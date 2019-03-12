@@ -1,0 +1,6 @@
+[submodule "support-app"]
+	path = support-app
+	url = https://github.com/AniTrend/support-app.git
+[submodule "support-markdown"]
+	path = support-markdown
+	url = https://github.com/AniTrend/support-markdown.git
