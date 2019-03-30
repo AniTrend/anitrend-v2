@@ -1,0 +1,2 @@
+include ':app', ':support', ':core'
+project(':support').projectDir = new File('support-app/support')

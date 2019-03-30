@@ -1,0 +1,108 @@
+plugins {
+    id("com.android.library")
+    id("kotlin-kapt")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("de.mannodermaus.android-junit5")
+}
+
+android {
+    compileSdkVersion rootProject.compileSdk
+    defaultConfig {
+        minSdkVersion rootProject.minSdk
+        targetSdkVersion rootProject.targetSdk
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** Project Modules */
+    implementation project(":support")
+
+    /** Kotlin Libraries */
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesAndroid"
+
+    /** Material Design */
+    implementation "com.google.android.material:material:$rootProject.material"
+
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint"
+
+    /** Architecture Components */
+    implementation "androidx.core:core-ktx:$rootProject.ktx"
+    implementation "android.arch.work:work-runtime:$rootProject.worker"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
+    implementation "androidx.room:room-runtime:$rootProject.anroidx"
+    kapt "androidx.room:room-compiler:$rootProject.anroidx"
+
+    /** Fire-base Libraries */
+    // implementation "com.google.firebase:firebase-core:${rootProject.firebase}"
+
+    /** Crash Analytics */
+    // implementation("com.crashlytics.sdk.android:crashlytics:${rootProject.crashlytics}") {
+    //     transitive = true
+    // }
+
+    /** Retrofit Libraries */
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.12.1"
+
+    /** Glide Libraries */
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glide"
+
+    /** Java Streams Port */
+    implementation "com.annimon:stream:$rootProject.stream"
+
+    /** Event Bus Library */
+    implementation "org.greenrobot:eventbus:$rootProject.eventBus"
+
+    /** State Layout Library */
+    implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
+
+    /** Material Dialogs */
+    implementation "com.afollestad.material-dialogs:core:$rootProject.materialDialogs"
+
+    /** Flex Box */
+    implementation "com.google.android:flexbox:$rootProject.flexBox"
+
+    // (Required) Writing tests for JUnit Jupiter
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
+    // (Required) The instrumentation test companion library
+    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:$rootProject.instrumentation"
+
+    // (Required) Runtime dependencies to orchestrate the execution on-device
+    androidTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.jupiter"
+    androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
+    androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:$rootProject.instrumentation"
+}
