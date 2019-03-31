@@ -1,0 +1,65 @@
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("de.mannodermaus.android-junit5")
+}
+
+android {
+    compileSdkVersion rootProject.compileSdk
+    defaultConfig {
+        minSdkVersion rootProject.minSdk
+        targetSdkVersion rootProject.targetSdk
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** Project Modules */
+    implementation project(":support")
+
+    /** Kotlin Libraries */
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.coroutinesCore}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.coroutinesAndroid}"
+
+    /** Material Design */
+    implementation "com.google.android.material:material:${rootProject.material}"
+
+    /** Architecture Components */
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.anroidx}"
+    implementation "android.arch.work:work-runtime:$rootProject.worker"
+    implementation "androidx.room:room-runtime:${rootProject.anroidx}"
+
+    /** Retrofit Libraries */
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofit}"
+
+    // (Required) Writing tests for JUnit Jupiter
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
+    // (Required) The instrumentation test companion library
+    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:$rootProject.instrumentation"
+
+    // (Required) Runtime dependencies to orchestrate the execution on-device
+    androidTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.jupiter"
+    androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
+}
