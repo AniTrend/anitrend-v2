@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    id("com.android.application")
     id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
@@ -45,6 +45,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Project Modules */
+    implementation project(":core")
     implementation project(":support")
 
     /** Kotlin Libraries */
