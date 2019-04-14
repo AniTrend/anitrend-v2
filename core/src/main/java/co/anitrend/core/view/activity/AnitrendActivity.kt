@@ -1,7 +1,7 @@
 package co.anitrend.core.view.activity
 
-import io.wax911.support.custom.activity.SupportActivity
-import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.core.presenter.SupportPresenter
+import io.wax911.support.ui.activity.SupportActivity
 
 /**
  * Abstract application based activity for anitrend, avoids further modification of the

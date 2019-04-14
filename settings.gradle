@@ -1,2 +1,5 @@
-include ':app', ':support', ':core'
-project(':support').projectDir = new File('support-app/support')
+include ':app', ':core', ':support-ext', ':support-core', ':support-ui', ':graphql'
+project(':support-ext').projectDir = new File('support-app/support-ext')
+project(':support-core').projectDir = new File('support-app/support-core')
+project(':support-ui').projectDir = new File('support-app/support-ui')
+project(':graphql').projectDir = new File('retrofit-graphql/library')
