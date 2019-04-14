@@ -38,6 +38,7 @@ dependencies {
     implementation project(":support-ext")
     implementation project(":support-ui")
     implementation project(":graphql")
+    implementation project(":emojify")
 
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.kotlin}"

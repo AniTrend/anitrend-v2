@@ -34,6 +34,9 @@ buildscript {
         coroutinesCore = '1.1.1'
         coroutinesAndroid = '1.1.1'
         materialDialogs = '2.0.0'
+
+        gson = '2.8.5'
+        timber = '4.7.1'
     }
     repositories {
         google()
