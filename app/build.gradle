@@ -24,6 +24,12 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "anitrend_v${defaultConfig.versionName}_rc_${defaultConfig.versionCode}.apk"
+                }
+            }
         }
     }
     compileOptions {
@@ -98,6 +104,9 @@ dependencies {
 
     /** Flex Box */
     implementation "com.google.android:flexbox:$rootProject.flexBox"
+
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$rootProject.junit"
