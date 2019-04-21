@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion rootProject.compileSdk
+    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode versionCode
+        versionName versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -19,6 +19,25 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildTypes.each {
+        def secretsProps = new Properties()
+        file(".config/secrets.properties").withInputStream {
+            stream -> secretsProps.load(stream)
+        }
+        it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
+        it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
+
+        def configProps = new Properties()
+        file(".config/configuration.properties").withInputStream {
+            stream -> configProps.load(stream)
+        }
+        it.buildConfigField("String", "redirectUri", configProps['redirectUri'])
+        it.buildConfigField("String", "registrationUrl", configProps['registrationUrl'])
+        it.buildConfigField("String", "apiAuthUrl", configProps['apiAuthUrl'])
+        it.buildConfigField("String", "apiUrl", configProps['apiUrl'])
+
+        it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,23 +60,30 @@ dependencies {
     implementation project(":emojify")
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.kotlin}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.coroutinesCore}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.coroutinesAndroid}"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
-    implementation "com.google.android.material:material:${rootProject.material}"
+    implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.anroidx}"
-    implementation "android.arch.work:work-runtime:$rootProject.worker"
-    implementation "androidx.room:room-runtime:${rootProject.anroidx}"
+    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
+    implementation "android.arch.work:work-runtime:$worker"
+    implementation "androidx.room:room-runtime:$anroidx"
 
     /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofit}"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.12.1"
+
+    /** Gson */
+    implementation "com.google.code.gson:gson:$gson"
+
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$rootProject.junit"
-    androidTestImplementation "androidx.test:runner:$rootProject.runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test:runner:$runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
