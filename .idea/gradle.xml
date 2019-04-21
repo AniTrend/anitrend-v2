@@ -8,9 +8,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/android-emojify/emojify" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/support-app/support" />
+            <option value="$PROJECT_DIR$/retrofit-graphql/library" />
+            <option value="$PROJECT_DIR$/support-app/support-core" />
+            <option value="$PROJECT_DIR$/support-app/support-ext" />
+            <option value="$PROJECT_DIR$/support-app/support-ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
