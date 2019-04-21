@@ -6,41 +6,32 @@ import androidx.annotation.StringDef
  * Media list scoring type
  */
 @StringDef(
-    ScoreFormat.ID,
-    ScoreFormat.ID_DESC,
-    ScoreFormat.SCORE,
-    ScoreFormat.SCORE_DESC,
-    ScoreFormat.RATING,
-    ScoreFormat.RATING_DESC,
-    ScoreFormat.CREATED_AT,
-    ScoreFormat.CREATED_AT_DESC,
-    ScoreFormat.UPDATED_AT,
-    ScoreFormat.UPDATED_AT_DESC
+    ScoreFormat.POINT_100,
+    ScoreFormat.POINT_10_DECIMAL,
+    ScoreFormat.POINT_10,
+    ScoreFormat.POINT_5,
+    ScoreFormat.POINT_3
 )
 annotation class ScoreFormat {
     companion object {
-        const val ID = "ID"
-        const val ID_DESC = "ID_DESC"
-        const val SCORE = "SCORE"
-        const val SCORE_DESC = "SCORE_DESC"
-        const val RATING = "RATING"
-        const val RATING_DESC = "RATING_DESC"
-        const val CREATED_AT = "CREATED_AT"
-        const val CREATED_AT_DESC = "CREATED_AT_DESC"
-        const val UPDATED_AT = "UPDATED_AT"
-        const val UPDATED_AT_DESC = "UPDATED_AT_DESC"
+        // An integer from 0-100
+        const val POINT_100 = "POINT_100"
+        // A float from 0-10 with 1 decimal place
+        const val POINT_10_DECIMAL = "POINT_10_DECIMAL"
+        // An integer from 0-10
+        const val POINT_10 = "POINT_10"
+        // An integer from 0-5. Should be represented in Stars
+        const val POINT_5 = "POINT_5"
+        // An integer from 0-3. Should be represented in Smileys. 0 => No Score, 1 => :(, 2
+        // => :|, 3 => :)
+        const val POINT_3 = "POINT_3"
 
         val ALL = listOf(
-            ID,
-            ID_DESC,
-            SCORE,
-            SCORE_DESC,
-            RATING,
-            RATING_DESC,
-            CREATED_AT,
-            CREATED_AT_DESC,
-            UPDATED_AT,
-            UPDATED_AT_DESC
+            POINT_100,
+            POINT_10_DECIMAL,
+            POINT_10,
+            POINT_5,
+            POINT_3
         )
     }
 }
