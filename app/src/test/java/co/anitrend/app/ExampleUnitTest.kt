@@ -1,4 +1,4 @@
-package co.anitrend
+package co.anitrend.app
 
 import org.junit.Test
 

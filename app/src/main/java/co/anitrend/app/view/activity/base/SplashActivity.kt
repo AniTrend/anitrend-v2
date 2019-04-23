@@ -1,4 +1,4 @@
-package co.anitrend.view.activity.base
+package co.anitrend.app.view.activity.base
 
 import androidx.appcompat.app.AppCompatActivity
 
