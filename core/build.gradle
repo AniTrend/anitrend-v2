@@ -63,6 +63,12 @@ dependencies {
     implementation project(":support-ui")
     implementation project(":graphql")
     implementation project(":emojify")
+    
+    /** Koin AndroidX Dependency Injection */
+    implementation "org.koin:koin-core:$koin"
+    implementation "org.koin:koin-core-ext:$koin"
+    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
@@ -79,7 +85,7 @@ dependencies {
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.12.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
 
     /** Gson */
     implementation "com.google.code.gson:gson:$gson"

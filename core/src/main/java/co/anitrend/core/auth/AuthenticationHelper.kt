@@ -5,14 +5,16 @@ import co.anitrend.core.BuildConfig
 import co.anitrend.core.auth.contract.IAuthenticationHelper
 import co.anitrend.core.auth.model.JsonWebToken
 import co.anitrend.core.dao.DatabaseHelper
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 /**
  * Provides an api to handle authentication based processes
  */
-class AuthenticationHelper(private val databaseHelper: DatabaseHelper?): IAuthenticationHelper {
+class AuthenticationHelper(private val databaseHelper: DatabaseHelper): IAuthenticationHelper, KoinComponent {
 
     override val jsonWebToken by lazy {
-        databaseHelper?.jsonWebTokenDao()?.findLatest()
+        databaseHelper.jsonWebTokenDao().findLatest()
     }
 
     /**
@@ -27,7 +29,7 @@ class AuthenticationHelper(private val databaseHelper: DatabaseHelper?): IAuthen
         val jwt = callbackUri.getQueryParameter(CALLBACK_QUERY_KEY)
         return if (!jwt.isNullOrBlank()) {
             val jsonWebTokenId = jsonWebToken?.id ?: 1
-            databaseHelper?.jsonWebTokenDao()?.insert(
+            databaseHelper.jsonWebTokenDao().insert(
                 JsonWebToken(jsonWebTokenId, jwt)
             )
             true

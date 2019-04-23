@@ -139,5 +139,5 @@ data class MediaQuery(
     val popularity_greater: Int? = null,
     val popularity_lesser: Int? = null,
     @MediaSort
-    val sort: List<MediaSort>? = null
+    val sort: List<String>? = null
 ): IGraphQuery

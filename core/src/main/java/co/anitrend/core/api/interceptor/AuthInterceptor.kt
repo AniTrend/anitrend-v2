@@ -3,11 +3,13 @@ package co.anitrend.core.api.interceptor
 import android.content.Context
 import co.anitrend.core.auth.AuthenticationHelper
 import co.anitrend.core.auth.contract.IAuthenticationHelper
-import co.anitrend.core.extension.getDatabaseHelper
+import co.anitrend.core.dao.DatabaseHelper
 import co.anitrend.core.util.Settings
 import io.wax911.support.extension.isConnectedToNetwork
 import okhttp3.Interceptor
 import okhttp3.Response
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
 /**
@@ -15,15 +17,11 @@ import timber.log.Timber
  * The context in which an [Interceptor] may be  parallel or asynchronous depending
  * on the dispatching caller, as such take care to assure thread safety
  */
-class AuthInterceptor(private val settings: Settings, private val context: Context?) : Interceptor {
+class AuthInterceptor(private val context: Context?) : Interceptor, KoinComponent {
 
-    private val databaseHelper by lazy {
-        context?.getDatabaseHelper()
-    }
-
-    private val authenticationHelper: IAuthenticationHelper by lazy {
-        AuthenticationHelper(databaseHelper)
-    }
+    private val authenticationHelper  by inject<IAuthenticationHelper>()
+    private val databaseHelper by inject<DatabaseHelper>()
+    private val settings by inject<Settings>()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -37,9 +35,9 @@ class AuthInterceptor(private val settings: Settings, private val context: Conte
                     jsonWebToken.getTokenKey()
                 )
                 context.isConnectedToNetwork() -> {
+                    settings.authenticatedUserId = Settings.INVALID_USER_ID
                     settings.isAuthenticated = false
-                    settings.setAuthenticatedUser()
-                    databaseHelper?.clearAllTables()
+                    databaseHelper.clearAllTables()
                     Timber.e("${toString()} -> authentication token is null, application is logging user out!")
                 }
                 else ->

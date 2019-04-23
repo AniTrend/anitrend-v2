@@ -2,35 +2,32 @@ package co.anitrend.core.worker
 
 import android.content.Context
 import androidx.work.WorkerParameters
-import co.anitrend.core.api.NetworkClient
 import co.anitrend.core.api.endpoint.MediaEndPoint
 import co.anitrend.core.dao.DatabaseHelper
-import co.anitrend.core.extension.getDatabaseHelper
 import co.anitrend.core.extension.getEndPointOf
-import co.anitrend.core.presenter.SharedPresenter
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.util.graphql.GraphUtil
 import io.wax911.support.core.controller.SupportRequestClient
 import io.wax911.support.core.worker.SupportWorker
 import io.wax911.support.core.wrapper.extension.isSuccessful
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
-class MediaTagWorker(
+class MediaTagCollectionWorker(
     context: Context,
     workerParameters: WorkerParameters
-): SupportWorker<SharedPresenter>(context, workerParameters) {
+): SupportWorker<CorePresenter>(context, workerParameters), KoinComponent {
 
-    private val supportRequestClient: SupportRequestClient by lazy {
-        NetworkClient()
-    }
 
-    private val databaseHelper: DatabaseHelper by lazy {
-        applicationContext.getDatabaseHelper()
-    }
+    private val supportRequestClient by inject<SupportRequestClient>()
+
+    private val databaseHelper by inject<DatabaseHelper>()
 
     /**
      * @return the presenter that will be used by the worker
      */
-    override fun initPresenter() = SharedPresenter.newInstance(applicationContext)
+    override fun initPresenter() = inject<CorePresenter>().value
 
     /**
      * Override this method to do your actual background processing.  This method is called on a
@@ -58,7 +55,7 @@ class MediaTagWorker(
                 )
         val wrapper = supportRequestClient.executeUsing(mediaTagsCall)
         if (wrapper.isSuccessful()) {
-            return wrapper.model?.data?.result?.let {
+            return wrapper.model?.data?.mediaTagCollection?.let {
                 try {
                     databaseHelper.mediaTagDao().insert(*it.toTypedArray())
                     Result.success()

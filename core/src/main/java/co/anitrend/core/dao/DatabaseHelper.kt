@@ -13,7 +13,7 @@ import co.anitrend.core.dao.query.MediaGenreDao
 import co.anitrend.core.dao.query.MediaTagDao
 import co.anitrend.core.model.response.general.media.MediaGenre
 import co.anitrend.core.model.response.general.media.MediaTag
-import io.wax911.support.core.factory.SingletonCreator
+import io.wax911.support.core.factory.InstanceCreator
 
 @Database(
     entities = [
@@ -27,7 +27,7 @@ abstract class DatabaseHelper : RoomDatabase() {
     abstract fun mediaTagDao(): MediaTagDao
     abstract fun mediaGenreDao(): MediaGenreDao
 
-    companion object : SingletonCreator<DatabaseHelper, Context>({ applicationContext ->
+    companion object : InstanceCreator<DatabaseHelper, Context>({ applicationContext ->
         Room.databaseBuilder(
             applicationContext,
             DatabaseHelper::class.java,

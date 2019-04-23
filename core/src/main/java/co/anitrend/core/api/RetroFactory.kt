@@ -3,11 +3,10 @@ package co.anitrend.core.api
 import android.content.Context
 import co.anitrend.core.BuildConfig
 import co.anitrend.core.api.interceptor.AuthInterceptor
-import co.anitrend.core.util.Settings
-import io.github.wax911.library.converter.GraphConverter
 import co.anitrend.core.api.interceptor.ClientInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import io.github.wax911.library.converter.GraphConverter
 import io.wax911.support.core.factory.SingletonCreator
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,10 +21,7 @@ class RetroFactory private constructor(context: Context) {
     private val retrofit: Retrofit by lazy {
         val httpClient = createHttpClient(
             HttpLoggingInterceptor.Level.BODY,
-            AuthInterceptor(
-                Settings.newInstance(context),
-                context
-            )
+            AuthInterceptor(context)
         )
 
         Retrofit.Builder().client(
