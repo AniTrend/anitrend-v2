@@ -79,7 +79,7 @@ dependencies {
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.12.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
 
     /** Gson */
     implementation "com.google.code.gson:gson:$gson"
