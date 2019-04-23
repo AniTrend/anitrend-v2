@@ -1,4 +1,4 @@
-package co.anitrend.service
+package co.anitrend.app.service
 
 import androidx.core.content.FileProvider
 

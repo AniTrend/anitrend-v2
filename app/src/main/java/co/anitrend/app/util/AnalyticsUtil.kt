@@ -1,4 +1,4 @@
-package co.anitrend.util
+package co.anitrend.app.util
 
 import android.content.Context
 import android.os.Bundle

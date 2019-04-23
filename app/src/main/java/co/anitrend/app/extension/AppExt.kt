@@ -1,7 +1,7 @@
-package co.anitrend.extension
+package co.anitrend.app.extension
 
 import android.content.Context
-import co.anitrend.App
+import co.anitrend.app.App
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
 
 fun Context?.getAnalytics(): ISupportAnalytics? = this?.let {

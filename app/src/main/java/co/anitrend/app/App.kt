@@ -1,7 +1,8 @@
-package co.anitrend
+package co.anitrend.app
 
 import android.app.Application
-import co.anitrend.util.AnalyticsUtil
+import co.anitrend.BuildConfig
+import co.anitrend.app.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
