@@ -61,11 +61,14 @@ class QueryMappingTest {
         assertTrue("Map contains key `onList`", mappedQuery.containsKey("onList"))
         assertTrue("Map contains key `status_in`", mappedQuery.containsKey("status_in"))
 
-        assertEquals(MediaType.ANIME, mappedQuery["type"])
-        assertEquals(FuzzyDate(year = 2018, month = 5).toFuzzyDateInt(), mappedQuery["endDate"])
-        assertEquals(MediaSeason.FALL, mappedQuery["season"])
-        assertEquals(MediaFormat.ALL, mappedQuery["format_in"])
+        assertEquals("ANIME", mappedQuery["type"])
+        assertEquals("20180500", mappedQuery["endDate"])
+        assertEquals("FALL", mappedQuery["season"])
+        assertEquals(listOf(
+            "TV", "TV_SHORT", "MOVIE", "SPECIAL", "OVA", "ONA",
+            "MUSIC", "MANGA", "NOVEL", "ONE_SHOT"
+        ), mappedQuery["format_in"])
         assertEquals(true, mappedQuery["onList"])
-        assertEquals(listOf(MediaStatus.FINISHED, MediaStatus.NOT_YET_RELEASED), mappedQuery["status_in"])
+        assertEquals(listOf("FINISHED", "NOT_YET_RELEASED"), mappedQuery["status_in"])
     }
 }
