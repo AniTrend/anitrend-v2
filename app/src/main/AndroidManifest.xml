@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:fullBackupContent="@xml/backup_descriptor"
+        app:appCategory="social"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".view.activity.base.SplashActivity">
