@@ -2,15 +2,16 @@ package co.anitrend.core.worker
 
 import android.content.Context
 import androidx.work.WorkerParameters
-import co.anitrend.core.api.endpoint.MediaEndPoint
-import co.anitrend.core.dao.DatabaseHelper
-import co.anitrend.core.extension.getEndPointOf
-import co.anitrend.core.model.response.general.media.MediaGenre
+import co.anitrend.data.api.endpoint.MediaEndPoint
+import co.anitrend.data.dao.DatabaseHelper
+import co.anitrend.data.extension.getEndPointOf
+import co.anitrend.data.model.response.general.media.MediaGenre
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.util.graphql.GraphUtil
+import co.anitrend.data.util.graphql.GraphUtil
 import io.wax911.support.core.controller.SupportRequestClient
 import io.wax911.support.core.worker.SupportWorker
 import io.wax911.support.core.wrapper.extension.isSuccessful
+import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
@@ -20,14 +21,11 @@ class MediaGenreCollectionWorker(
     workerParameters: WorkerParameters
 ): SupportWorker<CorePresenter>(context, workerParameters), KoinComponent {
 
+    override val presenter by inject<CorePresenter>()
+
     private val supportRequestClient by inject<SupportRequestClient>()
 
     private val databaseHelper by inject<DatabaseHelper>()
-
-    /**
-     * @return the presenter that will be used by the worker
-     */
-    override fun initPresenter() = inject<CorePresenter>().value
 
     /**
      * Override this method to do your actual background processing.  This method is called on a
@@ -60,7 +58,9 @@ class MediaGenreCollectionWorker(
                     val mediaGenreList = it.map { genre ->
                         MediaGenre(genre)
                     }.toTypedArray()
-                    databaseHelper.mediaGenreDao().insert(*mediaGenreList)
+                    runBlocking {
+                        databaseHelper.mediaGenreDao().insert(*mediaGenreList)
+                    }
                     Result.success()
                 } catch (e: Exception) {
                     Timber.e(e)

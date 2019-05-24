@@ -1,5 +1,6 @@
 plugins {
     id("com.android.library")
+    id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
 }
@@ -25,25 +26,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each {
-        def secretsProps = new Properties()
-        file(".config/secrets.properties").withInputStream {
-            stream -> secretsProps.load(stream)
-        }
-        it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
-        it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
-
-        def configProps = new Properties()
-        file(".config/configuration.properties").withInputStream {
-            stream -> configProps.load(stream)
-        }
-        it.buildConfigField("String", "redirectUri", configProps['redirectUri'])
-        it.buildConfigField("String", "registrationUrl", configProps['registrationUrl'])
-        it.buildConfigField("String", "apiAuthUrl", configProps['apiAuthUrl'])
-        it.buildConfigField("String", "apiUrl", configProps['apiUrl'])
-
-        it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -63,7 +45,8 @@ dependencies {
     implementation project(":support-ui")
     implementation project(":graphql")
     implementation project(":emojify")
-    
+    implementation project(":data")
+
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-core:$koin"
     implementation "org.koin:koin-core-ext:$koin"
@@ -71,24 +54,22 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"
 
+    implementation "androidx.constraintlayout:constraintlayout:$constraint"
+
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
-    implementation "android.arch.work:work-runtime:$worker"
-    implementation "androidx.room:room-runtime:$anroidx"
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
-
-    /** Gson */
-    implementation "com.google.code.gson:gson:$gson"
 
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
