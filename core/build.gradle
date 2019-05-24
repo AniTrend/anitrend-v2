@@ -1,19 +1,23 @@
 plugins {
     id("com.android.library")
+    id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id("de.mannodermaus.android-junit5")
 }
 
 android {
-    compileSdkVersion rootProject.compileSdk
+    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode versionCode
+        versionName versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -36,30 +40,42 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Project Modules */
-    implementation project(":support")
+    implementation project(":support-core")
+    implementation project(":support-ext")
+    implementation project(":support-ui")
+    implementation project(":graphql")
+    implementation project(":emojify")
+    implementation project(":data")
+
+    /** Koin AndroidX Dependency Injection */
+    implementation "org.koin:koin-core:$koin"
+    implementation "org.koin:koin-core-ext:$koin"
+    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.kotlin}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.coroutinesCore}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.coroutinesAndroid}"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
-    implementation "com.google.android.material:material:${rootProject.material}"
+    implementation "com.google.android.material:material:$material"
+
+    implementation "androidx.constraintlayout:constraintlayout:$constraint"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.anroidx}"
-    implementation "android.arch.work:work-runtime:$rootProject.worker"
-    implementation "androidx.room:room-runtime:${rootProject.anroidx}"
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
 
     /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofit}"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
 
-    // (Required) Writing tests for JUnit Jupiter
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
-    // (Required) The instrumentation test companion library
-    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:$rootProject.instrumentation"
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
-    // (Required) Runtime dependencies to orchestrate the execution on-device
-    androidTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.jupiter"
-    androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
+    /** Testing-only dependencies */
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test:runner:$runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
