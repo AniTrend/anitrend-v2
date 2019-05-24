@@ -1,4 +1,4 @@
-include ':app', ':core', ':support-ext', ':support-core', ':support-ui', ':graphql', ':emojify'
+include ':app', ':core', ':support-ext', ':support-core', ':support-ui', ':graphql', ':emojify', ':data'
 project(':support-ext').projectDir = new File('support-app/support-ext')
 project(':support-core').projectDir = new File('support-app/support-core')
 project(':support-ui').projectDir = new File('support-app/support-ui')

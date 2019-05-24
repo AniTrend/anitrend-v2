@@ -1,10 +1,10 @@
-package co.anitrend.core.auth
+package co.anitrend.data
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.Assert
+import org.junit.Test
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -13,13 +13,13 @@ import org.junit.runner.RunWith
  */
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class AuthenticationHelperWithContextTest {
+class ExampleInstrumentedTest {
 
     private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }
 
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        assertEquals("co.anitrend.core.auth.test", appContext.packageName)
+        Assert.assertEquals("co.anitrend.data.test", appContext.packageName)
     }
 }
