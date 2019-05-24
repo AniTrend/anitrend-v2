@@ -46,6 +46,7 @@ dependencies {
 
     /** Project Modules */
     implementation project(":core")
+    implementation project(":data")
 
     /** Platform Dependencies */
     implementation project(":support-core")
@@ -59,7 +60,7 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
@@ -70,10 +71,13 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
-    implementation "android.arch.work:work-runtime:$worker"
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
-    implementation "androidx.room:room-runtime:$anroidx"
-    kapt "androidx.room:room-compiler:$anroidx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
 
     /** Fire-base Libraries */
     implementation "com.google.firebase:firebase-core:$firebase"
@@ -83,29 +87,9 @@ dependencies {
         transitive = true
     }
 
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
-
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
-
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$stream"
-
-    /** Event Bus Library */
-    implementation "org.greenrobot:eventbus:$eventBus"
-
-    /** State Layout Library */
-    implementation "com.github.nguyenhoanglam:ProgressLayout:$stateLayout"
-
-    /** Material Dialogs */
-    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
-
-    /** Flex Box */
-    implementation "com.google.android:flexbox:$flexBox"
 
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"

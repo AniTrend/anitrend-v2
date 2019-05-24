@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/android-emojify/emojify" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/retrofit-graphql/library" />
             <option value="$PROJECT_DIR$/support-app/support-core" />
             <option value="$PROJECT_DIR$/support-app/support-ext" />

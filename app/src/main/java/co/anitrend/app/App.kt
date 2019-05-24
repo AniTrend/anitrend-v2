@@ -1,28 +1,25 @@
 package co.anitrend.app
 
 import android.app.Application
-import co.anitrend.BuildConfig
+import co.anitrend.app.koin.appModules
 import co.anitrend.app.util.AnalyticsUtil
+import co.anitrend.core.koin.coreModules
+import co.anitrend.core.koin.corePresenterModules
+import co.anitrend.core.koin.coreViewModelModules
+import co.anitrend.data.koin.dataModules
+import co.anitrend.data.koin.dataRepositoryModules
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import io.wax911.support.core.util.SupportCoroutineUtil
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App: Application() {
+class App: Application(), SupportCoroutineUtil {
 
-    val analyticsUtil: ISupportAnalytics by lazy {
-        AnalyticsUtil.newInstance(this)
-    }
-
-    init {
-        EventBus.builder().logNoSubscriberMessages(BuildConfig.DEBUG)
-            .sendNoSubscriberEvent(BuildConfig.DEBUG)
-            .sendSubscriberExceptionEvent(BuildConfig.DEBUG)
-            .throwSubscriberException(BuildConfig.DEBUG)
-            .installDefaultEventBus()
-    }
+    val analyticsUtil: ISupportAnalytics by inject()
 
     /**
      * Called when the application is starting, before any activity, service,
@@ -48,7 +45,21 @@ class App: Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        GlobalScope.launch(Dispatchers.IO) {
+        startKoin{
+            androidLogger()
+            androidContext(
+                applicationContext
+            )
+            modules(
+                appModules,
+                coreModules,
+                dataModules,
+                coreViewModelModules,
+                corePresenterModules,
+                dataRepositoryModules
+            )
+        }
+        launch {
             when (BuildConfig.DEBUG) {
                 true -> Timber.plant(Timber.DebugTree())
                 else -> Timber.plant(analyticsUtil as AnalyticsUtil)
