@@ -12,11 +12,11 @@ import retrofit2.http.POST
 interface MediaEndPoint {
 
     @POST("/")
-    @GraphQuery("GenreCollection")
+    @GraphQuery("genre-collection")
     fun getMediaGenres(@Body request: QueryContainerBuilder): Call<GraphContainer<GenreCollection>>
 
     @POST("/")
-    @GraphQuery("MediaTagCollection")
+    @GraphQuery("media-tag-collection")
     fun getMediaTags(@Body request: QueryContainerBuilder): Call<GraphContainer<MediaTagCollection>>
 
 }

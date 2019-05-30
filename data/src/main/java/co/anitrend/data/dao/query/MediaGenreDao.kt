@@ -4,17 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.model.response.general.media.MediaGenre
-import io.wax911.support.core.dao.ISupportQuery
+import io.wax911.support.data.dao.ISupportQuery
 
 @Dao
-interface MediaGenreDao: ISupportQuery<MediaGenre?> {
+interface MediaGenreDao: ISupportQuery<MediaGenre> {
 
     @Query("select count(genre) from MediaGenre")
-    fun count(): Int
+    suspend fun count(): Int
 
     @Query("select * from MediaGenre")
-    fun findAll(): List<MediaGenre>?
+    suspend fun findAll(): List<MediaGenre>?
 
     @Query("select * from MediaGenre")
     fun findAllLiveData(): LiveData<List<MediaGenre>?>
+
+    @Query("delete from MediaGenre")
+    suspend fun deleteAll()
 }

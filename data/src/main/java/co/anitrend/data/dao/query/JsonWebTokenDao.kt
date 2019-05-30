@@ -3,7 +3,7 @@ package co.anitrend.data.dao.query
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.auth.model.JsonWebToken
-import io.wax911.support.core.dao.ISupportQuery
+import io.wax911.support.data.dao.ISupportQuery
 
 @Dao
 interface JsonWebTokenDao: ISupportQuery<JsonWebToken?> {
@@ -16,4 +16,7 @@ interface JsonWebTokenDao: ISupportQuery<JsonWebToken?> {
 
     @Query("select * from JsonWebToken limit :limit offset :offset")
     fun findAll(offset: Int, limit: Int): List<JsonWebToken>?
+
+    @Query("delete from JsonWebToken")
+    fun clearTable()
 }

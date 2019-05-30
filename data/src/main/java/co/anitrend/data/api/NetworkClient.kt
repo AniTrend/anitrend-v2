@@ -1,9 +1,10 @@
 package co.anitrend.data.api
 
 import io.github.wax911.library.util.getError
-import io.wax911.support.core.controller.SupportRequestClient
-import io.wax911.support.core.wrapper.RequestResult
+import io.wax911.support.data.controller.SupportRequestClient
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import retrofit2.Call
 import timber.log.Timber
@@ -12,7 +13,18 @@ import timber.log.Timber
  * Network client executor helper class, dispatches network calls & registers on going calls.
  * The class can cancel all on-going calls through [NetworkClient.cancel]
  */
-class NetworkClient: SupportRequestClient() {
+@Deprecated(
+    message = "This network client will be deprecated in v1.2 see [Koin](https://insert-koin.io/docs/2.0/getting-started/)",
+    replaceWith = ReplaceWith(
+        expression = "by inject<ISupportDataSource> in your desired class use case"
+    ),
+    level = DeprecationLevel.WARNING
+)
+class NetworkClient(
+    parentCoroutineJob: Job? = null
+) : SupportRequestClient() {
+
+    override val supervisorJob = SupervisorJob(parentCoroutineJob)
 
     /**
      * Executes the given retrofit call and returns a result. This function call
@@ -21,23 +33,18 @@ class NetworkClient: SupportRequestClient() {
      *
      * @param call retrofit call to execute
      */
-    override fun <T> executeUsing(call: Call<T>): RequestResult<T?> {
-        try {
+    override fun <T> executeUsing(call: Call<T>): T? {
+        return try {
             callList.add(call)
             val response = call.execute()
 
             if (!response.isSuccessful)
                 response.getError()
 
-            return RequestResult(
-                response.code(),
-                response.body(),
-                response.headers(),
-                response.errorBody()
-            )
+            response.body()
         } catch (e: Exception) {
             Timber.e(e)
-            return RequestResult()
+            null
         }
     }
 
@@ -47,7 +54,7 @@ class NetworkClient: SupportRequestClient() {
      *
      * @param call retrofit call to execute
      */
-    override fun <T> executeUsingAsync(call: Call<T>): Deferred<RequestResult<T?>> = async {
+    override fun <T> executeUsingAsync(call: Call<T>): Deferred<T?> = async {
         return@async executeUsing(call)
     }
 

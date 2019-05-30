@@ -1,5 +1,6 @@
 package co.anitrend.data.util.graphql
 
+import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.model.query.PageQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
@@ -23,5 +24,20 @@ object GraphUtil {
             queryContainer.putVariables(toMap())
         }
         return queryContainer
+    }
+
+    /**
+     * Compacts the request body aiding in the shrinkage of the request payload
+     */
+    @AniTrendExperimentalFeature
+    internal fun minify(rawData: String?): String? {
+        if (!rawData.isNullOrBlank()) {
+            return rawData.replace(" ", "")
+                .replace("\t", " ")
+                .replace("\n", " ")
+                .replaceFirst("mutation", "mutation ")
+                .replaceFirst("query", "query ")
+        }
+        return rawData
     }
 }

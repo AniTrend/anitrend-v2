@@ -11,13 +11,14 @@ import okhttp3.Response
 class ClientInterceptor: Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val builder = request.newBuilder()
+        val original = chain.request()
 
-        builder.apply {
-            addHeader("Content-Type", "application/json")
-        }
+        val request = original.newBuilder()
+            .header("Content-Type", "application/json")
+            .header("Accept", "application/json")
+            .method(original.method(), original.body())
+            .build()
 
-        return chain.proceed(builder.build())
+        return chain.proceed(request)
     }
 }
