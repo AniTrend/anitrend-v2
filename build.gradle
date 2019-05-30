@@ -6,8 +6,8 @@ buildscript {
         targetSdk = 28
         minSdk = 21
 
-        versionCode = 110
-        versionName = '2.0.0-alpha'
+        versionCode = 120
+        versionName = '2.0.0-alpha11'
 
         constraint = '1.1.3'
 
@@ -16,13 +16,13 @@ buildscript {
 
         material = '1.0.0'
         androidx = '2.0.0'
-        room = '2.1.0-beta01'
+        room = '2.1.0-rc01'
         paging = '2.1.0-rc01'
         pagingKtx = '2.1.0'
-        ktx = '1.1.0-beta01'
+        ktx = '1.2.0-alpha01'
         fragmentKtx = '1.0.0'
-        workerKtx = '2.0.1'
-        navigation = '2.1.0-alpha03'
+        workerKtx = '2.1.0-alpha02'
+        navigation = '2.1.0-alpha04'
         firebase = '16.0.9'
 
         koin = '2.0.0-rc-2'
@@ -37,7 +37,7 @@ buildscript {
         crashlytics = '2.6.8@aar'
         coroutinesCore = '1.1.1'
         coroutinesAndroid = '1.1.1'
-        materialDialogs = '3.0.0-alpha1'
+        materialDialogs = '3.0.0-alpha4'
 
         gson = '2.8.5'
         timber = '4.7.1'
@@ -60,7 +60,7 @@ buildscript {
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.28.1'
+        classpath 'io.fabric.tools:gradle:1.29.0'
     }
 }
 
