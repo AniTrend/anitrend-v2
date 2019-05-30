@@ -1,2 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="AppTheme" parent="SupportTheme.AppTheme">
+        <item name="android:windowAnimationStyle">@style/SupportTheme.WindowAnimationStyle</item>
+        <item name="android:textViewStyle">@style/SupportTheme.FontFamily</item>
+    </style>
+
 </resources>

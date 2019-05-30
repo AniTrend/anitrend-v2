@@ -4,17 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.model.response.general.media.MediaTag
-import io.wax911.support.core.dao.ISupportQuery
+import io.wax911.support.data.dao.ISupportQuery
 
 @Dao
-interface MediaTagDao: ISupportQuery<MediaTag?> {
+interface MediaTagDao: ISupportQuery<MediaTag> {
 
     @Query("select count(id) from MediaTag")
-    fun count(): Int
+    suspend fun count(): Int
 
     @Query("select * from MediaTag")
-    fun findAll(): List<MediaTag>?
+    suspend fun findAll(): List<MediaTag>?
 
     @Query("select * from MediaTag")
     fun findAllLiveData(): LiveData<List<MediaTag>?>
+
+    @Query("delete from MediaTag")
+    suspend fun deleteAll()
 }

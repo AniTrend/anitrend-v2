@@ -1,4 +1,4 @@
-query MediaTagCollection {
+query {
   MediaTagCollection {
     ... on MediaTag {
       id

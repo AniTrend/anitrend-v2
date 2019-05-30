@@ -39,12 +39,11 @@ androidExtensions {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    /** Project Modules */
+    /** Platform Dependencies */
     implementation project(":support-core")
+    implementation project(":support-data")
     implementation project(":support-ext")
     implementation project(":support-ui")
-    implementation project(":graphql")
-    implementation project(":emojify")
     implementation project(":data")
 
     /** Koin AndroidX Dependency Injection */
@@ -65,6 +64,7 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
 

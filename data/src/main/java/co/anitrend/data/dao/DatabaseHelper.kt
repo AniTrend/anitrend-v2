@@ -12,7 +12,6 @@ import co.anitrend.data.dao.query.MediaGenreDao
 import co.anitrend.data.dao.query.MediaTagDao
 import co.anitrend.data.model.response.general.media.MediaGenre
 import co.anitrend.data.model.response.general.media.MediaTag
-import io.wax911.support.core.factory.InstanceCreator
 
 @Database(
     entities = [
@@ -26,14 +25,16 @@ abstract class DatabaseHelper: RoomDatabase() {
     abstract fun mediaTagDao(): MediaTagDao
     abstract fun mediaGenreDao(): MediaGenreDao
 
-    companion object : InstanceCreator<DatabaseHelper, Context>({ applicationContext ->
-        Room.databaseBuilder(
-            applicationContext,
-            DatabaseHelper::class.java,
-            "anitrend_data"
-        )
-            .addMigrations(MIGRATION_1_2)
-            .fallbackToDestructiveMigration()
-            .build()
-    })
+    companion object {
+
+        fun newInstance(applicationContext: Context): DatabaseHelper {
+            return Room.databaseBuilder(
+                applicationContext,
+                DatabaseHelper::class.java,
+                "anitrend-data"
+            ).fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_1_2)
+                .build()
+        }
+    }
 }
