@@ -7,8 +7,8 @@ import org.koin.dsl.module
 
 val appModules = module {
     factory<ISupportAnalytics> {
-        AnalyticsUtil.newInstance(
-            arg = androidContext()
+        AnalyticsUtil(
+            context = androidContext()
         )
     }
 }

@@ -115,4 +115,7 @@ dependencies {
     testImplementation "org.koin:koin-test:$koin"
 }
 
-apply plugin: 'com.google.gms.google-services'
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'io.fabric'
+}
