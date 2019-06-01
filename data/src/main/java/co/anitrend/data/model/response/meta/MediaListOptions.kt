@@ -1,7 +1,7 @@
 package co.anitrend.data.model.response.meta
 
 import android.os.Parcelable
-import co.anitrend.data.repository.media.ScoreFormat
+import co.anitrend.data.repository.media.attributes.ScoreFormat
 import kotlinx.android.parcel.Parcelize
 
 /** [MediaListOptions](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistoptions.doc.html)
