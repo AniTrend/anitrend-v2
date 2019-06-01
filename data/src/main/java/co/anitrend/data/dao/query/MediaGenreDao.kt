@@ -12,10 +12,10 @@ interface MediaGenreDao: ISupportQuery<MediaGenre> {
     @Query("select count(genre) from MediaGenre")
     suspend fun count(): Int
 
-    @Query("select * from MediaGenre")
+    @Query("select * from MediaGenre order by genre asc")
     suspend fun findAll(): List<MediaGenre>?
 
-    @Query("select * from MediaGenre")
+    @Query("select * from MediaGenre order by genre asc")
     fun findAllLiveData(): LiveData<List<MediaGenre>?>
 
     @Query("delete from MediaGenre")

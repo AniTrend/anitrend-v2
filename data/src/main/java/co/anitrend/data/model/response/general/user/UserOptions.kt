@@ -1,7 +1,7 @@
 package co.anitrend.data.model.response.general.user
 
 import android.os.Parcelable
-import co.anitrend.data.repository.user.UserTitleLanguage
+import co.anitrend.data.repository.user.attributes.UserTitleLanguage
 import kotlinx.android.parcel.Parcelize
 
 /** [UserOptions](https://anilist.github.io/ApiV2-GraphQL-Docs/useroptions.doc.html)

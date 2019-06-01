@@ -1,10 +1,10 @@
 package co.anitrend.data.model.query
 
 import co.anitrend.data.model.response.meta.FuzzyDate
-import co.anitrend.data.repository.media.MediaFormat
-import co.anitrend.data.repository.media.MediaSeason
-import co.anitrend.data.repository.media.MediaStatus
-import co.anitrend.data.repository.media.MediaType
+import co.anitrend.data.repository.media.attributes.MediaFormat
+import co.anitrend.data.repository.media.attributes.MediaSeason
+import co.anitrend.data.repository.media.attributes.MediaStatus
+import co.anitrend.data.repository.media.attributes.MediaType
 import org.junit.Assert.*
 import org.junit.Test
 
