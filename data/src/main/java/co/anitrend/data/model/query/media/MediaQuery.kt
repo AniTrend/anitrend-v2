@@ -1,5 +1,7 @@
-package co.anitrend.data.model.query
+package co.anitrend.data.model.query.media
 
+import co.anitrend.data.model.contract.FuzzyDateInt
+import co.anitrend.data.model.contract.FuzzyDateLike
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.repository.media.attributes.*
 
@@ -100,12 +102,12 @@ data class MediaQuery(
     val idMal_not: Int? = null,
     val idMal_in: List<Int>? = null,
     val idMal_not_in: List<Int>? = null,
-    val startDate_greater: String? = null,
-    val startDate_lesser: String? = null,
-    val startDate_like: String? = null,
-    val endDate_greater: String? = null,
-    val endDate_lesser: String? = null,
-    val endDate_like: String? = null,
+    val startDate_greater: FuzzyDateInt? = null,
+    val startDate_lesser: FuzzyDateInt? = null,
+    val startDate_like: FuzzyDateLike? = null,
+    val endDate_greater: FuzzyDateInt? = null,
+    val endDate_lesser: FuzzyDateInt? = null,
+    val endDate_like: FuzzyDateLike? = null,
     @MediaFormat
     val format_in: List<String>? = null,
     @MediaFormat
@@ -140,7 +142,7 @@ data class MediaQuery(
     val popularity_lesser: Int? = null,
     @MediaSort
     val sort: List<String>? = null
-): IGraphQuery {
+) : IGraphQuery {
 
     /**
      * A map serializer to build maps out of object so that we can consume them
