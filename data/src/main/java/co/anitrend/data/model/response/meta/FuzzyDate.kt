@@ -2,6 +2,7 @@ package co.anitrend.data.model.response.meta
 
 import android.os.Parcelable
 import androidx.annotation.IntRange
+import co.anitrend.data.model.contract.FuzzyDateInt
 import kotlinx.android.parcel.Parcelize
 
 /** [FuzzyDate](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydate.doc.html)
@@ -21,32 +22,12 @@ data class FuzzyDate(
     val day: Int = UNKNOWN
 ): Parcelable {
 
-    /** [FuzzyDateInt](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydateint.doc.html)
+    /**
+     * Checks if all date fields are not set
      *
-     * 8 digit long date integer (YYYYMMDD).
-     * Unknown dates represented by 0.
-     *
-     * E.g. 2016: 20160000, May 1976: 19760500
+     * @return [Boolean] true if the date fields are set to [UNKNOWN] otherwise false
      */
-    fun toFuzzyDateInt(): String {
-        if (year == 0 && month == 0 && day == 0)
-            return "0"
-        val fuzzyDateYear = when {
-            year < 10 -> "000$year"
-            year < 100 -> "00$year"
-            year < 1000 -> "0$year"
-            else -> "$year"
-        }
-        val fuzzyDateMonth = when {
-            month <= 9 -> "0$month"
-            else -> "$month"
-        }
-        val fuzzyDateDay = when {
-            day <= 9 -> "0$day"
-            else -> "$day"
-        }
-        return "$fuzzyDateYear$fuzzyDateMonth$fuzzyDateDay"
-    }
+    fun isDateNotSet() = day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
 
     companion object {
         /**

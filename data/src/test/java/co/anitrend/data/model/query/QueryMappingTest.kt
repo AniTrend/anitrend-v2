@@ -1,5 +1,7 @@
 package co.anitrend.data.model.query
 
+import co.anitrend.data.model.extension.toFuzzyDateInt
+import co.anitrend.data.model.query.media.MediaQuery
 import co.anitrend.data.model.response.meta.FuzzyDate
 import co.anitrend.data.repository.media.attributes.MediaFormat
 import co.anitrend.data.repository.media.attributes.MediaSeason

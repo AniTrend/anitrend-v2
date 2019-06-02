@@ -1,6 +1,7 @@
-package co.anitrend.data.model.response.meta
+package co.anitrend.data.model.extension
 
-import org.junit.Assert.*
+import co.anitrend.data.model.response.meta.FuzzyDate
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -8,7 +9,8 @@ import org.junit.Test
  *
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
-class FuzzyDateTest {
+class FuzzyDateIntConversionTest {
+
 
     @Test
     fun toFuzzyDateIntUnknownIsCorrect() {
