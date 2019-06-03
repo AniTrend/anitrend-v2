@@ -6,32 +6,31 @@ import co.anitrend.data.repository.media.attributes.MediaTrendSort
 
 /** [MediaTrend query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
- * @param mediaId: Filter by the media id
- * @param date: Filter by date
- * @param trending: Filter by trending amount
- * @param averageScore: Filter by score
- * @param popularity: Filter by popularity
- * @param episode: Filter by episode number
- * @param releasing: Filter to stats recorded while the media was
- * @param releasing
- * @param mediaId_not: Filter by the media id
- * @param mediaId_in: Filter by the media id
- * @param mediaId_not_in: Filter by the media id
- * @param date_greater: Filter by date
- * @param date_lesser: Filter by date
- * @param trending_greater: Filter by trending amount
- * @param trending_lesser: Filter by trending amount
- * @param trending_not: Filter by trending amount
- * @param averageScore_greater: Filter by score
- * @param averageScore_lesser: Filter by score
- * @param averageScore_not: Filter by score
- * @param popularity_greater: Filter by popularity
- * @param popularity_lesser: Filter by popularity
- * @param popularity_not: Filter by popularity
- * @param episode_greater: Filter by episode number
- * @param episode_lesser: Filter by episode number
- * @param episode_not: Filter by episode number
- * @param sort: The order the results will be returned in
+ * @param mediaId Filter by the media id
+ * @param date Filter by date
+ * @param trending Filter by trending amount
+ * @param averageScore Filter by score
+ * @param popularity Filter by popularity
+ * @param episode Filter by episode number
+ * @param releasing Filter to stats recorded while the media was releasing
+ * @param mediaId_not Filter by the media id
+ * @param mediaId_in Filter by the media id
+ * @param mediaId_not_in Filter by the media id
+ * @param date_greater Filter by date
+ * @param date_lesser Filter by date
+ * @param trending_greater Filter by trending amount
+ * @param trending_lesser Filter by trending amount
+ * @param trending_not Filter by trending amount
+ * @param averageScore_greater Filter by score
+ * @param averageScore_lesser Filter by score
+ * @param averageScore_not Filter by score
+ * @param popularity_greater Filter by popularity
+ * @param popularity_lesser Filter by popularity
+ * @param popularity_not Filter by popularity
+ * @param episode_greater Filter by episode number
+ * @param episode_lesser Filter by episode number
+ * @param episode_not Filter by episode number
+ * @param sort The order the results will be returned in
  */
 data class MediaTrendQuery(
     val mediaId: Int? = null,

@@ -4,8 +4,8 @@ import co.anitrend.data.model.contract.IGraphQuery
 
 /** [ActivityReply query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by the reply id
- * @param activityId: Filter by the parent id
+ * @param id Filter by the reply id
+ * @param activityId Filter by the parent id
  */
 data class ActivityReplyQuery(
     val id: Int? = null,

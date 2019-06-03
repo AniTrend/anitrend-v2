@@ -8,67 +8,67 @@ import co.anitrend.data.repository.media.attributes.*
 
 /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
- * @param id: Filter by the media id
- * @param idMal: Filter by the media's MyAnimeList id
- * @param startDate: Filter by the start date of the media
- * @param endDate: Filter by the end date of the media
- * @param season: Filter by the season the media was released in
- * @param seasonYear: The year of the season (Winter 2017 would also
- * @param type: Filter by the media's type
- * @param format: Filter by the media's format
- * @param status: Filter by the media's current release status
- * @param episodes: Filter by amount of episodes the media has
- * @param duration: Filter by the media's episode length
- * @param chapters: Filter by the media's chapter count
- * @param volumes: Filter by the media's volume count
- * @param isAdult: Filter by if the media's intended for 18+ adult
- * @param genre: Filter by the media's genres
- * @param tag: Filter by the media's tags
- * @param tagCategory: Filter by the media's tags with in a tag category
- * @param onList: Filter by the media on the authenticated user's lists
- * @param averageScore: Filter by the media's average score
- * @param popularity: Filter by the number of users with this media on
- * @param search: Filter by search query
- * @param id_not: Filter by the media id
- * @param id_in: Filter by the media id
- * @param id_not_in: Filter by the media id
- * @param idMal_not: Filter by the media's MyAnimeList id
- * @param idMal_in: Filter by the media's MyAnimeList id
- * @param idMal_not_in: Filter by the media's MyAnimeList id
- * @param startDate_greater: Filter by the start date of the media
- * @param startDate_lesser: Filter by the start date of the media
- * @param startDate_like: Filter by the start date of the media
- * @param endDate_greater: Filter by the end date of the media
- * @param endDate_lesser: Filter by the end date of the media
- * @param endDate_like: Filter by the end date of the media
- * @param format_in: Filter by the media's format
- * @param format_not: Filter by the media's format
- * @param format_not_in: Filter by the media's format
- * @param status_in: Filter by the media's current release status
- * @param status_not: Filter by the media's current release status
- * @param status_not_in: Filter by the media's current release status
- * @param episodes_greater: Filter by amount of episodes the media has
- * @param episodes_lesser: Filter by amount of episodes the media has
- * @param duration_greater: Filter by the media's episode length
- * @param duration_lesser: Filter by the media's episode length
- * @param chapters_greater: Filter by the media's chapter count
- * @param chapters_lesser: Filter by the media's chapter count
- * @param volumes_greater: Filter by the media's volume count
- * @param volumes_lesser: Filter by the media's volume count
- * @param genre_in: Filter by the media's genres
- * @param genre_not_in: Filter by the media's genres
- * @param tag_in: Filter by the media's tags
- * @param tag_not_in: Filter by the media's tags
- * @param tagCategory_in: Filter by the media's tags with in a tag
- * @param tagCategory_not_in: Filter by the media's tags with in a tag
- * @param onList on users list
- * @param averageScore_not: Filter by the media's average score
- * @param averageScore_greater: Filter by the media's average score
- * @param averageScore_lesser: Filter by the media's average score
- * @param popularity_not: Filter by the number of users with this media
- * @param popularity_greater: Filter by the number of users with this
- * @param popularity_lesser: Filter by the number of users with this
- * @param sort: The order the results will be returned in
+ * @param id Filter by the media id
+ * @param idMal Filter by the media's MyAnimeList id
+ * @param startDate Filter by the start date of the media
+ * @param endDate Filter by the end date of the media
+ * @param season Filter by the season the media was released in
+ * @param seasonYear The year of the season (Winter 2017 would also
+ * @param type Filter by the media's type
+ * @param format Filter by the media's format
+ * @param status Filter by the media's current release status
+ * @param episodes Filter by amount of episodes the media has
+ * @param duration Filter by the media's episode length
+ * @param chapters Filter by the media's chapter count
+ * @param volumes Filter by the media's volume count
+ * @param isAdult Filter by if the media's intended for 18+ adult
+ * @param genre Filter by the media's genres
+ * @param tag Filter by the media's tags
+ * @param tagCategory Filter by the media's tags with in a tag category
+ * @param onList Filter by the media on the authenticated user's lists
+ * @param averageScore Filter by the media's average score
+ * @param popularity Filter by the number of users with this media on
+ * @param search Filter by search query
+ * @param id_not Filter by the media id
+ * @param id_in Filter by the media id
+ * @param id_not_in Filter by the media id
+ * @param idMal_not Filter by the media's MyAnimeList id
+ * @param idMal_in Filter by the media's MyAnimeList id
+ * @param idMal_not_in Filter by the media's MyAnimeList id
+ * @param startDate_greater Filter by the start date of the media
+ * @param startDate_lesser Filter by the start date of the media
+ * @param startDate_like Filter by the start date of the media
+ * @param endDate_greater Filter by the end date of the media
+ * @param endDate_lesser Filter by the end date of the media
+ * @param endDate_like Filter by the end date of the media
+ * @param format_in Filter by the media's format
+ * @param format_not Filter by the media's format
+ * @param format_not_in Filter by the media's format
+ * @param status_in Filter by the media's current release status
+ * @param status_not Filter by the media's current release status
+ * @param status_not_in Filter by the media's current release status
+ * @param episodes_greater Filter by amount of episodes the media has
+ * @param episodes_lesser Filter by amount of episodes the media has
+ * @param duration_greater Filter by the media's episode length
+ * @param duration_lesser Filter by the media's episode length
+ * @param chapters_greater Filter by the media's chapter count
+ * @param chapters_lesser Filter by the media's chapter count
+ * @param volumes_greater Filter by the media's volume count
+ * @param volumes_lesser Filter by the media's volume count
+ * @param genre_in Filter by the media's genres
+ * @param genre_not_in Filter by the media's genres
+ * @param tag_in Filter by the media's tags
+ * @param tag_not_in Filter by the media's tags
+ * @param tagCategory_in Filter by the media's tags with in a tag
+ * @param tagCategory_not_in Filter by the media's tags with in a tag
+ * @param onList n users list
+ * @param averageScore_not Filter by the media's average score
+ * @param averageScore_greater Filter by the media's average score
+ * @param averageScore_lesser Filter by the media's average score
+ * @param popularity_not Filter by the number of users with this media
+ * @param popularity_greater Filter by the number of users with this
+ * @param popularity_lesser Filter by the number of users with this
+ * @param sort The order the results will be returned in
  */
 data class MediaQuery(
     val id: Int? = null,

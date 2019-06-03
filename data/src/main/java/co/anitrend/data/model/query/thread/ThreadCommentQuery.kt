@@ -4,9 +4,9 @@ import co.anitrend.data.model.contract.IGraphQuery
 
 /** [ThreadComment query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by the comment id
- * @param threadId: Filter by the thread id
- * @param userId: Filter by the user id of the comment's creator
+ * @param id Filter by the comment id
+ * @param threadId Filter by the thread id
+ * @param userId Filter by the user id of the comment's creator
  */
 data class ThreadCommentQuery(
     val id: Int? = null,

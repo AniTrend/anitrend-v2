@@ -6,11 +6,11 @@ import co.anitrend.data.repository.review.attributes.ReviewSort
 
 /** [Review query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by Review id
- * @param mediaId: Filter by media id
- * @param userId: Filter by media id
- * @param mediaType: Filter by media type
- * @param sort: The order the results will be returned in
+ * @param id Filter by Review id
+ * @param mediaId Filter by media id
+ * @param userId Filter by media id
+ * @param mediaType Filter by media type
+ * @param sort The order the results will be returned in
  */
 data class ReviewQuery(
     val id: Int? = null,

@@ -6,25 +6,25 @@ import co.anitrend.data.repository.airing.attributes.AiringSort
 
 /** [AiringSchedule query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
- * @param id: Filter by the id of the airing schedule item
- * @param mediaId: Filter by the id of associated media
- * @param episode: Filter by the airing episode number
- * @param airingAt: Filter by the time of airing
- * @param notYetAired: Filter to episodes that haven't yet aired
- * @param id_not: Filter by the id of the airing schedule item
- * @param id_in: Filter by the id of the airing schedule item
- * @param id_not_in: Filter by the id of the airing schedule item
- * @param mediaId_not: Filter by the id of associated media
- * @param mediaId_in: Filter by the id of associated media
- * @param mediaId_not_in: Filter by the id of associated media
- * @param episode_not: Filter by the airing episode number
- * @param episode_in: Filter by the airing episode number
- * @param episode_not_in: Filter by the airing episode number
- * @param episode_greater: Filter by the airing episode number
- * @param episode_lesser: Filter by the airing episode number
- * @param airingAt_greater: Filter by the time of airing
- * @param airingAt_lesser: Filter by the time of airing
- * @param sort: The order the results will be returned in
+ * @param id Filter by the id of the airing schedule item
+ * @param mediaId Filter by the id of associated media
+ * @param episode Filter by the airing episode number
+ * @param airingAt Filter by the time of airing
+ * @param notYetAired Filter to episodes that haven't yet aired
+ * @param id_not Filter by the id of the airing schedule item
+ * @param id_in Filter by the id of the airing schedule item
+ * @param id_not_in Filter by the id of the airing schedule item
+ * @param mediaId_not Filter by the id of associated media
+ * @param mediaId_in Filter by the id of associated media
+ * @param mediaId_not_in Filter by the id of associated media
+ * @param episode_not Filter by the airing episode number
+ * @param episode_in Filter by the airing episode number
+ * @param episode_not_in Filter by the airing episode number
+ * @param episode_greater Filter by the airing episode number
+ * @param episode_lesser Filter by the airing episode number
+ * @param airingAt_greater Filter by the time of airing
+ * @param airingAt_lesser Filter by the time of airing
+ * @param sort The order the results will be returned in
  */
 data class AiringScheduleQuery(
     val id: Int? = null,
@@ -70,8 +70,8 @@ data class AiringScheduleQuery(
         "episode_not_in" to episode_not_in,
         "episode_greater" to episode_greater,
         "episode_lesser" to episode_lesser,
-        "airingAt_greater" to airingAt_greater,
-        "airingAt_lesser" to airingAt_lesser,
+        "airingAt_greater" to airingAt_greater?.toMap(),
+        "airingAt_lesser" to airingAt_lesser?.toMap(),
         "sort" to sort
     )
 }

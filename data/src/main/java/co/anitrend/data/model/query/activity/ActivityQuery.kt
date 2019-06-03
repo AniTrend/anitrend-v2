@@ -7,33 +7,33 @@ import co.anitrend.data.repository.feed.attributes.ActivityType
 
 /** [Activity query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by the activity id
- * @param userId: Filter by the owner user id
- * @param messengerId: Filter by the id of the user who sent a message
- * @param mediaId: Filter by the associated media id of the activity
- * @param type: Filter by the type of activity
- * @param isFollowing: Filter activity to users who are being followed by the authenticated user
- * @param hasReplies: Filter activity to only activity with replies
- * @param hasRepliesOrTypeText: Filter activity to only activity with replies or is of type text
- * @param createdAt: Filter by the time the activity was created
- * @param id_not: Filter by the activity id
- * @param id_in: Filter by the activity id
- * @param id_not_in: Filter by the activity id
- * @param userId_not: Filter by the owner user id
- * @param userId_in: Filter by the owner user id
- * @param userId_not_in: Filter by the owner user id
- * @param messengerId_not: Filter by the id of the user who sent a message
- * @param messengerId_in: Filter by the id of the user who sent a message
- * @param messengerId_not_in: Filter by the id of the user who sent a message
- * @param mediaId_not: Filter by the associated media id of the activity
- * @param mediaId_in: Filter by the associated media id of the activity
- * @param mediaId_not_in: Filter by the associated media id of the activity
- * @param type_not: Filter by the type of activity
- * @param type_in: Filter by the type of activity
- * @param type_not_in: Filter by the type of activity
- * @param createdAt_greater: Filter by the time the activity was created
- * @param createdAt_lesser: Filter by the time the activity was created
- * @param sort: The order the results will be returned in
+ * @param id Filter by the activity id
+ * @param userId Filter by the owner user id
+ * @param messengerId Filter by the id of the user who sent a message
+ * @param mediaId Filter by the associated media id of the activity
+ * @param type Filter by the type of activity
+ * @param isFollowing Filter activity to users who are being followed by the authenticated user
+ * @param hasReplies Filter activity to only activity with replies
+ * @param hasRepliesOrTypeText Filter activity to only activity with replies or is of type text
+ * @param createdAt Filter by the time the activity was created
+ * @param id_not Filter by the activity id
+ * @param id_in Filter by the activity id
+ * @param id_not_in Filter by the activity id
+ * @param userId_not Filter by the owner user id
+ * @param userId_in Filter by the owner user id
+ * @param userId_not_in Filter by the owner user id
+ * @param messengerId_not Filter by the id of the user who sent a message
+ * @param messengerId_in Filter by the id of the user who sent a message
+ * @param messengerId_not_in Filter by the id of the user who sent a message
+ * @param mediaId_not Filter by the associated media id of the activity
+ * @param mediaId_in Filter by the associated media id of the activity
+ * @param mediaId_not_in Filter by the associated media id of the activity
+ * @param type_not Filter by the type of activity
+ * @param type_in Filter by the type of activity
+ * @param type_not_in Filter by the type of activity
+ * @param createdAt_greater Filter by the time the activity was created
+ * @param createdAt_lesser Filter by the time the activity was created
+ * @param sort The order the results will be returned in
  */
 data class ActivityQuery(
     val id: Int? = null,

@@ -6,7 +6,7 @@ import co.anitrend.data.model.contract.IGraphQuery
  *
  * Provide AniList markdown to be converted to html (Requires auth)
  *
- * @param markdown: The markdown to be parsed to html
+ * @param markdown The markdown to be parsed to html
  */
 data class MarkdownQuery(
     val markdown: String

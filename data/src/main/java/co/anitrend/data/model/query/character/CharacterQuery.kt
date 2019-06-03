@@ -5,12 +5,12 @@ import co.anitrend.data.repository.character.attributes.CharacterSort
 
 /** [Character query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by character id
- * @param search: Filter by search query
- * @param id_not: Filter by character id
- * @param id_in: Filter by character id
- * @param id_not_in: Filter by character id
- * @param sort: The order the results will be returned in
+ * @param id Filter by character id
+ * @param search Filter by search query
+ * @param id_not Filter by character id
+ * @param id_in Filter by character id
+ * @param id_not_in Filter by character id
+ * @param sort The order the results will be returned in
  */
 data class CharacterQuery (
     val id: Int? = null,
