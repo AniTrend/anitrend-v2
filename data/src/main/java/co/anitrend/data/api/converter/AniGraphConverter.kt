@@ -21,14 +21,13 @@ class AniGraphConverter(
     /**
      * Response body converter delegates logic processing to a child class that handles
      * wrapping and deserialization of the json response data.
-     * @see GraphRequestConverter
-     * <br></br>
-     *
      *
      * @param parameterAnnotations All the annotation applied to request parameters
      * @param methodAnnotations All the annotation applied to the requesting method
      * @param retrofit The retrofit object representing the response
      * @param type The type of the parameter of the request
+     *
+     * @see AniRequestConverter
      */
     override fun requestBodyConverter(
         type: Type?,
@@ -54,7 +53,7 @@ class AniGraphConverter(
         fun create(context: Context?) =
             AniGraphConverter(context).apply {
                 this.gson = GsonBuilder()
-                    .setExclusionStrategies(object : ExclusionStrategy {
+                    .addSerializationExclusionStrategy(object : ExclusionStrategy {
                         /**
                          * @param clazz the class object that is under test
                          * @return true if the class should be ignored; otherwise false
