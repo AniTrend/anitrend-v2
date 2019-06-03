@@ -5,12 +5,12 @@ import co.anitrend.data.repository.staff.attributes.StaffSort
 
 /** [Staff query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by the staff id
- * @param search: Filter by search query
- * @param id_not: Filter by the staff id
- * @param id_in: Filter by the staff id
- * @param id_not_in: Filter by the staff id
- * @param sort: The order the results will be returned in
+ * @param id Filter by the staff id
+ * @param search Filter by search query
+ * @param id_not Filter by the staff id
+ * @param id_in Filter by the staff id
+ * @param id_not_in Filter by the staff id
+ * @param sort The order the results will be returned in
  */
 data class StaffQuery(
     val id: Int,

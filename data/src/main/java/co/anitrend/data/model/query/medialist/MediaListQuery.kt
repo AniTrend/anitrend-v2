@@ -9,25 +9,25 @@ import co.anitrend.data.repository.medialist.attributes.MediaListStatus
 
 /** [MediaList query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
- * @param id: Filter by a list entry's id
- * @param userId: Filter by a user's id
- * @param userName: Filter by a user's name
- * @param type: Filter by the list entries media type
- * @param status: Filter by the watching/reading status
- * @param mediaId: Filter by the media id of the list entry
- * @param isFollowing: Filter list entries to users who are being followed by the authenticated user
- * @param notes: Filter by note words and #tags
- * @param startedAt: Filter by the date the user started the media
- * @param completedAt: Filter by the date the user completed the media
- * @param userId_in: Filter by a user's id
- * @param notes_like: Filter by note words and #tags
- * @param startedAt_greater: Filter by the date the user started the media
- * @param startedAt_lesser: Filter by the date the user started the media
- * @param startedAt_like: Filter by the date the user started the media
- * @param completedAt_greater: Filter by the date the user completed the media
- * @param completedAt_lesser: Filter by the date the user completed the media
- * @param completedAt_like: Filter by the date the user completed the media
- * @param sort: The order the results will be returned in
+ * @param id Filter by a list entry's id
+ * @param userId Filter by a user's id
+ * @param userName Filter by a user's name
+ * @param type Filter by the list entries media type
+ * @param status Filter by the watching/reading status
+ * @param mediaId Filter by the media id of the list entry
+ * @param isFollowing Filter list entries to users who are being followed by the authenticated user
+ * @param notes Filter by note words and #tags
+ * @param startedAt Filter by the date the user started the media
+ * @param completedAt Filter by the date the user completed the media
+ * @param userId_in Filter by a user's id
+ * @param notes_like Filter by note words and #tags
+ * @param startedAt_greater Filter by the date the user started the media
+ * @param startedAt_lesser Filter by the date the user started the media
+ * @param startedAt_like Filter by the date the user started the media
+ * @param completedAt_greater Filter by the date the user completed the media
+ * @param completedAt_lesser Filter by the date the user completed the media
+ * @param completedAt_like Filter by the date the user completed the media
+ * @param sort The order the results will be returned in
  */
 data class MediaListQuery(
     val id: Int? = null,

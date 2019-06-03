@@ -5,12 +5,12 @@ import co.anitrend.data.repository.studio.attributes.StudioSort
 
 /** [Studio query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by the studio id
- * @param search: Filter by search query
- * @param id_not: Filter by the studio id
- * @param id_in: Filter by the studio id
- * @param id_not_in: Filter by the studio id
- * @param sort: The order the results will be returned in
+ * @param id Filter by the studio id
+ * @param search Filter by search query
+ * @param id_not Filter by the studio id
+ * @param id_in Filter by the studio id
+ * @param id_not_in Filter by the studio id
+ * @param sort The order the results will be returned in
  */
 data class StudioQuery(
     val id: Int? = null,

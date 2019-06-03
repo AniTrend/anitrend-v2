@@ -10,21 +10,21 @@ import co.anitrend.data.repository.medialist.attributes.MediaListSort
  *
  * Media list collection query, provides list pre-grouped by status & custom lists.
  *
- * @param userId: Filter by a user's id
- * @param userName: Filter by a user's name
- * @param type: Filter by the list entries media type
- * @param notes: Filter by note words and #tags
- * @param startedAt: Filter by the date the user started the media
- * @param completedAt: Filter by the date the user completed the media
- * @param forceSingleCompletedList: Always return completed list entries in one group, overriding the user's split completed option.
- * @param notes_like: Filter by note words and #tags
- * @param startedAt_greater: Filter by the date the user started the media
- * @param startedAt_lesser: Filter by the date the user started the media
- * @param startedAt_like: Filter by the date the user started the media
- * @param completedAt_greater: Filter by the date the user completed the media
- * @param completedAt_lesser: Filter by the date the user completed the media
- * @param completedAt_like: Filter by the date the user completed the media
- * @param sort: The order the results will be returned in
+ * @param userId Filter by a user's id
+ * @param userName Filter by a user's name
+ * @param type Filter by the list entries media type
+ * @param notes Filter by note words and #tags
+ * @param startedAt Filter by the date the user started the media
+ * @param completedAt Filter by the date the user completed the media
+ * @param forceSingleCompletedList Always return completed list entries in one group, overriding the user's split completed option.
+ * @param notes_like Filter by note words and #tags
+ * @param startedAt_greater Filter by the date the user started the media
+ * @param startedAt_lesser Filter by the date the user started the media
+ * @param startedAt_like Filter by the date the user started the media
+ * @param completedAt_greater Filter by the date the user completed the media
+ * @param completedAt_lesser Filter by the date the user completed the media
+ * @param completedAt_like Filter by the date the user completed the media
+ * @param sort The order the results will be returned in
  */
 data class MediaListCollectionQuery(
     val userId: Int? = null,

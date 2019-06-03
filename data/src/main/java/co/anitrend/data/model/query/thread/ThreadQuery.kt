@@ -5,15 +5,15 @@ import co.anitrend.data.repository.thread.attributes.ThreadSort
 
 /** [Thread query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
- * @param id: Filter by the thread id
- * @param userId: Filter by the user id of the thread's creator
- * @param replyUserId: Filter by the user id of the last user to comment on the thread
- * @param subscribed: Filter by if the currently authenticated user's subscribed threads
- * @param categoryId: Filter by thread category id
- * @param mediaCategoryId: Filter by thread media id category
- * @param search: Filter by search query
- * @param id_in: Filter by the thread id
- * @param sort: The order the results will be returned in
+ * @param id Filter by the thread id
+ * @param userId Filter by the user id of the thread's creator
+ * @param replyUserId Filter by the user id of the last user to comment on the thread
+ * @param subscribed Filter by if the currently authenticated user's subscribed threads
+ * @param categoryId Filter by thread category id
+ * @param mediaCategoryId Filter by thread media id category
+ * @param search Filter by search query
+ * @param id_in Filter by the thread id
+ * @param sort The order the results will be returned in
  */
 data class ThreadQuery(
     val id: Int? = null,
