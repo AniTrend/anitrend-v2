@@ -27,7 +27,7 @@ annotation class UserTitleLanguage {
         /** The romanization of the native language title, stylised by media creator **/
         const val ROMAJI_STYLISED = "ROMAJI_STYLISED"
 
-        /** he official english title, stylised by media creator **/
+        /** The official english title, stylised by media creator **/
         const val ENGLISH_STYLISED = "ENGLISH_STYLISED"
 
         /** Official title in it's native language, stylised by media creator **/
