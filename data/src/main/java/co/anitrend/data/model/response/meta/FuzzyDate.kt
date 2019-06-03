@@ -3,6 +3,7 @@ package co.anitrend.data.model.response.meta
 import android.os.Parcelable
 import androidx.annotation.IntRange
 import co.anitrend.data.model.contract.FuzzyDateInt
+import co.anitrend.data.model.contract.IGraphQuery
 import kotlinx.android.parcel.Parcelize
 
 /** [FuzzyDate](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydate.doc.html)
@@ -20,7 +21,7 @@ data class FuzzyDate(
     val month: Int = UNKNOWN,
     @IntRange(from = 0, to = 31)
     val day: Int = UNKNOWN
-): Parcelable {
+) : IGraphQuery, Parcelable {
 
     /**
      * Checks if all date fields are not set
@@ -28,6 +29,16 @@ data class FuzzyDate(
      * @return [Boolean] true if the date fields are set to [UNKNOWN] otherwise false
      */
     fun isDateNotSet() = day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
+
+    /**
+     * A map serializer to build maps out of object so that we can consume them
+     * using [io.github.wax911.library.model.request.QueryContainerBuilder].
+     */
+    override fun toMap() = mapOf(
+        "year" to year,
+        "month" to month,
+        "day" to day
+    )
 
     companion object {
         /**
