@@ -2,7 +2,6 @@ package co.anitrend.data.model.query.review
 
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.repository.media.attributes.MediaType
-import co.anitrend.data.repository.review.attributes.ReviewSort
 
 /** [Review query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

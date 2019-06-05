@@ -7,8 +7,6 @@ import co.anitrend.data.dao.DatabaseHelper
 import co.anitrend.data.mapper.media.MediaGenreMapper
 import co.anitrend.data.util.graphql.GraphUtil
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.source.SupportDataSource
-import kotlinx.coroutines.launch
 import org.koin.core.inject
 
 class MediaGenreDataSource(

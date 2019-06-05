@@ -1,11 +1,9 @@
 package co.anitrend.data.api.converter
 
 import android.content.Context
-import co.anitrend.data.api.RetroFactory
 import co.anitrend.data.api.converter.request.AniRequestConverter
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.github.wax911.library.converter.GraphConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder

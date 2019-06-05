@@ -3,7 +3,10 @@ package co.anitrend.data.model.query.media
 import co.anitrend.data.model.contract.FuzzyDateInt
 import co.anitrend.data.model.contract.FuzzyDateLike
 import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.media.attributes.*
+import co.anitrend.data.repository.media.attributes.MediaFormat
+import co.anitrend.data.repository.media.attributes.MediaSeason
+import co.anitrend.data.repository.media.attributes.MediaSort
+import co.anitrend.data.repository.media.attributes.MediaStatus
 
 
 /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]

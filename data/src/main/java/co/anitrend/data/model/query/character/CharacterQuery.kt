@@ -2,7 +2,6 @@ package co.anitrend.data.model.query.character
 
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.repository.character.attributes.CharacterSort
-import co.anitrend.data.repository.character.attributes.CharacterSortContract
 
 /** [Character query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
