@@ -26,12 +26,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         buildTypes.each {
-            def secretsProps = new Properties()
-            file(".config/secrets.properties").withInputStream {
-                stream -> secretsProps.load(stream)
+            File secretsFile = file(".config/secrets.properties")
+            if (secretsFile.exists()) {
+                def secretsProps = new Properties()
+                secretsFile.withInputStream {
+                    stream -> secretsProps.load(stream)
+                }
+                it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
+                it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
+            } else {
+                it.buildConfigField("String", "cliendId", "ENTER_CLIENT_ID_HERE")
+                it.buildConfigField("String", "clientSecret", "ENTER_CLIENT_SECRET_HERE")
             }
-            it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
-            it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
 
             def configProps = new Properties()
             file(".config/configuration.properties").withInputStream {
