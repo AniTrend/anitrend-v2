@@ -14,8 +14,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class MediaListOptions(
-    @ScoreFormat
-    val scoreFormat: String,
+    val scoreFormat: ScoreFormat,
     val rowOrder: String,
     val animeList: MediaListTypeOptions?,
     val mangaList: MediaListTypeOptions?

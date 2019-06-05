@@ -57,8 +57,7 @@ data class MediaTrendQuery(
     val episode_greater: Int? = null,
     val episode_lesser: Int? = null,
     val episode_not: Int? = null,
-    @MediaTrendSort
-    val sort: List<String>? = null
+    val sort: List<MediaTrendSort>? = null
 ) : IGraphQuery {
 
     /**

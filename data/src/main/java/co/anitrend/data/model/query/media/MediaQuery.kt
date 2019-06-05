@@ -75,15 +75,11 @@ data class MediaQuery(
     val idMal: Int? = null,
     val startDate: String? = null,
     val endDate: String? = null,
-    @MediaSeason
-    val season: String? = null,
+    val season: MediaSeason? = null,
     val seasonYear: Int? = null,
-    @MediaType
     val type: String? = null,
-    @MediaFormat
-    val format: String? = null,
-    @MediaStatus
-    val status: String? = null,
+    val format: MediaFormat? = null,
+    val status: MediaStatus? = null,
     val episodes: Int? = null,
     val duration: Int? = null,
     val chapters: Int? = null,
@@ -108,18 +104,12 @@ data class MediaQuery(
     val endDate_greater: FuzzyDateInt? = null,
     val endDate_lesser: FuzzyDateInt? = null,
     val endDate_like: FuzzyDateLike? = null,
-    @MediaFormat
-    val format_in: List<String>? = null,
-    @MediaFormat
-    val format_not: String? = null,
-    @MediaFormat
-    val format_not_in: List<String>? = null,
-    @MediaStatus
-    val status_in: List<String>? = null,
-    @MediaStatus
-    val status_not: String? = null,
-    @MediaStatus
-    val status_not_in: List<String>? = null,
+    val format_in: List<MediaFormat>? = null,
+    val format_not: MediaFormat? = null,
+    val format_not_in: List<MediaFormat>? = null,
+    val status_in: List<MediaStatus>? = null,
+    val status_not: MediaStatus? = null,
+    val status_not_in: List<MediaStatus>? = null,
     val episodes_greater: Int? = null,
     val episodes_lesser: Int? = null,
     val duration_greater: Int? = null,
@@ -140,8 +130,7 @@ data class MediaQuery(
     val popularity_not: Int? = null,
     val popularity_greater: Int? = null,
     val popularity_lesser: Int? = null,
-    @MediaSort
-    val sort: List<String>? = null
+    val sort: List<MediaSort>? = null
 ) : IGraphQuery {
 
     /**

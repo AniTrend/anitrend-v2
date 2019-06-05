@@ -9,8 +9,7 @@ import co.anitrend.data.repository.notification.attributes.NotificationType
  * @param resetNotificationCount Reset the unread notification count to 0 on load
  */
 data class NotificationQuery(
-    @NotificationType
-    val type: String? = null,
+    val type: NotificationType? = null,
     val resetNotificationCount: Boolean = false
 ) : IGraphQuery {
 

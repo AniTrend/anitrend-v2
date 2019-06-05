@@ -6,16 +6,20 @@ import androidx.annotation.StringDef
  * The role the character plays in the media
  */
 @StringDef(
-    CharacterRole.MAIN,
-    CharacterRole.SUPPORTING,
-    CharacterRole.BACKGROUND
+    CharacterRoleContract.MAIN,
+    CharacterRoleContract.SUPPORTING,
+    CharacterRoleContract.BACKGROUND
 )
-annotation class CharacterRole {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class CharacterRoleContract {
     companion object {
         /** A primary character role in the media */
         const val MAIN = "MAIN"
+
         /** A supporting character role in the media */
         const val SUPPORTING = "SUPPORTING"
+
         /** A background character in the media */
         const val BACKGROUND = "BACKGROUND"
 
@@ -26,3 +30,6 @@ annotation class CharacterRole {
         )
     }
 }
+
+@CharacterRoleContract
+typealias CharacterRole = String

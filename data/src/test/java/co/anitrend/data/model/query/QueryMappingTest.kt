@@ -3,10 +3,10 @@ package co.anitrend.data.model.query
 import co.anitrend.data.model.extension.toFuzzyDateInt
 import co.anitrend.data.model.query.media.MediaQuery
 import co.anitrend.data.model.response.meta.FuzzyDate
-import co.anitrend.data.repository.media.attributes.MediaFormat
-import co.anitrend.data.repository.media.attributes.MediaSeason
-import co.anitrend.data.repository.media.attributes.MediaStatus
-import co.anitrend.data.repository.media.attributes.MediaType
+import co.anitrend.data.repository.media.attributes.MediaFormatContract
+import co.anitrend.data.repository.media.attributes.MediaSeasonContract
+import co.anitrend.data.repository.media.attributes.MediaStatusContract
+import co.anitrend.data.repository.media.attributes.MediaTypeContract
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -38,17 +38,17 @@ class QueryMappingTest {
     @Test
     fun mediaQueryMapIsSuccessful() {
         val mediaQuery = MediaQuery(
-            type = MediaType.ANIME,
+            type = MediaTypeContract.ANIME,
             endDate = FuzzyDate(
                 year = 2018,
                 month = 5
             ).toFuzzyDateInt(),
-            season = MediaSeason.FALL,
-            format_in = MediaFormat.ALL,
+            season = MediaSeasonContract.FALL,
+            format_in = MediaFormatContract.ALL,
             onList = true,
             status_in = listOf(
-                MediaStatus.FINISHED,
-                MediaStatus.NOT_YET_RELEASED
+                MediaStatusContract.FINISHED,
+                MediaStatusContract.NOT_YET_RELEASED
             )
         )
 

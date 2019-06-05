@@ -9,13 +9,12 @@ import co.anitrend.data.repository.medialist.attributes.MediaListStatus
  * @param name name of the current group
  * @param isCustomList If the current group is a custom list
  * @param isSplitCompletedList If this grouping is split by types of of media, e.g movies, tv, specials, etc
- * @param status status of current group, one of [MediaListStatus]
+ * @param status status of current group, one of [co.anitrend.data.repository.medialist.attributes.MediaListStatusContract]
  */
 data class MediaListGroup(
     val entries: List<Any>,
     val name: String,
     val isCustomList: Boolean,
     val isSplitCompletedList: Boolean,
-    @MediaListStatus
-    val status: String
+    val status: MediaListStatus
 )

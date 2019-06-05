@@ -3,6 +3,7 @@ package co.anitrend.data.model.query.media
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.model.response.meta.FuzzyDate
 import co.anitrend.data.repository.airing.attributes.AiringSort
+import co.anitrend.data.repository.airing.attributes.AiringSortContract
 
 /** [AiringSchedule query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
@@ -45,8 +46,7 @@ data class AiringScheduleQuery(
     val episode_lesser: Int? = null,
     val airingAt_greater: FuzzyDate? = null,
     val airingAt_lesser: FuzzyDate? = null,
-    @AiringSort
-    val sort: List<String>? = null
+    val sort: List<AiringSort>? = null
 ) : IGraphQuery {
 
     /**

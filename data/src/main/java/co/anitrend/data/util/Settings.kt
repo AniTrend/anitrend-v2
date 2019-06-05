@@ -12,6 +12,10 @@ class Settings(context: Context) : SupportPreference(context) {
             sharedPreferences.edit().putLong(AUTHENTICATED_USER, value).apply()
         }
 
+    // TODO: Implement preference values for sorting
+    var isSortOrderDescending: Boolean = false
+
+
     companion object  {
         const val INVALID_USER_ID: Long = -1
         private const val updateChannel = "updateChannel"

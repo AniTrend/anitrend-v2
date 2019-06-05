@@ -29,8 +29,7 @@ import co.anitrend.data.repository.medialist.attributes.MediaListSort
 data class MediaListCollectionQuery(
     val userId: Int? = null,
     val userName: String? = null,
-    @MediaType
-    val type: String,
+    val type: MediaType,
     val notes: String? = null,
     val startedAt: FuzzyDateInt? = null,
     val completedAt: FuzzyDateInt? = null,
@@ -42,8 +41,7 @@ data class MediaListCollectionQuery(
     val completedAt_greater: FuzzyDateInt? = null,
     val completedAt_lesser: FuzzyDateInt? = null,
     val completedAt_like: FuzzyDateLike? = null,
-    @MediaListSort
-    val sort: List<String>? = null
+    val sort: List<MediaListSort>? = null
 ) : IGraphQuery {
 
     /**

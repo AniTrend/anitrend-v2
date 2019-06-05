@@ -2,6 +2,7 @@ package co.anitrend.data.model.query.character
 
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.repository.character.attributes.CharacterSort
+import co.anitrend.data.repository.character.attributes.CharacterSortContract
 
 /** [Character query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
@@ -18,8 +19,7 @@ data class CharacterQuery (
     val id_not: Int? = null,
     val id_in: List<Int>? = null,
     val id_not_in: List<Int>? = null,
-    @CharacterSort
-    val sort: List<String>? = null
+    val sort: List<CharacterSort>? = null
 ) : IGraphQuery {
 
     /**
