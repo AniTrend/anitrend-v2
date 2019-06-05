@@ -13,7 +13,7 @@ import org.junit.Test
 class FuzzyDateConversionTest {
 
     @Test
-    fun fromFuzzyDateUnknownIsCorrect() {
+    fun `should produce unknown fuzzy date fields`() {
         /** should produce fuzzy date of [FuzzyDate.UNKNOWN] */
         val fuzzyDateInt : FuzzyDateInt = "0"
 
@@ -25,7 +25,7 @@ class FuzzyDateConversionTest {
     }
 
     @Test
-    fun toFuzzyDateMissingDayIsCorrect() {
+    fun `should produce fuzzy date with an unknown day field`() {
         val fuzzyDateInt : FuzzyDateInt = "19760500"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDate()
@@ -36,7 +36,7 @@ class FuzzyDateConversionTest {
     }
 
     @Test
-    fun toFuzzyDateMissingMonthIsCorrect() {
+    fun `should produce fuzzy date with an unknown month field`() {
         val fuzzyDateInt : FuzzyDateInt = "18430010"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDate()
@@ -47,7 +47,7 @@ class FuzzyDateConversionTest {
     }
 
     @Test
-    fun toFuzzyDateMissingYearIsCorrect() {
+    fun `should produce fuzzy date with an unknown year field`() {
         val fuzzyDateInt : FuzzyDateInt = "00000810"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDate()
@@ -58,7 +58,7 @@ class FuzzyDateConversionTest {
     }
 
     @Test
-    fun toFuzzyDateAllPresentIsCorrect() {
+    fun `should produce fuzzy date with no unknown fields`() {
         val fuzzyDateInt : FuzzyDateInt = "20111117"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDate()

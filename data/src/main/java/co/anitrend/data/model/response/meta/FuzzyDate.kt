@@ -2,7 +2,6 @@ package co.anitrend.data.model.response.meta
 
 import android.os.Parcelable
 import androidx.annotation.IntRange
-import co.anitrend.data.model.contract.FuzzyDateInt
 import co.anitrend.data.model.contract.IGraphQuery
 import kotlinx.android.parcel.Parcelize
 

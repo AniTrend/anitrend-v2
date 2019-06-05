@@ -9,8 +9,6 @@ import io.github.wax911.library.converter.GraphConverter
 import io.wax911.support.data.factory.contract.IRetrofitFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 

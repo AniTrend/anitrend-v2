@@ -32,6 +32,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     dataBinding {
         enabled = true
     }
@@ -109,6 +112,7 @@ dependencies {
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 
