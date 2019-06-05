@@ -6,13 +6,16 @@ import androidx.annotation.StringDef
  * Media Rank Type values
  */
 @StringDef(
-    MediaRankType.RATED,
-    MediaRankType.POPULAR
+    MediaRankTypeContract.RATED,
+    MediaRankTypeContract.POPULAR
 )
-annotation class MediaRankType {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class MediaRankTypeContract {
     companion object {
         /** Ranking is based on the media's ratings/score **/
         const val RATED = "RATED"
+
         /** Ranking is based on the media's popularity **/
         const val POPULAR = "POPULAR"
 
@@ -22,3 +25,6 @@ annotation class MediaRankType {
         )
     }
 }
+
+@MediaRankTypeContract
+typealias MediaRankType = String

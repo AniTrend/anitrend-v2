@@ -6,14 +6,16 @@ import androidx.annotation.StringDef
  * User title language values
  */
 @StringDef(
-    UserTitleLanguage.ROMAJI,
-    UserTitleLanguage.ENGLISH,
-    UserTitleLanguage.NATIVE,
-    UserTitleLanguage.ROMAJI_STYLISED,
-    UserTitleLanguage.ENGLISH_STYLISED,
-    UserTitleLanguage.NATIVE_STYLISED
+    UserTitleLanguageContract.ROMAJI,
+    UserTitleLanguageContract.ENGLISH,
+    UserTitleLanguageContract.NATIVE,
+    UserTitleLanguageContract.ROMAJI_STYLISED,
+    UserTitleLanguageContract.ENGLISH_STYLISED,
+    UserTitleLanguageContract.NATIVE_STYLISED
 )
-annotation class UserTitleLanguage {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class UserTitleLanguageContract {
     companion object {
         /** The romanization of the native language title **/
         const val ROMAJI = "ROMAJI"
@@ -43,3 +45,6 @@ annotation class UserTitleLanguage {
         )
     }
 }
+
+@UserTitleLanguageContract
+typealias UserTitleLanguage = String

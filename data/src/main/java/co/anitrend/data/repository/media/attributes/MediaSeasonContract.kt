@@ -6,19 +6,24 @@ import androidx.annotation.StringDef
  * Media Season values
  */
 @StringDef(
-    MediaSeason.WINTER,
-    MediaSeason.SPRING,
-    MediaSeason.SUMMER,
-    MediaSeason.FALL
+    MediaSeasonContract.WINTER,
+    MediaSeasonContract.SPRING,
+    MediaSeasonContract.SUMMER,
+    MediaSeasonContract.FALL
 )
-annotation class MediaSeason {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class MediaSeasonContract {
     companion object {
         /** Months December to February */
         const val WINTER = "WINTER"
+
         /** Months March to May */
         const val SPRING = "SPRING"
+
         /** Months June to August */
         const val SUMMER = "SUMMER"
+
         /** Months September to November */
         const val FALL = "FALL"
 
@@ -30,3 +35,6 @@ annotation class MediaSeason {
         )
     }
 }
+
+@MediaSeasonContract
+typealias MediaSeason = String

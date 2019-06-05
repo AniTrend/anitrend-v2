@@ -6,12 +6,14 @@ import androidx.annotation.StringDef
  * Types that can be liked
  */
 @StringDef(
-    LikeableType.THREAD,
-    LikeableType.THREAD_COMMENT,
-    LikeableType.ACTIVITY,
-    LikeableType.ACTIVITY_REPLY
+    LikeableTypeContract.THREAD,
+    LikeableTypeContract.THREAD_COMMENT,
+    LikeableTypeContract.ACTIVITY,
+    LikeableTypeContract.ACTIVITY_REPLY
 )
-annotation class LikeableType {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class LikeableTypeContract {
     companion object {
         const val THREAD = "THREAD"
         const val THREAD_COMMENT = "THREAD_COMMENT"
@@ -26,3 +28,6 @@ annotation class LikeableType {
         )
     }
 }
+
+@LikeableTypeContract
+typealias LikeableType = String

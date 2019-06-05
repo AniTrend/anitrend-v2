@@ -6,13 +6,15 @@ import androidx.annotation.StringDef
  * Studio sort values
  */
 @StringDef(
-    StudioSort.ID,
-    StudioSort.ID_DESC,
-    StudioSort.NAME,
-    StudioSort.NAME_DESC,
-    StudioSort.SEARCH_MATCH
+    StudioSortContract.ID,
+    StudioSortContract.ID_DESC,
+    StudioSortContract.NAME,
+    StudioSortContract.NAME_DESC,
+    StudioSortContract.SEARCH_MATCH
 )
-annotation class StudioSort {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class StudioSortContract {
     companion object {
         const val ID = "ID"
         const val ID_DESC = "ID_DESC"
@@ -29,3 +31,6 @@ annotation class StudioSort {
         )
     }
 }
+
+@StudioSortContract
+typealias StudioSort = String

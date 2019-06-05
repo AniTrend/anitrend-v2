@@ -6,13 +6,16 @@ import androidx.annotation.StringDef
  * Media types
  */
 @StringDef(
-    MediaType.ANIME,
-    MediaType.MANGA
+    MediaTypeContract.ANIME,
+    MediaTypeContract.MANGA
 )
-annotation class MediaType {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class MediaTypeContract {
     companion object {
         /** Japanese Anime **/
         const val ANIME = "ANIME"
+
         /** Asian comic **/
         const val MANGA = "MANGA"
 
@@ -22,3 +25,6 @@ annotation class MediaType {
         )
     }
 }
+
+@MediaTypeContract
+typealias MediaType = String

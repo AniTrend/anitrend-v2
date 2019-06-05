@@ -6,11 +6,13 @@ import androidx.annotation.StringDef
  * Review rating values
  */
 @StringDef(
-    ReviewRating.NO_VOTE,
-    ReviewRating.UP_VOTE,
-    ReviewRating.DOWN_VOTE
+    ReviewRatingContract.NO_VOTE,
+    ReviewRatingContract.UP_VOTE,
+    ReviewRatingContract.DOWN_VOTE
 )
-annotation class ReviewRating {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class ReviewRatingContract {
     companion object {
         const val NO_VOTE = "NO_VOTE"
         const val UP_VOTE = "UP_VOTE"
@@ -23,3 +25,6 @@ annotation class ReviewRating {
         )
     }
 }
+
+@ReviewRatingContract
+typealias ReviewRating = String

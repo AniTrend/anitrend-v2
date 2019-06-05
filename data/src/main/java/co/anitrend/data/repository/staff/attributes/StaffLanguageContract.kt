@@ -6,37 +6,48 @@ import androidx.annotation.StringDef
  * The primary language of the voice actor
  */
 @StringDef(
-    StaffLanguage.JAPANESE,
-    StaffLanguage.ENGLISH,
-    StaffLanguage.KOREAN,
-    StaffLanguage.ITALIAN,
-    StaffLanguage.SPANISH,
-    StaffLanguage.PORTUGUESE,
-    StaffLanguage.FRENCH,
-    StaffLanguage.GERMAN,
-    StaffLanguage.HEBREW,
-    StaffLanguage.HUNGARIAN
+    StaffLanguageContract.JAPANESE,
+    StaffLanguageContract.ENGLISH,
+    StaffLanguageContract.KOREAN,
+    StaffLanguageContract.ITALIAN,
+    StaffLanguageContract.SPANISH,
+    StaffLanguageContract.PORTUGUESE,
+    StaffLanguageContract.FRENCH,
+    StaffLanguageContract.GERMAN,
+    StaffLanguageContract.HEBREW,
+    StaffLanguageContract.HUNGARIAN
 )
-annotation class StaffLanguage {
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
+annotation class StaffLanguageContract {
     companion object {
         /** Japanese */
         const val JAPANESE = "JAPANESE"
+
         /** English */
         const val ENGLISH = "ENGLISH"
+
         /** Korean */
         const val KOREAN = "KOREAN"
+
         /** Italian */
         const val ITALIAN = "ITALIAN"
+
         /** Spanish */
         const val SPANISH = "SPANISH"
+
         /** Portuguese */
         const val PORTUGUESE = "PORTUGUESE"
+
         /** French */
         const val FRENCH = "FRENCH"
+
         /** German */
         const val GERMAN = "GERMAN"
+
         /** Hebrew */
         const val HEBREW = "HEBREW"
+
         /** Hungarian */
         const val HUNGARIAN = "HUNGARIAN"
         
@@ -54,3 +65,6 @@ annotation class StaffLanguage {
         )
     }
 }
+
+@StaffLanguageContract
+typealias StaffLanguage = String
