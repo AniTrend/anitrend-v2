@@ -1,9 +1,7 @@
 package co.anitrend.data.model.query.media
 
 import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.model.response.meta.FuzzyDate
 import co.anitrend.data.repository.airing.attributes.AiringSort
-import co.anitrend.data.repository.airing.attributes.AiringSortContract
 
 /** [AiringSchedule query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
@@ -31,7 +29,7 @@ data class AiringScheduleQuery(
     val id: Int? = null,
     val mediaId: Int? = null,
     val episode: Int? = null,
-    val airingAt: FuzzyDate? = null,
+    val airingAt: Int? = null,
     val notYetAired: Boolean? = null,
     val id_not: Int? = null,
     val id_in: List<Int>? = null,
@@ -44,8 +42,8 @@ data class AiringScheduleQuery(
     val episode_not_in: List<Int>? = null,
     val episode_greater: Int? = null,
     val episode_lesser: Int? = null,
-    val airingAt_greater: FuzzyDate? = null,
-    val airingAt_lesser: FuzzyDate? = null,
+    val airingAt_greater: Int? = null,
+    val airingAt_lesser: Int? = null,
     val sort: List<AiringSort>? = null
 ) : IGraphQuery {
 
@@ -70,8 +68,8 @@ data class AiringScheduleQuery(
         "episode_not_in" to episode_not_in,
         "episode_greater" to episode_greater,
         "episode_lesser" to episode_lesser,
-        "airingAt_greater" to airingAt_greater?.toMap(),
-        "airingAt_lesser" to airingAt_lesser?.toMap(),
+        "airingAt_greater" to airingAt_greater,
+        "airingAt_lesser" to airingAt_lesser,
         "sort" to sort
     )
 }
