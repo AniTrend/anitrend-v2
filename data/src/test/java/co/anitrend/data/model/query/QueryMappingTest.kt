@@ -1,6 +1,7 @@
 package co.anitrend.data.model.query
 
 import co.anitrend.data.model.extension.toFuzzyDateInt
+import co.anitrend.data.model.query.media.AiringScheduleQuery
 import co.anitrend.data.model.query.media.MediaQuery
 import co.anitrend.data.model.response.meta.FuzzyDate
 import co.anitrend.data.repository.media.attributes.MediaFormatContract
@@ -18,7 +19,7 @@ import org.junit.Test
 class QueryMappingTest {
 
     @Test
-    fun pageQueryMapIsSuccessful() {
+    fun `mapping of page query has correct keys and values`() {
         val pageQuery = PageQuery(
             page = 1,
             perPage = 15
@@ -36,7 +37,7 @@ class QueryMappingTest {
     }
 
     @Test
-    fun mediaQueryMapIsSuccessful() {
+    fun `mapping of media query has correct keys and values`() {
         val mediaQuery = MediaQuery(
             type = MediaTypeContract.ANIME,
             endDate = FuzzyDate(
