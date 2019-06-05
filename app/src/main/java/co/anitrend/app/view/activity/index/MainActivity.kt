@@ -15,6 +15,7 @@ import co.anitrend.core.view.activity.AnitrendActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.support.ui.activity.SupportActivity
+import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -122,6 +123,7 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
     }
 
     private fun onNavigate(@IdRes menu: Int) {
+        var supportFragment: SupportFragment<*, *, *>? = null
         when (menu) {
             R.id.nav_theme -> {
                 when (AppCompatDelegate.getDefaultNightMode()) {
@@ -143,14 +145,15 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
             }
         }
 
-        attachSelectedNavigationItem(menu)
+        attachSelectedNavigationItem(menu, supportFragment)
     }
 
     /**
      * Replaces the current content with that in the selected fragment
      */
-    private fun attachSelectedNavigationItem(@IdRes menu: Int) {
+    private fun attachSelectedNavigationItem(@IdRes menu: Int, supportFragment: SupportFragment<*, *, *>?) {
         supportFragment?.apply {
+            compatView = this@apply
             supportFragmentManager.commit {
                 replace(R.id.contentFrame, this@apply, tag)
             }
