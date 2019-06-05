@@ -18,3 +18,8 @@ typealias FuzzyDateInt = String
  * May 2011: 201105%
  */
 typealias FuzzyDateLike = String
+
+/**
+ * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) Two-letter country codes
+ */
+typealias CountryCode = String
