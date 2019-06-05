@@ -74,7 +74,7 @@ data class MediaQuery(
     val id: Int? = null,
     val idMal: Int? = null,
     val startDate: String? = null,
-    val endDate: String? = null,
+    val endDate: FuzzyDateInt? = null,
     val season: MediaSeason? = null,
     val seasonYear: Int? = null,
     val type: String? = null,
