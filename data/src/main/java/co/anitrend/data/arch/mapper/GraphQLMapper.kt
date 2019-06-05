@@ -47,7 +47,7 @@ abstract class GraphQLMapper<S, D> (
             val graphErrors = response.getError()
             if (!graphErrors.isNullOrEmpty()) {
                 graphErrors.forEach {
-                    Timber.tag(TAG).e("${it.message} | Status: ${it.status}")
+                    Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
                 }
                 return NetworkState(
                     status = SupportStateType.ERROR,
@@ -56,7 +56,7 @@ abstract class GraphQLMapper<S, D> (
                 )
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e)
+            Timber.tag(moduleTag).e(e)
         }
         return NetworkState.error(
             msg = "Unable to complete request"
@@ -74,7 +74,7 @@ abstract class GraphQLMapper<S, D> (
                     msg = "Unable to complete request"
                 )
             )
-            Timber.tag(TAG).e(throwable)
+            Timber.tag(moduleTag).e(throwable)
         }
 
         /**
@@ -108,12 +108,12 @@ abstract class GraphQLMapper<S, D> (
                             )
                         )
                         graphErrors.forEach {
-                            Timber.tag(TAG).e("${it.message} | Status: ${it.status}")
+                            Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
                         }
                     }
                     else {
                         val message = response.message()
-                        Timber.tag(TAG).e(message)
+                        Timber.tag(moduleTag).e(message)
                         networkState.postValue(
                             NetworkState(
                                 status = SupportStateType.ERROR,

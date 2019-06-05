@@ -44,6 +44,6 @@ class MediaTagMapper(
                 mediaTagDao.update(*array)
         }
         else
-            Timber.tag(TAG).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
+            Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
     }
 }
