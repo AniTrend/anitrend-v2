@@ -14,8 +14,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class UserOptions(
-    @UserTitleLanguage
-    val titleLanguage: String,
+    val titleLanguage: UserTitleLanguage,
     val displayAdultContent: Boolean,
     val airingNotifications: Boolean,
     val profileColor: String
