@@ -33,14 +33,15 @@ android:
 licenses:
   - '.+'
 
+before_script:
+  - cd ./data/.config/
+  - touch secrets.properties
+  - echo cliendId=\"cliend_id\" >> secrets.properties
+  - echo clientSecret=\"client_secret\" >> secrets.properties
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-# Move our test play-services configuration to the appropreiate config location
-before_script:
-    - mv app/.travic-ci/google-services.json app/google-services.json
-    - mv app/.travic-ci/secrets ./secrets.properties
 
 cache:
   directories:
