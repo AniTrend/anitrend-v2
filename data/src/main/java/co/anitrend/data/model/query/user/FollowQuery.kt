@@ -10,8 +10,7 @@ import co.anitrend.data.repository.user.attributes.UserSort
  */
 data class FollowQuery(
     val userId: Int,
-    @UserSort
-    val sort: List<String>? = null
+    val sort: List<UserSort>? = null
 ) : IGraphQuery {
 
     /**

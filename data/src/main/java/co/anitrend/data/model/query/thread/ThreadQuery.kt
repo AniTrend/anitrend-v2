@@ -24,8 +24,7 @@ data class ThreadQuery(
     val mediaCategoryId: Int? = null,
     val search: String? = null,
     val id_in: List<Int>? = null,
-    @ThreadSort
-    val sort: List<String>? = null
+    val sort: List<ThreadSort>? = null
 ) : IGraphQuery {
 
     /**

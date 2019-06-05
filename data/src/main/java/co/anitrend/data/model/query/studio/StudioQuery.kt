@@ -18,8 +18,7 @@ data class StudioQuery(
     val id_not: Int? = null,
     val id_in: List<Int>? = null,
     val id_not_in: List<Int>? = null,
-    @StudioSort
-    val sort: List<String>? = null
+    val sort: List<StudioSort>? = null
 ) : IGraphQuery {
 
     /**

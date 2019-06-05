@@ -16,10 +16,8 @@ data class ReviewQuery(
     val id: Int? = null,
     val mediaId: Int? = null,
     val userId: Int? = null,
-    @MediaType
-    val mediaType: String? = null,
-    @ReviewSort
-    val sort: List<String>? = null
+    val mediaType: MediaType? = null,
+    val sort: List<MediaType>? = null
 ) : IGraphQuery {
 
     /**

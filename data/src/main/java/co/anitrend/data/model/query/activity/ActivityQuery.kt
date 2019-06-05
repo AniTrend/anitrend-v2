@@ -40,8 +40,7 @@ data class ActivityQuery(
     val userId: Int? = null,
     val messengerId: Int? = null,
     val mediaId: Int? = null,
-    @ActivityType
-    val type: String? = null,
+    val type: ActivityType? = null,
     val isFollowing: Boolean? = null,
     val hasReplies: Boolean? = null,
     val hasRepliesOrTypeText: Boolean? = null,
@@ -58,16 +57,12 @@ data class ActivityQuery(
     val mediaId_not: Int? = null,
     val mediaId_in: List<Int>? = null,
     val mediaId_not_in: List<Int>? = null,
-    @ActivityType
-    val type_not: String? = null,
-    @ActivityType
-    val type_in: List<String>? = null,
-    @ActivityType
-    val type_not_in: List<String>? = null,
+    val type_not: ActivitySort? = null,
+    val type_in: List<ActivitySort>? = null,
+    val type_not_in: List<ActivitySort>? = null,
     val createdAt_greater: FuzzyDateInt? = null,
     val createdAt_lesser: FuzzyDateInt? = null,
-    @ActivitySort
-    val sort: List<String>? = null
+    val sort: List<ActivitySort>? = null
 ) : IGraphQuery {
 
     /**

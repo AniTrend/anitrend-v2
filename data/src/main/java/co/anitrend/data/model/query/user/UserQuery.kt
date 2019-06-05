@@ -14,8 +14,7 @@ data class UserQuery(
     val id: Int? = null,
     val name: String? = null,
     val search: String? = null,
-    @UserSort
-    val sort: List<String>? = null
+    val sort: List<UserSort>? = null
 ) : IGraphQuery {
 
     /**

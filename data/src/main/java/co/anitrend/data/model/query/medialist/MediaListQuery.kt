@@ -33,10 +33,8 @@ data class MediaListQuery(
     val id: Int? = null,
     val userId: Int? = null,
     val userName: String? = null,
-    @MediaType
-    val type: String,
-    @MediaListStatus
-    val status: String? = null,
+    val type: MediaType,
+    val status: MediaListStatus? = null,
     val mediaId: Int? = null,
     val isFollowing: Boolean? = null,
     val notes: String? = null,
@@ -50,8 +48,7 @@ data class MediaListQuery(
     val completedAt_greater: FuzzyDateInt? = null,
     val completedAt_lesser: FuzzyDateInt? = null,
     val completedAt_like: FuzzyDateLike? = null,
-    @MediaListSort
-    val sort: List<String>?
+    val sort: List<MediaListSort>?
 ) : IGraphQuery {
 
     /**

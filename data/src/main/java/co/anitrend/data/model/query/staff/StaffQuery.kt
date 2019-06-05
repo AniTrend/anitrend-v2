@@ -18,8 +18,7 @@ data class StaffQuery(
     val id_not: Int,
     val id_in: List<Int>?,
     val id_not_in: List<Int>?,
-    @StaffSort
-    val sort: List<String>?
+    val sort: List<StaffSort>?
 ) : IGraphQuery {
 
     /**
