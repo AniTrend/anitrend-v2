@@ -45,6 +45,9 @@ android {
             it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -102,6 +105,7 @@ dependencies {
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
