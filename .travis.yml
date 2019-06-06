@@ -34,10 +34,9 @@ licenses:
   - '.+'
 
 before_script:
-  - cd ./data/.config/
-  - touch secrets.properties
-  - echo cliendId=\"cliend_id\" >> secrets.properties
-  - echo clientSecret=\"client_secret\" >> secrets.properties
+  - touch ./data/.config/secrets.properties
+  - echo cliendId=\"cliend_id\" >> ./data/.config/secrets.properties
+  - echo clientSecret=\"client_secret\" >> ./data/.config/secrets.properties
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
