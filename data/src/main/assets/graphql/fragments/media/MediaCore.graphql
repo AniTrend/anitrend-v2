@@ -1,0 +1,30 @@
+fragment MediaCore on Media {
+    id
+    title {
+        ... MediaTitle
+    }
+    bannerImage
+    coverImage {
+        ... MediaImage
+    }
+    type
+    format
+    season
+    status
+    meanScore
+    averageScore
+    startDate {
+        ... FuzzyDate
+    }
+    endDate {
+        ... FuzzyDate
+    }
+    episodes
+    chapters
+    volumes
+    isAdult
+    isFavourite
+    nextAiringEpisode {
+        ... AiringSchedule
+    }
+}

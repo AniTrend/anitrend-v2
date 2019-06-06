@@ -1,0 +1,125 @@
+plugins {
+    id("com.android.application")
+    id("kotlin-kapt")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+}
+
+android {
+    compileSdkVersion compileSdk
+    defaultConfig {
+        applicationId "co.anitrend.app"
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "anitrend_v${defaultConfig.versionName}_rc_${defaultConfig.versionCode}.apk"
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** Project Modules */
+    implementation project(":core")
+    implementation project(":data")
+
+    /** Platform Dependencies */
+    implementation project(":support-core")
+    implementation project(":support-ext")
+    implementation project(":support-ui")
+
+    /** Koin AndroidX Dependency Injection */
+    implementation "org.koin:koin-core:$koin"
+    implementation "org.koin:koin-core-ext:$koin"
+    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
+
+    /** Kotlin Libraries */
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
+
+    /** Material Design */
+    implementation "com.google.android.material:material:$material"
+
+    implementation "androidx.constraintlayout:constraintlayout:$constraint"
+
+    /** Architecture Components */
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+
+    /** Fire-base Libraries */
+    implementation "com.google.firebase:firebase-core:$firebase"
+
+    /** Crash Analytics */
+    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics") {
+        transitive = true
+    }
+
+    /** Glide Libraries */
+    implementation "com.github.bumptech.glide:glide:$glide"
+    kapt "com.github.bumptech.glide:compiler:$glide"
+
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
+
+    /** Material Dialogs */
+    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:input:$materialDialogs"
+
+    /** Flex Box */
+    implementation "com.google.android:flexbox:$flexBox"
+
+    /** Smart Tab Layout */
+    implementation "com.ogaclejapan.smarttablayout:library:$smartTab"
+
+    /** Tap Target Prompt */
+    implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
+
+    /** Testing-only dependencies */
+    testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
+    androidTestImplementation "androidx.test:runner:$runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+    testImplementation "org.koin:koin-test:$koin"
+}
+
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'io.fabric'
+}
