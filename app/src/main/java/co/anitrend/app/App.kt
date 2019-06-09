@@ -32,14 +32,14 @@ class App: Application(), Configuration.Provider {
             )
             modules(
                 /** Application dependencies */
-                appModules,
+                appModules +
                 /** Core dependencies */
-                coreModules,
-                coreViewModelModules,
-                corePresenterModules,
+                coreModules +
+                coreViewModelModules +
+                corePresenterModules +
                 /** Data dependencies */
-                dataModules,
-                dataNetworkModules,
+                dataModules +
+                dataNetworkModules +
                 dataRepositoryModules
             )
         }
