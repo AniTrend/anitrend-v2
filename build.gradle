@@ -32,7 +32,7 @@ buildscript {
         mockk = '1.9.3'
         junit = '4.12'
         runner = '1.1.0'
-        espresso = '3.1.0'
+        espresso = '3.2.0'
 
         flexBox = '1.1.0'
         crashlytics = '2.6.8@aar'
