@@ -21,7 +21,7 @@ buildscript {
         pagingKtx = '2.1.0'
         ktx = '1.2.0-alpha01'
         fragmentKtx = '1.0.0'
-        workerKtx = '2.1.0-alpha02'
+        workerKtx = '2.1.0-alpha03'
         navigation = '2.1.0-alpha05'
         firebase = '16.0.9'
 
@@ -31,7 +31,7 @@ buildscript {
 
         mockk = '1.9.3'
         junit = '4.12'
-        runner = '1.1.0'
+        runner = '1.2.0'
         espresso = '3.2.0'
 
         flexBox = '1.1.0'
