@@ -34,7 +34,9 @@ class RetroFactory(
             httpClient.build()
         ).addConverterFactory(
             graphConverter
-        ).baseUrl(BuildConfig.apiUrl).build()
+        ).baseUrl(
+            baseUrl
+        ).build()
     }
 
     /**
