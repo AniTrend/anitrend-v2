@@ -36,8 +36,8 @@ buildscript {
 
         flexBox = '1.1.0'
         crashlytics = '2.6.8@aar'
+        coroutinesAndroid = '1.2.1'
         coroutinesCore = '1.2.1'
-        coroutinesAndroid = '1.1.1'
         materialDialogs = '3.0.0-alpha4'
 
         gson = '2.8.5'
