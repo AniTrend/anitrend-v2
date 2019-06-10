@@ -7,6 +7,7 @@ import co.anitrend.data.dao.DatabaseHelper
 import co.anitrend.data.mapper.media.MediaGenreMapper
 import co.anitrend.data.util.graphql.GraphUtil
 import io.wax911.support.data.model.NetworkState
+import kotlinx.coroutines.async
 import org.koin.core.inject
 
 class MediaGenreDataSource(
@@ -22,14 +23,17 @@ private val mediaEndPoint: MediaEndPoint
      * @param bundle request parameters or more
      */
     override suspend fun startRequestForType(bundle: Bundle?): NetworkState {
-        val callRequest = mediaEndPoint.getMediaGenres(
-            GraphUtil.getDefaultQuery()
+        val futureResponse = async {
+            mediaEndPoint.getMediaGenres(
+                GraphUtil.getDefaultQuery()
+            )
+        }
+
+        val mapper = MediaGenreMapper(
+            databaseHelper.mediaGenreDao()
         )
 
-        return MediaGenreMapper(
-            networkState,
-            databaseHelper.mediaGenreDao()
-        ).executeUsing(callRequest)
+        return mapper.handleResponse(futureResponse)
     }
 
     /**

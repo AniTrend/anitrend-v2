@@ -7,6 +7,7 @@ import co.anitrend.data.dao.DatabaseHelper
 import co.anitrend.data.mapper.media.MediaTagMapper
 import co.anitrend.data.util.graphql.GraphUtil
 import io.wax911.support.data.model.NetworkState
+import kotlinx.coroutines.async
 import org.koin.core.inject
 
 class MediaTagDataSource(
@@ -22,14 +23,17 @@ class MediaTagDataSource(
      * @param bundle request parameters or more
      */
     override suspend fun startRequestForType(bundle: Bundle?): NetworkState {
-        val callRequest = mediaEndPoint.getMediaTags(
-            GraphUtil.getDefaultQuery()
+        val futureResponse = async {
+            mediaEndPoint.getMediaTags(
+                GraphUtil.getDefaultQuery()
+            )
+        }
+
+        val mapper = MediaTagMapper(
+            databaseHelper.mediaTagDao()
         )
 
-        return MediaTagMapper(
-            networkState,
-            databaseHelper.mediaTagDao()
-        ).executeUsing(callRequest)
+        return mapper.handleResponse(futureResponse)
     }
 
     /**
