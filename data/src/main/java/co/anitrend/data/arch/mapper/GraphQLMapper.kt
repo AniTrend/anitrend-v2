@@ -1,14 +1,31 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package co.anitrend.data.arch.mapper
 
-import androidx.lifecycle.MutableLiveData
 import io.github.wax911.library.model.body.GraphContainer
 import io.github.wax911.library.util.getError
+import io.wax911.support.data.mapper.SupportDataMapper
+import io.wax911.support.data.mapper.contract.IMapperHelper
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateType
-import io.wax911.support.data.source.mapper.SupportDataMapper
+import io.wax911.support.data.model.contract.SupportStateContract
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,115 +33,47 @@ import retrofit2.Response
 import timber.log.Timber
 
 /**
- * GraphQLMapper specific mapper, extends and overrides the response callback as we can
- * assure that all requests respond with [GraphContainer] as the root tree object
- * this makes it easier for us to implement error logging and provide better error messages
+ * GraphQLMapper specific mapper, assures that all requests respond with [GraphContainer] as the root tree object.
+ * Making it easier for us to implement error logging and provide better error messages
  *
  * @see SupportDataMapper
  */
 abstract class GraphQLMapper<S, D> (
-    parentCoroutineJob: Job? = null,
-    networkState: MutableLiveData<NetworkState>
-): SupportDataMapper<GraphContainer<S>?, D>(parentCoroutineJob, networkState) {
+    parentCoroutineJob: Job? = null
+): SupportDataMapper<GraphContainer<S>, D>(parentCoroutineJob), IMapperHelper<Response<GraphContainer<S>>> {
 
     /**
-     * Synchronous network request handler for coroutine contexts which need cannot observe
-     * the live data of [networkState]
+     * Response handler for coroutine contexts which need to observe
+     * the live data of [NetworkState]
      *
-     * @param call GraphQL network request which needs to be executed
+     * Unless when if using [androidx.paging.PagingRequestHelper.Request.Callback]
+     * then you can ignore the return type
+     *
+     * @param deferred an deferred result awaiting execution
+     * @return network state of the deferred result
      */
-    suspend fun executeUsing(call: Call<GraphContainer<S>>): NetworkState {
-        try {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                withContext(Dispatchers.IO) {
-                    val mapped = onResponseMapFrom(response)
-                    onResponseDatabaseInsert(mapped)
-                }
-                return NetworkState.LOADED
-            }
+    override suspend fun handleResponse(deferred: Deferred<Response<GraphContainer<S>>>): NetworkState {
+        val response = deferred.await()
 
-            val graphErrors = response.getError()
-            if (!graphErrors.isNullOrEmpty()) {
-                graphErrors.forEach {
-                    Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
-                }
-                return NetworkState(
-                    status = SupportStateType.ERROR,
-                    message = graphErrors.first().message,
-                    code = graphErrors.first().status
-                )
-            }
-        } catch (e: Exception) {
-            Timber.tag(moduleTag).e(e)
+        if (response.isSuccessful && response.body() != null) {
+            val mapped = onResponseMapFrom(response.body()!!)
+            onResponseDatabaseInsert(mapped)
+
+            return NetworkState.LOADED
         }
-        return NetworkState.error(
-            msg = "Unable to complete request"
-        )
-    }
 
-    override val responseCallback = object : Callback<GraphContainer<S>?> {
-        /**
-         * Invoked when a network exception occurred talking to the server or when an unexpected
-         * exception occurred creating the request or processing the response.
-         */
-        override fun onFailure(call: Call<GraphContainer<S>?>, throwable: Throwable) {
-            networkState.postValue(
-                NetworkState.error(
-                    msg = "Unable to complete request"
-                )
+        val graphErrors = response.getError()
+        if (!graphErrors.isNullOrEmpty()) {
+            graphErrors.forEach {
+                Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
+            }
+            return NetworkState(
+                status = SupportStateContract.ERROR,
+                message = graphErrors.first().message,
+                code = graphErrors.first().status
             )
-            Timber.tag(moduleTag).e(throwable)
         }
 
-        /**
-         * Invoked for a received HTTP response.
-         *
-         *
-         * Note: An HTTP response may still indicate an application-level failure such as a 404 or 500.
-         * Call [Response.isSuccessful] to determine if the response indicates success.
-         */
-        override fun onResponse(call: Call<GraphContainer<S>?>, response: Response<GraphContainer<S>?>) {
-            when (response.isSuccessful) {
-                true -> {
-                    launch {
-                        val mapped = onResponseMapFrom(response)
-                        onResponseDatabaseInsert(mapped)
-                        withContext(Dispatchers.Main) {
-                            networkState.postValue(
-                                NetworkState.LOADED
-                            )
-                        }
-                    }
-                }
-                false -> {
-                    val graphErrors = response.getError()
-                    if (!graphErrors.isNullOrEmpty()) {
-                        networkState.postValue(
-                            NetworkState(
-                                status = SupportStateType.ERROR,
-                                message = graphErrors.first().message,
-                                code = graphErrors.first().status
-                            )
-                        )
-                        graphErrors.forEach {
-                            Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
-                        }
-                    }
-                    else {
-                        val message = response.message()
-                        Timber.tag(moduleTag).e(message)
-                        networkState.postValue(
-                            NetworkState(
-                                status = SupportStateType.ERROR,
-                                message = message,
-                                code = response.code()
-                            )
-                        )
-                    }
-                }
-            }
-        }
-
+        return NetworkState.error("Unable to process exception")
     }
 }

@@ -1,15 +1,30 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package co.anitrend.core.worker
 
 import android.content.Context
-import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.api.endpoint.MediaEndPoint
 import co.anitrend.data.extension.getEndPointOf
 import co.anitrend.data.source.media.MediaGenreDataSource
-import io.wax911.support.core.worker.SupportWorker
+import io.wax911.support.core.worker.SupportCoroutineWorker
 import io.wax911.support.data.factory.contract.IRetrofitFactory
-import io.wax911.support.data.model.contract.SupportStateType
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -17,7 +32,7 @@ import org.koin.core.inject
 class MediaGenreCollectionWorker(
     context: Context,
     workerParameters: WorkerParameters
-): CoroutineWorker(context, workerParameters), KoinComponent {
+) : SupportCoroutineWorker<CorePresenter>(context, workerParameters), KoinComponent {
 
     private val connectivityHelper by inject<SupportConnectivityHelper>()
     private val retroFactory by inject<IRetrofitFactory>()
@@ -25,13 +40,13 @@ class MediaGenreCollectionWorker(
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
-     * <p>
+     *
      * A CoroutineWorker is given a maximum of ten minutes to finish its execution and return a
-     * [ListenableWorker.Result].  After this time has expired, the worker will be signalled to
+     * [androidx.work.ListenableWorker.Result].  After this time has expired, the worker will be signalled to
      * stop.
      *
-     * @return The [ListenableWorker.Result] of the result of the background work; note that
-     * dependent work will not execute if you return [ListenableWorker.Result.failure]
+     * @return The [androidx.work.ListenableWorker.Result] of the result of the background work; note that
+     * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
         if (connectivityHelper.isConnected) {
@@ -42,7 +57,7 @@ class MediaGenreCollectionWorker(
 
             val networkResult = mediaTagDataSource.startRequestForType()
 
-            if (networkResult.code == SupportStateType.CONTENT)
+            if (networkResult.isLoaded())
                 return Result.success()
             return Result.failure()
         }
@@ -50,6 +65,6 @@ class MediaGenreCollectionWorker(
     }
 
     companion object {
-        const val TAG = "MediaGenreCollectionWorker"
+        const val TAG = "co.anitrend:MediaGenreCollectionWorker"
     }
 }

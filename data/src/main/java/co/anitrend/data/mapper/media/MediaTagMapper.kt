@@ -1,30 +1,43 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package co.anitrend.data.mapper.media
 
-import androidx.lifecycle.MutableLiveData
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import co.anitrend.data.dao.query.MediaTagDao
 import co.anitrend.data.model.response.collection.MediaTagCollection
 import co.anitrend.data.model.response.general.media.MediaTag
 import io.github.wax911.library.model.body.GraphContainer
-import io.wax911.support.data.model.NetworkState
-import retrofit2.Response
 import timber.log.Timber
 
 class MediaTagMapper(
-    networkState: MutableLiveData<NetworkState>,
     private val mediaTagDao: MediaTagDao
-) : GraphQLMapper<MediaTagCollection, List<MediaTag>>(networkState = networkState) {
+) : GraphQLMapper<MediaTagCollection, List<MediaTag>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
-     * @see [responseCallback]
+     * @see [handleResponse]
      *
-     * @param response retrofit response containing data
+     * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(response: Response<GraphContainer<MediaTagCollection>?>): List<MediaTag> {
-        return response.body()?.data?.mediaTagCollection.orEmpty()
+    override suspend fun onResponseMapFrom(source: GraphContainer<MediaTagCollection>): List<MediaTag> {
+        return source.data?.mediaTagCollection.orEmpty()
     }
 
     /**
@@ -37,11 +50,10 @@ class MediaTagMapper(
     override suspend fun onResponseDatabaseInsert(mappedData: List<MediaTag>) {
         if (mappedData.isNotEmpty()) {
             val current = mediaTagDao.count()
-            val array = mappedData.toTypedArray()
             if (current < 1)
-                mediaTagDao.insert(*array)
+                mediaTagDao.insert(mappedData)
             else
-                mediaTagDao.update(*array)
+                mediaTagDao.upsert(mappedData)
         }
         else
             Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")

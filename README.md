@@ -13,43 +13,108 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 ## Known Issues
 
-- Find all issues, feature requests, bugs and project road map [here](https://waffle.io/AniTrend/anitrend-v2)
+- Current projects for each major release can be found here [here](https://github.com/AniTrend/anitrend-v2/projects)
+- All unresolved issues related to this project can be found [here](https://github.com/AniTrend/anitrend-v2/pulls?q=is%3Aopen+is%3Apr) 
 
 ## Documentation
 
 Development documentation for AniTrend is still a work in progress so for the time being on the essentials are available and can be found over at: __[anitrend.gitbook.io](https://anitrend.gitbook.io/project/)__
 
+### Contributors
+
+#### Internal
+
+- [AniTrend Team](https://github.com/orgs/AniTrend/people/)
+
+#### External
+
+> T.B.A
+
+### Donators
+
+> T.B.A
+
+### Libraries Used
+
+#### Core
+
+- [Android KTX](https://developer.android.com/kotlin/ktx.html/)
+- [Data Binding](https://developer.android.com/topic/libraries/data-binding/)
+- [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html/)
+- [Kotlin](https://kotlinlang.org/)
+- [Material Components](https://material.io/develop/android/docs/getting-started/)
+- [Live Data](https://developer.android.com/topic/libraries/architecture/livedata/)
+- [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle/)
+- [Room](https://developer.android.com/topic/libraries/architecture/room)
+- [Paging](https://developer.android.com/topic/libraries/architecture/paging/)
+- [Worker Manager](https://developer.android.com/topic/libraries/architecture/workmanager/)
+- [Navigation](https://developer.android.com/topic/libraries/architecture/navigation.html/)
+
+#### Analytics
+
+- [Firebase](https://firebase.google.com/)
+- [Crashlytics](https://fabric.io/kits/android/crashlytics/)
+
+#### Networking
+
+- [Glide](https://bumptech.github.io/glide/)
+- [Retrofit](https://square.github.io/retrofit/)
+
+#### Dependency Injection
+
+- [Koin](https://insert-koin.io/)
+
+#### Testing
+
+- [Mockk](https://mockk.io/)
+- [Junit](https://developer.android.com/training/testing/junit-rules/)
+- [Runner](https://developer.android.com/training/testing/junit-runner.html/)
+- [Espresso](https://developer.android.com/training/testing/espresso/index.html/)
+
+#### Logging
+
+- [Timber](https://github.com/JakeWharton/timber/)
+- [OkHttp](https://square.github.io/okhttp/)
+
+#### Other
+
+- [Gson](https://github.com/google/gson/)
+- [Flex Box](https://github.com/google/flexbox-layout/)
+- [Material Dialogs](https://github.com/afollestad/material-dialogs/)
+- [Smart Tab Layout](https://github.com/ogaclejapan/SmartTabLayout/)
+- [Material Tap Target Prompt](https://sjwall.github.io/MaterialTapTargetPrompt/)
+
+> **N.B** 
+> Some of the libraries used in this project may depend on other libraries
+> not listed here. 
+> 
+> If we have used a library but forgot to mentions it please let us know 
+
+
 # License
 
 ```
-MIT License
+Copyright (C) 2018  AniTrend
 
-Copyright (c) 2018 AniTrend
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
 # Terms Of Service
 
 By using [Anitrend](https://play.google.com/store/apps/details?id=com.mxt.anitrend) you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.
 
-[Please Read The Full Terms Of Service Here](https://github.com/AniTrend/anitrend-v2/blob/master/TOS.md)
+[Please Read The Full Terms Of Service Here](https://github.com/AniTrend/anitrend-v2/blob/master/TERMS_OF_SERVICE.md)
 
 # Privacy Policy
 
