@@ -20,6 +20,77 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 Development documentation for AniTrend is still a work in progress so for the time being on the essentials are available and can be found over at: __[anitrend.gitbook.io](https://anitrend.gitbook.io/project/)__
 
+## Contributers
+
+### Internal Contributers 
+
+- [AniTrend Team](https://github.com/orgs/AniTrend/people/)
+
+### External Contributers
+
+> T.B.A
+
+## Donators
+
+> T.B.A
+
+## Libraries Used
+
+### Core
+
+[Android KTX](https://developer.android.com/kotlin/ktx.html/)
+[Data Binding](https://developer.android.com/topic/libraries/data-binding/)
+[Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html/)
+[Kotlin](https://kotlinlang.org/)
+[Material Components](https://material.io/develop/android/docs/getting-started/)
+[Live Data](https://developer.android.com/topic/libraries/architecture/livedata/)
+[Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle/)
+[Room](https://developer.android.com/topic/libraries/architecture/room)
+[Paging](https://developer.android.com/topic/libraries/architecture/paging/)
+[Worker Manager](https://developer.android.com/topic/libraries/architecture/workmanager/)
+[Navigation](https://developer.android.com/topic/libraries/architecture/navigation.html/)
+
+### Analytics
+
+[Firebase](https://firebase.google.com/)
+[Crashlytics](https://fabric.io/kits/android/crashlytics/)
+
+### Networking
+
+[Glide](https://bumptech.github.io/glide/)
+[Retrofit](https://square.github.io/retrofit/)
+
+### Dependency Injection
+
+[Koin](https://insert-koin.io/)
+
+### Testing
+
+[Mockk](https://mockk.io/)
+[Junit](https://developer.android.com/training/testing/junit-rules/)
+[Runner](https://developer.android.com/training/testing/junit-runner.html/)
+[Espresso](https://developer.android.com/training/testing/espresso/index.html/)
+
+### Logging
+
+[Timber](https://github.com/JakeWharton/timber/)
+[OkHttp](https://square.github.io/okhttp/)
+
+### Other
+
+[Gson](https://github.com/google/gson/)
+[Flex Box](https://github.com/google/flexbox-layout/)
+[Material Dialogs](https://github.com/afollestad/material-dialogs/)
+[Smart Tab Layout](https://github.com/ogaclejapan/SmartTabLayout/)
+[Material Tap Target Prompt](https://sjwall.github.io/MaterialTapTargetPrompt/)
+
+> **N.B** 
+> Some of the libraries used in this project may depend on other libraries
+> not listed here. 
+> 
+> If we have used a library but forgot to mentions it please let us know 
+
+
 # License
 
 ```
@@ -43,7 +114,7 @@ Copyright (C) 2018  AniTrend
 
 By using [Anitrend](https://play.google.com/store/apps/details?id=com.mxt.anitrend) you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.
 
-[Please Read The Full Terms Of Service Here](https://github.com/AniTrend/anitrend-v2/blob/master/TOS.md)
+[Please Read The Full Terms Of Service Here](https://github.com/AniTrend/anitrend-v2/blob/master/TERMS_OF_SERVICE.md)
 
 # Privacy Policy
 
