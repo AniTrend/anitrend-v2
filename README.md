@@ -13,7 +13,8 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 ## Known Issues
 
-- Find all issues, feature requests, bugs and project road map [here](https://waffle.io/AniTrend/anitrend-v2)
+- Current projects for each major release can be found here [here](https://github.com/AniTrend/anitrend-v2/projects)
+- All unresolved issues related to this project can be found [here](https://github.com/AniTrend/anitrend-v2/pulls?q=is%3Aopen+is%3Apr) 
 
 ## Documentation
 
@@ -22,27 +23,20 @@ Development documentation for AniTrend is still a work in progress so for the ti
 # License
 
 ```
-MIT License
+Copyright (C) 2018  AniTrend
 
-Copyright (c) 2018 AniTrend
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
 # Terms Of Service
