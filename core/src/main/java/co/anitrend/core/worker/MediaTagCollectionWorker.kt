@@ -65,6 +65,6 @@ class MediaTagCollectionWorker(
     }
 
     companion object {
-        const val TAG = "MediaTagCollectionWorker"
+        const val TAG = "co.anitrend:MediaTagCollectionWorker"
     }
 }
