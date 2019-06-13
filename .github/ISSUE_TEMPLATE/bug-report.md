@@ -12,30 +12,21 @@ Before opening a new issue, please take a moment to review our [**community guid
 https://github.com/AniTrend/anitrend-v2/issues?q=is%3Aissue+is%3Aclosed
 
 
-## Description Of Bug
-<!--- A clear and concise description of what the bug is. -->
-
-__Media Detail Pages__ with long titles are under the __Overview Tab__ are cropped from start instead of from the end.
-
-**Steps To Reproduce**
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## Description of Bug
+<!-- A clear and concise description of what the bug is. e.g. -->
 
 
-## Expected Behaviour
-<!--- A clear and concise description of what you expect to happen. -->
+## Reproduction Steps
+<!-- In detail, please explain how and what can be done to reproduce this bug. -->
 
-Perhaps it would be best if anime/manga titles are not truncated
 
 
 ## Screenshots/Videos
-<!--- If applicable, add screenshots to help explain your problem. If none of these are available please remove this section alone -->
+<!-- Screenshots or videos usally paint a better picutre, if you have non please remove this heading -->
 
 
 ## Device & Build Information
-<!--- Please provide any relevant information about your device. This is important in case the issue is not reproducible except for under certain conditions. -->
+<!-- Please provide any relevant information about your device. This is important in case the issue is not reproducible except for under certain conditions. -->
 
 * OS Version: Lollipop 5.0.1
 * App Version: 1.2.0
@@ -49,7 +40,10 @@ Donwload Source:
 
 
 ## Additional Context
-<!--- What are you trying to accomplish? Providing context helps us come up with a solution that is most useful in the real world, also include an logs if you have any in this section -->
+<!--
+Providing context helps us come up with a solution that is most useful in the real world, 
+also include any logs if you have any in this section, if not please remove this section
+-->
 
 I have tested with multiple devices and the issue doesn't seem to be bound to any specific device, OS version or form factor.
 
