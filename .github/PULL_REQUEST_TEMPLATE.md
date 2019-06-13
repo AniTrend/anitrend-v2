@@ -12,7 +12,7 @@ Before opening a pull request, please ensure:
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
 - [ ] You have followed our [**contributing guidelines**](https://github.com/AniTrend/anitrend-v2/blob/master/CONTRIBUTING.md)
-- [ ] double-check your branch is based on `develop` and targets `develop` 
+- [ ] Double checked that your branch is based on `develop` and targets `develop` 
 - [ ] Pull request has tests
 - [ ] Code is well-commented, linted and follows project conventions
 - [ ] Documentation is updated (if necessary)
@@ -32,7 +32,8 @@ Before opening a pull request, please ensure:
 <!--- Include details of your testing environment, tests ran to see how -->
 <!--- your change affects other areas of the code, etc. -->
 
-## Screenshots (if appropriate):
+## Screenshots:
+<!-- If applicable, if not feel free to remove this section -->
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
@@ -43,4 +44,4 @@ Before opening a pull request, please ensure:
 <!--- Be kind to code reviewers, please try to keep pull requests as small and focused as possible :) -->
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project
-owners to license your work under the terms of the [MIT License](https://github.com/AniTrend/anitrend-v2/blob/master/LICENSE.md).
+owners to license your work under the terms of the [GPL v3 License](https://github.com/AniTrend/anitrend-v2/blob/master/LICENSE.md).
