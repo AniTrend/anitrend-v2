@@ -65,6 +65,6 @@ class MediaGenreCollectionWorker(
     }
 
     companion object {
-        const val TAG = "MediaGenreCollectionWorker"
+        const val TAG = "co.anitrend:MediaGenreCollectionWorker"
     }
 }
