@@ -21,7 +21,7 @@ buildscript {
         pagingKtx = '2.1.0'
         ktx = '1.2.0-alpha01'
         fragmentKtx = '1.0.0'
-        workerKtx = '2.1.0-alpha03'
+        workerKtx = '2.1.0-beta01'
         navigation = '2.1.0-alpha05'
         firebase = '16.0.9'
 
