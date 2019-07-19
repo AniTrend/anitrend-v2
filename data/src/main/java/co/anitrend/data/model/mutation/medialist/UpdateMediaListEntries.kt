@@ -19,7 +19,7 @@ package co.anitrend.data.model.mutation.medialist
 
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.model.response.meta.FuzzyDate
-import co.anitrend.data.repository.medialist.attributes.MediaListStatus
+import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
 
 /** [UpdateMediaList mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
  *

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.response.group
 
-import co.anitrend.data.repository.medialist.attributes.MediaListStatus
+import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
 
 /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
  * List group of anime or manga entries

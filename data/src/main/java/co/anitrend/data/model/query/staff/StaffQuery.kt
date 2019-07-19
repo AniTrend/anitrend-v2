@@ -18,7 +18,7 @@
 package co.anitrend.data.model.query.staff
 
 import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.staff.attributes.StaffSort
+import co.anitrend.data.usecase.staff.attributes.StaffSort
 
 /** [Staff query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

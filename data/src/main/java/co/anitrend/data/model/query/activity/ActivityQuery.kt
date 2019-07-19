@@ -19,8 +19,8 @@ package co.anitrend.data.model.query.activity
 
 import co.anitrend.data.model.contract.FuzzyDateInt
 import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.feed.attributes.ActivitySort
-import co.anitrend.data.repository.feed.attributes.ActivityType
+import co.anitrend.data.usecase.feed.attributes.ActivitySort
+import co.anitrend.data.usecase.feed.attributes.ActivityType
 
 /** [Activity query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

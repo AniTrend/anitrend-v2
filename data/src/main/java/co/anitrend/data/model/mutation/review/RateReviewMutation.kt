@@ -18,7 +18,7 @@
 package co.anitrend.data.model.mutation.review
 
 import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.review.attributes.ReviewRating
+import co.anitrend.data.usecase.review.attributes.ReviewRating
 
 /** [RateReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
  *

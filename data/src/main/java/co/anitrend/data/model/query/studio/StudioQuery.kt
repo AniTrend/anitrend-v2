@@ -18,7 +18,7 @@
 package co.anitrend.data.model.query.studio
 
 import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.studio.attributes.StudioSort
+import co.anitrend.data.usecase.studio.attributes.StudioSort
 
 /** [Studio query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

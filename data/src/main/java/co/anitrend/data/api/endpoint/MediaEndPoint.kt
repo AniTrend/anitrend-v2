@@ -17,6 +17,7 @@
 
 package co.anitrend.data.api.endpoint
 
+import co.anitrend.data.api.endpoint.contract.AniTrendEndpointFactory
 import co.anitrend.data.model.response.collection.GenreCollection
 import co.anitrend.data.model.response.collection.MediaTagCollection
 import io.github.wax911.library.annotation.GraphQuery
@@ -40,4 +41,8 @@ interface MediaEndPoint {
     suspend fun getMediaTags(
         @Body request: QueryContainerBuilder
     ): Response<GraphContainer<MediaTagCollection>>
+
+    companion object : AniTrendEndpointFactory<MediaEndPoint>(
+        endpoint = MediaEndPoint::class
+    )
 }

@@ -20,8 +20,8 @@ package co.anitrend.data.model.mutation.user
 import co.anitrend.data.model.contract.IGraphQuery
 import co.anitrend.data.model.input.MediaListOptionsInput
 import co.anitrend.data.model.input.NotificationOption
-import co.anitrend.data.repository.media.attributes.ScoreFormat
-import co.anitrend.data.repository.user.attributes.UserTitleLanguage
+import co.anitrend.data.usecase.media.attributes.ScoreFormat
+import co.anitrend.data.usecase.user.attributes.UserTitleLanguage
 
 /** [UpdateUser mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
  *
