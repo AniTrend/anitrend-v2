@@ -17,6 +17,12 @@
 
 package co.anitrend.data.api.endpoint
 
+import co.anitrend.data.api.endpoint.contract.AniTrendEndpointFactory
+
 interface ReviewEndPoint {
 
+
+    companion object : AniTrendEndpointFactory<ReviewEndPoint>(
+        endpoint = ReviewEndPoint::class
+    )
 }

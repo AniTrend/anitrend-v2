@@ -2,8 +2,8 @@
 
 buildscript {
     ext {
-        compileSdk = 28
-        targetSdk = 28
+        compileSdk = 29
+        targetSdk = 29
         minSdk = 21
 
         versionCode = 124
@@ -14,7 +14,7 @@ buildscript {
         glide = '4.9.0'
         retrofit = '2.6.0'
 
-        material = '1.0.0'
+        material = '1.1.0-alpha08'
         androidx = '2.0.0'
         room = '2.1.0'
         paging = '2.1.0'

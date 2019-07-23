@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.query.activity
 
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.IGraphQuery
 
 /** [ActivityReply query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

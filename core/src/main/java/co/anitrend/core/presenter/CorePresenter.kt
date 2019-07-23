@@ -22,10 +22,9 @@ import androidx.work.BackoffPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import co.anitrend.core.worker.MediaGenreCollectionWorker
-import co.anitrend.core.worker.MediaTagCollectionWorker
+import co.anitrend.core.worker.MediaGenreWorker
+import co.anitrend.core.worker.MediaTagWorker
 import co.anitrend.data.util.Settings
-import co.anitrend.data.util.graphql.GraphUtil
 import io.wax911.support.core.presenter.SupportPresenter
 import java.util.concurrent.TimeUnit
 
@@ -38,14 +37,14 @@ class CorePresenter(
      * Invokes works to run in the background to fetch genres and tags
      */
     fun syncMediaGenresAndTags() {
-        val genreCollectionWorker = OneTimeWorkRequestBuilder<MediaGenreCollectionWorker>()
+        val genreCollectionWorker = OneTimeWorkRequestBuilder<MediaGenreWorker>()
             .setBackoffCriteria(BackoffPolicy.LINEAR, 20, TimeUnit.SECONDS)
-            .addTag(MediaGenreCollectionWorker.TAG)
+            .addTag(MediaGenreWorker.TAG)
             .build()
 
-        val tagCollectionWorker = OneTimeWorkRequestBuilder<MediaTagCollectionWorker>()
+        val tagCollectionWorker = OneTimeWorkRequestBuilder<MediaTagWorker>()
             .setBackoffCriteria(BackoffPolicy.LINEAR, 20, TimeUnit.SECONDS)
-            .addTag(MediaTagCollectionWorker.TAG)
+            .addTag(MediaTagWorker.TAG)
             .build()
 
         WorkManager.getInstance(context)

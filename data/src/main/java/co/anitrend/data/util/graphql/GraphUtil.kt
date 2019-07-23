@@ -18,7 +18,7 @@
 package co.anitrend.data.util.graphql
 
 import co.anitrend.data.arch.AniTrendExperimentalFeature
-import co.anitrend.data.model.query.PageQuery
+import co.anitrend.data.model.query.paging.PageQuery
 import co.anitrend.data.util.Settings
 import io.github.wax911.library.model.request.QueryContainerBuilder
 

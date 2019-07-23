@@ -17,6 +17,12 @@
 
 package co.anitrend.data.api.endpoint
 
+import co.anitrend.data.api.endpoint.contract.AniTrendEndpointFactory
+
 interface AiringEndPoint {
 
+
+    companion object : AniTrendEndpointFactory<AiringEndPoint>(
+        endpoint = AiringEndPoint::class
+    )
 }

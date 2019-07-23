@@ -17,12 +17,12 @@
 
 package co.anitrend.data.model.query.medialist
 
-import co.anitrend.data.model.contract.FuzzyDateInt
-import co.anitrend.data.model.contract.FuzzyDateLike
-import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.media.attributes.MediaType
-import co.anitrend.data.repository.medialist.attributes.MediaListSort
-import co.anitrend.data.repository.medialist.attributes.MediaListStatus
+import co.anitrend.data.model.response.contract.FuzzyDateInt
+import co.anitrend.data.model.response.contract.FuzzyDateLike
+import co.anitrend.data.model.response.contract.IGraphQuery
+import co.anitrend.data.usecase.media.attributes.MediaType
+import co.anitrend.data.usecase.medialist.attributes.MediaListSort
+import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
 
 /** [MediaList query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *

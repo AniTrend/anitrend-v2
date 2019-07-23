@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.query.thread
 
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.IGraphQuery
 
 /** [ThreadComment query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

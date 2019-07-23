@@ -56,7 +56,7 @@ class SplashActivity : AnitrendActivity<Nothing, CorePresenter>() {
             R.string.app_splash_description
         )
         binding.splashDescription.text = description
-        makeRequest()
+        onFetchDataInitialize()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,13 +67,28 @@ class SplashActivity : AnitrendActivity<Nothing, CorePresenter>() {
         )
     }
 
-    override fun updateUI() {
+    /**
+     * Handles the updating of views, binding, creation or state change, depending on the context
+     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
+     *
+     * Check implementation for more details
+     */
+    override fun onUpdateUserInterface() {
         startNewActivity<MainActivity>(intent.extras)
         finish()
     }
 
-    override fun makeRequest() {
+    /**
+     * Handles the complex logic required to dispatch network request to [SupportViewModel]
+     * which uses [SupportRepository] to either request from the network or database cache.
+     *
+     * The results of the dispatched network or cache call will be published by the
+     * [androidx.lifecycle.LiveData] specifically [SupportViewModel.model]
+     *
+     * @see [SupportViewModel.requestBundleLiveData]
+     */
+    override fun onFetchDataInitialize() {
         supportPresenter.syncMediaGenresAndTags()
-        updateUI()
+        onUpdateUserInterface()
     }
 }

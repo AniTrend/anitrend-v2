@@ -19,8 +19,8 @@ package co.anitrend.data.util.graphql
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
-import co.anitrend.data.repository.media.attributes.MediaSortContract
-import co.anitrend.data.repository.medialist.attributes.MediaListSortContract
+import co.anitrend.data.usecase.media.attributes.MediaSortContract
+import co.anitrend.data.usecase.medialist.attributes.MediaListSortContract
 import co.anitrend.data.util.Settings
 import org.junit.Assert
 import org.junit.Test

@@ -27,6 +27,7 @@ import co.anitrend.core.koin.coreViewModelModules
 import co.anitrend.data.koin.dataModules
 import co.anitrend.data.koin.dataNetworkModules
 import co.anitrend.data.koin.dataRepositoryModules
+import co.anitrend.data.koin.dataUseCaseModules
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -57,6 +58,7 @@ class App: Application(), Configuration.Provider {
                 /** Data dependencies */
                 dataModules +
                 dataNetworkModules +
+                dataUseCaseModules +
                 dataRepositoryModules
             )
         }
