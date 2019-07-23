@@ -27,8 +27,8 @@ import co.anitrend.data.dao.migration.MIGRATION_1_2
 import co.anitrend.data.dao.query.JsonWebTokenDao
 import co.anitrend.data.dao.query.MediaGenreDao
 import co.anitrend.data.dao.query.MediaTagDao
-import co.anitrend.data.model.response.general.media.MediaGenre
-import co.anitrend.data.model.response.general.media.MediaTag
+import co.anitrend.data.model.response.core.media.MediaGenre
+import co.anitrend.data.model.response.core.media.MediaTag
 
 @Database(
     entities = [
