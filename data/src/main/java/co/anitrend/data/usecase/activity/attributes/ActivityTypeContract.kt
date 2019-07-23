@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright (C) 2019  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -19,23 +19,41 @@ package co.anitrend.data.usecase.activity.attributes
 
 import androidx.annotation.StringDef
 
-/**
- * Activity Sort Values
- */
 @StringDef(
-    ActivitySortContract.ID
+    ActivityTypeContract.TEXT,
+    ActivityTypeContract.ANIME_LIST,
+    ActivityTypeContract.MANGA_LIST,
+    ActivityTypeContract.MESSAGE,
+    ActivityTypeContract.MEDIA_LIST
 )
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
-annotation class ActivitySortContract {
+annotation class ActivityTypeContract {
     companion object {
-        const val ID = "ID"
+        /** A text activity */
+        const val TEXT = "TEXT"
+
+        /** A anime list update activity */
+        const val ANIME_LIST = "ANIME_LIST"
+
+        /** A manga list update activity */
+        const val MANGA_LIST = "MANGA_LIST"
+
+        /** A text message activity sent to another user */
+        const val MESSAGE = "MESSAGE"
+
+        /** Anime & Manga list update, only used in query arguments */
+        const val MEDIA_LIST = "MEDIA_LIST"
 
         val ALL = listOf(
-            ID
+            TEXT,
+            ANIME_LIST,
+            MANGA_LIST,
+            MESSAGE,
+            MEDIA_LIST
         )
     }
 }
 
-@ActivitySortContract
-typealias ActivitySort = String
+@ActivityTypeContract
+typealias ActivityType = String

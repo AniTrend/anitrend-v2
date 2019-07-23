@@ -15,45 +15,36 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.usecase.feed.attributes
+package co.anitrend.data.usecase.user.attributes
 
 import androidx.annotation.StringDef
 
+/**
+ * User statistics sort values
+ */
 @StringDef(
-    ActivityTypeContract.TEXT,
-    ActivityTypeContract.ANIME_LIST,
-    ActivityTypeContract.MANGA_LIST,
-    ActivityTypeContract.MESSAGE,
-    ActivityTypeContract.MEDIA_LIST
+    UserStatisticsSortContract.COUNT,
+    UserStatisticsSortContract.ID,
+    UserStatisticsSortContract.MEAN_SCORE,
+    UserStatisticsSortContract.PROGRESS
 )
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPEALIAS)
-annotation class ActivityTypeContract {
+annotation class UserStatisticsSortContract {
     companion object {
-        /** A text activity */
-        const val TEXT = "TEXT"
-
-        /** A anime list update activity */
-        const val ANIME_LIST = "ANIME_LIST"
-
-        /** A manga list update activity */
-        const val MANGA_LIST = "MANGA_LIST"
-
-        /** A text message activity sent to another user */
-        const val MESSAGE = "MESSAGE"
-
-        /** Anime & Manga list update, only used in query arguments */
-        const val MEDIA_LIST = "MEDIA_LIST"
+        const val COUNT = "COUNT"
+        const val ID = "ID"
+        const val MEAN_SCORE = "MEAN_SCORE"
+        const val PROGRESS = "PROGRESS"
 
         val ALL = listOf(
-            TEXT,
-            ANIME_LIST,
-            MANGA_LIST,
-            MESSAGE,
-            MEDIA_LIST
+            COUNT,
+            ID,
+            MEAN_SCORE,
+            PROGRESS
         )
     }
 }
 
-@ActivityTypeContract
-typealias ActivityType = String
+@UserSortContract
+typealias UserStatisticsSort = String
