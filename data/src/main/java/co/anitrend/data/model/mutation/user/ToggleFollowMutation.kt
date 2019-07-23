@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.mutation.user
 
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.IGraphQuery
 
 /** [ToggleFollow mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
  *

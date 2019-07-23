@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.query.notification
 
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.IGraphQuery
 import co.anitrend.data.usecase.notification.attributes.NotificationType
 
 /** [Notification query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)

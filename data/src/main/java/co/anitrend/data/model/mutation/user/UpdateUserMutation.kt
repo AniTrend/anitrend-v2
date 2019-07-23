@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.mutation.user
 
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.IGraphQuery
 import co.anitrend.data.model.input.MediaListOptionsInput
 import co.anitrend.data.model.input.NotificationOption
 import co.anitrend.data.usecase.media.attributes.ScoreFormat

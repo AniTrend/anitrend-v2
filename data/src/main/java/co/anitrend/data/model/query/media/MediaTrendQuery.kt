@@ -17,8 +17,8 @@
 
 package co.anitrend.data.model.query.media
 
-import co.anitrend.data.model.contract.FuzzyDateInt
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.FuzzyDateInt
+import co.anitrend.data.model.response.contract.IGraphQuery
 import co.anitrend.data.usecase.media.attributes.MediaTrendSort
 
 /** [MediaTrend query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]

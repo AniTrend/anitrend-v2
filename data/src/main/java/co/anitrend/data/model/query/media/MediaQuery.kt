@@ -17,9 +17,9 @@
 
 package co.anitrend.data.model.query.media
 
-import co.anitrend.data.model.contract.FuzzyDateInt
-import co.anitrend.data.model.contract.FuzzyDateLike
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.FuzzyDateInt
+import co.anitrend.data.model.response.contract.FuzzyDateLike
+import co.anitrend.data.model.response.contract.IGraphQuery
 import co.anitrend.data.usecase.media.attributes.MediaFormat
 import co.anitrend.data.usecase.media.attributes.MediaSeason
 import co.anitrend.data.usecase.media.attributes.MediaSort
