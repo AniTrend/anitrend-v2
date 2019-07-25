@@ -15,23 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.response.core.airing
+package co.anitrend.data.model.response.core.activity
 
 import androidx.room.PrimaryKey
-import co.anitrend.data.model.response.core.airing.contract.IAiringSchedule
-import co.anitrend.data.model.response.core.media.Media
+import co.anitrend.data.model.response.core.activity.contract.IFeed
+import co.anitrend.data.model.response.core.user.User
+import co.anitrend.data.usecase.activity.attributes.ActivityType
 
-/** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
- * Media Airing Schedule
+/** [ActivityReply](https://anilist.github.io/ApiV2-GraphQL-Docs/textactivity.doc.html)
+ * Replay to an activity item
  *
- * @param media The associate media of the airing episode
+ * @param activityId The id of the parent activity
  */
-data class AiringSchedule(
-    val media: Media?,
+data class FeedReply(
+    val activityId: Long?,
     @PrimaryKey
     override val id: Long,
-    override val airingAt: Int,
-    override val episode: Int,
-    override val mediaId: Long,
-    override val timeUntilAiring: Int
-) : IAiringSchedule
+    override val createdAt: Long,
+    override val likes: List<User>?,
+    override val replyCount: Int,
+    override val siteUrl: String?,
+    override val text: String?,
+    override val type: ActivityType?,
+    override val user: User?,
+    override val userId: Long?
+) : IFeed

@@ -15,14 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.response.core.activity.contract
+package co.anitrend.data.model.response.core.airing
 
-import co.anitrend.data.entity.contract.IEntity
-
-/** [Activity](https://anilist.github.io/ApiV2-GraphQL-Docs/activityunion.doc.html)
- * Activity contract with shared objects
+/** [AiringProgression](https://anilist.github.io/ApiV2-GraphQL-Docs/airingprogression.doc.html)
+ * Score & Watcher stats for airing anime by episode and mid-week
  *
+ * @param episode The episode the stats were recorded at. .5 is the mid point between 2 episodes airing dates
+ * @param score The average score for the media
+ * @param watching The amount of users watching the anime
  */
-interface IActivity : IEntity {
-
-}
+data class AiringProgression(
+    val episode: Float?,
+    val score: Float?,
+    val watching: Int?
+)

@@ -15,23 +15,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.response.core.airing
+package co.anitrend.data.model.response.core.notification
 
 import androidx.room.PrimaryKey
-import co.anitrend.data.model.response.core.airing.contract.IAiringSchedule
 import co.anitrend.data.model.response.core.media.Media
+import co.anitrend.data.model.response.core.notification.contract.INotification
+import co.anitrend.data.model.response.core.user.User
+import co.anitrend.data.usecase.notification.attributes.NotificationType
 
-/** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
- * Media Airing Schedule
+/** [Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationunion.doc.html)
+ * Notification with shared objects
  *
- * @param media The associate media of the airing episode
+ * @param activityId The id of the activity which was liked
+ * @param user The user related to this notification type
+ * @param media The associated media of the airing schedule
+ * @param contexts The notification context text
  */
-data class AiringSchedule(
+data class Notification(
+    val activityId: Int?,
+    val user: User?,
     val media: Media?,
+    val contexts: List<String>?,
     @PrimaryKey
     override val id: Long,
-    override val airingAt: Int,
-    override val episode: Int,
-    override val mediaId: Long,
-    override val timeUntilAiring: Int
-) : IAiringSchedule
+    override val context: String?,
+    override val createdAt: Long?,
+    override val type: NotificationType?
+) : INotification

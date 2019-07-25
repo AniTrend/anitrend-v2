@@ -15,23 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.response.core.airing
+package co.anitrend.data.model.response.core.airing.connection
 
-import androidx.room.PrimaryKey
-import co.anitrend.data.model.response.core.airing.contract.IAiringSchedule
-import co.anitrend.data.model.response.core.media.Media
+import co.anitrend.data.entity.contract.IEntityConnection
+import co.anitrend.data.model.response.core.airing.AiringSchedule
+import co.anitrend.data.model.response.core.airing.edge.AiringScheduleEdge
+import co.anitrend.data.model.response.meta.PageInfo
 
-/** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
- * Media Airing Schedule
- *
- * @param media The associate media of the airing episode
+/**
+ * Airing schedule connection
  */
-data class AiringSchedule(
-    val media: Media?,
-    @PrimaryKey
-    override val id: Long,
-    override val airingAt: Int,
-    override val episode: Int,
-    override val mediaId: Long,
-    override val timeUntilAiring: Int
-) : IAiringSchedule
+data class AiringScheduleConnection(
+    override val edges: List<AiringScheduleEdge>?,
+    override val nodes: List<AiringSchedule>?,
+    override val pageInfo: PageInfo?
+) : IEntityConnection<AiringScheduleEdge, AiringSchedule>

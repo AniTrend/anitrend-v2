@@ -18,10 +18,17 @@
 package co.anitrend.data.model.response.core.notification.contract
 
 import co.anitrend.data.entity.contract.IEntity
+import co.anitrend.data.usecase.notification.attributes.NotificationType
 
 /** [Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationunion.doc.html)
  * Notification contract with shared objects
  *
+ * @property context The notification context text
+ * @property createdAt The time the notification was created at
+ * @property type The type of notification
  */
 interface INotification : IEntity {
+    val context: String?
+    val createdAt: Long?
+    val type: NotificationType?
 }
