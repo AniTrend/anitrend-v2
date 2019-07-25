@@ -18,7 +18,6 @@
 package co.anitrend.data.model.response.core.medialist
 
 import co.anitrend.data.model.response.core.user.User
-import co.anitrend.data.model.response.group.MediaListGroup
 
 /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
  * List of anime or manga
