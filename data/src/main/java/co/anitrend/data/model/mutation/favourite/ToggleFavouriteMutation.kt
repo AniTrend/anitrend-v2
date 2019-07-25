@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.mutation.favourite
 
-import co.anitrend.data.model.contract.IGraphQuery
+import co.anitrend.data.model.response.contract.IGraphQuery
 
 /** [ToggleFavourite mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
  *

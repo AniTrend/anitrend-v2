@@ -17,8 +17,8 @@
 
 package co.anitrend.data.model.extension
 
-import co.anitrend.data.model.contract.FuzzyDateInt
-import co.anitrend.data.model.contract.FuzzyDateLike
+import co.anitrend.data.model.response.contract.FuzzyDateInt
+import co.anitrend.data.model.response.contract.FuzzyDateLike
 import co.anitrend.data.model.response.meta.FuzzyDate
 import io.wax911.support.extension.empty
 

@@ -17,8 +17,8 @@
 
 package co.anitrend.data.model.input
 
-import co.anitrend.data.model.contract.IGraphQuery
-import co.anitrend.data.repository.notification.attributes.NotificationType
+import co.anitrend.data.model.response.contract.IGraphQuery
+import co.anitrend.data.usecase.notification.attributes.NotificationType
 
 /** [NotificationOptionInput](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationoptioninput.doc.html)
  *

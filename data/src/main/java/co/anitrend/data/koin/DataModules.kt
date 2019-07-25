@@ -19,17 +19,24 @@ package co.anitrend.data.koin
 
 import android.content.Context
 import android.net.ConnectivityManager
-import co.anitrend.data.api.RetroFactory
+import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.converter.AniGraphConverter
+import co.anitrend.data.api.endpoint.MediaEndPoint
 import co.anitrend.data.api.interceptor.AuthInterceptor
+import co.anitrend.data.api.interceptor.ClientInterceptor
 import co.anitrend.data.auth.AuthenticationHelper
-import co.anitrend.data.dao.DatabaseHelper
+import co.anitrend.data.dao.AniTrendStore
+import co.anitrend.data.usecase.media.meta.MediaGenreFetchUseCase
+import co.anitrend.data.usecase.media.meta.MediaTagFetchUseCase
 import co.anitrend.data.util.Settings
 import io.wax911.support.data.auth.contract.ISupportAuthentication
-import io.wax911.support.data.factory.contract.IRetrofitFactory
 import io.wax911.support.extension.util.SupportConnectivityHelper
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 val dataModules = module {
     factory {
@@ -39,7 +46,7 @@ val dataModules = module {
     }
 
     single {
-        DatabaseHelper.newInstance(
+        AniTrendStore.newInstance(
             applicationContext = androidContext()
         )
     }
@@ -47,7 +54,7 @@ val dataModules = module {
     factory<ISupportAuthentication> {
         AuthenticationHelper(
             connectivityHelper = get(),
-            jsonWebTokenDao = get<DatabaseHelper>().jsonWebTokenDao(),
+            jsonWebTokenDao = get<AniTrendStore>().jsonWebTokenDao(),
             settings = get()
         )
     }
@@ -74,10 +81,42 @@ val dataNetworkModules = module {
         )
     }
 
-    single<IRetrofitFactory> {
-        RetroFactory(
-            authInterceptor = get<AuthInterceptor>(),
-            graphConverter = get<AniGraphConverter>()
+    single {
+        val okHttpClientBuilder = OkHttpClient.Builder()
+            .readTimeout(35, TimeUnit.SECONDS)
+            .connectTimeout(35, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .addInterceptor(ClientInterceptor())
+            .authenticator(get<AuthInterceptor>())
+        when {
+            BuildConfig.DEBUG -> {
+                val httpLoggingInterceptor = HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+                okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
+            }
+        }
+
+        Retrofit.Builder().client(
+            okHttpClientBuilder.build()
+        ).addConverterFactory(
+            get<AniGraphConverter>()
+        ).baseUrl(
+            BuildConfig.apiUrl
+        ).build()
+    }
+}
+
+val dataUseCaseModules = module {
+    factory {
+        MediaGenreFetchUseCase(
+            mediaEndPoint = MediaEndPoint.create(),
+            mediaGenreDao = get<AniTrendStore>().mediaGenreDao()
+        )
+    }
+    factory {
+        MediaTagFetchUseCase(
+            mediaEndPoint = MediaEndPoint.create(),
+            mediaTagDao = get<AniTrendStore>().mediaTagDao()
         )
     }
 }

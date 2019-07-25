@@ -17,6 +17,8 @@
             <option value="$PROJECT_DIR$/support-app/support-data" />
             <option value="$PROJECT_DIR$/support-app/support-ext" />
             <option value="$PROJECT_DIR$/support-app/support-ui" />
+            <option value="$PROJECT_DIR$/support-markdown/markdown" />
+            <option value="$PROJECT_DIR$/support-sync-plugin/syncplugin" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -85,7 +85,7 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
             setNavigationItemSelectedListener(this@MainActivity)
             setCheckedItem(selectedItem)
         }
-        updateUI()
+        onUpdateUserInterface()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -94,12 +94,10 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
         super.onSaveInstanceState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
-        }
+        selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
+        selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
     }
 
     override fun onBackPressed() {
@@ -170,7 +168,7 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
      */
     private fun attachSelectedNavigationItem(@IdRes menu: Int, supportFragment: SupportFragment<*, *, *>?) {
         supportFragment?.apply {
-            compatView = this@apply
+            supportFragmentActivity = this@apply
             supportFragmentManager.commit {
                 replace(R.id.contentFrame, this@apply, tag)
             }
@@ -182,14 +180,30 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
         }
     }
 
-    override fun updateUI() {
+    /**
+     * Handles the updating of views, binding, creation or state change, depending on the context
+     * [androidx.lifecycle.LiveData] for a given [io.wax911.support.ui.view.contract.ISupportFragmentActivity]
+     * will be available by this point.
+     *
+     * Check implementation for more details
+     */
+    override fun onUpdateUserInterface() {
         if (selectedItem != 0)
             onNavigate(selectedItem)
         else
             onNavigate(R.id.nav_popular_series)
     }
 
-    override fun makeRequest() {
-
+    /**
+     * Handles the complex logic required to dispatch network request to [SupportViewModel]
+     * which uses [SupportRepository] to either request from the network or database cache.
+     *
+     * The results of the dispatched network or cache call will be published by the
+     * [androidx.lifecycle.LiveData] specifically [SupportViewModel.model]
+     *
+     * @see [SupportViewModel.requestBundleLiveData]
+     */
+    override fun onFetchDataInitialize() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -17,50 +17,47 @@
 
 package co.anitrend.data.source.media
 
-import android.os.Bundle
 import co.anitrend.data.api.endpoint.MediaEndPoint
-import co.anitrend.data.arch.source.WorkerDataSource
-import co.anitrend.data.dao.DatabaseHelper
+import co.anitrend.data.dao.query.MediaTagDao
 import co.anitrend.data.mapper.media.MediaTagMapper
 import co.anitrend.data.util.graphql.GraphUtil
 import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.source.coroutine.SupportCoroutineDataSource
 import kotlinx.coroutines.async
-import org.koin.core.inject
 
 class MediaTagDataSource(
-    private val mediaEndPoint: MediaEndPoint
-) : WorkerDataSource() {
-
-    override val databaseHelper by inject<DatabaseHelper>()
+    private val mediaEndPoint: MediaEndPoint,
+    private val mediaTagDao: MediaTagDao
+) : SupportCoroutineDataSource() {
 
     /**
-     * Handles the requesting data from a the network source and informs the
-     * network state that it is in the loading state
+     * Handles the requesting data from a the network source and return
+     * [NetworkState] to the caller after execution.
      *
-     * @param bundle request parameters or more
+     * In this context the super.invoke() method will allow a retry action to be set
      */
-    override suspend fun startRequestForType(bundle: Bundle?): NetworkState {
-        val futureResponse = async {
-            mediaEndPoint.getMediaTags(
-                GraphUtil.getDefaultQuery()
+    override suspend fun invoke(): NetworkState {
+        val state = super.invoke()
+        if (connectivityHelper.isConnected) {
+            val futureResponse = async {
+                mediaEndPoint.getMediaTags(
+                    GraphUtil.getDefaultQuery()
+                )
+            }
+
+            val mapper = MediaTagMapper(
+                mediaTagDao = mediaTagDao
             )
+
+            return mapper.handleResponse(futureResponse)
         }
-
-        val mapper = MediaTagMapper(
-            databaseHelper.mediaTagDao()
-        )
-
-        return mapper.handleResponse(futureResponse)
+        return state
     }
 
     /**
-     * Clears all the data in a database table which will assure that
-     * and refresh the backing storage medium with new network data
-     *
-     * @param bundle the request request parameters to use
+     * Clears data sources (databases, preferences, e.t.c)
      */
-    override suspend fun refreshOrInvalidate(bundle: Bundle?): NetworkState {
-        databaseHelper.mediaTagDao().deleteAll()
-        return startRequestForType(bundle)
+    override suspend fun clearDataSource() {
+        mediaTagDao.deleteAll()
     }
 }

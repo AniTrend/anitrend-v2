@@ -18,13 +18,13 @@
 package co.anitrend.data.model.query
 
 import co.anitrend.data.model.extension.toFuzzyDateInt
-import co.anitrend.data.model.query.media.AiringScheduleQuery
 import co.anitrend.data.model.query.media.MediaQuery
+import co.anitrend.data.model.query.paging.PageQuery
 import co.anitrend.data.model.response.meta.FuzzyDate
-import co.anitrend.data.repository.media.attributes.MediaFormatContract
-import co.anitrend.data.repository.media.attributes.MediaSeasonContract
-import co.anitrend.data.repository.media.attributes.MediaStatusContract
-import co.anitrend.data.repository.media.attributes.MediaTypeContract
+import co.anitrend.data.usecase.media.attributes.MediaFormatContract
+import co.anitrend.data.usecase.media.attributes.MediaSeasonContract
+import co.anitrend.data.usecase.media.attributes.MediaStatusContract
+import co.anitrend.data.usecase.media.attributes.MediaTypeContract
 import org.junit.Assert.*
 import org.junit.Test
 

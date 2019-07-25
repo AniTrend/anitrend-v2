@@ -10,3 +10,6 @@
 [submodule "android-emojify"]
 	path = android-emojify
 	url = https://github.com/AniTrend/android-emojify.git
+[submodule "support-sync-plugin"]
+	path = support-sync-plugin
+	url = https://github.com/AniTrend/support-sync-plugin

@@ -37,8 +37,6 @@ class AuthenticationHelper(
     private val settings: Settings
 ): SupportAuthentication<Uri>() {
 
-    private val TAG = javaClass.simpleName
-
     /**
      * Facade to provide information on authentication status of the application,
      * on demand
@@ -116,7 +114,7 @@ class AuthenticationHelper(
             settings.authenticatedUserId = Settings.INVALID_USER_ID
             settings.isAuthenticated = false
             jsonWebTokenDao.clearTable()
-            Timber.tag(TAG).e("Authentication token is null, application is logging user out!")
+            Timber.tag(moduleTag).e("Authentication token is null, application is logging user out!")
         }
     }
 

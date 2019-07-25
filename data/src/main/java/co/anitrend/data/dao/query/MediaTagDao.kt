@@ -20,7 +20,7 @@ package co.anitrend.data.dao.query
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.model.response.general.media.MediaTag
+import co.anitrend.data.model.response.core.media.MediaTag
 import io.wax911.support.data.dao.ISupportQuery
 
 @Dao
