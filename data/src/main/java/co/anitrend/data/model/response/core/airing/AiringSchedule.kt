@@ -17,6 +17,7 @@
 
 package co.anitrend.data.model.response.core.airing
 
+import androidx.room.PrimaryKey
 import co.anitrend.data.model.response.core.airing.contract.IAiringSchedule
 import co.anitrend.data.model.response.core.media.Media
 
@@ -27,9 +28,10 @@ import co.anitrend.data.model.response.core.media.Media
  */
 data class AiringSchedule(
     val media: Media?,
+    @PrimaryKey
+    override val id: Long,
     override val airingAt: Int,
     override val episode: Int,
     override val mediaId: Long,
-    override val timeUntilAiring: Int,
-    override val id: Long
+    override val timeUntilAiring: Int
 ) : IAiringSchedule
