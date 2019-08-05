@@ -14,7 +14,7 @@ buildscript {
         glide = '4.9.0'
         retrofit = '2.6.0'
 
-        material = '1.1.0-alpha08'
+        material = '1.1.0-alpha09'
         androidx = '2.0.0'
         room = '2.1.0'
         paging = '2.1.0'
