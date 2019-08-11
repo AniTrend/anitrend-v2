@@ -27,8 +27,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
+        versionCode versionProductionCode
+        versionName versionProductionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -105,7 +105,7 @@ dependencies {
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.room:room-runtime:$room"

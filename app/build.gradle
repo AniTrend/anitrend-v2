@@ -28,8 +28,8 @@ android {
         applicationId "co.anitrend.app"
         minSdkVersion minSdk
         targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
+        versionCode versionProductionCode
+        versionName versionProductionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -98,7 +98,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
 
