@@ -41,14 +41,14 @@
         <!--
         app:appCategory="social"-->
 
-        <activity android:name=".view.activity.base.SplashActivity">
+        <activity android:name=".ui.activity.base.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.index.MainActivity"
+        <activity android:name=".ui.activity.index.MainActivity"
             android:launchMode="singleTop"/>
 
         <provider

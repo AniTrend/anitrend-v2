@@ -42,7 +42,7 @@ class App: Application(), Configuration.Provider {
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      * Initializes Koin dependency injection
      */
-    private fun initializeDependencyInjection() {
+    private fun initializeKoin() {
         startKoin{
             androidLogger()
             androidContext(
@@ -98,7 +98,7 @@ class App: Application(), Configuration.Provider {
      */
     override fun onCreate() {
         super.onCreate()
-        initializeDependencyInjection()
+        initializeKoin()
         plantLoggingTree()
     }
 
