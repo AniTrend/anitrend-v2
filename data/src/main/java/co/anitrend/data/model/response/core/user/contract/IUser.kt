@@ -48,5 +48,5 @@ interface IUser : IEntity {
     val siteUrl: String?
     val donatorTier: Int?
     val moderatorStatus: String?
-    val updatedAt: Int?
+    val updatedAt: Long?
 }

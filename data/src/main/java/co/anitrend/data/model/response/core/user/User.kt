@@ -47,5 +47,5 @@ data class User(
     override val siteUrl: String?,
     override val donatorTier: Int?,
     override val moderatorStatus: String?,
-    override val updatedAt: Int?
+    override val updatedAt: Long?
 ) : IUser
