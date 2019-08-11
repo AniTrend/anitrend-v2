@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.view.activity
+package co.anitrend.core.ui.activity
 
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.ui.activity.SupportActivity

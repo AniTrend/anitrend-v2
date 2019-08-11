@@ -17,9 +17,7 @@
 
 package co.anitrend.data.model.response.core.user.statistics
 
-import android.os.Parcelable
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 
 /** [UserReleaseYearStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userreleaseyearstatistic.doc.html)
  *
@@ -32,4 +30,4 @@ data class UserReleaseYearStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic

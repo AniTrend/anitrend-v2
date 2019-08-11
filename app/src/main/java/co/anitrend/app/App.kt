@@ -19,8 +19,8 @@ package co.anitrend.app
 
 import android.app.Application
 import androidx.work.Configuration
-import co.anitrend.app.util.AnalyticsUtil
 import co.anitrend.app.koin.appModules
+import co.anitrend.app.util.AnalyticsUtil
 import co.anitrend.core.koin.coreModules
 import co.anitrend.core.koin.corePresenterModules
 import co.anitrend.core.koin.coreViewModelModules
@@ -42,7 +42,7 @@ class App: Application(), Configuration.Provider {
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      * Initializes Koin dependency injection
      */
-    private fun initializeDependencyInjection() {
+    private fun initializeKoin() {
         startKoin{
             androidLogger()
             androidContext(
@@ -98,7 +98,7 @@ class App: Application(), Configuration.Provider {
      */
     override fun onCreate() {
         super.onCreate()
-        initializeDependencyInjection()
+        initializeKoin()
         plantLoggingTree()
     }
 

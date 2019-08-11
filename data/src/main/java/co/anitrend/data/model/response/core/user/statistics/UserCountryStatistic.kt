@@ -18,9 +18,9 @@
 package co.anitrend.data.model.response.core.user.statistics
 
 import co.anitrend.data.model.response.contract.CountryCode
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 
-/** (UserCountryStatistic)[https://anilist.github.io/ApiV2-GraphQL-Docs/usercountrystatistic.doc.html]
+/** [UserCountryStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/usercountrystatistic.doc.html)
  *
  * @param country country code
  */
@@ -31,4 +31,4 @@ data class UserCountryStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic

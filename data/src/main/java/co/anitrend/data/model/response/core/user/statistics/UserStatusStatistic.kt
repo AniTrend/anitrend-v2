@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.response.core.user.statistics
 
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
 
 /** [UserStatusStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userstatusstatistic.doc.html)
@@ -31,4 +31,4 @@ data class UserStatusStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic

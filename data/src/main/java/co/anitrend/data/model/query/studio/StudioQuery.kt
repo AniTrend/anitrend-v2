@@ -17,7 +17,6 @@
 
 package co.anitrend.data.model.query.studio
 
-import co.anitrend.data.model.query.studio.connection.IStudioMediaConnectionQuery
 import co.anitrend.data.model.response.contract.IGraphQuery
 import co.anitrend.data.usecase.studio.attributes.StudioSort
 

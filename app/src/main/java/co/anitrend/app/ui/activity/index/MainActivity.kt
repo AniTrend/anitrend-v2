@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app.view.activity.index
+package co.anitrend.app.ui.activity.index
 
 import android.os.Bundle
 import android.view.Menu
@@ -28,7 +28,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.commit
 import co.anitrend.app.R
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.view.activity.AnitrendActivity
+import co.anitrend.core.ui.activity.AnitrendActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.support.ui.activity.SupportActivity

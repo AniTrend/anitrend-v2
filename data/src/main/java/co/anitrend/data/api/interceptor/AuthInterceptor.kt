@@ -28,7 +28,9 @@ import okhttp3.*
  * The context in which an [Interceptor] may be  parallel or asynchronous depending
  * on the dispatching caller, as such take care to assure thread safety
  */
-class AuthInterceptor(private val authenticationHelper: ISupportAuthentication) : Authenticator {
+class AuthInterceptor(
+    private val authenticationHelper: ISupportAuthentication<Request.Builder>
+) : Authenticator {
 
     /**
      * Returns a request that includes a credential to satisfy an authentication challenge in `response`.
@@ -40,11 +42,11 @@ class AuthInterceptor(private val authenticationHelper: ISupportAuthentication) 
      * application interceptor, such as when implementing client-specific retries.
      */
     override fun authenticate(route: Route?, response: Response): Request? {
-        val networkState = NetworkState(code = response.code(), status = SupportStateContract.LOADING)
+        val networkState = NetworkState(code = response.code, status = SupportStateContract.LOADING)
         if (networkState.isUnauthorized()) {
-            val requestBuilder = response.request().newBuilder()
+            val requestBuilder = response.request.newBuilder()
             if (authenticationHelper.isAuthenticated) {
-                authenticationHelper.injectHeaders(requestBuilder)
+                authenticationHelper(requestBuilder)
                 return requestBuilder.build()
             }
         }

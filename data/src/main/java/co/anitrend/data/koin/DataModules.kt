@@ -32,6 +32,7 @@ import co.anitrend.data.util.Settings
 import io.wax911.support.data.auth.contract.ISupportAuthentication
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -51,7 +52,7 @@ val dataModules = module {
         )
     }
 
-    factory<ISupportAuthentication> {
+    factory<ISupportAuthentication<Request.Builder>> {
         AuthenticationHelper(
             connectivityHelper = get(),
             jsonWebTokenDao = get<AniTrendStore>().jsonWebTokenDao(),
@@ -90,8 +91,9 @@ val dataNetworkModules = module {
             .authenticator(get<AuthInterceptor>())
         when {
             BuildConfig.DEBUG -> {
-                val httpLoggingInterceptor = HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+                val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
                 okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
             }
         }

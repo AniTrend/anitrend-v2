@@ -15,21 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app.view.activity.base
+package co.anitrend.app.ui.activity.base
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil.setContentView
 import co.anitrend.app.R
 import co.anitrend.app.databinding.ActivitySplashBinding
-import co.anitrend.app.view.activity.index.MainActivity
+import co.anitrend.app.ui.activity.index.MainActivity
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.view.activity.AnitrendActivity
+import co.anitrend.core.ui.activity.AnitrendActivity
 import io.wax911.support.extension.startNewActivity
 import io.wax911.support.ui.activity.SupportActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 class SplashActivity : AnitrendActivity<Nothing, CorePresenter>() {

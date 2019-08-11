@@ -17,19 +17,42 @@
 
 package co.anitrend.data.model.response.core.user.statistics.contract
 
-/**
- * Contract for user statistics, applied on various items such as countries, formats, genres, years, staff e.t.c
+import co.anitrend.data.model.response.core.user.statistics.*
+
+/** [UserStatistics](https://anilist.github.io/ApiV2-GraphQL-Docs/UserStatistics.doc.html)
  *
- * @property chaptersRead Chapters read for the statistic
- * @property count Count for the statistic
- * @property meanScore Mean score for the the statistic
- * @property mediaIds List of media ids for the statistic
- * @property minutesWatched Minutes for watched for teh statistic
+ * Contract for user statistics without any anime or manga information
+ *
+ * @property count TBA
+ * @property countries TBA
+ * @property formats TBA
+ * @property genres TBA
+ * @property lengths TBA
+ * @property meanScore TBA
+ * @property releaseYears TBA
+ * @property scores TBA
+ * @property staff TBA
+ * @property standardDeviation TBA
+ * @property startYears TBA
+ * @property statuses TBA
+ * @property studios TBA
+ * @property tags TBA
+ * @property voiceActors TBA
  */
 interface IUserStatistic {
-    val chaptersRead: Int
     val count: Int
+    val countries: List<UserCountryStatistic>?
+    val formats: List<UserFormatStatistic>?
+    val genres: List<UserGenreStatistic>?
+    val lengths: List<UserLengthStatistic>?
     val meanScore: Float
-    val mediaIds: List<Int>
-    val minutesWatched: Int
+    val releaseYears: List<UserReleaseYearStatistic>?
+    val scores: List<UserScoreStatistic>?
+    val staff: List<UserStaffStatistic>?
+    val standardDeviation: Float
+    val startYears: List<UserStartYearStatistic>?
+    val statuses: List<UserStatusStatistic>?
+    val studios: List<UserStudioStatistic>?
+    val tags: List<UserTagStatistic>?
+    val voiceActors: List<UserVoiceActorStatistic>?
 }

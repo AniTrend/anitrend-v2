@@ -22,7 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.index.MainActivity">
+    tools:context=".ui.activity.index.MainActivity">
 
     <include layout="@layout/content_main" />
 
@@ -31,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:elevation="@dimen/xl_margin"
         android:hapticFeedbackEnabled="true"
         android:backgroundTint="@color/primaryColor"
         app:hideOnScroll="true"

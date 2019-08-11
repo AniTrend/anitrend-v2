@@ -18,7 +18,7 @@
 package co.anitrend.data.model.response.core.user.statistics
 
 import co.anitrend.data.model.response.core.media.MediaTag
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 
 /** [UserTagStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/usertagstatistic.doc.html)
  *
@@ -31,4 +31,4 @@ data class UserTagStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic

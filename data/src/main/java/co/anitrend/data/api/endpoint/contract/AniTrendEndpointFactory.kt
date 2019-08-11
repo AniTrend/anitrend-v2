@@ -39,7 +39,6 @@ open class AniTrendEndpointFactory<E: Any>(
     companion object {
         val GSON: Gson by lazy {
             GsonBuilder()
-                .enableComplexMapKeySerialization()
                 .generateNonExecutableJson()
                 .serializeNulls()
                 .setLenient()
