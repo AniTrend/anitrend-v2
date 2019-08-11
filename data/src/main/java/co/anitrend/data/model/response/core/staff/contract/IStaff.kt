@@ -18,10 +18,29 @@
 package co.anitrend.data.model.response.core.staff.contract
 
 import co.anitrend.data.entity.contract.IEntity
+import co.anitrend.data.entity.contract.IEntityImage
+import co.anitrend.data.entity.contract.IEntityName
+import co.anitrend.data.usecase.staff.attributes.StaffLanguage
 
 /** [Staff](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/staff.doc.html)
  * Voice actors or production staff
  *
+ * @property description A general description of the staff member
+ * @property favourites The amount of user's who have favourited the staff member
+ * @property image The staff images
+ * @property isFavourite If the staff member is marked as favourite by the currently authenticated user
+ * @property language The primary language of the staff member
+ * @property name The names of the staff member
+ * @property siteUrl The url for the staff page on the AniList website
+ * @property updatedAt When the staff's data was last updated
  */
 interface IStaff : IEntity {
+    val description: String?
+    val favourites: Int
+    val image: IEntityImage?
+    val isFavourite: Boolean
+    val language: StaffLanguage?
+    val name: IEntityName?
+    val siteUrl: String?
+    val updatedAt: Long?
 }

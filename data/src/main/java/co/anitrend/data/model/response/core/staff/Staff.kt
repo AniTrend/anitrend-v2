@@ -17,10 +17,31 @@
 
 package co.anitrend.data.model.response.core.staff
 
-/** []()
+import androidx.room.PrimaryKey
+import co.anitrend.data.model.response.core.character.connection.CharacterConnection
+import co.anitrend.data.model.response.core.media.connection.MediaConnection
+import co.anitrend.data.model.response.core.staff.contract.IStaff
+import co.anitrend.data.model.response.meta.CoverImage
+import co.anitrend.data.model.response.meta.CoverName
+import co.anitrend.data.usecase.staff.attributes.StaffLanguage
+
+/** [Staff](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/staff.doc.html)
+ * Voice actors or production staff
  *
- *
+ * @param character Characters voiced by the actor
+ * @param staffMedia Media where the staff member has a production role
  */
 data class Staff(
-    val updatedAt: Int?
-)
+    val character: CharacterConnection?,
+    val staffMedia: MediaConnection?,
+    @PrimaryKey
+    override val id: Long,
+    override val description: String?,
+    override val favourites: Int,
+    override val image: CoverImage?,
+    override val isFavourite: Boolean,
+    override val language: StaffLanguage?,
+    override val name: CoverName?,
+    override val siteUrl: String?,
+    override val updatedAt: Long?
+) : IStaff
