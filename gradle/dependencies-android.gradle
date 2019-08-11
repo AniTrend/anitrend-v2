@@ -19,6 +19,7 @@ ext {
     preferenceX = "1.1.0-rc01"
     swipeRefreshX = "1.1.0-alpha02"
     constraintX = '1.1.3'
+    viewPager2X = "1.0.0-beta03"
 
     lifecycleStateX = '1.0.0-alpha03'
     lifecycleX = '2.1.0-rc01'
