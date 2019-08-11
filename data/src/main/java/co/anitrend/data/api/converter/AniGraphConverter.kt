@@ -59,6 +59,24 @@ class AniGraphConverter(
 
     companion object {
 
+        private val exclusionStrategy = object : ExclusionStrategy {
+            /**
+             * @param clazz the class object that is under test
+             * @return true if the class should be ignored; otherwise false
+             */
+            override fun shouldSkipClass(clazz: Class<*>?) = false
+
+            /**
+             * @param f the field object that is under test
+             * @return true if the field should be ignored; otherwise false
+             */
+            override fun shouldSkipField(f: FieldAttributes?): Boolean {
+                return f?.name?.equals("operationName") ?: false
+                        ||
+                        f?.name?.equals("extensions") ?: false
+            }
+        }
+
         /**
          * Allows you to provide your own Gson configuration which will be used when serialize or
          * deserialize response and request bodies.
@@ -67,25 +85,8 @@ class AniGraphConverter(
          */
         fun create(context: Context?) =
             AniGraphConverter(context).apply {
-                this.gson = GsonBuilder()
-                    .addSerializationExclusionStrategy(object : ExclusionStrategy {
-                        /**
-                         * @param clazz the class object that is under test
-                         * @return true if the class should be ignored; otherwise false
-                         */
-                        override fun shouldSkipClass(clazz: Class<*>?) = false
-
-                        /**
-                         * @param f the field object that is under test
-                         * @return true if the field should be ignored; otherwise false
-                         */
-                        override fun shouldSkipField(f: FieldAttributes?): Boolean {
-                            return f?.name?.equals("operationName") ?: false
-                                    ||
-                                    f?.name?.equals("extensions") ?: false
-                        }
-                    })
-                    .enableComplexMapKeySerialization()
+                gson = GsonBuilder()
+                    .addSerializationExclusionStrategy(exclusionStrategy)
                     .setLenient()
                     .create()
             }

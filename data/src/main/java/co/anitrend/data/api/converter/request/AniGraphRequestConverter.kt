@@ -21,7 +21,9 @@ import com.google.gson.Gson
 import io.github.wax911.library.annotation.processor.GraphProcessor
 import io.github.wax911.library.converter.request.GraphRequestConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AniRequestConverter(
     methodAnnotations: Array<Annotation>,
@@ -49,8 +51,11 @@ class AniRequestConverter(
 
         val queryJson = gson.toJson(queryContainer)
 
-        // Because anilist won't recognize application/graphql as a valid content type!
-        // return RequestBody.create(MediaType.parse(GraphConverter.MimeType), queryJson)
-        return RequestBody.create(null, queryJson)
+        val mediaType = MIME_TYPE.toMediaTypeOrNull()
+        return queryJson.toRequestBody(mediaType)
+    }
+
+    companion object {
+        internal const val MIME_TYPE = "application/json"
     }
 }
