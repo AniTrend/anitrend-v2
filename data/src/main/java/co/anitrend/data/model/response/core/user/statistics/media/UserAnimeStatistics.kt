@@ -17,8 +17,8 @@
 
 package co.anitrend.data.model.response.core.user.statistics.media
 
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
 import co.anitrend.data.model.response.core.user.statistics.*
+import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
 
 /** [UserStatistics](https://anilist.github.io/ApiV2-GraphQL-Docs/UserStatistics.doc.html)
  *

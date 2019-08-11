@@ -19,8 +19,8 @@ package co.anitrend.app
 
 import android.app.Application
 import androidx.work.Configuration
-import co.anitrend.app.util.AnalyticsUtil
 import co.anitrend.app.koin.appModules
+import co.anitrend.app.util.AnalyticsUtil
 import co.anitrend.core.koin.coreModules
 import co.anitrend.core.koin.corePresenterModules
 import co.anitrend.core.koin.coreViewModelModules

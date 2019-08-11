@@ -19,10 +19,10 @@ package co.anitrend.data.model.response.core.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import co.anitrend.data.model.response.core.medialist.MediaListOptions
 import co.anitrend.data.model.response.core.user.contract.IUser
 import co.anitrend.data.model.response.meta.CoverImage
 import co.anitrend.data.model.response.meta.Favourites
-import co.anitrend.data.model.response.core.medialist.MediaListOptions
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
  * A user from the anilist platform

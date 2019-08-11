@@ -24,11 +24,7 @@ import io.wax911.support.data.mapper.contract.IMapperHelper
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.contract.SupportStateContract
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
