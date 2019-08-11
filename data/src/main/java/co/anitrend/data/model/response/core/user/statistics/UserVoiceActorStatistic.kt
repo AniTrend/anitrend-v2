@@ -18,7 +18,7 @@
 package co.anitrend.data.model.response.core.user.statistics
 
 import co.anitrend.data.model.response.core.staff.Staff
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 
 /** [UserVoiceActorStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/uservoiceactorstatistic.doc.html)
  *
@@ -32,4 +32,4 @@ data class UserVoiceActorStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic

@@ -17,6 +17,9 @@
 
 package co.anitrend.data.model.response.core.user
 
+import co.anitrend.data.model.response.core.user.statistics.media.UserAnimeStatistics
+import co.anitrend.data.model.response.core.user.statistics.media.UserMangaStatistics
+
 /** [UserStatisticTypes](https://anilist.github.io/ApiV2-GraphQL-Docs/UserStatisticTypes.doc.html)
  * A user's statistics
  *
@@ -24,6 +27,6 @@ package co.anitrend.data.model.response.core.user
  * @param manga TBA
  */
 data class UserStatisticTypes(
-    val anime: UserStatistics,
-    val manga: UserStatistics
+    val anime: UserAnimeStatistics,
+    val manga: UserMangaStatistics
 )

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.response.core.user.statistics
 
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 
 /** [UserScoreStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userscorestatistic.doc.html)
  *
@@ -30,4 +30,4 @@ data class UserScoreStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic

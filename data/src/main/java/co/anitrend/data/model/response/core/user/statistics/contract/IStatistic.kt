@@ -15,20 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.response.core.user.statistics
+package co.anitrend.data.model.response.core.user.statistics.contract
 
-import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
-import co.anitrend.data.usecase.media.attributes.MediaFormat
-
-/** [UserFormatStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userformatstatistic.doc.html)
+/**
+ * Contract for user statistics, applied on various items such as countries, formats, genres, years, staff e.t.c
  *
- * @param format media format
+ * @property chaptersRead Chapters read for the statistic
+ * @property count Count for the statistic
+ * @property meanScore Mean score for the the statistic
+ * @property mediaIds List of media ids for the statistic
+ * @property minutesWatched Minutes for watched for teh statistic
  */
-data class UserFormatStatistic(
-    val format: MediaFormat?,
-    override val chaptersRead: Int,
-    override val count: Int,
-    override val meanScore: Float,
-    override val mediaIds: List<Int>,
-    override val minutesWatched: Int
-) : IStatistic
+interface IStatistic {
+    val chaptersRead: Int
+    val count: Int
+    val meanScore: Float
+    val mediaIds: List<Int>
+    val minutesWatched: Int
+}

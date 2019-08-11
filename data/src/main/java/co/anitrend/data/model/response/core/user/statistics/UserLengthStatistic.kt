@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.response.core.user.statistics
 
-import co.anitrend.data.model.response.core.user.statistics.contract.IUserStatistic
+import co.anitrend.data.model.response.core.user.statistics.contract.IStatistic
 
 /** [UserLengthStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userlengthstatistic.doc.html)
  *
@@ -30,4 +30,4 @@ data class UserLengthStatistic(
     override val meanScore: Float,
     override val mediaIds: List<Int>,
     override val minutesWatched: Int
-) : IUserStatistic
+) : IStatistic
