@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    apply from: "./gradle/dependencies-android.gradle"
+    apply from: "./gradle/gradle-ext-versions.gradle"
 
     repositories {
         google()
