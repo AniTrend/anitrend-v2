@@ -15,12 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app.util
+package co.anitrend.app.analytics
 
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
+import co.anitrend.app.BuildConfig
+import co.anitrend.data.util.Settings
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
@@ -28,16 +30,24 @@ import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import io.wax911.support.extension.empty
 import timber.log.Timber
 
-class AnalyticsUtil(context: Context): Timber.Tree(), ISupportAnalytics {
+class AnalyticsLogging(
+    context: Context,
+    settings: Settings
+): Timber.Tree(), ISupportAnalytics {
 
-    private val analytics by lazy {
-        FirebaseAnalytics.getInstance(context).also {
-            it.setAnalyticsCollectionEnabled(true)
+    private var fabric: Fabric? = null
+    private val analytics: FirebaseAnalytics =
+        FirebaseAnalytics.getInstance(context).apply {
+            setAnalyticsCollectionEnabled(
+                settings.isAnalyticsEnabled
+            )
         }
-    }
 
-    private val fabric by lazy {
-        Fabric.with(context)
+    init {
+        if (settings.isCrashlyticsEnabled)
+            fabric = Fabric.Builder(context).kits(Crashlytics())
+                .appIdentifier(BuildConfig.BUILD_TYPE)
+                .build().let { Fabric.with(it) }
     }
 
     /**
@@ -52,9 +62,11 @@ class AnalyticsUtil(context: Context): Timber.Tree(), ISupportAnalytics {
         if (priority < Log.INFO)
             return
 
-        Crashlytics.setInt(PRIORITY, priority)
-        Crashlytics.setString(TAG, tag)
-        Crashlytics.setString(MESSAGE, message)
+        runCatching {
+            Crashlytics.setInt(PRIORITY, priority)
+            Crashlytics.setString(TAG, tag)
+            Crashlytics.setString(MESSAGE, message)
+        }.exceptionOrNull()?.printStackTrace()
 
         when (throwable) {
             null -> log(priority, tag, message)
@@ -63,31 +75,49 @@ class AnalyticsUtil(context: Context): Timber.Tree(), ISupportAnalytics {
     }
 
     override fun logCurrentScreen(context: FragmentActivity?, tag : String) {
-        if (context != null) {
-            fabric?.currentActivity = context
-            analytics.setCurrentScreen(context, tag, null)
-        }
+        runCatching {
+            if (context != null) {
+                fabric?.currentActivity = context
+                analytics.setCurrentScreen(context, tag, null)
+            }
+        }.exceptionOrNull()?.printStackTrace()
     }
 
-    override fun logCurrentState(tag: String, bundle: Bundle) =
-        analytics.logEvent(tag, bundle)
+    override fun logCurrentState(tag: String, bundle: Bundle) {
+        runCatching {
+            analytics.logEvent(tag, bundle)
+        }.exceptionOrNull()?.printStackTrace()
+    }
 
+    override fun logException(throwable: Throwable?) {
+        runCatching {
+            Crashlytics.logException(throwable)
+        }.exceptionOrNull()?.printStackTrace()
+    }
 
-    override fun logException(throwable: Throwable?) =
-        Crashlytics.logException(throwable)
+    override fun log(priority: Int, tag: String?, message: String) {
+        runCatching {
+            Crashlytics.log(priority, tag, message)
+        }.exceptionOrNull()?.printStackTrace()
+    }
 
-    override fun log(priority: Int, tag: String?, message: String) =
-        Crashlytics.log(priority, tag, message)
-
-    override fun clearUserSession() =
-        Crashlytics.setUserIdentifier(String.empty())
+    override fun clearUserSession() {
+        runCatching {
+            Crashlytics.setUserIdentifier(String.empty())
+        }.exceptionOrNull()?.printStackTrace()
+    }
 
     override fun setCrashAnalyticUser(userIdentifier: String) {
-        fabric?.also { Crashlytics.setUserIdentifier(userIdentifier) }
+        runCatching {
+            Crashlytics.setUserIdentifier(userIdentifier)
+        }.exceptionOrNull()?.printStackTrace()
     }
 
-    override fun resetAnalyticsData() =
-        analytics.resetAnalyticsData()
+    override fun resetAnalyticsData() {
+        runCatching {
+            analytics.resetAnalyticsData()
+        }.exceptionOrNull()?.printStackTrace()
+    }
 
     companion object {
         private const val PRIORITY = "priority"
