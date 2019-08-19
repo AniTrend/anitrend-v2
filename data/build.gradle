@@ -22,14 +22,10 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+apply from: "../gradle/gradle-common-config.gradle"
+
 android {
-    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode versionProductionCode
-        versionName versionProductionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -38,10 +34,6 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         buildTypes.each {
             def secretsProps = new Properties()
             file(".config/secrets.properties").withInputStream {
@@ -62,46 +54,15 @@ android {
             it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
         }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += [ "-Xuse-experimental=kotlin.Experimental" ]
-    }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-
     /** Platform Dependencies */
     implementation project(":support-data")
     implementation project(":support-ext")
     implementation project(":graphql")
-
-    /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
-
-    /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
-
-    /** Material Design */
-    implementation "com.google.android.material:material:$material"
-
-    implementation "androidx.constraintlayout:constraintlayout:$constraint"
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
@@ -115,9 +76,6 @@ dependencies {
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
