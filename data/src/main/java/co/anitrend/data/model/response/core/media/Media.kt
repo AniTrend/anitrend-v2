@@ -22,8 +22,8 @@ import androidx.room.PrimaryKey
 import co.anitrend.data.model.response.contract.CountryCode
 import co.anitrend.data.model.response.core.airing.AiringSchedule
 import co.anitrend.data.model.response.core.media.contract.IMedia
-import co.anitrend.data.model.response.meta.CoverImage
 import co.anitrend.data.model.response.meta.FuzzyDate
+import co.anitrend.data.model.response.meta.MediaCover
 import co.anitrend.data.usecase.media.attributes.*
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
@@ -39,7 +39,7 @@ data class Media(
     override val bannerImage: String?,
     override val chapters: Int?,
     override val countryOfOrigin: CountryCode?,
-    override val coverImage: CoverImage?,
+    override val coverImage: MediaCover?,
     override val description: String?,
     override val duration: Int?,
     override val endDate: FuzzyDate?,
