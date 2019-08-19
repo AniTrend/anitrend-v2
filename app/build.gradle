@@ -22,6 +22,10 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 android {
     compileSdkVersion compileSdk
     defaultConfig {
