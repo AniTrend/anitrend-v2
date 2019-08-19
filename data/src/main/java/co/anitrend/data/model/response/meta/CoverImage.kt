@@ -21,8 +21,9 @@ import android.os.Parcelable
 import co.anitrend.data.entity.contract.IEntityImage
 import kotlinx.android.parcel.Parcelize
 
-/** [CoverImage](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
- * Shared model between [co.anitrend.data.model.response.core.media.Media] &
+/**
+ * Shared model between [co.anitrend.data.model.response.core.character.Character],
+ * [co.anitrend.data.model.response.core.staff.Staff] &
  * [co.anitrend.data.model.response.core.user.User]
  *
  * @param large The cover image at its largest size
