@@ -1,0 +1,9 @@
+fragment Tag on MediaTag {
+    id
+    name
+    description
+    category
+    rank
+    isGeneralSpoiler
+    isAdult
+}

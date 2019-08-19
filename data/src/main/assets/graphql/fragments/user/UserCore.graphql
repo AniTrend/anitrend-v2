@@ -1,0 +1,8 @@
+fragment UserCore on User {
+    id
+    name
+    avatar {
+        ... UserAvatar
+    }
+    isFollowing
+}

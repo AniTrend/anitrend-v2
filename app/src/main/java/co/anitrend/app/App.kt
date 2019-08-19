@@ -1,25 +1,78 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package co.anitrend.app
 
 import android.app.Application
+import androidx.work.Configuration
 import co.anitrend.app.koin.appModules
 import co.anitrend.app.util.AnalyticsUtil
 import co.anitrend.core.koin.coreModules
 import co.anitrend.core.koin.corePresenterModules
 import co.anitrend.core.koin.coreViewModelModules
 import co.anitrend.data.koin.dataModules
+import co.anitrend.data.koin.dataNetworkModules
 import co.anitrend.data.koin.dataRepositoryModules
+import co.anitrend.data.koin.dataUseCaseModules
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import io.wax911.support.core.util.SupportCoroutineUtil
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App: Application(), SupportCoroutineUtil {
+class App: Application(), Configuration.Provider {
 
-    val analyticsUtil: ISupportAnalytics by inject()
+    val analyticsUtil by inject<ISupportAnalytics>()
+
+    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
+     * Initializes Koin dependency injection
+     */
+    private fun initializeKoin() {
+        startKoin{
+            androidLogger()
+            androidContext(
+                applicationContext
+            )
+            modules(
+                /** Application dependencies */
+                appModules +
+                /** Core dependencies */
+                coreModules +
+                coreViewModelModules +
+                corePresenterModules +
+                /** Data dependencies */
+                dataModules +
+                dataNetworkModules +
+                dataUseCaseModules +
+                dataRepositoryModules
+            )
+        }
+    }
+
+    /**
+     * Timber logging tree depending on the build type we plant the appropriate tree
+     */
+    private fun plantLoggingTree() {
+        when (BuildConfig.DEBUG) {
+            true -> Timber.plant(Timber.DebugTree())
+            else -> Timber.plant(analyticsUtil as AnalyticsUtil)
+        }
+    }
 
     /**
      * Called when the application is starting, before any activity, service,
@@ -45,25 +98,15 @@ class App: Application(), SupportCoroutineUtil {
      */
     override fun onCreate() {
         super.onCreate()
-        startKoin{
-            androidLogger()
-            androidContext(
-                applicationContext
-            )
-            modules(
-                appModules,
-                coreModules,
-                dataModules,
-                coreViewModelModules,
-                corePresenterModules,
-                dataRepositoryModules
-            )
-        }
-        launch {
-            when (BuildConfig.DEBUG) {
-                true -> Timber.plant(Timber.DebugTree())
-                else -> Timber.plant(analyticsUtil as AnalyticsUtil)
-            }
-        }
+        initializeKoin()
+        plantLoggingTree()
+    }
+
+    /**
+     * @return The [Configuration] used to initialize WorkManager
+     */
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .build()
     }
 }

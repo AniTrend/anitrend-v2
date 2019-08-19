@@ -1,7 +1,25 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package co.anitrend.data.model.response.meta
 
 import android.os.Parcelable
 import androidx.annotation.IntRange
+import co.anitrend.data.model.response.contract.IGraphQuery
 import kotlinx.android.parcel.Parcelize
 
 /** [FuzzyDate](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydate.doc.html)
@@ -19,34 +37,24 @@ data class FuzzyDate(
     val month: Int = UNKNOWN,
     @IntRange(from = 0, to = 31)
     val day: Int = UNKNOWN
-): Parcelable {
+) : IGraphQuery, Parcelable {
 
-    /** [FuzzyDateInt](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydateint.doc.html)
+    /**
+     * Checks if all date fields are not set
      *
-     * 8 digit long date integer (YYYYMMDD).
-     * Unknown dates represented by 0.
-     *
-     * E.g. 2016: 20160000, May 1976: 19760500
+     * @return [Boolean] true if the date fields are set to [UNKNOWN] otherwise false
      */
-    fun toFuzzyDateInt(): String {
-        if (year == 0 && month == 0 && day == 0)
-            return "0"
-        val fuzzyDateYear = when {
-            year < 10 -> "000$year"
-            year < 100 -> "00$year"
-            year < 1000 -> "0$year"
-            else -> "$year"
-        }
-        val fuzzyDateMonth = when {
-            month <= 9 -> "0$month"
-            else -> "$month"
-        }
-        val fuzzyDateDay = when {
-            day <= 9 -> "0$day"
-            else -> "$day"
-        }
-        return "$fuzzyDateYear$fuzzyDateMonth$fuzzyDateDay"
-    }
+    fun isDateNotSet() = day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
+
+    /**
+     * A map serializer to build maps out of object so that we can consume them
+     * using [io.github.wax911.library.model.request.QueryContainerBuilder].
+     */
+    override fun toMap() = mapOf(
+        "year" to year,
+        "month" to month,
+        "day" to day
+    )
 
     companion object {
         /**

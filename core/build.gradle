@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 plugins {
     id("com.android.library")
     id("kotlin-kapt")
@@ -5,58 +22,30 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+apply from: "../gradle/gradle-common-config.gradle"
+
 android {
-    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
     }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    /** Project Modules */
+    /** Platform Dependencies */
     implementation project(":support-core")
+    implementation project(":support-data")
     implementation project(":support-ext")
     implementation project(":support-ui")
-    implementation project(":graphql")
-    implementation project(":emojify")
     implementation project(":data")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
-
-    /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"
@@ -65,17 +54,16 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
 
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
-
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }

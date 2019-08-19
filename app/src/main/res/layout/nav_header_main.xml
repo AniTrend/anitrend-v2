@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@drawable/side_nav_bar"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_vertical_spacing" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_vertical_spacing" />
+
+    <io.wax911.support.ui.view.text.SingleLineTextView
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="?titleColor"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <io.wax911.support.ui.view.text.SingleLineTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?subtitleColor"
+        android:text="@string/app_banner_text" />
+
+</LinearLayout>
