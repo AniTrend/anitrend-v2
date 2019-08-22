@@ -15,22 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.response.meta
+package co.anitrend.data.entity.contract
 
-import android.os.Parcelable
-import co.anitrend.data.entity.contract.IEntityImage
-import kotlinx.android.parcel.Parcelize
-
-/**
- * Shared model between [co.anitrend.data.model.response.core.character.Character],
- * [co.anitrend.data.model.response.core.staff.Staff] &
- * [co.anitrend.data.model.response.core.user.User]
- *
- * @param large The cover image at its largest size
- * @param medium The cover image at medium size
+/** [MediaCoverImage](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
+ * Contract for media cover images
+ * 
+ * @property color Average #hex color of cover image
+ * @property extraLarge The cover image url of the media at its largest size. If this size isn't available, large will be provided instead.
  */
-@Parcelize
-data class CoverImage(
-    override val large: String?,
-    override val medium: String?
-): Parcelable, IEntityImage
+interface IEntityMediaCover : IEntityImage {
+    val color: String?
+    val extraLarge: String?
+}

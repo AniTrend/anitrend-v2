@@ -22,22 +22,19 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+apply from: "../gradle/gradle-common-config.gradle"
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 android {
-    compileSdkVersion compileSdk
     defaultConfig {
         applicationId "co.anitrend.app"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode versionProductionCode
-        versionName versionProductionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
             applicationVariants.all { variant ->
                 variant.outputs.all {
                     outputFileName = "anitrend_v${defaultConfig.versionName}_rc_${defaultConfig.versionCode}.apk"
@@ -45,23 +42,9 @@ android {
             }
         }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
     dataBinding {
         enabled = true
     }
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
@@ -77,15 +60,7 @@ dependencies {
     implementation project(":support-ui")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
-
-    /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"
@@ -107,16 +82,11 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebase"
 
     /** Crash Analytics */
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics") {
-        transitive = true
-    }
+    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics")
 
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
-
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Material Dialogs */
     implementation "com.afollestad.material-dialogs:core:$materialDialogs"

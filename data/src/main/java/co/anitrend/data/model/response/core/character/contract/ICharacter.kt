@@ -18,8 +18,8 @@
 package co.anitrend.data.model.response.core.character.contract
 
 import co.anitrend.data.entity.contract.IEntity
+import co.anitrend.data.entity.contract.IEntityImage
 import co.anitrend.data.entity.contract.IEntityName
-import co.anitrend.data.model.response.meta.CoverImage
 
 /** [Character](https://anilist.github.io/ApiV2-GraphQL-Docs/character.doc.html)
  * Character contract without any connections
@@ -36,7 +36,7 @@ import co.anitrend.data.model.response.meta.CoverImage
 interface ICharacter : IEntity {
     val description: String?
     val favourites: Int?
-    val image: CoverImage?
+    val image: IEntityImage?
     val isFavourite: Boolean
     val name: IEntityName?
     val siteUrl: String?

@@ -18,11 +18,50 @@
 package co.anitrend.data.model.response.core.medialist.contract
 
 import co.anitrend.data.entity.contract.IEntity
+import co.anitrend.data.model.response.core.media.contract.IMedia
+import co.anitrend.data.model.response.meta.FuzzyDate
+import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
 
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
+ * MediaList contract for anime or manga
  *
- *
+ * @property advancedScores Map of advanced scores with name keys
+ * @property completedAt When the entry was completed by the user
+ * @property createdAt When the entry data was created
+ * @property customLists Map of booleans for which custom lists the entry are in
+ * @property hiddenFromStatusLists If the entry shown be hidden from non-custom lists
+ * @property media The media for the list entry
+ * @property mediaId The id of the media
+ * @property notes Text notes
+ * @property priority Priority of planning
+ * @property private If the entry should only be visible to authenticated user
+ * @property progress The amount of episodes/chapters consumed by the user
+ * @property progressVolumes The amount of volumes read by the user
+ * @property repeat The amount of times the user has rewatched/read the media
+ * @property score The score of the entry
+ * @property startedAt When the entry was started by the user
+ * @property status The watching/reading status
+ * @property updatedAt When the entry data was last updated
+ * @property userId The id of the user owner of the list entry
  */
 interface IMediaList : IEntity {
+    val advancedScores: Map<String, String>?
+    val completedAt: FuzzyDate?
+    val createdAt: Long?
+    val customLists: Map<String, String>?
+    val hiddenFromStatusLists: Boolean?
+    val media: IMedia?
+    val mediaId: Int
+    val notes: String?
+    val priority: Int?
+    val private: Boolean?
+    val progress: Int?
+    val progressVolumes: Int?
+    val repeat: Int?
+    val score: Float?
+    val startedAt: FuzzyDate?
+    val status: MediaListStatus?
+    val updatedAt: Long?
+    val userId: Int
 }

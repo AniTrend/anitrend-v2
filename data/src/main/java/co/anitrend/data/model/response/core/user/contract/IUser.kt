@@ -18,8 +18,8 @@
 package co.anitrend.data.model.response.core.user.contract
 
 import co.anitrend.data.entity.contract.IEntity
+import co.anitrend.data.entity.contract.IEntityImage
 import co.anitrend.data.model.response.core.user.UserOptions
-import co.anitrend.data.model.response.meta.CoverImage
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
  * A user from the anilist platform without the favourites, media options and stats
@@ -40,7 +40,7 @@ import co.anitrend.data.model.response.meta.CoverImage
 interface IUser : IEntity {
     val name: String
     val about: String?
-    val avatar: CoverImage?
+    val avatar: IEntityImage?
     val bannerImage: String?
     val isFollowing: Boolean?
     val options: UserOptions?

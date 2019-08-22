@@ -45,27 +45,33 @@ import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
  * @param completedAt_lesser Filter by the date the user completed the media
  * @param completedAt_like Filter by the date the user completed the media
  * @param sort The order the results will be returned in
+ * @param compareWithAuthList Limit to only entries also on the auth user's list.
+ * Requires [userId] or [userName] arguments.
  */
 data class MediaListQuery(
-    val id: Int? = null,
-    val userId: Int? = null,
+    val id: Long? = null,
+    val userId: Long? = null,
     val userName: String? = null,
     val type: MediaType,
     val status: MediaListStatus? = null,
-    val mediaId: Int? = null,
+    val mediaId: Long? = null,
     val isFollowing: Boolean? = null,
     val notes: String? = null,
     val startedAt: FuzzyDateInt? = null,
     val completedAt: FuzzyDateInt? = null,
-    val userId_in: List<Int>? = null,
+    val userId_in: List<Long>? = null,
     val notes_like: String? = null,
+    val status_in: List<MediaListStatus>? = null,
+    val status_not: List<MediaListStatus>? = null,
+    val status_not_in: List<MediaListStatus>? = null,
     val startedAt_greater: FuzzyDateInt? = null,
     val startedAt_lesser: FuzzyDateInt? = null,
     val startedAt_like: FuzzyDateLike? = null,
     val completedAt_greater: FuzzyDateInt? = null,
     val completedAt_lesser: FuzzyDateInt? = null,
     val completedAt_like: FuzzyDateLike? = null,
-    val sort: List<MediaListSort>?
+    val sort: List<MediaListSort>?,
+    val compareWithAuthList: Boolean
 ) : IGraphQuery {
 
     /**
@@ -85,12 +91,16 @@ data class MediaListQuery(
         "completedAt" to completedAt,
         "userId_in" to userId_in,
         "notes_like" to notes_like,
+        "status_in" to status_in,
+        "status_not" to status_not,
+        "status_not_in" to status_not_in,
         "startedAt_greater" to startedAt_greater,
         "startedAt_lesser" to startedAt_lesser,
         "startedAt_like" to startedAt_like,
         "completedAt_greater" to completedAt_greater,
         "completedAt_lesser" to completedAt_lesser,
         "completedAt_like" to completedAt_like,
-        "sort" to sort
+        "sort" to sort,
+        "compareWithAuthList" to compareWithAuthList
     )
 }

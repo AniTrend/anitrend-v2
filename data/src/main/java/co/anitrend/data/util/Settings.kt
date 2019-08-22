@@ -32,6 +32,9 @@ class Settings(context: Context) : SupportPreference(context) {
     // TODO: Implement preference values for sorting
     var isSortOrderDescending: Boolean = false
 
+    var isAnalyticsEnabled: Boolean = false
+
+    var isCrashlyticsEnabled: Boolean = false
 
     companion object  {
         const val INVALID_USER_ID: Long = -1

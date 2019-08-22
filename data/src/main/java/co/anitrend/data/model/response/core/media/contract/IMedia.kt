@@ -18,10 +18,10 @@
 package co.anitrend.data.model.response.core.media.contract
 
 import co.anitrend.data.entity.contract.IEntity
+import co.anitrend.data.entity.contract.IEntityMediaCover
 import co.anitrend.data.model.response.contract.CountryCode
 import co.anitrend.data.model.response.core.airing.AiringSchedule
 import co.anitrend.data.model.response.core.media.*
-import co.anitrend.data.model.response.meta.CoverImage
 import co.anitrend.data.model.response.meta.FuzzyDate
 import co.anitrend.data.usecase.media.attributes.*
 
@@ -71,7 +71,7 @@ interface IMedia : IEntity {
     val bannerImage: String?
     val chapters: Int?
     val countryOfOrigin: CountryCode?
-    val coverImage: CoverImage?
+    val coverImage: IEntityMediaCover?
     val description: String?
     val duration: Int?
     val endDate: FuzzyDate?
