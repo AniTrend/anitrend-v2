@@ -18,14 +18,35 @@
 package co.anitrend.data.model.response.core.medialist
 
 import androidx.room.PrimaryKey
+import co.anitrend.data.model.response.core.media.Media
+import co.anitrend.data.model.response.core.media.contract.IMedia
 import co.anitrend.data.model.response.core.medialist.contract.IMediaList
+import co.anitrend.data.model.response.meta.FuzzyDate
+import co.anitrend.data.usecase.medialist.attributes.MediaListStatus
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
  * List of anime or manga
  *
- *
  */
 data class MediaList(
     @PrimaryKey
-    override val id: Long
+    override val id: Long,
+    override val advancedScores: Map<String, String>?,
+    override val completedAt: FuzzyDate?,
+    override val createdAt: Long?,
+    override val customLists: Map<String, String>?,
+    override val hiddenFromStatusLists: Boolean?,
+    override val media: Media?,
+    override val mediaId: Int,
+    override val notes: String?,
+    override val priority: Int?,
+    override val private: Boolean?,
+    override val progress: Int?,
+    override val progressVolumes: Int?,
+    override val repeat: Int?,
+    override val score: Float?,
+    override val startedAt: FuzzyDate?,
+    override val status: MediaListStatus?,
+    override val updatedAt: Long?,
+    override val userId: Int
 ) : IMediaList
