@@ -1,0 +1,15 @@
+version: 1
+update_configs:
+  - package_manager: "java:gradle"
+    directory: "/gradle/gradle-ext-versions.gradle"
+    update_schedule: "weekly"
+
+    default_reviewers:
+      - "wax911"
+    default_labels:
+      - "enhancement"
+      
+    target_branch: "develop"
+    allowed_updates:
+    - match:
+        update_type: "all"
