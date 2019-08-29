@@ -26,10 +26,8 @@ apply from: "../gradle/gradle-common-config.gradle"
 
 android {
     defaultConfig {
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
+        defaultConfig {
+            consumerProguardFiles 'consumer-rules.pro'
         }
     }
 }
