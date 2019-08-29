@@ -39,8 +39,8 @@ ext {
 
     flexBox = '1.1.0'
     crashlytics = '2.10.1'
-    coroutinesCore = '1.2.2'
-    coroutinesAndroid = '1.2.2'
+    coroutinesCore = '1.3.0'
+    coroutinesAndroid = '1.3.0'
     materialDialogs = '3.1.0'
 
     gson = '2.8.5'
