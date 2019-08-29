@@ -102,12 +102,8 @@ dependencies {
     implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
-
     testImplementation "org.koin:koin-test:$koin"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
 
 if (file("google-services.json").exists()) {
