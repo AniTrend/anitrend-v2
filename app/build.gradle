@@ -82,7 +82,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebase"
 
     /** Crash Analytics */
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics")
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics"
 
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
