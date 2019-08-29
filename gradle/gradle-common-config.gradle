@@ -59,4 +59,9 @@ dependencies {
 
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
+
+    /** Testing-only dependencies */
+    testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
+    androidTestImplementation "androidx.test:runner:$runner"
 }
