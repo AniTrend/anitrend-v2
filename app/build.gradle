@@ -53,8 +53,10 @@ dependencies {
     /** Project Modules */
     implementation project(":core")
     implementation project(":data")
+    implementation project(":domain")
 
     /** Platform Dependencies */
+    implementation project(":support-domain")
     implementation project(":support-core")
     implementation project(":support-ext")
     implementation project(":support-ui")

@@ -64,8 +64,10 @@ dependencies {
 
     /** Platform Dependencies */
     implementation project(":support-data")
+    implementation project(":support-domain")
     implementation project(":support-ext")
     implementation project(":graphql")
+    implementation project(":domain")
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
