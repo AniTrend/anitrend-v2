@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/retrofit-graphql/library" />
             <option value="$PROJECT_DIR$/support-app/support-core" />
             <option value="$PROJECT_DIR$/support-app/support-data" />
+            <option value="$PROJECT_DIR$/support-app/support-domain" />
             <option value="$PROJECT_DIR$/support-app/support-ext" />
             <option value="$PROJECT_DIR$/support-app/support-ui" />
             <option value="$PROJECT_DIR$/support-markdown/markdown" />
