@@ -31,9 +31,9 @@ import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
-import io.wax911.support.ui.activity.SupportActivity
-import io.wax911.support.ui.fragment.SupportFragment
-import io.wax911.support.ui.util.SupportUiKeyStore
+import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.arch.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
@@ -182,7 +182,7 @@ class MainActivity : AnitrendActivity<Nothing, CorePresenter>(), NavigationView.
 
     /**
      * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [io.wax911.support.ui.view.contract.ISupportFragmentActivity]
+     * [androidx.lifecycle.LiveData] for a given [co.anitrend.arch.ui.view.contract.ISupportFragmentActivity]
      * will be available by this point.
      *
      * Check implementation for more details

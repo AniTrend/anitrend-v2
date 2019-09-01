@@ -18,7 +18,7 @@
 package co.anitrend.app.koin
 
 import co.anitrend.app.analytics.AnalyticsLogging
-import io.wax911.support.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

@@ -25,7 +25,7 @@ import androidx.work.WorkManager
 import co.anitrend.core.worker.MediaGenreWorker
 import co.anitrend.core.worker.MediaTagWorker
 import co.anitrend.data.util.Settings
-import io.wax911.support.core.presenter.SupportPresenter
+import co.anitrend.arch.core.presenter.SupportPresenter
 import java.util.concurrent.TimeUnit
 
 class CorePresenter(

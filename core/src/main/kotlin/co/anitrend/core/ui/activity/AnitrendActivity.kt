@@ -17,8 +17,13 @@
 
 package co.anitrend.core.ui.activity
 
-import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.ui.activity.SupportActivity
+import android.os.Build
+import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
+import co.anitrend.arch.core.presenter.SupportPresenter
+import co.anitrend.arch.extension.getCompatColor
+import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.core.R
 
 /**
  * Abstract application based activity for anitrend, avoids further modification of the
@@ -30,9 +35,9 @@ abstract class AnitrendActivity<M, P: SupportPresenter<*>>: SupportActivity<M, P
      * Can be used to configure custom theme styling as desired
      */
     override fun configureActivity() {
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val systemUiOptions = window.decorView.systemUiVisibility
-            when (@AppCompatDelegate.NightMode val nightMode = AppCompatDelegate.getDefaultNightMode()) {
+            when (AppCompatDelegate.getDefaultNightMode()) {
                 AppCompatDelegate.MODE_NIGHT_NO -> {
                     window.navigationBarColor = getCompatColor(R.color.colorPrimary)
                     window.decorView.systemUiVisibility = systemUiOptions or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
@@ -46,6 +51,6 @@ abstract class AnitrendActivity<M, P: SupportPresenter<*>>: SupportActivity<M, P
                     // According to Google/IO other ui options like auto and follow system might be deprecated
                 }
             }
-        }*/
+        }
     }
 }

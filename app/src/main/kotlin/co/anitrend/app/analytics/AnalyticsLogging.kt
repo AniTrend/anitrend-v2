@@ -26,8 +26,8 @@ import co.anitrend.data.util.Settings
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
-import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import io.wax911.support.extension.empty
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.extension.empty
 import timber.log.Timber
 
 class AnalyticsLogging(
@@ -74,22 +74,21 @@ class AnalyticsLogging(
         }
     }
 
-    override fun logCurrentScreen(context: FragmentActivity?, tag : String) {
+    override fun logCurrentScreen(context: FragmentActivity, tag : String) {
         runCatching {
-            if (context != null) {
                 fabric?.currentActivity = context
                 analytics.setCurrentScreen(context, tag, null)
-            }
+                logCurrentState(tag, context.intent.extras)
         }.exceptionOrNull()?.printStackTrace()
     }
 
-    override fun logCurrentState(tag: String, bundle: Bundle) {
+    override fun logCurrentState(tag: String, bundle: Bundle?) {
         runCatching {
             analytics.logEvent(tag, bundle)
         }.exceptionOrNull()?.printStackTrace()
     }
 
-    override fun logException(throwable: Throwable?) {
+    override fun logException(throwable: Throwable) {
         runCatching {
             Crashlytics.logException(throwable)
         }.exceptionOrNull()?.printStackTrace()

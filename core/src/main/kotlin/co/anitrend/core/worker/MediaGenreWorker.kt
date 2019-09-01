@@ -21,7 +21,8 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.usecase.media.meta.MediaGenreFetchUseCase
-import io.wax911.support.core.worker.SupportCoroutineWorker
+import co.anitrend.arch.core.worker.SupportCoroutineWorker
+import co.anitrend.arch.domain.entities.isSuccess
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -46,7 +47,7 @@ class MediaGenreWorker(
     override suspend fun doWork(): Result {
         val networkResult = mediaUseCase(null)
 
-        if (networkResult.isLoaded())
+        if (networkResult.isSuccess())
             return Result.success()
 
         return Result.retry()

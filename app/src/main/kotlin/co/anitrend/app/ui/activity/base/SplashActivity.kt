@@ -24,8 +24,8 @@ import co.anitrend.app.databinding.ActivitySplashBinding
 import co.anitrend.app.ui.activity.index.MainActivity
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
-import io.wax911.support.extension.startNewActivity
-import io.wax911.support.ui.activity.SupportActivity
+import co.anitrend.arch.extension.startNewActivity
+import co.anitrend.arch.ui.activity.SupportActivity
 import org.koin.android.ext.android.inject
 
 class SplashActivity : AnitrendActivity<Nothing, CorePresenter>() {
