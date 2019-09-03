@@ -15,27 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.common
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.entity.IEntityImage
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
-}
+/**
+ * Shared model between [co.anitrend.data.model.response.core.character.Character],
+ * [co.anitrend.data.model.response.core.staff.Staff] &
+ * [co.anitrend.data.model.response.core.user.User]
+ *
+ * @param large The cover image at its largest size
+ * @param medium The cover image at medium size
+ */
+data class CoverImage(
+    override val large: String?,
+    override val medium: String?
+) : IEntityImage

@@ -15,27 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.response.media
 
-apply from: "../gradle/gradle-common-config.gradle"
-
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
+ * Media title contract
+ *
+ * @property romaji The romanization of the native language title
+ * @property english The official english title
+ * @property native Official title in it's native language
+ * @property userPreferred The currently authenticated users preferred title language.
+ *
+ * Default romaji for non-authenticated requests
+ */
+interface IMediaTitle {
+    val romaji: String?
+    val english: String?
+    val native: String?
+    val userPreferred: String?
 }

@@ -15,27 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.common
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.entity.IEntityPageInfo
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
-}
+/** [PageInfo](https://anilist.github.io/ApiV2-GraphQL-Docs/pageinfo)
+ *
+ * paging info
+ */
+data class PageInfo(
+    override val currentPage: Int,
+    override val hasNextPage: Boolean,
+    override val lastPage: Int,
+    override val perPage: Int,
+    override val total: Int
+) : IEntityPageInfo

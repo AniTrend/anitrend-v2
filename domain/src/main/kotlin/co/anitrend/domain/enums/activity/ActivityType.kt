@@ -15,27 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.activity
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * Activity type enum
+ */
+enum class ActivityType(override val value: String) : IGraphEnum {
+    /** A text activity */
+    TEXT("TEXT"),
+    /** A anime list update activity */
+    ANIME_LIST("ANIME_LIST"),
+    /** A manga list update activity */
+    MANGA_LIST("MANGA_LIST"),
+    /** A text message activity sent to another user */
+    MESSAGE("MESSAGE"),
+    /** Anime & Manga list update, only used in query arguments */
+    MEDIA_LIST("MEDIA_LIST")
 }

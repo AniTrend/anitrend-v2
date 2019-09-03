@@ -15,27 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.review
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * Review sort enums
+ */
+enum class ReviewSort(override val value: String) : IGraphEnum {
+    CREATED_AT("CREATED_AT"),
+    ID("ID"),
+    RATING("RATING"),
+    SCORE("SCORE"),
+    UPDATED_AT("UPDATED_AT")
 }

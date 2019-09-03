@@ -15,27 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.usecases.media
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.arch.domain.common.IUserInterfaceState
+import co.anitrend.arch.domain.usecases.core.ISupportCoreUseCase
+import co.anitrend.domain.repositories.media.IMediaTagRepository
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
+abstract class MediaTagUseCase<R: IUserInterfaceState<*>>(
+    private val mediaTagRepository: IMediaTagRepository<R>
+) : ISupportCoreUseCase<Nothing?, R> {
+
+    /**
+     * Solves a given use case in the implementation target
+     *
+     * @param param input for solving a given use case
+     */
+    override fun invoke(param: Nothing?): R {
+        return mediaTagRepository.getMediaTags()
     }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
 }

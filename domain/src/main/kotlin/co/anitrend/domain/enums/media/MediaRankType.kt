@@ -15,27 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.media
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * The type of ranking
+ */
+enum class MediaRankType(override val value: String) : IGraphEnum {
+    /** Ranking is based on the media's popularity */
+    POPULAR("POPULAR"),
+    /** Ranking is based on the media's ratings/score */
+    RATED("RATED")
 }

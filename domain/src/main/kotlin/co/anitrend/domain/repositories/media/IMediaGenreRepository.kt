@@ -15,27 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.repositories.media
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.arch.domain.common.IUserInterfaceState
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+interface IMediaGenreRepository<R: IUserInterfaceState<*>> {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /**
+     * @return media genres
+     */
+    fun getMediaGenres(): R
 }

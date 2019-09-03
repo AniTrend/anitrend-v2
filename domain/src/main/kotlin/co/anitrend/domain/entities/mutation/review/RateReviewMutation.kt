@@ -15,27 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.mutation.review
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.enums.review.ReviewRating
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/** [RateReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
+ *
+ * Rate a review
+ *
+ * @param reviewId The id of the review to rate
+ * @param rating The rating to apply to the review
+ */
+data class RateReviewMutation(
+    val reviewId: Long,
+    val rating: ReviewRating
+) : IGraphPayload {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /**
+     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     */
+    override fun toMap() = mapOf(
+        "reviewId" to reviewId,
+        "rating" to rating
+    )
 }

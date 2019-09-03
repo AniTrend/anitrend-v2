@@ -15,27 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.mutation.user
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.graph.IGraphPayload
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/** [ToggleFollow mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
+ *
+ * Toggle the un/following of a user
+ *
+ * @param userId The id of the user to un/follow
+ */
+data class ToggleFollowMutation(
+    val userId: Long
+) : IGraphPayload {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /**
+     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     */
+    override fun toMap() = mapOf(
+        "userId" to userId
+    )
 }

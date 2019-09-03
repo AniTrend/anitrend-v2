@@ -15,27 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.common.entity
 
-apply from: "../gradle/gradle-common-config.gradle"
-
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * Name name contract
+ *
+ * @property alternative Other names that might be referred to as (pen names)
+ * @property first First name
+ * @property full Full name
+ * @property last Last name
+ * @property native The full name in the native language
+ */
+interface IEntityName {
+    val alternative: List<String>?
+    val first: String?
+    val full: String?
+    val last: String?
+    val native: String?
 }

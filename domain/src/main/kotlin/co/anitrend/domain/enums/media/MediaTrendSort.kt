@@ -15,27 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.media
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * Media trend sort enums
+ */
+enum class MediaTrendSort(override val value: String) : IGraphEnum {
+    DATE("DATE"),
+    EPISODE("EPISODE"),
+    ID("ID"),
+    MEDIA_ID("MEDIA_ID"),
+    POPULARITY("POPULARITY"),
+    SCORE("SCORE"),
+    TRENDING("TRENDING")
 }
