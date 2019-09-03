@@ -26,10 +26,8 @@ apply from: "../gradle/gradle-common-config.gradle"
 
 android {
     defaultConfig {
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
+        defaultConfig {
+            consumerProguardFiles 'consumer-rules.pro'
         }
     }
 }
@@ -40,9 +38,11 @@ dependencies {
     /** Platform Dependencies */
     implementation project(":support-core")
     implementation project(":support-data")
+    implementation project(":support-domain")
     implementation project(":support-ext")
     implementation project(":support-ui")
     implementation project(":data")
+    implementation project(":domain")
 
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-androidx-viewmodel:$koin"
@@ -57,13 +57,8 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleStateX"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-
-    /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }

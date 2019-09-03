@@ -1,7 +1,8 @@
 version: 1
 update_configs:
   - package_manager: "java:gradle"
-    directory: "/gradle/gradle-ext-versions.gradle"
+    directory: "/gradle"
+    # file: "gradle-ext-versions.gradle" This is probably unsupported
     update_schedule: "weekly"
 
     default_reviewers:

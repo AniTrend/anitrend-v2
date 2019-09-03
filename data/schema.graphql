@@ -789,6 +789,7 @@ type InternalPage {
         #Filter by trending amount
         trending_not: Int
     ): [MediaTrend]
+    modActions(userId: Int): [ModAction]
     notifications(
         #Reset the unread notification count to 0 on load
         resetNotificationCount: Boolean,
@@ -1439,6 +1440,18 @@ type MessageActivity {
     siteUrl: String
     "The type of the activity"
     type: ActivityType
+}
+
+type ModAction {
+    createdAt: Int!
+    data: String
+    "The id of the action"
+    id: Int!
+    mod: User
+    objectId: Int
+    objectType: String
+    type: ModActionType
+    user: User
 }
 
 type Mutation {
@@ -3408,6 +3421,14 @@ type UserLengthStatistic {
     minutesWatched: Int!
 }
 
+"User data for moderators"
+type UserModData {
+    alts: [User]
+    bans: Json
+    counts: Json
+    ip: Json
+}
+
 "A user's general options"
 type UserOptions {
     "Whether the user receives notifications when a show they are watching aires"
@@ -3835,6 +3856,16 @@ enum MediaType {
     ANIME
     #Asian comic
     MANGA
+}
+
+enum ModActionType {
+    BAN
+    DELETE
+    EDIT
+    EXPIRE
+    NOTE
+    REPORT
+    RESET
 }
 
 "Notification type enum"

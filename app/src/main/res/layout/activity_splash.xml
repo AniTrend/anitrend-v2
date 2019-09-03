@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         tools:context="io.wax911.sample.view.activity.base.SplashActivity">
 
-        <io.wax911.support.ui.view.text.SingleLineTextView
+        <co.anitrend.arch.ui.view.text.SingleLineTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -39,13 +39,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <io.wax911.support.ui.view.text.SingleLineTextView
+        <co.anitrend.arch.ui.view.text.SingleLineTextView
             android:id="@+id/splash_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:text="@string/app_splash_description"
             app:layout_constraintBottom_toTopOf="@+id/progressBar"
             app:layout_constraintLeft_toLeftOf="parent"

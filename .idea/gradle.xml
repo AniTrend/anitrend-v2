@@ -12,15 +12,18 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/data" />
+            <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/retrofit-graphql/library" />
             <option value="$PROJECT_DIR$/support-app/support-core" />
             <option value="$PROJECT_DIR$/support-app/support-data" />
+            <option value="$PROJECT_DIR$/support-app/support-domain" />
             <option value="$PROJECT_DIR$/support-app/support-ext" />
             <option value="$PROJECT_DIR$/support-app/support-ui" />
             <option value="$PROJECT_DIR$/support-markdown/markdown" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -31,6 +31,9 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        defaultConfig {
+            consumerProguardFiles 'consumer-rules.pro'
+        }
     }
 
     buildTypes {
@@ -61,8 +64,10 @@ dependencies {
 
     /** Platform Dependencies */
     implementation project(":support-data")
+    implementation project(":support-domain")
     implementation project(":support-ext")
     implementation project(":graphql")
+    implementation project(":domain")
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
@@ -81,10 +86,4 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
-
-    /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
