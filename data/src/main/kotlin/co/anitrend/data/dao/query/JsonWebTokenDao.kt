@@ -20,7 +20,7 @@ package co.anitrend.data.dao.query
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.auth.model.JsonWebToken
-import io.wax911.support.data.dao.ISupportQuery
+import co.anitrend.arch.data.dao.ISupportQuery
 
 @Dao
 interface JsonWebTokenDao: ISupportQuery<JsonWebToken?> {

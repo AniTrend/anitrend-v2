@@ -25,10 +25,10 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.dao.migration.MIGRATION_1_2
 import co.anitrend.data.dao.query.JsonWebTokenDao
-import co.anitrend.data.dao.query.MediaGenreDao
-import co.anitrend.data.dao.query.MediaTagDao
-import co.anitrend.data.model.response.core.media.MediaGenre
-import co.anitrend.data.model.response.core.media.MediaTag
+import co.anitrend.data.datasource.local.media.MediaGenreDao
+import co.anitrend.data.datasource.local.media.MediaTagDao
+import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.model.core.media.MediaTag
 
 @Database(
     entities = [
@@ -44,7 +44,7 @@ abstract class AniTrendStore: RoomDatabase() {
 
     companion object {
 
-        fun newInstance(applicationContext: Context): AniTrendStore {
+        fun create(applicationContext: Context): AniTrendStore {
             return Room.databaseBuilder(
                 applicationContext,
                 AniTrendStore::class.java,
