@@ -1,7 +1,7 @@
-# [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend v2.0 &nbsp; [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/AniTrend/anitrend-v2/blob/master/LICENSE.md)
+# [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend v2.0
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/30a8f983c55541cbb504671ecc32786c)](https://www.codacy.com/app/wax911/anitrend-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wax911/anitrend-v2&amp;utm_campaign=Badge_Grade) &nbsp; [![Build Status](https://travis-ci.org/AniTrend/anitrend-v2.svg?branch=master)](https://travis-ci.org/AniTrend/anitrend-v2)
 
-Discover anime or manga with AniTrend which is a free [AniList](https://anilist.co) android client written in java.(AniTrend does not offer streaming capabilities, but official website links such as Hulu, Chrunchyroll, Netflix will be provided if available). This is a temporary repository for anitrend v2.0 and no external pull requests (outside the project team members will be accepted at the current time)
+Discover anime or manga with AniTrend which is a free [AniList](https://anilist.co) android client written in kotlin. This is a temporary repository for anitrend v2.0 and no external pull requests (outside the project team members will be accepted at the current time)
 
 Big shout out to all the testers, translators and donators on the [AniTrend Discord Server](https://discord.gg/2wzTqnF) helping me keep this project alive!
 
@@ -20,7 +20,15 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 Development documentation for AniTrend is still a work in progress so for the time being on the essentials are available and can be found over at: __[anitrend.gitbook.io](https://anitrend.gitbook.io/project/)__
 
-### Contributors
+## Tools
+
+- **[POEditor](https://poeditor.com/join/project/dicYaYCroE)** for translating translating resource to multiple languages
+- **[TravisCI](https://travis-ci.org/AniTrend/anitrend-v2)** continuous integration service to build and test
+- **[Codacy](https://app.codacy.com/project/AniTrend/anitrend-v2)** automated code reviews and monitors code quality over time
+
+> Big thanks to **[POEditor](https://poeditor.com)** for supportings the open source movement! AniTrend was approved for a free localization project. 
+
+## Contributors
 
 #### Internal
 

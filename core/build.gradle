@@ -22,38 +22,14 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+apply from: "../gradle/gradle-common-config.gradle"
+
 android {
-    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
+        defaultConfig {
+            consumerProguardFiles 'consumer-rules.pro'
         }
     }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
@@ -62,20 +38,14 @@ dependencies {
     /** Platform Dependencies */
     implementation project(":support-core")
     implementation project(":support-data")
+    implementation project(":support-domain")
     implementation project(":support-ext")
     implementation project(":support-ui")
     implementation project(":data")
+    implementation project(":domain")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
-
-    /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"
@@ -86,17 +56,9 @@ dependencies {
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleStateX"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
-
-    /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
