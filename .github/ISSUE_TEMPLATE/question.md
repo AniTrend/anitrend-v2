@@ -13,6 +13,7 @@ https://github.com/AniTrend/anitrend-v2/issues?q=is%3Aissue+is%3Aclosed
 
 ## Question
 <!-- Clearly and explicitly explain the details about your question -->
+
 I would like to know if... I have also searched in the closed issues and...
 
 ## Additional Context

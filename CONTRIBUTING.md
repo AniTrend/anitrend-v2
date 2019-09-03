@@ -1,20 +1,33 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
+When contributing to this repository, please first discuss the change you wish to make via github issue, email, discord or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
 ## Contributing Guidelines
 
-Please ensure your pull request adheres to the following guidelines:
+Please ensure your **issues** adheres to the following guidelines:
 
 - Search previous suggestions for duplicates before making a new one.
-- Make an individual pull request for each suggestion or feature.
+- Individual issues for each suggestion, bug or feature.
 - Use the following format: `- [Bookmark Title](link): Description.`
-- Titles should be [capitalized](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html).
-- New categories or improvements to the existing categorization are welcome.
+- Titles should be [capitalized](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html)
+- Check your spelling and grammar.
+
+Please ensure your **pull request** adheres to the following guidelines:
+
+- Make an individual pull request for each issue.
+- Use the following format: `- [Bookmark Title](link): Description.`
+- Titles should be [capitalized](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html)
 - Be sure not to stage any files in excluded in .gitignore
 - Check your spelling and grammar.
+- Assure that your commits mention any relevant **issues** or other **pull requests**
+
+## Quality Standards
+
+For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your usecase coverage. If you have any questions regarding this please feel free to ask.
+
+Please see [Git Best Practises](https://deepsource.io/blog/git-best-practices/)
 
 ## Code of Conduct
 

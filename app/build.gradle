@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 plugins {
     id("com.android.application")
     id("kotlin-kapt")
@@ -5,22 +22,19 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+apply from: "../gradle/gradle-common-config.gradle"
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 android {
-    compileSdkVersion compileSdk
     defaultConfig {
         applicationId "co.anitrend.app"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
             applicationVariants.all { variant ->
                 variant.outputs.all {
                     outputFileName = "anitrend_v${defaultConfig.versionName}_rc_${defaultConfig.versionCode}.apk"
@@ -28,17 +42,9 @@ android {
             }
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     dataBinding {
         enabled = true
     }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
@@ -46,22 +52,17 @@ dependencies {
 
     /** Project Modules */
     implementation project(":core")
+    implementation project(":data")
+    implementation project(":domain")
 
     /** Platform Dependencies */
+    implementation project(":support-domain")
     implementation project(":support-core")
     implementation project(":support-ext")
     implementation project(":support-ui")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
-
-    /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"
@@ -70,45 +71,24 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
-    implementation "android.arch.work:work-runtime:$worker"
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
-    implementation "androidx.room:room-runtime:$anroidx"
-    kapt "androidx.room:room-compiler:$anroidx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
+    implementation "androidx.viewpager2:viewpager2:$viewPager2X"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
 
     /** Fire-base Libraries */
     implementation "com.google.firebase:firebase-core:$firebase"
 
     /** Crash Analytics */
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlytics") {
-        transitive = true
-    }
-
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics"
 
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
-
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$stream"
-
-    /** Event Bus Library */
-    implementation "org.greenrobot:eventbus:$eventBus"
-
-    /** State Layout Library */
-    implementation "com.github.nguyenhoanglam:ProgressLayout:$stateLayout"
-
-    /** Material Dialogs */
-    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
-
-    /** Flex Box */
-    implementation "com.google.android:flexbox:$flexBox"
-
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Material Dialogs */
     implementation "com.afollestad.material-dialogs:core:$materialDialogs"
@@ -124,11 +104,11 @@ dependencies {
     implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
-
     testImplementation "org.koin:koin-test:$koin"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
 
-apply plugin: 'com.google.gms.google-services'
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'io.fabric'
+}
