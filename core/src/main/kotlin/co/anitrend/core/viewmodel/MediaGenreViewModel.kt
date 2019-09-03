@@ -15,18 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.presenter
+package co.anitrend.core.viewmodel
 
-import android.content.Context
-import androidx.work.BackoffPolicy
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import co.anitrend.data.util.Settings
-import co.anitrend.arch.core.presenter.SupportPresenter
-import java.util.concurrent.TimeUnit
+import co.anitrend.arch.core.viewmodel.SupportViewModel
+import co.anitrend.arch.data.model.UserInterfaceState
+import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.domain.usecases.media.MediaGenreUseCase
 
-class CorePresenter(
-    context: Context,
-    settings: Settings
-): SupportPresenter<Settings>(context, settings)
+class MediaGenreViewModel(
+    override val useCase: MediaGenreUseCase<UserInterfaceState<List<MediaGenre>>>
+) : SupportViewModel<Nothing?, List<MediaGenre>>()
