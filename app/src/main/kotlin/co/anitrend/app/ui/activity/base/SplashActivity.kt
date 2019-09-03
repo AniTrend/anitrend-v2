@@ -84,7 +84,6 @@ class SplashActivity : AnitrendActivity<Nothing, CorePresenter>() {
      * @see [SupportViewModel.requestBundleLiveData]
      */
     override fun onFetchDataInitialize() {
-        supportPresenter.syncMediaGenresAndTags()
         onUpdateUserInterface()
     }
 }

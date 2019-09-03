@@ -36,5 +36,5 @@
     <string name="app_banner_text">AniTrend - </string>
 
     <string name="Loading">Loading</string>
-    <string name="app_splash_description">AniTrend v2.0</string>
+    <string name="app_splash_description">Powered by AniList</string>
 </resources>
