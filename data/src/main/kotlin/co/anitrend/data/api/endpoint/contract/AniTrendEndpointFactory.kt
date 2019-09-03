@@ -20,7 +20,7 @@ package co.anitrend.data.api.endpoint.contract
 import co.anitrend.data.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import io.wax911.support.data.factory.SupportEndpointFactory
+import co.anitrend.arch.data.factory.SupportEndpointFactory
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import retrofit2.Retrofit

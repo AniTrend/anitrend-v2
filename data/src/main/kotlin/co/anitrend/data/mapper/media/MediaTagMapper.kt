@@ -18,10 +18,11 @@
 package co.anitrend.data.mapper.media
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
-import co.anitrend.data.dao.query.MediaTagDao
-import co.anitrend.data.model.response.collection.MediaTagCollection
-import co.anitrend.data.model.response.core.media.MediaTag
+import co.anitrend.data.datasource.local.media.MediaTagDao
+import co.anitrend.data.model.collection.MediaTagCollection
+import co.anitrend.data.model.core.media.MediaTag
 import io.github.wax911.library.model.body.GraphContainer
+import kotlinx.coroutines.Job
 import timber.log.Timber
 
 class MediaTagMapper(

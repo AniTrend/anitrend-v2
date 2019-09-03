@@ -19,10 +19,9 @@ package co.anitrend.data.arch.mapper
 
 import io.github.wax911.library.model.body.GraphContainer
 import io.github.wax911.library.util.getError
-import io.wax911.support.data.mapper.SupportDataMapper
-import io.wax911.support.data.mapper.contract.IMapperHelper
-import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateContract
+import co.anitrend.arch.data.mapper.SupportDataMapper
+import co.anitrend.arch.data.mapper.contract.IMapperHelper
+import co.anitrend.arch.domain.entities.NetworkState
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import retrofit2.Response
@@ -34,9 +33,9 @@ import timber.log.Timber
  *
  * @see SupportDataMapper
  */
-abstract class GraphQLMapper<S, D> (
-    parentCoroutineJob: Job? = null
-): SupportDataMapper<GraphContainer<S>, D>(parentCoroutineJob), IMapperHelper<Response<GraphContainer<S>>> {
+abstract class GraphQLMapper<S, D> :
+    SupportDataMapper<GraphContainer<S>, D>(),
+    IMapperHelper<Deferred<Response<GraphContainer<S>>>> {
 
     /**
      * Response handler for coroutine contexts which need to observe
@@ -45,17 +44,17 @@ abstract class GraphQLMapper<S, D> (
      * Unless when if using [androidx.paging.PagingRequestHelper.Request.Callback]
      * then you can ignore the return type
      *
-     * @param deferred an deferred result awaiting execution
+     * @param resource an deferred result awaiting execution
      * @return network state of the deferred result
      */
-    override suspend fun handleResponse(deferred: Deferred<Response<GraphContainer<S>>>): NetworkState {
-        val response = deferred.await()
+    override suspend fun invoke(resource: Deferred<Response<GraphContainer<S>>>): NetworkState {
+        val response = resource.await()
 
         if (response.isSuccessful && response.body() != null) {
             val mapped = onResponseMapFrom(response.body()!!)
             onResponseDatabaseInsert(mapped)
 
-            return NetworkState.LOADED
+            return NetworkState.Success
         }
 
         val graphErrors = response.getError()
@@ -63,13 +62,16 @@ abstract class GraphQLMapper<S, D> (
             graphErrors.forEach {
                 Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
             }
-            return NetworkState(
-                status = SupportStateContract.ERROR,
+            return NetworkState.Error(
+                heading = "API Request/Response Error",
                 message = graphErrors.first().message,
                 code = graphErrors.first().status
             )
         }
 
-        return NetworkState.error("Unable to process exception")
+        return NetworkState.Error(
+            heading = "Unknown Error Encountered",
+            message = "What a catastrophic failure, unable to provide additional information regarding the error"
+        )
     }
 }

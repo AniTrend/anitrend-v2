@@ -26,11 +26,14 @@ import co.anitrend.data.api.interceptor.AuthInterceptor
 import co.anitrend.data.api.interceptor.ClientInterceptor
 import co.anitrend.data.auth.AuthenticationHelper
 import co.anitrend.data.dao.AniTrendStore
-import co.anitrend.data.usecase.media.meta.MediaGenreFetchUseCase
-import co.anitrend.data.usecase.media.meta.MediaTagFetchUseCase
 import co.anitrend.data.util.Settings
-import io.wax911.support.data.auth.contract.ISupportAuthentication
-import io.wax911.support.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.data.auth.contract.ISupportAuthentication
+import co.anitrend.arch.extension.util.SupportConnectivityHelper
+import co.anitrend.data.datasource.remote.media.MediaGenreSourceImpl
+import co.anitrend.data.datasource.remote.media.MediaTagSourceImpl
+import co.anitrend.data.repository.media.MediaGenreRepository
+import co.anitrend.data.repository.media.MediaTagRepository
+import co.anitrend.data.usecase.media.MediaTagUseCaseImpl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,7 +42,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
-val dataModules = module {
+private val commonDataModules = module {
     factory {
         Settings(
             context = androidContext()
@@ -47,7 +50,7 @@ val dataModules = module {
     }
 
     single {
-        AniTrendStore.newInstance(
+        AniTrendStore.create(
             applicationContext = androidContext()
         )
     }
@@ -61,7 +64,7 @@ val dataModules = module {
     }
 }
 
-val dataNetworkModules = module {
+private val networkDataModules = module {
     factory {
         AuthInterceptor(
             authenticationHelper = get()
@@ -108,21 +111,49 @@ val dataNetworkModules = module {
     }
 }
 
-val dataUseCaseModules = module {
+private val dataSourceModule = module {
     factory {
-        MediaGenreFetchUseCase(
+        MediaGenreSourceImpl(
             mediaEndPoint = MediaEndPoint.create(),
-            mediaGenreDao = get<AniTrendStore>().mediaGenreDao()
+            genreDao = get<AniTrendStore>().mediaGenreDao()
         )
     }
+
     factory {
-        MediaTagFetchUseCase(
+        MediaTagSourceImpl(
             mediaEndPoint = MediaEndPoint.create(),
             mediaTagDao = get<AniTrendStore>().mediaTagDao()
         )
     }
 }
 
-val dataRepositoryModules = module {
-
+private val repositoryModules = module {
+    factory {
+        MediaGenreRepository(
+            dataSource = get<MediaGenreSourceImpl>()
+        )
+    }
+    factory {
+        MediaTagRepository(
+            dataSource = get<MediaTagSourceImpl>()
+        )
+    }
 }
+
+private val useCaseModules = module {
+    factory {
+        MediaTagUseCaseImpl(
+            repository = get()
+        )
+    }
+    factory {
+        MediaTagUseCaseImpl(
+            repository = get()
+        )
+    }
+}
+
+val dataModules = listOf(
+    commonDataModules, networkDataModules, dataSourceModule,
+    repositoryModules, useCaseModules
+)

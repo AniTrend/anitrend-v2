@@ -18,7 +18,8 @@
 package co.anitrend.data.util
 
 import android.content.Context
-import io.wax911.support.extension.preference.SupportPreference
+import co.anitrend.arch.extension.empty
+import co.anitrend.arch.extension.preference.SupportPreference
 
 class Settings(context: Context) : SupportPreference(context) {
 
@@ -28,6 +29,9 @@ class Settings(context: Context) : SupportPreference(context) {
             field = value
             sharedPreferences.edit().putLong(AUTHENTICATED_USER, value).apply()
         }
+
+    // TODO: Implement different types of themes which the application can use
+    var appliedTheme: String = String.empty()
 
     // TODO: Implement preference values for sorting
     var isSortOrderDescending: Boolean = false

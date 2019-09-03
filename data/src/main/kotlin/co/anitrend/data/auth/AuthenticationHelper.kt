@@ -22,9 +22,9 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.dao.query.JsonWebTokenDao
 import co.anitrend.data.util.Settings
-import io.wax911.support.data.auth.SupportAuthentication
-import io.wax911.support.extension.empty
-import io.wax911.support.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.data.auth.SupportAuthentication
+import co.anitrend.arch.extension.empty
+import co.anitrend.arch.extension.util.SupportConnectivityHelper
 import okhttp3.Request
 import timber.log.Timber
 
@@ -124,14 +124,13 @@ class AuthenticationHelper(
 
         const val AUTHORIZATION = "Authorization"
 
-        val authenticationUri: Uri by lazy {
-            Uri.Builder()
+        val AUTHENTICATION_URI = Uri.Builder()
                 .scheme("https")
                 .authority(BuildConfig.apiAuthUrl)
                 .appendPath("authorize")
                 .appendQueryParameter("client_id", BuildConfig.cliendId)
                 .appendQueryParameter("response_type", "token")
                 .build()
-        }
+
     }
 }
