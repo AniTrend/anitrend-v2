@@ -15,27 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.mutation.activity
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.graph.IGraphPayload
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/** [SaveTextActivity mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
+ *
+ * Create or update text activity for the currently authenticated user
+ *
+ * @param id The activity's id, required for updating
+ * @param text The activity text
+ */
+data class SaveTextActivityMutation(
+    val id: Long? = null,
+    val text: String
+) : IGraphPayload {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /**
+     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     */
+    override fun toMap() = mapOf(
+        "id" to id,
+        "text" to text
+    )
 }

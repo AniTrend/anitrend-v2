@@ -15,27 +15,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.query.user
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.enums.user.UserSort
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/** [Follow query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
+ *
+ * @param userId User id of the follower/followed
+ * @param sort The order the results will be returned in
+ */
+data class FollowQuery(
+    val userId: Long,
+    val sort: List<UserSort>? = null
+) : IGraphPayload {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /**
+     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     */
+    override fun toMap() = mapOf(
+        "userId" to userId,
+        "sort" to sort
+    )
 }

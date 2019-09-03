@@ -15,27 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.query.thread
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.graph.IGraphPayload
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/** [ThreadComment query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
+ *
+ * @param id Filter by the comment id
+ * @param threadId Filter by the thread id
+ * @param userId Filter by the user id of the comment's creator
+ */
+data class ThreadCommentQuery(
+    val id: Long? = null,
+    val threadId: Long? = null,
+    val userId: Long? = null
+) : IGraphPayload {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /**
+     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     */
+    override fun toMap() = mapOf(
+        "id" to id,
+        "threadId" to threadId,
+        "userId" to userId
+    )
 }

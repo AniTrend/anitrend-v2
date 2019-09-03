@@ -15,27 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.media
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * The current releasing status of the media
+ */
+enum class MediaStatus(override val value: String) : IGraphEnum {
+    /** Ended before the work could be finished */
+    CANCELLED("CANCELLED"),
+    /** Has completed and is no longer being released */
+    FINISHED("FINISHED"),
+    /** To be released at a later date */
+    NOT_YET_RELEASED("NOT_YET_RELEASED"),
+    /** Currently releasing */
+    RELEASING("RELEASING")
 }

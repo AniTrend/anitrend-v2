@@ -15,27 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.media
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/**
+ * Media season enums
+ */
+enum class MediaSeason(override val value: String) : IGraphEnum {
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+    /** Months September to November */
+    FALL("FALL"),
+    /** Months March to May */
+    SPRING("SPRING"),
+    /** Months June to August */
+    SUMMER("SUMMER"),
+    /** Months December to February */
+    WINTER("WINTER")
 }

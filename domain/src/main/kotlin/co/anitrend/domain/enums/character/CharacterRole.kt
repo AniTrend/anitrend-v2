@@ -15,27 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.character
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * The role the character plays in the media
+ */
+enum class CharacterRole(override val value: String) : IGraphEnum {
+    /** A primary character role in the media */
+    MAIN("MAIN"),
+    /** A supporting character role in the media */
+    SUPPORTING("SUPPORTING"),
+    /** A background character in the media */
+    BACKGROUND("BACKGROUND")
 }

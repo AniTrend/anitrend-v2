@@ -15,27 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.medialist
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * Media list scoring type
+ */
+enum class ScoreFormat(override val value: String) : IGraphEnum {
+    /** An integer from 0-10 */
+    POINT_10("POINT_10"),
+    /** An integer from 0-100 */
+    POINT_100("POINT_100"),
+    /** A float from 0-10 with 1 decimal place */
+    POINT_10_DECIMAL("POINT_10_DECIMAL"),
+    /** An integer from 0-3. Should be represented in Smileys. 0 => No Score, 1 => :(, 2 => :|, 3 => :) */
+    POINT_3("POINT_3"),
+    /** An integer from 0-5. Should be represented in Stars */
+    POINT_5("POINT_5")
 }

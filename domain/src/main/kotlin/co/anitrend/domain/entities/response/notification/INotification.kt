@@ -15,27 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.response.notification
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.domain.enums.notification.NotificationType
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/** [Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationunion.doc.html)
+ * Notification contract with shared objects
+ *
+ * @property context The notification context text
+ * @property createdAt The time the notification was created at
+ * @property type The type of notification
+ */
+interface INotification : IEntity {
+    val context: String?
+    val createdAt: Long?
+    val type: NotificationType?
 }

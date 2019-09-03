@@ -15,27 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.common
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.entity.IEntityName
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
-}
+/**
+ * Name attributes for various models such as characters and staff/actors
+ */
+data class CoverName(
+    override val alternative: List<String>?,
+    override val first: String?,
+    override val full: String?,
+    override val last: String?,
+    override val native: String?
+) : IEntityName

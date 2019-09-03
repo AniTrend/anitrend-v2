@@ -15,27 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.common
 
-apply from: "../gradle/gradle-common-config.gradle"
+/**
+ * 8 digit long date integer (YYYYMMDD).
+ * Unknown dates represented by 0.
+ *
+ * E.g. 2016: 20160000
+ * May 1976: 19760500
+ */
+typealias FuzzyDateInt = String
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
+/**
+ * A query filter type for FuzzyDateInt,
+ * instead of return YYYYMMDD any unset fields
+ * are replaced by %
+ *
+ * E.g 2019: 2019%
+ * May 2011: 201105%
+ */
+typealias FuzzyDateLike = String
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
-}
+/**
+ * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) Two-letter country codes
+ */
+typealias CountryCode = String

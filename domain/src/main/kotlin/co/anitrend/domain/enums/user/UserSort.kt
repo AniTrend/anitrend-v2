@@ -15,27 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.enums.user
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.enum.IGraphEnum
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/**
+ * User sort enums
+ */
+enum class UserSort(override val value: String) : IGraphEnum {
+    CHAPTERS_READ("CHAPTERS_READ"),
+    ID("ID"),
+    SEARCH_MATCH("SEARCH_MATCH"),
+    USERNAME("USERNAME"),
+    WATCHED_TIME("WATCHED_TIME")
 }

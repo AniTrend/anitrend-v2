@@ -15,27 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.response.airing
 
-apply from: "../gradle/gradle-common-config.gradle"
+import co.anitrend.domain.common.entity.IEntity
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
+/** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
+ * Media Airing Schedule without media relation object
+ *
+ * @property airingAt The time the episode airs at
+ * @property episode The airing episode number
+ * @property mediaId The associate media id of the airing episode
+ * @property timeUntilAiring Seconds until episode starts airing
+ * @property id The id of the airing schedule item
+ */
+interface IAiringSchedule : IEntity {
+    val airingAt: Int
+    val episode: Int
+    val mediaId: Long
+    val timeUntilAiring: Int
 }

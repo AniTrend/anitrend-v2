@@ -15,27 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+package co.anitrend.domain.entities.common
 
-apply from: "../gradle/gradle-common-config.gradle"
+/** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)
+ * User's favourite anime, manga, characters, staff & studios
+ *
+ */
 
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-
-    /** Annotation support */
-    implementation "androidx.annotation:annotation:1.1.0"
-}
+data class Favourites(
+    // TODO("Pending implementation")
+    val anime: String
+)
