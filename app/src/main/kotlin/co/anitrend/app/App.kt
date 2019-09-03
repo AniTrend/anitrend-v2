@@ -22,13 +22,9 @@ import androidx.work.Configuration
 import co.anitrend.app.koin.appModules
 import co.anitrend.app.analytics.AnalyticsLogging
 import co.anitrend.core.koin.coreModules
-import co.anitrend.core.koin.corePresenterModules
-import co.anitrend.core.koin.coreViewModelModules
 import co.anitrend.data.koin.dataModules
-import co.anitrend.data.koin.dataNetworkModules
-import co.anitrend.data.koin.dataRepositoryModules
-import co.anitrend.data.koin.dataUseCaseModules
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.data.util.Settings
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -38,6 +34,7 @@ import timber.log.Timber
 class App: Application(), Configuration.Provider {
 
     val analyticsUtil by inject<ISupportAnalytics>()
+    private val settings by inject<Settings>()
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      * Initializes Koin dependency injection
@@ -49,17 +46,9 @@ class App: Application(), Configuration.Provider {
                 applicationContext
             )
             modules(
-                /** Application dependencies */
                 appModules +
-                /** Core dependencies */
                 coreModules +
-                coreViewModelModules +
-                corePresenterModules +
-                /** Data dependencies */
-                dataModules +
-                dataNetworkModules +
-                dataUseCaseModules +
-                dataRepositoryModules
+                dataModules
             )
         }
     }
@@ -108,5 +97,15 @@ class App: Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration(): Configuration {
         return Configuration.Builder()
             .build()
+    }
+
+    /**
+     * Applies the correct application theme base on preferences
+     */
+    fun applyApplicationTheme() {
+        /*if (settings.isLightTheme())
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)*/
     }
 }

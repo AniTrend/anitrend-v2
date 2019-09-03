@@ -22,7 +22,7 @@ import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val appModules = module {
+private val commonAppModules = module {
     factory<ISupportAnalytics> {
         AnalyticsLogging(
             context = androidContext(),
@@ -30,3 +30,5 @@ val appModules = module {
         )
     }
 }
+
+val appModules = listOf(commonAppModules)
