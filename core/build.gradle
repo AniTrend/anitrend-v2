@@ -57,6 +57,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleStateX"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
