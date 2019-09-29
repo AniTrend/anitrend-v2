@@ -67,8 +67,6 @@ dependencies {
     /** Material Design */
     implementation "com.google.android.material:material:$material"
 
-    implementation "androidx.constraintlayout:constraintlayout:$constraint"
-
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.paging:paging-runtime:$paging"
@@ -79,6 +77,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
 
     /** Fire-base Libraries */
     implementation "com.google.firebase:firebase-core:$firebase"
