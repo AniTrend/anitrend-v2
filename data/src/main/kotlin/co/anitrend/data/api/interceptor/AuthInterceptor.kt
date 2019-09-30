@@ -20,6 +20,7 @@ package co.anitrend.data.api.interceptor
 import co.anitrend.arch.data.auth.contract.ISupportAuthentication
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.domain.entities.isUnauthorized
+import co.anitrend.data.auth.AuthenticationHelper
 import okhttp3.*
 
 /**
@@ -28,7 +29,7 @@ import okhttp3.*
  * on the dispatching caller, as such take care to assure thread safety
  */
 class AuthInterceptor(
-    private val authenticationHelper: ISupportAuthentication<Request.Builder>
+    private val authenticationHelper: AuthenticationHelper
 ) : Authenticator {
 
     /**

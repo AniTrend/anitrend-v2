@@ -17,61 +17,140 @@
 
 package co.anitrend.data.arch.mapper
 
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagingRequestHelper
+import co.anitrend.arch.data.common.ISupportPagingResponse
+import co.anitrend.arch.data.common.ISupportResponse
+import co.anitrend.arch.data.mapper.SupportResponseMapper
 import io.github.wax911.library.model.body.GraphContainer
 import io.github.wax911.library.util.getError
-import co.anitrend.arch.data.mapper.SupportDataMapper
-import co.anitrend.arch.data.mapper.contract.IMapperHelper
 import co.anitrend.arch.domain.entities.NetworkState
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
 import retrofit2.Response
 import timber.log.Timber
 
 /**
  * GraphQLMapper specific mapper, assures that all requests respond with [GraphContainer] as the root tree object.
  * Making it easier for us to implement error logging and provide better error messages
- *
- * @see SupportDataMapper
  */
 abstract class GraphQLMapper<S, D> :
-    SupportDataMapper<GraphContainer<S>, D>(),
-    IMapperHelper<Deferred<Response<GraphContainer<S>>>> {
+    SupportResponseMapper<GraphContainer<S>, D>(),
+    ISupportResponse<Deferred<Response<GraphContainer<S>>>, D>,
+    ISupportPagingResponse<Deferred<Response<GraphContainer<S>>>> {
 
     /**
-     * Response handler for coroutine contexts which need to observe
-     * the live data of [NetworkState]
+     * Response handler for coroutine contexts which need to observe [NetworkState]
      *
-     * Unless when if using [androidx.paging.PagingRequestHelper.Request.Callback]
-     * then you can ignore the return type
+     * @param resource awaiting execution
+     * @param networkState for the deferred result
      *
-     * @param resource an deferred result awaiting execution
-     * @return network state of the deferred result
+     * @return resource fetched if present
      */
-    override suspend fun invoke(resource: Deferred<Response<GraphContainer<S>>>): NetworkState {
-        val response = resource.await()
+    override suspend fun invoke(
+        resource: Deferred<Response<GraphContainer<S>>>,
+        networkState: MutableLiveData<NetworkState>
+    ): D? {
+        val result = runCatching {
+            val response = resource.await()
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                if (responseBody?.errors.isNullOrEmpty()) {
+                    val result = if (responseBody != null) {
+                        val mapped = onResponseMapFrom(responseBody)
+                        onResponseDatabaseInsert(mapped)
+                        mapped
+                    } else null
+                    networkState.postValue(NetworkState.Success)
+                    result
+                } else {
+                    val errors = responseBody?.errors
+                    errors?.forEach {
+                        Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
+                    }
+                    networkState.postValue(
+                        NetworkState.Error(
+                            heading = "Request Unable to Complete Successfully",
+                            message = errors?.firstOrNull()?.message
+                        )
+                    )
+                    null
+                }
+            } else {
+                val graphErrors = response.getError()
+                graphErrors?.forEach {
+                    Timber.tag(moduleTag).e(
+                        "Request failed: ${it.message} | Status: ${it.status} | Code: ${response.code()}"
+                    )
+                }
 
-        if (response.isSuccessful && response.body() != null) {
-            val mapped = onResponseMapFrom(response.body()!!)
-            onResponseDatabaseInsert(mapped)
-
-            return NetworkState.Success
-        }
-
-        val graphErrors = response.getError()
-        if (!graphErrors.isNullOrEmpty()) {
-            graphErrors.forEach {
-                Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
+                networkState.postValue(
+                    NetworkState.Error(
+                        heading = "Server Request/Response Error",
+                        message = graphErrors?.firstOrNull()?.message ?: response.message()
+                    )
+                )
+                null
             }
-            return NetworkState.Error(
-                heading = "API Request/Response Error",
-                message = graphErrors.first().message,
-                code = graphErrors.first().status
-            )
         }
 
-        return NetworkState.Error(
-            heading = "Unknown Error Encountered",
-            message = "What a catastrophic failure, unable to provide additional information regarding the error"
-        )
+        return result.getOrElse {
+            it.printStackTrace()
+            networkState.postValue(
+                NetworkState.Error(
+                    heading = "Internal Application Error",
+                    message = it.message
+                )
+            )
+            null
+        }
+    }
+
+    /**
+     * Response handler for coroutine contexts, mainly for paging
+     *
+     * @param resource awaiting execution
+     * @param pagingRequestHelper optional paging request callback
+     */
+    override suspend fun invoke(
+        resource: Deferred<Response<GraphContainer<S>>>,
+        pagingRequestHelper: PagingRequestHelper.Request.Callback
+    ) {
+        val result = runCatching {
+            val response = resource.await()
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+                if (responseBody != null) {
+                    if (responseBody.errors.isNullOrEmpty()) {
+                        val mapped = onResponseMapFrom(responseBody)
+                        onResponseDatabaseInsert(mapped)
+                    } else {
+                        val errors = responseBody.errors
+                        errors?.forEach {
+                            Timber.tag(moduleTag).e("${it.message} | Status: ${it.status}")
+                        }
+                        pagingRequestHelper.recordFailure(
+                            Throwable(errors?.first()?.message ?: "Unknown error occurred")
+                        )
+                    }
+                }
+                pagingRequestHelper.recordSuccess()
+            } else {
+                val graphErrors = response.getError()
+                graphErrors?.forEach {
+                    Timber.tag(moduleTag).e(
+                        "Request failed: ${it.message} | Status: ${it.status} | Code: ${response.code()}"
+                    )
+                }
+                pagingRequestHelper.recordFailure(
+                    Throwable(graphErrors?.first()?.message ?: response.message())
+                )
+            }
+        }
+
+        result.getOrElse {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
+            pagingRequestHelper.recordFailure(it)
+        }
     }
 }

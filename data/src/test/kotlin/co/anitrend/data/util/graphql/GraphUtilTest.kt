@@ -17,7 +17,7 @@
 
 package co.anitrend.data.util.graphql
 
-import co.anitrend.data.model.query.paging.PageQuery
+import co.anitrend.data.entity.paging.PageQuery
 import org.junit.Test
 
 import org.junit.Assert.*

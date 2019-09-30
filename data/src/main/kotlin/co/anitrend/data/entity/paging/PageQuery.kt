@@ -15,15 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.query.paging
+package co.anitrend.data.entity.paging
 
-import android.os.Parcelable
 import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
 import co.anitrend.domain.common.entity.IEntityPageQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.data.util.graphql.GraphUtil
-import kotlinx.android.parcel.Parcelize
 
 /** [Page query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *

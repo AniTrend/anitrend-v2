@@ -19,7 +19,6 @@ package co.anitrend.domain.entities.response.thread
 
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.entities.response.media.IMedia
-import co.anitrend.domain.entities.response.thread.IThreadCategory
 import co.anitrend.domain.entities.response.user.IUser
 
 /** [Thread](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/thread.doc.html)

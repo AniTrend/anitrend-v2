@@ -17,95 +17,38 @@
 
 package co.anitrend.app
 
-import android.app.Application
-import androidx.work.Configuration
 import co.anitrend.app.koin.appModules
-import co.anitrend.app.analytics.AnalyticsLogging
+import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.koin.coreModules
 import co.anitrend.data.koin.dataModules
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
-import co.anitrend.data.util.Settings
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import timber.log.Timber
+import org.koin.core.context.stopKoin
 
-class App: Application(), Configuration.Provider {
-
-    val analyticsUtil by inject<ISupportAnalytics>()
-    private val settings by inject<Settings>()
+class App: AniTrendApplication() {
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
-     * Initializes Koin dependency injection
+     *
+     * Initializes dependencies for the entire application, this function is automatically called
+     * in [onCreate] as the first call to assure all injections are available
      */
-    private fun initializeKoin() {
+    override fun initializeDependencyInjection() {
         startKoin{
             androidLogger()
             androidContext(
                 applicationContext
             )
-            modules(
-                appModules +
-                coreModules +
-                dataModules
-            )
+            modules(appModules)
         }
     }
 
-    /**
-     * Timber logging tree depending on the build type we plant the appropriate tree
+    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
+     *
+     * Restarts the global koin instance
      */
-    private fun plantLoggingTree() {
-        when (BuildConfig.DEBUG) {
-            true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(analyticsUtil as AnalyticsLogging)
-        }
-    }
-
-    /**
-     * Called when the application is starting, before any activity, service,
-     * or receiver objects (excluding content providers) have been created.
-     *
-     *
-     * Implementations should be as quick as possible (for example using
-     * lazy initialization of state) since the time spent in this function
-     * directly impacts the performance of starting the first activity,
-     * service, or receiver in a process.
-     *
-     *
-     * If you override this method, be sure to call `super.onCreate()`.
-     *
-     *
-     * Be aware that direct boot may also affect callback order on
-     * Android [android.os.Build.VERSION_CODES.N] and later devices.
-     * Until the user unlocks the device, only direct boot aware components are
-     * allowed to run. You should consider that all direct boot unaware
-     * components, including such [android.content.ContentProvider], are
-     * disabled until user unlock happens, especially when component callback
-     * order matters.
-     */
-    override fun onCreate() {
-        super.onCreate()
-        initializeKoin()
-        plantLoggingTree()
-    }
-
-    /**
-     * @return The [Configuration] used to initialize WorkManager
-     */
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
-            .build()
-    }
-
-    /**
-     * Applies the correct application theme base on preferences
-     */
-    fun applyApplicationTheme() {
-        /*if (settings.isLightTheme())
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        else
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)*/
+    override fun restartDependencyInjection() {
+        stopKoin()
+        initializeDependencyInjection()
     }
 }

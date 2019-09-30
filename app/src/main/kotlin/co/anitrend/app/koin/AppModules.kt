@@ -17,18 +17,43 @@
 
 package co.anitrend.app.koin
 
-import co.anitrend.app.analytics.AnalyticsLogging
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.app.navigation.NavigationController
+import co.anitrend.app.ui.main.MainScreen
+import co.anitrend.app.ui.main.presenter.MainPresenter
+import co.anitrend.app.ui.splash.SplashScreen
+import co.anitrend.app.ui.splash.presenter.SplashPresenter
+import co.anitrend.core.koin.coreModules
+import co.anitrend.core.navigation.INavigationController
+import co.anitrend.data.koin.dataModules
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private val commonAppModules = module {
-    factory<ISupportAnalytics> {
-        AnalyticsLogging(
-            context = androidContext(),
-            settings = get()
-        )
+private val coreModule = module {
+    factory<INavigationController> {
+        NavigationController()
     }
 }
 
-val appModules = listOf(commonAppModules)
+private val presenterModule = module {
+    scope(named<SplashScreen>()) {
+        scoped {
+            SplashPresenter(
+                context = androidContext(),
+                settings = get()
+            )
+        }
+    }
+    scope(named<MainScreen>()) {
+        scoped {
+            MainPresenter(
+                context = androidContext(),
+                settings = get()
+            )
+        }
+    }
+}
+
+val appModules = listOf(
+    coreModule, presenterModule
+) + coreModules + dataModules

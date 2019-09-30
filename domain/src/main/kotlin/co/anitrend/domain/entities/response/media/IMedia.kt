@@ -22,7 +22,6 @@ import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.common.entity.IEntityMediaCover
 import co.anitrend.domain.entities.common.FuzzyDate
-import co.anitrend.domain.entities.response.media.*
 import co.anitrend.domain.enums.media.*
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)

@@ -18,8 +18,8 @@
 package co.anitrend.data.util.graphql
 
 import co.anitrend.data.arch.AniTrendExperimentalFeature
-import co.anitrend.data.model.query.paging.PageQuery
-import co.anitrend.data.util.Settings
+import co.anitrend.data.entity.paging.PageQuery
+import co.anitrend.core.settings.Settings
 import co.anitrend.domain.common.enum.IGraphEnum
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
@@ -71,7 +71,7 @@ object GraphUtil {
      *
      * @see SORT_ORDER_EXCEPTIONS
      */
-    fun IGraphEnum.applySortOrderUsing(settings: Settings): String{
+    fun IGraphEnum.applySortOrderUsing(settings: co.anitrend.core.settings.Settings): String{
         val sortType = value
         if (settings.isSortOrderDescending) {
             return if (SORT_ORDER_EXCEPTIONS.contains(sortType))

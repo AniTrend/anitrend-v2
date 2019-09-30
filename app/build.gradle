@@ -51,7 +51,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Project Modules */
-    implementation project(":core")
+    implementation project(':app-core')
     implementation project(":data")
     implementation project(":domain")
 
@@ -79,15 +79,8 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.constraintlayout:constraintlayout:$constraintX"
 
-    /** Fire-base Libraries */
-    implementation "com.google.firebase:firebase-core:$firebase"
-
-    /** Crash Analytics */
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics"
-
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
-    kapt "com.github.bumptech.glide:compiler:$glide"
 
     /** Material Dialogs */
     implementation "com.afollestad.material-dialogs:core:$materialDialogs"

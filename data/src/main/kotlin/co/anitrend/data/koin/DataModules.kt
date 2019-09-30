@@ -26,45 +26,34 @@ import co.anitrend.data.api.interceptor.AuthInterceptor
 import co.anitrend.data.api.interceptor.ClientInterceptor
 import co.anitrend.data.auth.AuthenticationHelper
 import co.anitrend.data.dao.AniTrendStore
-import co.anitrend.data.util.Settings
-import co.anitrend.arch.data.auth.contract.ISupportAuthentication
-import co.anitrend.arch.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.datasource.remote.media.MediaGenreSourceImpl
 import co.anitrend.data.datasource.remote.media.MediaTagSourceImpl
 import co.anitrend.data.repository.media.MediaGenreRepository
 import co.anitrend.data.repository.media.MediaTagRepository
 import co.anitrend.data.usecase.media.MediaTagUseCaseImpl
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
-private val commonDataModules = module {
-    factory {
-        Settings(
-            context = androidContext()
-        )
-    }
-
+private val coreModule = module {
     single {
         AniTrendStore.create(
             applicationContext = androidContext()
         )
     }
 
-    factory<ISupportAuthentication<Request.Builder>> {
+    factory {
         AuthenticationHelper(
-            connectivityHelper = get(),
-            jsonWebTokenDao = get<AniTrendStore>().jsonWebTokenDao(),
             settings = get()
         )
     }
 }
 
-private val networkDataModules = module {
+private val networkModule = module {
     factory {
         AuthInterceptor(
             authenticationHelper = get()
@@ -72,7 +61,7 @@ private val networkDataModules = module {
     }
 
     factory {
-        SupportConnectivityHelper(
+        SupportConnectivity(
             androidContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager?
@@ -127,7 +116,7 @@ private val dataSourceModule = module {
     }
 }
 
-private val repositoryModules = module {
+private val repositoryModule = module {
     factory {
         MediaGenreRepository(
             dataSource = get<MediaGenreSourceImpl>()
@@ -140,7 +129,7 @@ private val repositoryModules = module {
     }
 }
 
-private val useCaseModules = module {
+private val useCaseModule = module {
     factory {
         MediaTagUseCaseImpl(
             repository = get()
@@ -154,6 +143,6 @@ private val useCaseModules = module {
 }
 
 val dataModules = listOf(
-    commonDataModules, networkDataModules, dataSourceModule,
-    repositoryModules, useCaseModules
+    coreModule, networkModule, dataSourceModule,
+    repositoryModule, useCaseModule
 )

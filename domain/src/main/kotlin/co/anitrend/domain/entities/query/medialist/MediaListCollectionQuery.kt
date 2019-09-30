@@ -17,66 +17,90 @@
 
 package co.anitrend.domain.entities.query.medialist
 
+import androidx.annotation.IntRange
+import co.anitrend.domain.common.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.enums.media.MediaType
 import co.anitrend.domain.enums.medialist.MediaListSort
+import co.anitrend.domain.enums.medialist.MediaListStatus
 
 /** [MediaListCollection query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
  *
  * Media list collection query, provides list pre-grouped by status & custom lists.
+ * User ID and Media Type arguments required.
  *
- * @param userId Filter by a user's id
- * @param userName Filter by a user's name
- * @param type Filter by the list entries media type
- * @param notes Filter by note words and #tags
- * @param startedAt Filter by the date the user started the media
+ * @param chunk Which chunk of list entries to load
  * @param completedAt Filter by the date the user completed the media
- * @param forceSingleCompletedList Always return completed list entries in one group, overriding the user's split completed option.
- * @param notes_like Filter by note words and #tags
- * @param startedAt_greater Filter by the date the user started the media
- * @param startedAt_lesser Filter by the date the user started the media
- * @param startedAt_like Filter by the date the user started the media
  * @param completedAt_greater Filter by the date the user completed the media
  * @param completedAt_lesser Filter by the date the user completed the media
  * @param completedAt_like Filter by the date the user completed the media
+ * @param forceSingleCompletedList Always return completed list entries in one group,
+ * overriding the user's split completed option.
+ * @param notes Filter by note words and #tags
+ * @param notes_like Filter by note words and #tags
+ * @param perChunk The amount of entries per chunk, max 500
  * @param sort The order the results will be returned in
+ * @param startedAt Filter by the date the user started the media
+ * @param startedAt_greater Filter by the date the user started the media
+ * @param startedAt_lesser Filter by the date the user started the media
+ * @param startedAt_like Filter by the date the user started the media
+ * @param status Filter by the watching/reading status
+ * @param status_in Filter by the watching/reading status
+ * @param status_not Filter by the watching/reading status
+ * @param status_not_in Filter by the watching/reading status
+ * @param type Filter by the list entries media type
+ * @param userId Filter by a user's id
+ * @param userName Filter by a user's name
  */
 data class MediaListCollectionQuery(
-    val userId: Long? = null,
-    val userName: String? = null,
-    val type: MediaType,
-    val notes: String? = null,
-    val startedAt: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val completedAt: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val forceSingleCompletedList: Boolean? = null,
-    val notes_like: String? = null,
-    val startedAt_greater: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val startedAt_lesser: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val startedAt_like: co.anitrend.domain.common.FuzzyDateLike? = null,
-    val completedAt_greater: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val completedAt_lesser: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val completedAt_like: co.anitrend.domain.common.FuzzyDateLike? = null,
-    val sort: List<MediaListSort>? = null
+    var chunk: Int? = null,
+    var completedAt: FuzzyDateInt? = null,
+    var completedAt_greater: FuzzyDateInt? = null,
+    var completedAt_lesser: FuzzyDateInt? = null,
+    var completedAt_like: String? = null,
+    var forceSingleCompletedList: Boolean? = null,
+    var notes: String? = null,
+    var notes_like: String? = null,
+    @IntRange(from = 0, to = 500)
+    var perChunk: Int? = null,
+    var sort: List<MediaListSort>? = null,
+    var startedAt: FuzzyDateInt? = null,
+    var startedAt_greater: FuzzyDateInt? = null,
+    var startedAt_lesser: FuzzyDateInt? = null,
+    var startedAt_like: String? = null,
+    var status: MediaListStatus? = null,
+    var status_in: List<MediaListStatus>? = null,
+    var status_not: MediaListStatus? = null,
+    var status_not_in: List<MediaListStatus>? = null,
+    var type: MediaType,
+    var userId: Long,
+    var userName: String? = null
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "userId" to userId,
-        "userName" to userName,
-        "type" to type,
-        "notes" to notes,
-        "startedAt" to startedAt,
+        "chunk" to chunk,
         "completedAt" to completedAt,
-        "forceSingleCompletedList" to forceSingleCompletedList,
-        "notes_like" to notes_like,
-        "startedAt_greater" to startedAt_greater,
-        "startedAt_lesser" to startedAt_lesser,
-        "startedAt_like" to startedAt_like,
         "completedAt_greater" to completedAt_greater,
         "completedAt_lesser" to completedAt_lesser,
         "completedAt_like" to completedAt_like,
-        "sort" to sort
+        "forceSingleCompletedList" to forceSingleCompletedList,
+        "notes" to notes,
+        "notes_like" to notes_like,
+        "perChunk" to perChunk,
+        "sort" to sort,
+        "startedAt" to startedAt,
+        "startedAt_greater" to startedAt_greater,
+        "startedAt_lesser" to startedAt_lesser,
+        "startedAt_like" to startedAt_like,
+        "status" to status,
+        "status_in" to status_in,
+        "status_not" to status_not,
+        "status_not_in" to status_not_in,
+        "type" to type,
+        "userId" to userId,
+        "userName" to userName
     )
 }

@@ -17,6 +17,7 @@
 
 package co.anitrend.data.entity.extension
 
+import co.anitrend.data.extensions.toFuzzyDate
 import co.anitrend.domain.entities.common.FuzzyDate
 import co.anitrend.domain.common.FuzzyDateInt
 import org.junit.Assert
