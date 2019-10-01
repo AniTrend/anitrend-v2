@@ -23,6 +23,7 @@ plugins {
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
+apply from: "../gradle/gradle-common-dependencies.gradle"
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -51,9 +52,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Project Modules */
-    implementation project(":core")
-    implementation project(":data")
-    implementation project(":domain")
+    implementation project(':app-core')
+    implementation project(':app-data')
+    implementation project(':app-domain')
 
     /** Platform Dependencies */
     implementation project(":support-domain")
@@ -67,8 +68,6 @@ dependencies {
     /** Material Design */
     implementation "com.google.android.material:material:$material"
 
-    implementation "androidx.constraintlayout:constraintlayout:$constraint"
-
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.paging:paging-runtime:$paging"
@@ -79,16 +78,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
-
-    /** Fire-base Libraries */
-    implementation "com.google.firebase:firebase-core:$firebase"
-
-    /** Crash Analytics */
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
 
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
-    kapt "com.github.bumptech.glide:compiler:$glide"
 
     /** Material Dialogs */
     implementation "com.afollestad.material-dialogs:core:$materialDialogs"

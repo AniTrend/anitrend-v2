@@ -1,0 +1,27 @@
+query MediaListCollection(
+    $chunk: Int,
+    $completedAt: FuzzyDateInt,
+    $completedAt_greater: FuzzyDateInt,
+    $completedAt_lesser: FuzzyDateInt,
+    $completedAt_like: String,
+    $forceSingleCompletedList: Boolean,
+    $notes: String,
+    $notes_like: String,
+    $perChunk: Int,
+    $sort: [MediaListSort],
+    $startedAt: FuzzyDateInt,
+    $startedAt_greater: FuzzyDateInt,
+    $startedAt_lesser: FuzzyDateInt,
+    $startedAt_like: String,
+    $status: MediaListStatus,
+    $status_in: [MediaListStatus],
+    $status_not: MediaListStatus,
+    $status_not_in: [MediaListStatus],
+    $type: MediaType,
+    $userId: Int,
+    $userName: String
+) {
+    MediaListCollection {
+
+    }
+}
