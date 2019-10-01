@@ -1,0 +1,76 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+plugins {
+    id("com.android.library")
+    id("kotlin-kapt")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+}
+
+apply from: "../gradle/gradle-common-config.gradle"
+apply from: "../gradle/gradle-common-dependencies.gradle"
+
+android {
+    defaultConfig {
+        defaultConfig {
+            consumerProguardFiles 'consumer-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** Platform Dependencies */
+    implementation project(":support-core")
+    implementation project(":support-data")
+    implementation project(":support-domain")
+    implementation project(":support-ext")
+    implementation project(":support-ui")
+    implementation project(':app-data')
+    implementation project(':app-domain')
+
+    /** Koin AndroidX Dependency Injection */
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
+
+    /** Material Design */
+    implementation "com.google.android.material:material:$material"
+
+    /** Architecture Components */
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+
+    /** Fire-base Libraries */
+    implementation "com.google.firebase:firebase-core:$firebase"
+
+    /** Crash Analytics */
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics"
+
+    /** Material Dialogs */
+    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:lifecycle:$materialDialogs"
+
+    /** Glide Libraries */
+    implementation "com.github.bumptech.glide:glide:$glide"
+    kapt "com.github.bumptech.glide:compiler:$glide"
+
+    /** Retrofit Libraries */
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+}

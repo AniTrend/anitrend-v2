@@ -25,8 +25,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -40,24 +38,24 @@
         <!--
         app:appCategory="social"-->
 
-        <activity android:name=".ui.activity.base.SplashActivity">
+        <activity android:name="co.anitrend.app.ui.splash.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.index.MainActivity"
+        <activity android:name="co.anitrend.app.ui.main.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider
             android:authorities="${applicationId}.provider"
-            android:name=".service.FileProviderService"
+            android:name="co.anitrend.arch.core.provider.SupportFileProvider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_paths"/>
+                android:resource="@xml/support_file_provider_paths"/>
         </provider>
 
     </application>
