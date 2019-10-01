@@ -698,6 +698,10 @@ type InternalPage {
         isFollowing: Boolean,
         #Filter by the media id of the list entry
         mediaId: Int,
+        #Filter by the media id of the list entry
+        mediaId_in: [Int],
+        #Filter by the media id of the list entry
+        mediaId_not_in: [Int],
         #Filter by note words and #tags
         notes: String,
         #Filter by note words and #tags
@@ -908,6 +912,8 @@ type ListActivity {
     createdAt: Int!
     "The id of the activity"
     id: Int!
+    "If the activity is locked and can receive replies"
+    isLocked: Boolean
     "The users who liked the activity"
     likes: [User]
     "The associated media to the activity update"
@@ -1417,6 +1423,8 @@ type MessageActivity {
     createdAt: Int!
     "The id of the activity"
     id: Int!
+    "If the activity is locked and can receive replies"
+    isLocked: Boolean
     "The users who liked the activity"
     likes: [User]
     "The message text (Markdown)"
@@ -1508,6 +1516,13 @@ type Mutation {
         #The reply text
         text: String
     ): ActivityReply
+    "Update list activity (Mod Only)"
+    SaveListActivity(
+        #The activity's id, required for updating
+        id: Int,
+        #If the activity should be locked. (Mod Only)
+        locked: Boolean
+    ): ListActivity
     "Create or update a media list entry"
     SaveMediaListEntry(
         #Array of advanced scores
@@ -1547,6 +1562,8 @@ type Mutation {
     SaveMessageActivity(
         #The activity id, required for updating
         id: Int,
+        #If the activity should be locked. (Mod Only)
+        locked: Boolean,
         #The activity message text
         message: String,
         #The id of the user the message is being sent to
@@ -1571,6 +1588,8 @@ type Mutation {
     SaveTextActivity(
         #The activity's id, required for updating
         id: Int,
+        #If the activity should be locked. (Mod Only)
+        locked: Boolean,
         #The activity text
         text: String
     ): TextActivity
@@ -2006,6 +2025,10 @@ type Page {
         isFollowing: Boolean,
         #Filter by the media id of the list entry
         mediaId: Int,
+        #Filter by the media id of the list entry
+        mediaId_in: [Int],
+        #Filter by the media id of the list entry
+        mediaId_not_in: [Int],
         #Filter by note words and #tags
         notes: String,
         #Filter by note words and #tags
@@ -2494,6 +2517,10 @@ type Query {
         isFollowing: Boolean,
         #Filter by the media id of the list entry
         mediaId: Int,
+        #Filter by the media id of the list entry
+        mediaId_in: [Int],
+        #Filter by the media id of the list entry
+        mediaId_not_in: [Int],
         #Filter by note words and #tags
         notes: String,
         #Filter by note words and #tags
@@ -3105,6 +3132,8 @@ type TextActivity {
     createdAt: Int!
     "The id of the activity"
     id: Int!
+    "If the activity is locked and can receive replies"
+    isLocked: Boolean
     "The users who liked the activity"
     likes: [User]
     "The written replies to the activity"
