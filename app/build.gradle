@@ -23,6 +23,7 @@ plugins {
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
+apply from: "../gradle/gradle-common-dependencies.gradle"
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
