@@ -31,11 +31,13 @@ import com.google.gson.annotations.SerializedName
  * @param userId The user id of the activity's sender
  * @param recipient The user who the activity message was sent to
  * @param recipientId The user id of the activity's recipient
+ * @param isLocked If the activity is locked and can receive replies
  */
 data class MessageFeed(
     val replies: List<FeedReply>?,
     val recipient : User?,
     val recipientId : Long?,
+    val isLocked: Boolean,
     @PrimaryKey
     override val id: Long,
     override val createdAt: Long,
