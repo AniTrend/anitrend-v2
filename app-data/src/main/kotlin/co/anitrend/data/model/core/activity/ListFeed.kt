@@ -31,11 +31,13 @@ import com.google.gson.annotations.SerializedName
  * @param media The associated media to the activity update
  * @param text The list progress made
  * @param status The list item's textual status
+ * @param isLocked If the activity is locked and can receive replies
  */
 data class ListFeed(
     val replies: List<FeedReply>?,
     val media: Media?,
     val status: String?,
+    val isLocked: Boolean,
     @PrimaryKey
     override val id: Long,
     override val createdAt: Long,

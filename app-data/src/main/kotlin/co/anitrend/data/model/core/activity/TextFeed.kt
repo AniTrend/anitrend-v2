@@ -26,9 +26,11 @@ import co.anitrend.domain.activity.enums.ActivityType
  * User text activity
  *
  * @param replies The written replies to the activity
+ * @param isLocked If the activity is locked and can receive replies
  */
 data class TextFeed(
     val replies: List<FeedReply>?,
+    val isLocked: Boolean,
     @PrimaryKey
     override val id: Long,
     override val createdAt: Long,
