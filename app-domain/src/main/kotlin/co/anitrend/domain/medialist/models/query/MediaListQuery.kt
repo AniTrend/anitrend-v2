@@ -30,6 +30,8 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @param type Filter by the list entries media type
  * @param status Filter by the watching/reading status
  * @param mediaId Filter by the media id of the list entry
+ * @param mediaId_in Filter by matching list of media ids
+ * @param mediaId_not_in Filter by non-matching list of media ids
  * @param isFollowing Filter list entries to users who are being followed by the authenticated user
  * @param notes Filter by note words and #tags
  * @param startedAt Filter by the date the user started the media
@@ -53,6 +55,8 @@ data class MediaListQuery(
     val type: MediaType,
     val status: MediaListStatus? = null,
     val mediaId: Long? = null,
+    val mediaId_in: List<Int>? = null,
+    val mediaId_not_in: List<Int>? = null,
     val isFollowing: Boolean? = null,
     val notes: String? = null,
     val startedAt: co.anitrend.domain.common.FuzzyDateInt? = null,

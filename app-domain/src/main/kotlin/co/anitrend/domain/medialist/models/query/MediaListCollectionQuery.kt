@@ -17,7 +17,6 @@
 
 package co.anitrend.domain.medialist.models.query
 
-import androidx.annotation.IntRange
 import co.anitrend.domain.common.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaType
@@ -61,7 +60,6 @@ data class MediaListCollectionQuery(
     var forceSingleCompletedList: Boolean? = null,
     var notes: String? = null,
     var notes_like: String? = null,
-    @IntRange(from = 0, to = 500)
     var perChunk: Int? = null,
     var sort: List<MediaListSort>? = null,
     var startedAt: FuzzyDateInt? = null,
