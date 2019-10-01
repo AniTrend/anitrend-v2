@@ -42,8 +42,8 @@ dependencies {
     implementation project(":support-domain")
     implementation project(":support-ext")
     implementation project(":support-ui")
-    implementation project(":data")
-    implementation project(":domain")
+    implementation project(':app-data')
+    implementation project(':app-domain')
 
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-androidx-viewmodel:$koin"

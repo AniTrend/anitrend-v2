@@ -53,8 +53,8 @@ dependencies {
 
     /** Project Modules */
     implementation project(':app-core')
-    implementation project(":data")
-    implementation project(":domain")
+    implementation project(':app-data')
+    implementation project(':app-domain')
 
     /** Platform Dependencies */
     implementation project(":support-domain")
