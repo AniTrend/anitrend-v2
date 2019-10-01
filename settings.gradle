@@ -1,6 +1,6 @@
-include ':app', ':app-core', ':domain',
+include ':app', ':app-core', ':app-domain',
         ':support-ext', ':support-core', ':support-data', ':support-domain', ':support-ui',
-        ':graphql', ':emojify', ':data', ':markdown' //, ':sync-plugin'
+        ':graphql', ':emojify', ':app-data', ':markdown' //, ':sync-plugin'
 project(':support-ext').projectDir = new File('support-app/support-ext')
 project(':support-core').projectDir = new File('support-app/support-core')
 project(':support-data').projectDir = new File('support-app/support-data')
