@@ -17,11 +17,11 @@
 
 package co.anitrend.core.koin
 
-import co.anitrend.arch.extension.preference.SupportPreference
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
+import co.anitrend.core.settings.Settings.Companion.settingsBindings
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.bind
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 private val coreModule = module {
@@ -29,7 +29,7 @@ private val coreModule = module {
         Settings(
             context = androidContext()
         )
-    } bind SupportPreference::class
+    } binds(settingsBindings)
 }
 
 private val presenterModule = module {
