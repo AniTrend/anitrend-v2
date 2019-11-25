@@ -1,5 +1,6 @@
 # [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend v2.0
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30a8f983c55541cbb504671ecc32786c)](https://www.codacy.com/app/wax911/anitrend-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wax911/anitrend-v2&amp;utm_campaign=Badge_Grade) &nbsp; [![Build Status](https://travis-ci.org/AniTrend/anitrend-v2.svg?branch=master)](https://travis-ci.org/AniTrend/anitrend-v2)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30a8f983c55541cbb504671ecc32786c)](https://www.codacy.com/app/wax911/anitrend-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wax911/anitrend-v2&amp;utm_campaign=Badge_Grade) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_shield)
+&nbsp; [![Build Status](https://travis-ci.org/AniTrend/anitrend-v2.svg?branch=master)](https://travis-ci.org/AniTrend/anitrend-v2)
 
 Discover anime or manga with AniTrend which is a free [AniList](https://anilist.co) android client written in kotlin. This is a temporary repository for anitrend v2.0 and no external pull requests (outside the project team members will be accepted at the current time)
 
@@ -117,6 +118,9 @@ Copyright (C) 2018  AniTrend
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_large)
 
 # Terms Of Service
 
