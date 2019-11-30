@@ -16,6 +16,8 @@
  */
  
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-core:$koin"
     implementation "org.koin:koin-core-ext:$koin"
@@ -33,4 +35,5 @@ dependencies {
     testImplementation "junit:junit:$junit"
     testImplementation "io.mockk:mockk:$mockk"
     androidTestImplementation "androidx.test:runner:$runner"
-} 
+    androidTestImplementation "androidx.test.ext:junit-ktx:$junitKtx"
+}

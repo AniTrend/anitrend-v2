@@ -6,35 +6,36 @@ ext {
     versionCode = 126
     versionName = '2.0.0-alpha17'
 
-    glide = '4.9.0'
-    retrofit = '2.6.1'
+    glide = '4.10.0'
+    retrofit = '2.6.2'
 
-    material = '1.1.0-alpha10'
+    material = '1.1.0-beta02'
     preferenceX = "1.1.0"
     swipeRefreshX = "1.0.0"
     constraintX = '1.1.3'
-    viewPager2X = "1.0.0-beta04"
+    viewPager2X = "1.0.0"
 
     lifecycleStateX = '1.0.0-alpha05'
     lifecycleX = '2.1.0'
-    room = '2.1.0'
+    room = '2.2.2'
     paging = '2.1.0'
     pagingKtx = '2.1.0'
     ktx = '1.1.0'
-    fragmentKtx = '1.0.0'
+    fragmentKtx = '1.1.0'
     workerKtx = '2.2.0'
     navigation = '2.1.0'
-    firebase = '17.2.0'
+    firebase = '17.2.1'
 
     koin = '2.0.1'
-    kotlinVersion = '1.3.50'
+    kotlinVersion = '1.3.61'
 
     mockk = '1.9.3'
     junit = '4.12'
+    junitKtx = '1.1.1'
     runner = '1.2.0'
     espresso = '3.2.0'
 
-    flexBox = '1.1.0'
+    flexBox = '1.1.1'
     crashlytics = '2.10.1'
     coroutinesCore = '1.3.0'
     coroutinesAndroid = '1.3.0'
