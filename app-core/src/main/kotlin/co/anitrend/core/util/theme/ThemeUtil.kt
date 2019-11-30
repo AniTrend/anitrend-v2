@@ -27,9 +27,7 @@ import co.anitrend.core.R
 import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
 
-class ThemeUtil(
-    private val settings: IThemeSettings
-) {
+class ThemeUtil(private val settings: IThemeSettings) {
 
     @get:StyleRes
     val theme: Int

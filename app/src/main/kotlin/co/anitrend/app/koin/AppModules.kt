@@ -18,10 +18,8 @@
 package co.anitrend.app.koin
 
 import co.anitrend.app.navigation.NavigationController
-import co.anitrend.app.ui.main.MainScreen
-import co.anitrend.app.ui.main.presenter.MainPresenter
-import co.anitrend.app.ui.splash.SplashScreen
-import co.anitrend.app.ui.splash.presenter.SplashPresenter
+import co.anitrend.app.ui.MainScreen
+import co.anitrend.app.ui.presenter.MainPresenter
 import co.anitrend.core.koin.coreModules
 import co.anitrend.core.navigation.INavigationController
 import co.anitrend.data.koin.dataModules
@@ -36,14 +34,6 @@ private val coreModule = module {
 }
 
 private val presenterModule = module {
-    scope(named<SplashScreen>()) {
-        scoped {
-            SplashPresenter(
-                context = androidContext(),
-                settings = get()
-            )
-        }
-    }
     scope(named<MainScreen>()) {
         scoped {
             MainPresenter(

@@ -18,12 +18,12 @@
 package co.anitrend.domain.genre.interactors
 
 import co.anitrend.arch.domain.common.IUserInterfaceState
-import co.anitrend.arch.domain.usecases.core.ISupportCoreUseCase
+import co.anitrend.arch.domain.usecases.ISupportUseCase
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
 abstract class MediaGenreUseCase<R: IUserInterfaceState<*>>(
     private val mediaGenreRepository: IMediaGenreRepository<R>
-) : ISupportCoreUseCase<Nothing?, R> {
+) : ISupportUseCase<Nothing?, R> {
 
     /**
      * Solves a given use case in the implementation target

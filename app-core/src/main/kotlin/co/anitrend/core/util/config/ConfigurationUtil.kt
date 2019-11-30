@@ -18,6 +18,7 @@
 package co.anitrend.core.util.config
 
 import android.content.Intent
+import co.anitrend.core.extensions.koinOf
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.util.config.contract.IConfigurationUtil
@@ -47,8 +48,8 @@ class ConfigurationUtil(
     override fun onCreate(activity: AnitrendActivity<*, *>) {
         applicationTheme = settings.theme
         applicationLocale = settings.locale
-        LocaleUtil(activity, settings).applyApplicationLocale()
-        ThemeUtil(settings).applyApplicationTheme(activity)
+        koinOf<LocaleUtil>().applyApplicationLocale(activity)
+        koinOf<ThemeUtil>().applyApplicationTheme(activity)
     }
 
     /**

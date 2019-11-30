@@ -23,10 +23,7 @@ import android.content.res.Resources
 import co.anitrend.core.settings.common.locale.ILocaleSettings
 import java.util.*
 
-class LocaleUtil(
-    private val context: Context,
-    private val settings: ILocaleSettings
-) {
+class LocaleUtil(private val settings: ILocaleSettings) {
 
     val locale: Locale
         get() {
@@ -35,7 +32,7 @@ class LocaleUtil(
             return getPersonalizedLocale()
         }
 
-    internal fun applyApplicationLocale() {
+    internal fun applyApplicationLocale(context: Context) {
         Locale.setDefault(locale)
         val resources: Resources = context.resources
         val configuration = Configuration(resources.configuration)

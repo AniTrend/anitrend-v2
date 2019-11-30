@@ -21,9 +21,12 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import co.anitrend.arch.extension.preference.SupportPreference
+import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.core.R
 import co.anitrend.core.settings.common.IConfigurationSettings
+import co.anitrend.core.settings.common.locale.ILocaleSettings
 import co.anitrend.core.settings.common.privacy.IPrivacySettings
+import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.util.locale.AniTrendLocale
 import co.anitrend.core.util.theme.AniTrendTheme
 import co.anitrend.data.auth.settings.IAuthenticationSettings
@@ -34,21 +37,69 @@ class Settings(context: Context) : SupportPreference(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
     ISortOrderSettings {
 
-    override var locale: AniTrendLocale
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    override var locale: AniTrendLocale = AniTrendLocale.AUTOMATIC
+        get() = AniTrendLocale.valueOf(
+            sharedPreferences.getString(
+                stringOf(R.string.settings_configuration_locale),
+                null
+            ) ?: AniTrendLocale.AUTOMATIC.name
+        )
+        set(value) {
+            field = value
+            sharedPreferences.edit {
+                putString(
+                    stringOf(R.string.settings_configuration_locale),
+                    value.name
+                )
+            }
+        }
 
-    override var theme: AniTrendTheme
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    override var theme: AniTrendTheme = AniTrendTheme.SYSTEM
+        get() = AniTrendTheme.valueOf(
+            sharedPreferences.getString(
+                stringOf(R.string.settings_configuration_theme),
+                null
+            ) ?: AniTrendTheme.SYSTEM.name
+        )
+        set(value) {
+            field = value
+            sharedPreferences.edit {
+                putString(
+                    stringOf(R.string.settings_configuration_theme),
+                    value.name
+                )
+            }
+        }
 
-    override var isAnalyticsEnabled: Boolean
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    override var isAnalyticsEnabled: Boolean = false
+        get() = sharedPreferences.getBoolean(
+            stringOf(R.string.settings_privacy_usage_analytics),
+            false
+        )
+        set(value) {
+            field = value
+            sharedPreferences.edit {
+                putBoolean(
+                    stringOf(R.string.settings_privacy_usage_analytics),
+                    value
+                )
+            }
+        }
 
-    override var isCrashlyticsEnabled: Boolean
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    override var isCrashlyticsEnabled: Boolean = true
+        get() = sharedPreferences.getBoolean(
+            stringOf(R.string.settings_privacy_crash_analytics),
+            true
+        )
+        set(value) {
+            field = value
+            sharedPreferences.edit {
+                putBoolean(
+                    stringOf(R.string.settings_privacy_crash_analytics),
+                    value
+                )
+            }
+        }
 
     override var authenticatedUserId: Long = INVALID_USER_ID
         get() = sharedPreferences.getLong(
@@ -85,15 +136,17 @@ class Settings(context: Context) : SupportPreference(context),
         set(value) {}
 
     companion object {
-        private fun Settings.stringOf(@StringRes resource: Int) =
-            context.getString(resource)
+        private fun Settings.stringOf(
+            @StringRes resource: Int
+        ) = context.getString(resource)
 
         /**
-         * Binding types [Settings]
+         * Binding types for [Settings]
          */
-        internal val settingsBindings = arrayOf(
-            SupportPreference::class, IConfigurationSettings::class,
-            IPrivacySettings::class, IAuthenticationSettings::class,
+        internal val BINDINGS = arrayOf(
+            ISupportPreference::class, IConfigurationSettings::class,
+            ILocaleSettings::class, IThemeSettings::class,
+            IAuthenticationSettings::class, IPrivacySettings::class,
             ISortOrderSettings::class
         )
     }

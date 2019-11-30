@@ -18,12 +18,12 @@
 package co.anitrend.domain.tag.interactors
 
 import co.anitrend.arch.domain.common.IUserInterfaceState
-import co.anitrend.arch.domain.usecases.core.ISupportCoreUseCase
+import co.anitrend.arch.domain.usecases.ISupportUseCase
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 
 abstract class MediaTagUseCase<R: IUserInterfaceState<*>>(
     private val mediaTagRepository: IMediaTagRepository<R>
-) : ISupportCoreUseCase<Nothing?, R> {
+) : ISupportUseCase<Nothing?, R> {
 
     /**
      * Solves a given use case in the implementation target

@@ -23,6 +23,7 @@ plugins {
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
+apply from: "../gradle/gradle-common-config-app.gradle"
 apply from: "../gradle/gradle-common-dependencies.gradle"
 
 repositories {
@@ -32,7 +33,6 @@ repositories {
 android {
     defaultConfig {
         applicationId "co.anitrend.app"
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -43,21 +43,29 @@ android {
             }
         }
     }
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Project Modules */
-    implementation project(':app-core')
-    implementation project(':app-data')
-    implementation project(':app-domain')
+    implementation project(":app-core")
+    implementation project(":app-data")
+    implementation project(":app-domain")
+
+    /** Feature Modules */
+    implementation project(":app-splash")
+    implementation project(":app-onboarding")
+
+    runtimeOnly project(":feature-about")
+    runtimeOnly project(":feature-account")
+    runtimeOnly project(":feature-news")
+    runtimeOnly project(":feature-search")
+    runtimeOnly project(":feature-settings")
+    runtimeOnly project(":feature-profile")
 
     /** Platform Dependencies */
     implementation project(":support-domain")
+    implementation project(":support-theme")
     implementation project(":support-core")
     implementation project(":support-ext")
     implementation project(":support-ui")

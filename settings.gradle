@@ -1,10 +1,14 @@
-include ':app', ':app-core', ':app-domain',
+include ':app', ':app-core', ':app-domain', ':app-onboarding', ':app-splash', ':app-auth', ':app-navigation', ':android-core', ':feature-character', ':feature-staff', ':feature-studio', ':feature-media', ':feature-notification', ':feature-medialist', ':feature-review', ':feature-forum', ':feature-trending',
+        ':feature-settings', ':feature-search',
+        ':feature-profile', ':feature-account',
+        ':feature-about', ':feature-news',
         ':support-ext', ':support-core', ':support-data', ':support-domain', ':support-ui',
-        ':graphql', ':emojify', ':app-data', ':markdown' //, ':sync-plugin'
+        ':graphql', ':emojify', ':app-data', ':markdown', ':support-theme' //, ':sync-plugin'
 project(':support-ext').projectDir = new File('support-app/support-ext')
 project(':support-core').projectDir = new File('support-app/support-core')
 project(':support-data').projectDir = new File('support-app/support-data')
 project(':support-domain').projectDir = new File('support-app/support-domain')
+project(':support-theme').projectDir = new File('support-app/support-theme')
 project(':support-ui').projectDir = new File('support-app/support-ui')
 project(':graphql').projectDir = new File('retrofit-graphql/library')
 project(':emojify').projectDir = new File('android-emojify/emojify')

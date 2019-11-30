@@ -30,8 +30,8 @@ data class AiringSchedule(
     val media: Media?,
     @PrimaryKey
     override val id: Long,
-    override val airingAt: Int,
+    override val airingAt: Long,
     override val episode: Int,
     override val mediaId: Long,
-    override val timeUntilAiring: Int
+    override val timeUntilAiring: Long
 ) : IAiringSchedule

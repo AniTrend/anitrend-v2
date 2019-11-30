@@ -17,9 +17,13 @@
 
 package co.anitrend.core.koin
 
+import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.core.R
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
-import co.anitrend.core.settings.Settings.Companion.settingsBindings
+import co.anitrend.core.util.config.ConfigurationUtil
+import co.anitrend.core.util.locale.LocaleUtil
+import co.anitrend.core.util.theme.ThemeUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
@@ -29,7 +33,33 @@ private val coreModule = module {
         Settings(
             context = androidContext()
         )
-    } binds(settingsBindings)
+    } binds(Settings.BINDINGS)
+    single {
+        SupportStateLayoutConfiguration(
+            loadingDrawable = R.drawable.ic_anitrend_notification_logo,
+            errorDrawable = R.drawable.ic_support_empty_state,
+            loadingMessage = R.string.label_text_loading,
+            retryAction = R.string.label_text_action_retry
+        )
+    }
+    factory {
+        ConfigurationUtil(
+            settings = get()
+        )
+    }
+}
+
+private val configurationModule = module {
+    single {
+        LocaleUtil(
+            settings = get()
+        )
+    }
+    single {
+        ThemeUtil(
+            settings = get()
+        )
+    }
 }
 
 private val presenterModule = module {
@@ -41,10 +71,7 @@ private val presenterModule = module {
     }
 }
 
-private val viewModelModule = module {
-
-}
 
 val coreModules = listOf(
-    coreModule, presenterModule
+    coreModule, configurationModule, presenterModule
 )

@@ -18,7 +18,7 @@
 package co.anitrend.app.navigation
 
 import android.content.Context
-import co.anitrend.app.ui.main.MainScreen
+import co.anitrend.app.ui.MainScreen
 import co.anitrend.arch.extension.startNewActivity
 import co.anitrend.core.navigation.INavigationController
 

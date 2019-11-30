@@ -38,14 +38,7 @@
         <!--
         app:appCategory="social"-->
 
-        <activity android:name="co.anitrend.app.ui.splash.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name="co.anitrend.app.ui.main.MainScreen"
+        <activity android:name="co.anitrend.app.ui.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider

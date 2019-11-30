@@ -20,4 +20,14 @@
     <!-- settings keys -->
     <string name="settings_authentication_id" translatable="false">_authenticationId</string>
     <string name="settings_is_authenticated" translatable="false">_isAuthenticated</string>
+
+    <string name="settings_authentication_logged_in" translatable="false">_isAuthenticated</string>
+    <string name="settings_authentication_session_id" translatable="false">_sessionId</string>
+    <string name="settings_authentication_premium_access" translatable="false">_premiumAccess</string>
+
+    <string name="settings_configuration_theme" translatable="false">_theme</string>
+    <string name="settings_configuration_locale" translatable="false">_locale</string>
+
+    <string name="settings_privacy_crash_analytics" translatable="false">_crashAnalytics</string>
+    <string name="settings_privacy_usage_analytics" translatable="false">_usageAnalytics</string>
 </resources>

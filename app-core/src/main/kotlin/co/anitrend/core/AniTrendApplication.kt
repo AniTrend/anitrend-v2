@@ -24,7 +24,12 @@ import co.anitrend.core.analytics.AnalyticsLogger
 import co.anitrend.core.extensions.analytics
 import co.anitrend.core.extensions.koinOf
 import co.anitrend.core.settings.Settings
+import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.util.theme.ThemeUtil
+import io.wax911.emojify.EmojiManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 abstract class AniTrendApplication : Application(), Configuration.Provider {
@@ -52,16 +57,39 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
         }
     }
 
+    /**
+     * Applies theme on application instance
+     */
+    protected open fun applyNightMode() {
+        // apply application theme on application instance
+        koinOf<ThemeUtil>().applyNightMode()
+    }
+
+    /**
+     * Checks if the application needs to perform any migrations
+     */
+    protected open fun checkApplicationMigration() {
+        //Settings(this).sharedPreferences.edit(commit = true) { clear() }
+    }
+
+    /**
+     * Initializes emoji helper global instance
+     */
+    protected open fun initializeEmoji() {
+        GlobalScope.launch(Dispatchers.IO) {
+            runCatching {
+                EmojiManager.initEmojiData(applicationContext)
+            }.exceptionOrNull()?.printStackTrace()
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
-        // clearing preference for migration purposes
-        //Settings(this).sharedPreferences.edit(commit = true) { clear() }
+        checkApplicationMigration()
         initializeDependencyInjection()
         plantLoggingTree()
-        // apply application theme on application instance
-        ThemeUtil(
-            settings = koinOf<Settings>()
-        ).applyNightMode()
+        applyNightMode()
+        initializeEmoji()
     }
 
     /**
