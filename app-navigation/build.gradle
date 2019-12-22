@@ -39,6 +39,7 @@ dependencies {
     implementation project(":app-core")
 
     /** Platform Dependencies */
+    implementation project(":support-ui")
     implementation project(":support-ext")
 
     /** Koin AndroidX Dependency Injection */

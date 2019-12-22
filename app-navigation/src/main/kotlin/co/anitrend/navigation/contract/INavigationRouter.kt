@@ -15,20 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation
+package co.anitrend.navigation.contract
 
-import org.junit.Test
+import android.content.Context
+import android.content.Intent
 
-import org.junit.Assert.*
+interface INavigationRouter {
+    val navRouterIntent: Intent?
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    /**
+     * Starts the target [navRouterIntent] for the implementation
+     */
+    operator fun invoke(context: Context?) {
+        runCatching {
+            context?.startActivity(navRouterIntent)
+        }.exceptionOrNull()?.printStackTrace()
     }
 }
