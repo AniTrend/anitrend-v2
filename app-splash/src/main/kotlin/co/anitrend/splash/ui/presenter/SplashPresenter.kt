@@ -20,8 +20,22 @@ package co.anitrend.splash.ui.presenter
 import android.content.Context
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
+import co.anitrend.navigation.NavigationTargets
+import kotlinx.coroutines.delay
 
 class SplashPresenter(
     context: Context,
     settings: Settings
-) : CorePresenter(context, settings)
+) : CorePresenter(context, settings) {
+
+    /**
+     * Decide which screen to open
+     */
+    suspend fun firstRunCheck() {
+        delay(350)
+        if (supportPreference.isNewInstallation)
+            NavigationTargets.OnBoarding(context)
+        else
+            NavigationTargets.Main(context)
+    }
+}

@@ -32,18 +32,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.ui
+package co.anitrend.splash.ui.activity
 
 import android.os.Bundle
 import androidx.fragment.app.commit
 import co.anitrend.splash.R
-import co.anitrend.splash.ui.fragment.SplashFragment
+import co.anitrend.splash.ui.fragment.SplashContent
 import co.anitrend.splash.ui.presenter.SplashPresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.splash.koin.injectFeatureModules
 import org.koin.android.ext.android.inject
-import org.koin.androidx.scope.currentScope
 
 class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
 
@@ -80,10 +79,10 @@ class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
      */
     override fun onUpdateUserInterface() {
         val fragment = supportFragmentManager.findFragmentByTag(
-            SplashFragment.FRAGMENT_TAG
-        ) ?: SplashFragment.newInstance()
+            SplashContent.FRAGMENT_TAG
+        ) ?: SplashContent.newInstance()
         supportFragmentManager.commit {
-            replace(R.id.splashFrame, fragment, SplashFragment.FRAGMENT_TAG)
+            replace(R.id.splashFrame, fragment, SplashContent.FRAGMENT_TAG)
         }
     }
 }

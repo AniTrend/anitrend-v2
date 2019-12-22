@@ -16,11 +16,8 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splashFrame"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    tools:context="co.anitrend.splash.ui.activity.SplashScreen"
- />
-
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:radius="@dimen/xl_margin" />
+</shape>

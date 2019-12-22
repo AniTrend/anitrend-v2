@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2019  AniTrend
   ~
@@ -16,5 +17,7 @@
   -->
 
 <resources>
-    <string name="app_name">Navigation</string>
+
+    <integer name="splash_stripe_rotation_factor">45</integer>
+
 </resources>

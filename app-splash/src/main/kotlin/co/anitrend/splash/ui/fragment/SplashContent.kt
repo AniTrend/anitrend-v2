@@ -21,18 +21,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.splash.R
-import co.anitrend.splash.ui.presenter.SplashPresenter
 import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.core.extensions.koinOf
-import co.anitrend.core.navigation.INavigationController
-import co.anitrend.splash.binding.fragment.SplashLayout
+import co.anitrend.navigation.NavigationTargets
+import co.anitrend.splash.R
+import co.anitrend.splash.ui.presenter.SplashPresenter
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class SplashFragment : SupportFragment<Nothing, SplashPresenter, Nothing>() {
-
-    private lateinit var binding: SplashLayout
+class SplashContent : SupportFragment<Nothing, SplashPresenter, Nothing>() {
 
     /**
      * Should be created lazily through injection or lazy delegate
@@ -68,10 +65,8 @@ class SplashFragment : SupportFragment<Nothing, SplashPresenter, Nothing>() {
      * A default View can be returned by calling [.Fragment] in your
      * constructor. Otherwise, this method returns null.
      *
-     *
      * It is recommended to **only** inflate the layout in this method and move
      * logic that operates on the returned View to [.onViewCreated].
-     *
      *
      * If you return a View from here, you will later be called in
      * [.onDestroyView] when the view is being released.
@@ -90,27 +85,7 @@ class SplashFragment : SupportFragment<Nothing, SplashPresenter, Nothing>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = SplashLayout.inflate(
-        inflater, container, false
-    ).let {
-        binding = it
-        binding.root
-    }
-
-    /**
-     * Called immediately after [.onCreateView]
-     * has returned, but before any saved state has been restored in to the view.
-     * This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.  The fragment's
-     * view hierarchy is not however attached to its parent at this point.
-     * @param view The View returned by [.onCreateView].
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.splashDescription.setText(R.string.app_splash_description)
-    }
+    ): View = inflater.inflate(R.layout.content_splash, container, false)
 
     override fun onResume() {
         super.onResume()
@@ -124,10 +99,7 @@ class SplashFragment : SupportFragment<Nothing, SplashPresenter, Nothing>() {
      * Check implementation for more details
      */
     override fun onUpdateUserInterface() {
-        context?.apply {
-            koinOf<INavigationController>()
-                .navigateToMain(this)
-        }
+
     }
 
     /**
@@ -141,12 +113,13 @@ class SplashFragment : SupportFragment<Nothing, SplashPresenter, Nothing>() {
      */
     override fun onFetchDataInitialize() {
         // some state checks and finally
+        launch { supportPresenter.firstRunCheck() }
         onUpdateUserInterface()
     }
 
     companion object {
         const val FRAGMENT_TAG = "Splash_Fragment"
 
-        fun newInstance() = SplashFragment()
+        fun newInstance() = SplashContent()
     }
 }
