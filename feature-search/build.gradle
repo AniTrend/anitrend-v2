@@ -35,7 +35,7 @@ android {
 }
 
 ext {
-    mutliSearch = '0.2'
+    materialMultiSearch = '0.1.1'
 }
 
 dependencies {
@@ -63,6 +63,8 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.constraintlayout:constraintlayout:$constraintX"
+
+    implementation "com.github.anitrend:material-multi-search:$materialMultiSearch"
 
     /** Testing-only dependencies */
     testImplementation "org.koin:koin-test:$koin"
