@@ -19,4 +19,6 @@
 <resources>
     <color name="anitrendBackdropShade">#e8e8e8</color>
     <color name="anitrendDrawerSelector">#E2E2E2</color>
+
+    <color name="anitrendColorAccent">@color/light_blue_A700</color>
 </resources>
