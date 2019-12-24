@@ -8,6 +8,9 @@ schema {
 "Activity union type"
 union ActivityUnion = ListActivity | MessageActivity | TextActivity
 
+"Likeable union type"
+union LikeableUnion = ActivityReply | ListActivity | MessageActivity | TextActivity | Thread | ThreadComment
+
 "Notification union type"
 union NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | FollowingNotification | RelatedMediaAdditionNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification
 
@@ -79,6 +82,10 @@ type ActivityReply {
     createdAt: Int!
     "The id of the reply"
     id: Int!
+    "If the currently authenticated user liked the reply"
+    isLiked: Boolean
+    "The amount of likes the reply has"
+    likeCount: Int!
     "The users who liked the reply"
     likes: [User]
     "The reply text"
@@ -244,8 +251,7 @@ type Character {
     name: CharacterName
     "The url for the character page on the AniList website"
     siteUrl: String
-    "When the character's data was last updated"
-    updatedAt: Int
+    updatedAt: Int @deprecated(reason : "No data available")
 }
 
 type CharacterConnection {
@@ -549,6 +555,12 @@ type InternalPage {
         #User id of the follower/followed
         userId: Int!
     ): [User]
+    likes(
+        #The id of the likeable type
+        likeableId: Int,
+        #The type of model the id applies to
+        type: LikeableType
+    ): [User]
     media(
         #Filter by the media's average score
         averageScore: Int,
@@ -622,6 +634,8 @@ type InternalPage {
         licensedBy: String,
         #Filter media by sites with a online streaming or reading license
         licensedBy_in: [String],
+        #Only apply the tags filter argument to tags above this rank. Default: 18
+        minimumTagRank: Int,
         #Filter by the media on the authenticated user's lists
         onList: Boolean,
         #Filter by the number of users with this media on their list
@@ -804,6 +818,24 @@ type InternalPage {
     ): [NotificationUnion]
     "The pagination information"
     pageInfo: PageInfo
+    recommendations(
+        #Filter by recommendation id
+        id: Int,
+        #Filter by media id
+        mediaId: Int,
+        #Filter by media recommendation id
+        mediaRecommendationId: Int,
+        #Filter by total rating of the recommendation
+        rating: Int,
+        #Filter by total rating of the recommendation
+        rating_greater: Int,
+        #Filter by total rating of the recommendation
+        rating_lesser: Int,
+        #The order the results will be returned in
+        sort: [RecommendationSort],
+        #Filter by user who created the recommendation
+        userId: Int
+    ): [Recommendation]
     reports: [Report]
     reviews(
         #Filter by Review id
@@ -912,8 +944,14 @@ type ListActivity {
     createdAt: Int!
     "The id of the activity"
     id: Int!
+    "If the currently authenticated user liked the activity"
+    isLiked: Boolean
     "If the activity is locked and can receive replies"
     isLocked: Boolean
+    "If the currently authenticated user is subscribed to the activity"
+    isSubscribed: Boolean
+    "The amount of likes the activity has"
+    likeCount: Int!
     "The users who liked the activity"
     likes: [User]
     "The associated media to the activity update"
@@ -1007,6 +1045,8 @@ type Media {
     isLicensed: Boolean
     "Locked media may not be added to lists our favorited. This may be due to the entry pending for deletion or other reasons."
     isLocked: Boolean
+    "If the media is blocked from being recommended to/from"
+    isRecommendationBlocked: Boolean
     "Mean score of all the user's scores of the media"
     meanScore: Int
     "The authenticated user's media list entry for the media"
@@ -1019,6 +1059,14 @@ type Media {
     popularity: Int
     "The ranking of the media in a particular time span and format compared to other media"
     rankings: [MediaRank]
+    "User recommendations for similar media"
+    recommendations(
+        #The page
+        page: Int,
+        #The amount of entries per page, max 25
+        perPage: Int,
+        sort: [RecommendationSort]
+    ): RecommendationConnection
     "Other media in the same or connecting franchise"
     relations: MediaConnection
     "User reviews of the media"
@@ -1030,10 +1078,12 @@ type Media {
         perPage: Int,
         sort: [ReviewSort]
     ): ReviewConnection
-    "The year & season the media was initially released in"
+    "The season the media was initially released in"
     season: MediaSeason
     "The year & season the media was initially released in"
     seasonInt: Int
+    "The season year the media was initially released in"
+    seasonYear: Int
     "The url for the media page on the AniList website"
     siteUrl: String
     "Source type the media was adapted from."
@@ -1423,8 +1473,16 @@ type MessageActivity {
     createdAt: Int!
     "The id of the activity"
     id: Int!
+    "If the currently authenticated user liked the activity"
+    isLiked: Boolean
     "If the activity is locked and can receive replies"
     isLocked: Boolean
+    "If the message is private and only viewable to the sender and recipients"
+    isPrivate: Boolean
+    "If the currently authenticated user is subscribed to the activity"
+    isSubscribed: Boolean
+    "The amount of likes the activity has"
+    likeCount: Int!
     "The users who liked the activity"
     likes: [User]
     "The message text (Markdown)"
@@ -1511,6 +1569,8 @@ type Mutation {
     SaveActivityReply(
         #The id of the parent activity being replied to
         activityId: Int,
+        #If the reply should be sent from the Moderator account (Mod Only)
+        asMod: Boolean,
         #The activity reply id, required for updating
         id: Int,
         #The reply text
@@ -1560,15 +1620,28 @@ type Mutation {
     ): MediaList
     "Create or update message activity for the currently authenticated user"
     SaveMessageActivity(
+        #If the message should be sent from the Moderator account (Mod Only)
+        asMod: Boolean,
         #The activity id, required for updating
         id: Int,
         #If the activity should be locked. (Mod Only)
         locked: Boolean,
         #The activity message text
         message: String,
+        #If the activity should be private
+        private: Boolean,
         #The id of the user the message is being sent to
         recipientId: Int
     ): MessageActivity
+    "Recommendation a media"
+    SaveRecommendation(
+        #The id of the base media
+        mediaId: Int,
+        #The id of the media to recommend
+        mediaRecommendationId: Int,
+        #The rating to give the recommendation
+        rating: RecommendationRating
+    ): Recommendation
     "Create or update a review"
     SaveReview(
         #The main review text. Min:2200 characters
@@ -1621,6 +1694,13 @@ type Mutation {
         #The id of thread the comment belongs to
         threadId: Int
     ): ThreadComment
+    "Toggle the subscription of an activity item"
+    ToggleActivitySubscription(
+        #The id of the activity to un/subscribe
+        activityId: Int,
+        #Whether to subscribe or unsubscribe from the activity
+        subscribe: Boolean
+    ): ActivityUnion
     "Favourite or unfavourite an anime, manga, character, staff member, or studio"
     ToggleFavourite(
         #The id of the anime to un/favourite
@@ -1649,6 +1729,13 @@ type Mutation {
         #The type of model to be un/liked
         type: LikeableType
     ): [User]
+    "Add or remove a like from a likeable type."
+    ToggleLikeV2(
+        #The id of the likeable type
+        id: Int,
+        #The type of model to be un/liked
+        type: LikeableType
+    ): LikeableUnion
     "Toggle the subscription of a forum thread"
     ToggleThreadSubscription(
         #Whether to subscribe or unsubscribe from the forum thread
@@ -1876,6 +1963,12 @@ type Page {
         #User id of the follower/followed
         userId: Int!
     ): [User]
+    likes(
+        #The id of the likeable type
+        likeableId: Int,
+        #The type of model the id applies to
+        type: LikeableType
+    ): [User]
     media(
         #Filter by the media's average score
         averageScore: Int,
@@ -1949,6 +2042,8 @@ type Page {
         licensedBy: String,
         #Filter media by sites with a online streaming or reading license
         licensedBy_in: [String],
+        #Only apply the tags filter argument to tags above this rank. Default: 18
+        minimumTagRank: Int,
         #Filter by the media on the authenticated user's lists
         onList: Boolean,
         #Filter by the number of users with this media on their list
@@ -2122,6 +2217,24 @@ type Page {
     ): [NotificationUnion]
     "The pagination information"
     pageInfo: PageInfo
+    recommendations(
+        #Filter by recommendation id
+        id: Int,
+        #Filter by media id
+        mediaId: Int,
+        #Filter by media recommendation id
+        mediaRecommendationId: Int,
+        #Filter by total rating of the recommendation
+        rating: Int,
+        #Filter by total rating of the recommendation
+        rating_greater: Int,
+        #Filter by total rating of the recommendation
+        rating_lesser: Int,
+        #The order the results will be returned in
+        sort: [RecommendationSort],
+        #Filter by user who created the recommendation
+        userId: Int
+    ): [Recommendation]
     reviews(
         #Filter by Review id
         id: Int,
@@ -2361,6 +2474,13 @@ type Query {
     ): User
     "Collection of all the possible media genres"
     GenreCollection: [String]
+    "Like query"
+    Like(
+        #The id of the likeable type
+        likeableId: Int,
+        #The type of model the id applies to
+        type: LikeableType
+    ): User
     "Provide AniList markdown to be converted to html (Requires auth)"
     Markdown(
         #The markdown to be parsed to html
@@ -2440,6 +2560,8 @@ type Query {
         licensedBy: String,
         #Filter media by sites with a online streaming or reading license
         licensedBy_in: [String],
+        #Only apply the tags filter argument to tags above this rank. Default: 18
+        minimumTagRank: Int,
         #Filter by the media on the authenticated user's lists
         onList: Boolean,
         #Filter by the number of users with this media on their list
@@ -2670,6 +2792,25 @@ type Query {
         #The amount of entries per page, max 50
         perPage: Int
     ): Page
+    "Recommendation query"
+    Recommendation(
+        #Filter by recommendation id
+        id: Int,
+        #Filter by media id
+        mediaId: Int,
+        #Filter by media recommendation id
+        mediaRecommendationId: Int,
+        #Filter by total rating of the recommendation
+        rating: Int,
+        #Filter by total rating of the recommendation
+        rating_greater: Int,
+        #Filter by total rating of the recommendation
+        rating_lesser: Int,
+        #The order the results will be returned in
+        sort: [RecommendationSort],
+        #Filter by user who created the recommendation
+        userId: Int
+    ): Recommendation
     "Review query"
     Review(
         #Filter by Review id
@@ -2760,6 +2901,34 @@ type Query {
     ): User
     "Get the currently authenticated user"
     Viewer: User
+}
+
+"Media recommendation"
+type Recommendation {
+    "The id of the recommendation"
+    id: Int!
+    "The media the recommendation is from"
+    media: Media
+    "The recommended media"
+    mediaRecommendation: Media
+    "Users rating of the recommendation"
+    rating: Int
+    "The user that first created the recommendation"
+    user: User
+    "The rating of the recommendation by currently authenticated user"
+    userRating: RecommendationRating
+}
+
+type RecommendationConnection {
+    edges: [RecommendationEdge]
+    nodes: [Recommendation]
+    "The pagination information"
+    pageInfo: PageInfo
+}
+
+"Recommendation connection edge"
+type RecommendationEdge {
+    node: Recommendation
 }
 
 "Notification for when new media is added to the site"
@@ -2986,8 +3155,7 @@ type Staff {
     submissionStatus: Int
     "Submitter for the submission"
     submitter: User
-    "When the staff's data was last updated"
-    updatedAt: Int
+    updatedAt: Int @deprecated(reason : "No data available")
 }
 
 type StaffConnection {
@@ -3132,8 +3300,14 @@ type TextActivity {
     createdAt: Int!
     "The id of the activity"
     id: Int!
+    "If the currently authenticated user liked the activity"
+    isLiked: Boolean
     "If the activity is locked and can receive replies"
     isLocked: Boolean
+    "If the currently authenticated user is subscribed to the activity"
+    isSubscribed: Boolean
+    "The amount of likes the activity has"
+    likeCount: Int!
     "The users who liked the activity"
     likes: [User]
     "The written replies to the activity"
@@ -3168,12 +3342,16 @@ type Thread {
     createdAt: Int!
     "The id of the thread"
     id: Int!
+    "If the currently authenticated user liked the thread"
+    isLiked: Boolean
     "If the thread is locked and can receive comments"
     isLocked: Boolean
     "If the thread is stickied and should be displayed at the top of the page"
     isSticky: Boolean
     "If the currently authenticated user is subscribed to the thread"
     isSubscribed: Boolean
+    "The amount of likes the thread has"
+    likeCount: Int!
     "The users who liked the thread"
     likes: [User]
     "The media categories of the thread"
@@ -3223,6 +3401,10 @@ type ThreadComment {
     createdAt: Int!
     "The id of the comment"
     id: Int!
+    "If the currently authenticated user liked the comment"
+    isLiked: Boolean
+    "The amount of likes the comment has"
+    likeCount: Int!
     "The users who liked the comment"
     likes: [User]
     "The url for the comment page on the AniList website"
@@ -3374,6 +3556,8 @@ type User {
     id: Int!
     "If the user is blocked by the authenticated user"
     isBlocked: Boolean
+    "If this user if following the authenticated user"
+    isFollower: Boolean
     "If the authenticated user if following this user"
     isFollowing: Boolean
     "The user's media list options"
@@ -3888,6 +4072,7 @@ enum MediaType {
 }
 
 enum ModActionType {
+    ANON
     BAN
     DELETE
     EDIT
@@ -3927,6 +4112,21 @@ enum NotificationType {
     THREAD_LIKE
     #A user has commented in one of your subscribed forum threads
     THREAD_SUBSCRIBED
+}
+
+"Recommendation rating enums"
+enum RecommendationRating {
+    NO_RATING
+    RATE_DOWN
+    RATE_UP
+}
+
+"Recommendation sort enums"
+enum RecommendationSort {
+    ID
+    ID_DESC
+    RATING
+    RATING_DESC
 }
 
 "Review rating enums"
