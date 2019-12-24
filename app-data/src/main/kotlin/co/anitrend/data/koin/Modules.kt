@@ -27,6 +27,7 @@ import co.anitrend.data.api.interceptor.AuthInterceptor
 import co.anitrend.data.api.interceptor.ClientInterceptor
 import co.anitrend.data.auth.AuthenticationHelper
 import co.anitrend.data.database.AniTrendStore
+import co.anitrend.data.extensions.koinOf
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import okhttp3.OkHttpClient
@@ -97,6 +98,8 @@ private val networkModule = module {
         ).build()
     }
 }
+
+internal fun store() = koinOf<AniTrendStore>()
 
 val dataModules = listOf(
     coreModule, networkModule
