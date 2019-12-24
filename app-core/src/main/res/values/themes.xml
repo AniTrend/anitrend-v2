@@ -21,4 +21,18 @@
         <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
 
+    <style name="AppTheme.ShapeAppearance.Small.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/lg_margin</item>
+    </style>
+
+    <style name="AppTheme.ShapeAppearance.Medium.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/xl_margin</item>
+    </style>
+
+    <style name="AppTheme.ShapeAppearance.Large.Rounded" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/xl_margin</item>
+    </style>
 </resources>
