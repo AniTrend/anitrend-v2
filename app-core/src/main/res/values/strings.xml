@@ -27,6 +27,7 @@
     <string name="title_app_splash">Splash</string>
 
     <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
 
     <string name="nav_header_customization">Customization</string>
     <string name="nav_header_navigation">Navigation</string>
@@ -45,4 +46,6 @@
     <string name="label_text_action_retry">Reload</string>
 
     <string name="app_splash_description">Powered by AniList</string>
+    <string name="app_splash_powered_by">Powered by</string>
+    <string name="app_splash_provider">AniList</string>
 </resources>
