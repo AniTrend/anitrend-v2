@@ -15,40 +15,32 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.core.activity
+package co.anitrend.data.activity.model.remote
 
 import androidx.room.PrimaryKey
-import co.anitrend.domain.activity.entities.IFeed
+import co.anitrend.data.activity.model.remote.common.IFeedModel
 import co.anitrend.data.model.core.user.User
 import co.anitrend.domain.activity.enums.ActivityType
-import com.google.gson.annotations.SerializedName
 
-/** [MessageActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/messageactivity.doc.html)
- * User message activity
+/** [TextActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/textactivity.doc.html)
+ * User text activity
  *
  * @param replies The written replies to the activity
- * @param user The user who sent the activity message
- * @param userId The user id of the activity's sender
- * @param recipient The user who the activity message was sent to
- * @param recipientId The user id of the activity's recipient
  * @param isLocked If the activity is locked and can receive replies
+ * @property user The user who created the activity
+ * @property userId The user id of the activity's creator
  */
-data class MessageFeed(
-    val replies: List<FeedReply>?,
-    val recipient : User?,
-    val recipientId : Long?,
+data class TextFeedModel(
+    val replies: List<ReplyFeedModel>?,
     val isLocked: Boolean,
+    val user: User?,
+    val userId: Long?,
+    val text: String?,
     @PrimaryKey
     override val id: Long,
     override val createdAt: Long,
     override val likes: List<User>?,
-    override val replyCount: Int,
     override val siteUrl: String?,
-    @SerializedName("message")
-    override val text: String?,
     override val type: ActivityType?,
-    @SerializedName("messenger")
-    override val user: User?,
-    @SerializedName("messengerId")
-    override val userId: Long?
-) : IFeed
+    override val replyCount: Int
+) : IFeedModel

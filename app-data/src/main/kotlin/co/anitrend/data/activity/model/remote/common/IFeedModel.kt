@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.activity.entities
+package co.anitrend.data.activity.model.remote.common
 
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.user.entities.IUser
@@ -28,18 +28,12 @@ import co.anitrend.domain.activity.enums.ActivityType
  * @property likes The users who liked the activity
  * @property replyCount The number of activity replies
  * @property siteUrl The url for the activity page on the AniList website
- * @property text The status text (Markdown)
  * @property type The type of activity
- * @property user The user who created the activity
- * @property userId The user id of the activity's creator
  */
-interface IFeed : IEntity {
+interface IFeedModel : IEntity {
     val createdAt: Long
     val likes: List<IUser>?
     val replyCount: Int
     val siteUrl: String?
-    val text: String?
     val type: ActivityType?
-    val user: IUser?
-    val userId: Long?
 }

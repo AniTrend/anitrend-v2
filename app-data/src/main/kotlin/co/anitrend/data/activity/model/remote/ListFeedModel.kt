@@ -15,38 +15,48 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.core.activity
+package co.anitrend.data.activity.model.remote
 
-import androidx.room.PrimaryKey
-import co.anitrend.domain.activity.entities.IFeed
+import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.data.activity.entity.ListFeedEntity
+import co.anitrend.data.activity.model.remote.common.IFeedModel
 import co.anitrend.data.model.core.media.Media
 import co.anitrend.data.model.core.user.User
 import co.anitrend.domain.activity.enums.ActivityType
-import com.google.gson.annotations.SerializedName
 
 /** [ListActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/listactivity.doc.html)
  * User text activity
  *
  * @param replies The written replies to the activity
  * @param media The associated media to the activity update
- * @param text The list progress made
+ * @param progress The list progress made
  * @param status The list item's textual status
  * @param isLocked If the activity is locked and can receive replies
+ * @property user The user who created the activity
+ * @property userId The user id of the activity's creator
  */
-data class ListFeed(
-    val replies: List<FeedReply>?,
+data class ListFeedModel(
+    val replies: List<ReplyFeedModel>?,
     val media: Media?,
     val status: String?,
     val isLocked: Boolean,
-    @PrimaryKey
+    val progress: String?,
+    val user: User?,
+    val userId: Long?,
     override val id: Long,
     override val createdAt: Long,
     override val likes: List<User>?,
-    override val replyCount: Int,
     override val siteUrl: String?,
-    @SerializedName("progress")
-    override val text: String?,
     override val type: ActivityType?,
-    override val user: User?,
-    override val userId: Long?
-) : IFeed
+    override val replyCount: Int
+) : IFeedModel {
+
+    companion object : ISupportMapperHelper<ListFeedModel, ListFeedEntity> {
+        /**
+         * Transforms the the [source] to the target type
+         */
+        override fun transform(source: ListFeedModel): ListFeedEntity {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+    }
+}

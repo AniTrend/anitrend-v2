@@ -15,10 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.model.core.activity
+package co.anitrend.data.activity.model.remote
 
 import androidx.room.PrimaryKey
-import co.anitrend.domain.activity.entities.IFeed
+import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.data.activity.entity.ReplyFeedEntity
+import co.anitrend.data.activity.model.remote.common.IFeedModel
 import co.anitrend.data.model.core.user.User
 import co.anitrend.domain.activity.enums.ActivityType
 
@@ -26,17 +28,30 @@ import co.anitrend.domain.activity.enums.ActivityType
  * Replay to an activity item
  *
  * @param activityId The id of the parent activity
+ * @property user The user who created the activity
+ * @property userId The user id of the activity's creator
+ * @property text The status text (Markdown)
  */
-data class FeedReply(
+data class ReplyFeedModel(
     val activityId: Long?,
+    val text: String?,
+    val user: User?,
+    val userId: Long?,
     @PrimaryKey
     override val id: Long,
     override val createdAt: Long,
     override val likes: List<User>?,
-    override val replyCount: Int,
     override val siteUrl: String?,
-    override val text: String?,
     override val type: ActivityType?,
-    override val user: User?,
-    override val userId: Long?
-) : IFeed
+    override val replyCount: Int
+) : IFeedModel {
+
+    companion object : ISupportMapperHelper<ReplyFeedModel, ReplyFeedEntity> {
+        /**
+         * Transforms the the [source] to the target type
+         */
+        override fun transform(source: ReplyFeedModel): ReplyFeedEntity {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+    }
+}

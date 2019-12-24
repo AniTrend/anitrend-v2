@@ -15,17 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.navigation
+package co.anitrend.data.activity.entity
 
-import android.content.Context
+import androidx.room.Entity
+import co.anitrend.domain.common.entity.IEntity
 
-/**
- * Contract for application navigation components
- *
- *
- */
-interface INavigationController {
-
-    fun navigateToMain(context: Context)
-    fun navigateToSettings(context: Context)
-}
+@Entity
+class ListFeedEntity(
+    override val id: Long
+) : IEntity

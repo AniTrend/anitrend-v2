@@ -15,20 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app.navigation
+package co.anitrend.data.activity.entity
 
-import android.content.Context
-import co.anitrend.app.ui.MainScreen
-import co.anitrend.arch.extension.startNewActivity
-import co.anitrend.core.navigation.INavigationController
+import androidx.room.Entity
+import co.anitrend.domain.common.entity.IEntity
 
-internal class NavigationController : INavigationController {
-
-    override fun navigateToMain(context: Context) {
-        context.startNewActivity<MainScreen>()
-    }
-
-    override fun navigateToSettings(context: Context) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-}
+@Entity
+class MessageFeedEntity(
+    override val id: Long
+) : IEntity

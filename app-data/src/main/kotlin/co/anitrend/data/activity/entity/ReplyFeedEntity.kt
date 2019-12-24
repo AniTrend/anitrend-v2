@@ -15,20 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.about
+package co.anitrend.data.activity.entity
 
-import org.junit.Test
+import androidx.room.Entity
+import co.anitrend.domain.common.entity.IEntity
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-    }
-}
+@Entity
+class ReplyFeedEntity(
+    override val id: Long
+) : IEntity
