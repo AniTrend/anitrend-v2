@@ -26,6 +26,7 @@ import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.core.R
 import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
+import timber.log.Timber
 
 class ThemeUtil(private val settings: IThemeSettings) {
 
@@ -47,15 +48,16 @@ class ThemeUtil(private val settings: IThemeSettings) {
             val systemUiOptions = window.decorView.systemUiVisibility
             when (AppCompatDelegate.getDefaultNightMode()) {
                 AppCompatDelegate.MODE_NIGHT_NO -> {
-                    window.navigationBarColor = window.context.getCompatColor(R.color.colorPrimary)
+                    window.navigationBarColor = getCompatColor(R.color.colorPrimary)
                     window.decorView.systemUiVisibility = systemUiOptions or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 }
                 AppCompatDelegate.MODE_NIGHT_YES -> {
-                    window.navigationBarColor = window.context.getCompatColor(R.color.colorPrimary)
+                    window.navigationBarColor = getCompatColor(R.color.colorPrimary)
                     window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                     window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 }
                 else -> {
+                    Timber.w("Follow system night mode might be deprecated in future")
                     // According to Google/IO other ui options like auto and follow system might be deprecated
                 }
             }
@@ -80,8 +82,8 @@ class ThemeUtil(private val settings: IThemeSettings) {
     }
 
     internal fun applyApplicationTheme(context: AnitrendActivity<*, *>) {
-        context.applyWindowStyle()
         context.setTheme(theme)
+        context.applyWindowStyle()
     }
 
     private fun isThemeLight(theme: AniTrendTheme): Boolean {

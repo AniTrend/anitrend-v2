@@ -17,7 +17,6 @@
 
 package co.anitrend.core.util.config
 
-import android.content.Intent
 import co.anitrend.core.extensions.koinOf
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
@@ -59,12 +58,18 @@ class ConfigurationUtil(
      */
     override fun onResume(activity: AnitrendActivity<*, *>) {
         if (applicationTheme != settings.theme) {
-            val intent: Intent? = activity.intent
-            activity.finish()
-            activity()
-            activity.startActivity(intent)
-            activity()
+            activity.resetActivity()
+            koinOf<ThemeUtil>().applyNightMode()
         }
+    }
+
+
+    private fun AnitrendActivity<*, *>.resetActivity() {
+        val currentIntent = intent
+        finish()
+        invoke()
+        startActivity(currentIntent)
+        invoke()
     }
 
     companion object {

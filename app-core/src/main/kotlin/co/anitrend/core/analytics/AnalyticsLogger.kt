@@ -96,21 +96,16 @@ class AnalyticsLogger(
         }.exceptionOrNull()?.printStackTrace()
     }
 
-    override fun clearUserSession() {
+    override fun clearCrashAnalyticsSession() {
         runCatching {
             Crashlytics.setUserIdentifier(String.empty())
-        }.exceptionOrNull()?.printStackTrace()
-    }
-
-    override fun setCrashAnalyticUser(userIdentifier: String) {
-        runCatching {
-            Crashlytics.setUserIdentifier(userIdentifier)
-        }.exceptionOrNull()?.printStackTrace()
-    }
-
-    override fun resetAnalyticsData() {
-        runCatching {
             analytics.resetAnalyticsData()
+        }.exceptionOrNull()?.printStackTrace()
+    }
+
+    override fun setCrashAnalyticIdentifier(identifier: String) {
+        runCatching {
+            Crashlytics.setUserIdentifier(identifier)
         }.exceptionOrNull()?.printStackTrace()
     }
 

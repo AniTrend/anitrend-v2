@@ -17,6 +17,7 @@
 
 package co.anitrend.core.koin
 
+import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.core.R
 import co.anitrend.core.presenter.CorePresenter
@@ -46,6 +47,9 @@ private val coreModule = module {
         ConfigurationUtil(
             settings = get()
         )
+    }
+    single {
+        SupportDispatchers()
     }
 }
 
