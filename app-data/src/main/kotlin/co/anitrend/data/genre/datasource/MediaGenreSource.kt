@@ -20,17 +20,18 @@ package co.anitrend.data.genre.datasource
 import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.extensions.koinOf
 import co.anitrend.data.model.core.media.MediaGenre
 import co.anitrend.data.util.graphql.GraphUtil
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
-abstract class MediaGenreSource : SupportCoreDataSource() {
+abstract class MediaGenreSource : SupportCoreDataSource(koinOf()) {
 
     /**
      * Registers a dispatcher executing a unit of work and then returns a
      * [androidx.lifecycle.LiveData] observable
      */
-    protected abstract val observable: ISourceObservable<Nothing?, List<MediaGenre>>
+    protected abstract val observable: ISourceObservable<QueryContainerBuilder, List<MediaGenre>>
 
     /**
      * Handles dispatcher for requesting media tags

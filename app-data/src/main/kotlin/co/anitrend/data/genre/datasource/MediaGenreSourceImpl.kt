@@ -31,17 +31,16 @@ import org.koin.core.get
 
 internal class MediaGenreSourceImpl(
     private val mediaRemoteSource: MediaGenreRemoteSource,
-    private val genreLocalSource: MediaGenreLocalSource
+    private val genreLocalSource: MediaGenreLocalSource,
+    private val responseMapper: MediaGenreResponseMapper
 ) : MediaGenreSource() {
-
-    private val mapper = MediaGenreResponseMapper(genreLocalSource)
 
     /**
      * Registers a dispatcher executing a unit of work and then returns a
      * [androidx.lifecycle.LiveData] observable
      */
     override val observable =
-        object : ISourceObservable<Nothing?, List<MediaGenre>> {
+        object : ISourceObservable<QueryContainerBuilder, List<MediaGenre>> {
 
             /**
              * Returns the appropriate observable which we will monitor for updates,
@@ -50,7 +49,7 @@ internal class MediaGenreSourceImpl(
              *
              * @param parameter to use when executing
              */
-            override fun invoke(parameter: Nothing?): LiveData<List<MediaGenre>> {
+            override fun invoke(parameter: QueryContainerBuilder): LiveData<List<MediaGenre>> {
                 return genreLocalSource.findAllLiveData()
             }
         }
@@ -66,12 +65,12 @@ internal class MediaGenreSourceImpl(
 
         launch {
             val controller =
-                mapper.controller(connectivityHelper)
+                responseMapper.controller()
 
             controller(deferred, networkState)
         }
 
-        return observable(null)
+        return observable(queryContainerBuilder)
     }
 
     /**

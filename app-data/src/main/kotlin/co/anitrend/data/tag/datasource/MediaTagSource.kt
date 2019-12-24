@@ -20,11 +20,12 @@ package co.anitrend.data.tag.datasource
 import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.extensions.koinOf
 import co.anitrend.data.model.core.media.MediaTag
 import co.anitrend.data.util.graphql.GraphUtil
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
-abstract class MediaTagSource : SupportCoreDataSource() {
+abstract class MediaTagSource : SupportCoreDataSource(koinOf()) {
 
     /**
      * Registers a dispatcher executing a unit of work and then returns a

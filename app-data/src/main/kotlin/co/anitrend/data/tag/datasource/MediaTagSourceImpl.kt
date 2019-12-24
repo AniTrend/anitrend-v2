@@ -64,7 +64,7 @@ internal class MediaTagSourceImpl(
 
         launch {
             val controller =
-                mapper.controller(connectivityHelper)
+                mapper.controller()
 
             controller(deferred, networkState)
         }
