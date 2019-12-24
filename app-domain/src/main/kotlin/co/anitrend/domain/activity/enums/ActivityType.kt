@@ -20,7 +20,7 @@ package co.anitrend.domain.activity.enums
 /**
  * Activity type enum
  */
-enum class ActivityType() {
+enum class ActivityType {
     /** A text activity */
     TEXT,
     /** A anime list update activity */
