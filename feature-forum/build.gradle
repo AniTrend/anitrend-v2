@@ -39,6 +39,8 @@ dependencies {
     implementation project(":app-core")
     implementation project(":app-data")
     implementation project(":app-domain")
+    implementation project(":app-navigation")
+    implementation project(":emojify")
 
     /** Platform Dependencies */
     implementation project(":support-domain")

@@ -43,6 +43,7 @@ dependencies {
     implementation project(":app-core")
     implementation project(":app-data")
     implementation project(":app-domain")
+    implementation project(":app-navigation")
 
     /** Platform Dependencies */
     implementation project(":support-domain")
