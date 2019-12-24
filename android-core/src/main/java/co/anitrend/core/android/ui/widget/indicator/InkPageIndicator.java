@@ -22,6 +22,7 @@ package co.anitrend.core.android.ui.widget.indicator;
  import android.animation.ValueAnimator;
  import android.content.Context;
  import android.content.res.TypedArray;
+ import android.database.DataSetObserver;
  import android.graphics.Canvas;
  import android.graphics.Paint;
  import android.graphics.Path;
@@ -31,6 +32,7 @@ package co.anitrend.core.android.ui.widget.indicator;
  import android.view.View;
  import android.view.animation.Interpolator;
  import androidx.recyclerview.widget.RecyclerView;
+ import androidx.viewpager.widget.ViewPager;
  import androidx.viewpager2.widget.ViewPager2;
 
  import java.util.Arrays;
@@ -72,7 +74,7 @@ public class InkPageIndicator extends View implements View.OnAttachStateChangeLi
      private float dotBottomY;
 
      // ViewPager
-     private ViewPager2 viewPager;
+     private ViewPager viewPager;
 
      // state
      private int pageCount;
@@ -160,13 +162,12 @@ public class InkPageIndicator extends View implements View.OnAttachStateChangeLi
          addOnAttachStateChangeListener(this);
      }
 
-     public void setViewPager(ViewPager2 viewPager) {
+     public void setViewPager(ViewPager viewPager) {
          this.viewPager = viewPager;
-         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
              @Override
              public void onPageScrolled(int position, float positionOffset,
                                         int positionOffsetPixels) {
-                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                  if (isAttachedToWindow) {
                      float fraction = positionOffset;
                      int currentPosition = pageChanging ? previousPage : currentPage;
@@ -189,7 +190,6 @@ public class InkPageIndicator extends View implements View.OnAttachStateChangeLi
 
              @Override
              public void onPageSelected(int position) {
-                 super.onPageSelected(position);
                  if (isAttachedToWindow) {
                      // this is the main event we're interested in!
                      setSelectedPage(position);
@@ -201,15 +201,16 @@ public class InkPageIndicator extends View implements View.OnAttachStateChangeLi
 
              @Override
              public void onPageScrollStateChanged(int state) {
-                 super.onPageScrollStateChanged(state);
                  // nothing to do
              }
          });
-         setPageCount(viewPager.getAdapter().getItemCount());
-         viewPager.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+         setPageCount(viewPager.getAdapter().getCount());
+         viewPager.getAdapter().registerDataSetObserver(new DataSetObserver() {
+
              @Override
              public void onChanged() {
-                 setPageCount(InkPageIndicator.this.viewPager.getAdapter().getItemCount());
+                 super.onChanged();
+                 setPageCount(InkPageIndicator.this.viewPager.getAdapter().getCount());
              }
          });
          setCurrentPageImmediate();
