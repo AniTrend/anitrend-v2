@@ -34,9 +34,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/lottieAnimationView"
-        app:lottie_rawRes="@raw/mountain"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,20 +45,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-        app:layout_constraintBottom_toTopOf="@+id/inkPageIndicator"
+        android:layout_marginStart="@dimen/xl_margin"
+        android:layout_marginEnd="@dimen/xl_margin"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/horizontalBottomGuideLine"
         app:layout_constraintVertical_bias="0.3"
         tools:text="Welcome message place holder" />
-
-    <co.anitrend.core.android.ui.widget.indicator.InkPageIndicator
-        android:id="@+id/inkPageIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/xl_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </com.jem.liquidswipe.layout.LiquidSwipeConstraintLayout>

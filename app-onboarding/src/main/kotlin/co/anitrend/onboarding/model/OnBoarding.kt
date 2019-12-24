@@ -17,8 +17,13 @@
 
 package co.anitrend.onboarding.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class OnBoarding(
     val resource: Int,
     val backgroundColor: Int,
-    val text: Int
-)
+    val text: String,
+    val textColor: Int
+) : Parcelable

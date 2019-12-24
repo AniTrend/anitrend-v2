@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.ui.pager.SupportPageAdapter
 import co.anitrend.onboarding.model.OnBoarding
+import co.anitrend.onboarding.ui.fragment.OnBoardingContent
 
 class OnBoardingPageAdapter(
     private val onBoardingPages: List<OnBoarding>,
@@ -28,7 +29,11 @@ class OnBoardingPageAdapter(
 ) : SupportPageAdapter(context, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     init {
-
+        titles.addAll(
+            onBoardingPages.map {
+                it.text
+            }
+        )
     }
 
     /**
@@ -37,6 +42,8 @@ class OnBoardingPageAdapter(
      * @param position
      */
     override fun getItem(position: Int): Fragment {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return OnBoardingContent.newInstance(
+            onBoardingPages[position]
+        )
     }
 }

@@ -17,4 +17,5 @@
 
 <resources>
 
+    <string name="onbaording_button_finish">Finish</string>
 </resources>

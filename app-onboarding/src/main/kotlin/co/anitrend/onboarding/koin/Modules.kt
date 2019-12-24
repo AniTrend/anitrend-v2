@@ -15,20 +15,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.auth
+package co.anitrend.onboarding.koin
 
-import org.junit.Test
+import co.anitrend.onboarding.presenter.OnBoardingPresenter
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+private val presenterModule = module {
+    factory {
+        OnBoardingPresenter(
+            context = androidContext(),
+            settings = get()
+        )
     }
 }
+
+private val modules = listOf(presenterModule)
+
+private val koinModules by lazy {
+    loadKoinModules(modules)
+}
+
+/**
+ * loads koin modules with the current
+ */
+fun injectFeatureModules() = koinModules
