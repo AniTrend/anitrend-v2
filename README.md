@@ -8,6 +8,8 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 ###### Feel free to donate the weeb cause with [Patreon](https://www.patreon.com/wax911) or [PayPal](https://www.paypal.me/mmax9)
 
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_large)
+
 # __The AniTrend Road Map (What's Next?)__
 - AniTrend projects can be found [here](https://github.com/AniTrend/anitrend-v2/projects) which will contain a brief description of what a given version number will focus on e.t.c
 - Milestones for each project can also be found [here](https://github.com/AniTrend/anitrend-v2/milestones), these are more detailed and show the actual task required to satisfy the project
@@ -26,6 +28,7 @@ Development documentation for AniTrend is still a work in progress so for the ti
 - **[POEditor](https://poeditor.com/join/project/dicYaYCroE)** for translating translating resource to multiple languages
 - **[TravisCI](https://travis-ci.org/AniTrend/anitrend-v2)** continuous integration service to build and test
 - **[Codacy](https://app.codacy.com/project/AniTrend/anitrend-v2)** automated code reviews and monitors code quality over time
+- **[FOSSA](https://https://app.fossa.com)** Open source dependency management for enterprise teams
 
 > Big thanks to **[POEditor](https://poeditor.com)** for supportings the open source movement! AniTrend was approved for a free localization project. 
 
@@ -118,9 +121,6 @@ Copyright (C) 2018  AniTrend
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
-
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_large)
 
 # Terms Of Service
 
