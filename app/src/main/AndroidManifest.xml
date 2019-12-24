@@ -18,7 +18,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="co.anitrend.app">
+    package="co.anitrend">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -38,12 +38,12 @@
         <!--
         app:appCategory="social"-->
 
-        <activity android:name="co.anitrend.app.ui.MainScreen"
+        <activity android:name=".ui.activity.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider
             android:authorities="${applicationId}.provider"
-            android:name="co.anitrend.arch.core.provider.SupportFileProvider"
+            android:name=".arch.core.provider.SupportFileProvider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

@@ -15,15 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app.ui.presenter
+package co.anitrend.koin
 
-import android.content.Context
-import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
+import co.anitrend.ui.activity.MainScreen
+import co.anitrend.presenter.MainPresenter
+import co.anitrend.core.koin.coreModules
+import co.anitrend.data.koin.dataModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-class MainPresenter(
-    context: Context,
-    settings: Settings
-) : CorePresenter(context, settings) {
-
+private val presenterModule = module {
+    scope(named<MainScreen>()) {
+        scoped {
+            MainPresenter(
+                context = androidContext(),
+                settings = get()
+            )
+        }
+    }
 }
+
+val appModules = listOf(
+    presenterModule
+) + coreModules + dataModules

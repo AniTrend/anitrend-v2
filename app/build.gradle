@@ -32,7 +32,7 @@ repositories {
 
 android {
     defaultConfig {
-        applicationId "co.anitrend.app"
+        applicationId "co.anitrend"
     }
     buildTypes {
         release {
@@ -54,8 +54,10 @@ dependencies {
 
     /** Feature Modules */
     implementation project(":app-splash")
+    implementation project(":app-navigation")
     implementation project(":app-onboarding")
 
+    /** Dynamic Modules */
     runtimeOnly project(":feature-about")
     runtimeOnly project(":feature-account")
     runtimeOnly project(":feature-news")

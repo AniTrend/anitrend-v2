@@ -25,7 +25,7 @@
                 android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_popular_series"
-                    android:icon="@drawable/ic_live_tv_24dp"
+                    android:icon="@drawable/ic_tv_24dp"
                     android:title="@string/nav_popular_series"
                     app:showAsAction="ifRoom|withText"/>
 

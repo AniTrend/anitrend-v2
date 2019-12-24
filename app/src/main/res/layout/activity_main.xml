@@ -22,7 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainScreen">
+    tools:context=".ui.activity.MainScreen">
 
     <include layout="@layout/content_main" />
 
@@ -34,15 +34,17 @@
         android:hapticFeedbackEnabled="true"
         android:backgroundTint="@color/primaryColor"
         app:hideOnScroll="true"
-        app:navigationIcon="@drawable/ic_menu_adaptable_24dp" />
+        app:fabAlignmentMode="end"
+        app:navigationIcon="@drawable/ic_menu_open_24dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingShortcutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:tint="@color/white_1000"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_gesture_white_24dp"/>
+        app:backgroundTint="@color/anitrendColorAccent"
+        app:srcCompat="@drawable/ic_explore_24dp"/>
 
     <FrameLayout
         android:id="@+id/bottomNavigationDrawer"

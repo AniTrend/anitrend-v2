@@ -24,7 +24,7 @@ import co.anitrend.navigation.extensions.forIntent
 object NavigationTargets {
 
     object Main : INavigationRouter, INavigationTarget {
-        override val packageName = "app.ui.activity"
+        override val packageName = "ui.activity"
         override val className = "MainScreen"
 
         override val navRouterIntent = forIntent()

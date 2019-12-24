@@ -15,12 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app
+package co.anitrend
 
-import co.anitrend.app.koin.appModules
+import co.anitrend.koin.appModules
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.core.koin.coreModules
-import co.anitrend.data.koin.dataModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -34,7 +32,7 @@ class App: AniTrendApplication() {
      * in [onCreate] as the first call to assure all injections are available
      */
     override fun initializeDependencyInjection() {
-        startKoin{
+        startKoin {
             androidLogger()
             androidContext(
                 applicationContext

@@ -32,7 +32,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.app.ui
+package co.anitrend.ui.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -41,8 +41,8 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.commit
-import co.anitrend.app.R
-import co.anitrend.app.ui.presenter.MainPresenter
+import co.anitrend.R
+import co.anitrend.presenter.MainPresenter
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.core.ui.activity.AnitrendActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
