@@ -22,11 +22,13 @@ import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.data.common.ISupportPagingResponse
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import io.github.wax911.library.model.body.GraphContainer
 import io.github.wax911.library.util.getError
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import timber.log.Timber
 
@@ -38,7 +40,8 @@ import timber.log.Timber
  */
 internal class GraphQLController<S, D> private constructor(
     private val responseMapper: GraphQLMapper<S, D>,
-    private val supportConnectivity: SupportConnectivity
+    private val supportConnectivity: SupportConnectivity,
+    private val supportDispatchers: SupportDispatchers
 ) : ISupportResponse<Deferred<Response<GraphContainer<S>>>, D>,
     ISupportPagingResponse<Deferred<Response<GraphContainer<S>>>> {
 
@@ -87,13 +90,17 @@ internal class GraphQLController<S, D> private constructor(
         return connectedRun({
             networkState.postValue(NetworkState.Loading)
             val result = runCatching {
-                val response = resource.await()
+                val response = withContext(supportDispatchers.io) {
+                    resource.await()
+                }
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody?.errors.isNullOrEmpty()) {
                         val result = if (responseBody != null) {
                             val mapped = responseMapper.onResponseMapFrom(responseBody)
-                            responseMapper.onResponseDatabaseInsert(mapped)
+                            withContext(supportDispatchers.io) {
+                                responseMapper.onResponseDatabaseInsert(mapped)
+                            }
                             mapped
                         } else null
                         networkState.postValue(NetworkState.Success)
@@ -154,13 +161,17 @@ internal class GraphQLController<S, D> private constructor(
     ) {
         connectedRun({
             val result = runCatching {
-                val response = resource.await()
+                val response = withContext(supportDispatchers.io) {
+                    resource.await()
+                }
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         if (responseBody.errors.isNullOrEmpty()) {
                             val mapped = responseMapper.onResponseMapFrom(responseBody)
-                            responseMapper.onResponseDatabaseInsert(mapped)
+                            withContext(supportDispatchers.io) {
+                                responseMapper.onResponseDatabaseInsert(mapped)
+                            }
                         } else {
                             val errors = responseBody.errors
                             errors?.forEach {
@@ -196,7 +207,12 @@ internal class GraphQLController<S, D> private constructor(
     companion object {
         fun <S, D> newInstance(
             responseMapper: GraphQLMapper<S, D>,
-            supportConnectivity: SupportConnectivity
-        ) = GraphQLController(responseMapper, supportConnectivity)
+            supportConnectivity: SupportConnectivity,
+            supportDispatchers: SupportDispatchers
+        ) = GraphQLController(
+            responseMapper,
+            supportConnectivity,
+            supportDispatchers
+        )
     }
 }

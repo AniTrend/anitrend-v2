@@ -17,23 +17,28 @@
 
 package co.anitrend.data.extensions
 
-import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.GraphQLController
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import com.google.gson.reflect.TypeToken
+import org.koin.core.context.GlobalContext
 import java.lang.reflect.Type
 
 /**
  * Extension to get any type of given generic type
  */
-inline fun <reified T> getTypeToken(): Type =
+internal inline fun <reified T> getTypeToken(): Type =
     object : TypeToken<T>() {}.type
+
+
+internal inline fun <reified T> koinOf() =
+    GlobalContext.get().koin.get<T>()
 
 /**
  * Extension to help us create a controller from a a mapper instance
  */
-internal fun <S, D> GraphQLMapper<S, D>.controller(
-    supportConnectivity: SupportConnectivity
-) = GraphQLController.newInstance(
-    responseMapper = this, supportConnectivity = supportConnectivity
-)
+internal fun <S, D> GraphQLMapper<S, D>.controller() =
+    GraphQLController.newInstance(
+        responseMapper = this,
+        supportConnectivity = koinOf(),
+        supportDispatchers = koinOf()
+    )
