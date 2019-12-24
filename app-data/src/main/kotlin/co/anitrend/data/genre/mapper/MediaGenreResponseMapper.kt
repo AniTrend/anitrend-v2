@@ -52,14 +52,9 @@ internal class MediaGenreResponseMapper(
      * @see [invoke]
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<MediaGenre>) {
-        if (mappedData.isNotEmpty()) {
-            val current = mediaGenreLocalSource.count()
-            if (current < 1)
-                mediaGenreLocalSource.insert(mappedData)
-            else
-                mediaGenreLocalSource.upsert(mappedData)
-        }
+        if (mappedData.isNotEmpty())
+            mediaGenreLocalSource.upsert(mappedData)
         else
-            Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
+            Timber.tag(moduleTag).i("onResponseDatabaseInsert -> mappedData is empty")
     }
 }
