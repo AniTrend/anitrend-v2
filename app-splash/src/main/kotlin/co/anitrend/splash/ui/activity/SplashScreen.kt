@@ -36,12 +36,13 @@ package co.anitrend.splash.ui.activity
 
 import android.os.Bundle
 import androidx.fragment.app.commit
-import co.anitrend.splash.R
-import co.anitrend.splash.ui.fragment.SplashContent
-import co.anitrend.splash.ui.presenter.SplashPresenter
-import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
+import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.splash.R
 import co.anitrend.splash.koin.injectFeatureModules
+import co.anitrend.splash.ui.fragment.SplashContent
+import co.anitrend.splash.presenter.SplashPresenter
 import org.koin.android.ext.android.inject
 
 class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
@@ -52,6 +53,14 @@ class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
      * @return supportPresenter of the generic type specified
      */
     override val supportPresenter by inject<SplashPresenter>()
+
+    /**
+     * Can be used to configure custom theme styling as desired
+     */
+    override fun configureActivity() {
+        super.configureActivity()
+        hideStatusBarAndNavigationBar()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

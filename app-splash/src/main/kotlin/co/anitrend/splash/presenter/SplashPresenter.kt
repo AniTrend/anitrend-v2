@@ -15,9 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.ui.presenter
+package co.anitrend.splash.presenter
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
 import co.anitrend.navigation.NavigationTargets
@@ -31,11 +32,13 @@ class SplashPresenter(
     /**
      * Decide which screen to open
      */
-    suspend fun firstRunCheck() {
-        delay(350)
+    suspend fun firstRunCheck(activity: FragmentActivity?) {
+        delay(1200)
         if (supportPreference.isNewInstallation)
             NavigationTargets.OnBoarding(context)
         else
             NavigationTargets.Main(context)
+
+        activity?.finish()
     }
 }

@@ -24,14 +24,21 @@
     android:layout_height="match_parent"
     tools:context="co.anitrend.splash.ui.activity.SplashScreen">
 
+    <ProgressBar
+        android:layout_width="@dimen/menu_item_icon_size"
+        android:layout_height="@dimen/menu_item_icon_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/lg_margin"
+        android:layout_marginEnd="@dimen/lg_margin" />
+
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lg_margin"
         android:orientation="vertical"
         android:rotation="@integer/splash_stripe_rotation_factor"
-        android:layout_marginTop="@dimen/lg_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -76,9 +83,10 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/series_image_lg"
-        android:layout_height="@dimen/series_image_lg"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        android:id="@+id/appCompatImageView"
+        android:layout_width="@dimen/series_image_sm"
+        android:layout_height="@dimen/series_image_sm"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -87,9 +95,38 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
+        app:layout_constraintVertical_bias="0.0">
+
+        <co.anitrend.arch.ui.view.text.SingleLineTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/splash_label_segment_first"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold" />
+
+        <co.anitrend.arch.ui.view.text.SingleLineTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/splash_label_segment_second"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/colorStateBlue"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/md_margin"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
@@ -97,36 +134,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
+            android:text="@string/app_splash_powered_by"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            tools:text="@string/app_splash_powered_by" />
+            android:textStyle="bold" />
 
         <co.anitrend.arch.ui.view.text.SingleLineTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/lg_margin"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/lg_margin"
+            android:text="@string/app_splash_provider"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            tools:text="@string/app_splash_provider" />
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="@dimen/wide_image_md"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:indeterminate="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,9 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.navigation.NavigationTargets
 import co.anitrend.splash.R
-import co.anitrend.splash.ui.presenter.SplashPresenter
+import co.anitrend.splash.presenter.SplashPresenter
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -113,7 +112,9 @@ class SplashContent : SupportFragment<Nothing, SplashPresenter, Nothing>() {
      */
     override fun onFetchDataInitialize() {
         // some state checks and finally
-        launch { supportPresenter.firstRunCheck() }
+        launch {
+            supportPresenter.firstRunCheck(activity)
+        }
         onUpdateUserInterface()
     }
 

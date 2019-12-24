@@ -17,4 +17,6 @@
 
 <resources>
 
+    <string name="splash_label_segment_first">Ani</string>
+    <string name="splash_label_segment_second">Trend</string>
 </resources>

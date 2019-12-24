@@ -17,7 +17,7 @@
 
 package co.anitrend.splash.koin
 
-import co.anitrend.splash.ui.presenter.SplashPresenter
+import co.anitrend.splash.presenter.SplashPresenter
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
