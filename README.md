@@ -60,7 +60,6 @@ Development documentation for AniTrend is still a work in progress so for the ti
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [Paging](https://developer.android.com/topic/libraries/architecture/paging/)
 - [Worker Manager](https://developer.android.com/topic/libraries/architecture/workmanager/)
-- [Navigation](https://developer.android.com/topic/libraries/architecture/navigation.html/)
 
 #### Analytics
 
