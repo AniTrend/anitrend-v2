@@ -16,6 +16,7 @@ jobs:
     - name: Configure properties
       working-directory: ./scripts
       run: |
-        sh ./configuration.sh
+        chmod +x configuration.sh
+        ./configuration.sh
     - name: Build with Gradle
       run: ./gradlew test
