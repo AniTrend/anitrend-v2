@@ -50,6 +50,7 @@ import com.google.android.material.navigation.NavigationView
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.util.SupportUiKeyStore
+import co.anitrend.navigation.NavigationTargets
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.currentScope
 
@@ -136,7 +137,7 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                Toast.makeText(this, "onMenuItemClick", Toast.LENGTH_SHORT).show()
+                NavigationTargets.Search(this)
                 return true
             }
         }
