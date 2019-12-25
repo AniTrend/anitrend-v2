@@ -14,10 +14,9 @@ jobs:
       with:
         java-version: 1.8
     - name: Configure properties
-      working-directory: ./data/.config
+      working-directory: ./scripts
       run: |
-      touch secrets.properties
-      echo cliendId=\"cliend_id\" >> .secrets.properties
-      echo clientSecret=\"client_secret\" >> .secrets.properties
+      chmod +x configuration.sh
+      ./configuration.sh
     - name: Build with Gradle
       run: ./gradlew test
