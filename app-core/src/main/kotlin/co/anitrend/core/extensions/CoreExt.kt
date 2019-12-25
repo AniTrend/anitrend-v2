@@ -18,6 +18,7 @@
 package co.anitrend.core.extensions
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.view.View
@@ -26,6 +27,7 @@ import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.AniTrendApplication
+import co.anitrend.core.R
 import co.anitrend.core.ui.activity.AnitrendActivity
 import com.afollestad.materialdialogs.DialogBehavior
 import com.afollestad.materialdialogs.MaterialDialog
@@ -58,6 +60,24 @@ fun FragmentActivity?.createDialog(
         .lifecycleOwner(this)
         .cancelOnTouchOutside(false)
 }
+
+/**
+ * Check if the system is in night mode
+ */
+fun Context.isEnvironmentNightMode()=
+    resources.getBoolean(R.bool.isNightMode)
+
+/**
+ * Check if the system should use light status bar
+ */
+fun Context.isLightStatusBar()=
+    resources.getBoolean(R.bool.isLightStatusBar)
+
+/**
+ * Check if the system should use light navigation bar
+ */
+fun Context.isLightNavigationBar()=
+    resources.getBoolean(R.bool.isLightNavigationBar)
 
 fun Activity.makeStatusBarTransparent() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

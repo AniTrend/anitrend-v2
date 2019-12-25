@@ -17,6 +17,7 @@
 
 package co.anitrend.core.util.theme
 
+import android.annotation.TargetApi
 import android.os.Build
 import android.view.View
 import android.view.Window
@@ -24,6 +25,7 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.core.R
+import co.anitrend.core.extensions.isEnvironmentNightMode
 import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
 import timber.log.Timber
@@ -42,23 +44,30 @@ class ThemeUtil(private val settings: IThemeSettings) {
             return getPersonalizedTheme()
         }
 
+    @TargetApi(Build.VERSION_CODES.O)
+    private fun AnitrendActivity<*, *>.applyNightModeDecorations(systemUiOptions: Int) {
+        window.navigationBarColor = getCompatColor(R.color.colorPrimary)
+        window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private fun AnitrendActivity<*, *>.applyDayModeDecorations(systemUiOptions: Int) {
+        window.navigationBarColor = getCompatColor(R.color.colorPrimary)
+        window.decorView.systemUiVisibility = systemUiOptions or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+    }
+
 
     private fun AnitrendActivity<*, *>.applyWindowStyle() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val systemUiOptions = window.decorView.systemUiVisibility
             when (AppCompatDelegate.getDefaultNightMode()) {
-                AppCompatDelegate.MODE_NIGHT_NO -> {
-                    window.navigationBarColor = getCompatColor(R.color.colorPrimary)
-                    window.decorView.systemUiVisibility = systemUiOptions or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                }
-                AppCompatDelegate.MODE_NIGHT_YES -> {
-                    window.navigationBarColor = getCompatColor(R.color.colorPrimary)
-                    window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                    window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                }
+                AppCompatDelegate.MODE_NIGHT_NO -> applyDayModeDecorations(systemUiOptions)
+                AppCompatDelegate.MODE_NIGHT_YES -> applyNightModeDecorations(systemUiOptions)
                 else -> {
-                    Timber.w("Follow system night mode might be deprecated in future")
                     // According to Google/IO other ui options like auto and follow system might be deprecated
+                    if (isEnvironmentNightMode()) applyNightModeDecorations(systemUiOptions)
+                    else applyDayModeDecorations(systemUiOptions)
                 }
             }
         }

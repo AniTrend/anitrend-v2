@@ -54,12 +54,12 @@ class Settings(context: Context) : SupportPreference(context),
             }
         }
 
-    override var theme: AniTrendTheme = AniTrendTheme.LIGHT
+    override var theme: AniTrendTheme = AniTrendTheme.SYSTEM
         get() = AniTrendTheme.valueOf(
             sharedPreferences.getString(
                 stringOf(R.string.settings_configuration_theme),
                 null
-            ) ?: AniTrendTheme.LIGHT.name
+            ) ?: AniTrendTheme.SYSTEM.name
         )
         set(value) {
             field = value
