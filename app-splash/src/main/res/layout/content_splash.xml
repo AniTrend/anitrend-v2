@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/app_splash_powered_by"
+            android:text="@string/splash_label_powered_by"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:textStyle="bold" />
 
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/lg_margin"
-            android:text="@string/app_splash_provider"
+            android:text="@string/splash_label_provider"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textStyle="bold" />
 

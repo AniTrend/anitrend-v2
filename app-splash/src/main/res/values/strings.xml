@@ -17,6 +17,10 @@
 
 <resources>
 
+    <string name="splash_label_description">Powered by AniList</string>
+    <string name="splash_label_powered_by">Powered by</string>
+    <string name="splash_label_provider">AniList</string>
+
     <string name="splash_label_segment_first">Ani</string>
     <string name="splash_label_segment_second">Trend</string>
 </resources>

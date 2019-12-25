@@ -44,8 +44,4 @@
 
     <string name="label_text_loading">Loading, please wait..</string>
     <string name="label_text_action_retry">Reload</string>
-
-    <string name="app_splash_description">Powered by AniList</string>
-    <string name="app_splash_powered_by">Powered by</string>
-    <string name="app_splash_provider">AniList</string>
 </resources>
