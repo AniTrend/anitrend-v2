@@ -46,7 +46,7 @@ class AuthenticationHelperWithContextTest {
     fun callBackUrlIsCorrect() {
         // This test may fail due to Uri class not being mock-able
         val expected = "https://${BuildConfig.apiAuthUrl}/authorize?client_id=${BuildConfig.cliendId}&response_type=token"
-        val authUri = AuthenticationHelper.authenticationUri
+        val authUri = AuthenticationHelper.AUTHENTICATION_URI
         val actual = URLDecoder.decode(authUri.toString(), "UTF-8")
 
         assertEquals(expected, actual)
