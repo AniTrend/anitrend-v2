@@ -1,0 +1,48 @@
+android {
+    compileSdkVersion compileSdk
+    defaultConfig {
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+    lintOptions {
+        abortOnError false
+        ignoreWarnings false
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += [ "-Xuse-experimental=kotlin.Experimental" ]
+    }
+    androidExtensions {
+        experimental = true
+    }
+}

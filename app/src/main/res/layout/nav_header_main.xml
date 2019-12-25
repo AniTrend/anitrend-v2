@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_vertical_spacing" />
 
-    <io.wax911.support.ui.view.text.SingleLineTextView
+    <co.anitrend.arch.ui.view.text.SingleLineTextView
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:textColor="?titleColor"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <io.wax911.support.ui.view.text.SingleLineTextView
+    <co.anitrend.arch.ui.view.text.SingleLineTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?subtitleColor"

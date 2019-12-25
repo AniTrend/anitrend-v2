@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <!-- settings keys -->
+    <string name="settings_authentication_id" translatable="false">_authenticationId</string>
+    <string name="settings_is_authenticated" translatable="false">_isAuthenticated</string>
+
+    <string name="settings_authentication_logged_in" translatable="false">_isAuthenticated</string>
+    <string name="settings_authentication_session_id" translatable="false">_sessionId</string>
+    <string name="settings_authentication_premium_access" translatable="false">_premiumAccess</string>
+
+    <string name="settings_configuration_theme" translatable="false">_theme</string>
+    <string name="settings_configuration_locale" translatable="false">_locale</string>
+
+    <string name="settings_privacy_crash_analytics" translatable="false">_crashAnalytics</string>
+    <string name="settings_privacy_usage_analytics" translatable="false">_usageAnalytics</string>
+</resources>

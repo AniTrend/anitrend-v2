@@ -1,4 +1,0 @@
-fragment MediaImage on MediaCoverImage {
-    large
-    medium
-}

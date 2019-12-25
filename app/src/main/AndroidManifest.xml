@@ -17,16 +17,13 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    package="co.anitrend.app">
+    package="co.anitrend">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".App"
@@ -41,24 +38,17 @@
         <!--
         app:appCategory="social"-->
 
-        <activity android:name=".view.activity.base.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".view.activity.index.MainActivity"
+        <activity android:name=".ui.activity.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider
             android:authorities="${applicationId}.provider"
-            android:name=".service.FileProviderService"
+            android:name=".arch.core.provider.SupportFileProvider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_paths"/>
+                android:resource="@xml/support_file_provider_paths"/>
         </provider>
 
     </application>

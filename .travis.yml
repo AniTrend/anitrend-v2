@@ -6,8 +6,13 @@ sudo: false
 env:
   global:
     - ANDROID_API_LEVEL=29
-    - ANDROID_BUILD_TOOLS_VERSION=29.0.1
+    - ANDROID_BUILD_TOOLS_VERSION=29.0.3
     - TRAVIS_SECURE_ENV_VARS=true
+
+deploy:
+  provider: firebase
+  token:
+    secure: BOvWypEnsGXVtIMtq1qBGIR58ywhMHexJQM147+XL1nmtWHf0YnVhAc/wcnOsJwmH+gdrmoFj8Rw33scOptjkuLCqdPTz1gyofQG0lineOVLw6iG4SIg5B1LJMPnxojKthraSTKWt19eviy5AQGkoGlWqk1ked5jiDJtJQo2Yj8kCcciIPv929lAKTwKl1z180upQKQN8VhEwnWVodqdDNc4lGlp9Kfz/iNSHF5j4m7NL04Yfn/KC4DJ6+28bNwwnWIB1IUySEY1NhnUi0ipBzm+rlET1qLo3qJZO1cWiSRX2phuH28Ls7vLtcvN1dJx9fcCd9i6877pL4ncplhnRSwbAlHEZxmLbHv8yNMM+Xw01cwXUcW5H10+4Q+93NuVWgxQqq1tVdInfXWKxPVg9jwRWU1RdS+lfzDFxjuj2TEtYxbOnBmQYK12jcjQlnt1gr4RycBkgXnODtSygUULiw4W65KIL6Fm/DvTIdMpNyopV/1VEcLLjQs+9uetXXjgITS1TIIYVNcVAsc1v/VYpiAQ0jnWE+gSaKyslPvHoC83zuN8ryF4VcsPpBTjI/KAqDM2MUaNuRUxIiHy8Q5oUpfV/03exQb3dxwtyM1TaLmrPaorQ6y5ecr3upOSFSRdX077kKJbsdbGO8VPJN5n/P4+2F96PbfKBK9KaDDqLCw=
 
 android:
   components:
@@ -55,9 +60,8 @@ cache:
     - $HOME/.android/build-cache
 
 before_script:
-  - touch ./data/.config/secrets.properties
-  - echo cliendId=\"cliend_id\" >> ./data/.config/secrets.properties
-  - echo clientSecret=\"client_secret\" >> ./data/.config/secrets.properties
+  - chmod +x ./scripts/configuration.sh
+  - ./scripts/configuration.sh
   
 script:
     - ./gradlew test

@@ -1,0 +1,95 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+plugins {
+    id("com.android.library")
+    id("kotlin-android")
+    id("kotlin-kapt")
+    id("kotlin-android-extensions")
+}
+
+apply from: "../gradle/gradle-common-config.gradle"
+apply from: "../gradle/gradle-common-dependencies.gradle"
+
+android {
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.expandingProjections": "true",
+                        "room.incremental": "true"
+                ]
+            }
+        }
+        defaultConfig {
+            consumerProguardFiles 'consumer-rules.pro'
+        }
+    }
+
+    buildTypes {
+        buildTypes.each {
+            def secretsProps = new Properties()
+            file(".config/secrets.properties").withInputStream {
+                stream -> secretsProps.load(stream)
+            }
+            it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
+            it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
+
+            def configProps = new Properties()
+            file(".config/configuration.properties").withInputStream {
+                stream -> configProps.load(stream)
+            }
+            it.buildConfigField("String", "redirectUri", configProps['redirectUri'])
+            it.buildConfigField("String", "registrationUrl", configProps['registrationUrl'])
+            it.buildConfigField("String", "apiAuthUrl", configProps['apiAuthUrl'])
+            it.buildConfigField("String", "apiUrl", configProps['apiUrl'])
+
+            it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
+        }
+    }
+}
+
+dependencies {
+
+    /** Platform Dependencies */
+    implementation project(":support-data")
+    implementation project(":support-domain")
+    implementation project(":support-ext")
+    implementation project(":graphql")
+    implementation project(':app-domain')
+
+    /** Architecture Components */
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-ktx:$room"
+    kapt "androidx.room:room-compiler:$room"
+
+    /** Retrofit Libraries */
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+
+    /** Retrofit Libraries */
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
+}
