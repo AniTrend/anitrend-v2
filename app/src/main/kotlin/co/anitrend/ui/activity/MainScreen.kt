@@ -160,9 +160,10 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
         when (menu) {
             R.id.nav_theme -> {
 
-                recreate()
             }
-            R.id.nav_about -> Toast.makeText(this, "About", Toast.LENGTH_SHORT).show()
+            R.id.nav_about -> {
+                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show()
+            }
             R.id.nav_popular_series -> {
                 selectedTitle = R.string.nav_popular_series
                 supportFragment = null
