@@ -70,7 +70,7 @@ object GraphUtil {
      *
      * @see SORT_ORDER_EXCEPTIONS
      */
-    fun Enum<*>.applySortOrderUsing(settings: ISortOrderSettings): String{
+    fun <E : Enum<E>> Enum<E>.applySortOrderUsing(settings: ISortOrderSettings): String {
         val sortType = name
         if (settings.isSortOrderDescending) {
             return if (SORT_ORDER_EXCEPTIONS.contains(sortType))
