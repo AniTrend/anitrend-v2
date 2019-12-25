@@ -18,4 +18,4 @@ jobs:
         chmod +x ./scripts/configuration.sh
         ./scripts/configuration.sh
     - name: Build with Gradle
-      run: ./gradlew test
+      run: ./gradlew test --stacktrace
