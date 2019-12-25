@@ -61,7 +61,7 @@ cache:
 
 before_script:
   - chmod +x ./scripts/configuration.sh
-  - ./configuration.sh
+  - ./scripts/configuration.sh
   
 script:
     - ./gradlew test
