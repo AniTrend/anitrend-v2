@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function create_directories {
-    mkdir -p ../data/config/
-    cd ../data/
+    mkdir -p ../app-data/config/
+    cd ../app-data/
 }
 
 function rename_directory {
