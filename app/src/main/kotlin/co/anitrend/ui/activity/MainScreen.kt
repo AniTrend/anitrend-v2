@@ -93,7 +93,7 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     override fun initializeComponents(savedInstanceState: Bundle?) {
         bottomAppBar.apply {
             setNavigationOnClickListener {
-                bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
             }
         }
         floatingShortcutButton.setOnClickListener {
@@ -119,10 +119,10 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     }
 
     override fun onBackPressed() {
-        when (bottomDrawerBehavior?.state) {
+        when (bottomDrawerBehavior.state) {
             BottomSheetBehavior.STATE_EXPANDED,
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 return
             }
             else -> super.onBackPressed()
@@ -189,7 +189,7 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
 
         if (menu != R.id.nav_theme) {
             bottomAppBar.setTitle(selectedTitle)
-            bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
