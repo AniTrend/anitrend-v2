@@ -14,9 +14,8 @@ jobs:
       with:
         java-version: 1.8
     - name: Configure properties
-      working-directory: ./scripts
       run: |
         chmod +x configuration.sh
-        ./configuration.sh
+        ./scripts/configuration.sh
     - name: Build with Gradle
       run: ./gradlew test
