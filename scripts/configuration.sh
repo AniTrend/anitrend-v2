@@ -1,13 +1,8 @@
 #!/bin/bash
 
 function create_directories {
-    mkdir -p ./app-data/config/
-    cd ./app-data/
-}
-
-function rename_directory {
-    mv config .config
-    cd .config
+    mkdir -p ./app-data/.config/
+    cd ./app-data/.config/
 }
 
 function create_files {
@@ -18,6 +13,5 @@ function create_files {
 
 
 create_directories
-rename_directory
 create_files
 
