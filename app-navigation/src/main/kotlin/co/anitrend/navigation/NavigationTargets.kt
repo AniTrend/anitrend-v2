@@ -37,6 +37,13 @@ object NavigationTargets {
         override val navRouterIntent = forIntent()
     }
 
+    object Search : INavigationRouter, INavigationTarget {
+        override val packageName = "search.ui.activity"
+        override val className = "SearchScreen"
+
+        override val navRouterIntent = forIntent()
+    }
+
     object Settings : INavigationRouter, INavigationTarget {
         override val packageName = "settings.ui.activity"
         override val className = "SettingsScreen"
