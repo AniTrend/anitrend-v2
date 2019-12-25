@@ -60,9 +60,8 @@ cache:
     - $HOME/.android/build-cache
 
 before_script:
-  - touch ./data/.config/secrets.properties
-  - echo cliendId=\"cliend_id\" >> ./data/.config/secrets.properties
-  - echo clientSecret=\"client_secret\" >> ./data/.config/secrets.properties
+  - chmod +x ./scripts/configuration.sh
+  - ./configuration.sh
   
 script:
     - ./gradlew test
