@@ -23,7 +23,6 @@ ext {
     ktx = '1.1.0'
     fragmentKtx = '1.1.0'
     workerKtx = '2.2.0'
-    navigation = '2.1.0'
     firebase = '17.2.1'
 
     koin = '2.0.1'
