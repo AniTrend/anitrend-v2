@@ -46,15 +46,22 @@ class ThemeUtil(private val settings: IThemeSettings) {
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun AnitrendActivity<*, *>.applyNightModeDecorations(systemUiOptions: Int) {
-        window.navigationBarColor = getCompatColor(R.color.colorPrimary)
-        window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        window.decorView.systemUiVisibility = systemUiOptions and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        val primaryColor = getCompatColor(R.color.colorPrimary)
+        window.navigationBarColor = primaryColor
+        window.statusBarColor = primaryColor
+        window.decorView.systemUiVisibility = systemUiOptions and
+                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR  and
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun AnitrendActivity<*, *>.applyDayModeDecorations(systemUiOptions: Int) {
-        window.navigationBarColor = getCompatColor(R.color.colorPrimary)
-        window.decorView.systemUiVisibility = systemUiOptions or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        val primaryColor = getCompatColor(R.color.colorPrimary)
+        window.navigationBarColor = primaryColor
+        window.statusBarColor = primaryColor
+        window.decorView.systemUiVisibility = systemUiOptions or
+                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 
 
