@@ -24,7 +24,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 
-class App: AniTrendApplication() {
+class App : AniTrendApplication() {
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
