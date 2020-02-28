@@ -9,7 +9,7 @@ ext {
     glide = '4.11.0'
     retrofit = '2.7.2'
 
-    material = '1.1.0-rc02'
+    material = '1.1.0'
     preferenceX = "1.1.0"
     swipeRefreshX = "1.0.0"
     constraintX = '1.1.3'
