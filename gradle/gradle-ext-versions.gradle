@@ -47,7 +47,7 @@ ext {
     smartTab = '2.0.0'
     tapTarget = '3.0.0'
     okHttpLogger = '4.4.0'
-    threetenabp = '1.2.1'
+    threetenabp = '1.2.2'
 
     workflow = '0.22.1'
 }
