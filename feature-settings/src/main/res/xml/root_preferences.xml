@@ -17,36 +17,30 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <Preference
+        app:title="@string/preference_title_accounts"
+        app:summary="@string/preference_summary_accounts"
+        app:icon="@drawable/ic_account_circle_24dp"
+        app:key="@string/preference_key_accounts"
+        app:allowDividerBelow="true"/>
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+    <Preference
+        app:title="@string/preference_title_locale"
+        app:summary="@string/preference_summary_locale"
+        app:icon="@drawable/ic_translate_24dp"
+        app:fragment=""/>
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+    <Preference
+        app:title="@string/preference_title_privacy"
+        app:summary="@string/preference_summary_privacy"
+        app:icon="@drawable/ic_policy_24dp"
+        app:fragment=""/>
 
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
-
-    </PreferenceCategory>
+    <Preference
+        app:title="@string/preference_title_theme"
+        app:summary="@string/preference_summary_theme"
+        app:icon="@drawable/ic_color_lens_24dp"
+        app:key="@string/preference_key_accounts"
+        app:allowDividerBelow="true"/>
 
 </PreferenceScreen>
