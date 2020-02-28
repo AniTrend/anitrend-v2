@@ -18,7 +18,7 @@
 package co.anitrend.data.tag.usecase
 
 import co.anitrend.arch.data.model.UserInterfaceState
-import co.anitrend.data.model.core.media.MediaTag
+import co.anitrend.data.media.model.remote.MediaTag
 import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.domain.tag.interactors.MediaTagUseCase
 

@@ -20,7 +20,7 @@ package co.anitrend.data.tag.datasource.local
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.model.core.media.MediaTag
+import co.anitrend.data.media.model.remote.MediaTag
 import co.anitrend.arch.data.dao.ISupportQuery
 
 @Dao

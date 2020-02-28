@@ -22,7 +22,7 @@ import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.data.extensions.controller
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
-import co.anitrend.data.model.core.media.MediaTag
+import co.anitrend.data.media.model.remote.MediaTag
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.async
