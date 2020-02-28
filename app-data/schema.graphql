@@ -825,6 +825,8 @@ type InternalPage {
         mediaId: Int,
         #Filter by media recommendation id
         mediaRecommendationId: Int,
+        #Filter by the media on the authenticated user's lists
+        onList: Boolean,
         #Filter by total rating of the recommendation
         rating: Int,
         #Filter by total rating of the recommendation
@@ -2224,6 +2226,8 @@ type Page {
         mediaId: Int,
         #Filter by media recommendation id
         mediaRecommendationId: Int,
+        #Filter by the media on the authenticated user's lists
+        onList: Boolean,
         #Filter by total rating of the recommendation
         rating: Int,
         #Filter by total rating of the recommendation
@@ -2800,6 +2804,8 @@ type Query {
         mediaId: Int,
         #Filter by media recommendation id
         mediaRecommendationId: Int,
+        #Filter by the media on the authenticated user's lists
+        onList: Boolean,
         #Filter by total rating of the recommendation
         rating: Int,
         #Filter by total rating of the recommendation
