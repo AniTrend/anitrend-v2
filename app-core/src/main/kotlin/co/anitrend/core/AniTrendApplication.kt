@@ -20,16 +20,14 @@ package co.anitrend.core
 import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.analytics.AnalyticsLogger
-import co.anitrend.core.extensions.analytics
-import co.anitrend.core.extensions.koinOf
-import co.anitrend.core.settings.Settings
-import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.util.theme.ThemeUtil
 import io.wax911.emojify.EmojiManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 import timber.log.Timber
 
 abstract class AniTrendApplication : Application(), Configuration.Provider {
@@ -53,7 +51,9 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
     protected open fun plantLoggingTree() {
         when (BuildConfig.DEBUG) {
             true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(analytics as AnalyticsLogger)
+            else -> Timber.plant(
+                get<ISupportAnalytics>() as AnalyticsLogger
+            )
         }
     }
 
@@ -61,8 +61,8 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
      * Applies theme on application instance
      */
     protected open fun applyNightMode() {
-        // apply application theme on application instance
-        koinOf<ThemeUtil>().applyNightMode()
+        // apply application theme on application instance'
+        get<ThemeUtil>().applyNightMode()
     }
 
     /**
@@ -85,11 +85,11 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        checkApplicationMigration()
         initializeDependencyInjection()
+        checkApplicationMigration()
         plantLoggingTree()
-        applyNightMode()
         initializeEmoji()
+        applyNightMode()
     }
 
     /**
