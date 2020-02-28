@@ -46,7 +46,7 @@ ext {
     markwon = '4.0.2'
     smartTab = '2.0.0'
     tapTarget = '3.0.0'
-    okHttpLogger = '4.0.1'
+    okHttpLogger = '4.4.0'
     threetenabp = '1.2.1'
 
     workflow = '0.22.1'
