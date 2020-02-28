@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2019  AniTrend
+  ~ Copyright (C) 2020  AniTrend
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU General Public License as published by
@@ -16,12 +16,8 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.fragment.app.FragmentContainerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contentFrame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main" />
+<resources>
+    <!-- Preference Keys -->
+    <string name="preference_key_accounts" translatable="false">_accounts</string>
+    <string name="preference_key_themes" translatable="false">_themes</string>
+</resources>

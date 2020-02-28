@@ -19,17 +19,21 @@
     <string name="title_activity_settings_screen">Settings</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="preference_title_accounts">Accounts</string>
+    <string name="preference_title_locale">Locale</string>
+    <string name="preference_title_privacy">Privacy</string>
+    <string name="preference_title_theme">Themes</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="preference_title_locale_config">Application language</string>
+    <string name="preference_title_privacy_analytics_config">Usage analytics</string>
+    <string name="preference_title_privacy_crash_analytics_config">Crash reporting</string>
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- Preference Summaries -->
+    <string name="preference_summary_accounts">Access information about current accounts</string>
+    <string name="preference_summary_locale">Configure which language to use</string>
+    <string name="preference_summary_privacy">Dial in the right level of privacy for you</string>
+    <string name="preference_summary_theme">Configure the look and feel of the application</string>
+
+    <string name="preference_summary_privacy_analytics_config">Allows usage statics to be sent to the developer</string>
+    <string name="preference_summary_privacy_crash_analytics_config">Allows crashes to be reported automatically as they happen</string>
 </resources>

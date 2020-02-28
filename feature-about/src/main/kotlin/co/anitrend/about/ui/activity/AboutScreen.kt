@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,25 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.settings.ui.activity
+package co.anitrend.about.ui.activity
 
 import android.os.Bundle
-import androidx.fragment.app.commit
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
-import co.anitrend.settings.R
-import co.anitrend.settings.ui.fragment.SettingsFragment
-import kotlinx.android.synthetic.main.settings_activity.*
 import org.koin.android.ext.android.inject
 
-class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
-        setSupportActionBar(bottomAppBar)
-    }
-
+class AboutScreen : AnitrendActivity<Nothing, CorePresenter>() {
     /**
      * Should be created lazily through injection or lazy delegate
      *
@@ -50,7 +39,7 @@ class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        onUpdateUserInterface()
+
     }
 
     /**
@@ -60,8 +49,6 @@ class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
      * Check implementation for more details
      */
     override fun onUpdateUserInterface() {
-        supportFragmentManager.commit {
-            replace(R.id.contentFrame, SettingsFragment.newInstance())
-        }
+
     }
 }

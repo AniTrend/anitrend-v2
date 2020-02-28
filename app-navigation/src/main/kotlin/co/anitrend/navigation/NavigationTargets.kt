@@ -50,4 +50,11 @@ object NavigationTargets {
 
         override val navRouterIntent = forIntent()
     }
+
+    object About : INavigationRouter, INavigationTarget {
+        override val packageName = "about.ui.activity"
+        override val className = "AboutScreen"
+
+        override val navRouterIntent = forIntent()
+    }
 }
