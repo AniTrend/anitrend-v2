@@ -24,18 +24,16 @@ import android.view.ViewGroup
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.onboarding.R
+import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import co.anitrend.onboarding.model.OnBoarding
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import com.airbnb.lottie.LottieDrawable
-import kotlinx.android.synthetic.main.onboarding_content.*
 import org.koin.android.ext.android.inject
 
 class OnBoardingContent : SupportFragment<OnBoarding, OnBoardingPresenter, OnBoarding>() {
 
     private val onBoarding by argument<OnBoarding>(PARAM_KEY)
-
-    override val inflateLayout: Int = R.layout.onboarding_content
+    private lateinit var binding: OnboardingContentBinding
 
     /**
      * Invoke view model observer to watch for changes
@@ -64,6 +62,41 @@ class OnBoardingContent : SupportFragment<OnBoarding, OnBoardingPresenter, OnBoa
     }
 
     /**
+     * Called to have the fragment instantiate its user interface view.
+     * This is optional, and non-graphical fragments can return null. This will be called between
+     * [.onCreate] and [.onActivityCreated].
+     *
+     * A default View can be returned by calling [.Fragment] in your
+     * constructor. Otherwise, this method returns null.
+     *
+     *
+     * It is recommended to **only** inflate the layout in this method and move
+     * logic that operates on the returned View to [.onViewCreated].
+     *
+     *
+     * If you return a View from here, you will later be called in
+     * [.onDestroyView] when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = OnboardingContentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    /**
      * Called immediately after [.onCreateView]
      * has returned, but before any saved state has been restored in to the view.
      * This gives subclasses a chance to initialize themselves once
@@ -80,15 +113,15 @@ class OnBoardingContent : SupportFragment<OnBoarding, OnBoardingPresenter, OnBoa
                 backgroundColor
             )
 
-            lottieAnimationView.repeatCount = LottieDrawable.INFINITE
-            lottieAnimationView.setAnimation(resource)
+            binding.lottieAnimationView.repeatCount = LottieDrawable.INFINITE
+            binding.lottieAnimationView.setAnimation(resource)
 
-            onBoardingTitle.setTextColor(
+            binding.onBoardingTitle.setTextColor(
                 view.context.getCompatColor(
                     textColor
                 )
             )
-            onBoardingTitle.text = text
+            binding.onBoardingTitle.text = text
         }
     }
 
@@ -104,7 +137,7 @@ class OnBoardingContent : SupportFragment<OnBoarding, OnBoardingPresenter, OnBoa
      * Check implementation for more details
      */
     override fun onUpdateUserInterface() {
-        lottieAnimationView.playAnimation()
+        binding.lottieAnimationView.playAnimation()
     }
 
     /**
