@@ -22,6 +22,9 @@ import co.anitrend.data.review.model.remote.Review
 import co.anitrend.data.review.model.remote.edge.ReviewEdge
 import co.anitrend.domain.common.model.PageInfo
 
+/** [ReviewConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/reviewconnection.doc.html)
+ * Review connection
+ */
 data class ReviewConnection(
     override val edges: List<ReviewEdge>?,
     override val nodes: List<Review>?,
