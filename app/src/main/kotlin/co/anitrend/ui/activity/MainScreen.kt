@@ -35,7 +35,7 @@ import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.util.SupportUiKeyStore
 import co.anitrend.navigation.NavigationTargets
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.androidx.scope.currentScope
+import org.koin.androidx.scope.lifecycleScope
 
 class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,17 +44,17 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     }
 
     @IdRes
-    private var selectedItem: Int = R.id.nav_popular_series
+    private var selectedItem: Int = R.id.nav_home
 
     @StringRes
-    private var selectedTitle: Int = R.string.nav_popular_series
+    private var selectedTitle: Int = R.string.nav_home
 
     /**
      * Should be created lazily through injection or lazy delegate
      *
      * @return supportPresenter of the generic type specified
      */
-    override val supportPresenter by currentScope.inject<MainPresenter>()
+    override val supportPresenter by lifecycleScope.inject<MainPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
         setSupportActionBar(bottomAppBar)
         bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         if (intent.hasExtra(SupportUiKeyStore.arg_redirect))
-            selectedItem = intent.getIntExtra(SupportUiKeyStore.arg_redirect, R.id.nav_popular_series)
+            selectedItem = intent.getIntExtra(SupportUiKeyStore.arg_redirect, R.id.nav_home)
     }
 
     /**
@@ -123,13 +123,17 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
                 NavigationTargets.Search(this)
                 return true
             }
+            R.id.action_settings -> {
+                NavigationTargets.Settings(this)
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (selectedItem != item.itemId) {
-            if (item.groupId != R.id.nav_group_customization) {
+            if (item.groupId != R.id.nav_group_support) {
                 selectedItem = item.itemId
                 onNavigate(selectedItem)
             } else
@@ -141,19 +145,34 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     private fun onNavigate(@IdRes menu: Int) {
         var supportFragment: SupportFragment<*, *, *>? = null
         when (menu) {
-            R.id.nav_theme -> {
-
+            R.id.nav_home -> {
+                selectedTitle = R.string.nav_home
+                supportFragment = null
+            }
+            R.id.nav_episode_feed -> {
+                selectedTitle = R.string.nav_episodes
+                supportFragment = null
+            }
+            R.id.nav_news -> {
+                selectedTitle = R.string.nav_news
+                supportFragment = null
+            }
+            R.id.nav_feed -> {
+                selectedTitle = R.string.nav_feed
+                supportFragment = null
+            }
+            R.id.nav_review -> {
+                selectedTitle = R.string.nav_review
+                supportFragment = null
             }
             R.id.nav_about -> {
-                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show()
+                NavigationTargets.About(this)
             }
-            R.id.nav_popular_series -> {
-                selectedTitle = R.string.nav_popular_series
-                supportFragment = null
+            R.id.nav_donate -> {
+                Toast.makeText(this, "Donate", Toast.LENGTH_SHORT).show()
             }
-            R.id.nav_popular_movies -> {
-                selectedTitle = R.string.nav_popular_movies
-                supportFragment = null
+            R.id.nav_discord -> {
+                Toast.makeText(this, "Discord", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -165,13 +184,21 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
      */
     private fun attachSelectedNavigationItem(@IdRes menu: Int, supportFragment: SupportFragment<*, *, *>?) {
         supportFragment?.apply {
-            supportFragmentActivity = this@apply
-            supportFragmentManager.commit {
-                replace(R.id.contentFrame, this@apply, tag)
+            val backStack = supportFragmentManager.findFragmentByTag(moduleTag)
+            if (backStack != null) {
+                supportFragmentActivity = backStack as SupportFragment<*, *, *>
+                supportFragmentManager.commit {
+                    replace(R.id.contentFrame, backStack, moduleTag)
+                }
+            } else {
+                supportFragmentActivity = this@apply
+                supportFragmentManager.commit {
+                    replace(R.id.contentFrame, this@apply, moduleTag)
+                }
             }
         }
 
-        if (menu != R.id.nav_theme) {
+        if (menu != R.id.nav_about || menu != R.id.nav_discord || menu != R.id.nav_donate) {
             bottomAppBar.setTitle(selectedTitle)
             bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -188,6 +215,6 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
         if (selectedItem != 0)
             onNavigate(selectedItem)
         else
-            onNavigate(R.id.nav_popular_series)
+            onNavigate(R.id.nav_home)
     }
 }
