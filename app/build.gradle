@@ -91,10 +91,6 @@ dependencies {
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
 
-    /** Material Dialogs */
-    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
-    implementation "com.afollestad.material-dialogs:input:$materialDialogs"
-
     /** Flex Box */
     implementation "com.google.android:flexbox:$flexBox"
 
