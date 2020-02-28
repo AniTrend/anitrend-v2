@@ -34,14 +34,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import org.koin.core.context.GlobalContext
 
-val analytics by lazy {
-    koinOf<ISupportAnalytics>()
-}
-
-inline fun <reified T> koinOf() =
-    GlobalContext.get().koin.get<T>()
-
-
 fun AnitrendActivity<*, *>.recreateModules() {
     val coreApplication = applicationContext as AniTrendApplication
     runCatching {
