@@ -20,6 +20,7 @@ package co.anitrend.data.recommendation.model.contract
 import co.anitrend.data.media.model.remote.Media
 import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.domain.recommendation.enums.RecommendationRating
 
 /**
  * The media the recommendation is from
