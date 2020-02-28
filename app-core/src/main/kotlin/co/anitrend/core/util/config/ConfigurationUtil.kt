@@ -17,7 +17,6 @@
 
 package co.anitrend.core.util.config
 
-import co.anitrend.core.extensions.koinOf
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.util.config.contract.IConfigurationUtil
@@ -30,7 +29,9 @@ import co.anitrend.core.util.theme.ThemeUtil
  * Configuration helper for the application
  */
 class ConfigurationUtil(
-    private val settings: IConfigurationSettings
+    private val settings: IConfigurationSettings,
+    private val localeUtil: LocaleUtil,
+    private val themeUtil: ThemeUtil
 ) : IConfigurationUtil {
 
     override val moduleTag: String = this::class.java.simpleName
@@ -47,8 +48,8 @@ class ConfigurationUtil(
     override fun onCreate(activity: AnitrendActivity<*, *>) {
         applicationTheme = settings.theme
         applicationLocale = settings.locale
-        koinOf<LocaleUtil>().applyApplicationLocale(activity)
-        koinOf<ThemeUtil>().applyApplicationTheme(activity)
+        localeUtil.applyApplicationLocale(activity)
+        themeUtil.applyApplicationTheme(activity)
     }
 
     /**
@@ -59,7 +60,7 @@ class ConfigurationUtil(
     override fun onResume(activity: AnitrendActivity<*, *>) {
         if (applicationTheme != settings.theme) {
             activity.resetActivity()
-            koinOf<ThemeUtil>().applyNightMode()
+            themeUtil.applyNightMode()
         }
     }
 

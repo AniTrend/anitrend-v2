@@ -45,7 +45,9 @@ private val coreModule = module {
     }
     factory {
         ConfigurationUtil(
-            settings = get()
+            settings = get(),
+            localeUtil = get(),
+            themeUtil = get()
         )
     }
     single {
