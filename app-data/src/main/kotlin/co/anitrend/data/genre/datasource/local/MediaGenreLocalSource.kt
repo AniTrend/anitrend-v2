@@ -20,7 +20,7 @@ package co.anitrend.data.genre.datasource.local
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.media.model.remote.MediaGenre
 import co.anitrend.arch.data.dao.ISupportQuery
 
 @Dao

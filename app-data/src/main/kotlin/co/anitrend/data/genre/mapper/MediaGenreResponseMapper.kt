@@ -20,7 +20,7 @@ package co.anitrend.data.genre.mapper
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.model.remote.GenreCollection
-import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.media.model.remote.MediaGenre
 import io.github.wax911.library.model.body.GraphContainer
 import timber.log.Timber
 

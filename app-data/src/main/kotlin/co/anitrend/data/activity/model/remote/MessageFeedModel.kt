@@ -21,9 +21,8 @@ import androidx.room.PrimaryKey
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.activity.entity.MessageFeedEntity
 import co.anitrend.data.activity.model.remote.common.IFeedModel
-import co.anitrend.data.model.core.user.User
+import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.activity.enums.ActivityType
-import com.google.gson.annotations.SerializedName
 
 /** [MessageActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/messageactivity.doc.html)
  * User message activity

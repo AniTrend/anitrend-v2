@@ -32,7 +32,10 @@ import kotlin.reflect.KClass
 internal open class EndpointFactory<E: Any>(
     url: String = BuildConfig.apiUrl,
     endpoint: KClass<E>
-) : SupportEndpointFactory<E>(url = url, endpoint = endpoint), KoinComponent {
+) : SupportEndpointFactory<E>(
+    url = url,
+    endpoint = endpoint
+), KoinComponent {
 
     override val retrofit by inject<Retrofit>()
 

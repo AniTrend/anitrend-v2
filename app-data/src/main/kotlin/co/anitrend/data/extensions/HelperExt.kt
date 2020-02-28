@@ -26,12 +26,12 @@ import java.lang.reflect.Type
 /**
  * Extension to get any type of given generic type
  */
-internal inline fun <reified T> getTypeToken(): Type =
+internal inline fun <reified T> typeTokenOf(): Type =
     object : TypeToken<T>() {}.type
 
 
 internal inline fun <reified T> koinOf() =
-    GlobalContext.get().koin.get<T>()
+    GlobalContext().get().get<T>()
 
 /**
  * Extension to help us create a controller from a a mapper instance

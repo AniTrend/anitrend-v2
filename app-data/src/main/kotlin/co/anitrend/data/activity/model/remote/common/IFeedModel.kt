@@ -18,7 +18,7 @@
 package co.anitrend.data.activity.model.remote.common
 
 import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.user.entities.IUser
+import co.anitrend.data.user.model.contract.IUser
 import co.anitrend.domain.activity.enums.ActivityType
 
 /** [Activity](https://anilist.github.io/ApiV2-GraphQL-Docs/activityunion.doc.html)

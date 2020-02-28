@@ -20,8 +20,8 @@ package co.anitrend.data.activity.model.remote
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.activity.entity.ListFeedEntity
 import co.anitrend.data.activity.model.remote.common.IFeedModel
-import co.anitrend.data.model.core.media.Media
-import co.anitrend.data.model.core.user.User
+import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.activity.enums.ActivityType
 
 /** [ListActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/listactivity.doc.html)

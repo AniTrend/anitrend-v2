@@ -17,10 +17,10 @@
 
 package co.anitrend.data.favourite.model.remote
 
-import co.anitrend.data.model.core.character.connection.CharacterConnection
-import co.anitrend.data.model.core.media.connection.MediaConnection
-import co.anitrend.data.model.core.staff.connection.StaffConnection
-import co.anitrend.data.model.core.studio.connection.StudioConnection
+import co.anitrend.data.character.model.remote.connection.CharacterConnection
+import co.anitrend.data.media.model.remote.connection.MediaConnection
+import co.anitrend.data.staff.model.remote.connection.StaffConnection
+import co.anitrend.data.studio.model.remote.connection.StudioConnection
 
 /** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)
  * User's favourite anime, manga, characters, staff & studios

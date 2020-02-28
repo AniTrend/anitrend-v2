@@ -23,11 +23,10 @@ import co.anitrend.data.extensions.controller
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
-import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.media.model.remote.MediaGenre
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.koin.core.get
 
 internal class MediaGenreSourceImpl(
     private val mediaRemoteSource: MediaGenreRemoteSource,

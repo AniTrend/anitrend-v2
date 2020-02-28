@@ -99,8 +99,6 @@ private val networkModule = module {
     }
 }
 
-internal fun store() = koinOf<AniTrendStore>()
-
 val dataModules = listOf(
     coreModule, networkModule
 ) + mediaTagModules + mediaGenreModules

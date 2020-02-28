@@ -21,7 +21,7 @@ import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.data.extensions.koinOf
-import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.media.model.remote.MediaGenre
 import co.anitrend.data.util.graphql.GraphUtil
 import io.github.wax911.library.model.request.QueryContainerBuilder
 

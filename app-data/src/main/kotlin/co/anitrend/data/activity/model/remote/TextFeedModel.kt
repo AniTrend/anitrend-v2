@@ -19,7 +19,7 @@ package co.anitrend.data.activity.model.remote
 
 import androidx.room.PrimaryKey
 import co.anitrend.data.activity.model.remote.common.IFeedModel
-import co.anitrend.data.model.core.user.User
+import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.activity.enums.ActivityType
 
 /** [TextActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/textactivity.doc.html)

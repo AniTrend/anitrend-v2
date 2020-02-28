@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.activity.entity.ReplyFeedEntity
 import co.anitrend.data.activity.model.remote.common.IFeedModel
-import co.anitrend.data.model.core.user.User
+import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.activity.enums.ActivityType
 
 /** [ActivityReply](https://anilist.github.io/ApiV2-GraphQL-Docs/textactivity.doc.html)

@@ -18,7 +18,7 @@
 package co.anitrend.data.genre.usecase
 
 import co.anitrend.arch.data.model.UserInterfaceState
-import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.media.model.remote.MediaGenre
 import co.anitrend.data.genre.repository.MediaGenreRepository
 import co.anitrend.domain.genre.interactors.MediaGenreUseCase
 

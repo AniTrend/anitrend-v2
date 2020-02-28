@@ -20,7 +20,7 @@ package co.anitrend.data.genre.repository
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.data.genre.datasource.MediaGenreSource
-import co.anitrend.data.model.core.media.MediaGenre
+import co.anitrend.data.media.model.remote.MediaGenre
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
 class MediaGenreRepository(
