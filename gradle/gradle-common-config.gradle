@@ -3,8 +3,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        versionCode versionCode
+        versionName versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -44,5 +44,8 @@ android {
     }
     androidExtensions {
         experimental = true
+    }
+    viewBinding {
+        enabled = true
     }
 }
