@@ -20,7 +20,7 @@ ext {
     room = '2.2.4'
     paging = '2.1.1'
     pagingKtx = '2.1.1'
-    ktx = '1.2.0-rc01'
+    ktx = '1.2.0'
     fragmentKtx = '1.2.0'
     workerKtx = '2.3.0'
     firebase = '17.2.1'
