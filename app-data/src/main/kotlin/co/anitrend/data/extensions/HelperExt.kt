@@ -17,6 +17,7 @@
 
 package co.anitrend.data.extensions
 
+import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.arch.controller.GraphQLController
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import com.google.gson.reflect.TypeToken
@@ -29,7 +30,7 @@ import java.lang.reflect.Type
 internal inline fun <reified T> typeTokenOf(): Type =
     object : TypeToken<T>() {}.type
 
-
+@AniTrendExperimentalFeature
 internal inline fun <reified T> koinOf() =
     GlobalContext().get().get<T>()
 
