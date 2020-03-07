@@ -21,19 +21,32 @@ import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.arch.data.dao.ISupportQuery
+import co.anitrend.data.arch.common.dao.ILocalSource
 
 @Dao
-interface JsonWebTokenDao: ISupportQuery<JsonWebToken?> {
+interface JsonWebTokenLocalSource: ILocalSource<JsonWebToken?> {
 
-    @Query("select count(id) from JsonWebToken")
-    fun count(): Int
+    @Query("""
+        select count(id) from JsonWebToken
+        """
+    )
+    override suspend fun count(): Int
 
-    @Query("select * from JsonWebToken order by id asc limit 1")
+    @Query("""
+            select * from JsonWebToken order by id desc limit 1
+            """
+    )
     fun findLatest(): JsonWebToken?
 
-    @Query("select * from JsonWebToken limit :limit offset :offset")
-    fun findAll(offset: Int, limit: Int): List<JsonWebToken>?
+    @Query("""
+        select * from JsonWebToken
+        """
+    )
+    fun findAll(): List<JsonWebToken>?
 
-    @Query("delete from JsonWebToken")
-    fun clearTable()
+    @Query("""
+        delete from JsonWebToken
+        """
+    )
+    override suspend fun clear()
 }
