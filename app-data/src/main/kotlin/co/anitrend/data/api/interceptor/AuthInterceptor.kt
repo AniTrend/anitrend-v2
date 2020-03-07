@@ -19,7 +19,7 @@ package co.anitrend.data.api.interceptor
 
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.domain.entities.isUnauthorized
-import co.anitrend.data.auth.AuthenticationHelper
+import co.anitrend.data.auth.util.AuthenticationHelper
 import okhttp3.*
 
 /**

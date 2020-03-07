@@ -20,6 +20,7 @@ package co.anitrend.data.auth
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.BuildConfig
+import co.anitrend.data.auth.util.AuthenticationHelper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

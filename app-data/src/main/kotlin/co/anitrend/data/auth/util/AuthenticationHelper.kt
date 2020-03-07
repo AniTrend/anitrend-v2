@@ -15,12 +15,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth
+package co.anitrend.data.auth.util
 
 import android.net.Uri
 import co.anitrend.data.BuildConfig
 import co.anitrend.arch.data.auth.SupportAuthentication
-import co.anitrend.arch.extension.preference.SupportPreference
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import okhttp3.Request
