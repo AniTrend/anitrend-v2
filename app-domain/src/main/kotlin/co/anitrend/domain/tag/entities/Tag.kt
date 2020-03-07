@@ -22,10 +22,10 @@ import co.anitrend.domain.common.entity.IEntity
 data class Tag(
     override val id: Long,
     val name: String,
-    val description: String?,
-    val category: String?,
-    val rank: Int?,
-    val isGeneralSpoiler: Boolean?,
-    val isMediaSpoiler: Boolean?,
-    val isAdult: Boolean?
+    val description: String? = null,
+    val category: String? = null,
+    val rank: Int,
+    val isGeneralSpoiler: Boolean,
+    val isMediaSpoiler: Boolean,
+    val isAdult: Boolean
 ) : IEntity
