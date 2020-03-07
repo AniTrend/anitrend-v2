@@ -55,13 +55,8 @@ object GraphUtil {
      */
     @AniTrendExperimentalFeature
     internal fun minify(rawData: String?): String? {
-        if (!rawData.isNullOrBlank()) {
-            return rawData.replace(" ", "")
-                .replace("\t", " ")
-                .replace("\n", " ")
-                .replaceFirst("mutation", "mutation ")
-                .replaceFirst("query", "query ")
-        }
+        if (!rawData.isNullOrBlank())
+            return rawData.trimIndent()
         return rawData
     }
 
