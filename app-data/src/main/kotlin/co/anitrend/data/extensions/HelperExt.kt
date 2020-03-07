@@ -17,6 +17,8 @@
 
 package co.anitrend.data.extensions
 
+import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.arch.controller.GraphQLController
 import co.anitrend.data.arch.mapper.GraphQLMapper
@@ -37,9 +39,12 @@ internal inline fun <reified T> koinOf() =
 /**
  * Extension to help us create a controller from a a mapper instance
  */
-internal fun <S, D> GraphQLMapper<S, D>.controller() =
+internal fun <S, D> GraphQLMapper<S, D>.controller(
+    connectivity: SupportConnectivity,
+    dispatchers: SupportDispatchers
+) =
     GraphQLController.newInstance(
         responseMapper = this,
-        supportConnectivity = koinOf(),
-        supportDispatchers = koinOf()
+        supportConnectivity = connectivity,
+        supportDispatchers = dispatchers
     )
