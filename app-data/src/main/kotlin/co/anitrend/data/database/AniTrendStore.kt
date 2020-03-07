@@ -24,7 +24,7 @@ import androidx.room.RoomDatabase
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.database.migration.MIGRATION_1_2
-import co.anitrend.data.auth.datasource.local.JsonWebTokenDao
+import co.anitrend.data.auth.datasource.local.JsonWebTokenLocalSource
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.media.model.remote.MediaGenre
@@ -38,7 +38,7 @@ import co.anitrend.data.media.model.remote.MediaTag
 )
 abstract class AniTrendStore: RoomDatabase() {
 
-    abstract fun jsonWebTokenDao(): JsonWebTokenDao
+    abstract fun jsonWebTokenDao(): JsonWebTokenLocalSource
     abstract fun mediaTagDao(): MediaTagLocalSource
     abstract fun mediaGenreDao(): MediaGenreLocalSource
 
