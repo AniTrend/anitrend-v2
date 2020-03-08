@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.repository
+package co.anitrend.data.genre.entity
 
-import co.anitrend.arch.data.model.UserInterfaceState
-import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.data.genre.datasource.MediaGenreSource
-import co.anitrend.data.media.model.remote.MediaGenre
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.genre.entities.Genre
-import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
-internal class MediaGenreRepository(
-    private val dataSource: MediaGenreSource
-) : SupportRepository(dataSource),
-    IMediaGenreRepository<UserInterfaceState<List<Genre>>> {
+@Entity
+data class GenreEntity(
+    @PrimaryKey(autoGenerate = true)
+    override val id: Long = 0,
+    val genre: String
+) : IEntity {
 
-    /**
-     * @return media genres
-     */
-    override fun getMediaGenres() =
-        UserInterfaceState.create(
-            model = dataSource.getMediaGenres(),
-            source = dataSource
+    companion object : ISupportMapperHelper<GenreEntity, Genre> {
+        /**
+         * Transforms the the [source] to the target type
+         */
+        override fun transform(source: GenreEntity) = Genre(
+            name = source.genre
         )
+    }
 }

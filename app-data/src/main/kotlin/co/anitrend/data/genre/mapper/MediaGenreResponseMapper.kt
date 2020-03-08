@@ -19,14 +19,15 @@ package co.anitrend.data.genre.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
+import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.remote.GenreCollection
 import co.anitrend.data.media.model.remote.MediaGenre
 import io.github.wax911.library.model.body.GraphContainer
 import timber.log.Timber
 
 internal class MediaGenreResponseMapper(
-    private val mediaGenreLocalSource: MediaGenreLocalSource
-) : GraphQLMapper<GenreCollection, List<MediaGenre>>() {
+    private val localSource: MediaGenreLocalSource
+) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -34,12 +35,12 @@ internal class MediaGenreResponseMapper(
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     *
-     * @see [invoke]
      */
-    override suspend fun onResponseMapFrom(source: GraphContainer<GenreCollection>): List<MediaGenre> {
+    override suspend fun onResponseMapFrom(source: GraphContainer<GenreCollection>): List<GenreEntity> {
         return source.data?.genreCollection?.map {
-            MediaGenre(it)
+            MediaGenre.transform(
+                MediaGenre(it)
+            )
         }.orEmpty()
     }
 
@@ -48,13 +49,11 @@ internal class MediaGenreResponseMapper(
      * called in [retrofit2.Callback.onResponse]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     *
-     * @see [invoke]
      */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaGenre>) {
+    override suspend fun onResponseDatabaseInsert(mappedData: List<GenreEntity>) {
         if (mappedData.isNotEmpty())
-            mediaGenreLocalSource.upsert(mappedData)
+            localSource.upsert(mappedData)
         else
-            Timber.tag(moduleTag).i("onResponseDatabaseInsert -> mappedData is empty")
+            onEmptyResponse()
     }
 }
