@@ -17,44 +17,32 @@
 
 package co.anitrend.navigation
 
-import co.anitrend.navigation.contract.INavigationRouter
-import co.anitrend.navigation.contract.INavigationTarget
-import co.anitrend.navigation.extensions.forIntent
+import co.anitrend.navigation.contract.NavigationComponent
 
 object NavigationTargets {
 
-    object Main : INavigationRouter, INavigationTarget {
-        override val packageName = "ui.activity"
-        override val className = "MainScreen"
+    object Main : NavigationComponent(
+        packageName = "ui.activity",
+        className = "MainScreen"
+    )
 
-        override val navRouterIntent = forIntent()
-    }
+    object OnBoarding : NavigationComponent(
+        packageName = "onboarding.ui.activity",
+        className = "OnBoardingScreen"
+    )
 
-    object OnBoarding : INavigationRouter, INavigationTarget {
-        override val packageName = "onboarding.ui.activity"
-        override val className = "OnBoardingScreen"
+    object Search : NavigationComponent(
+        packageName = "search.ui.activity",
+        className = "SearchScreen"
+    )
 
-        override val navRouterIntent = forIntent()
-    }
+    object Settings : NavigationComponent(
+        packageName = "settings.ui.activity",
+        className = "SettingsScreen"
+    )
 
-    object Search : INavigationRouter, INavigationTarget {
-        override val packageName = "search.ui.activity"
-        override val className = "SearchScreen"
-
-        override val navRouterIntent = forIntent()
-    }
-
-    object Settings : INavigationRouter, INavigationTarget {
-        override val packageName = "settings.ui.activity"
-        override val className = "SettingsScreen"
-
-        override val navRouterIntent = forIntent()
-    }
-
-    object About : INavigationRouter, INavigationTarget {
-        override val packageName = "about.ui.activity"
-        override val className = "AboutScreen"
-
-        override val navRouterIntent = forIntent()
-    }
+    object About : NavigationComponent(
+        packageName = "about.ui.activity",
+        className = "AboutScreen"
+    )
 }

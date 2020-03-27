@@ -17,7 +17,7 @@
 
 package co.anitrend.navigation.contract
 
-interface INavigationTarget {
+internal interface INavigationTarget {
     val packageName: String
     val className: String
 }
