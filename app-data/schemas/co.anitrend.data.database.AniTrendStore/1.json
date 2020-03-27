@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fae82b648a29196f13e00f2f9dc4fba7",
+    "identityHash": "1f3a1296004378a43855296dc8171ed9",
     "entities": [
       {
         "tableName": "JsonWebToken",
@@ -41,14 +41,14 @@
               "userId",
               "accessToken"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_JsonWebToken_userId_accessToken` ON `${TABLE_NAME}` (`userId`, `accessToken`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_JsonWebToken_userId_accessToken` ON `${TABLE_NAME}` (`userId`, `accessToken`)"
           }
         ],
         "foreignKeys": []
       },
       {
-        "tableName": "MediaTag",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `category` TEXT, `rank` INTEGER, `isGeneralSpoiler` INTEGER, `isMediaSpoiler` INTEGER, `isAdult` INTEGER, PRIMARY KEY(`id`))",
+        "tableName": "TagEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `category` TEXT, `rank` INTEGER, `isGeneralSpoiler` INTEGER NOT NULL, `isMediaSpoiler` INTEGER NOT NULL, `isAdult` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -84,19 +84,19 @@
             "fieldPath": "isGeneralSpoiler",
             "columnName": "isGeneralSpoiler",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "isMediaSpoiler",
             "columnName": "isMediaSpoiler",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "isAdult",
             "columnName": "isAdult",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -109,9 +109,15 @@
         "foreignKeys": []
       },
       {
-        "tableName": "MediaGenre",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`genre` TEXT NOT NULL, PRIMARY KEY(`genre`))",
+        "tableName": "GenreEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `genre` TEXT NOT NULL)",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "genre",
             "columnName": "genre",
@@ -121,9 +127,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "genre"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -132,7 +138,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fae82b648a29196f13e00f2f9dc4fba7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f3a1296004378a43855296dc8171ed9')"
     ]
   }
 }
