@@ -25,14 +25,15 @@ import co.anitrend.arch.extension.invisible
 import co.anitrend.arch.extension.visible
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.ui.activity.AnitrendActivity
-import co.anitrend.onboarding.R
+import co.anitrend.onboarding.databinding.OnboardingScreenBinding
 import co.anitrend.onboarding.koin.injectFeatureModules
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.ui.pager.OnBoardingPageAdapter
-import kotlinx.android.synthetic.main.onboarding_screen.*
 import org.koin.android.ext.android.inject
 
 class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
+
+    private lateinit var binding: OnboardingScreenBinding
 
     private val onBoardingPageAdapter by lazy(LAZY_MODE_UNSAFE) {
         OnBoardingPageAdapter(
@@ -74,11 +75,11 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
                 positionOffsetPixels: Int
             ) {
                 if (position == 5) {
-                    finishOnBoarding.visible()
-                    inkPageIndicator.invisible()
+                    binding.finishOnBoarding.visible()
+                    binding.inkPageIndicator.invisible()
                 } else {
-                    finishOnBoarding.gone()
-                    inkPageIndicator.visible()
+                    binding.finishOnBoarding.gone()
+                    binding.inkPageIndicator.visible()
                 }
             }
 
@@ -110,7 +111,8 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.onboarding_screen)
+        binding = OnboardingScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     /**
@@ -124,7 +126,7 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         injectFeatureModules()
         onUpdateUserInterface()
-        finishOnBoarding.setOnClickListener {
+        binding.finishOnBoarding.setOnClickListener {
             supportPresenter.onBoardingExperienceCompleted()
             finishAfterTransition()
         }
@@ -134,7 +136,7 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
         super.onSaveInstanceState(outState)
         outState.putInt(
             PAGER_STATE_KEY,
-            liquidSwipeViewPager.currentItem
+            binding.liquidSwipeViewPager.currentItem
         )
     }
 
@@ -144,8 +146,8 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
             PAGER_STATE_KEY,
             0
         )
-        if (liquidSwipeViewPager.currentItem != lastPosition)
-            liquidSwipeViewPager.setCurrentItem(
+        if (binding.liquidSwipeViewPager.currentItem != lastPosition)
+            binding.liquidSwipeViewPager.setCurrentItem(
                 lastPosition,
                 false
             )
@@ -158,14 +160,14 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
      */
     override fun onResume() {
         super.onResume()
-        liquidSwipeViewPager.addOnPageChangeListener(pageChangeListener)
+        binding.liquidSwipeViewPager.addOnPageChangeListener(pageChangeListener)
     }
 
     /**
      * Dispatch onPause() to fragments.
      */
     override fun onPause() {
-        liquidSwipeViewPager.removeOnPageChangeListener(pageChangeListener)
+        binding.liquidSwipeViewPager.removeOnPageChangeListener(pageChangeListener)
         super.onPause()
     }
 
@@ -176,9 +178,9 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
      * Check implementation for more details
      */
     override fun onUpdateUserInterface() {
-        liquidSwipeViewPager.offscreenPageLimit = 1
-        liquidSwipeViewPager.adapter = onBoardingPageAdapter
-        inkPageIndicator.setViewPager(liquidSwipeViewPager)
+        binding.liquidSwipeViewPager.offscreenPageLimit = 1
+        binding.liquidSwipeViewPager.adapter = onBoardingPageAdapter
+        binding.inkPageIndicator.setViewPager(binding.liquidSwipeViewPager)
     }
 
     companion object {
