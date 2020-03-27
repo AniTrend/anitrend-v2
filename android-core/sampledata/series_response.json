@@ -1,0 +1,37 @@
+{
+  "id": 101302,
+  "title": {
+    "english": "Dragon Ball Super: Broly",
+    "romaji": "Dragon Ball Super: Broly",
+    "native": "ドラゴンボール超 ブロリー",
+    "userPreferred": "Dragon Ball Super: Broly"
+  },
+  "coverImage": {
+    "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx101302-V6oDyQeArTRP.jpg",
+    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101302-V6oDyQeArTRP.jpg",
+    "color": "#f1d650"
+  },
+  "type": "ANIME",
+  "format": "MOVIE",
+  "season": "FALL",
+  "status": "FINISHED",
+  "meanScore": 80,
+  "averageScore": 80,
+  "startDate": {
+    "day": 14,
+    "month": 12,
+    "year": 2018
+  },
+  "endDate": {
+    "day": 14,
+    "month": 12,
+    "year": 2018
+  },
+  "episodes": 1,
+  "chapters": null,
+  "volumes": null,
+  "isAdult": false,
+  "isFavourite": false,
+  "nextAiringEpisode": null,
+  "mediaListEntry": null
+}

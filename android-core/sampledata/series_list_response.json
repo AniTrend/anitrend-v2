@@ -1,0 +1,557 @@
+[
+  {
+    "id": 101302,
+    "title": {
+      "english": "Dragon Ball Super: Broly",
+      "romaji": "Dragon Ball Super: Broly",
+      "native": "ドラゴンボール超 ブロリー",
+      "userPreferred": "Dragon Ball Super: Broly"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx101302-V6oDyQeArTRP.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101302-V6oDyQeArTRP.jpg",
+      "color": "#f1d650"
+    },
+    "type": "ANIME",
+    "format": "MOVIE",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 80,
+    "averageScore": 80,
+    "startDate": {
+      "day": 14,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 14,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 104580,
+    "title": {
+      "english": "The Disastrous Life of Saiki K. Season 3",
+      "romaji": "Saiki Kusuo no Ψ-nan: Kanketsu-hen",
+      "native": "斉木楠雄のΨ難 完結編",
+      "userPreferred": "Saiki Kusuo no Ψ-nan: Kanketsu-hen"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx104580-AfhlKn5rmOZS.png",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104580-AfhlKn5rmOZS.png",
+      "color": "#ffc900"
+    },
+    "type": "ANIME",
+    "format": "SPECIAL",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 81,
+    "averageScore": 80,
+    "startDate": {
+      "day": 28,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 28,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 104174,
+    "title": {
+      "english": "Steins;Gate 0: Valentine's of Crystal Polymorphism - Bittersweet Intermedio",
+      "romaji": "Steins;Gate 0: Kesshou Takei no Valentine - Bittersweet Day",
+      "native": "シュタインズ・ゲート ゼロ 結晶多形のバレンタイン",
+      "userPreferred": "Steins;Gate 0: Kesshou Takei no Valentine - Bittersweet Day"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx104174-aoNLSSN6bT4L.png",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104174-aoNLSSN6bT4L.png",
+      "color": null
+    },
+    "type": "ANIME",
+    "format": "SPECIAL",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 69,
+    "averageScore": 69,
+    "startDate": {
+      "day": 21,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 21,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 106862,
+    "title": {
+      "english": "Lord El-Melloi II's Case Files {Rail Zeppelin} Grace note - A Grave Keeper, a Cat, and a Mage",
+      "romaji": "Lord El-Melloi II-sei no Jikenbo: \"Rail Zeppelin\" Grace note - Hakamori to Neko to Majutsu-shi",
+      "native": "ロード・エルメロイⅡ世の事件簿 {魔眼蒐集列車} Grace note 墓守と猫と魔術師",
+      "userPreferred": "Lord El-Melloi II-sei no Jikenbo: \"Rail Zeppelin\" Grace note - Hakamori to Neko to Majutsu-shi"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx106862-Jj42Ukkr3UI0.png",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx106862-Jj42Ukkr3UI0.png",
+      "color": null
+    },
+    "type": "ANIME",
+    "format": "SPECIAL",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 70,
+    "averageScore": 69,
+    "startDate": {
+      "day": 31,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 31,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 102436,
+    "title": {
+      "english": "Strike the Blood III",
+      "romaji": "Strike the Blood III",
+      "native": "「ストライク・ザ・ブラッド」OVA3",
+      "userPreferred": "Strike the Blood III"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx102436-1A1THjDwq8Ky.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx102436-1A1THjDwq8Ky.jpg",
+      "color": "#5de4f1"
+    },
+    "type": "ANIME",
+    "format": "OVA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 70,
+    "averageScore": 69,
+    "startDate": {
+      "day": 19,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 25,
+      "month": 9,
+      "year": 2019
+    },
+    "episodes": 10,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 105662,
+    "title": {
+      "english": "Cells at Work!: The Common Cold",
+      "romaji": "Hataraku Saibou: Kaze Shoukougun",
+      "native": "はたらく細胞「風邪症候群」",
+      "userPreferred": "Hataraku Saibou: Kaze Shoukougun"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx105662-hQ04rdwCot6p.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx105662-hQ04rdwCot6p.jpg",
+      "color": "#e45d50"
+    },
+    "type": "ANIME",
+    "format": "SPECIAL",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 72,
+    "averageScore": 71,
+    "startDate": {
+      "day": 27,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 27,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 104170,
+    "title": {
+      "english": "Asobi Asobase -workshop of fun- OVA",
+      "romaji": "Asobi Asobase OVA",
+      "native": "あそびあそばせ (OAD)",
+      "userPreferred": "Asobi Asobase OVA"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/104170-124rT4AOJVKO.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/104170-124rT4AOJVKO.jpg",
+      "color": "#e4bb50"
+    },
+    "type": "ANIME",
+    "format": "OVA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 74,
+    "averageScore": 73,
+    "startDate": {
+      "day": 26,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 26,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 107190,
+    "title": {
+      "english": null,
+      "romaji": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai Picture Drama",
+      "native": "青春ブタ野郎はバニーガール先輩の夢を見ない",
+      "userPreferred": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai Picture Drama"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx107190-QUK9WOntzXU3.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx107190-QUK9WOntzXU3.jpg",
+      "color": "#bbd6f1"
+    },
+    "type": "ANIME",
+    "format": "SPECIAL",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 71,
+    "averageScore": 69,
+    "startDate": {
+      "day": 19,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 15,
+      "month": 5,
+      "year": 2019
+    },
+    "episodes": 5,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 106494,
+    "title": {
+      "english": "Aggretsuko: We Wish You A Metal Christmas",
+      "romaji": "Aggressive Retsuko: We Wish You A Metal Christmas",
+      "native": "アグレッシブ烈子：We Wish You a Metal Christmas",
+      "userPreferred": "Aggressive Retsuko: We Wish You A Metal Christmas"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx106494-aY2XojjGkGzy.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx106494-aY2XojjGkGzy.jpg",
+      "color": "#2886e4"
+    },
+    "type": "ANIME",
+    "format": "ONA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 72,
+    "averageScore": 71,
+    "startDate": {
+      "day": 20,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 20,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 106169,
+    "title": {
+      "english": "PERSONA5 the Animation: Dark Sun...",
+      "romaji": "Persona 5 The Animation: Dark Sun...",
+      "native": "PERSONA5 the Animation: Dark Sun…",
+      "userPreferred": "Persona 5 The Animation: Dark Sun..."
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n106169-EXFg8nPLs8yb.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n106169-EXFg8nPLs8yb.jpg",
+      "color": "#930d00"
+    },
+    "type": "ANIME",
+    "format": "SPECIAL",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 67,
+    "averageScore": 66,
+    "startDate": {
+      "day": 31,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 31,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 105096,
+    "title": {
+      "english": "HERO MASK",
+      "romaji": "HERO MASK",
+      "native": "HERO MASK",
+      "userPreferred": "HERO MASK"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx105096-cnoCYIEWrDKT.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx105096-cnoCYIEWrDKT.jpg",
+      "color": "#86280d"
+    },
+    "type": "ANIME",
+    "format": "ONA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 59,
+    "averageScore": 58,
+    "startDate": {
+      "day": 3,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 3,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 15,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 106915,
+    "title": {
+      "english": "Learning with Manga! Fate/Grand Order",
+      "romaji": "Manga de Wakaru! Fate/Grand Order",
+      "native": "マンガでわかる！Fate/Grand Order",
+      "userPreferred": "Manga de Wakaru! Fate/Grand Order"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx106915-stnjvFie2bG9.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx106915-stnjvFie2bG9.jpg",
+      "color": "#f100c9"
+    },
+    "type": "ANIME",
+    "format": "ONA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 77,
+    "averageScore": 76,
+    "startDate": {
+      "day": 31,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 31,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 102350,
+    "title": {
+      "english": "K: SEVEN STORIES \"Circle Vision - Nameless Song - \"",
+      "romaji": "K SEVEN STORIES: Circle Vision ~Nameless Song~",
+      "native": "K SEVEN STORIES「Circle Vision ～Nameless Song～」",
+      "userPreferred": "K SEVEN STORIES: Circle Vision ~Nameless Song~"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx102350-XhZRrllHNn9T.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx102350-XhZRrllHNn9T.jpg",
+      "color": null
+    },
+    "type": "ANIME",
+    "format": "MOVIE",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 68,
+    "averageScore": 63,
+    "startDate": {
+      "day": 1,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 1,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 1,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 97919,
+    "title": {
+      "english": "Saint Seiya Saintia Sho",
+      "romaji": "Saint Seiya: Saintia Shou",
+      "native": "聖闘士星矢 セインティア翔",
+      "userPreferred": "Saint Seiya: Saintia Shou"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97919-6GJGBd21g2kH.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97919-6GJGBd21g2kH.jpg",
+      "color": "#e4c935"
+    },
+    "type": "ANIME",
+    "format": "ONA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 51,
+    "averageScore": 50,
+    "startDate": {
+      "day": 10,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 18,
+      "month": 2,
+      "year": 2019
+    },
+    "episodes": 10,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  },
+  {
+    "id": 103237,
+    "title": {
+      "english": null,
+      "romaji": "Uma Musume: BNW no Chikai",
+      "native": "ウマ娘「BNWの誓い」",
+      "userPreferred": "Uma Musume: BNW no Chikai"
+    },
+    "coverImage": {
+      "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx103237-qQOTICgZ3eVj.jpg",
+      "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx103237-qQOTICgZ3eVj.jpg",
+      "color": null
+    },
+    "type": "ANIME",
+    "format": "OVA",
+    "season": "FALL",
+    "status": "FINISHED",
+    "meanScore": 70,
+    "averageScore": 65,
+    "startDate": {
+      "day": 19,
+      "month": 12,
+      "year": 2018
+    },
+    "endDate": {
+      "day": 19,
+      "month": 12,
+      "year": 2018
+    },
+    "episodes": 3,
+    "chapters": null,
+    "volumes": null,
+    "isAdult": false,
+    "isFavourite": false,
+    "nextAiringEpisode": null,
+    "mediaListEntry": null
+  }
+]
