@@ -65,6 +65,10 @@ android {
     ]
 }
 
+ext {
+    leakCanary = '2.2'
+}
+
 dependencies {
 
     /** Project Modules */
@@ -93,36 +97,38 @@ dependencies {
     implementation project(":support-ui")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    implementation("org.koin:koin-androidx-viewmodel:$koin")
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.paging:paging-runtime:$paging"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "androidx.viewpager2:viewpager2:$viewPager2X"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.paging:paging-runtime:$paging")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
+    implementation("androidx.viewpager2:viewpager2:$viewPager2X")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.constraintlayout:constraintlayout:$constraintX")
 
     /** Glide Libraries */
-    implementation "com.github.bumptech.glide:glide:$glide"
+    implementation("com.github.bumptech.glide:glide:$glide")
 
     /** Flex Box */
-    implementation "com.google.android:flexbox:$flexBox"
+    implementation("com.google.android:flexbox:$flexBox")
 
     /** Smart Tab Layout */
-    implementation "com.ogaclejapan.smarttablayout:library:$smartTab"
+    implementation("com.ogaclejapan.smarttablayout:library:$smartTab")
 
     /** Tap Target Prompt */
-    implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
+    implementation("uk.co.samuelwall:material-tap-target-prompt:$tapTarget")
 
     /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espresso")
+
+    /** debugImplementation because LeakCanary should only run in debug builds. */
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:$leakCanary")
 }
 
 if (file("google-services.json").exists()) {
