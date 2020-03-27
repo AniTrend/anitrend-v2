@@ -18,9 +18,7 @@
 package co.anitrend.core.settings
 
 import android.content.Context
-import androidx.annotation.StringRes
-import androidx.core.content.edit
-import co.anitrend.arch.extension.preference.SupportPreference
+import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.core.R
 import co.anitrend.core.settings.common.IConfigurationSettings
@@ -37,108 +35,61 @@ class Settings(context: Context) : SupportPreference(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
     ISortOrderSettings {
 
-    override var locale: AniTrendLocale = AniTrendLocale.AUTOMATIC
-        get() = AniTrendLocale.valueOf(
-            sharedPreferences.getString(
-                stringOf(R.string.settings_configuration_locale),
-                null
-            ) ?: AniTrendLocale.AUTOMATIC.name
-        )
-        set(value) {
-            field = value
-            sharedPreferences.edit {
-                putString(
-                    stringOf(R.string.settings_configuration_locale),
-                    value.name
-                )
-            }
-        }
+    override var locale by EnumPreference(
+        R.string.settings_configuration_locale,
+        AniTrendLocale.AUTOMATIC,
+        context.resources
+    )
 
-    override var theme: AniTrendTheme = AniTrendTheme.SYSTEM
-        get() = AniTrendTheme.valueOf(
-            sharedPreferences.getString(
-                stringOf(R.string.settings_configuration_theme),
-                null
-            ) ?: AniTrendTheme.SYSTEM.name
-        )
-        set(value) {
-            field = value
-            sharedPreferences.edit {
-                putString(
-                    stringOf(R.string.settings_configuration_theme),
-                    value.name
-                )
-            }
-        }
+    override var theme by EnumPreference(
+        R.string.settings_configuration_theme,
+        AniTrendTheme.SYSTEM,
+        context.resources
+    )
 
-    override var isAnalyticsEnabled: Boolean = false
-        get() = sharedPreferences.getBoolean(
-            stringOf(R.string.settings_privacy_usage_analytics),
-            false
-        )
-        set(value) {
-            field = value
-            sharedPreferences.edit {
-                putBoolean(
-                    stringOf(R.string.settings_privacy_usage_analytics),
-                    value
-                )
-            }
-        }
+    override var isAnalyticsEnabled by BooleanPreference(
+        R.string.settings_privacy_usage_analytics,
+        false,
+        context.resources
+    )
 
-    override var isCrashlyticsEnabled: Boolean = true
-        get() = sharedPreferences.getBoolean(
-            stringOf(R.string.settings_privacy_crash_analytics),
-            true
-        )
-        set(value) {
-            field = value
-            sharedPreferences.edit {
-                putBoolean(
-                    stringOf(R.string.settings_privacy_crash_analytics),
-                    value
-                )
-            }
-        }
+    override var isCrashlyticsEnabled by BooleanPreference(
+        R.string.settings_privacy_crash_analytics,
+        true,
+        context.resources
+    )
 
-    override var authenticatedUserId: Long = INVALID_USER_ID
-        get() = sharedPreferences.getLong(
-            stringOf(R.string.settings_authentication_id),
-            INVALID_USER_ID
-        )
-        set(value) {
-            field = value
-            sharedPreferences.edit {
-                putLong(
-                    stringOf(R.string.settings_authentication_id),
-                    value
-                )
-            }
-        }
+    override var authenticatedUserId by LongPreference(
+        R.string.settings_authentication_id,
+        INVALID_USER_ID,
+        context.resources
+    )
 
-    override var isAuthenticated: Boolean = false
-        get() = sharedPreferences.getBoolean(
-            stringOf(R.string.settings_is_authenticated),
-            false
-        )
-        set(value) {
-            field = value
-            sharedPreferences.edit {
-                putBoolean(
-                    stringOf(R.string.settings_is_authenticated),
-                    value
-                )
-            }
-        }
+    override var isAuthenticated by BooleanPreference(
+        R.string.settings_is_authenticated,
+        false,
+        context.resources
+    )
 
-    override var isSortOrderDescending: Boolean
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+    override var isSortOrderDescending by BooleanPreference(
+        R.string.settings_is_sort_order_desc,
+        false,
+        context.resources
+    )
+
+    override var isNewInstallation by BooleanPreference(
+        R.string.settings_is_new_installation,
+        true,
+        context.resources
+    )
+
+    override var versionCode by IntPreference(
+        R.string.settings_version_code,
+        1,
+        context.resources
+    )
 
     companion object {
-        private fun Settings.stringOf(
-            @StringRes resource: Int
-        ) = context.getString(resource)
 
         /**
          * Binding types for [Settings]
