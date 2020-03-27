@@ -47,12 +47,12 @@ dependencies {
     implementation project(":support-ui")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    implementation("org.koin:koin-androidx-viewmodel:$koin")
 
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
     /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation("org.koin:koin-test:$koin")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espresso")
 }

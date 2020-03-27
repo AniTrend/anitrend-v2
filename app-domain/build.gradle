@@ -34,5 +34,5 @@ dependencies {
     implementation project(":support-domain")
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
+    testImplementation("junit:junit:$junit")
 }

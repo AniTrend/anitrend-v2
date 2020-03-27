@@ -36,6 +36,10 @@ android {
     }
 }
 
+ext {
+    preference = '1.1.0'
+}
+
 dependencies {
     /** Project Modules */
     implementation project(":app-core")
@@ -52,19 +56,20 @@ dependencies {
     implementation project(":support-ui")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    implementation("org.koin:koin-androidx-viewmodel:$koin")
 
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.constraintlayout:constraintlayout:$constraintX")
+
+    implementation("androidx.preference:preference:$preference")
 
     /** Testing-only dependencies */
-    implementation 'androidx.preference:preference:1.1.0'
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation("org.koin:koin-test:$koin")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espresso")
 }
