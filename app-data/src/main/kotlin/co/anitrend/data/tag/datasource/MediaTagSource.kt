@@ -22,7 +22,7 @@ import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.domain.tag.entities.Tag
 
-abstract class MediaTagSource(
+internal abstract class MediaTagSource(
     supportDispatchers: SupportDispatchers
 ) : SupportCoreDataSource(supportDispatchers) {
 

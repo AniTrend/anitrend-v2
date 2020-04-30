@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey
 import co.anitrend.domain.common.entity.IEntity
 
 @Entity
-class MessageFeedEntity(
+internal class MessageFeedEntity(
     @PrimaryKey
     override val id: Long
 ) : IEntity

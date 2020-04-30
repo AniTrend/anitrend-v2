@@ -27,7 +27,7 @@ import co.anitrend.domain.user.enums.UserTitleLanguage
  * @property airingNotifications Whether the user receives notifications when a show they are watching airs
  * @property profileColor Profile highlight color (blue, purple, pink, orange, red, green, gray)
  */
-interface IUserOptions {
+internal interface IUserOptions {
     val titleLanguage: UserTitleLanguage
     val displayAdultContent: Boolean
     val airingNotifications: Boolean

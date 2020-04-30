@@ -34,11 +34,11 @@ import co.anitrend.data.tag.entity.TagEntity
     ],
     version = BuildConfig.DATABASE_SCHEMA_VERSION
 )
-abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
+internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
 
-        fun create(applicationContext: Context): AniTrendStore {
+        internal fun create(applicationContext: Context): AniTrendStore {
             return Room.databaseBuilder(
                 applicationContext,
                 AniTrendStore::class.java,

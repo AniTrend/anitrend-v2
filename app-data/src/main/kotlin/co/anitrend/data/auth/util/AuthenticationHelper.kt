@@ -27,7 +27,7 @@ import okhttp3.Request
 /**
  * Provides an api to handle authentication based processes
  */
-class AuthenticationHelper(
+internal class AuthenticationHelper(
     private val settings: IAuthenticationSettings
 ) : SupportAuthentication() {
 

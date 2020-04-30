@@ -19,7 +19,7 @@ package co.anitrend.data.arch.database.dao
 
 import co.anitrend.arch.data.dao.ISupportQuery
 
-interface ILocalSource<T> : ISupportQuery<T> {
+internal interface ILocalSource<T> : ISupportQuery<T> {
     suspend fun count(): Int
     suspend fun clear()
 }

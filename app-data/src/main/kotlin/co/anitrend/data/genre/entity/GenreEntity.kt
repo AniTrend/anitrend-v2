@@ -24,7 +24,7 @@ import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.genre.entities.Genre
 
 @Entity
-data class GenreEntity(
+internal data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
     override val id: Long = 0,
     val genre: String

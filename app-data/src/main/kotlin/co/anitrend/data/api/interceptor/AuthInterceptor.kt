@@ -27,7 +27,7 @@ import okhttp3.*
  * The context in which an [Interceptor] may be  parallel or asynchronous depending
  * on the dispatching caller, as such take care to assure thread safety
  */
-class AuthInterceptor(
+internal class AuthInterceptor(
     private val authenticationHelper: AuthenticationHelper
 ) : Authenticator {
 

@@ -24,7 +24,7 @@ import co.anitrend.data.util.graphql.GraphUtil
 import co.anitrend.domain.genre.entities.Genre
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
-abstract class MediaGenreSource(
+internal abstract class MediaGenreSource(
     supportDispatchers: SupportDispatchers
 ) : SupportCoreDataSource(supportDispatchers) {
 

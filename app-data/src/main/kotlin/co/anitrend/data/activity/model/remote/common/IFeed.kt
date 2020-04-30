@@ -30,7 +30,7 @@ import co.anitrend.domain.activity.enums.ActivityType
  * @property siteUrl The url for the activity page on the AniList website
  * @property type The type of activity
  */
-interface IFeed : IEntity {
+internal interface IFeed : IEntity {
     val createdAt: Long
     val likes: List<IUser>?
     val replyCount: Int

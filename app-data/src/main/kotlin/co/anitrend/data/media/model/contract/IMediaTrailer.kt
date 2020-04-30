@@ -24,7 +24,7 @@ package co.anitrend.data.media.model.contract
  * @property site The site the video is hosted by
  * (Currently either **YouTube** or **DailyMotion**)
  */
-interface IMediaTrailer {
+internal interface IMediaTrailer {
     val id: String?
     val site: String?
 }

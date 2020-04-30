@@ -23,7 +23,7 @@ import co.anitrend.data.genre.repository.MediaGenreRepository
 import co.anitrend.domain.genre.entities.Genre
 import co.anitrend.domain.genre.interactors.MediaGenreUseCase
 
-class MediaGenreUseCaseImpl(
+internal class MediaGenreUseCaseImpl(
     private val repository: MediaGenreRepository
 ) : MediaGenreUseCase<UserInterfaceState<List<Genre>>>(repository) {
 

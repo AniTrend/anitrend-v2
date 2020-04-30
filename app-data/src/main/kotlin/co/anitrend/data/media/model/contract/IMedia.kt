@@ -64,7 +64,7 @@ import co.anitrend.domain.media.enums.*
  * @property updatedAt When the media's data was last updated
  * @property volumes The amount of volumes the manga has when complete
  */
-interface IMedia : IEntity {
+internal interface IMedia : IEntity {
     val averageScore: Int?
     val bannerImage: String?
     val chapters: Int?

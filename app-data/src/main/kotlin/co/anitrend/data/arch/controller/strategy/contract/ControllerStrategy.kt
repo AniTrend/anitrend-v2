@@ -21,6 +21,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.domain.entities.NetworkState
 
+/**
+ * Contract for controller strategy
+ */
 internal abstract class ControllerStrategy<D> {
 
     protected val moduleTag = javaClass.simpleName

@@ -20,7 +20,7 @@ package co.anitrend.data.arch.database.migration
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-val MIGRATION_1_2 = object : Migration(1, 2) {
+internal val MIGRATION_1_2 = object : Migration(1, 2) {
     /**
      * Should run the necessary migrations.
      *
