@@ -28,7 +28,7 @@ import co.anitrend.data.studio.model.contract.IStudio
 /** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)
  * User's favourite anime, manga, characters, staff & studios
  */
-interface IFavourites {
+internal interface IFavourites {
     val anime: IEntityConnection<IEntityEdge<IMedia>, IMedia>?
     val characters: IEntityConnection<IEntityEdge<ICharacter>, ICharacter>?
     val manga: IEntityConnection<IEntityEdge<IMedia>, IMedia>?

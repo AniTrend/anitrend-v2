@@ -21,6 +21,6 @@ import androidx.room.Entity
 import co.anitrend.domain.common.entity.IEntity
 
 @Entity
-class ListFeedEntity(
+internal class ListFeedEntity(
     override val id: Long
 ) : IEntity

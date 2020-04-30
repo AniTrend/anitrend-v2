@@ -23,7 +23,7 @@ import co.anitrend.data.tag.datasource.MediaTagSource
 import co.anitrend.domain.tag.entities.Tag
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 
-class MediaTagRepository(
+internal class MediaTagRepository(
     private val dataSource: MediaTagSource
 ) : SupportRepository(dataSource),
     IMediaTagRepository<UserInterfaceState<List<Tag>>> {

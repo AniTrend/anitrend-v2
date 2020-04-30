@@ -19,7 +19,7 @@ package co.anitrend.data.genre.model.remote
 
 import com.google.gson.annotations.SerializedName
 
-data class GenreCollection(
+internal data class GenreCollection(
     @SerializedName("GenreCollection")
     val genreCollection: List<String>
 )

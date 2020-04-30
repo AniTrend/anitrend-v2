@@ -26,7 +26,7 @@ import co.anitrend.data.util.graphql.GraphUtil
 import co.anitrend.domain.genre.entities.Genre
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
-class MediaGenreRepository(
+internal class MediaGenreRepository(
     private val dataSource: MediaGenreSource
 ) : SupportRepository(dataSource),
     IMediaGenreRepository<UserInterfaceState<List<Genre>>> {

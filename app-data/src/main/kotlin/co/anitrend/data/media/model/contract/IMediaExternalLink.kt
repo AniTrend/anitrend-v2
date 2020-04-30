@@ -26,7 +26,7 @@ import co.anitrend.domain.common.entity.IEntity
  * @property site The site location of the external link
  * @property url The url of the external link
  */
-interface IMediaExternalLink : IEntity {
+internal interface IMediaExternalLink : IEntity {
     val site: String
     val url: String
 }

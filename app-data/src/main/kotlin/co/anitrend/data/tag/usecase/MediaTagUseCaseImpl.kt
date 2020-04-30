@@ -22,7 +22,7 @@ import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.domain.tag.entities.Tag
 import co.anitrend.domain.tag.interactors.MediaTagUseCase
 
-class MediaTagUseCaseImpl(
+internal class MediaTagUseCaseImpl(
     private val repository: MediaTagRepository
 ) : MediaTagUseCase<UserInterfaceState<List<Tag>>>(repository) {
 

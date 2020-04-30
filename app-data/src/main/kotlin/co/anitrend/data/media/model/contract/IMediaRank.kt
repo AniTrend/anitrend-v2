@@ -33,7 +33,7 @@ import co.anitrend.domain.media.enums.MediaSeason
  * @property type The type of ranking
  * @property year The year the media is ranked within
  */
-interface IMediaRank : IEntity {
+internal interface IMediaRank : IEntity {
     val allTime: Boolean?
     val context: String
     val format: MediaFormat

@@ -27,7 +27,7 @@ import co.anitrend.domain.notification.enums.NotificationType
  * @property createdAt The time the notification was created at
  * @property type The type of notification
  */
-interface INotification : IEntity {
+internal interface INotification : IEntity {
     val context: String?
     val createdAt: Long?
     val type: NotificationType?

@@ -23,8 +23,7 @@ import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
 
 @Dao
-interface MediaLocalSource :
-    ILocalSource<MediaEntity> {
+internal interface MediaLocalSource : ILocalSource<MediaEntity> {
 
     /**
      * Count the number of entities

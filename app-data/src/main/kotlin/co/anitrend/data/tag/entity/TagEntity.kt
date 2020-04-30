@@ -24,7 +24,7 @@ import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.tag.entities.Tag
 
 @Entity
-data class TagEntity(
+internal data class TagEntity(
     @PrimaryKey
     override val id: Long,
     val name: String,

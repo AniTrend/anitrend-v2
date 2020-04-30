@@ -29,7 +29,7 @@ import co.anitrend.domain.common.entity.IEntity
  * @property name The name of the studio
  * @property siteUrl The url for the studio page on the AniList website
 */
-interface IStudio : IEntity {
+internal interface IStudio : IEntity {
     val favourites: Int?
     val isAnimationStudio: Boolean
     val isFavourite: Boolean

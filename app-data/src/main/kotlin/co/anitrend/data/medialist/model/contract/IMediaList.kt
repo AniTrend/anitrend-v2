@@ -45,13 +45,13 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @property updatedAt When the entry data was last updated
  * @property userId The id of the user owner of the list entry
  */
-interface IMediaList : IEntity {
+internal interface IMediaList : IEntity {
     val advancedScores: Map<String, String>?
     val completedAt: FuzzyDate?
     val createdAt: Long?
     val customLists: Map<String, String>?
     val hiddenFromStatusLists: Boolean?
-    val media: co.anitrend.data.media.model.contract.IMedia?
+    val media: IMedia?
     val mediaId: Int
     val notes: String?
     val priority: Int?

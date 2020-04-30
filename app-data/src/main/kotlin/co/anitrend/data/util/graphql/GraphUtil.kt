@@ -25,7 +25,7 @@ import io.github.wax911.library.model.request.QueryContainerBuilder
 /**
  * Graph request helper class
  */
-object GraphUtil {
+internal object GraphUtil {
 
     private val SORT_ORDER_EXCEPTIONS = listOf(
         "SEARCH_MATCH"

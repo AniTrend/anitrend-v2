@@ -17,6 +17,7 @@
 
 package co.anitrend.data.thread.model.contract
 
+import co.anitrend.data.media.model.contract.IMedia
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.data.user.model.contract.IUser
 
@@ -43,7 +44,7 @@ import co.anitrend.data.user.model.contract.IUser
  * @property userId The id of the thread owner user
  * @property viewCount The number of times users have viewed the thread
  */
-interface IThread : IEntity {
+internal interface IThread : IEntity {
     val body: String?
     val categories: List<IThreadCategory>?
     val createdAt: Long
@@ -51,7 +52,7 @@ interface IThread : IEntity {
     val isSticky: Boolean
     val isSubscribed: Boolean
     val likes: List<IUser>?
-    val mediaCategories: List<co.anitrend.data.media.model.contract.IMedia>?
+    val mediaCategories: List<IMedia>?
     val repliedAt: Long?
     val replyCommentId: Int?
     val replyCount: Int?

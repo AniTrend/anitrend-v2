@@ -24,8 +24,7 @@ import co.anitrend.data.genre.entity.GenreEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MediaGenreLocalSource:
-    ILocalSource<GenreEntity> {
+internal interface MediaGenreLocalSource: ILocalSource<GenreEntity> {
 
     @Query("""
         select count(id) from GenreEntity

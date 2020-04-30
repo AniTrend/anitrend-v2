@@ -22,7 +22,7 @@ import co.anitrend.data.thread.model.contract.IThreadCategory
 /** [ThreadCategory](https://anilist.github.io/ApiV2-GraphQL-Docs/threadcategory.doc.html)
  * A forum thread category
  */
-data class ThreadCategory(
+internal data class ThreadCategory(
     override val id: Long,
     override val name: String
 ) : IThreadCategory

@@ -26,7 +26,7 @@ import co.anitrend.domain.review.enums.ReviewRating
 /** [Review](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/review.doc.html)
  * A Review that features in an anime or manga
  */
-class Review(
+internal class Review(
     override val body: String?,
     override val createdAt: Long,
     override val media: IMedia?,

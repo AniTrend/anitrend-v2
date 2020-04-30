@@ -23,7 +23,7 @@ package co.anitrend.data.arch.common.entity
  * @property id The id of the connection
  * @property node The node for the connection
  */
-interface IEntityEdge<N> {
+internal interface IEntityEdge<N> {
     val id: Long
     val node: N?
 }

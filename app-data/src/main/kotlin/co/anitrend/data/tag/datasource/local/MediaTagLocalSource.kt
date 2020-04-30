@@ -24,7 +24,7 @@ import co.anitrend.data.tag.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MediaTagLocalSource : ILocalSource<TagEntity> {
+internal interface MediaTagLocalSource : ILocalSource<TagEntity> {
 
     @Query("""
         select count(id) from TagEntity

@@ -24,7 +24,7 @@ import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.media.entities.Media
 
 @Entity
-data class MediaEntity(
+internal data class MediaEntity(
     @PrimaryKey
     override val id: Long
 ) : IEntity {

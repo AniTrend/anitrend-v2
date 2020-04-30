@@ -20,6 +20,6 @@ package co.anitrend.data.media.model.contract
 /**
  * Media genre contract
  */
-interface IMediaGenre {
+internal interface IMediaGenre {
     val genre: String
 }

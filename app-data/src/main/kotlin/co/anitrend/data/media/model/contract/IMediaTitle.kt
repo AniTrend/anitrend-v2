@@ -27,7 +27,7 @@ package co.anitrend.data.media.model.contract
  *
  * Default romaji for non-authenticated requests
  */
-interface IMediaTitle {
+internal interface IMediaTitle {
     val romaji: String?
     val english: String?
     val native: String?

@@ -21,7 +21,7 @@ import co.anitrend.data.auth.datasource.local.JsonWebTokenLocalSource
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 
-interface IAniTrendStore {
+internal interface IAniTrendStore {
     fun jsonWebTokenDao(): JsonWebTokenLocalSource
     fun mediaTagDao(): MediaTagLocalSource
     fun mediaGenreDao(): MediaGenreLocalSource

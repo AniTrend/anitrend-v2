@@ -23,7 +23,7 @@ import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.arch.database.dao.ILocalSource
 
 @Dao
-interface JsonWebTokenLocalSource : ILocalSource<JsonWebToken?> {
+internal interface JsonWebTokenLocalSource : ILocalSource<JsonWebToken?> {
 
     @Query("""
         select count(id) from JsonWebToken
