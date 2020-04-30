@@ -31,9 +31,6 @@ android {
             consumerProguardFiles 'consumer-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -50,9 +47,6 @@ dependencies {
     implementation project(':app-data')
     implementation project(':emojify')
 
-    /** Koin AndroidX Dependency Injection */
-    implementation("org.koin:koin-androidx-viewmodel:$koin")
-
     /** Material Design */
     implementation("com.google.android.material:material:$material")
 
@@ -60,7 +54,10 @@ dependencies {
     implementation("androidx.core:core-ktx:$ktx")
     implementation("androidx.paging:paging-runtime:$paging")
     implementation("androidx.work:work-runtime-ktx:$workerKtx")
+
+    /** Lifecycle Components*/
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
 
     /** Fire-base Libraries */
     implementation("com.google.firebase:firebase-core:$firebase")
@@ -71,6 +68,10 @@ dependencies {
     /** Material Dialogs */
     implementation("com.afollestad.material-dialogs:core:$materialDialogs")
     implementation("com.afollestad.material-dialogs:lifecycle:$materialDialogs")
+    implementation("com.afollestad.material-dialogs:bottomsheets:$materialDialogs")
+
+    /** Coil */
+    implementation("io.coil-kt:coil-base:$coil")
 
     /** Glide Libraries */
     implementation("com.github.bumptech.glide:glide:$glide")
