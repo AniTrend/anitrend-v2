@@ -18,16 +18,29 @@
 package co.anitrend.core.util.locale
 
 import co.anitrend.arch.extension.empty
-import java.util.*
+import java.util.Locale
 
 /**
- * Represents application locales, we might have the same locale for different countries
+ * Represents application locales, we might have the same locale for different countries so we
+ * define each locale variant explicitly that we support.
+ *
+ * _**N.B** [country] is optional, this means if you do not wish use a specific
+ * locale you will only specify the [language] despite the country_
+ *
+ * @param language 2-letter language code as per **ISO 639**
+ * @param country Uppercase 2-letter country code as per **ISO 3166**
+ *
+ * @see Locale
  */
 enum class AniTrendLocale(val language: String, val country: String? = null) {
     AUTOMATIC(String.empty()),
-    ENGLISH_UK(
-        language = Locale.UK.language,
-        country = Locale.UK.country
+    GERMAN_GERMANY(
+        language = Locale.GERMAN.language,
+        country = Locale.GERMAN.country
+    ),
+    ITALIAN_ITALY(
+        language = Locale.ITALY.language,
+        country = Locale.ITALY.country
     ),
     FRENCH_FRANCE(
         language = Locale.FRANCE.language,

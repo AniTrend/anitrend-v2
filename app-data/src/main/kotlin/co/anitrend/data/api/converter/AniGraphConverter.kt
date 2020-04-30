@@ -24,6 +24,7 @@ import com.google.gson.FieldAttributes
 import com.google.gson.GsonBuilder
 import io.github.wax911.library.converter.GraphConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder
+import io.github.wax911.library.util.LogLevel
 import okhttp3.RequestBody
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -89,6 +90,7 @@ class AniGraphConverter(
                     .addSerializationExclusionStrategy(exclusionStrategy)
                     .setLenient()
                     .create()
+                setLogLevel(LogLevel.ERROR)
             }
     }
 }

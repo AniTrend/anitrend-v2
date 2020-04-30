@@ -1,0 +1,107 @@
+/*
+ * Copyright (C) 2020  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package co.anitrend.data.arch.extension
+
+import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
+import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.arch.mapper.GraphQLMapper
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import org.koin.core.scope.Scope
+import retrofit2.HttpException
+import retrofit2.Response
+import retrofit2.Retrofit
+import java.io.IOException
+
+/**
+ * Extension to help us create a controller from a a mapper instance
+ */
+internal fun <S, D> GraphQLMapper<S, D>.controller(
+    supportDispatchers: SupportDispatchers,
+    strategy: ControllerStrategy<D>
+) = GraphQLController.newInstance(
+    mapper = this,
+    strategy = strategy,
+    dispatchers = supportDispatchers
+)
+
+internal inline fun <reified T> Scope.api() = get<Retrofit>().create(T::class.java)
+internal fun Scope.db() = get<IAniTrendStore>()
+
+@Throws(HttpException::class)
+private fun <T> Response<T>.bodyOrThrow(): T {
+    if (!isSuccessful) throw HttpException(this)
+    return body()!!
+}
+
+private fun defaultShouldRetry(exception: Exception) = when (exception) {
+    is HttpException -> exception.code() == 429
+    is IOException -> true
+    else -> false
+}
+
+private suspend inline fun <T> Deferred<Response<T>>.executeWithRetry(
+    dispatcher: CoroutineDispatcher,
+    defaultDelay: Long = 100,
+    maxAttempts: Int = 3,
+    shouldRetry: (Exception) -> Boolean = ::defaultShouldRetry
+): Response<T> {
+    repeat(maxAttempts) { attempt ->
+        var nextDelay = attempt * attempt * defaultDelay
+        try {
+            return withContext(dispatcher) { await() }
+        } catch (e: Exception) {
+            // The response failed, so lets see if we should retry again
+            if (attempt == (maxAttempts - 1) || !shouldRetry(e)) {
+                throw e
+            }
+
+            if (e is HttpException) {
+                // If we have a HttpException, check whether we have a Retry-After
+                // header to decide how long to delay
+                val retryAfterHeader = e.response()?.headers()?.get("Retry-After")
+                if (retryAfterHeader != null && retryAfterHeader.isNotEmpty()) {
+                    // Got a Retry-After value, try and parse it to an long
+                    try {
+                        nextDelay = (retryAfterHeader.toLong() + 10).coerceAtLeast(defaultDelay)
+                    } catch (nfe: NumberFormatException) {
+                        // Probably won't happen, ignore the value and use the generated default above
+                    }
+                }
+            }
+        }
+
+        delay(nextDelay)
+    }
+
+    // We should never hit here
+    throw IllegalStateException("Unknown exception from executeWithRetry")
+}
+
+@Throws(HttpException::class)
+internal suspend inline fun <T> Deferred<Response<T>>.fetchBodyWithRetry(
+    dispatcher: CoroutineDispatcher,
+    firstDelay: Long = 100,
+    maxAttempts: Int = 3,
+    shouldRetry: (Exception) -> Boolean = ::defaultShouldRetry
+) = executeWithRetry(dispatcher, firstDelay, maxAttempts, shouldRetry).bodyOrThrow()

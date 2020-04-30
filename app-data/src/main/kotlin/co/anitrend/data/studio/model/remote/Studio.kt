@@ -42,7 +42,7 @@ import co.anitrend.data.studio.model.contract.IStudio
  *
  * @param favourites The amount of user's who have favourite the studio
  */
-data class Studio(
+internal data class Studio(
     val media: MediaConnection?,
     override val favourites: Int?,
     override val id: Long,

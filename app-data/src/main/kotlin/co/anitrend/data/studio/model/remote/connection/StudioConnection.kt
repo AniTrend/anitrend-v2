@@ -25,7 +25,7 @@ import co.anitrend.domain.common.model.PageInfo
 /** [StudioConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/studioconnection.doc.html)
  * Studio Connection
  */
-data class StudioConnection(
+internal data class StudioConnection(
     override val edges: List<Studio>?,
     override val nodes: List<StudioEdge>?,
     override val pageInfo: PageInfo?

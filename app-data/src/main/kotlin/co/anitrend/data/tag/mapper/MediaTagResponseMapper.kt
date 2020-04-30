@@ -18,44 +18,38 @@
 package co.anitrend.data.tag.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
-import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
-import co.anitrend.data.tag.model.remote.MediaTagCollection
 import co.anitrend.data.media.model.remote.MediaTag
-import io.github.wax911.library.model.body.GraphContainer
-import timber.log.Timber
+import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
+import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.tag.model.remote.MediaTagCollection
 
 internal class MediaTagResponseMapper(
-    private val mediaTagLocalSource: MediaTagLocalSource
-) : GraphQLMapper<MediaTagCollection, List<MediaTag>>() {
+    private val localSource: MediaTagLocalSource
+) : GraphQLMapper<MediaTagCollection, List<TagEntity>?>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
-     * @see [handleResponse]
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: GraphContainer<MediaTagCollection>): List<MediaTag> {
-        return source.data?.mediaTagCollection.orEmpty()
+    override suspend fun onResponseMapFrom(source: MediaTagCollection): List<TagEntity>? {
+        return source.mediaTagCollection.map {
+            MediaTag.transform(it)
+        }
     }
 
     /**
      * Inserts the given object into the implemented room database,
      * called in [retrofit2.Callback.onResponse]
-     * @see [responseCallback]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaTag>) {
-        if (mappedData.isNotEmpty()) {
-            val current = mediaTagLocalSource.count()
-            if (current < 1)
-                mediaTagLocalSource.insert(mappedData)
-            else
-                mediaTagLocalSource.upsert(mappedData)
-        }
+    override suspend fun onResponseDatabaseInsert(mappedData: List<TagEntity>?) {
+        if (!mappedData.isNullOrEmpty())
+            localSource.upsert(mappedData)
         else
-            Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
+            onEmptyResponse()
     }
 }

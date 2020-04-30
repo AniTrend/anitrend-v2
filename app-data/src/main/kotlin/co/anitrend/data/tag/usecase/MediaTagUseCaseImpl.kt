@@ -18,13 +18,13 @@
 package co.anitrend.data.tag.usecase
 
 import co.anitrend.arch.data.model.UserInterfaceState
-import co.anitrend.data.media.model.remote.MediaTag
 import co.anitrend.data.tag.repository.MediaTagRepository
+import co.anitrend.domain.tag.entities.Tag
 import co.anitrend.domain.tag.interactors.MediaTagUseCase
 
 class MediaTagUseCaseImpl(
     private val repository: MediaTagRepository
-) : MediaTagUseCase<UserInterfaceState<List<MediaTag>>>(repository) {
+) : MediaTagUseCase<UserInterfaceState<List<Tag>>>(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop

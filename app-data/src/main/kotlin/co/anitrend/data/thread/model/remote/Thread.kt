@@ -25,7 +25,7 @@ import co.anitrend.data.user.model.remote.User
  * Forum Thread
  *
  */
-data class Thread(
+internal data class Thread(
     override val id: Long,
     override val body: String?,
     override val categories: List<ThreadCategory>?,

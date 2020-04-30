@@ -20,11 +20,12 @@ package co.anitrend.data.genre.usecase
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.data.media.model.remote.MediaGenre
 import co.anitrend.data.genre.repository.MediaGenreRepository
+import co.anitrend.domain.genre.entities.Genre
 import co.anitrend.domain.genre.interactors.MediaGenreUseCase
 
 class MediaGenreUseCaseImpl(
     private val repository: MediaGenreRepository
-) : MediaGenreUseCase<UserInterfaceState<List<MediaGenre>>>(repository) {
+) : MediaGenreUseCase<UserInterfaceState<List<Genre>>>(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop

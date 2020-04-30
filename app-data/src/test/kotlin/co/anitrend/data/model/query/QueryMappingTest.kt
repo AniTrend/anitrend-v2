@@ -17,7 +17,7 @@
 
 package co.anitrend.data.model.query
 
-import co.anitrend.data.extensions.toFuzzyDateInt
+import co.anitrend.domain.common.extensions.toFuzzyDateInt
 import co.anitrend.data.arch.common.model.paging.PageQuery
 import co.anitrend.domain.common.model.FuzzyDate
 import co.anitrend.domain.media.models.query.MediaQuery

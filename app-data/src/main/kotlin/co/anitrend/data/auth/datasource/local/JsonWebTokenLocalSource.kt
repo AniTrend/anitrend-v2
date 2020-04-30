@@ -20,11 +20,10 @@ package co.anitrend.data.auth.datasource.local
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.auth.model.JsonWebToken
-import co.anitrend.arch.data.dao.ISupportQuery
-import co.anitrend.data.arch.common.dao.ILocalSource
+import co.anitrend.data.arch.database.dao.ILocalSource
 
 @Dao
-interface JsonWebTokenLocalSource: ILocalSource<JsonWebToken?> {
+interface JsonWebTokenLocalSource : ILocalSource<JsonWebToken?> {
 
     @Query("""
         select count(id) from JsonWebToken

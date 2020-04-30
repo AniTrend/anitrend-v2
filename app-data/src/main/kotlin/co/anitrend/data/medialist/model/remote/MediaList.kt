@@ -26,7 +26,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * List of anime or manga
  *
  */
-data class MediaList(
+internal data class MediaList(
     override val id: Long,
     override val advancedScores: Map<String, String>?,
     override val completedAt: FuzzyDate?,

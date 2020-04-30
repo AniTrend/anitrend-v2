@@ -21,17 +21,17 @@ import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.util.config.contract.IConfigurationUtil
 import co.anitrend.core.util.locale.AniTrendLocale
-import co.anitrend.core.util.locale.LocaleUtil
+import co.anitrend.core.util.locale.LocaleHelper
 import co.anitrend.core.util.theme.AniTrendTheme
-import co.anitrend.core.util.theme.ThemeUtil
+import co.anitrend.core.util.theme.ThemeHelper
 
 /**
  * Configuration helper for the application
  */
 class ConfigurationUtil(
     private val settings: IConfigurationSettings,
-    private val localeUtil: LocaleUtil,
-    private val themeUtil: ThemeUtil
+    private val localeHelper: LocaleHelper,
+    private val themeHelper: ThemeHelper
 ) : IConfigurationUtil {
 
     override val moduleTag: String = this::class.java.simpleName
@@ -48,8 +48,8 @@ class ConfigurationUtil(
     override fun onCreate(activity: AnitrendActivity<*, *>) {
         applicationTheme = settings.theme
         applicationLocale = settings.locale
-        localeUtil.applyApplicationLocale(activity)
-        themeUtil.applyApplicationTheme(activity)
+        localeHelper.applyApplicationLocale(activity)
+        themeHelper.applyApplicationTheme(activity)
     }
 
     /**
@@ -60,7 +60,7 @@ class ConfigurationUtil(
     override fun onResume(activity: AnitrendActivity<*, *>) {
         if (applicationTheme != settings.theme) {
             activity.resetActivity()
-            themeUtil.applyNightMode()
+            themeHelper.applyDynamicNightModeFromTheme()
         }
     }
 

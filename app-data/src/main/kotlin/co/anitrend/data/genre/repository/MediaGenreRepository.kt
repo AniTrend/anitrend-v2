@@ -17,14 +17,16 @@
 
 package co.anitrend.data.genre.repository
 
+import androidx.paging.PagedList
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.data.genre.datasource.MediaGenreSource
 import co.anitrend.data.media.model.remote.MediaGenre
+import co.anitrend.data.util.graphql.GraphUtil
 import co.anitrend.domain.genre.entities.Genre
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
-internal class MediaGenreRepository(
+class MediaGenreRepository(
     private val dataSource: MediaGenreSource
 ) : SupportRepository(dataSource),
     IMediaGenreRepository<UserInterfaceState<List<Genre>>> {
@@ -34,7 +36,7 @@ internal class MediaGenreRepository(
      */
     override fun getMediaGenres() =
         UserInterfaceState.create(
-            model = dataSource.getMediaGenres(),
+            model = dataSource.observable(null),
             source = dataSource
         )
 }

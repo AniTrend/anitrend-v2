@@ -17,24 +17,15 @@
 
 package co.anitrend.data.tag.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
 import co.anitrend.data.tag.model.remote.MediaTagCollection
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.body.GraphContainer
-import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface MediaTagRemoteSource {
 
     @POST("/")
     @GraphQuery("MediaTagCollection")
-    suspend fun getMediaTags(
-        @Body request: QueryContainerBuilder
-    ): Response<GraphContainer<MediaTagCollection>>
-
-    companion object : EndpointFactory<MediaTagRemoteSource>(
-        endpoint = MediaTagRemoteSource::class
-    )
+    suspend fun getMediaTags(): Response<GraphContainer<MediaTagCollection>>
 }

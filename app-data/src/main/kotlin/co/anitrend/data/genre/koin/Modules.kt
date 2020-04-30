@@ -17,27 +17,20 @@
 
 package co.anitrend.data.genre.koin
 
-import co.anitrend.data.database.AniTrendStore
+import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.db
 import co.anitrend.data.genre.datasource.MediaGenreSource
 import co.anitrend.data.genre.datasource.MediaGenreSourceImpl
-import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.repository.MediaGenreRepository
 import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
-import co.anitrend.domain.genre.interactors.MediaGenreUseCase
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory {
-        get<AniTrendStore>().mediaGenreDao()
-    }
-    factory {
-        MediaGenreRemoteSource.create()
-    }
     factory<MediaGenreSource> {
         MediaGenreSourceImpl(
-            localSource = get(),
-            remoteSource = get(),
+            localSource = db().mediaGenreDao(),
+            remoteSource = api(),
             mapper = get(),
             connectivity = get(),
             dispatchers = get()
@@ -48,7 +41,7 @@ private val sourceModule = module {
 private val mapperModule = module {
     factory {
         MediaGenreResponseMapper(
-            localSource = get()
+            localSource = db().mediaGenreDao()
         )
     }
 }

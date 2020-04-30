@@ -35,7 +35,9 @@ import java.net.URLDecoder
 @RunWith(AndroidJUnit4ClassRunner::class)
 class AuthenticationHelperWithContextTest {
 
-    private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }
+    private val appContext by lazy {
+        InstrumentationRegistry.getInstrumentation().context
+    }
 
     @Test
     fun useAppContext() {

@@ -19,12 +19,13 @@ package co.anitrend.data.genre.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.arch.common.dao.ILocalSource
+import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MediaGenreLocalSource: ILocalSource<GenreEntity> {
+interface MediaGenreLocalSource:
+    ILocalSource<GenreEntity> {
 
     @Query("""
         select count(id) from GenreEntity

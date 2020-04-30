@@ -18,6 +18,6 @@
 
 <resources>
     <!-- Preference Keys -->
-    <string name="preference_key_accounts" translatable="false">_accounts</string>
-    <string name="preference_key_themes" translatable="false">_themes</string>
+    <string name="preference_key_account" translatable="false">_accounts</string>
+    <string name="preference_key_theme" translatable="false">_theme</string>
 </resources>

@@ -23,8 +23,8 @@ import co.anitrend.core.R
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
 import co.anitrend.core.util.config.ConfigurationUtil
-import co.anitrend.core.util.locale.LocaleUtil
-import co.anitrend.core.util.theme.ThemeUtil
+import co.anitrend.core.util.locale.LocaleHelper
+import co.anitrend.core.util.theme.ThemeHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
@@ -46,8 +46,8 @@ private val coreModule = module {
     factory {
         ConfigurationUtil(
             settings = get(),
-            localeUtil = get(),
-            themeUtil = get()
+            localeHelper = get(),
+            themeHelper = get()
         )
     }
     single {
@@ -57,12 +57,12 @@ private val coreModule = module {
 
 private val configurationModule = module {
     single {
-        LocaleUtil(
+        LocaleHelper(
             settings = get()
         )
     }
     single {
-        ThemeUtil(
+        ThemeHelper(
             settings = get()
         )
     }

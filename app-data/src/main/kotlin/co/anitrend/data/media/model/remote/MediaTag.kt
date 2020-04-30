@@ -17,12 +17,14 @@
 
 package co.anitrend.data.media.model.remote
 
+import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.media.model.contract.IMediaTag
+import co.anitrend.data.tag.entity.TagEntity
 
 /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
  * A tag that describes a theme or element of the media
  */
-data class MediaTag(
+internal data class MediaTag(
     override val id: Long,
     override val name: String,
     override val description: String?,
@@ -31,4 +33,22 @@ data class MediaTag(
     override val isGeneralSpoiler: Boolean?,
     override val isMediaSpoiler: Boolean?,
     override val isAdult: Boolean?
-) : IMediaTag
+) : IMediaTag {
+
+    companion object : ISupportMapperHelper<IMediaTag, TagEntity> {
+        /**
+         * Transforms the the [source] to the target type
+         */
+        override fun transform(source: IMediaTag) =
+            TagEntity(
+                id = source.id,
+                name = source.name,
+                description = source.description,
+                category = source.category,
+                rank = source.rank,
+                isGeneralSpoiler = source.isGeneralSpoiler ?: false,
+                isMediaSpoiler = source.isMediaSpoiler ?: false,
+                isAdult = source.isAdult ?: false
+            )
+    }
+}

@@ -29,7 +29,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @param isSplitCompletedList If this grouping is split by types of of media, e.g movies, tv, specials, etc
  * @param status status of current group, one of [co.anitrend.domain.enums.medialist.MediaListStatusContract]
  */
-data class MediaListGroup(
+internal data class MediaListGroup(
     val entries: List<MediaList>?,
     val isCustomList: Boolean,
     val isSplitCompletedList: Boolean,

@@ -19,16 +19,22 @@ package co.anitrend.splash.ui.activity
 
 import android.os.Bundle
 import androidx.fragment.app.commit
+import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.splash.R
+import co.anitrend.splash.databinding.ActivitySplashBinding
 import co.anitrend.splash.koin.injectFeatureModules
 import co.anitrend.splash.ui.fragment.SplashContent
 import co.anitrend.splash.presenter.SplashPresenter
 import org.koin.android.ext.android.inject
 
 class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
+
+    private val binding by lazy(LAZY_MODE_UNSAFE) {
+        ActivitySplashBinding.inflate(layoutInflater)
+    }
 
     /**
      * Should be created lazily through injection or lazy delegate
@@ -47,7 +53,7 @@ class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        setContentView(binding.root)
     }
 
     /**
@@ -73,8 +79,13 @@ class SplashScreen : AnitrendActivity<Nothing, SplashPresenter>() {
         val fragment = supportFragmentManager.findFragmentByTag(
             SplashContent.FRAGMENT_TAG
         ) ?: SplashContent.newInstance()
+
         supportFragmentManager.commit {
-            replace(R.id.splashFrame, fragment, SplashContent.FRAGMENT_TAG)
+            replace(
+                binding.splashFrame.id,
+                fragment,
+                SplashContent.FRAGMENT_TAG
+            )
         }
     }
 }

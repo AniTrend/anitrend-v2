@@ -25,7 +25,7 @@ import co.anitrend.domain.common.model.PageInfo
 /**
  * Airing schedule connection
  */
-data class AiringScheduleConnection(
+internal data class AiringScheduleConnection(
     override val edges: List<AiringScheduleEdge>?,
     override val nodes: List<AiringSchedule>?,
     override val pageInfo: PageInfo?

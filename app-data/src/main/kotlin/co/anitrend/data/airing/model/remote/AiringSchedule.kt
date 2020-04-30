@@ -17,7 +17,6 @@
 
 package co.anitrend.data.airing.model.remote
 
-import androidx.room.PrimaryKey
 import co.anitrend.data.airing.model.remote.contract.IAiringSchedule
 import co.anitrend.data.media.model.remote.Media
 
@@ -26,9 +25,8 @@ import co.anitrend.data.media.model.remote.Media
  *
  * @param media The associate media of the airing episode
  */
-data class AiringSchedule(
+internal data class AiringSchedule(
     val media: Media?,
-    @PrimaryKey
     override val id: Long,
     override val airingAt: Long,
     override val episode: Int,

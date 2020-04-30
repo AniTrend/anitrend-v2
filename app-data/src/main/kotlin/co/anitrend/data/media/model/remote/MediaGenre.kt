@@ -17,11 +17,24 @@
 
 package co.anitrend.data.media.model.remote
 
+import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.model.contract.IMediaGenre
 
 /**
- * If AniList ever duplicates genres we're screwed! R.I.P
+ * If AniList ever duplicates genres we're screwed! **R.I.P**
  */
-data class MediaGenre(
+internal data class MediaGenre(
     override val genre: String
-) : IMediaGenre
+) : IMediaGenre {
+
+    companion object : ISupportMapperHelper<IMediaGenre, GenreEntity> {
+        /**
+         * Transforms the the [source] to the target type
+         */
+        override fun transform(source: IMediaGenre) =
+            GenreEntity(
+                genre = source.genre
+            )
+    }
+}

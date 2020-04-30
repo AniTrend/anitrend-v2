@@ -17,12 +17,7 @@
 
 package co.anitrend.data.airing.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
-
 internal interface AiringRemoteSource {
 
 
-    companion object : EndpointFactory<AiringRemoteSource>(
-        endpoint = AiringRemoteSource::class
-    )
 }

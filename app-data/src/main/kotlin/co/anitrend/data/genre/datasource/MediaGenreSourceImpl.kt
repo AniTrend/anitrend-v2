@@ -18,23 +18,21 @@
 package co.anitrend.data.genre.datasource
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
-import co.anitrend.data.extensions.controller
+import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
+import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.domain.genre.entities.Genre
-import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 
 internal class MediaGenreSourceImpl(
@@ -51,7 +49,7 @@ internal class MediaGenreSourceImpl(
      */
     @ExperimentalCoroutinesApi
     override val observable =
-        object : ISourceObservable<QueryContainerBuilder, List<Genre>> {
+        object : ISourceObservable<Nothing?, List<Genre>> {
 
             /**
              * Returns the appropriate observable which we will monitor for updates,
@@ -60,7 +58,10 @@ internal class MediaGenreSourceImpl(
              *
              * @param parameter to use when executing
              */
-            override fun invoke(parameter: QueryContainerBuilder): LiveData<List<Genre>> {
+            override fun invoke(parameter: Nothing?): LiveData<List<Genre>> {
+                retry = { fetchAllGenres() }
+                fetchAllGenres()
+
                 val genreFlow = localSource.findAllX()
                 return genreFlow.map {
                         it.map { entity ->
@@ -75,20 +76,17 @@ internal class MediaGenreSourceImpl(
     /**
      * Handles dispatcher for requesting media tags
      */
-    override fun getMediaGenres(queryContainerBuilder: QueryContainerBuilder): LiveData<List<Genre>> {
-        retry = { getMediaGenres(queryContainerBuilder) }
+    override fun fetchAllGenres() {
         val deferred = async {
-            remoteSource.getMediaGenres(queryContainerBuilder)
+            remoteSource.getMediaGenres()
         }
 
         launch {
             val controller =
-                mapper.controller(connectivity, dispatchers)
+                mapper.controller(dispatchers, OnlineStrategy.create(connectivity))
 
             controller(deferred, networkState)
         }
-
-        return observable(queryContainerBuilder)
     }
 
     /**

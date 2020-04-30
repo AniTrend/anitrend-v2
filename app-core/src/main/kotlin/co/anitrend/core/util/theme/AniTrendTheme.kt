@@ -17,12 +17,29 @@
 
 package co.anitrend.core.util.theme
 
+import androidx.annotation.StyleRes
+import co.anitrend.core.R
+
 /**
  * Represents application themes
+ *
+ * @param styleAttribute The style resource attribute that will be applied
+ * @param useNightMode If the current theme should also change the system to use night mode
  */
-enum class AniTrendTheme {
-    SYSTEM,
-    AMOLED,
-    LIGHT,
-    DARK
+enum class AniTrendTheme(@StyleRes val styleAttribute: Int, val useNightMode: Boolean = false) {
+    SYSTEM(
+        styleAttribute = 0
+    ),
+    AMOLED(
+        styleAttribute = R.style.AppTheme,
+        useNightMode = true
+    ),
+    LIGHT(
+        styleAttribute = R.style.AppTheme,
+        useNightMode = false
+    ),
+    DARK(
+        styleAttribute = R.style.AppTheme_Dark,
+        useNightMode = true
+    )
 }

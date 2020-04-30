@@ -17,26 +17,23 @@
 
 package co.anitrend.data.tag.datasource
 
-import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.data.extensions.koinOf
-import co.anitrend.data.media.model.remote.MediaTag
-import co.anitrend.data.util.graphql.GraphUtil
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.domain.tag.entities.Tag
 
-abstract class MediaTagSource : SupportCoreDataSource(koinOf()) {
+abstract class MediaTagSource(
+    supportDispatchers: SupportDispatchers
+) : SupportCoreDataSource(supportDispatchers) {
 
     /**
      * Registers a dispatcher executing a unit of work and then returns a
      * [androidx.lifecycle.LiveData] observable
      */
-    protected abstract val observable: ISourceObservable<Nothing?, List<MediaTag>>
+    abstract val observable: ISourceObservable<Nothing?, List<Tag>>
 
     /**
      * Handles dispatcher for requesting media tags
      */
-    abstract fun getMediaTags(
-        queryContainerBuilder: QueryContainerBuilder = GraphUtil.getDefaultQuery()
-    ): LiveData<List<MediaTag>>
+    abstract fun fetchAllMediaTags()
 }

@@ -25,7 +25,7 @@ import timber.log.Timber
  * GraphQLMapper specific mapper, assures that all requests respond with [GraphContainer] as the root tree object.
  * Making it easier for us to implement error logging and provide better error messages
  */
-internal abstract class GraphQLMapper<S, D> : SupportResponseMapper<GraphContainer<S>, D>() {
+internal abstract class GraphQLMapper<S, D> : SupportResponseMapper<S, D>() {
 
     /**
      * Simple logger for empty response

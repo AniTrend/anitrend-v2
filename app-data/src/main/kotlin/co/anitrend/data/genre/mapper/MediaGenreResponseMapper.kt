@@ -22,8 +22,6 @@ import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.remote.GenreCollection
 import co.anitrend.data.media.model.remote.MediaGenre
-import io.github.wax911.library.model.body.GraphContainer
-import timber.log.Timber
 
 internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource
@@ -36,12 +34,12 @@ internal class MediaGenreResponseMapper(
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: GraphContainer<GenreCollection>): List<GenreEntity> {
-        return source.data?.genreCollection?.map {
+    override suspend fun onResponseMapFrom(source: GenreCollection): List<GenreEntity> {
+        return source.genreCollection.map {
             MediaGenre.transform(
                 MediaGenre(it)
             )
-        }.orEmpty()
+        }
     }
 
     /**

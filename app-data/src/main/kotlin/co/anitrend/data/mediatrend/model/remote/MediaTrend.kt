@@ -23,7 +23,7 @@ import co.anitrend.data.mediatrend.model.contract.IMediaTrend
 /** [MediaTrend](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrend.doc.html)
  * Daily media statistics
  */
-data class MediaTrend(
+internal data class MediaTrend(
     override val averageScore: Int?,
     override val date: Long,
     override val episode: Int?,

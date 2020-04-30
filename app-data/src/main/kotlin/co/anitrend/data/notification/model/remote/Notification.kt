@@ -30,7 +30,7 @@ import co.anitrend.domain.notification.enums.NotificationType
  * @param media The associated media of the airing schedule
  * @param contexts The notification context text
  */
-data class Notification(
+internal data class Notification(
     val activityId: Int?,
     val user: User?,
     val media: Media?,

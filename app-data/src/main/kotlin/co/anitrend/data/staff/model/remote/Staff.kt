@@ -30,7 +30,7 @@ import co.anitrend.domain.staff.enums.StaffLanguage
  * @param character Characters voiced by the actor
  * @param staffMedia Media where the staff member has a production role
  */
-data class Staff(
+internal data class Staff(
     val character: CharacterConnection?,
     val staffMedia: MediaConnection?,
     override val id: Long,

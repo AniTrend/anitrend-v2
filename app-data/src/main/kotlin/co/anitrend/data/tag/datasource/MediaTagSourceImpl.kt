@@ -18,29 +18,39 @@
 package co.anitrend.data.tag.datasource
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
-import co.anitrend.data.extensions.controller
+import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
+import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
-import co.anitrend.data.tag.mapper.MediaTagResponseMapper
-import co.anitrend.data.media.model.remote.MediaTag
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.tag.mapper.MediaTagResponseMapper
+import co.anitrend.domain.tag.entities.Tag
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 internal class MediaTagSourceImpl(
-    private val mediaRemoteSource: MediaTagRemoteSource,
-    private val mediaTagLocalSource: MediaTagLocalSource
-) : MediaTagSource() {
-
-    private val mapper = MediaTagResponseMapper(mediaTagLocalSource)
+    private val remoteSource: MediaTagRemoteSource,
+    private val localSource: MediaTagLocalSource,
+    private val mapper: MediaTagResponseMapper,
+    private val connectivity: SupportConnectivity,
+    dispatchers: SupportDispatchers
+) : MediaTagSource(dispatchers) {
 
     /**
      * Registers a dispatcher executing a unit of work and then returns a
      * [androidx.lifecycle.LiveData] observable
      */
+    @ExperimentalCoroutinesApi
     override val observable =
-        object : ISourceObservable<Nothing?, List<MediaTag>> {
+        object : ISourceObservable<Nothing?, List<Tag>> {
+
             /**
              * Returns the appropriate observable which we will monitor for updates,
              * common implementation may include but not limited to returning
@@ -48,34 +58,41 @@ internal class MediaTagSourceImpl(
              *
              * @param parameter to use when executing
              */
-            override fun invoke(parameter: Nothing?): LiveData<List<MediaTag>> {
-                return mediaTagLocalSource.findAllLiveData()
+            override fun invoke(parameter: Nothing?): LiveData<List<Tag>> {
+                retry = { fetchAllMediaTags() }
+                fetchAllMediaTags()
+
+                val tagFlow = localSource.findAllFlow()
+                return tagFlow.map {
+                        it.map { entity ->
+                            TagEntity.transform(entity)
+                        }
+                    }
+                    .flowOn(dispatchers.computation)
+                    .asLiveData()
             }
         }
 
     /**
      * Handles dispatcher for requesting media tags
      */
-    override fun getMediaTags(queryContainerBuilder: QueryContainerBuilder): LiveData<List<MediaTag>> {
-        retry = { getMediaTags(queryContainerBuilder) }
+    override fun fetchAllMediaTags() {
         val deferred = async {
-            mediaRemoteSource.getMediaTags(queryContainerBuilder)
+            remoteSource.getMediaTags()
         }
 
         launch {
             val controller =
-                mapper.controller()
+                mapper.controller(dispatchers, OnlineStrategy.create(connectivity))
 
             controller(deferred, networkState)
         }
-
-        return observable(null)
     }
 
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
     override suspend fun clearDataSource() {
-        mediaTagLocalSource.deleteAll()
+        localSource.clear()
     }
 }
