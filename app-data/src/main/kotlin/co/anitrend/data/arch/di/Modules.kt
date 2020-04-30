@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.koin
+package co.anitrend.data.arch.di
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -25,9 +25,9 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.converter.AniGraphConverter
 import co.anitrend.data.api.interceptor.AuthInterceptor
 import co.anitrend.data.api.interceptor.ClientInterceptor
-import co.anitrend.data.auth.AuthenticationHelper
-import co.anitrend.data.database.AniTrendStore
-import co.anitrend.data.extensions.koinOf
+import co.anitrend.data.auth.util.AuthenticationHelper
+import co.anitrend.data.arch.database.AniTrendStore
+import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import okhttp3.OkHttpClient
@@ -38,12 +38,11 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
-    single {
+    single<IAniTrendStore> {
         AniTrendStore.create(
             applicationContext = androidContext()
         )
     }
-
     factory {
         AuthenticationHelper(
             settings = get()
@@ -100,5 +99,6 @@ private val networkModule = module {
 }
 
 val dataModules = listOf(
-    coreModule, networkModule
+    coreModule,
+    networkModule
 ) + mediaTagModules + mediaGenreModules

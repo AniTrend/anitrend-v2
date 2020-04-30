@@ -20,7 +20,7 @@ package co.anitrend.koin
 import co.anitrend.ui.activity.MainScreen
 import co.anitrend.presenter.MainPresenter
 import co.anitrend.core.koin.coreModules
-import co.anitrend.data.koin.dataModules
+import co.anitrend.data.arch.di.dataModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
