@@ -18,6 +18,11 @@
 <resources>
     <string name="title_activity_settings_screen">Settings</string>
 
+    <!-- Preference Categories Titles -->
+    <string name="preference_category_title_user_interface">User Interface Experience</string>
+    <string name="preference_category_title_updates_and_storage">Updates &amp; Storage</string>
+    <string name="preference_category_title_notifications_and_sync_settings">Notifications &amp; Sync</string>
+
     <!-- Preference Titles -->
     <string name="preference_title_accounts">Accounts</string>
     <string name="preference_title_locale">Locale</string>
@@ -28,12 +33,27 @@
     <string name="preference_title_privacy_analytics_config">Usage analytics</string>
     <string name="preference_title_privacy_crash_analytics_config">Crash reporting</string>
 
+    <string name="preference_title_content_filtering">Filters</string>
+    <string name="preference_title_presentation">Presentation</string>
+    <string name="preference_title_updates">Updates</string>
+    <string name="preference_title_sync">Synchronization</string>
+    <string name="preference_title_notifications">Notifications</string>
+    <string name="preference_title_storage">Storage</string>
+
     <!-- Preference Summaries -->
-    <string name="preference_summary_accounts">Access information about current accounts</string>
-    <string name="preference_summary_locale">Configure which language to use</string>
+    <string name="preference_summary_accounts">Access information about your accounts</string>
+    <string name="preference_summary_locale">Change the application language</string>
     <string name="preference_summary_privacy">Dial in the right level of privacy for you</string>
-    <string name="preference_summary_theme">Configure the look and feel of the application</string>
+    <string name="preference_summary_theme">Change the application theme</string>
 
     <string name="preference_summary_privacy_analytics_config">Allows usage statics to be sent to the developer</string>
     <string name="preference_summary_privacy_crash_analytics_config">Allows crashes to be reported automatically as they happen</string>
+
+    <string name="preference_summary_content_filtering">Configure how content is filtered</string>
+    <string name="preference_summary_presentation">Change the general user interface style</string>
+    <string name="preference_summary_notifications">Configure how notifications behave</string>
+    <string name="preference_summary_sync">Configure how data sync\'d between services</string>
+    <string name="preference_summary_updates">Configure how and which updates to receive</string>
+    <string name="preference_summary_storage">Configure how the app should use storage space</string>
+
 </resources>

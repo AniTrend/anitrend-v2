@@ -19,18 +19,24 @@ package co.anitrend.settings.ui.activity
 
 import android.os.Bundle
 import androidx.fragment.app.commit
+import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.settings.R
+import co.anitrend.settings.databinding.SettingsActivityBinding
 import co.anitrend.settings.ui.fragment.SettingsFragment
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.koin.android.ext.android.inject
 
 class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
 
+    private val binding by lazy(LAZY_MODE_UNSAFE) {
+        SettingsActivityBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
+        setContentView(binding.root)
         setSupportActionBar(bottomAppBar)
     }
 
@@ -60,8 +66,16 @@ class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
      * Check implementation for more details
      */
     override fun onUpdateUserInterface() {
+        val fragment = supportFragmentManager.findFragmentByTag(
+            SettingsFragment.FRAGMENT_TAG
+        ) ?: SettingsFragment.newInstance()
+
         supportFragmentManager.commit {
-            replace(R.id.contentFrame, SettingsFragment.newInstance())
+            replace(
+                R.id.contentFrame,
+                fragment,
+                SettingsFragment.FRAGMENT_TAG
+            )
         }
     }
 }

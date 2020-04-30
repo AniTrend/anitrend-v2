@@ -20,15 +20,7 @@
     <Preference
         app:title="@string/preference_title_accounts"
         app:summary="@string/preference_summary_accounts"
-        app:icon="@drawable/ic_account_circle_24dp"
-        app:key="@string/preference_key_accounts"
-        app:allowDividerBelow="true"/>
-
-    <Preference
-        app:title="@string/preference_title_locale"
-        app:summary="@string/preference_summary_locale"
-        app:icon="@drawable/ic_translate_24dp"
-        app:fragment=""/>
+        app:icon="@drawable/ic_account_circle_24dp"/>
 
     <Preference
         app:title="@string/preference_title_privacy"
@@ -36,11 +28,74 @@
         app:icon="@drawable/ic_policy_24dp"
         app:fragment=""/>
 
+    <!-- TODO: Add preference fragment to change what kind of data to display, exclude things like hentai or ecchi -->
     <Preference
-        app:title="@string/preference_title_theme"
-        app:summary="@string/preference_summary_theme"
-        app:icon="@drawable/ic_color_lens_24dp"
-        app:key="@string/preference_key_accounts"
-        app:allowDividerBelow="true"/>
+        app:title="@string/preference_title_content_filtering"
+        app:summary="@string/preference_summary_content_filtering"
+        app:icon="@drawable/ic_filter_list_24dp"
+        app:fragment=""/>
+
+    <PreferenceCategory
+        app:title="@string/preference_category_title_user_interface">
+
+        <Preference
+            app:title="@string/preference_title_locale"
+            app:summary="@string/preference_summary_locale"
+            app:icon="@drawable/ic_translate_24dp"/>
+
+        <Preference
+            app:title="@string/preference_title_theme"
+            app:summary="@string/preference_summary_theme"
+            app:icon="@drawable/ic_color_lens_24dp"/>
+
+        <!-- TODO: Add preference fragment to change look and feel -->
+        <Preference
+            app:title="@string/preference_title_presentation"
+            app:summary="@string/preference_summary_presentation"
+            app:icon="@drawable/ic_photo_filter_24dp"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/preference_category_title_notifications_and_sync_settings">
+
+        <!-- TODO: Add preference fragment to change notification behaviour, show notifications, make sound, swipe to dismiss, workaround, e.t.c  -->
+        <Preference
+            app:title="@string/preference_title_notifications"
+            app:summary="@string/preference_summary_notifications"
+            app:fragment=""
+            app:icon="@drawable/ic_notifications_24dp"
+            />
+
+        <!-- TODO: Add preference fragment to change sync options for one or more services, intervals and other similar options -->
+        <Preference
+            app:title="@string/preference_title_sync"
+            app:summary="@string/preference_summary_sync"
+            app:fragment=""
+            app:icon="@drawable/ic_sync_24dp"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/preference_category_title_updates_and_storage">
+
+        <!-- TODO: Add preference fragment to select update channel, update build and save location -->
+        <Preference
+            app:title="@string/preference_title_updates"
+            app:summary="@string/preference_summary_updates"
+            app:fragment=""
+            app:icon="@drawable/ic_system_update_24dp"
+            />
+
+        <!-- TODO: Add preference fragment to change storage settings such as image caching, downloads location, e.t.c  -->
+        <Preference
+            app:title="@string/preference_title_storage"
+            app:summary="@string/preference_summary_storage"
+            app:fragment=""
+            app:icon="@drawable/ic_storage_24dp"
+            />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
