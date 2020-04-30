@@ -19,5 +19,4 @@ package co.anitrend.data.thread.datasource.remote
 
 internal interface ThreadRemoteSource {
 
-
 }

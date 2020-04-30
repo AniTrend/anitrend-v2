@@ -17,12 +17,6 @@
 
 package co.anitrend.data.studio.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
-
 internal interface StudioRemoteSource {
 
-
-    companion object : EndpointFactory<StudioRemoteSource>(
-        endpoint = StudioRemoteSource::class
-    )
 }
