@@ -22,7 +22,7 @@ import co.anitrend.arch.domain.usecases.ISupportUseCase
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 
 abstract class MediaTagUseCase<R: IUserInterfaceState<*>>(
-    private val mediaTagRepository: IMediaTagRepository<R>
+    protected val repository: IMediaTagRepository<R>
 ) : ISupportUseCase<Nothing?, R> {
 
     /**
@@ -31,6 +31,6 @@ abstract class MediaTagUseCase<R: IUserInterfaceState<*>>(
      * @param param input for solving a given use case
      */
     override fun invoke(param: Nothing?): R {
-        return mediaTagRepository.getMediaTags()
+        return repository.getMediaTags()
     }
 }

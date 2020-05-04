@@ -25,7 +25,7 @@ import co.anitrend.data.studio.model.remote.connection.StudioConnection
 /** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)
  * User's favourite anime, manga, characters, staff & studios
  */
-data class Favourites(
+internal data class Favourites(
     val anime: MediaConnection?,
     val characters: CharacterConnection?,
     val manga: MediaConnection?,

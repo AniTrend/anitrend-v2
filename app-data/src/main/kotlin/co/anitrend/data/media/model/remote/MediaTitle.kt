@@ -22,7 +22,7 @@ import co.anitrend.data.media.model.contract.IMediaTitle
 /** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
  * The official titles of the media in various languages
  */
-data class MediaTitle(
+internal data class MediaTitle(
     override val romaji: String?,
     override val english: String?,
     override val native: String?,

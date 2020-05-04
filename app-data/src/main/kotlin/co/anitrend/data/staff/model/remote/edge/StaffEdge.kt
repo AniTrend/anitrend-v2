@@ -26,7 +26,7 @@ import co.anitrend.data.staff.model.remote.Staff
  * @param favouriteOrder The order the staff should be displayed from the users favourites
  * @param role The role of the staff member in the production of the media
  */
-data class StaffEdge(
+internal data class StaffEdge(
     val favouriteOrder: Int?,
     val role: String?,
     override val id: Long,

@@ -25,7 +25,7 @@ import co.anitrend.domain.common.model.PageInfo
 /** [MediaConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaconnection.doc.html)
  * Media connection
  */
-data class MediaConnection(
+internal data class MediaConnection(
     override val edges: List<MediaEdge>?,
     override val nodes: List<Media>?,
     override val pageInfo: PageInfo?

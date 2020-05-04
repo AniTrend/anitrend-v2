@@ -26,7 +26,7 @@ import co.anitrend.data.studio.model.remote.Studio
  * @param favouriteOrder The order the character should be displayed from the users favourites
  * @param isMain If the studio is the main animation studio of the anime
  */
-data class StudioEdge(
+internal data class StudioEdge(
     val favouriteOrder: Int?,
     val isMain: Boolean,
     override val id: Long,

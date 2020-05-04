@@ -35,4 +35,29 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/xl_margin</item>
     </style>
+
+    <style name="AppTheme.MaterialCard" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_margin">@dimen/lg_margin</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardBackgroundColor">?cardColor</item>
+        <item name="cardElevation">@dimen/sm_margin</item>
+        <item name="cardCornerRadius">@dimen/lg_margin</item>
+    </style>
+
+    <style name="AppTheme.MediaImage">
+        <item name="android:layout_width">@dimen/series_image_xl</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="AppTheme.MediaStatus">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/sm_margin</item>
+    </style>
+
+    <style name="AppTheme.SingleLineText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="singleLine">true</item>
+    </style>
 </resources>

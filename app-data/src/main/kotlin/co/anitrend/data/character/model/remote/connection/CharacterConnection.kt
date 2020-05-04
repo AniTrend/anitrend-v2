@@ -25,7 +25,7 @@ import co.anitrend.domain.common.model.PageInfo
 /** [CharacterConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/characterconnection.doc.html)
  * Character Connection
  */
-data class CharacterConnection(
+internal data class CharacterConnection(
     override val edges: List<CharacterEdge>?,
     override val nodes: List<Character>?,
     override val pageInfo: PageInfo?

@@ -17,29 +17,24 @@
 
 package co.anitrend.data.genre.koin
 
-import co.anitrend.data.database.AniTrendStore
-import co.anitrend.data.genre.datasource.MediaGenreSource
-import co.anitrend.data.genre.datasource.MediaGenreSourceImpl
-import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.db
+import co.anitrend.data.genre.source.contract.MediaGenreSource
+import co.anitrend.data.genre.source.MediaGenreSourceImpl
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.repository.MediaGenreRepository
+import co.anitrend.data.genre.usecase.MediaGenreUseCaseContract
 import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
-import co.anitrend.domain.genre.interactors.MediaGenreUseCase
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory {
-        get<AniTrendStore>().mediaGenreDao()
-    }
-    factory {
-        MediaGenreRemoteSource.create()
-    }
     factory<MediaGenreSource> {
         MediaGenreSourceImpl(
-            localSource = get(),
-            remoteSource = get(),
+            localSource = db().mediaGenreDao(),
+            remoteSource = api(EndpointType.GRAPH_QL),
             mapper = get(),
-            connectivity = get(),
+            clearDataHelper = get(),
             dispatchers = get()
         )
     }
@@ -48,13 +43,13 @@ private val sourceModule = module {
 private val mapperModule = module {
     factory {
         MediaGenreResponseMapper(
-            localSource = get()
+            localSource = db().mediaGenreDao()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory {
+    factory<MediaGenreUseCaseContract> {
         MediaGenreUseCaseImpl(
             repository = get()
         )
@@ -64,7 +59,7 @@ private val useCaseModule = module {
 private val repositoryModule = module {
     factory {
         MediaGenreRepository(
-            dataSource = get()
+            source = get()
         )
     }
 }

@@ -22,7 +22,7 @@ import co.anitrend.data.media.model.contract.IMediaTrailer
 /** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
  * Media trailer or advertisement
  */
-data class MediaTrailer(
+internal data class MediaTrailer(
     override val id: String?,
     override val site: String?
 ) : IMediaTrailer

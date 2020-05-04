@@ -22,7 +22,7 @@ import co.anitrend.data.media.model.contract.IMediaExternalLink
 /** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
  * An external link to another site related to the media
  */
-data class MediaExternalLink(
+internal data class MediaExternalLink(
     override val site: String,
     override val url: String,
     override val id: Long

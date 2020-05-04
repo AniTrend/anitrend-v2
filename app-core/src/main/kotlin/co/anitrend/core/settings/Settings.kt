@@ -19,7 +19,7 @@ package co.anitrend.core.settings
 
 import android.content.Context
 import co.anitrend.arch.extension.preference.*
-import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.arch.extension.preference.contract.ISupportSettings
 import co.anitrend.core.R
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.settings.common.locale.ILocaleSettings
@@ -27,13 +27,14 @@ import co.anitrend.core.settings.common.privacy.IPrivacySettings
 import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.util.locale.AniTrendLocale
 import co.anitrend.core.util.theme.AniTrendTheme
+import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
-import co.anitrend.data.settings.ISortOrderSettings
+import co.anitrend.data.arch.database.settings.ISortOrderSettings
 
-class Settings(context: Context) : SupportPreference(context),
+class Settings(context: Context) : SupportSettings(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
-    ISortOrderSettings {
+    ISortOrderSettings, IRefreshBehaviourSettings {
 
     override var locale by EnumPreference(
         R.string.settings_configuration_locale,
@@ -89,16 +90,22 @@ class Settings(context: Context) : SupportPreference(context),
         context.resources
     )
 
+    override var clearDataOnSwipeRefresh by BooleanPreference(
+        R.string.settings_clear_on_swipe_refresh,
+        true,
+        context.resources
+    )
+
     companion object {
 
         /**
          * Binding types for [Settings]
          */
         internal val BINDINGS = arrayOf(
-            ISupportPreference::class, IConfigurationSettings::class,
+            ISupportSettings::class, IConfigurationSettings::class,
             ILocaleSettings::class, IThemeSettings::class,
             IAuthenticationSettings::class, IPrivacySettings::class,
-            ISortOrderSettings::class
+            ISortOrderSettings::class, IRefreshBehaviourSettings::class
         )
     }
 }

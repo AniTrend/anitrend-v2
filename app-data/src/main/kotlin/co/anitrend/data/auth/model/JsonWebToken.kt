@@ -33,7 +33,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-data class JsonWebToken(
+internal data class JsonWebToken(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val userId: Long,

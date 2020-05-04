@@ -17,12 +17,6 @@
 
 package co.anitrend.data.medialist.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
-
 internal interface MediaListRemoteSource {
 
-
-    companion object : EndpointFactory<MediaListRemoteSource>(
-        endpoint = MediaListRemoteSource::class
-    )
 }

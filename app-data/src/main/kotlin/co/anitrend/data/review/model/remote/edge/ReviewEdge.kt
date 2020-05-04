@@ -23,7 +23,7 @@ import co.anitrend.data.review.model.remote.Review
 /** [ReviewEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/reviewedge.doc.html)
  * Review connection edge
  */
-data class ReviewEdge(
+internal data class ReviewEdge(
     override val id: Long,
     override val node: Review?
 ) : IEntityEdge<Review>

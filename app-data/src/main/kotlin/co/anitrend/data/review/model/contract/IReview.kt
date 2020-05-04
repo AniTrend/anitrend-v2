@@ -17,6 +17,7 @@
 
 package co.anitrend.data.review.model.contract
 
+import co.anitrend.data.media.model.contract.IMedia
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.data.user.model.contract.IUser
 import co.anitrend.domain.media.enums.MediaType
@@ -41,10 +42,10 @@ import co.anitrend.domain.review.enums.ReviewRating
  * @property userId The id of the review's creator
  * @property userRating The rating of the review by currently authenticated user
  */
-interface IReview : IEntity {
+internal interface IReview : IEntity {
     val body: String?
     val createdAt: Long
-    val media: co.anitrend.data.media.model.contract.IMedia?
+    val media: IMedia?
     val mediaId: Long
     val mediaType: MediaType?
     val private: Boolean?

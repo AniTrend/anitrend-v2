@@ -17,25 +17,32 @@
 
 package co.anitrend.splash.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
-import co.anitrend.arch.ui.fragment.SupportFragment
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.attachComponent
+import co.anitrend.arch.extension.detachComponent
+import co.anitrend.core.ui.fragment.AniTrendFragment
+import co.anitrend.core.ui.fragment.contract.IFragmentFactory
 import co.anitrend.splash.R
 import co.anitrend.splash.presenter.SplashPresenter
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import co.anitrend.core.extensions.injectScoped
+import co.anitrend.splash.koin.moduleHelper
 
-class SplashContent : SupportFragment<Nothing, SplashPresenter, Nothing>() {
+class SplashContent(
+    override val inflateLayout: Int = R.layout.content_splash
+) : AniTrendFragment<Nothing>() {
+
+    private val presenter by injectScoped<SplashPresenter>()
 
     /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
+     * Called when a fragment is first attached to its context.
+     * [onCreate] will be called after this.
      */
-    override val supportPresenter by inject<SplashPresenter>()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        attachComponent(moduleHelper)
+    }
 
     /**
      * Invoke view model observer to watch for changes
@@ -45,82 +52,50 @@ class SplashContent : SupportFragment<Nothing, SplashPresenter, Nothing>() {
     }
 
     /**
-     * Additional initialization to be done in this method, if the overriding class is type of
-     * [androidx.fragment.app.Fragment] then this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
-     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
+     * Additional initialization to be done in this method, this method will be called in
+     * [androidx.fragment.app.FragmentActivity.onCreate].
      *
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        lifecycleScope.launchWhenResumed {
+            presenter.firstRunCheck(activity)
+            onFetchDataInitialize()
+        }
     }
 
     /**
-     * Called to have the fragment instantiate its user interface view.
-     * This is optional, and non-graphical fragments can return null. This will be called between
-     * [.onCreate] and [.onActivityCreated].
+     * Handles the updating, binding, creation or state change, depending on the context of views.
      *
-     * A default View can be returned by calling [.Fragment] in your
-     * constructor. Otherwise, this method returns null.
-     *
-     * It is recommended to **only** inflate the layout in this method and move
-     * logic that operates on the returned View to [.onViewCreated].
-     *
-     * If you return a View from here, you will later be called in
-     * [.onDestroyView] when the view is being released.
-     *
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return Return the View for the fragment's UI, or null.
-     */
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.content_splash, container, false)
-
-    override fun onResume() {
-        super.onResume()
-        onFetchDataInitialize()
-    }
-
-    /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
-     *
-     * Check implementation for more details
+     * **N.B.** Where this is called is up to the developer
      */
     override fun onUpdateUserInterface() {
 
     }
 
     /**
-     * Handles the complex logic required to dispatch network request to [ISupportViewModel]
-     * to either request from the network or database cache.
+     * Handles the complex logic required to dispatch network request to a view model, presenter or
+     * worker to either request from the network or database cache.
      *
-     * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] specifically [ISupportViewModel.model]
-     *
-     * @see [ISupportViewModel.invoke]
+     * **N.B.** Where this is called is up to the developer
      */
     override fun onFetchDataInitialize() {
         // some state checks and finally
-        launch {
-            supportPresenter.firstRunCheck(activity)
-        }
         onUpdateUserInterface()
     }
 
-    companion object {
-        const val FRAGMENT_TAG = "Splash_Fragment"
+    /**
+     * Called when the fragment is no longer attached to its activity.  This
+     * is called after [onDestroy].
+     */
+    override fun onDetach() {
+        detachComponent(moduleHelper)
+        super.onDetach()
+    }
 
-        fun newInstance() = SplashContent()
+    companion object : IFragmentFactory<SplashContent> {
+        override val fragmentTag = SplashContent::class.java.simpleName
+
+        override fun newInstance(bundle: Bundle?) = SplashContent()
     }
 }

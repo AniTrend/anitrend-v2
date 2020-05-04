@@ -35,7 +35,7 @@ import co.anitrend.domain.media.enums.MediaRelation
  * @property staffRole The role of the staff member in the production of the media
  * @property voiceActors The voice actors of the character
  */
-data class MediaEdge(
+internal data class MediaEdge(
     val characterRole: CharacterRole?,
     val characters: List<Character>?,
     val favouriteOrder: Int?,

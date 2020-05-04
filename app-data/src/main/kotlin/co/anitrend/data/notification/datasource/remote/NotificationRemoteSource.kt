@@ -17,12 +17,6 @@
 
 package co.anitrend.data.notification.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
-
 internal interface NotificationRemoteSource {
 
-
-    companion object : EndpointFactory<NotificationRemoteSource>(
-        endpoint = NotificationRemoteSource::class
-    )
 }

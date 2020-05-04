@@ -41,7 +41,7 @@ class OnBoardingPresenter(
     )
 
     fun onBoardingExperienceCompleted() {
-        supportPreference.isNewInstallation = false
+        settings.isNewInstallation = false
         NavigationTargets.Main(context)
     }
 

@@ -34,11 +34,10 @@ class SplashPresenter(
      */
     suspend fun firstRunCheck(activity: FragmentActivity?) {
         delay(1200)
-        if (supportPreference.isNewInstallation)
+        if (settings.isNewInstallation)
             NavigationTargets.OnBoarding(context)
         else
             NavigationTargets.Main(context)
-
         activity?.finish()
     }
 }

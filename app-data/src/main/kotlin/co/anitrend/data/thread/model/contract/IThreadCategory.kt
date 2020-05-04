@@ -24,6 +24,6 @@ import co.anitrend.domain.common.entity.IEntity
  *
  * @property name The name of the category
  */
-interface IThreadCategory : IEntity {
+internal interface IThreadCategory : IEntity {
     val name: String
 }

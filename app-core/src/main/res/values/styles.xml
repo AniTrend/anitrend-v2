@@ -29,4 +29,7 @@
         <item name="shapeAppearanceLargeComponent">@style/AppTheme.ShapeAppearance.Large.Rounded</item>
     </style>
 
+    <!-- TODO: Override styling attributes -->
+    <style name="AppTheme.Dark"/>
+
 </resources>

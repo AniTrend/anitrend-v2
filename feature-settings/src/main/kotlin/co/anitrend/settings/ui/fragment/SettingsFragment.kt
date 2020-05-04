@@ -27,6 +27,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
+        val FRAGMENT_TAG = SettingsFragment::class.java.simpleName
+
         fun newInstance(): SettingsFragment {
             return SettingsFragment()
         }

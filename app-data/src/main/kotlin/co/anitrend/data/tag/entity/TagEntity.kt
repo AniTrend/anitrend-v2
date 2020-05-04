@@ -19,12 +19,10 @@ package co.anitrend.data.tag.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.tag.entities.Tag
 
 @Entity
-data class TagEntity(
+internal data class TagEntity(
     @PrimaryKey
     override val id: Long,
     val name: String,
@@ -34,22 +32,4 @@ data class TagEntity(
     val isGeneralSpoiler: Boolean,
     val isMediaSpoiler: Boolean,
     val isAdult: Boolean
-) : IEntity {
-
-    companion object : ISupportMapperHelper<TagEntity, Tag> {
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: TagEntity) =
-            Tag(
-                id = source.id,
-                name = source.name,
-                description = source.description,
-                category = source.category,
-                rank = source.rank ?: 0,
-                isGeneralSpoiler = source.isGeneralSpoiler,
-                isMediaSpoiler = source.isMediaSpoiler,
-                isAdult = source.isAdult
-            )
-    }
-}
+) : IEntity

@@ -29,16 +29,6 @@
                     android:title="@string/nav_home"/>
 
                 <item
-                    android:id="@+id/nav_episode_feed"
-                    android:icon="@drawable/ic_tv_24dp"
-                    android:title="@string/nav_episodes"/>
-
-                <item
-                    android:id="@+id/nav_news"
-                    android:icon="@drawable/ic_menu_book_24dp"
-                    android:title="@string/nav_news"/>
-
-                <item
                     android:id="@+id/nav_feed"
                     android:icon="@drawable/ic_deck_24dp"
                     android:title="@string/nav_feed"/>
@@ -51,13 +41,28 @@
         </menu>
     </item>
 
+
+    <item android:title="@string/nav_header_catalogs">
+        <menu>
+            <group android:id="@+id/nav_group_catalogs"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_news"
+                    android:icon="@drawable/ic_menu_book_24dp"
+                    android:title="@string/nav_news"/>
+
+                <item
+                    android:id="@+id/nav_episode_feed"
+                    android:icon="@drawable/ic_tv_24dp"
+                    android:title="@string/nav_episodes"/>
+            </group>
+        </menu>
+
+    </item>
+
     <item android:title="@string/nav_header_support">
         <menu>
             <group android:id="@+id/nav_group_support">
-                <item
-                    android:id="@+id/nav_about"
-                    android:icon="@drawable/ic_help_24dp"
-                    android:title="@string/nav_about" />
                 <item
                     android:id="@+id/nav_donate"
                     android:icon="@drawable/ic_patreon_24dp"

@@ -19,23 +19,11 @@ package co.anitrend.data.genre.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.genre.entities.Genre
 
 @Entity
-data class GenreEntity(
+internal data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
     override val id: Long = 0,
     val genre: String
-) : IEntity {
-
-    companion object : ISupportMapperHelper<GenreEntity, Genre> {
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: GenreEntity) = Genre(
-            name = source.genre
-        )
-    }
-}
+) : IEntity

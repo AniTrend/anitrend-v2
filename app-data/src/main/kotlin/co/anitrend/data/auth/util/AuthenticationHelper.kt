@@ -27,7 +27,7 @@ import okhttp3.Request
 /**
  * Provides an api to handle authentication based processes
  */
-class AuthenticationHelper(
+internal class AuthenticationHelper(
     private val settings: IAuthenticationSettings
 ) : SupportAuthentication() {
 
@@ -84,7 +84,7 @@ class AuthenticationHelper(
                 .scheme("https")
                 .authority(BuildConfig.apiAuthUrl)
                 .appendPath("authorize")
-                .appendQueryParameter("client_id", BuildConfig.cliendId)
+                .appendQueryParameter("client_id", BuildConfig.clientId)
                 .appendQueryParameter("response_type", "token")
                 .build()
 

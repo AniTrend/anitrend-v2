@@ -17,12 +17,6 @@
 
 package co.anitrend.data.recommendation.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
-
 internal interface RecommendationRemoteSource {
 
-
-    companion object : EndpointFactory<RecommendationRemoteSource>(
-        endpoint = RecommendationRemoteSource::class
-    )
 }

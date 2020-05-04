@@ -27,7 +27,7 @@ import co.anitrend.domain.common.model.CoverName
  *
  * @param description A general description of the character
  */
-class Character(
+internal class Character(
     val media: MediaConnection?,
     override val description: String?,
     override val favourites: Int?,

@@ -25,7 +25,7 @@ import co.anitrend.data.arch.common.entity.IEntityEdge
  *
  * **N.B.** The schema doesn't use the [id] field for MediaTrendEdge
  */
-data class MediaTrendEdge(
+internal data class MediaTrendEdge(
     override val id: Long,
     override val node: MediaTrend?
 ) : IEntityEdge<MediaTrend>

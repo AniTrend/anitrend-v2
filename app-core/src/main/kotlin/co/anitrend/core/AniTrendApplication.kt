@@ -22,7 +22,7 @@ import android.util.Log
 import androidx.work.Configuration
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.analytics.AnalyticsLogger
-import co.anitrend.core.util.theme.ThemeUtil
+import co.anitrend.core.util.theme.ThemeHelper
 import io.wax911.emojify.EmojiManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -51,9 +51,7 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
     protected open fun plantLoggingTree() {
         when (BuildConfig.DEBUG) {
             true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(
-                get<ISupportAnalytics>() as AnalyticsLogger
-            )
+            else -> Timber.plant(get<ISupportAnalytics>() as AnalyticsLogger)
         }
     }
 
@@ -62,7 +60,7 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
      */
     protected open fun applyNightMode() {
         // apply application theme on application instance'
-        get<ThemeUtil>().applyNightMode()
+        get<ThemeHelper>().applyDynamicNightModeFromTheme()
     }
 
     /**

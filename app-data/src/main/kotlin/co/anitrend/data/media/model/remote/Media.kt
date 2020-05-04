@@ -26,10 +26,8 @@ import co.anitrend.domain.media.enums.*
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
  * Anime or Manga representation
- *
- *
  */
-data class Media(
+internal data class Media(
     override val id: Long,
     override val averageScore: Int?,
     override val bannerImage: String?,

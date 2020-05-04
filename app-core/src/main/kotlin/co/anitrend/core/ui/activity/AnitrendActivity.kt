@@ -17,7 +17,6 @@
 
 package co.anitrend.core.ui.activity
 
-import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.util.config.ConfigurationUtil
 import org.koin.android.ext.android.inject
@@ -26,7 +25,7 @@ import org.koin.android.ext.android.inject
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
  */
-abstract class AnitrendActivity<M, P: SupportPresenter<*>> : SupportActivity<M, P>() {
+abstract class AnitrendActivity : SupportActivity() {
 
     protected val configurationUtil by inject<ConfigurationUtil>()
 

@@ -17,12 +17,6 @@
 
 package co.anitrend.data.thread.datasource.remote
 
-import co.anitrend.data.api.endpoint.EndpointFactory
-
 internal interface ThreadRemoteSource {
 
-
-    companion object : EndpointFactory<ThreadRemoteSource>(
-        endpoint = ThreadRemoteSource::class
-    )
 }

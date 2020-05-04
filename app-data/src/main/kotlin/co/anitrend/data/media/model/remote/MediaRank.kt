@@ -25,7 +25,7 @@ import co.anitrend.domain.media.enums.MediaSeason
 /** [MediaRank](https://anilist.github.io/ApiV2-GraphQL-Docs/mediarank.doc.html)
  * The ranking of a media in a particular time span and format compared to other media
  */
-data class MediaRank(
+internal data class MediaRank(
     override val allTime: Boolean?,
     override val context: String,
     override val format: MediaFormat,

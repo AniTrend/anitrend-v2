@@ -17,6 +17,8 @@
 
 package co.anitrend.domain.media.models.query
 
+import co.anitrend.domain.common.FuzzyDateInt
+import co.anitrend.domain.common.FuzzyDateLike
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.*
 
@@ -89,7 +91,7 @@ data class MediaQuery(
     val id: Int? = null,
     val idMal: Int? = null,
     val startDate: String? = null,
-    val endDate: co.anitrend.domain.common.FuzzyDateInt? = null,
+    val endDate: FuzzyDateInt? = null,
     val season: MediaSeason? = null,
     val seasonYear: Int? = null,
     val type: MediaType? = null,
@@ -113,12 +115,12 @@ data class MediaQuery(
     val idMal_not: Int? = null,
     val idMal_in: List<Int>? = null,
     val idMal_not_in: List<Int>? = null,
-    val startDate_greater: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val startDate_lesser: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val startDate_like: co.anitrend.domain.common.FuzzyDateLike? = null,
-    val endDate_greater: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val endDate_lesser: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val endDate_like: co.anitrend.domain.common.FuzzyDateLike? = null,
+    val startDate_greater: FuzzyDateInt? = null,
+    val startDate_lesser: FuzzyDateInt? = null,
+    val startDate_like: FuzzyDateLike? = null,
+    val endDate_greater: FuzzyDateInt? = null,
+    val endDate_lesser: FuzzyDateInt? = null,
+    val endDate_like: FuzzyDateLike? = null,
     val format_in: List<MediaFormat>? = null,
     val format_not: MediaFormat? = null,
     val format_not_in: List<MediaFormat>? = null,

@@ -26,7 +26,7 @@ import co.anitrend.domain.common.entity.IEntityPageInfo
  * @property nodes The relational nodes
  * @property pageInfo The pagination information
  */
-interface IEntityConnection<E, N> {
+internal interface IEntityConnection<E, N> {
     val edges: List<E>?
     val nodes: List<N>?
     val pageInfo: IEntityPageInfo?

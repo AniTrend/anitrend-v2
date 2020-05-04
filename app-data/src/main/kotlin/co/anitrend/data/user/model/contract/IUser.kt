@@ -36,7 +36,7 @@ import co.anitrend.domain.common.entity.IEntityImage
  * @property moderatorStatus If the user is a moderator or data moderator
  * @property updatedAt When the user's data was last updated
  */
-interface IUser : IEntity {
+internal interface IUser : IEntity {
     val name: String
     val about: String?
     val avatar: IEntityImage?

@@ -23,7 +23,7 @@ import co.anitrend.data.airing.model.remote.AiringSchedule
 /**
  * AiringSchedule connection edge
  */
-data class AiringScheduleEdge(
+internal data class AiringScheduleEdge(
     override val id: Long,
     override val node: AiringSchedule?
 ) : IEntityEdge<AiringSchedule>

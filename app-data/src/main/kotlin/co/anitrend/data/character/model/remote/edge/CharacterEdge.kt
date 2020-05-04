@@ -31,7 +31,7 @@ import co.anitrend.domain.character.enums.CharacterRole
  * @param role The characters role in the media
  * @param voiceActors The voice actors of the character
  */
-data class CharacterEdge(
+internal data class CharacterEdge(
     val favouriteOrder: Int?,
     val media: List<Media>?,
     val role: CharacterRole?,

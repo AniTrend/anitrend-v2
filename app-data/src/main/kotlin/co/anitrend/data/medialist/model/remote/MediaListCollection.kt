@@ -26,7 +26,7 @@ import co.anitrend.data.user.model.remote.User
  * @param hasNextChunk If there is another chunk
  * @param user The owner of the list
  */
-data class MediaListCollection(
+internal data class MediaListCollection(
     val lists: List<MediaListGroup>,
     val hasNextChunk: Boolean,
     val user: User?

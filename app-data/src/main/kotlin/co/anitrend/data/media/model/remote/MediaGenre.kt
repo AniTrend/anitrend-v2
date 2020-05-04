@@ -18,10 +18,12 @@
 package co.anitrend.data.media.model.remote
 
 import co.anitrend.data.media.model.contract.IMediaGenre
+import com.google.gson.annotations.SerializedName
 
 /**
- * If AniList ever duplicates genres we're screwed! R.I.P
+ * If AniList ever duplicates genres we're screwed! **R.I.P**
  */
-data class MediaGenre(
+internal data class MediaGenre(
+    @SerializedName("genre")
     override val genre: String
 ) : IMediaGenre

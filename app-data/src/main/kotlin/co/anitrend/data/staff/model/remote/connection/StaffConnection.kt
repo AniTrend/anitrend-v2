@@ -26,7 +26,7 @@ import co.anitrend.domain.common.model.PageInfo
  * Staff Connection
  *
  */
-data class StaffConnection(
+internal data class StaffConnection(
     override val edges: List<StaffEdge>?,
     override val nodes: List<Staff>?,
     override val pageInfo: PageInfo?

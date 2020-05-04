@@ -30,7 +30,7 @@ import kotlinx.android.parcel.Parcelize
  * @param advancedScoringEnabled If advanced scoring is enabled
  */
 @Parcelize
-data class MediaListTypeOptions(
+internal data class MediaListTypeOptions(
     val sectionOrder: List<String>?,
     val splitCompletedSectionByFormat: Boolean,
     val customLists: List<String>?,

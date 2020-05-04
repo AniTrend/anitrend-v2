@@ -33,7 +33,7 @@ import co.anitrend.domain.common.entity.IEntityName
  * @property siteUrl The url for the character page on the AniList website
  * @property updatedAt When the character's data was last updated
  */
-interface ICharacter : IEntity {
+internal interface ICharacter : IEntity {
     val description: String?
     val favourites: Int?
     val image: IEntityImage?

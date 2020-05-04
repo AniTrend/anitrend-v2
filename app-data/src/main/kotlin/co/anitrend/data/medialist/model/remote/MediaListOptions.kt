@@ -30,7 +30,7 @@ import kotlinx.android.parcel.Parcelize
  * @param mangaList The user's manga list options
  */
 @Parcelize
-data class MediaListOptions(
+internal data class MediaListOptions(
     val scoreFormat: ScoreFormat,
     val rowOrder: String,
     val animeList: MediaListTypeOptions?,

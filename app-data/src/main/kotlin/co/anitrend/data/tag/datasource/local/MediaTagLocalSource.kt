@@ -17,30 +17,37 @@
 
 package co.anitrend.data.tag.datasource.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.media.model.remote.MediaTag
-import co.anitrend.arch.data.dao.ISupportQuery
+import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.tag.entity.TagEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MediaTagLocalSource: ISupportQuery<MediaTag> {
+internal interface MediaTagLocalSource : ILocalSource<TagEntity> {
 
-    @Query("select count(id) from MediaTag")
-    suspend fun count(): Int
+    @Query("""
+        select count(id) from TagEntity
+    """)
+    override suspend fun count(): Int
 
-    @Query("select * from MediaTag where id = :id order by name asc")
-    suspend fun find(id: Long): List<MediaTag>
+    @Query("""
+        delete from TagEntity
+    """
+    )
+    override suspend fun clear()
 
-    @Query("select * from MediaTag order by name asc")
-    suspend fun findAll(): List<MediaTag>
+    @Query("""
+        select * from TagEntity 
+        order by category, name asc
+        """
+    )
+    suspend fun findAll(): List<TagEntity>
 
-    @Query("delete from MediaTag")
-    suspend fun deleteAll()
-
-    @Query("select * from MediaTag where id = :id order by name asc")
-    fun findLiveData(id: Long): LiveData<List<MediaTag>>
-
-    @Query("select * from MediaTag order by name asc")
-    fun findAllLiveData(): LiveData<List<MediaTag>>
+    @Query("""
+        select * from TagEntity 
+        order by category, name asc
+        """
+    )
+    fun findAllFlow(): Flow<List<TagEntity>>
 }

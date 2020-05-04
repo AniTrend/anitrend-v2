@@ -22,7 +22,7 @@ import co.anitrend.data.media.model.contract.IMediaTag
 /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
  * A tag that describes a theme or element of the media
  */
-data class MediaTag(
+internal data class MediaTag(
     override val id: Long,
     override val name: String,
     override val description: String?,

@@ -32,12 +32,12 @@ import co.anitrend.data.media.model.contract.IMedia
  * @property releasing If the media was being released at this time
  * @property trending The amount of media activity on the day
  */
-interface IMediaTrend {
+internal interface IMediaTrend {
     val averageScore: Int?
     val date: Long
     val episode: Int?
     val inProgress: Int?
-    val media: co.anitrend.data.media.model.contract.IMedia
+    val media: IMedia
     val mediaId: Long
     val popularity: Int?
     val releasing: Boolean
