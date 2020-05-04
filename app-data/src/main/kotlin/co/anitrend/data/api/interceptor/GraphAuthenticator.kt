@@ -18,7 +18,7 @@
 package co.anitrend.data.api.interceptor
 
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.domain.entities.isUnauthorized
+import co.anitrend.arch.domain.extensions.isUnauthorized
 import co.anitrend.data.auth.util.AuthenticationHelper
 import okhttp3.*
 
@@ -27,7 +27,7 @@ import okhttp3.*
  * The context in which an [Interceptor] may be  parallel or asynchronous depending
  * on the dispatching caller, as such take care to assure thread safety
  */
-internal class AuthInterceptor(
+internal class GraphAuthenticator(
     private val authenticationHelper: AuthenticationHelper
 ) : Authenticator {
 

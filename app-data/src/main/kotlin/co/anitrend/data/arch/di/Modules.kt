@@ -22,15 +22,17 @@ import android.net.ConnectivityManager
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.systemServiceOf
 import co.anitrend.data.BuildConfig
-import co.anitrend.data.api.converter.AniGraphConverter
-import co.anitrend.data.api.interceptor.AuthInterceptor
-import co.anitrend.data.api.interceptor.ClientInterceptor
+import co.anitrend.data.api.converter.AniTrendConverterFactory
+import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.arch.database.AniTrendStore
-import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.tag.koin.mediaTagModules
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.chuckerteam.chucker.api.RetentionManager
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -39,7 +41,7 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
-    single<IAniTrendStore> {
+    single {
         AniTrendStore.create(
             applicationContext = androidContext()
         )
@@ -59,12 +61,6 @@ private val coreModule = module {
 
 private val networkModule = module {
     factory {
-        AuthInterceptor(
-            authenticationHelper = get()
-        )
-    }
-
-    factory {
         SupportConnectivity(
             connectivityManager = androidContext()
                 .systemServiceOf<ConnectivityManager>(
@@ -72,40 +68,60 @@ private val networkModule = module {
                 )
         )
     }
-
     factory {
-        AniGraphConverter.create(
-            context = androidContext()
+        Retrofit.Builder()
+            .addConverterFactory(
+                AniTrendConverterFactory.create(
+                    context = androidContext()
+                )
+            )
+    }
+}
+
+private val interceptorModules = module {
+    factory { (exclusionHeaders: Set<String>) ->
+        ChuckerInterceptor(
+            context = androidContext(),
+            // The previously created Collector
+            collector = ChuckerCollector(
+                context = androidContext(),
+                // Toggles visibility of the push notification
+                showNotification = true,
+                // Allows to customize the retention period of collected data
+                retentionPeriod = RetentionManager.Period.ONE_HOUR
+            ),
+            // The max body content length in bytes, after this responses will be truncated.
+            maxContentLength = 250000L,
+            // List of headers to replace with ** in the Chucker UI
+            headersToRedact = exclusionHeaders
         )
     }
-
-    single {
+    factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
         val okHttpClientBuilder = OkHttpClient.Builder()
-            .readTimeout(35, TimeUnit.SECONDS)
-            .connectTimeout(35, TimeUnit.SECONDS)
+            .cache(
+                Cache(
+                    androidContext().cacheDir,
+                    CacheHelper.MAX_CACHE_SIZE
+                )
+            )
+            .readTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
-            .addInterceptor(ClientInterceptor())
-            .authenticator(get<AuthInterceptor>())
+
         when {
             BuildConfig.DEBUG -> {
-                val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
+                val httpLoggingInterceptor = HttpLoggingInterceptor()
+                httpLoggingInterceptor.level = interceptorLogLevel
                 okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
             }
         }
 
-        Retrofit.Builder().client(
-            okHttpClientBuilder.build()
-        ).addConverterFactory(
-            get<AniGraphConverter>()
-        ).baseUrl(
-            BuildConfig.apiUrl
-        ).build()
+        okHttpClientBuilder
     }
 }
 
 val dataModules = listOf(
     coreModule,
-    networkModule
+    networkModule,
+    interceptorModules
 ) + mediaTagModules + mediaGenreModules

@@ -19,6 +19,8 @@ package co.anitrend.data.api.converter
 
 import android.content.Context
 import co.anitrend.data.api.converter.request.AniRequestConverter
+import co.anitrend.data.arch.JSON
+import co.anitrend.data.arch.XML
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.GsonBuilder
@@ -26,12 +28,17 @@ import io.github.wax911.library.converter.GraphConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import io.github.wax911.library.util.LogLevel
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import org.simpleframework.xml.convert.AnnotationStrategy
+import org.simpleframework.xml.core.Persister
 import retrofit2.Converter
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.lang.reflect.Type
 
-internal class AniGraphConverter(
-    context: Context?
+internal class AniTrendConverterFactory(
+    context: Context
 ) : GraphConverter(context) {
 
     /**
@@ -57,8 +64,45 @@ internal class AniGraphConverter(
             gson = gson
         )
 
+    /**
+     * Response body converter delegates logic processing to a child class that handles
+     * wrapping and deserialization of the json response data.
+     *
+     * @param annotations All the annotation applied to the requesting Call method
+     * @param retrofit The retrofit object representing the response
+     * @param type The generic type declared on the Call method
+     *
+     * @see Retrofit
+     * @see io.github.wax911.library.converter.response.GraphResponseConverter
+     */
+    override fun responseBodyConverter(
+        type: Type?,
+        annotations: Array<Annotation>,
+        retrofit: Retrofit
+    ): Converter<ResponseBody, *>? {
+        for (annotation in annotations) {
+            when (annotation) {
+                is XML -> {
+                    @Suppress("DEPRECATION")
+                    return SimpleXmlConverterFactory.createNonStrict(
+                        Persister(AnnotationStrategy())
+                    ).responseBodyConverter(type!!, annotations, retrofit)
+                }
+                is JSON -> {
+                    return GsonConverterFactory.create(GSON)
+                        .responseBodyConverter(type!!, annotations, retrofit)
+                }
+            }
+        }
+        // Default for GraphQl marked queries
+        return super.responseBodyConverter(type, annotations, retrofit)
+    }
 
     companion object {
+        private val GSON = GsonBuilder()
+            .generateNonExecutableJson()
+            .setLenient()
+            .create()
 
         private val exclusionStrategy = object : ExclusionStrategy {
             /**
@@ -84,10 +128,11 @@ internal class AniGraphConverter(
          *
          * @param context any valid application context
          */
-        fun create(context: Context?) =
-            AniGraphConverter(context).apply {
+        fun create(context: Context) =
+            AniTrendConverterFactory(context).apply {
                 gson = GsonBuilder()
                     .addSerializationExclusionStrategy(exclusionStrategy)
+                    .generateNonExecutableJson()
                     .setLenient()
                     .create()
                 setLogLevel(LogLevel.ERROR)

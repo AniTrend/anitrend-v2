@@ -23,7 +23,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.arch.database.common.IAniTrendStore
-import co.anitrend.data.arch.database.migration.MIGRATION_1_2
+import co.anitrend.data.arch.database.migration.migrations
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.tag.entity.TagEntity
@@ -37,14 +37,13 @@ import co.anitrend.data.tag.entity.TagEntity
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-
-        internal fun create(applicationContext: Context): AniTrendStore {
+        internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(
                 applicationContext,
                 AniTrendStore::class.java,
                 "anitrend-db"
             ).fallbackToDestructiveMigration()
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(*migrations)
                 .build()
         }
     }
