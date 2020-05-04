@@ -47,7 +47,7 @@ android {
             file(".config/secrets.properties").withInputStream {
                 stream -> secretsProps.load(stream)
             }
-            it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
+            it.buildConfigField("String", "clientId", secretsProps['clientId'])
             it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
 
             def configProps = new Properties()

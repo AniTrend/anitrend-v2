@@ -84,7 +84,7 @@ internal class AuthenticationHelper(
                 .scheme("https")
                 .authority(BuildConfig.apiAuthUrl)
                 .appendPath("authorize")
-                .appendQueryParameter("client_id", BuildConfig.cliendId)
+                .appendQueryParameter("client_id", BuildConfig.clientId)
                 .appendQueryParameter("response_type", "token")
                 .build()
 
