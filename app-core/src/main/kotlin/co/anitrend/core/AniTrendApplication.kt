@@ -51,9 +51,7 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
     protected open fun plantLoggingTree() {
         when (BuildConfig.DEBUG) {
             true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(
-                get<ISupportAnalytics>() as AnalyticsLogger
-            )
+            else -> Timber.plant(get<ISupportAnalytics>() as AnalyticsLogger)
         }
     }
 

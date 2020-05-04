@@ -56,7 +56,7 @@ class AnalyticsLogger(
      * @param throwable Accompanying exceptions. May be `null`, but then `message` will not be.
      */
     override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
-        if (priority < Log.INFO)
+        if (priority < Log.WARN)
             return
 
         runCatching {

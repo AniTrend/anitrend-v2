@@ -67,6 +67,7 @@ android {
 ext {
     leakCanary = '2.2'
     debugDB = '1.0.6'
+    treessence = '0.3.2'
 }
 
 dependencies {
@@ -114,6 +115,9 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:$viewPager2X")
 
     implementation("com.ogaclejapan.smarttablayout:library:$smartTab")
+
+    /** Timber Trees */
+    implementation("fr.bipi.treessence:treessence:$treessence")
 
     // Don't need these in the app module
     /*implementation("com.google.android:flexbox:$flexBox")
