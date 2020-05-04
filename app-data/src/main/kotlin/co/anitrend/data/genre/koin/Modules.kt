@@ -17,6 +17,7 @@
 
 package co.anitrend.data.genre.koin
 
+import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.genre.source.contract.MediaGenreSource
@@ -31,7 +32,7 @@ private val sourceModule = module {
     factory<MediaGenreSource> {
         MediaGenreSourceImpl(
             localSource = db().mediaGenreDao(),
-            remoteSource = api(),
+            remoteSource = api(EndpointType.GRAPH_QL),
             mapper = get(),
             clearDataHelper = get(),
             dispatchers = get()
