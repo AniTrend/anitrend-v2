@@ -28,15 +28,30 @@
         app:icon="@drawable/ic_policy_24dp"
         app:fragment=""/>
 
-    <!-- TODO: Add preference fragment to change what kind of data to display, exclude things like hentai or ecchi -->
-    <Preference
-        app:title="@string/preference_title_content_filtering"
-        app:summary="@string/preference_summary_content_filtering"
-        app:icon="@drawable/ic_filter_list_24dp"
-        app:fragment=""/>
+    <PreferenceCategory
+        app:title="@string/preference_group_title_application_behavior"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true">
+
+        <SwitchPreference
+            app:title="@string/preference_title_refresh_behavior_config"
+            app:summary="@string/preference_summary_refresh_behavior_config"
+            app:icon="@drawable/ic_layers_clear_24dp"
+            app:defaultValue="true"
+            app:key="@string/settings_clear_on_swipe_refresh" />
+
+        <!-- TODO: Add preference fragment to change what kind of data to display, exclude things like hentai or ecchi -->
+        <Preference
+            app:title="@string/preference_title_content_filtering"
+            app:summary="@string/preference_summary_content_filtering"
+            app:icon="@drawable/ic_filter_list_24dp"
+            app:fragment=""/>
+    </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="@string/preference_category_title_user_interface">
+        app:title="@string/preference_category_title_user_interface"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true">
 
         <Preference
             app:title="@string/preference_title_locale"
@@ -57,7 +72,9 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="@string/preference_category_title_notifications_and_sync_settings">
+        app:title="@string/preference_category_title_notifications_and_sync_settings"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true">
 
         <!-- TODO: Add preference fragment to change notification behaviour, show notifications, make sound, swipe to dismiss, workaround, e.t.c  -->
         <Preference
@@ -78,7 +95,9 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="@string/preference_category_title_updates_and_storage">
+        app:title="@string/preference_category_title_updates_and_storage"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true">
 
         <!-- TODO: Add preference fragment to select update channel, update build and save location -->
         <Preference
