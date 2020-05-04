@@ -98,7 +98,7 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_activity, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -106,6 +106,10 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
         when (item.itemId) {
             R.id.action_search -> {
                 NavigationTargets.Search(this)
+                return true
+            }
+            R.id.action_about -> {
+                NavigationTargets.About(this)
                 return true
             }
             R.id.action_settings -> {
@@ -149,10 +153,6 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
                 state.selectedTitle = R.string.nav_review
                 null
             }
-            R.id.nav_about -> {
-                NavigationTargets.About(this)
-                null
-            }
             R.id.nav_donate -> {
                 Toast.makeText(this, "Donate", Toast.LENGTH_SHORT).show()
                 null
@@ -187,7 +187,7 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
             }
         }
 
-        if (menu != R.id.nav_about || menu != R.id.nav_discord || menu != R.id.nav_donate) {
+        if (menu != R.id.nav_discord || menu != R.id.nav_donate) {
             bottomAppBar.setTitle(state.selectedTitle)
             bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }

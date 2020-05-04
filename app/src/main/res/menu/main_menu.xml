@@ -27,8 +27,15 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_about"
         android:orderInCategory="101"
+        android:icon="@drawable/ic_help_outline_24dp"
+        android:title="@string/action_about"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="102"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
