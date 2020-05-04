@@ -17,23 +17,25 @@
 
 package co.anitrend.data.tag.datasource
 
+import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.arch.data.source.coroutine.SupportCoroutineDataSource
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.domain.tag.entities.Tag
+import kotlinx.coroutines.launch
 
 internal abstract class MediaTagSource(
     supportDispatchers: SupportDispatchers
-) : SupportCoreDataSource(supportDispatchers) {
+) : SupportCoroutineDataSource(supportDispatchers) {
 
-    /**
-     * Registers a dispatcher executing a unit of work and then returns a
-     * [androidx.lifecycle.LiveData] observable
-     */
-    abstract val observable: ISourceObservable<Nothing?, List<Tag>>
+    protected abstract val observable:
+            ISourceObservable<Nothing?, List<Tag>>
 
-    /**
-     * Handles dispatcher for requesting media tags
-     */
-    abstract fun fetchAllMediaTags()
+    protected abstract suspend fun getTags()
+
+    internal operator fun invoke(): LiveData<List<Tag>> {
+        retry = { getTags() }
+        launch { retry?.invoke() }
+        return observable(null)
+    }
 }

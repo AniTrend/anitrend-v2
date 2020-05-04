@@ -34,7 +34,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 internal class MediaGenreSourceImpl(
     private val remoteSource: MediaGenreRemoteSource,
@@ -56,7 +55,7 @@ internal class MediaGenreSourceImpl(
              * @param parameter to use when executing
              */
             override fun invoke(parameter: Nothing?): LiveData<List<Genre>> {
-                val genreFlow = localSource.findAllX()
+                val genreFlow = localSource.findAllFlow()
                 return genreFlow.map {
                         it.map { entity ->
                             GenreEntity.transform(entity)

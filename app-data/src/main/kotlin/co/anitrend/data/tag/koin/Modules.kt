@@ -17,6 +17,7 @@
 
 package co.anitrend.data.tag.koin
 
+import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
@@ -25,6 +26,7 @@ import co.anitrend.data.tag.datasource.MediaTagSourceImpl
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
 import co.anitrend.data.tag.repository.MediaTagRepository
+import co.anitrend.data.tag.usecase.MediaTagUseCaseContract
 import co.anitrend.data.tag.usecase.MediaTagUseCaseImpl
 import org.koin.dsl.module
 
@@ -32,9 +34,9 @@ private val sourceModule = module {
     factory<MediaTagSource> {
         MediaTagSourceImpl(
             localSource = db().mediaTagDao(),
-            remoteSource = api(),
+            remoteSource = api(EndpointType.GRAPH_QL),
             mapper = get(),
-            connectivity = get(),
+            clearDataHelper = get(),
             dispatchers = get()
         )
     }
@@ -49,7 +51,7 @@ private val mapperModule = module {
 }
 
 private val useCaseModule = module {
-    factory {
+    factory<MediaTagUseCaseContract> {
         MediaTagUseCaseImpl(
             repository = get()
         )
@@ -59,7 +61,7 @@ private val useCaseModule = module {
 private val repositoryModule = module {
     factory {
         MediaTagRepository(
-            dataSource = get()
+            source = get()
         )
     }
 }

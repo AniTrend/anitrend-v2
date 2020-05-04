@@ -48,5 +48,5 @@ internal interface MediaGenreLocalSource: ILocalSource<GenreEntity> {
         select * from GenreEntity order by genre asc
         """
     )
-    fun findAllX(): Flow<List<GenreEntity>>
+    fun findAllFlow(): Flow<List<GenreEntity>>
 }

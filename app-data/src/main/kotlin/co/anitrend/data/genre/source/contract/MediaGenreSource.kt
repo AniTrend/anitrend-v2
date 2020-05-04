@@ -19,17 +19,14 @@ package co.anitrend.data.genre.source.contract
 
 import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.data.source.coroutine.SupportCoroutineDataSource
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.data.util.graphql.GraphUtil
 import co.anitrend.domain.genre.entities.Genre
-import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.launch
 
 internal abstract class MediaGenreSource(
     supportDispatchers: SupportDispatchers
-) : SupportCoroutineDataSource<Any, Unit>(supportDispatchers) {
+) : SupportCoroutineDataSource(supportDispatchers) {
 
     protected abstract val observable:
             ISourceObservable<Nothing?, List<Genre>>
@@ -37,11 +34,8 @@ internal abstract class MediaGenreSource(
     protected abstract suspend fun getGenres()
 
     internal operator fun invoke(): LiveData<List<Genre>> {
-        retry = {
-            getGenres()
-        }
-        /** Initial initial call when [MediaGenreSource] is invoked */
-        launch { getGenres() }
+        retry = { getGenres() }
+        launch { retry?.invoke() }
         return observable(null)
     }
 }

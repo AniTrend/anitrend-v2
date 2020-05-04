@@ -59,7 +59,7 @@ private val useCaseModule = module {
 private val repositoryModule = module {
     factory {
         MediaGenreRepository(
-            dataSource = get()
+            source = get()
         )
     }
 }

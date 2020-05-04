@@ -24,6 +24,7 @@ import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
+import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
 import co.anitrend.data.tag.entity.TagEntity
@@ -39,14 +40,10 @@ internal class MediaTagSourceImpl(
     private val remoteSource: MediaTagRemoteSource,
     private val localSource: MediaTagLocalSource,
     private val mapper: MediaTagResponseMapper,
-    private val connectivity: SupportConnectivity,
+    private val clearDataHelper: ClearDataHelper,
     dispatchers: SupportDispatchers
 ) : MediaTagSource(dispatchers) {
 
-    /**
-     * Registers a dispatcher executing a unit of work and then returns a
-     * [androidx.lifecycle.LiveData] observable
-     */
     @ExperimentalCoroutinesApi
     override val observable =
         object : ISourceObservable<Nothing?, List<Tag>> {
@@ -59,9 +56,6 @@ internal class MediaTagSourceImpl(
              * @param parameter to use when executing
              */
             override fun invoke(parameter: Nothing?): LiveData<List<Tag>> {
-                retry = { fetchAllMediaTags() }
-                fetchAllMediaTags()
-
                 val tagFlow = localSource.findAllFlow()
                 return tagFlow.map {
                         it.map { entity ->
@@ -73,26 +67,23 @@ internal class MediaTagSourceImpl(
             }
         }
 
-    /**
-     * Handles dispatcher for requesting media tags
-     */
-    override fun fetchAllMediaTags() {
+    override suspend fun getTags() {
         val deferred = async {
             remoteSource.getMediaTags()
         }
 
-        launch {
-            val controller =
-                mapper.controller(dispatchers, OnlineStrategy.create(connectivity))
+        val controller =
+            mapper.controller(dispatchers, OnlineStrategy.create())
 
-            controller(deferred, networkState)
-        }
+        controller(deferred, networkState)
     }
 
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
     override suspend fun clearDataSource() {
-        localSource.clear()
+        clearDataHelper {
+            localSource.clear()
+        }
     }
 }

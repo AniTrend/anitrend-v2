@@ -18,21 +18,21 @@
 package co.anitrend.data.genre.repository
 
 import co.anitrend.arch.data.model.UserInterfaceState
+import co.anitrend.arch.data.model.UserInterfaceState.Companion.create
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.data.genre.source.contract.MediaGenreSource
 import co.anitrend.domain.genre.entities.Genre
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
 internal class MediaGenreRepository(
-    private val dataSource: MediaGenreSource
-) : SupportRepository(dataSource), IMediaGenreRepository<UserInterfaceState<List<Genre>>> {
+    private val source: MediaGenreSource
+) : SupportRepository(source), IMediaGenreRepository<UserInterfaceState<List<Genre>>> {
 
     /**
      * @return media genres
      */
     override fun getMediaGenres() =
-        UserInterfaceState.create(
-            model = dataSource.observable(null),
-            source = dataSource
+        source.create(
+            model = source()
         )
 }
