@@ -24,9 +24,9 @@ import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
+import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
-import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.source.contract.MediaGenreSource
 import co.anitrend.domain.genre.entities.Genre
@@ -57,12 +57,10 @@ internal class MediaGenreSourceImpl(
             override fun invoke(parameter: Nothing?): LiveData<List<Genre>> {
                 val genreFlow = localSource.findAllFlow()
                 return genreFlow.map {
-                        it.map { entity ->
-                            GenreEntity.transform(entity)
-                        }
-                    }
-                    .flowOn(dispatchers.computation)
-                    .asLiveData()
+                    GenreEntityConverter().convertFrom(it)
+                }.flowOn(
+                    dispatchers.computation
+                ).asLiveData()
             }
         }
 

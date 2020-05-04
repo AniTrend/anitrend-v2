@@ -18,33 +18,30 @@
 package co.anitrend.data.genre.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.remote.GenreCollection
-import co.anitrend.data.media.model.remote.MediaGenre
 
 internal class MediaGenreResponseMapper(
-    private val localSource: MediaGenreLocalSource
+    private val localSource: MediaGenreLocalSource,
+    private val mapper: GenreModelConverter = GenreModelConverter()
 ) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
 
     /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects,
-     * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
+     * Creates mapped objects and handles the database operations which may be required to map various objects
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: GenreCollection): List<GenreEntity> {
-        return source.genreCollection.map {
-            MediaGenre.transform(
-                MediaGenre(it)
-            )
-        }
-    }
+    override suspend fun onResponseMapFrom(
+        source: GenreCollection
+    )= mapper.convertTo(
+        source.genreCollection
+    )
 
     /**
-     * Inserts the given object into the implemented room database,
-     * called in [retrofit2.Callback.onResponse]
+     * Inserts the given object into the implemented room database
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
