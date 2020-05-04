@@ -25,9 +25,10 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.converter.AniGraphConverter
 import co.anitrend.data.api.interceptor.AuthInterceptor
 import co.anitrend.data.api.interceptor.ClientInterceptor
-import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.arch.helper.data.ClearDataHelper
+import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import okhttp3.OkHttpClient
@@ -45,6 +46,12 @@ private val coreModule = module {
     }
     factory {
         AuthenticationHelper(
+            settings = get()
+        )
+    }
+    factory {
+        ClearDataHelper(
+            connectivity = get(),
             settings = get()
         )
     }

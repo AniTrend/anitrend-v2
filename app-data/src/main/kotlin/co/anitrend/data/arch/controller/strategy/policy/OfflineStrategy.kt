@@ -61,7 +61,9 @@ internal class OfflineStrategy<D> private constructor() : ControllerStrategy<D>(
     ): D? {
         return runCatching{
             networkState.postValue(NetworkState.Loading)
-            block()
+            val result = block()
+            networkState.postValue(NetworkState.Success)
+            result
         }.getOrElse {
             Timber.tag(moduleTag).e(it)
             networkState.postValue(

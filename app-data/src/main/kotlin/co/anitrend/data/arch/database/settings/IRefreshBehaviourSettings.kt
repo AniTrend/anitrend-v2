@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,22 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.genre.interactors
+package co.anitrend.data.arch.database.settings
 
-import co.anitrend.arch.domain.common.IUserInterfaceState
-import co.anitrend.arch.domain.usecases.ISupportUseCase
-import co.anitrend.domain.genre.repositories.IMediaGenreRepository
+interface IRefreshBehaviourSettings {
 
-abstract class MediaGenreUseCase<R: IUserInterfaceState<*>>(
-    protected val repository: IMediaGenreRepository<R>
-) : ISupportUseCase<Nothing?, R> {
-
-    /**
-     * Solves a given use case in the implementation target
-     *
-     * @param param input for solving a given use case
-     */
-    override fun invoke(param: Nothing?): R {
-        return repository.getMediaGenres()
-    }
+    var clearDataOnSwipeRefresh: Boolean
 }

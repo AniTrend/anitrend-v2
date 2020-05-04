@@ -15,19 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.datasource
+package co.anitrend.data.genre.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
+import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
+import co.anitrend.data.genre.source.contract.MediaGenreSource
 import co.anitrend.domain.genre.entities.Genre
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -39,14 +40,10 @@ internal class MediaGenreSourceImpl(
     private val remoteSource: MediaGenreRemoteSource,
     private val localSource: MediaGenreLocalSource,
     private val mapper: MediaGenreResponseMapper,
-    private val connectivity: SupportConnectivity,
+    private val clearDataHelper: ClearDataHelper,
     dispatchers: SupportDispatchers
 ) : MediaGenreSource(dispatchers) {
 
-    /**
-     * Registers a dispatcher executing a unit of work and then returns a
-     * [androidx.lifecycle.LiveData] observable
-     */
     @ExperimentalCoroutinesApi
     override val observable =
         object : ISourceObservable<Nothing?, List<Genre>> {
@@ -59,9 +56,6 @@ internal class MediaGenreSourceImpl(
              * @param parameter to use when executing
              */
             override fun invoke(parameter: Nothing?): LiveData<List<Genre>> {
-                retry = { fetchAllGenres() }
-                fetchAllGenres()
-
                 val genreFlow = localSource.findAllX()
                 return genreFlow.map {
                         it.map { entity ->
@@ -73,26 +67,23 @@ internal class MediaGenreSourceImpl(
             }
         }
 
-    /**
-     * Handles dispatcher for requesting media tags
-     */
-    override fun fetchAllGenres() {
+    override suspend fun getGenres() {
         val deferred = async {
             remoteSource.getMediaGenres()
         }
 
-        launch {
-            val controller =
-                mapper.controller(dispatchers, OnlineStrategy.create(connectivity))
+        val controller =
+            mapper.controller(dispatchers, OnlineStrategy.create())
 
-            controller(deferred, networkState)
-        }
+        controller(deferred, networkState)
     }
 
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
     override suspend fun clearDataSource() {
-        localSource.clear()
+        clearDataHelper {
+            localSource.clear()
+        }
     }
 }

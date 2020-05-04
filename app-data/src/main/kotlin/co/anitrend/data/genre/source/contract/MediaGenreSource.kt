@@ -15,27 +15,33 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.datasource
+package co.anitrend.data.genre.source.contract
 
+import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.arch.data.source.coroutine.SupportCoroutineDataSource
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.data.util.graphql.GraphUtil
 import co.anitrend.domain.genre.entities.Genre
 import io.github.wax911.library.model.request.QueryContainerBuilder
+import kotlinx.coroutines.launch
 
 internal abstract class MediaGenreSource(
     supportDispatchers: SupportDispatchers
-) : SupportCoreDataSource(supportDispatchers) {
+) : SupportCoroutineDataSource<Any, Unit>(supportDispatchers) {
 
-    /**
-     * Registers a dispatcher executing a unit of work and then returns a
-     * [androidx.lifecycle.LiveData] observable
-     */
-    internal abstract val observable: ISourceObservable<Nothing?, List<Genre>>
+    protected abstract val observable:
+            ISourceObservable<Nothing?, List<Genre>>
 
-    /**
-     * Handles dispatcher for requesting media tags
-     */
-    abstract fun fetchAllGenres()
+    protected abstract suspend fun getGenres()
+
+    internal operator fun invoke(): LiveData<List<Genre>> {
+        retry = {
+            getGenres()
+        }
+        /** Initial initial call when [MediaGenreSource] is invoked */
+        launch { getGenres() }
+        return observable(null)
+    }
 }

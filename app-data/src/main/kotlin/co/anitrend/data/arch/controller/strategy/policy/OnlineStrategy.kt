@@ -22,6 +22,9 @@ import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
+import org.koin.core.KoinComponent
+import org.koin.core.get
+import org.koin.core.inject
 import timber.log.Timber
 
 /**
@@ -70,7 +73,9 @@ internal class OnlineStrategy<D> private constructor(
         if (connectivity.isConnected) {
             return runCatching{
                 networkState.postValue(NetworkState.Loading)
-                block()
+                val result = block()
+                networkState.postValue(NetworkState.Success)
+                result
             }.getOrElse {
                 Timber.tag(moduleTag).e(it)
                 networkState.postValue(
@@ -92,8 +97,7 @@ internal class OnlineStrategy<D> private constructor(
         return null
     }
 
-    companion object {
-        fun <T> create(connectivity: SupportConnectivity) =
-            OnlineStrategy<T>(connectivity)
+    companion object : KoinComponent {
+        fun <T> create() = OnlineStrategy<T>(get())
     }
 }

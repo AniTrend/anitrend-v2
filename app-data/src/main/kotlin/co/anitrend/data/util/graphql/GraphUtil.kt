@@ -19,7 +19,7 @@ package co.anitrend.data.util.graphql
 
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.arch.common.model.paging.PageQuery
-import co.anitrend.data.settings.ISortOrderSettings
+import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
 /**

@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.settings
+package co.anitrend.data.arch.database.settings
 
 interface ISortOrderSettings {
 
