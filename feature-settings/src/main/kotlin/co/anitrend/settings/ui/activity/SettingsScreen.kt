@@ -28,7 +28,7 @@ import co.anitrend.settings.ui.fragment.SettingsFragment
 import kotlinx.android.synthetic.main.settings_activity.*
 import org.koin.android.ext.android.inject
 
-class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
+class SettingsScreen : AnitrendActivity() {
 
     private val binding by lazy(LAZY_MODE_UNSAFE) {
         SettingsActivityBinding.inflate(layoutInflater)
@@ -41,17 +41,8 @@ class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
     }
 
     /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by inject<CorePresenter>()
-
-    /**
-     * Additional initialization to be done in this method, if the overriding class is type of
-     * [androidx.fragment.app.Fragment] then this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
-     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
+     * Additional initialization to be done in this method, this is called in during
+     * [androidx.fragment.app.FragmentActivity.onPostCreate]
      *
      * @param savedInstanceState
      */
@@ -60,10 +51,9 @@ class SettingsScreen : AnitrendActivity<Nothing, CorePresenter>() {
     }
 
     /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
+     * Handles the updating, binding, creation or state change, depending on the context of views.
      *
-     * Check implementation for more details
+     * **N.B.** Where this is called is up to the developer
      */
     override fun onUpdateUserInterface() {
         val fragment = supportFragmentManager.findFragmentByTag(

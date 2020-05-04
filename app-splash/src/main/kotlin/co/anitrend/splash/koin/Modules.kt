@@ -17,27 +17,26 @@
 
 package co.anitrend.splash.koin
 
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.splash.presenter.SplashPresenter
+import co.anitrend.splash.ui.fragment.SplashContent
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private val presenterModule = module {
-    factory {
-        SplashPresenter(
-            context = androidContext(),
-            settings = get()
-        )
+    scope(named<SplashContent>()) {
+        scoped {
+            SplashPresenter(
+                context = androidContext(),
+                settings = get()
+            )
+        }
     }
 }
 
-private val splashModules = listOf(presenterModule)
-
-private val koinModules by lazy {
-    loadKoinModules(splashModules)
+internal val moduleHelper by lazy {
+    DynamicFeatureModuleHelper(
+        listOf(presenterModule)
+    )
 }
-
-/**
- * loads koin modules with the current
- */
-fun injectFeatureModules() = koinModules

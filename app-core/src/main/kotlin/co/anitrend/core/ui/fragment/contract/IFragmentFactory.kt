@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,25 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.util.config.contract
+package co.anitrend.core.ui.fragment.contract
 
-import androidx.fragment.app.FragmentActivity
+import android.os.Bundle
+import androidx.fragment.app.Fragment
 
-interface IConfigurationUtil {
+/**
+ * Fragment factory to help us construct new fragments
+ *
+ * @property fragmentTag unique tag that can be used by
+ * [androidx.fragment.app.FragmentManager]
+ *
+ * @param T type of your fragment
+ */
+interface IFragmentFactory<T: Fragment> {
+    val fragmentTag: String
 
-    val moduleTag: String
-
-    /**
-     * Applies configuration upon the create state of the current activity
-     *
-     * @param activity
-     */
-    fun onCreate(activity: FragmentActivity)
-
-    /**
-     * Applies configuration upon the resume state of the current activity
-     *
-     * @param activity
-     */
-    fun onResume(activity: FragmentActivity)
+    fun newInstance(bundle: Bundle? = null): T
 }

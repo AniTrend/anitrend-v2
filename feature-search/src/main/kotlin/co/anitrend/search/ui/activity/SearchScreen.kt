@@ -23,12 +23,9 @@ import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.multisearch.model.MultiSearchChangeListener
 import co.anitrend.search.databinding.SearchScreenBinding
-import co.anitrend.search.koin.injectFeatureModules
-import co.anitrend.search.presenter.SearchPresenter
 import co.anitrend.search.ui.fragment.SearchContentScreen
-import org.koin.android.ext.android.inject
 
-class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
+class SearchScreen : AnitrendActivity() {
 
     private val binding by lazy(LAZY_MODE_UNSAFE) {
         SearchScreenBinding.inflate(layoutInflater)
@@ -76,13 +73,6 @@ class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
             }
         }
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by inject<SearchPresenter>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -98,7 +88,6 @@ class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        injectFeatureModules()
         onUpdateUserInterface()
         binding.multiSearch.setSearchViewListener(searchChangeListener)
     }
@@ -111,14 +100,14 @@ class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
      */
     override fun onUpdateUserInterface() {
         val fragment = supportFragmentManager.findFragmentByTag(
-            SearchContentScreen.FRAGMENT_TAG
+            SearchContentScreen.fragmentTag
         ) ?: SearchContentScreen.newInstance()
 
         supportFragmentManager.commit {
             replace(
                 binding.searchContent.id,
                 fragment,
-                SearchContentScreen.FRAGMENT_TAG
+                SearchContentScreen.fragmentTag
             )
         }
     }

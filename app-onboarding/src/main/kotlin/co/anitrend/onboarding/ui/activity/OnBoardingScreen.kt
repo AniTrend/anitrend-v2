@@ -19,25 +19,22 @@ package co.anitrend.onboarding.ui.activity
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
-import co.anitrend.arch.extension.gone
-import co.anitrend.arch.extension.invisible
-import co.anitrend.arch.extension.visible
+import co.anitrend.arch.extension.*
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
+import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.onboarding.databinding.OnboardingScreenBinding
-import co.anitrend.onboarding.koin.injectFeatureModules
+import co.anitrend.onboarding.koin.moduleHelper
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.ui.pager.OnBoardingPageAdapter
-import org.koin.android.ext.android.inject
 
-class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
+class OnBoardingScreen : AnitrendActivity() {
 
     private lateinit var binding: OnboardingScreenBinding
 
     private val onBoardingPageAdapter by lazy(LAZY_MODE_UNSAFE) {
         OnBoardingPageAdapter(
-            supportPresenter.onBoardingItems,
+            presenter.onBoardingItems,
             this
         )
     }
@@ -94,19 +91,12 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
             }
         }
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by inject<OnBoardingPresenter>()
+    private val presenter by injectScoped<OnBoardingPresenter>()
 
-    /**
-     * Can be used to configure custom theme styling as desired
-     */
     override fun configureActivity() {
         super.configureActivity()
         hideStatusBarAndNavigationBar()
+        attachComponent(moduleHelper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,19 +105,10 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
         setContentView(binding.root)
     }
 
-    /**
-     * Additional initialization to be done in this method, if the overriding class is type of
-     * [androidx.fragment.app.Fragment] then this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
-     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
-     *
-     * @param savedInstanceState
-     */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        injectFeatureModules()
         onUpdateUserInterface()
         binding.finishOnBoarding.setOnClickListener {
-            supportPresenter.onBoardingExperienceCompleted()
+            presenter.onBoardingExperienceCompleted()
             finishAfterTransition()
         }
     }
@@ -153,19 +134,11 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
             )
     }
 
-    /**
-     * Dispatch onResume() to fragments.  Note that for better inter-operation
-     * with older versions of the platform, at the point of this call the
-     * fragments attached to the activity are *not* resumed.
-     */
     override fun onResume() {
         super.onResume()
         binding.liquidSwipeViewPager.addOnPageChangeListener(pageChangeListener)
     }
 
-    /**
-     * Dispatch onPause() to fragments.
-     */
     override fun onPause() {
         binding.liquidSwipeViewPager.removeOnPageChangeListener(pageChangeListener)
         super.onPause()
@@ -181,6 +154,11 @@ class OnBoardingScreen : AnitrendActivity<Nothing, OnBoardingPresenter>() {
         binding.liquidSwipeViewPager.offscreenPageLimit = 1
         binding.liquidSwipeViewPager.adapter = onBoardingPageAdapter
         binding.inkPageIndicator.setViewPager(binding.liquidSwipeViewPager)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        detachComponent(moduleHelper)
     }
 
     companion object {

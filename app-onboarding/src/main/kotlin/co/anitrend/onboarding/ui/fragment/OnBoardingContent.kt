@@ -24,13 +24,14 @@ import android.view.ViewGroup
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.core.ui.fragment.AniTrendFragment
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import co.anitrend.onboarding.model.OnBoarding
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import com.airbnb.lottie.LottieDrawable
 import org.koin.android.ext.android.inject
 
-class OnBoardingContent : SupportFragment<OnBoarding, OnBoardingPresenter, OnBoarding>() {
+class OnBoardingContent : AniTrendFragment<OnBoarding>() {
 
     private val onBoarding by argument<OnBoarding>(PARAM_KEY)
     private lateinit var binding: OnboardingContentBinding
@@ -41,13 +42,6 @@ class OnBoardingContent : SupportFragment<OnBoarding, OnBoardingPresenter, OnBoa
     override fun setUpViewModelObserver() {
 
     }
-
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by inject<OnBoardingPresenter>()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of

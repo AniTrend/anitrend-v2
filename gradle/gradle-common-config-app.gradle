@@ -62,7 +62,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:$constraintX")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX")
 
+    /** Lifecycle Components */
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
 

@@ -18,7 +18,7 @@
 package co.anitrend.core.koin
 
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.arch.ui.util.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
@@ -36,7 +36,7 @@ private val coreModule = module {
         )
     } binds(Settings.BINDINGS)
     single {
-        SupportStateLayoutConfiguration(
+        StateLayoutConfig(
             loadingDrawable = R.drawable.ic_anitrend_notification_logo,
             errorDrawable = R.drawable.ic_support_empty_state,
             loadingMessage = R.string.label_text_loading,

@@ -96,25 +96,22 @@ dependencies {
     implementation project(":support-ext")
     implementation project(":support-ui")
 
-    /** Koin AndroidX Dependency Injection */
-    implementation("org.koin:koin-androidx-viewmodel:$koin")
-
     /** Material Design */
     implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
     implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
 
-    implementation("androidx.paging:paging-runtime:$paging")
-    implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
+    /** Lifecycle Components */
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
 
     implementation("androidx.constraintlayout:constraintlayout:$constraintX")
     implementation("androidx.viewpager2:viewpager2:$viewPager2X")
-    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
-
-    implementation("androidx.work:work-runtime-ktx:$workerKtx")
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
-
 
     implementation("com.ogaclejapan.smarttablayout:library:$smartTab")
 

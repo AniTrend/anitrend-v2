@@ -22,57 +22,45 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
-import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import co.anitrend.R
-import co.anitrend.presenter.MainPresenter
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.extra
+import co.anitrend.arch.ui.common.ISupportActionUp
+import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.model.ScreenState
+import co.anitrend.navigation.NavigationTargets
+import co.anitrend.presenter.MainPresenter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
-import co.anitrend.arch.ui.activity.SupportActivity
-import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.arch.ui.util.SupportUiKeyStore
-import co.anitrend.navigation.NavigationTargets
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.androidx.scope.lifecycleScope
+import kotlinx.coroutines.launch
 
-class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.OnNavigationItemSelectedListener {
+class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val bottomDrawerBehavior by lazy(LAZY_MODE_UNSAFE) {
-        BottomSheetBehavior.from(bottomNavigationDrawer)
-    }
+    private val redirectItem by extra(ARG_KEY_REDIRECT, R.id.nav_home)
 
-    @IdRes
-    private var selectedItem: Int = R.id.nav_home
+    private val bottomDrawerBehavior
+            by lazy(LAZY_MODE_UNSAFE) {
+                BottomSheetBehavior.from(bottomNavigationDrawer)
+            }
 
-    @StringRes
-    private var selectedTitle: Int = R.string.nav_home
+    private lateinit var state: ScreenState
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by lifecycleScope.inject<MainPresenter>()
+    private val presenter by injectScoped<MainPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(bottomAppBar)
         bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        if (intent.hasExtra(SupportUiKeyStore.arg_redirect))
-            selectedItem = intent.getIntExtra(SupportUiKeyStore.arg_redirect, R.id.nav_home)
+        state = ScreenState()
+        if (redirectItem != null)
+            state.selectedItem = redirectItem!!
     }
 
-    /**
-     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
-     * then this method will be called in [SupportFragment.onCreate]. Otherwise [SupportActivity.onPostCreate]
-     * invokes this function
-     *
-     * @see [SupportActivity.onPostCreate] and [SupportFragment.onCreate]
-     * @param
-     */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         bottomAppBar.apply {
             setNavigationOnClickListener {
@@ -82,23 +70,20 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
         floatingShortcutButton.setOnClickListener {
             Toast.makeText(this, "Fab Clicked", Toast.LENGTH_SHORT).show()
         }
-        bottomNavigationView.apply {
-            setNavigationItemSelectedListener(this@MainScreen)
-            setCheckedItem(selectedItem)
-        }
+        bottomNavigationView.setNavigationItemSelectedListener(this)
+        bottomNavigationView.setCheckedItem(state.selectedItem)
         onUpdateUserInterface()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(SupportUiKeyStore.key_navigation_selected, selectedItem)
-        outState.putInt(SupportUiKeyStore.key_navigation_title, selectedTitle)
+        outState.putParcelable(ARG_KEY_NAVIGATION_STATE, state)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
-        selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
+        if (savedInstanceState.containsKey(ARG_KEY_NAVIGATION_STATE))
+            state = savedInstanceState.getParcelable(ARG_KEY_NAVIGATION_STATE)!!
     }
 
     override fun onBackPressed() {
@@ -132,10 +117,10 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (selectedItem != item.itemId) {
+        if (state.selectedItem != item.itemId) {
             if (item.groupId != R.id.nav_group_support) {
-                selectedItem = item.itemId
-                onNavigate(selectedItem)
+                state.selectedItem = item.itemId
+                onNavigate(state.selectedItem)
             } else
                 onNavigate(item.itemId)
         }
@@ -143,78 +128,78 @@ class MainScreen : AnitrendActivity<Nothing, MainPresenter>(), NavigationView.On
     }
 
     private fun onNavigate(@IdRes menu: Int) {
-        var supportFragment: SupportFragment<*, *, *>? = null
-        when (menu) {
+        val fragment: ISupportActionUp? =when (menu) {
             R.id.nav_home -> {
-                selectedTitle = R.string.nav_home
-                supportFragment = null
+                state.selectedTitle = R.string.nav_home
+                null
             }
             R.id.nav_episode_feed -> {
-                selectedTitle = R.string.nav_episodes
-                supportFragment = null
+                state.selectedTitle = R.string.nav_episodes
+                null
             }
             R.id.nav_news -> {
-                selectedTitle = R.string.nav_news
-                supportFragment = null
+                state.selectedTitle = R.string.nav_news
+                null
             }
             R.id.nav_feed -> {
-                selectedTitle = R.string.nav_feed
-                supportFragment = null
+                state.selectedTitle = R.string.nav_feed
+                null
             }
             R.id.nav_review -> {
-                selectedTitle = R.string.nav_review
-                supportFragment = null
+                state.selectedTitle = R.string.nav_review
+                null
             }
             R.id.nav_about -> {
                 NavigationTargets.About(this)
+                null
             }
             R.id.nav_donate -> {
                 Toast.makeText(this, "Donate", Toast.LENGTH_SHORT).show()
+                null
             }
             R.id.nav_discord -> {
                 Toast.makeText(this, "Discord", Toast.LENGTH_SHORT).show()
+                null
             }
+            else -> null
         }
 
-        attachSelectedNavigationItem(menu, supportFragment)
+        launch { attachSelectedNavigationItem(menu, fragment) }
     }
 
     /**
      * Replaces the current content with that in the selected fragment
      */
-    private fun attachSelectedNavigationItem(@IdRes menu: Int, supportFragment: SupportFragment<*, *, *>?) {
-        supportFragment?.apply {
+    private fun attachSelectedNavigationItem(@IdRes menu: Int, fragment: ISupportActionUp?) {
+        if (fragment != null) {
             val backStack = supportFragmentManager.findFragmentByTag(moduleTag)
             if (backStack != null) {
-                supportFragmentActivity = backStack as SupportFragment<*, *, *>
+                supportActionUp = backStack as ISupportActionUp
                 supportFragmentManager.commit {
                     replace(R.id.contentFrame, backStack, moduleTag)
                 }
             } else {
-                supportFragmentActivity = this@apply
+                fragment as Fragment
+                supportActionUp = fragment
                 supportFragmentManager.commit {
-                    replace(R.id.contentFrame, this@apply, moduleTag)
+                    replace(R.id.contentFrame, fragment, moduleTag)
                 }
             }
         }
 
         if (menu != R.id.nav_about || menu != R.id.nav_discord || menu != R.id.nav_donate) {
-            bottomAppBar.setTitle(selectedTitle)
+            bottomAppBar.setTitle(state.selectedTitle)
             bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
-    /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [co.anitrend.arch.ui.view.contract.ISupportFragmentActivity]
-     * will be available by this point.
-     *
-     * Check implementation for more details
-     */
     override fun onUpdateUserInterface() {
-        if (selectedItem != 0)
-            onNavigate(selectedItem)
-        else
-            onNavigate(R.id.nav_home)
+        onNavigate(state.selectedItem)
+    }
+
+    companion object {
+        private const val ARG_KEY_REDIRECT = "ARG_KEY_REDIRECT"
+
+        private const val ARG_KEY_NAVIGATION_STATE = "ARG_KEY_NAVIGATION_STATE"
     }
 }

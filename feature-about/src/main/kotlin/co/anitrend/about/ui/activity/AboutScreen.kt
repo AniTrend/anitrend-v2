@@ -22,19 +22,11 @@ import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
 import org.koin.android.ext.android.inject
 
-class AboutScreen : AnitrendActivity<Nothing, CorePresenter>() {
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by inject<CorePresenter>()
+class AboutScreen : AnitrendActivity() {
 
     /**
-     * Additional initialization to be done in this method, if the overriding class is type of
-     * [androidx.fragment.app.Fragment] then this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
-     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
+     * Additional initialization to be done in this method, this is called in during
+     * [androidx.fragment.app.FragmentActivity.onPostCreate]
      *
      * @param savedInstanceState
      */
@@ -43,10 +35,9 @@ class AboutScreen : AnitrendActivity<Nothing, CorePresenter>() {
     }
 
     /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
+     * Handles the updating, binding, creation or state change, depending on the context of views.
      *
-     * Check implementation for more details
+     * **N.B.** Where this is called is up to the developer
      */
     override fun onUpdateUserInterface() {
 

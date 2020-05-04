@@ -17,9 +17,17 @@
 
 package co.anitrend.core.ui.fragment
 
+import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.core.presenter.CorePresenter
 
-abstract class AniTrendFragment<M, P: CorePresenter, VM> : SupportFragment<M, P, VM>() {
+abstract class AniTrendFragment<M> : SupportFragment<M>() {
 
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState(): ISupportViewModelState<*>? {
+        // Making this optional
+        return null
+    }
 }

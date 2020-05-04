@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,25 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.util.config.contract
+package co.anitrend.model
 
-import androidx.fragment.app.FragmentActivity
+import android.os.Parcelable
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
+import co.anitrend.R
+import kotlinx.android.parcel.Parcelize
 
-interface IConfigurationUtil {
-
-    val moduleTag: String
-
-    /**
-     * Applies configuration upon the create state of the current activity
-     *
-     * @param activity
-     */
-    fun onCreate(activity: FragmentActivity)
-
-    /**
-     * Applies configuration upon the resume state of the current activity
-     *
-     * @param activity
-     */
-    fun onResume(activity: FragmentActivity)
-}
+@Parcelize
+data class ScreenState(
+    @IdRes var selectedItem: Int = R.id.nav_home,
+    @StringRes var selectedTitle: Int = R.string.nav_home
+) : Parcelable

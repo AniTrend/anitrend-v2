@@ -19,7 +19,7 @@ package co.anitrend.core.settings
 
 import android.content.Context
 import co.anitrend.arch.extension.preference.*
-import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.arch.extension.preference.contract.ISupportSettings
 import co.anitrend.core.R
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.settings.common.locale.ILocaleSettings
@@ -32,7 +32,7 @@ import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 
-class Settings(context: Context) : SupportPreference(context),
+class Settings(context: Context) : SupportSettings(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
     ISortOrderSettings, IRefreshBehaviourSettings {
 
@@ -102,7 +102,7 @@ class Settings(context: Context) : SupportPreference(context),
          * Binding types for [Settings]
          */
         internal val BINDINGS = arrayOf(
-            ISupportPreference::class, IConfigurationSettings::class,
+            ISupportSettings::class, IConfigurationSettings::class,
             ILocaleSettings::class, IThemeSettings::class,
             IAuthenticationSettings::class, IPrivacySettings::class,
             ISortOrderSettings::class, IRefreshBehaviourSettings::class

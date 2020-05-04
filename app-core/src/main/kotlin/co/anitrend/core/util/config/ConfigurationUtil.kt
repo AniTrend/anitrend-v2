@@ -17,8 +17,8 @@
 
 package co.anitrend.core.util.config
 
+import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.settings.common.IConfigurationSettings
-import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.util.config.contract.IConfigurationUtil
 import co.anitrend.core.util.locale.AniTrendLocale
 import co.anitrend.core.util.locale.LocaleHelper
@@ -34,7 +34,7 @@ class ConfigurationUtil(
     private val themeHelper: ThemeHelper
 ) : IConfigurationUtil {
 
-    override val moduleTag: String = this::class.java.simpleName
+    override val moduleTag: String = ConfigurationUtil::class.java.simpleName
 
     // we might change this in future when we have more themes
     private var applicationTheme = AniTrendTheme.SYSTEM
@@ -45,7 +45,7 @@ class ConfigurationUtil(
      *
      * @param activity
      */
-    override fun onCreate(activity: AnitrendActivity<*, *>) {
+    override fun onCreate(activity: FragmentActivity) {
         applicationTheme = settings.theme
         applicationLocale = settings.locale
         localeHelper.applyApplicationLocale(activity)
@@ -57,7 +57,7 @@ class ConfigurationUtil(
      *
      * @param activity
      */
-    override fun onResume(activity: AnitrendActivity<*, *>) {
+    override fun onResume(activity: FragmentActivity) {
         if (applicationTheme != settings.theme) {
             activity.resetActivity()
             themeHelper.applyDynamicNightModeFromTheme()
@@ -65,7 +65,7 @@ class ConfigurationUtil(
     }
 
 
-    private fun AnitrendActivity<*, *>.resetActivity() {
+    private fun FragmentActivity.resetActivity() {
         val currentIntent = intent
         finish()
         invoke()
@@ -74,7 +74,7 @@ class ConfigurationUtil(
     }
 
     companion object {
-        private operator fun AnitrendActivity<*, *>.invoke() {
+        private operator fun FragmentActivity.invoke() {
             overridePendingTransition(
                 android.R.anim.fade_in,
                 android.R.anim.fade_out

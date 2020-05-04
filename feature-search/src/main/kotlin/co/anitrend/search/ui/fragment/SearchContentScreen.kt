@@ -17,32 +17,41 @@
 
 package co.anitrend.search.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
+import co.anitrend.arch.extension.attachComponent
+import co.anitrend.arch.extension.detachComponent
+import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.fragment.AniTrendFragment
+import co.anitrend.core.ui.fragment.contract.IFragmentFactory
+import co.anitrend.search.koin.moduleHelper
 import co.anitrend.search.presenter.SearchPresenter
-import org.koin.android.ext.android.inject
 
-class SearchContentScreen : AniTrendFragment<Nothing, SearchPresenter, Nothing>() {
+class SearchContentScreen : AniTrendFragment<Nothing>() {
+
+    private val presenter by injectScoped<SearchPresenter>()
 
     /**
-     * Invoke view model observer to watch for changes
+     * Called when a fragment is first attached to its context.
+     * [onCreate] will be called after this.
      */
-    override fun setUpViewModelObserver() {
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        attachComponent(moduleHelper)
     }
 
     /**
-     * Should be created lazily through injection or lazy delegate
+     * Invoke view model observer to watch for changes, this is called in [onViewCreated]
      *
-     * @return supportPresenter of the generic type specified
+     * @see onViewCreated
      */
-    override val supportPresenter by inject<SearchPresenter>()
+    override fun setUpViewModelObserver() {
+        TODO("Not yet implemented")
+    }
 
     /**
-     * Additional initialization to be done in this method, if the overriding class is type of
-     * [androidx.fragment.app.Fragment] then this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
-     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
+     * Additional initialization to be done in this method, this method will be called in
+     * [androidx.fragment.app.FragmentActivity.onCreate].
      *
      * @param savedInstanceState
      */
@@ -51,33 +60,36 @@ class SearchContentScreen : AniTrendFragment<Nothing, SearchPresenter, Nothing>(
     }
 
     /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
+     * Handles the updating, binding, creation or state change, depending on the context of views.
      *
-     * Check implementation for more details
+     * **N.B.** Where this is called is up to the developer
      */
     override fun onUpdateUserInterface() {
         TODO("Not yet implemented")
     }
 
     /**
-     * Handles the complex logic required to dispatch network request to [ISupportViewModel]
-     * to either request from the network or database cache.
+     * Handles the complex logic required to dispatch network request to a view model, presenter or
+     * worker to either request from the network or database cache.
      *
-     * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] specifically [ISupportViewModel.model]
-     *
-     * @see [ISupportViewModel.invoke]
+     * **N.B.** Where this is called is up to the developer
      */
     override fun onFetchDataInitialize() {
         TODO("Not yet implemented")
     }
 
-    companion object {
-        val FRAGMENT_TAG = SearchContentScreen::class.java.simpleName
+    /**
+     * Called when the fragment is no longer attached to its activity.
+     * This is called after [onDestroy].
+     */
+    override fun onDetach() {
+        detachComponent(moduleHelper)
+        super.onDetach()
+    }
 
-        fun newInstance(): SearchContentScreen {
-            return SearchContentScreen()
-        }
+    companion object : IFragmentFactory<SearchContentScreen> {
+        override val fragmentTag = SearchContentScreen::class.java.simpleName
+
+        override fun newInstance(bundle: Bundle?) = SearchContentScreen()
     }
 }

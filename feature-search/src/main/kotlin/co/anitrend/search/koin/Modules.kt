@@ -17,18 +17,22 @@
 
 package co.anitrend.search.koin
 
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.search.presenter.SearchPresenter
+import co.anitrend.search.ui.fragment.SearchContentScreen
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 
 private val presenterModule = module {
-    factory {
-        SearchPresenter(
-            context = androidContext(),
-            settings = get()
-        )
+    scope(named<SearchContentScreen>()) {
+        scoped {
+            SearchPresenter(
+                context = androidContext(),
+                settings = get()
+            )
+        }
     }
 }
 
@@ -36,13 +40,8 @@ private val viewModelModule = module {
 
 }
 
-private val modules = listOf(presenterModule)
-
-private val koinModules by lazy {
-    loadKoinModules(modules)
+internal val moduleHelper by lazy {
+    DynamicFeatureModuleHelper(
+        listOf(presenterModule)
+    )
 }
-
-/**
- * loads koin modules with the current
- */
-fun injectFeatureModules() = koinModules

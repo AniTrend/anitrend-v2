@@ -7,6 +7,15 @@ buildscript {
         buildTools = '3.6.3'
         googleServices = '4.3.3'
         fabricTools = '1.31.2'
+
+        glide = '4.11.0'
+        coil = '0.10.1'
+        mockk = '1.10.0'
+        workflow = '0.22.1'
+        markwon = '4.0.2'
+        smartTab = '2.0.0'
+        tapTarget = '3.0.0'
+        okHttpLogger = '4.4.0'
     }
 
     repositories {
