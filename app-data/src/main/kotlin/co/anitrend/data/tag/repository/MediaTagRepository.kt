@@ -20,7 +20,7 @@ package co.anitrend.data.tag.repository
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.model.UserInterfaceState.Companion.create
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.data.tag.datasource.MediaTagSource
+import co.anitrend.data.tag.source.contract.MediaTagSource
 import co.anitrend.domain.tag.entities.Tag
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 

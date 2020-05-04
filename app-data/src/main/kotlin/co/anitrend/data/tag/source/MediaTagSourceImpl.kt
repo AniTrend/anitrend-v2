@@ -15,26 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.tag.datasource
+package co.anitrend.data.tag.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
+import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
-import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
+import co.anitrend.data.tag.source.contract.MediaTagSource
 import co.anitrend.domain.tag.entities.Tag
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 internal class MediaTagSourceImpl(
     private val remoteSource: MediaTagRemoteSource,
@@ -58,12 +57,10 @@ internal class MediaTagSourceImpl(
             override fun invoke(parameter: Nothing?): LiveData<List<Tag>> {
                 val tagFlow = localSource.findAllFlow()
                 return tagFlow.map {
-                        it.map { entity ->
-                            TagEntity.transform(entity)
-                        }
-                    }
-                    .flowOn(dispatchers.computation)
-                    .asLiveData()
+                    TagEntityConverter().convertFrom(it)
+                }.flowOn(
+                    dispatchers.computation
+                ).asLiveData()
             }
         }
 

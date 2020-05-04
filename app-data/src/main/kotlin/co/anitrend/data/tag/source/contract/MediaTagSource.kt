@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.tag.datasource
+package co.anitrend.data.tag.source.contract
 
 import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable

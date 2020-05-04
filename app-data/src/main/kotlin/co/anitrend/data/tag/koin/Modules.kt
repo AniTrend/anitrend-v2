@@ -18,12 +18,10 @@
 package co.anitrend.data.tag.koin
 
 import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.tag.datasource.MediaTagSource
-import co.anitrend.data.tag.datasource.MediaTagSourceImpl
-import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
+import co.anitrend.data.tag.source.contract.MediaTagSource
+import co.anitrend.data.tag.source.MediaTagSourceImpl
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
 import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.data.tag.usecase.MediaTagUseCaseContract

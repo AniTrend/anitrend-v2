@@ -18,31 +18,29 @@
 package co.anitrend.data.tag.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
-import co.anitrend.data.media.model.remote.MediaTag
+import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.MediaTagCollection
 
 internal class MediaTagResponseMapper(
-    private val localSource: MediaTagLocalSource
+    private val localSource: MediaTagLocalSource,
+    private val mapper: TagModelConverter = TagModelConverter()
 ) : GraphQLMapper<MediaTagCollection, List<TagEntity>?>() {
 
     /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects,
-     * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
+     * Creates mapped objects and handles the database operations which may be required to map various objects
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: MediaTagCollection): List<TagEntity>? {
-        return source.mediaTagCollection.map {
-            MediaTag.transform(it)
-        }
-    }
+    override suspend fun onResponseMapFrom(source: MediaTagCollection) =
+        mapper.convertFrom(
+            source.mediaTagCollection
+        )
 
     /**
-     * Inserts the given object into the implemented room database,
-     * called in [retrofit2.Callback.onResponse]
+     * Inserts the given object into the implemented room database
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
