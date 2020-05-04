@@ -19,6 +19,8 @@ package co.anitrend.data.arch.extension
 
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.api.provider.RetrofitProvider
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.database.common.IAniTrendStore
@@ -45,7 +47,15 @@ internal fun <S, D> GraphQLMapper<S, D>.controller(
     dispatchers = supportDispatchers
 )
 
-internal inline fun <reified T> Scope.api() = get<Retrofit>().create(T::class.java)
+/**
+ * Facade for supplying retrofit interface types
+ */
+internal inline fun <reified T> Scope.api(endpointType: EndpointType): T =
+    RetrofitProvider.provideRetrofit(endpointType, this).create(T::class.java)
+
+/**
+ * Facade for supplying database contract
+ */
 internal fun Scope.db() = get<IAniTrendStore>()
 
 @Throws(HttpException::class)
@@ -98,6 +108,16 @@ private suspend inline fun <T> Deferred<Response<T>>.executeWithRetry(
     throw IllegalStateException("Unknown exception from executeWithRetry")
 }
 
+/**
+ * Automatically runs the suspendable operation and returns the body adopted from **tivi**
+ *
+ * @param dispatcher dispatcher to use
+ * @param firstDelay initial delay before retrying
+ * @param maxAttempts max number of attempts to retry
+ * @param shouldRetry when request should be retried after failure
+ *
+ * @throws HttpException
+ */
 @Throws(HttpException::class)
 internal suspend inline fun <T> Deferred<Response<T>>.fetchBodyWithRetry(
     dispatcher: CoroutineDispatcher,
