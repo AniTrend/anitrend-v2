@@ -3,7 +3,7 @@ include ':app', ':app-core', ':app-domain', ':app-onboarding', ':app-splash', ':
         ':feature-profile', ':feature-account',
         ':feature-about', ':feature-news',
         ':support-ext', ':support-core', ':support-data', ':support-domain', ':support-ui',
-        ':graphql', ':emojify', ':app-data', ':markdown', ':support-theme' //, ':sync-plugin'
+        ':graphql', ':emojify', ':app-data', ':markdown', ':support-theme', ':support-recycler' //, ':sync-plugin'
 project(':support-ext').projectDir = new File('support-app/support-ext')
 project(':support-core').projectDir = new File('support-app/support-core')
 project(':support-data').projectDir = new File('support-app/support-data')
@@ -14,3 +14,4 @@ project(':graphql').projectDir = new File('retrofit-graphql/library')
 project(':emojify').projectDir = new File('android-emojify/emojify')
 project(':markdown').projectDir = new File('support-markdown/markdown')
 //project(':sync-plugin').projectDir = new File('support-sync-plugin/syncplugin')
+project(':support-recycler').projectDir = new File('support-app/support-recycler')
