@@ -21,7 +21,6 @@ ext {
     ktx = '1.2.0'
     fragmentKtx = '1.2.4'
     workerKtx = '2.3.4'
-    firebase = '17.4.0'
 
     koin = '2.1.5'
     kotlinVersion = '1.3.72'
@@ -31,11 +30,8 @@ ext {
     runner = '1.2.0'
     espresso = '3.2.0'
 
-    flexBox = '2.0.1'
-    crashlytics = '2.10.1'
     coroutinesCore = '1.3.4'
     coroutinesAndroid = '1.3.4'
-    materialDialogs = '3.3.0'
 
     gson = '2.8.5'
     timber = '4.7.1'
