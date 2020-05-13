@@ -23,6 +23,8 @@ import androidx.work.Configuration
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.analytics.AnalyticsLogger
 import co.anitrend.core.util.theme.ThemeHelper
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import io.wax911.emojify.EmojiManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -30,7 +32,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import timber.log.Timber
 
-abstract class AniTrendApplication : Application(), Configuration.Provider {
+abstract class AniTrendApplication : Application(), Configuration.Provider, ImageLoaderFactory {
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
@@ -102,4 +104,9 @@ abstract class AniTrendApplication : Application(), Configuration.Provider {
             .setMinimumLoggingLevel(logLevel)
             .build()
     }
+
+    /**
+     * Return a new [ImageLoader].
+     */
+    override fun newImageLoader() =  get<ImageLoader>()
 }

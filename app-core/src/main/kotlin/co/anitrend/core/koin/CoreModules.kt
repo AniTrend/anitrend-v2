@@ -17,17 +17,30 @@
 
 package co.anitrend.core.koin
 
+import android.os.Build
 import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.isLowRamDevice
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
+import co.anitrend.core.helper.StorageHelper
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
+import co.anitrend.core.settings.common.cache.ICacheSettings
 import co.anitrend.core.util.config.ConfigurationUtil
 import co.anitrend.core.util.locale.LocaleHelper
 import co.anitrend.core.util.theme.ThemeHelper
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.decode.SvgDecoder
+import coil.fetch.VideoFrameFileFetcher
+import coil.fetch.VideoFrameUriFetcher
+import okhttp3.Cache
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
     factory {
@@ -65,6 +78,49 @@ private val configurationModule = module {
         ThemeHelper(
             settings = get()
         )
+    }
+    factory {
+        val isLowRamDevice = androidContext().isLowRamDevice()
+        val memoryLimit = if (isLowRamDevice) 0.15 else 0.35
+        val dispatchers = get<SupportDispatchers>()
+        val context = androidContext()
+        val loader = ImageLoader.Builder(context)
+            .availableMemoryPercentage(memoryLimit)
+            .bitmapPoolPercentage(memoryLimit)
+            .dispatcher(dispatchers.io)
+            .okHttpClient {
+                OkHttpClient.Builder().cache(
+                    Cache(
+                        StorageHelper.getImageCache(
+                            context = androidContext()
+                        ),
+                        StorageHelper.getStorageUsageLimit(
+                            context = androidContext(),
+                            settings = object : ICacheSettings {
+                                override var usageRatio = 0.15f
+                            }
+                        )
+                    )
+                )
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
+                    .build()
+            }.componentRegistry {
+                if (Build.VERSION.SDK_INT >= 28)
+                    add(ImageDecoderDecoder())
+                else
+                    add(GifDecoder())
+                add(SvgDecoder(context))
+                add(VideoFrameFileFetcher(context))
+                add(VideoFrameUriFetcher(context))
+            }
+
+        if (!isLowRamDevice)
+            loader.crossfade(360)
+        else
+            loader.allowRgb565(true)
+
+        loader.build()
     }
 }
 
