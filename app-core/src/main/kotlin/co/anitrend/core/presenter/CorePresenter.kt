@@ -21,7 +21,7 @@ import android.content.Context
 import co.anitrend.core.settings.Settings
 import co.anitrend.arch.core.presenter.SupportPresenter
 
-open class CorePresenter(
+abstract class CorePresenter(
     context: Context,
     settings: Settings
-): SupportPresenter<Settings>(context, settings)
+) : SupportPresenter<Settings>(context, settings)

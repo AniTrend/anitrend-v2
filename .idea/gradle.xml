@@ -41,6 +41,7 @@
             <option value="$PROJECT_DIR$/support-app/support-data" />
             <option value="$PROJECT_DIR$/support-app/support-domain" />
             <option value="$PROJECT_DIR$/support-app/support-ext" />
+            <option value="$PROJECT_DIR$/support-app/support-recycler" />
             <option value="$PROJECT_DIR$/support-app/support-theme" />
             <option value="$PROJECT_DIR$/support-app/support-ui" />
             <option value="$PROJECT_DIR$/support-markdown/markdown" />

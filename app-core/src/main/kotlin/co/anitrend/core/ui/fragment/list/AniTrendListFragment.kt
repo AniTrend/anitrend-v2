@@ -15,16 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment
+package co.anitrend.core.ui.fragment.list
 
 import android.content.Context
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.attachComponent
 import co.anitrend.arch.extension.detachComponent
-import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.arch.ui.fragment.list.SupportFragmentList
 import co.anitrend.core.ui.ILifecycleFeature
 
-abstract class AniTrendFragment : SupportFragment(), ILifecycleFeature {
+abstract class AniTrendListFragment<M> : SupportFragmentList<M>(), ILifecycleFeature {
 
     /**
      * Called when a fragment is first attached to its context.
@@ -46,13 +45,5 @@ abstract class AniTrendFragment : SupportFragment(), ILifecycleFeature {
             detachComponent(it)
         }
         super.onDetach()
-    }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState(): ISupportViewModelState<*>? {
-        // Making this optional
-        return null
     }
 }

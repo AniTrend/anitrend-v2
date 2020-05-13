@@ -20,8 +20,11 @@ package co.anitrend.settings.ui.activity
 import android.os.Bundle
 import androidx.fragment.app.commit
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
+import co.anitrend.core.extensions.commit
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.settings.R
 import co.anitrend.settings.databinding.SettingsActivityBinding
 import co.anitrend.settings.ui.fragment.SettingsFragment
@@ -51,21 +54,17 @@ class SettingsScreen : AnitrendActivity() {
     }
 
     /**
+     * Expects a module helper if one is available for the current scope, otherwise return null
+     */
+    override fun featureModuleHelper(): Nothing? = null
+
+    /**
      * Handles the updating, binding, creation or state change, depending on the context of views.
      *
      * **N.B.** Where this is called is up to the developer
      */
-    override fun onUpdateUserInterface() {
-        val fragment = supportFragmentManager.findFragmentByTag(
-            SettingsFragment.FRAGMENT_TAG
-        ) ?: SettingsFragment.newInstance()
-
-        supportFragmentManager.commit {
-            replace(
-                R.id.contentFrame,
-                fragment,
-                SettingsFragment.FRAGMENT_TAG
-            )
-        }
+    private fun onUpdateUserInterface() {
+        currentFragmentTag = FragmentItem(fragment = SettingsFragment::class.java)
+            .commit(R.id.contentFrame, this) {}
     }
 }

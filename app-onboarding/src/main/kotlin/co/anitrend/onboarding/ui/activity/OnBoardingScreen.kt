@@ -19,7 +19,10 @@ package co.anitrend.onboarding.ui.activity
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import co.anitrend.arch.extension.*
+import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.gone
+import co.anitrend.arch.extension.invisible
+import co.anitrend.arch.extension.visible
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
@@ -96,7 +99,6 @@ class OnBoardingScreen : AnitrendActivity() {
     override fun configureActivity() {
         super.configureActivity()
         hideStatusBarAndNavigationBar()
-        attachComponent(moduleHelper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,6 +114,11 @@ class OnBoardingScreen : AnitrendActivity() {
             finishAfterTransition()
         }
     }
+
+    /**
+     * Expects a module helper if one is available for the current scope, otherwise return null
+     */
+    override fun featureModuleHelper() = moduleHelper
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -144,21 +151,10 @@ class OnBoardingScreen : AnitrendActivity() {
         super.onPause()
     }
 
-    /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
-     *
-     * Check implementation for more details
-     */
-    override fun onUpdateUserInterface() {
+    private fun onUpdateUserInterface() {
         binding.liquidSwipeViewPager.offscreenPageLimit = 1
         binding.liquidSwipeViewPager.adapter = onBoardingPageAdapter
         binding.inkPageIndicator.setViewPager(binding.liquidSwipeViewPager)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        detachComponent(moduleHelper)
     }
 
     companion object {

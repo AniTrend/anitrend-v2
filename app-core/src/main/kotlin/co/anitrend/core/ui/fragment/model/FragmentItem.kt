@@ -15,21 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment.contract
+package co.anitrend.core.ui.fragment.model
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 
 /**
- * Fragment factory to help us construct new fragments
- *
- * @property fragmentTag unique tag that can be used by
- * [androidx.fragment.app.FragmentManager]
- *
- * @param T type of your fragment
+ * Fragment loader holder helper
  */
-interface IFragmentFactory<T: Fragment> {
-    val fragmentTag: String
-
-    fun newInstance(bundle: Bundle? = null): T
+data class FragmentItem<T: Fragment>(
+    val parameter: Bundle? = null,
+    val fragment: Class<out T>
+) {
+    fun tag() = fragment.simpleName
 }

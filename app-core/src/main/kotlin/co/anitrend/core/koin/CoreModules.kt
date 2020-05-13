@@ -18,7 +18,7 @@
 package co.anitrend.core.koin
 
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.ui.util.StateLayoutConfig
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
@@ -68,16 +68,7 @@ private val configurationModule = module {
     }
 }
 
-private val presenterModule = module {
-    factory {
-        CorePresenter(
-            androidContext(),
-            settings = get()
-        )
-    }
-}
-
 
 val coreModules = listOf(
-    coreModule, configurationModule, presenterModule
+    coreModule, configurationModule
 )

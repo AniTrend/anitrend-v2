@@ -21,9 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.ui.fragment.AniTrendFragment
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import co.anitrend.onboarding.model.OnBoarding
@@ -31,7 +33,7 @@ import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import com.airbnb.lottie.LottieDrawable
 import org.koin.android.ext.android.inject
 
-class OnBoardingContent : AniTrendFragment<OnBoarding>() {
+class OnBoardingContent : AniTrendFragment() {
 
     private val onBoarding by argument<OnBoarding>(PARAM_KEY)
     private lateinit var binding: OnboardingContentBinding
@@ -52,8 +54,15 @@ class OnBoardingContent : AniTrendFragment<OnBoarding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        lifecycleScope.launchWhenResumed {
+            binding.lottieAnimationView.playAnimation()
+        }
     }
+
+    /**
+     * Expects a module helper if one is available for the current scope, otherwise return null
+     */
+    override fun featureModuleHelper(): Nothing? = null
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -85,9 +94,13 @@ class OnBoardingContent : AniTrendFragment<OnBoarding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = OnboardingContentBinding.inflate(inflater, container, false)
-        return binding.root
+    ) = OnboardingContentBinding.inflate(
+        inflater,
+        container,
+        false
+    ).let {
+        binding = it
+        binding.root
     }
 
     /**
@@ -103,9 +116,7 @@ class OnBoardingContent : AniTrendFragment<OnBoarding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onBoarding?.apply {
-            view.background = view.context.getDrawable(
-                backgroundColor
-            )
+            view.background = view.context.getDrawable(backgroundColor)
 
             binding.lottieAnimationView.repeatCount = LottieDrawable.INFINITE
             binding.lottieAnimationView.setAnimation(resource)
@@ -119,36 +130,9 @@ class OnBoardingContent : AniTrendFragment<OnBoarding>() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        onUpdateUserInterface()
-    }
-
-    /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
-     *
-     * Check implementation for more details
-     */
-    override fun onUpdateUserInterface() {
-        binding.lottieAnimationView.playAnimation()
-    }
-
-    /**
-     * Handles the complex logic required to dispatch network request to [ISupportViewModel]
-     * to either request from the network or database cache.
-     *
-     * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] specifically [ISupportViewModel.model]
-     *
-     * @see [ISupportViewModel.invoke]
-     */
-    override fun onFetchDataInitialize() {
-
-    }
 
     companion object {
-        private const val PARAM_KEY = "OnBoardingContent_OnBoarding"
+        private const val PARAM_KEY = "OnBoardingContent:OnBoarding"
 
         fun newInstance(model: OnBoarding): OnBoardingContent {
             val fragment = OnBoardingContent()

@@ -18,6 +18,7 @@
 package co.anitrend.about.ui.activity
 
 import android.os.Bundle
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
 import org.koin.android.ext.android.inject
@@ -35,11 +36,7 @@ class AboutScreen : AnitrendActivity() {
     }
 
     /**
-     * Handles the updating, binding, creation or state change, depending on the context of views.
-     *
-     * **N.B.** Where this is called is up to the developer
+     * Expects a module helper if one is available for the current scope, otherwise return null
      */
-    override fun onUpdateUserInterface() {
-
-    }
+    override fun featureModuleHelper(): Nothing? = null
 }
