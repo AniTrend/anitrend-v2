@@ -17,6 +17,7 @@
 
 package co.anitrend.data.api.provider
 
+import androidx.collection.LruCache
 import co.anitrend.arch.extension.BuildConfig
 import co.anitrend.arch.extension.LAZY_MODE_SYNCHRONIZED
 import co.anitrend.data.api.contract.EndpointType
@@ -38,10 +39,7 @@ import java.util.*
 internal object RetrofitProvider {
 
     private val moduleTag = javaClass.simpleName
-    private val retrofitCache
-            by lazy(LAZY_MODE_SYNCHRONIZED) {
-                HashMap<String, Retrofit>()
-            }
+    private val retrofitCache = LruCache<EndpointType, Retrofit>(3)
 
     private fun provideOkHttpClient(endpointType: EndpointType, scope: Scope) : OkHttpClient {
         val builder = scope.get<OkHttpClient.Builder> {
@@ -94,14 +92,15 @@ internal object RetrofitProvider {
     }
 
     fun provideRetrofit(endpointType: EndpointType, scope: Scope): Retrofit {
-        return if (retrofitCache.containsKey(endpointType.name)) {
-            Timber.tag(moduleTag).v(
+        val reference = retrofitCache.get(endpointType)
+        return if (reference != null) {
+            Timber.tag(moduleTag).d(
                 "Using cached retrofit instance for endpoint: ${endpointType.name}"
             )
-            retrofitCache[endpointType.name]!!
+            reference
         }
         else {
-            Timber.tag(moduleTag).v(
+            Timber.tag(moduleTag).d(
                 "Creating new retrofit instance for endpoint: ${endpointType.name}"
             )
             val retrofit =
@@ -109,7 +108,7 @@ internal object RetrofitProvider {
                     endpointType,
                     scope
                 )
-            retrofitCache[endpointType.name] = retrofit
+            retrofitCache.put(endpointType, retrofit)
             retrofit
         }
     }
