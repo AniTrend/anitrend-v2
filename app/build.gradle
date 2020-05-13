@@ -119,6 +119,9 @@ dependencies {
     /** Timber Trees */
     implementation("fr.bipi.treessence:treessence:$treessence")
 
+    /** Coil */
+    implementation("io.coil-kt:coil:$coil")
+
     // Don't need these in the app module
     /*implementation("com.google.android:flexbox:$flexBox")
     implementation("uk.co.samuelwall:material-tap-target-prompt:$tapTarget")*/

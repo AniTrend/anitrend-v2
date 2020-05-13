@@ -73,8 +73,11 @@ dependencies {
     implementation("com.afollestad.material-dialogs:lifecycle:$materialDialogs")
     implementation("com.afollestad.material-dialogs:bottomsheets:$materialDialogs")
 
-    /** Coil */
-    implementation("io.coil-kt:coil-base:$coil")
+    /** Coil libraries */
+    implementation("io.coil-kt:coil:$coil")
+    implementation("io.coil-kt:coil-svg:$coil")
+    implementation("io.coil-kt:coil-gif:$coil")
+    implementation("io.coil-kt:coil-video:$coil")
 
     /** Glide Libraries */
     implementation("com.github.bumptech.glide:glide:$glide")
