@@ -7,7 +7,7 @@ function create_directories {
 
 function create_files {
     touch secrets.properties
-    echo "cliendId=\"cliend_id\"" >> secrets.properties
+    echo "clientId=\"client_id\"" >> secrets.properties
     echo "clientSecret=\"client_secret\"" >> secrets.properties
 }
 
