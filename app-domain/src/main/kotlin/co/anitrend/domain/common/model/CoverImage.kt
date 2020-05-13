@@ -20,9 +20,9 @@ package co.anitrend.domain.common.model
 import co.anitrend.domain.common.entity.IEntityImage
 
 /**
- * Shared model between [co.anitrend.domain.character.entities.ICharacter],
- * [co.anitrend.domain.staff.entities.IStaff] &
- * [co.anitrend.domain.user.entities.IUser]
+ * Shared model between [co.anitrend.domain.character.entities.Character],
+ * [co.anitrend.domain.staff.entities.Staff] &
+ * [co.anitrend.domain.user.entities.User]
  *
  * @param large The cover image at its largest size
  * @param medium The cover image at medium size

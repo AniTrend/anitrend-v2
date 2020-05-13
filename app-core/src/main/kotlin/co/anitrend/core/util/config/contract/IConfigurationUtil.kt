@@ -17,7 +17,7 @@
 
 package co.anitrend.core.util.config.contract
 
-import co.anitrend.core.ui.activity.AnitrendActivity
+import androidx.fragment.app.FragmentActivity
 
 interface IConfigurationUtil {
 
@@ -28,12 +28,12 @@ interface IConfigurationUtil {
      *
      * @param activity
      */
-    fun onCreate(activity: AnitrendActivity<*, *>)
+    fun onCreate(activity: FragmentActivity)
 
     /**
      * Applies configuration upon the resume state of the current activity
      *
      * @param activity
      */
-    fun onResume(activity: AnitrendActivity<*, *>)
+    fun onResume(activity: FragmentActivity)
 }

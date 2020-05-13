@@ -18,11 +18,10 @@
 package co.anitrend.data.util.graphql
 
 import co.anitrend.data.arch.common.model.paging.PageQuery
-import co.anitrend.data.settings.ISortOrderSettings
+import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.data.util.graphql.GraphUtil.applySortOrderUsing
 import co.anitrend.domain.media.enums.MediaSort
-import org.junit.Assert
 import org.junit.Test
 
 import org.junit.Assert.*

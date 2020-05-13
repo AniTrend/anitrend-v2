@@ -23,43 +23,52 @@ plugins {
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
-apply from: "../gradle/gradle-common-config-app.gradle"
 apply from: "../gradle/gradle-common-dependencies.gradle"
 
 android {
     defaultConfig {
-        defaultConfig {
-            consumerProguardFiles 'consumer-rules.pro'
-        }
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+    viewBinding {
+        enabled = true
     }
 }
 
-dependencies {
-    /** Project Modules */
-    implementation project(":app-core")
-    implementation project(":app-data")
-    implementation project(":app-domain")
+ext {
+    palette = '1.0.0'
+}
 
+dependencies {
     /** Platform Dependencies */
     implementation project(":support-domain")
     implementation project(":support-theme")
     implementation project(":support-core")
+    implementation project(":support-data")
     implementation project(":support-ext")
     implementation project(":support-ui")
 
-    /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    implementation project(':app-domain')
+    implementation project(':app-data')
+    implementation project(':app-core')
 
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
-    /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation("androidx.palette:palette:$palette")
+    implementation("androidx.palette:palette-ktx:$palette")
     implementation "androidx.constraintlayout:constraintlayout:$constraintX"
 
-    /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    /** Architecture Components */
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.paging:paging-runtime:$paging")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
+
+    /** Lifecycle Components */
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX")
+
+    /** Coil Library */
+    implementation("io.coil-kt:coil-base:$coil")
+    implementation("com.github.bumptech.glide:glide:$glide")
 }

@@ -47,7 +47,7 @@ android {
             file(".config/secrets.properties").withInputStream {
                 stream -> secretsProps.load(stream)
             }
-            it.buildConfigField("String", "cliendId", secretsProps['cliendId'])
+            it.buildConfigField("String", "clientId", secretsProps['clientId'])
             it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
 
             def configProps = new Properties()
@@ -64,6 +64,11 @@ android {
     }
 }
 
+ext {
+    roomigrant = '0.1.7'
+    chuncker = '3.2.0'
+}
+
 dependencies {
 
     /** Platform Dependencies */
@@ -74,22 +79,31 @@ dependencies {
     implementation project(':app-domain')
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "androidx.paging:paging-runtime:$paging"
-    implementation "androidx.room:room-runtime:$room"
-    implementation "androidx.room:room-ktx:$room"
-    kapt "androidx.room:room-compiler:$room"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
+    implementation("androidx.paging:paging-runtime:$paging")
+    implementation("androidx.room:room-runtime:$room")
+    implementation("androidx.room:room-ktx:$room")
+    kapt("androidx.room:room-compiler:$room")
+
+    // Lacks incremental procession so out it goes.. for now
+    // implementation("com.github.MatrixDev.Roomigrant:RoomigrantLib:$roomigrant")
+    // kapt("com.github.MatrixDev.Roomigrant:RoomigrantCompiler:$roomigrant")
 
     /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation("com.squareup.retrofit2:retrofit:$retrofit")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpLogger")
+    implementation("com.squareup.retrofit2:converter-simplexml:$retrofit") {
+        exclude group: 'xpp3', module: 'xpp3'
+        exclude group: 'stax', module: 'stax-api'
+        exclude group: 'stax', module: 'stax'
+    }
 
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
+    debugImplementation("com.github.ChuckerTeam.Chucker:library:$chuncker")
+    releaseImplementation("com.github.ChuckerTeam.Chucker:library-no-op:$chuncker")
 }

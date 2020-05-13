@@ -26,50 +26,12 @@ apply from: "../gradle/gradle-common-config.gradle"
 apply from: "../gradle/gradle-common-config-app.gradle"
 apply from: "../gradle/gradle-common-dependencies.gradle"
 
-android {
-    defaultConfig {
-        defaultConfig {
-            consumerProguardFiles 'consumer-rules.pro'
-        }
-    }
-}
-
 ext {
     liquidSwipe = '1.3'
-    lottie = '3.3.1'
+    lottie = '3.4.0'
 }
 
 dependencies {
-    /** Project Modules */
-    implementation project(':app-core')
-    implementation project(':app-data')
-    implementation project(':app-domain')
-    implementation project(':android-core')
-    implementation project(":app-navigation")
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-    implementation project(":support-theme")
-    implementation project(":support-core")
-    implementation project(":support-ext")
-    implementation project(":support-ui")
-
-    /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
-
-    /** Material Design */
-    implementation "com.google.android.material:material:$material"
-
-    /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
-
-    /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
-
-    implementation "com.github.Chrisvin:LiquidSwipe:$liquidSwipe"
-    implementation "com.airbnb.android:lottie:$lottie"
+    implementation("com.github.Chrisvin:LiquidSwipe:$liquidSwipe")
+    implementation("com.airbnb.android:lottie:$lottie")
 }

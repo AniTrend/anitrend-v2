@@ -19,21 +19,25 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation("org.koin:koin-core:$koin")
+    implementation("org.koin:koin-core-ext:$koin")
+    implementation("org.koin:koin-androidx-scope:$koin")
+    implementation("org.koin:koin-androidx-viewmodel:$koin")
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid")
 
     /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
+    implementation("com.jakewharton.timber:timber:$timber")
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.ext:junit-ktx:$junitKtx"
+    testImplementation("junit:junit:$junit")
+    testImplementation("io.mockk:mockk:$mockk")
+    androidTestImplementation("androidx.test:runner:$runner")
+    androidTestImplementation("androidx.test.ext:junit-ktx:$junitKtx")
+
+    /** Koin for Unit tests */
+    testImplementation("org.koin:koin-test:$koin")
 }

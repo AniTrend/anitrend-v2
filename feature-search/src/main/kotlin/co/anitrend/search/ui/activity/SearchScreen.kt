@@ -18,15 +18,18 @@
 package co.anitrend.search.ui.activity
 
 import android.os.Bundle
+import androidx.fragment.app.commit
+import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.multisearch.model.MultiSearchChangeListener
-import co.anitrend.search.R
-import co.anitrend.search.koin.injectFeatureModules
-import co.anitrend.search.presenter.SearchPresenter
-import kotlinx.android.synthetic.main.search_screen.*
-import org.koin.android.ext.android.inject
+import co.anitrend.search.databinding.SearchScreenBinding
+import co.anitrend.search.ui.fragment.SearchContentScreen
 
-class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
+class SearchScreen : AnitrendActivity() {
+
+    private val binding by lazy(LAZY_MODE_UNSAFE) {
+        SearchScreenBinding.inflate(layoutInflater)
+    }
 
     private val searchChangeListener =
         object : MultiSearchChangeListener {
@@ -70,16 +73,10 @@ class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
             }
         }
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter by inject<SearchPresenter>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search_screen)
+        setContentView(binding.root)
+        setSupportActionBar(binding.bottomAppBar)
     }
 
     /**
@@ -91,8 +88,8 @@ class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        injectFeatureModules()
-        multiSearch.setSearchViewListener(searchChangeListener)
+        onUpdateUserInterface()
+        binding.multiSearch.setSearchViewListener(searchChangeListener)
     }
 
     /**
@@ -102,6 +99,16 @@ class SearchScreen : AnitrendActivity<Nothing, SearchPresenter>() {
      * Check implementation for more details
      */
     override fun onUpdateUserInterface() {
+        val fragment = supportFragmentManager.findFragmentByTag(
+            SearchContentScreen.fragmentTag
+        ) ?: SearchContentScreen.newInstance()
 
+        supportFragmentManager.commit {
+            replace(
+                binding.searchContent.id,
+                fragment,
+                SearchContentScreen.fragmentTag
+            )
+        }
     }
 }

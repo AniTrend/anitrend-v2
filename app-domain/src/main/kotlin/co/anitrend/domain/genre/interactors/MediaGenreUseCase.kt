@@ -22,7 +22,7 @@ import co.anitrend.arch.domain.usecases.ISupportUseCase
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
 abstract class MediaGenreUseCase<R: IUserInterfaceState<*>>(
-    private val mediaGenreRepository: IMediaGenreRepository<R>
+    protected val repository: IMediaGenreRepository<R>
 ) : ISupportUseCase<Nothing?, R> {
 
     /**
@@ -31,6 +31,6 @@ abstract class MediaGenreUseCase<R: IUserInterfaceState<*>>(
      * @param param input for solving a given use case
      */
     override fun invoke(param: Nothing?): R {
-        return mediaGenreRepository.getMediaGenres()
+        return repository.getMediaGenres()
     }
 }

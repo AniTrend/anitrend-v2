@@ -24,38 +24,53 @@
             <group android:id="@+id/nav_group_navigation"
                 android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_popular_series"
-                    android:icon="@drawable/ic_tv_24dp"
-                    android:title="@string/nav_popular_series"
-                    app:showAsAction="ifRoom|withText"/>
+                    android:id="@+id/nav_home"
+                    android:icon="@drawable/ic_home_24dp"
+                    android:title="@string/nav_home"/>
 
                 <item
-                    android:id="@+id/nav_popular_movies"
-                    android:icon="@drawable/ic_local_movies_24dp"
-                    android:title="@string/nav_popular_movies"
-                    app:showAsAction="ifRoom|withText"/>
+                    android:id="@+id/nav_feed"
+                    android:icon="@drawable/ic_deck_24dp"
+                    android:title="@string/nav_feed"/>
+
+                <item
+                    android:id="@+id/nav_review"
+                    android:icon="@drawable/ic_rate_review_24dp"
+                    android:title="@string/nav_review"/>
             </group>
         </menu>
     </item>
 
-    <item android:title="@string/nav_header_customization">
+
+    <item android:title="@string/nav_header_catalogs">
         <menu>
-            <group android:id="@+id/nav_group_customization">
+            <group android:id="@+id/nav_group_catalogs"
+                android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_theme"
-                    android:icon="@drawable/ic_invert_colors_24dp"
-                    android:title="@string/nav_theme" />
+                    android:id="@+id/nav_news"
+                    android:icon="@drawable/ic_menu_book_24dp"
+                    android:title="@string/nav_news"/>
+
+                <item
+                    android:id="@+id/nav_episode_feed"
+                    android:icon="@drawable/ic_tv_24dp"
+                    android:title="@string/nav_episodes"/>
             </group>
         </menu>
+
     </item>
 
     <item android:title="@string/nav_header_support">
         <menu>
             <group android:id="@+id/nav_group_support">
                 <item
-                    android:id="@+id/nav_about"
-                    android:icon="@drawable/ic_help_24dp"
-                    android:title="@string/nav_about" />
+                    android:id="@+id/nav_donate"
+                    android:icon="@drawable/ic_patreon_24dp"
+                    android:title="@string/nav_donate" />
+                <item
+                    android:id="@+id/nav_discord"
+                    android:icon="@drawable/ic_discord_24dp"
+                    android:title="@string/nav_discord" />
             </group>
         </menu>
     </item>

@@ -24,25 +24,19 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.R
-import co.anitrend.core.ui.activity.AnitrendActivity
 import com.afollestad.materialdialogs.DialogBehavior
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import org.koin.core.context.GlobalContext
+import org.koin.android.ext.android.get
+import org.koin.androidx.scope.lifecycleScope
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
 
-val analytics by lazy {
-    koinOf<ISupportAnalytics>()
-}
-
-inline fun <reified T> koinOf() =
-    GlobalContext.get().koin.get<T>()
-
-
-fun AnitrendActivity<*, *>.recreateModules() {
+fun FragmentActivity.recreateModules() {
     val coreApplication = applicationContext as AniTrendApplication
     runCatching {
         coreApplication.restartDependencyInjection()
@@ -95,7 +89,7 @@ fun Activity.makeStatusBarTransparent() {
     }
 }
 
-fun Activity.hideStatusBarAndNavigationBar() {
+fun FragmentActivity.hideStatusBarAndNavigationBar() {
     window.apply {
         decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or
                 View.SYSTEM_UI_FLAG_FULLSCREEN or
@@ -110,4 +104,24 @@ fun View.setMarginTop(marginTop: Int) {
     val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
     menuLayoutParams.setMargins(0, marginTop, 0, 0)
     this.layoutParams = menuLayoutParams
+}
+
+/**
+ * Inject using lifecycle scope
+ */
+inline fun <reified T: Any> FragmentActivity.injectScoped(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+) = lazy {
+    lifecycleScope.get<T>(qualifier, parameters)
+}
+
+/**
+ * Inject using lifecycle scope
+ */
+inline fun <reified T: Any> Fragment.injectScoped(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+) = lazy {
+    lifecycleScope.get<T>(qualifier, parameters)
 }

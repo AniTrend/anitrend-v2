@@ -18,43 +18,37 @@
 package co.anitrend.data.genre.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
+import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.remote.GenreCollection
-import co.anitrend.data.model.core.media.MediaGenre
-import io.github.wax911.library.model.body.GraphContainer
-import timber.log.Timber
 
 internal class MediaGenreResponseMapper(
-    private val mediaGenreLocalSource: MediaGenreLocalSource
-) : GraphQLMapper<GenreCollection, List<MediaGenre>>() {
+    private val localSource: MediaGenreLocalSource,
+    private val mapper: GenreModelConverter = GenreModelConverter()
+) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
 
     /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects,
-     * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
+     * Creates mapped objects and handles the database operations which may be required to map various objects
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     *
-     * @see [invoke]
      */
-    override suspend fun onResponseMapFrom(source: GraphContainer<GenreCollection>): List<MediaGenre> {
-        return source.data?.genreCollection?.map {
-            MediaGenre(it)
-        }.orEmpty()
-    }
+    override suspend fun onResponseMapFrom(
+        source: GenreCollection
+    )= mapper.convertTo(
+        source.genreCollection
+    )
 
     /**
-     * Inserts the given object into the implemented room database,
-     * called in [retrofit2.Callback.onResponse]
+     * Inserts the given object into the implemented room database
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     *
-     * @see [invoke]
      */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaGenre>) {
+    override suspend fun onResponseDatabaseInsert(mappedData: List<GenreEntity>) {
         if (mappedData.isNotEmpty())
-            mediaGenreLocalSource.upsert(mappedData)
+            localSource.upsert(mappedData)
         else
-            Timber.tag(moduleTag).i("onResponseDatabaseInsert -> mappedData is empty")
+            onEmptyResponse()
     }
 }

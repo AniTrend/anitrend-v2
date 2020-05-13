@@ -38,8 +38,8 @@
             app:searchSelectionIndicator="@drawable/ic_search_indicator_line"
             app:searchTextAppearance="@style/SearchTextAppearance" />
 
-        <FrameLayout
-            android:id="@+id/search_content"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/searchContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

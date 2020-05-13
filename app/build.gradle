@@ -23,12 +23,13 @@ plugins {
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
-apply from: "../gradle/gradle-common-config-app.gradle"
 apply from: "../gradle/gradle-common-dependencies.gradle"
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
+
+import com.android.build.OutputFile
 
 android {
     defaultConfig {
@@ -38,11 +39,35 @@ android {
         release {
             applicationVariants.all { variant ->
                 variant.outputs.all {
-                    outputFileName = "anitrend_v${defaultConfig.versionName}_rc_${defaultConfig.versionCode}.apk"
+                    def abi = getFilter(OutputFile.ABI) ?: "universal"
+                    def code = defaultConfig.versionCode
+                    def name = defaultConfig.versionName
+                    outputFileName = "anitrend_v${name}_rc_${code}_${abi}_${variant.name}.apk"
                 }
             }
         }
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'armeabi',
+                    'mips', 'mips64',
+                    'x86', 'x86_64'
+            universalApk true
+        }
+    }
+    project.ext.versionCodes = [
+            'armeabi': 1, 'armeabi-v7a': 2, 'arm64-v8a': 3,
+            'mips': 5, 'mips64': 6,
+            'x86': 8, 'x86_64': 9
+    ]
+}
+
+ext {
+    leakCanary = '2.2'
+    debugDB = '1.0.6'
+    treessence = '0.3.2'
 }
 
 dependencies {
@@ -72,41 +97,37 @@ dependencies {
     implementation project(":support-ext")
     implementation project(":support-ui")
 
-    /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
-
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.paging:paging-runtime:$paging"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "androidx.viewpager2:viewpager2:$viewPager2X"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
 
-    /** Glide Libraries */
-    implementation "com.github.bumptech.glide:glide:$glide"
+    /** Lifecycle Components */
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
 
-    /** Material Dialogs */
-    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
-    implementation "com.afollestad.material-dialogs:input:$materialDialogs"
+    implementation("androidx.constraintlayout:constraintlayout:$constraintX")
+    implementation("androidx.viewpager2:viewpager2:$viewPager2X")
 
-    /** Flex Box */
-    implementation "com.google.android:flexbox:$flexBox"
+    implementation("com.ogaclejapan.smarttablayout:library:$smartTab")
 
-    /** Smart Tab Layout */
-    implementation "com.ogaclejapan.smarttablayout:library:$smartTab"
+    /** Timber Trees */
+    implementation("fr.bipi.treessence:treessence:$treessence")
 
-    /** Tap Target Prompt */
-    implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
+    // Don't need these in the app module
+    /*implementation("com.google.android:flexbox:$flexBox")
+    implementation("uk.co.samuelwall:material-tap-target-prompt:$tapTarget")*/
 
-    /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    /** debugImplementation because LeakCanary should only run in debug builds. */
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:$leakCanary")
+
+    /** debugImplementation because debug-db should only run in debug builds */
+    debugImplementation("com.amitshekhar.android:debug-db:$debugDB")
 }
 
 if (file("google-services.json").exists()) {

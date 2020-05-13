@@ -18,8 +18,8 @@
 package co.anitrend.navigation.extensions
 
 import android.content.Intent
-import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.navigation.contract.INavigationTarget
+import androidx.fragment.app.Fragment
+import co.anitrend.navigation.contract.NavigationComponent
 import timber.log.Timber
 
 
@@ -50,7 +50,7 @@ internal fun <T> String.loadClassOrNull(): Class<out T>? =
         Class.forName(this)
     }.castOrNull()
 
-internal fun <T : SupportFragment<*, *, *>> String.loadFragmentOrNull(): T? =
+internal fun <T : Fragment> String.loadFragmentOrNull(): T? =
     try {
         this.loadClassOrNull<T>()?.newInstance()
     } catch (e: ClassNotFoundException) {
@@ -59,12 +59,15 @@ internal fun <T : SupportFragment<*, *, *>> String.loadFragmentOrNull(): T? =
     }
 
 /**
- * Builds a an intent path for the target
+ * Builds an intent path for the navigation component target
  */
-fun INavigationTarget.forIntent(): Intent? {
+fun NavigationComponent.forIntent(): Intent? {
     return "$APPLICATION_PACKAGE_NAME.$packageName.$className".loadIntentOrNull()
 }
 
-fun INavigationTarget.forFragment(): SupportFragment<*, *, *>? {
+/**
+ * Initializes a fragment from the navigation component and returns it
+ */
+fun NavigationComponent.forFragment(): Fragment? {
     return forIntent()?.component?.className?.loadFragmentOrNull()
 }

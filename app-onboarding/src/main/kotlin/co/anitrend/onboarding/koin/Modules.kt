@@ -17,27 +17,26 @@
 
 package co.anitrend.onboarding.koin
 
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
+import co.anitrend.onboarding.ui.activity.OnBoardingScreen
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private val presenterModule = module {
-    factory {
-        OnBoardingPresenter(
-            context = androidContext(),
-            settings = get()
-        )
+    scope(named<OnBoardingScreen>()) {
+        scoped {
+            OnBoardingPresenter(
+                context = androidContext(),
+                settings = get()
+            )
+        }
     }
 }
 
-private val modules = listOf(presenterModule)
-
-private val koinModules by lazy {
-    loadKoinModules(modules)
+internal val moduleHelper by lazy {
+    DynamicFeatureModuleHelper(
+        listOf(presenterModule)
+    )
 }
-
-/**
- * loads koin modules with the current
- */
-fun injectFeatureModules() = koinModules

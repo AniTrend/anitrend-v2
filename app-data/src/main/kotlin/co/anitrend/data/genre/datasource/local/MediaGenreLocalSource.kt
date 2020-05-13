@@ -17,24 +17,36 @@
 
 package co.anitrend.data.genre.datasource.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.model.core.media.MediaGenre
-import co.anitrend.arch.data.dao.ISupportQuery
+import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.genre.entity.GenreEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MediaGenreLocalSource: ISupportQuery<MediaGenre> {
+internal interface MediaGenreLocalSource: ILocalSource<GenreEntity> {
 
-    @Query("select count(genre) from MediaGenre")
-    suspend fun count(): Int
+    @Query("""
+        select count(id) from GenreEntity
+        """
+    )
+    override suspend fun count(): Int
 
-    @Query("select * from MediaGenre order by genre asc")
-    suspend fun findAll(): List<MediaGenre>
+    @Query("""
+            delete from GenreEntity
+        """
+    )
+    override suspend fun clear()
 
-    @Query("select * from MediaGenre order by genre asc")
-    fun findAllLiveData(): LiveData<List<MediaGenre>>
+    @Query("""
+        select * from GenreEntity order by genre asc
+        """
+    )
+    suspend fun findAll(): List<GenreEntity>
 
-    @Query("delete from MediaGenre")
-    suspend fun deleteAll()
+    @Query("""
+        select * from GenreEntity order by genre asc
+        """
+    )
+    fun findAllFlow(): Flow<List<GenreEntity>>
 }

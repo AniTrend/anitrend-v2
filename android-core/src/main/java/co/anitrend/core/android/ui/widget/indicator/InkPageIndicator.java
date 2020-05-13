@@ -31,9 +31,8 @@ package co.anitrend.core.android.ui.widget.indicator;
  import android.util.Log;
  import android.view.View;
  import android.view.animation.Interpolator;
- import androidx.recyclerview.widget.RecyclerView;
+
  import androidx.viewpager.widget.ViewPager;
- import androidx.viewpager2.widget.ViewPager2;
 
  import java.util.Arrays;
 
@@ -41,7 +40,7 @@ package co.anitrend.core.android.ui.widget.indicator;
  import co.anitrend.core.android.ui.widget.indicator.util.AnimUtils;
 
  /**
-  * An ink inspired widget for indicating pages in a {@link ViewPager2}.
+  * An ink inspired widget for indicating pages in a {@link ViewPager}.
   *
   * @author plaid
   */

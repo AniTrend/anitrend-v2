@@ -17,18 +17,56 @@
 
 package co.anitrend.data.genre.koin
 
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.db
+import co.anitrend.data.genre.source.contract.MediaGenreSource
+import co.anitrend.data.genre.source.MediaGenreSourceImpl
+import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
+import co.anitrend.data.genre.repository.MediaGenreRepository
+import co.anitrend.data.genre.usecase.MediaGenreUseCaseContract
+import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule = module {
+    factory<MediaGenreSource> {
+        MediaGenreSourceImpl(
+            localSource = db().mediaGenreDao(),
+            remoteSource = api(EndpointType.GRAPH_QL),
+            mapper = get(),
+            clearDataHelper = get(),
+            dispatchers = get()
+        )
+    }
+}
 
+private val mapperModule = module {
+    factory {
+        MediaGenreResponseMapper(
+            localSource = db().mediaGenreDao()
+        )
+    }
 }
 
 private val useCaseModule = module {
-
+    factory<MediaGenreUseCaseContract> {
+        MediaGenreUseCaseImpl(
+            repository = get()
+        )
+    }
 }
 
 private val repositoryModule = module {
-
+    factory {
+        MediaGenreRepository(
+            source = get()
+        )
+    }
 }
 
-internal val mediaGenreModules = listOf(sourceModule, useCaseModule, repositoryModule)
+internal val mediaGenreModules = listOf(
+    sourceModule,
+    mapperModule,
+    useCaseModule,
+    repositoryModule
+)

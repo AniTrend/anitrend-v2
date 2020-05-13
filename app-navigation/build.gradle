@@ -18,12 +18,9 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
-apply from: "../gradle/gradle-common-config-app.gradle"
 apply from: "../gradle/gradle-common-dependencies.gradle"
 
 android {
@@ -35,26 +32,7 @@ android {
 }
 
 dependencies {
-    /** Project Modules */
-    implementation project(":app-core")
-
-    /** Platform Dependencies */
-    implementation project(":support-ui")
-    implementation project(":support-ext")
-
-    /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
-
-    /** Material Design */
-    implementation "com.google.android.material:material:$material"
-
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
-
-    /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    implementation("androidx.activity:activity:$material")
+    implementation("androidx.fragment:fragment:$fragmentKtx")
 }

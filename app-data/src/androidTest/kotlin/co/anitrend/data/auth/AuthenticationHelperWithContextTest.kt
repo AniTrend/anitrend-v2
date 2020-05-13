@@ -20,6 +20,7 @@ package co.anitrend.data.auth
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.BuildConfig
+import co.anitrend.data.auth.util.AuthenticationHelper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,7 +35,9 @@ import java.net.URLDecoder
 @RunWith(AndroidJUnit4ClassRunner::class)
 class AuthenticationHelperWithContextTest {
 
-    private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }
+    private val appContext by lazy {
+        InstrumentationRegistry.getInstrumentation().context
+    }
 
     @Test
     fun useAppContext() {
@@ -45,7 +48,7 @@ class AuthenticationHelperWithContextTest {
     @Test
     fun callBackUrlIsCorrect() {
         // This test may fail due to Uri class not being mock-able
-        val expected = "https://${BuildConfig.apiAuthUrl}/authorize?client_id=${BuildConfig.cliendId}&response_type=token"
+        val expected = "https://${BuildConfig.apiAuthUrl}/authorize?client_id=${BuildConfig.clientId}&response_type=token"
         val authUri = AuthenticationHelper.AUTHENTICATION_URI
         val actual = URLDecoder.decode(authUri.toString(), "UTF-8")
 

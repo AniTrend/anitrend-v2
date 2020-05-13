@@ -17,18 +17,8 @@
 
 package co.anitrend.navigation.contract
 
-import android.content.Context
 import android.content.Intent
 
-interface INavigationRouter {
+internal interface INavigationRouter {
     val navRouterIntent: Intent?
-
-    /**
-     * Starts the target [navRouterIntent] for the implementation
-     */
-    operator fun invoke(context: Context?) {
-        runCatching {
-            context?.startActivity(navRouterIntent)
-        }.exceptionOrNull()?.printStackTrace()
-    }
 }
