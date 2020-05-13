@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.contract
+package co.anitrend.domain.media.entities
 
-/** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
- * Media trailer contract
- *
- * @property id The trailer video id
- * @property site The site the video is hosted by
- * (Currently either **YouTube** or **DailyMotion**)
- */
-internal interface IMediaTrailer {
-    val id: String?
-    val site: String?
-}
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaType
+
+data class MediaAttributes(
+    val averageScore: Int?,
+    val chapters: Int?,
+    val duration: Int?,
+    val episodes: Int?,
+    val idMal: Long?,
+    val meanScore: Int?,
+    val popularity: Int?,
+    val type: MediaType?,
+    val volumes: Int?,
+    val format: MediaFormat?
+)

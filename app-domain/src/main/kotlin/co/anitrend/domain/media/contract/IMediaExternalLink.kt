@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.contract
+package co.anitrend.domain.media.contract
 
 import co.anitrend.domain.common.entity.IEntity
 
@@ -26,7 +26,7 @@ import co.anitrend.domain.common.entity.IEntity
  * @property site The site location of the external link
  * @property url The url of the external link
  */
-internal interface IMediaExternalLink : IEntity {
+interface IMediaExternalLink : IEntity {
     val site: String
     val url: String
 }

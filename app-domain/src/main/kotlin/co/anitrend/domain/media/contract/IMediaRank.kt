@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.contract
+package co.anitrend.domain.media.contract
 
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.media.enums.MediaFormat
@@ -33,7 +33,7 @@ import co.anitrend.domain.media.enums.MediaSeason
  * @property type The type of ranking
  * @property year The year the media is ranked within
  */
-internal interface IMediaRank : IEntity {
+interface IMediaRank : IEntity {
     val allTime: Boolean?
     val context: String
     val format: MediaFormat
