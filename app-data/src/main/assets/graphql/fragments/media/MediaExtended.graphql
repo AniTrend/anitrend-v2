@@ -1,0 +1,72 @@
+fragment MediaExtended on Media {
+    id
+    averageScore
+    bannerImage
+    chapters
+    countryOfOrigin
+    coverImage {
+        ... MediaImage
+    }
+    description
+    duration
+    endDate {
+        ... FuzzyDate
+    }
+    episodes
+    externalLinks {
+        site
+        url
+        id
+    }
+    favourites
+    format
+    genres
+    hashtag
+    idMal
+    isAdult
+    isFavourite
+    isLicensed
+    isLocked
+    meanScore
+    nextAiringEpisode {
+        id
+        airingAt
+        episode
+        mediaId
+        timeUntilAiring
+    }
+    popularity
+    rankings {
+        allTime
+        context
+        format
+        rank
+        season
+        type
+        year
+        id
+    }
+    season
+    siteUrl
+    source
+    startDate {
+        ... FuzzyDate
+    }
+    status
+    synonyms
+    tags {
+        ... Tag
+    }
+    title {
+        ... MediaTitle
+    }
+    trailer {
+        id
+        site
+        thumbnail
+    }
+    trending
+    type
+    updatedAt
+    volumes
+}
