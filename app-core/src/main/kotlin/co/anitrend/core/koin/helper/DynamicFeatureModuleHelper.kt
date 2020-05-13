@@ -27,7 +27,8 @@ import timber.log.Timber
  * Module loader helper for dynamic features
  */
 class DynamicFeatureModuleHelper(
-    private val modules: List<Module>
+    private val modules: List<Module>,
+    private val unloadOnDestroy: Boolean = false
 ) : SupportLifecycle {
 
     override val moduleTag = DynamicFeatureModuleHelper::class.java.simpleName
@@ -40,7 +41,7 @@ class DynamicFeatureModuleHelper(
     override fun onCreate() {
         super.onCreate()
         Timber.tag(moduleTag).v(
-            "Loading ${modules.size} feature modules"
+            "Attempting to load dynamic feature modules: ${modules.size}"
         )
         loadModules()
     }
@@ -52,10 +53,12 @@ class DynamicFeatureModuleHelper(
      */
     override fun onDestroy() {
         super.onDestroy()
-        Timber.tag(moduleTag).v(
-            "Unloading ${modules.size} feature modules"
-        )
-        unloadModules()
+        if (unloadOnDestroy) {
+            Timber.tag(moduleTag).v(
+                "Unloading ${modules.size} feature modules from global context"
+            )
+            unloadModules()
+        }
     }
 
     companion object {

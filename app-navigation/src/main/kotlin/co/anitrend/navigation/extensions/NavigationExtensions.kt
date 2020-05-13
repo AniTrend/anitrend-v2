@@ -50,7 +50,7 @@ internal fun <T> String.loadClassOrNull(): Class<out T>? =
         Class.forName(this)
     }.castOrNull()
 
-internal fun <T : Fragment> String.loadFragmentOrNull(): T? =
+internal fun <T> String.loadOrNull(): T? =
     try {
         this.loadClassOrNull<T>()?.newInstance()
     } catch (e: ClassNotFoundException) {
@@ -66,8 +66,18 @@ fun NavigationComponent.forIntent(): Intent? {
 }
 
 /**
- * Initializes a fragment from the navigation component and returns it
+ * Build fragment class from the navigation component
  */
-fun NavigationComponent.forFragment(): Fragment? {
-    return forIntent()?.component?.className?.loadFragmentOrNull()
-}
+fun NavigationComponent.forFragment() =
+    forIntent()?.component?.className
+        ?.loadClassOrNull<Fragment>()
+
+/**
+ * Creates a new instance of the given type [T]. Assure that the
+ * required type is **constructorless**
+ *
+ * Suggested use would make heavy use of interfaces on base types
+ */
+fun <T> NavigationComponent.forInstance() =
+    forIntent()?.component?.className
+        ?.loadOrNull<T>()

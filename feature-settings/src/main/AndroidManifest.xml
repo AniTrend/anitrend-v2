@@ -6,8 +6,7 @@
     <application>
         <activity
             android:name=".ui.activity.SettingsScreen"
-            android:label="@string/title_activity_settings_screen"
-            android:theme="@style/AppTheme"></activity>
+            android:label="@string/title_activity_settings_screen" />
     </application>
 
 </manifest>

@@ -45,4 +45,9 @@ object NavigationTargets {
         packageName = "about.ui.activity",
         className = "AboutScreen"
     )
+
+    object Discover : NavigationComponent(
+        packageName = "media.ui.fragment",
+        className = "DiscoverContent"
+    )
 }

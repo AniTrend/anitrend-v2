@@ -25,12 +25,4 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
     }
-
-    companion object {
-        val FRAGMENT_TAG = SettingsFragment::class.java.simpleName
-
-        fun newInstance(): SettingsFragment {
-            return SettingsFragment()
-        }
-    }
 }

@@ -22,16 +22,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import co.anitrend.R
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.arch.extension.extra
-import co.anitrend.arch.ui.common.ISupportActionUp
+import co.anitrend.core.extensions.commit
 import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.model.ScreenState
 import co.anitrend.navigation.NavigationTargets
+import co.anitrend.navigation.extensions.forFragment
 import co.anitrend.presenter.MainPresenter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
@@ -74,6 +74,11 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
         bottomNavigationView.setCheckedItem(state.selectedItem)
         onUpdateUserInterface()
     }
+
+    /**
+     * Expects a module helper if one is available for the current scope, otherwise return null
+     */
+    override fun featureModuleHelper(): Nothing? = null
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(ARG_KEY_NAVIGATION_STATE, state)
@@ -132,10 +137,15 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     private fun onNavigate(@IdRes menu: Int) {
-        val fragment: ISupportActionUp? =when (menu) {
+        val fragmentItem = when (menu) {
             R.id.nav_home -> {
                 state.selectedTitle = R.string.nav_home
-                null
+                val fragment = NavigationTargets.Discover.forFragment()
+                fragment?.let {
+                    FragmentItem(
+                        fragment = it
+                    )
+                }
             }
             R.id.nav_episode_feed -> {
                 state.selectedTitle = R.string.nav_episodes
@@ -164,36 +174,21 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
             else -> null
         }
 
-        launch { attachSelectedNavigationItem(menu, fragment) }
+        launch { attachSelectedNavigationItem(menu, fragmentItem) }
     }
 
     /**
      * Replaces the current content with that in the selected fragment
      */
-    private fun attachSelectedNavigationItem(@IdRes menu: Int, fragment: ISupportActionUp?) {
-        if (fragment != null) {
-            val backStack = supportFragmentManager.findFragmentByTag(moduleTag)
-            if (backStack != null) {
-                supportActionUp = backStack as ISupportActionUp
-                supportFragmentManager.commit {
-                    replace(R.id.contentFrame, backStack, moduleTag)
-                }
-            } else {
-                fragment as Fragment
-                supportActionUp = fragment
-                supportFragmentManager.commit {
-                    replace(R.id.contentFrame, fragment, moduleTag)
-                }
-            }
-        }
-
+    private fun attachSelectedNavigationItem(@IdRes menu: Int, fragmentItem: FragmentItem<*>?) {
+        currentFragmentTag = fragmentItem?.commit(R.id.contentFrame, this) {}
         if (menu != R.id.nav_discord || menu != R.id.nav_donate) {
             bottomAppBar.setTitle(state.selectedTitle)
             bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
-    override fun onUpdateUserInterface() {
+    private fun onUpdateUserInterface() {
         onNavigate(state.selectedItem)
     }
 

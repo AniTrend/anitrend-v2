@@ -20,9 +20,13 @@ package co.anitrend.search.ui.activity
 import android.os.Bundle
 import androidx.fragment.app.commit
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
+import co.anitrend.core.extensions.commit
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.multisearch.model.MultiSearchChangeListener
 import co.anitrend.search.databinding.SearchScreenBinding
+import co.anitrend.search.koin.moduleHelper
 import co.anitrend.search.ui.fragment.SearchContentScreen
 
 class SearchScreen : AnitrendActivity() {
@@ -88,27 +92,17 @@ class SearchScreen : AnitrendActivity() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        onUpdateUserInterface()
         binding.multiSearch.setSearchViewListener(searchChangeListener)
+        onUpdateUserInterface()
     }
 
     /**
-     * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
-     *
-     * Check implementation for more details
+     * Expects a module helper if one is available for the current scope, otherwise return null
      */
-    override fun onUpdateUserInterface() {
-        val fragment = supportFragmentManager.findFragmentByTag(
-            SearchContentScreen.fragmentTag
-        ) ?: SearchContentScreen.newInstance()
+    override fun featureModuleHelper(): Nothing? = null
 
-        supportFragmentManager.commit {
-            replace(
-                binding.searchContent.id,
-                fragment,
-                SearchContentScreen.fragmentTag
-            )
-        }
+    private fun onUpdateUserInterface() {
+        currentFragmentTag = FragmentItem(fragment = SearchContentScreen::class.java)
+            .commit(binding.searchContent, this) {}
     }
 }

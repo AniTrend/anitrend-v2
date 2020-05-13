@@ -15,21 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment.contract
+package co.anitrend.core.ui
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 
-/**
- * Fragment factory to help us construct new fragments
- *
- * @property fragmentTag unique tag that can be used by
- * [androidx.fragment.app.FragmentManager]
- *
- * @param T type of your fragment
- */
-interface IFragmentFactory<T: Fragment> {
-    val fragmentTag: String
+interface ILifecycleFeature {
 
-    fun newInstance(bundle: Bundle? = null): T
+    /**
+     * Expects a module helper if one is available for the current scope, otherwise return null
+     */
+    fun featureModuleHelper(): DynamicFeatureModuleHelper?
 }

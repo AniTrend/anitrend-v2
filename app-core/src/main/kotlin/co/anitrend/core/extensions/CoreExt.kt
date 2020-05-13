@@ -24,10 +24,12 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.annotation.IdRes
+import androidx.fragment.app.*
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.R
+import co.anitrend.core.extensions.commit
+import co.anitrend.core.ui.fragment.model.FragmentItem
 import com.afollestad.materialdialogs.DialogBehavior
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
@@ -35,6 +37,7 @@ import org.koin.android.ext.android.get
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
+import timber.log.Timber
 
 fun FragmentActivity.recreateModules() {
     val coreApplication = applicationContext as AniTrendApplication
@@ -125,3 +128,47 @@ inline fun <reified T: Any> Fragment.injectScoped(
 ) = lazy {
     lifecycleScope.get<T>(qualifier, parameters)
 }
+
+
+const val moduleTag = "CoreExtensions"
+
+/**
+ * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
+ * a new instance is created.
+ *
+ * @return tag of the fragment
+ *
+ * @see androidx.fragment.app.commit
+ */
+inline fun FragmentItem<*>.commit(
+    @IdRes contentFrame: Int,
+    fragmentActivity: FragmentActivity,
+    action: FragmentTransaction.() -> Unit
+) : String? {
+    val fragmentManager = fragmentActivity.supportFragmentManager
+
+    val fragmentTag = tag()
+    val backStack = fragmentManager.findFragmentByTag(fragmentTag)
+
+    fragmentManager.commit {
+        action()
+        backStack?.let {
+            replace(contentFrame, it, fragmentTag)
+        } ?: replace(contentFrame, fragment, parameter, fragmentTag)
+    }
+    return fragmentTag
+}
+
+/**
+ * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
+ * a new instance is created.
+ *
+ * @return tag of the fragment
+ *
+ * @see androidx.fragment.app.commit
+ */
+inline fun FragmentItem<*>.commit(
+    contentFrame: View,
+    fragmentActivity: FragmentActivity,
+    action: FragmentTransaction.() -> Unit
+) = commit(contentFrame.id, fragmentActivity, action)

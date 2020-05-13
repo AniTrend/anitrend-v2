@@ -18,6 +18,7 @@
 package co.anitrend.core.ui.activity
 
 import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.core.ui.ILifecycleFeature
 import co.anitrend.core.util.config.ConfigurationUtil
 import org.koin.android.ext.android.inject
 
@@ -25,7 +26,7 @@ import org.koin.android.ext.android.inject
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
  */
-abstract class AnitrendActivity : SupportActivity() {
+abstract class AnitrendActivity : SupportActivity(), ILifecycleFeature {
 
     protected val configurationUtil by inject<ConfigurationUtil>()
 
@@ -34,6 +35,7 @@ abstract class AnitrendActivity : SupportActivity() {
      */
     override fun configureActivity() {
         configurationUtil.onCreate(this)
+        featureModuleHelper()?.onCreate()
     }
 
     /**
@@ -46,16 +48,8 @@ abstract class AnitrendActivity : SupportActivity() {
         configurationUtil.onResume(this)
     }
 
-    /**
-     * Handles the complex logic required to dispatch network request to [co.anitrend.arch.core.viewmodel.contract.ISupportViewModel]
-     * to either request from the network or database cache.
-     *
-     * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] specifically [co.anitrend.arch.core.viewmodel.contract.ISupportViewModel.model]
-     *
-     * @see [co.anitrend.arch.core.viewmodel.contract.ISupportViewModel.invoke]
-     */
-    override fun onFetchDataInitialize() {
-        // may not be used in most activities so we're making it optional
+    override fun onDestroy() {
+        super.onDestroy()
+        featureModuleHelper()?.onDestroy()
     }
 }

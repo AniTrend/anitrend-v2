@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.presenter
+package co.anitrend.core.ui.fragment.model
 
-import android.content.Context
-import co.anitrend.core.settings.Settings
-import co.anitrend.arch.core.presenter.SupportPresenter
+import android.os.Bundle
+import androidx.fragment.app.Fragment
 
-abstract class CorePresenter(
-    context: Context,
-    settings: Settings
-) : SupportPresenter<Settings>(context, settings)
+/**
+ * Fragment loader holder helper
+ */
+data class FragmentItem<T: Fragment>(
+    val parameter: Bundle? = null,
+    val fragment: Class<out T>
+) {
+    fun tag() = fragment.simpleName
+}

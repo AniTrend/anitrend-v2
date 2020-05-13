@@ -54,6 +54,8 @@ dependencies {
     implementation("androidx.core:core-ktx:$ktx")
     implementation("androidx.paging:paging-runtime:$paging")
     implementation("androidx.work:work-runtime-ktx:$workerKtx")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX")
 
     /** Lifecycle Components */
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
