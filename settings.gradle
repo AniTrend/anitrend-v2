@@ -15,3 +15,4 @@ project(':emojify').projectDir = new File('android-emojify/emojify')
 project(':markdown').projectDir = new File('support-markdown/markdown')
 //project(':sync-plugin').projectDir = new File('support-sync-plugin/syncplugin')
 project(':support-recycler').projectDir = new File('support-app/support-recycler')
+include ':common-media-ui'
