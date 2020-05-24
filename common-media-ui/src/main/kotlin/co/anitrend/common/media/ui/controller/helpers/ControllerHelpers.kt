@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,18 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.contract
+package co.anitrend.common.media.ui.controller.helpers
 
-import co.anitrend.domain.common.entity.IEntity
+import androidx.recyclerview.widget.DiffUtil
+import co.anitrend.domain.media.entities.Media
 
 
-/** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
- * Media external link contract
- *
- * @property site The site location of the external link
- * @property url The url of the external link
- */
-internal interface IMediaExternalLink : IEntity {
-    val site: String
-    val url: String
-}
+internal val DIFFER =
+    object : DiffUtil.ItemCallback<Media>() {
+        override fun areItemsTheSame(
+            oldItem: Media,
+            newItem: Media
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: Media,
+            newItem: Media
+        ): Boolean {
+            return oldItem.hashCode() == newItem.hashCode()
+        }
+    }

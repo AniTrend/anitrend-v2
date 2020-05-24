@@ -1,0 +1,243 @@
+{
+  "id": 100166,
+  "averageScore": 83,
+  "bannerImage": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/100166-k7RXwN5vZg0r.jpg",
+  "chapters": null,
+  "countryOfOrigin": "JP",
+  "coverImage": {
+    "color": "#e4a15d",
+    "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx100166-TxwbUGculKAX.jpg",
+    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx100166-TxwbUGculKAX.jpg",
+    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx100166-TxwbUGculKAX.jpg"
+  },
+  "description": "Summer is here, and the heroes of Class 1-A and 1-B are in for the toughest training camp of their lives! A group of seasoned pros pushes everyone's Quirks to new heights as the students face one overwhelming challenge after another. Braving the elements in this secret location becomes the least of their worries when routine training turns into a critical struggle for survival.<br><br>(Source: Crunchyroll)",
+  "duration": 24,
+  "endDate": {
+    "day": 29,
+    "month": 9,
+    "year": 2018
+  },
+  "episodes": 25,
+  "externalLinks": [
+    {
+      "site": "Official Site",
+      "url": "http://heroaca.com/",
+      "id": 6119
+    },
+    {
+      "site": "Twitter",
+      "url": "https://twitter.com/heroaca_anime",
+      "id": 6732
+    },
+    {
+      "site": "Crunchyroll",
+      "url": "http://www.crunchyroll.com/my-hero-academia",
+      "id": 6976
+    },
+    {
+      "site": "Funimation",
+      "url": "https://www.funimation.com/shows/my-hero-academia/",
+      "id": 7085
+    },
+    {
+      "site": "Animelab",
+      "url": "https://www.animelab.com/shows/my-hero-academia",
+      "id": 17913
+    },
+    {
+      "site": "Hulu",
+      "url": "https://www.hulu.com/my-hero-academia",
+      "id": 17914
+    }
+  ],
+  "favourites": 4428,
+  "format": "TV",
+  "genres": [
+    "Action",
+    "Comedy",
+    "Adventure"
+  ],
+  "hashtag": "#heroaca_a",
+  "idMal": 36456,
+  "isAdult": false,
+  "isFavourite": false,
+  "isLicensed": true,
+  "isLocked": false,
+  "meanScore": 83,
+  "nextAiringEpisode": null,
+  "popularity": 115666,
+  "rankings": [
+    {
+      "allTime": true,
+      "context": "highest rated all time",
+      "format": "TV",
+      "rank": 66,
+      "season": null,
+      "type": "RATED",
+      "year": null,
+      "id": 66
+    },
+    {
+      "allTime": true,
+      "context": "most popular all time",
+      "format": "TV",
+      "rank": 14,
+      "season": null,
+      "type": "POPULAR",
+      "year": null,
+      "id": 514
+    },
+    {
+      "allTime": false,
+      "context": "highest rated",
+      "format": "TV",
+      "rank": 7,
+      "season": null,
+      "type": "RATED",
+      "year": 2018,
+      "id": 8319
+    },
+    {
+      "allTime": false,
+      "context": "most popular",
+      "format": "TV",
+      "rank": 1,
+      "season": null,
+      "type": "POPULAR",
+      "year": 2018,
+      "id": 8413
+    },
+    {
+      "allTime": false,
+      "context": "highest rated",
+      "format": "TV",
+      "rank": 1,
+      "season": "SPRING",
+      "type": "RATED",
+      "year": 2018,
+      "id": 8573
+    },
+    {
+      "allTime": false,
+      "context": "most popular",
+      "format": "TV",
+      "rank": 1,
+      "season": "SPRING",
+      "type": "POPULAR",
+      "year": 2018,
+      "id": 8603
+    }
+  ],
+  "season": "SPRING",
+  "siteUrl": "https://anilist.co/anime/100166",
+  "source": "MANGA",
+  "startDate": {
+    "day": 7,
+    "month": 4,
+    "year": 2018
+  },
+  "status": "FINISHED",
+  "synonyms": [
+    "BNHA",
+    "MHA"
+  ],
+  "tags": [
+    {
+      "id": 172,
+      "name": "Superhero",
+      "description": "Prominently features super-powered humans who aim to serve the greater good.",
+      "category": "Theme-Fantasy",
+      "rank": 97,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 66,
+      "name": "Super Power",
+      "description": "Prominently features characters with special abilities that allow them to do what would normally be physically or logically impossible.",
+      "category": "Theme-Fantasy",
+      "rank": 93,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 56,
+      "name": "Shounen",
+      "description": "Target demographic is teenage and young adult males.",
+      "category": "Demographic",
+      "rank": 82,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 326,
+      "name": "Cultivation",
+      "description": "Features characters using training, often martial arts-related, and other special methods to cultivate life force and gain strength or immortality.",
+      "category": "Theme-Fantasy",
+      "rank": 68,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 46,
+      "name": "School",
+      "description": "Partly or completely set in a primary or secondary educational institution.",
+      "category": "Setting-Scene",
+      "rank": 67,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 82,
+      "name": "Male Protagonist",
+      "description": "Main character is male.",
+      "category": "Cast-Main Cast",
+      "rank": 61,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 105,
+      "name": "Ensemble Cast",
+      "description": "Features a large cast of characters with (almost) equal screen time and importance to the plot.",
+      "category": "Cast-Main Cast",
+      "rank": 56,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 252,
+      "name": "Revenge",
+      "description": "Prominently features a character who aims to exact punishment in a resentful or vindictive manner.",
+      "category": "Theme-Drama",
+      "rank": 54,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    },
+    {
+      "id": 163,
+      "name": "Yandere",
+      "description": "Prominently features a character who is obsessively in love with another, to the point of acting deranged or violent.",
+      "category": "Cast-Traits",
+      "rank": 30,
+      "isGeneralSpoiler": false,
+      "isAdult": false
+    }
+  ],
+  "title": {
+    "english": "My Hero Academia Season 3",
+    "romaji": "Boku no Hero Academia 3",
+    "native": "\u50d5\u306e\u30d2\u30fc\u30ed\u30fc\u30a2\u30ab\u30c7\u30df\u30a2 3",
+    "userPreferred": "Boku no Hero Academia 3"
+  },
+  "trailer": {
+    "id": "JezE6iZUWxo",
+    "site": "youtube",
+    "thumbnail": "https://i.ytimg.com/vi/JezE6iZUWxo/hqdefault.jpg"
+  },
+  "trending": 15,
+  "type": "ANIME",
+  "updatedAt": 1589390614,
+  "volumes": null,
+  "mediaAttributes": "2018 • TV • 25 Episodes"
+}

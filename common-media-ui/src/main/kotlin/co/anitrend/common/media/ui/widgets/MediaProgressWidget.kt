@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.contract
+package co.anitrend.common.media.ui.widgets
 
-/** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
- * Media title contract
- *
- * @property romaji The romanization of the native language title
- * @property english The official english title
- * @property native Official title in it's native language
- * @property userPreferred The currently authenticated users preferred title language.
- *
- * Default romaji for non-authenticated requests
- */
-internal interface IMediaTitle {
-    val romaji: String?
-    val english: String?
-    val native: String?
-    val userPreferred: String?
+internal class MediaProgressWidget {
 }
