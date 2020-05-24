@@ -25,8 +25,8 @@ Copyright (C) 2019 AniTrend
 
 ### 3\. Disclaimer
 
-1.  The materials in AniTrend are provided on an 'as is' basis. AniTrend makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
-2.  Further, AniTrend does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.
+1. The materials in AniTrend are provided on an 'as is' basis. AniTrend makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+2. Further, AniTrend does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.
 
 ### 4\. Limitations
 
@@ -42,14 +42,11 @@ AniTrend has not reviewed all of the sites linked to its website and is not resp
 
 - [Anilist](https://anilist.co/terms) : Anilist processes and has all the data related to your Anilist account, Anitrend does not collect this information (except locally for caching purposes).
 
-
 - [Firebase](https://firebase.google.com/terms/) : We use Firebase for :
   - Analytics on frequency of usage of the application and screen view names. No user-specific data is sent, only the active screen names
   - Crash reports with your Anilist username with Crash reports to help us understand and fix bugs.
 
-
 - [Giphy](https://giphy.com/terms) : Search queries for animated images are sent over to the Giphy API wihch is property of Giphy
-
 
 - [Chrunchyroll](http://www.crunchyroll.com/tos) : Used to obtain RSS results for a single show or mulitple shows
 
