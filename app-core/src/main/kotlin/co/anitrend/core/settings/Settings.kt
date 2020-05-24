@@ -22,6 +22,8 @@ import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportSettings
 import co.anitrend.core.R
 import co.anitrend.core.settings.common.IConfigurationSettings
+import co.anitrend.core.settings.common.customize.ICustomizationSettings
+import co.anitrend.core.settings.common.customize.common.PreferredViewMode
 import co.anitrend.core.settings.common.locale.ILocaleSettings
 import co.anitrend.core.settings.common.privacy.IPrivacySettings
 import co.anitrend.core.settings.common.theme.IThemeSettings
@@ -34,7 +36,7 @@ import co.anitrend.data.arch.database.settings.ISortOrderSettings
 
 class Settings(context: Context) : SupportSettings(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
-    ISortOrderSettings, IRefreshBehaviourSettings {
+    ISortOrderSettings, IRefreshBehaviourSettings, ICustomizationSettings {
 
     override var locale by EnumPreference(
         R.string.settings_configuration_locale,
@@ -96,6 +98,12 @@ class Settings(context: Context) : SupportSettings(context),
         context.resources
     )
 
+    override var preferredViewMode by EnumPreference(
+        R.string.settings_view_mode_preferred,
+        PreferredViewMode.GRID_LIST,
+        context.resources
+    )
+
     companion object {
 
         /**
@@ -105,7 +113,8 @@ class Settings(context: Context) : SupportSettings(context),
             ISupportSettings::class, IConfigurationSettings::class,
             ILocaleSettings::class, IThemeSettings::class,
             IAuthenticationSettings::class, IPrivacySettings::class,
-            ISortOrderSettings::class, IRefreshBehaviourSettings::class
+            ISortOrderSettings::class, IRefreshBehaviourSettings::class,
+            ICustomizationSettings::class
         )
     }
 }
