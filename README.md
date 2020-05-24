@@ -1,4 +1,5 @@
 # [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend v2.0
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/30a8f983c55541cbb504671ecc32786c)](https://www.codacy.com/app/wax911/anitrend-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wax911/anitrend-v2&amp;utm_campaign=Badge_Grade) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_shield)
 &nbsp; [![Build Status](https://travis-ci.org/AniTrend/anitrend-v2.svg?branch=master)](https://travis-ci.org/AniTrend/anitrend-v2)
 
@@ -11,13 +12,14 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_large)
 
 # __The AniTrend Road Map (What's Next?)__
+
 - AniTrend projects can be found [here](https://github.com/AniTrend/anitrend-v2/projects) which will contain a brief description of what a given version number will focus on e.t.c
 - Milestones for each project can also be found [here](https://github.com/AniTrend/anitrend-v2/milestones), these are more detailed and show the actual task required to satisfy the project
 
 ## Known Issues
 
 - Current projects for each major release can be found here [here](https://github.com/AniTrend/anitrend-v2/projects)
-- All unresolved issues related to this project can be found [here](https://github.com/AniTrend/anitrend-v2/pulls?q=is%3Aopen+is%3Apr) 
+- All unresolved issues related to this project can be found [here](https://github.com/anitrend/anitrend-v2/issues?q=is%3Aopen+is%3Aissue)
 
 ## Documentation
 
@@ -100,7 +102,6 @@ Development documentation for AniTrend is still a work in progress so for the ti
 > not listed here. 
 > 
 > If we have used a library but forgot to mentions it please let us know 
-
 
 # License
 
