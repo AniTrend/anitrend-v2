@@ -25,7 +25,7 @@ import co.anitrend.data.genre.model.remote.GenreCollection
 
 internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource,
-    private val mapper: GenreModelConverter = GenreModelConverter()
+    private val converter: GenreModelConverter = GenreModelConverter()
 ) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
 
     /**
@@ -36,7 +36,7 @@ internal class MediaGenreResponseMapper(
      */
     override suspend fun onResponseMapFrom(
         source: GenreCollection
-    )= mapper.convertTo(
+    ) = converter.convertTo(
         source.genreCollection
     )
 

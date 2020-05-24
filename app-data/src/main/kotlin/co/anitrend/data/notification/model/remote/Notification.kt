@@ -17,7 +17,7 @@
 
 package co.anitrend.data.notification.model.remote
 
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.user.model.remote.User
 import co.anitrend.data.notification.model.contract.INotification
 import co.anitrend.domain.notification.enums.NotificationType
@@ -33,7 +33,7 @@ import co.anitrend.domain.notification.enums.NotificationType
 internal data class Notification(
     val activityId: Int?,
     val user: User?,
-    val media: Media?,
+    val media: MediaModel?,
     val contexts: List<String>?,
     override val id: Long,
     override val context: String?,

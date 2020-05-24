@@ -18,21 +18,23 @@
 package co.anitrend.navigation.contract
 
 import android.content.Context
-import co.anitrend.navigation.extensions.forIntent
+import co.anitrend.navigation.extensions.loadIntentOrNull
 
 /**
  * Intermediate construct for navigation components
  *
+ * @param corePackage top level package path
  * @param className specific class name for component
  * @param packageName specific package name for the target class
  * excluding the application package name
  */
 abstract class NavigationComponent(
+    val corePackage: String = APP_PACKAGE,
     override val className: String,
     override val packageName: String
 ) : INavigationRouter, INavigationTarget {
 
-    override val navRouterIntent = forIntent()
+    override val navRouterIntent = loadIntentOrNull()
 
     /**
      * Starts the target [navRouterIntent] for the implementation
@@ -41,5 +43,9 @@ abstract class NavigationComponent(
         runCatching {
             context?.startActivity(navRouterIntent)
         }.exceptionOrNull()?.printStackTrace()
+    }
+
+    companion object {
+        private const val APP_PACKAGE = "co.anitrend"
     }
 }

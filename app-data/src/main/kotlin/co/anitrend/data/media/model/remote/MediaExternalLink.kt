@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.remote
 
-import co.anitrend.data.media.model.contract.IMediaExternalLink
+import co.anitrend.domain.media.contract.IMediaExternalLink
 
 /** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
  * An external link to another site related to the media

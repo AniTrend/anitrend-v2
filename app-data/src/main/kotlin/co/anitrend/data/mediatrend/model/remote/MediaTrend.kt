@@ -17,7 +17,7 @@
 
 package co.anitrend.data.mediatrend.model.remote
 
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.mediatrend.model.contract.IMediaTrend
 
 /** [MediaTrend](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrend.doc.html)
@@ -28,7 +28,7 @@ internal data class MediaTrend(
     override val date: Long,
     override val episode: Int?,
     override val inProgress: Int?,
-    override val media: Media,
+    override val media: MediaModel,
     override val mediaId: Long,
     override val popularity: Int?,
     override val releasing: Boolean,

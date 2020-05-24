@@ -17,12 +17,13 @@
 
 package co.anitrend.data.media.model.remote
 
-import co.anitrend.data.media.model.contract.IMediaTrailer
+import co.anitrend.domain.media.contract.IMediaTrailer
 
 /** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
  * Media trailer or advertisement
  */
 internal data class MediaTrailer(
     override val id: String?,
-    override val site: String?
+    override val site: String?,
+    val thumbnail: String?
 ) : IMediaTrailer

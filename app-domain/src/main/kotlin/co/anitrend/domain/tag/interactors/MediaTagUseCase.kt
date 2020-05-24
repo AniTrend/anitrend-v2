@@ -17,20 +17,16 @@
 
 package co.anitrend.domain.tag.interactors
 
+import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.common.IUserInterfaceState
-import co.anitrend.arch.domain.usecases.ISupportUseCase
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 
 abstract class MediaTagUseCase<R: IUserInterfaceState<*>>(
     protected val repository: IMediaTagRepository<R>
-) : ISupportUseCase<Nothing?, R> {
+) : IUseCase {
 
     /**
-     * Solves a given use case in the implementation target
-     *
-     * @param param input for solving a given use case
+     * @return media tags user interface state
      */
-    override fun invoke(param: Nothing?): R {
-        return repository.getMediaTags()
-    }
+    fun invoke() = repository.getMediaTags()
 }

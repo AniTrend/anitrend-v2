@@ -18,7 +18,7 @@
 package co.anitrend.data.airing.model.remote
 
 import co.anitrend.data.airing.model.remote.contract.IAiringSchedule
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 
 /** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
  * Media Airing Schedule
@@ -26,7 +26,7 @@ import co.anitrend.data.media.model.remote.Media
  * @param media The associate media of the airing episode
  */
 internal data class AiringSchedule(
-    val media: Media?,
+    val media: MediaModel?,
     override val id: Long,
     override val airingAt: Long,
     override val episode: Int,

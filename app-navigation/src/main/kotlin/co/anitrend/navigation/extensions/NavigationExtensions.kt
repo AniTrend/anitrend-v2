@@ -18,58 +18,77 @@
 package co.anitrend.navigation.extensions
 
 import android.content.Intent
+import androidx.collection.LruCache
 import androidx.fragment.app.Fragment
 import co.anitrend.navigation.contract.NavigationComponent
 import timber.log.Timber
 
 
-private const val APPLICATION_PACKAGE_NAME = "co.anitrend"
+private const val moduleTag = "NavigationExtensions"
 
-private val classMap = mutableMapOf<String, Class<*>>()
+private val classCache = object : LruCache<String, Class<*>>(8) {
+    /**
+     * Called after a cache miss to compute a value for the corresponding key.
+     * Returns the computed value or null if no value can be computed. The
+     * default implementation returns null.
+     *
+     * The method is called without synchronization: other threads may
+     * access the cache while this method is executing.
+     *
+     * If a value for [key] exists in the cache when this method
+     * returns, the created value will be released with [entryRemoved]
+     * and discarded. This can occur when multiple threads request the same key
+     * at the same time (causing multiple values to be created), or when one
+     * thread calls [put] while another is creating a value for the same
+     * key.
+     */
+    override fun create(key: String): Class<*>? {
+        Timber.tag(moduleTag).v("Creating new class reference for key: $key")
+        return Class.forName(key)
+    }
+}
 
 private inline fun <reified T : Any> Any.castOrNull() = this as? T
 
-private fun forIntent(className: String): Intent =
+private fun Class<*>.forIntent(
+    packageName: String
+): Intent =
     Intent(Intent.ACTION_VIEW)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        .setClassName(APPLICATION_PACKAGE_NAME, className)
-
-internal fun String.loadIntentOrNull(): Intent? =
-    try {
-        Class.forName(this).run {
-            forIntent(this@loadIntentOrNull)
-        }
-    } catch (e: ClassNotFoundException) {
-        Timber.tag("loadIntentOrNull").e(e)
-        null
-    }
+        .setClassName(packageName, name)
 
 @Throws(ClassNotFoundException::class)
-internal fun <T> String.loadClassOrNull(): Class<out T>? =
-    classMap.getOrPut(this) {
-        Class.forName(this)
-    }.castOrNull()
+internal fun <T> String.loadClassOrNull(): Class<out T>? {
+    return classCache.get(this)?.castOrNull()
+}
 
 internal fun <T> String.loadOrNull(): T? =
     try {
-        this.loadClassOrNull<T>()?.newInstance()
+        loadClassOrNull<T>()?.newInstance()
     } catch (e: ClassNotFoundException) {
-        Timber.tag("loadFragmentOrNull").e(e)
+        Timber.tag(moduleTag).e(e)
         null
     }
 
 /**
  * Builds an intent path for the navigation component target
  */
-fun NavigationComponent.forIntent(): Intent? {
-    return "$APPLICATION_PACKAGE_NAME.$packageName.$className".loadIntentOrNull()
-}
+internal fun NavigationComponent.loadIntentOrNull(): Intent? =
+    try {
+        val packagePath = "$corePackage.$packageName"
+        val classPath = "$packagePath.$className"
+        val `class` = classPath.loadClassOrNull<Any>()
+        `class`?.forIntent(packagePath)
+    } catch (e: ClassNotFoundException) {
+        Timber.tag(moduleTag).e(e)
+        null
+    }
 
 /**
  * Build fragment class from the navigation component
  */
 fun NavigationComponent.forFragment() =
-    forIntent()?.component?.className
+    loadIntentOrNull()?.component?.className
         ?.loadClassOrNull<Fragment>()
 
 /**
@@ -79,5 +98,5 @@ fun NavigationComponent.forFragment() =
  * Suggested use would make heavy use of interfaces on base types
  */
 fun <T> NavigationComponent.forInstance() =
-    forIntent()?.component?.className
+    loadIntentOrNull()?.component?.className
         ?.loadOrNull<T>()

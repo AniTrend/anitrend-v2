@@ -19,7 +19,7 @@ package co.anitrend.data.media.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.Character
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.staff.model.remote.Staff
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.enums.MediaRelation
@@ -44,5 +44,5 @@ internal data class MediaEdge(
     val staffRole: String?,
     val voiceActors: List<Staff>?,
     override val id: Long,
-    override val node: Media?
-) : IEntityEdge<Media>
+    override val node: MediaModel?
+) : IEntityEdge<MediaModel>

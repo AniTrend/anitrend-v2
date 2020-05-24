@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.remote
 
-import co.anitrend.data.media.model.contract.IMediaRank
+import co.anitrend.domain.media.contract.IMediaRank
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason

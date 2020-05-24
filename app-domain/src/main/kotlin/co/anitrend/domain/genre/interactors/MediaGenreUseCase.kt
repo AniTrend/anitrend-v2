@@ -17,20 +17,16 @@
 
 package co.anitrend.domain.genre.interactors
 
+import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.common.IUserInterfaceState
-import co.anitrend.arch.domain.usecases.ISupportUseCase
 import co.anitrend.domain.genre.repositories.IMediaGenreRepository
 
 abstract class MediaGenreUseCase<R: IUserInterfaceState<*>>(
     protected val repository: IMediaGenreRepository<R>
-) : ISupportUseCase<Nothing?, R> {
+) : IUseCase {
 
     /**
-     * Solves a given use case in the implementation target
-     *
-     * @param param input for solving a given use case
+     * @return media genres user interface state
      */
-    override fun invoke(param: Nothing?): R {
-        return repository.getMediaGenres()
-    }
+    fun invoke()= repository.getMediaGenres()
 }

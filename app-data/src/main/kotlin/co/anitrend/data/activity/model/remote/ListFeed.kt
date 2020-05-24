@@ -20,7 +20,7 @@ package co.anitrend.data.activity.model.remote
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.activity.entity.ListFeedEntity
 import co.anitrend.data.activity.model.remote.common.IFeed
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.activity.enums.ActivityType
 
@@ -37,7 +37,7 @@ import co.anitrend.domain.activity.enums.ActivityType
  */
 internal data class ListFeed(
     val replies: List<ReplyFeed>?,
-    val media: Media?,
+    val media: MediaModel?,
     val status: String?,
     val isLocked: Boolean,
     val progress: String?,

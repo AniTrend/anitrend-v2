@@ -17,10 +17,15 @@
 
 package co.anitrend.data.media.model.contract
 
+import co.anitrend.data.airing.model.remote.contract.IAiringSchedule
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.common.entity.IEntityMediaCover
 import co.anitrend.domain.common.model.FuzzyDate
+import co.anitrend.domain.media.contract.IMediaExternalLink
+import co.anitrend.domain.media.contract.IMediaRank
+import co.anitrend.domain.media.contract.IMediaTitle
+import co.anitrend.domain.media.contract.IMediaTrailer
 import co.anitrend.domain.media.enums.*
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
@@ -85,7 +90,7 @@ internal interface IMedia : IEntity {
     val isLicensed: Boolean?
     val isLocked: Boolean?
     val meanScore: Int?
-    val nextAiringEpisode: co.anitrend.data.airing.model.remote.contract.IAiringSchedule?
+    val nextAiringEpisode: IAiringSchedule?
     val popularity: Int?
     val rankings: List<IMediaRank>?
     val season: MediaSeason?

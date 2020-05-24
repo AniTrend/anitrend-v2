@@ -18,24 +18,25 @@
 package co.anitrend.data.tag.source.contract
 
 import androidx.lifecycle.LiveData
-import co.anitrend.arch.data.source.contract.ISourceObservable
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import co.anitrend.arch.data.source.coroutine.SupportCoroutineDataSource
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.domain.tag.entities.Tag
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 
 internal abstract class MediaTagSource(
     supportDispatchers: SupportDispatchers
 ) : SupportCoroutineDataSource(supportDispatchers) {
 
-    protected abstract val observable:
-            ISourceObservable<Nothing?, List<Tag>>
+    protected abstract val observable: Flow<List<Tag>>
 
     protected abstract suspend fun getTags()
 
-    internal operator fun invoke(): LiveData<List<Tag>> {
-        retry = { getTags() }
-        launch { retry?.invoke() }
-        return observable(null)
-    }
+    internal operator fun invoke(): LiveData<List<Tag>> =
+        liveData(coroutineContext) {
+            emitSource(observable.asLiveData())
+            retry = { getTags() }
+            getTags()
+        }
 }

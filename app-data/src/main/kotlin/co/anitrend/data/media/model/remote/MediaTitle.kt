@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.remote
 
-import co.anitrend.data.media.model.contract.IMediaTitle
+import co.anitrend.domain.media.contract.IMediaTitle
 
 /** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
  * The official titles of the media in various languages
