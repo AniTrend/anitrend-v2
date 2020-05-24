@@ -33,6 +33,7 @@ android {
 
 dependencies {
     /** Architecture Components */
+    implementation("androidx.core:core-ktx:$ktx")
     implementation("androidx.activity:activity:$material")
     implementation("androidx.fragment:fragment:$fragmentKtx")
 }
