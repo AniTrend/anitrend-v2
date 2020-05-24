@@ -48,4 +48,7 @@
 
     <string name="label_text_loading">Loading, please wait..</string>
     <string name="label_text_action_retry">Reload</string>
+
+
+    <string name="label_place_holder_to_be_announced">TBA</string>
 </resources>
