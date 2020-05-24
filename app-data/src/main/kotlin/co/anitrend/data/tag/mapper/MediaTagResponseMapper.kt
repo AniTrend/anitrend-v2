@@ -25,7 +25,7 @@ import co.anitrend.data.tag.model.remote.MediaTagCollection
 
 internal class MediaTagResponseMapper(
     private val localSource: MediaTagLocalSource,
-    private val mapper: TagModelConverter = TagModelConverter()
+    private val converter: TagModelConverter = TagModelConverter()
 ) : GraphQLMapper<MediaTagCollection, List<TagEntity>?>() {
 
     /**
@@ -34,8 +34,10 @@ internal class MediaTagResponseMapper(
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: MediaTagCollection) =
-        mapper.convertFrom(
+    override suspend fun onResponseMapFrom(
+        source: MediaTagCollection
+    ) =
+        converter.convertFrom(
             source.mediaTagCollection
         )
 

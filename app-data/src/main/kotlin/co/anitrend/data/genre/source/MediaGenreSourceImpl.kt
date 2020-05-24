@@ -17,9 +17,6 @@
 
 package co.anitrend.data.genre.source
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
@@ -29,7 +26,6 @@ import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.domain.genre.entities.Genre
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
@@ -40,29 +36,15 @@ internal class MediaGenreSourceImpl(
     private val localSource: MediaGenreLocalSource,
     private val mapper: MediaGenreResponseMapper,
     private val clearDataHelper: ClearDataHelper,
+    converter: GenreEntityConverter = GenreEntityConverter(),
     dispatchers: SupportDispatchers
 ) : MediaGenreSource(dispatchers) {
 
     @ExperimentalCoroutinesApi
     override val observable =
-        object : ISourceObservable<Nothing?, List<Genre>> {
-
-            /**
-             * Returns the appropriate observable which we will monitor for updates,
-             * common implementation may include but not limited to returning
-             * data source live data for a database
-             *
-             * @param parameter to use when executing
-             */
-            override fun invoke(parameter: Nothing?): LiveData<List<Genre>> {
-                val genreFlow = localSource.findAllFlow()
-                return genreFlow.map {
-                    GenreEntityConverter().convertFrom(it)
-                }.flowOn(
-                    dispatchers.computation
-                ).asLiveData()
-            }
-        }
+        localSource.findAllFlow().map {
+            converter.convertFrom(it)
+        }.flowOn(dispatchers.computation)
 
     override suspend fun getGenres() {
         val deferred = async {

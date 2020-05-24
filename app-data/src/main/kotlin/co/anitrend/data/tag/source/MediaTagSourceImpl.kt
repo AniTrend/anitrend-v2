@@ -17,9 +17,6 @@
 
 package co.anitrend.data.tag.source
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
@@ -29,7 +26,6 @@ import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
 import co.anitrend.data.tag.source.contract.MediaTagSource
-import co.anitrend.domain.tag.entities.Tag
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
@@ -40,29 +36,16 @@ internal class MediaTagSourceImpl(
     private val localSource: MediaTagLocalSource,
     private val mapper: MediaTagResponseMapper,
     private val clearDataHelper: ClearDataHelper,
+    converter: TagEntityConverter = TagEntityConverter(),
     dispatchers: SupportDispatchers
 ) : MediaTagSource(dispatchers) {
 
     @ExperimentalCoroutinesApi
     override val observable =
-        object : ISourceObservable<Nothing?, List<Tag>> {
+        localSource.findAllFlow().map {
+            converter.convertFrom(it)
+        }.flowOn(dispatchers.computation)
 
-            /**
-             * Returns the appropriate observable which we will monitor for updates,
-             * common implementation may include but not limited to returning
-             * data source live data for a database
-             *
-             * @param parameter to use when executing
-             */
-            override fun invoke(parameter: Nothing?): LiveData<List<Tag>> {
-                val tagFlow = localSource.findAllFlow()
-                return tagFlow.map {
-                    TagEntityConverter().convertFrom(it)
-                }.flowOn(
-                    dispatchers.computation
-                ).asLiveData()
-            }
-        }
 
     override suspend fun getTags() {
         val deferred = async {
