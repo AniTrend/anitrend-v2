@@ -39,6 +39,11 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import timber.log.Timber
 
+/**
+ * Text separator character
+ */
+const val CHARACTER_SEPARATOR: Char = '•'
+
 fun FragmentActivity.recreateModules() {
     val coreApplication = applicationContext as AniTrendApplication
     runCatching {
