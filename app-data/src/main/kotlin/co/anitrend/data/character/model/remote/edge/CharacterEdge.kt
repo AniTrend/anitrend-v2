@@ -19,7 +19,7 @@ package co.anitrend.data.character.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.Character
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.staff.model.remote.Staff
 import co.anitrend.domain.character.enums.CharacterRole
 
@@ -33,7 +33,7 @@ import co.anitrend.domain.character.enums.CharacterRole
  */
 internal data class CharacterEdge(
     val favouriteOrder: Int?,
-    val media: List<Media>?,
+    val media: List<MediaModel>?,
     val role: CharacterRole?,
     val voiceActors: List<Staff>?,
     override val id: Long,

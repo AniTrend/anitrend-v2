@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("DEPRECATION")
+
 package co.anitrend.data.api.converter
 
 import android.content.Context
@@ -83,7 +85,6 @@ internal class AniTrendConverterFactory(
         for (annotation in annotations) {
             when (annotation) {
                 is XML -> {
-                    @Suppress("DEPRECATION")
                     return SimpleXmlConverterFactory.createNonStrict(
                         Persister(AnnotationStrategy())
                     ).responseBodyConverter(type!!, annotations, retrofit)

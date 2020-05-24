@@ -20,6 +20,7 @@ package co.anitrend.data.media.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.data.media.model.contract.IMedia
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.media.entities.Media
 
@@ -27,14 +28,4 @@ import co.anitrend.domain.media.entities.Media
 internal data class MediaEntity(
     @PrimaryKey
     override val id: Long
-) : IEntity {
-
-    companion object : ISupportMapperHelper<MediaEntity, Media> {
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: MediaEntity): Media {
-            TODO("Not yet implemented")
-        }
-    }
-}
+) : IEntity

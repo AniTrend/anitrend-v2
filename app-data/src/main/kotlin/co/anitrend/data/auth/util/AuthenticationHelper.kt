@@ -19,7 +19,6 @@ package co.anitrend.data.auth.util
 
 import android.net.Uri
 import co.anitrend.data.BuildConfig
-import co.anitrend.arch.data.auth.SupportAuthentication
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import okhttp3.Request
@@ -29,23 +28,13 @@ import okhttp3.Request
  */
 internal class AuthenticationHelper(
     private val settings: IAuthenticationSettings
-) : SupportAuthentication() {
-
-    /**
-     * Checks if the data source that contains the token is valid,
-     * how to determine the validity of an existing token differs
-     * with each token type
-     */
-    override fun isTokenValid(): Boolean {
-        // use case doesn't support token validation checking
-        return true
-    }
+) {
 
     /**
      * Handle invalid token state by either renewing it or un-authenticates
      * the user locally if the token cannot be refreshed
      */
-    override fun onInvalidToken() {
+    fun onInvalidToken() {
         with (settings) {
             authenticatedUserId = INVALID_USER_ID
             isAuthenticated = false
@@ -53,19 +42,10 @@ internal class AuthenticationHelper(
     }
 
     /**
-     * Handles complex task or dispatching of token refreshing to the an external work,
-     * optionally the implementation can perform these operation internally
-     */
-    override fun refreshToken(): Boolean {
-        // use case doesn't support token refreshing
-        return false
-    }
-
-    /**
      * Facade to provide information on authentication status of the application,
      * on demand
      */
-    override val isAuthenticated: Boolean
+    val isAuthenticated: Boolean
         get() = settings.isAuthenticated
 
     operator fun invoke(requestBuilder: Request.Builder) {

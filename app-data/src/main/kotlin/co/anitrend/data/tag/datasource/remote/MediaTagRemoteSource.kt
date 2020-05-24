@@ -17,6 +17,7 @@
 
 package co.anitrend.data.tag.datasource.remote
 
+import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.tag.model.remote.MediaTagCollection
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.body.GraphContainer
@@ -25,7 +26,7 @@ import retrofit2.http.POST
 
 internal interface MediaTagRemoteSource {
 
-    @POST("/")
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("MediaTagCollection")
     suspend fun getMediaTags(): Response<GraphContainer<MediaTagCollection>>
 }

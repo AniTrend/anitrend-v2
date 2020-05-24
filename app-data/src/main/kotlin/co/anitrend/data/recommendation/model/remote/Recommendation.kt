@@ -17,14 +17,14 @@
 
 package co.anitrend.data.recommendation.model.remote
 
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.recommendation.model.contract.IRecommendation
 import co.anitrend.data.user.model.remote.User
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 
 internal data class Recommendation(
-    override val media: Media?,
-    override val mediaRecommendation: Media?,
+    override val media: MediaModel?,
+    override val mediaRecommendation: MediaModel?,
     override val rating: Int?,
     override val user: User?,
     override val userRating: RecommendationRating?,

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.thread.model.remote
 
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.thread.model.contract.IThread
 import co.anitrend.data.user.model.remote.User
 
@@ -34,7 +34,7 @@ internal data class Thread(
     override val isSticky: Boolean,
     override val isSubscribed: Boolean,
     override val likes: List<User>?,
-    override val mediaCategories: List<Media>?,
+    override val mediaCategories: List<MediaModel>?,
     override val repliedAt: Long?,
     override val replyCommentId: Int?,
     override val replyCount: Int?,

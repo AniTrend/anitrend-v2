@@ -17,22 +17,24 @@
 
 package co.anitrend.data.recommendation.model.contract
 
-import co.anitrend.data.media.model.remote.Media
-import co.anitrend.data.user.model.remote.User
+import co.anitrend.data.media.model.contract.IMedia
+import co.anitrend.data.user.model.contract.IUser
 import co.anitrend.domain.common.entity.IEntity
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 
 /**
- * The media the recommendation is from
- * The recommended media
- * Users rating of the recommendation
- * The user that first created the recommendation
- * The rating of the recommendation by currently authenticated user
+ * A recommendation on another media type
+ *
+ * @property media The media the recommendation is from
+ * @property mediaRecommendation The recommended media
+ * @property rating Users rating of the recommendation
+ * @property user The user that first created the recommendation
+ * @property userRating The rating of the recommendation by currently authenticated user
  */
 internal interface IRecommendation : IEntity {
-    val media: Media?
-    val mediaRecommendation: Media?
+    val media: IMedia?
+    val mediaRecommendation: IMedia?
     val rating: Int?
-    val user: User?
+    val user: IUser?
     val userRating: RecommendationRating?
 }

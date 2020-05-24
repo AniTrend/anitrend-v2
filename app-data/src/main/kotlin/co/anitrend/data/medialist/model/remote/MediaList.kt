@@ -17,7 +17,7 @@
 
 package co.anitrend.data.medialist.model.remote
 
-import co.anitrend.data.media.model.remote.Media
+import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.medialist.model.contract.IMediaList
 import co.anitrend.domain.common.model.FuzzyDate
 import co.anitrend.domain.medialist.enums.MediaListStatus
@@ -33,7 +33,7 @@ internal data class MediaList(
     override val createdAt: Long?,
     override val customLists: Map<String, String>?,
     override val hiddenFromStatusLists: Boolean?,
-    override val media: Media?,
+    override val media: MediaModel?,
     override val mediaId: Int,
     override val notes: String?,
     override val priority: Int?,

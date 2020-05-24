@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,18 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.remote.connection
+package co.anitrend.data.media.model.remote.page
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.media.model.remote.MediaModel
-import co.anitrend.data.media.model.remote.edge.MediaEdge
 import co.anitrend.domain.common.model.PageInfo
+import com.google.gson.annotations.SerializedName
 
-/** [MediaConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaconnection.doc.html)
- * Media connection
- */
-internal data class MediaConnection(
-    override val edges: List<MediaEdge>?,
-    override val nodes: List<MediaModel>?,
-    override val pageInfo: PageInfo?
-) : IEntityConnection<MediaEdge, MediaModel>
+internal data class MediaPage(
+    @SerializedName("Page")
+    val page: Page
+) {
+    data class Page(
+        @SerializedName("pageInfo")
+        val pageInfo: PageInfo,
+        @SerializedName("media")
+        val media: Collection<MediaModel>
+    )
+}
