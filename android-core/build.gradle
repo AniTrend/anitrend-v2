@@ -69,6 +69,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX")
 
     /** Coil Library */
-    implementation("io.coil-kt:coil-base:$coil")
+    implementation("io.coil-kt:coil:$coil")
+
+    /** Glide Library */
     implementation("com.github.bumptech.glide:glide:$glide")
 }
