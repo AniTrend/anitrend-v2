@@ -35,4 +35,5 @@
     <string name="settings_is_new_installation" translatable="false">_isNewInstallation</string>
     <string name="settings_version_code" translatable="false">_versionCode</string>
     <string name="settings_clear_on_swipe_refresh" translatable="false">_clearOnRefresh</string>
+    <string name="settings_view_mode_preferred" translatable="false">_viewMode</string>
 </resources>
