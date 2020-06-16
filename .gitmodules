@@ -4,9 +4,6 @@
 [submodule "support-markdown"]
 	path = support-markdown
 	url = https://github.com/AniTrend/support-markdown.git
-[submodule "retrofit-graphql"]
-	path = retrofit-graphql
-	url = https://github.com/AniTrend/retrofit-graphql.git
 [submodule "support-sync-plugin"]
 	path = support-sync-plugin
 	url = https://github.com/AniTrend/support-sync-plugin
