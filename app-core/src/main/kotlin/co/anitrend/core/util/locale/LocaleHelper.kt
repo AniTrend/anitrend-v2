@@ -32,6 +32,15 @@ class LocaleHelper(private val settings: ILocaleSettings) {
             return getPersonalizedLocale()
         }
 
+    internal fun applyLocale(context: Context?): Context? {
+        Locale.setDefault(locale)
+        val resources = context?.resources
+        val configuration = Configuration(resources?.configuration)
+        configuration.setLocale(locale)
+        return context?.createConfigurationContext(configuration)
+    }
+
+    @Deprecated("Use applyLocale instead")
     internal fun applyApplicationLocale(context: Context) {
         Locale.setDefault(locale)
         val resources: Resources = context.resources

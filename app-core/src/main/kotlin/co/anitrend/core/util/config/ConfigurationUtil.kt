@@ -17,6 +17,7 @@
 
 package co.anitrend.core.util.config
 
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.util.config.contract.IConfigurationUtil
@@ -40,6 +41,9 @@ class ConfigurationUtil(
     private var applicationTheme = AniTrendTheme.SYSTEM
     private var applicationLocale = AniTrendLocale.AUTOMATIC
 
+    fun attachContext(context: Context?) =
+        localeHelper.applyLocale(context)
+
     /**
      * Applies configuration upon the create state of the current activity
      *
@@ -48,7 +52,7 @@ class ConfigurationUtil(
     override fun onCreate(activity: FragmentActivity) {
         applicationTheme = settings.theme
         applicationLocale = settings.locale
-        localeHelper.applyApplicationLocale(activity)
+        //localeHelper.applyApplicationLocale(activity)
         themeHelper.applyApplicationTheme(activity)
     }
 

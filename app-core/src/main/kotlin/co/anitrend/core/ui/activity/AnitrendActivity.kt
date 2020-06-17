@@ -17,6 +17,7 @@
 
 package co.anitrend.core.ui.activity
 
+import android.content.Context
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.ui.ILifecycleFeature
 import co.anitrend.core.util.config.ConfigurationUtil
@@ -36,6 +37,11 @@ abstract class AnitrendActivity : SupportActivity(), ILifecycleFeature {
     override fun configureActivity() {
         configurationUtil.onCreate(this)
         featureModuleHelper()?.onCreate()
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        val newContext = configurationUtil.attachContext(newBase)
+        super.attachBaseContext(newContext)
     }
 
     /**
