@@ -11,16 +11,16 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/android-auth" />
             <option value="$PROJECT_DIR$/android-core" />
-            <option value="$PROJECT_DIR$/android-emojify/emojify" />
+            <option value="$PROJECT_DIR$/android-onboarding" />
+            <option value="$PROJECT_DIR$/android-splash" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/app-auth" />
             <option value="$PROJECT_DIR$/app-core" />
             <option value="$PROJECT_DIR$/app-data" />
             <option value="$PROJECT_DIR$/app-domain" />
             <option value="$PROJECT_DIR$/app-navigation" />
-            <option value="$PROJECT_DIR$/app-onboarding" />
-            <option value="$PROJECT_DIR$/app-splash" />
+            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/common-media-ui" />
             <option value="$PROJECT_DIR$/feature-about" />
             <option value="$PROJECT_DIR$/feature-account" />
@@ -37,18 +37,10 @@
             <option value="$PROJECT_DIR$/feature-staff" />
             <option value="$PROJECT_DIR$/feature-studio" />
             <option value="$PROJECT_DIR$/feature-trending" />
-            <option value="$PROJECT_DIR$/retrofit-graphql/library" />
-            <option value="$PROJECT_DIR$/support-app/support-core" />
-            <option value="$PROJECT_DIR$/support-app/support-data" />
-            <option value="$PROJECT_DIR$/support-app/support-domain" />
-            <option value="$PROJECT_DIR$/support-app/support-ext" />
-            <option value="$PROJECT_DIR$/support-app/support-recycler" />
-            <option value="$PROJECT_DIR$/support-app/support-theme" />
-            <option value="$PROJECT_DIR$/support-app/support-ui" />
-            <option value="$PROJECT_DIR$/support-markdown/markdown" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>
