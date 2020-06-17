@@ -21,6 +21,8 @@ import co.anitrend.buildSrc.common.Versions
 
 object Libraries {
 
+    const val liquidSwipe = "com.github.Chrisvin:LiquidSwipe:${Versions.liquidSwipe}"
+
     const val threeTenBp = "com.jakewharton.threetenabp:threetenabp:${Versions.threeTenBp}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 
@@ -33,7 +35,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "4.0.0"
+            private const val version = "4.2.0-alpha01"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -41,13 +43,13 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.1.0"
+            private const val version = "1.2.0-alpha06"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
 
         object AppCompat {
-            private const val version = "1.1.0"
+            private const val version = "1.3.0-alpha01"
             const val appcompat = "androidx.appcompat:appcompat:$version"
             const val appcompatResources = "androidx.appcompat:appcompat-resources:$version"
         }
@@ -59,7 +61,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.3.0"
+            private const val version = "1.5.0-alpha01"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -71,7 +73,7 @@ object Libraries {
         }
 
         object ContraintLayout {
-            private const val version = "2.0.0-beta6"
+            private const val version = "2.0.0-beta7"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -82,9 +84,10 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.2.3"
+            private const val version = "1.3.0-alpha06"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
+            const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
         }
 
         object Lifecycle {
@@ -97,7 +100,7 @@ object Libraries {
         }
 
         object Navigation {
-            private const val version = "2.3.0-beta01"
+            private const val version = "2.3.0-rc01"
             const val common = "androidx.navigation:navigation-common:$version"
             const val commonKtx = "androidx.navigation:navigation-common-ktx:$version"
 
@@ -120,7 +123,7 @@ object Libraries {
         }
 
         object Paging {
-            private const val version = "2.1.2"
+            private const val version = "3.0.0-alpha01"
             const val common = "androidx.paging:paging-common-ktx:$version"
             const val runtime = "androidx.paging:paging-runtime:$version"
             const val runtimeKtx = "androidx.paging:paging-runtime-ktx:$version"
@@ -140,7 +143,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.3.0-alpha01"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
@@ -148,8 +151,13 @@ object Libraries {
         }
 
         object Slice {
-            private const val version = "1.0.0"
+            private const val version = "1.1.0-alpha01"
             const val core = "androidx.slice:slice-core:$version"
+        }
+
+        object StartUp {
+            private const val version = "1.0.0-alpha01"
+            const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
         object SwipeRefresh {
@@ -158,8 +166,9 @@ object Libraries {
         }
 
         object Test {
-            private const val version = "1.2.0"
+            private const val version = "1.3.0-rc01"
             const val core = "androidx.test:core:$version"
+            const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
             const val rules = "androidx.test:rules:$version"
 
@@ -169,7 +178,7 @@ object Libraries {
             }
 
             object Extension {
-                private const val version = "1.1.1"
+                private const val version = "1.1.2-rc01"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
@@ -212,13 +221,22 @@ object Libraries {
         }
 
         object Retrofit {
-            private const val version = "0.11.0-alpha01"
+            //private const val version = "0.11.0-alpha01" // not yet released w.i.p
+            private const val version = "0.10.3"
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
 
         object Sync {
             private const val version = "0.1.0-alpha01"
             const val plugin = "com.github.anitrend:support-sync-plugin:${version}"
+        }
+    }
+
+    object AirBnB {
+
+        object Lottie {
+            private const val version = "3.4.0"
+            const val lottie = "com.airbnb.android:lottie:$version"
         }
     }
 
@@ -262,7 +280,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.2.0-beta01"
+            private const val version = "1.3.0-alpha01"
             const val material = "com.google.android.material:material:$version"
         }
 
@@ -307,7 +325,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.1.5"
+        private const val version = "2.1.6"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
@@ -317,6 +335,21 @@ object Libraries {
             const val fragment = "org.koin:koin-androidx-fragment:$version"
             const val viewmodel = "org.koin:koin-androidx-viewmodel:$version"
         }
+
+        object Gradle {
+            const val plugin = "org.koin:koin-gradle-plugin:$version"
+        }
+    }
+
+    object MaterialDialogs {
+        private const val version = "3.3.0"
+        const val core = "com.afollestad.material-dialogs:core:$version"
+        const val input = "com.afollestad.material-dialogs:input:$version"
+        const val files = "com.afollestad.material-dialogs:files:$version"
+        const val colour = "com.afollestad.material-dialogs:colour:$version"
+        const val dateTime = "com.afollestad.material-dialogs:dateTime:$version"
+        const val lifecycle = "com.afollestad.material-dialogs:lifecycle:$version"
+        const val bottomsheets = "com.afollestad.material-dialogs:bottomsheets:$version"
     }
 
     object Square {
