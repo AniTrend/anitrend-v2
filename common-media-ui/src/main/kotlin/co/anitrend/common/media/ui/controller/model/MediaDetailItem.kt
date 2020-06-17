@@ -22,13 +22,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
+import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.common.media.ui.databinding.MediaDetailItemBinding
 import co.anitrend.domain.media.entities.Media
 import coil.request.RequestDisposable
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaDetailItem(
@@ -45,13 +45,14 @@ internal data class MediaDetailItem(
      * @param position current position
      * @param payloads optional payloads which maybe empty
      * @param stateFlow observable to broadcast click events
+     * @param selectionMode action mode helper or null if none was provided
      */
-    @ExperimentalCoroutinesApi
     override fun bind(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>
+        stateFlow: MutableStateFlow<ClickableItem?>,
+        selectionMode: ISupportSelectionMode<Long>?
     ) {
         TODO("Not yet implemented")
     }

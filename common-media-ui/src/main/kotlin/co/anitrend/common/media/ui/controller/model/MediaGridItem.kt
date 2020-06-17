@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickType
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.common.DefaultClickableItem
@@ -35,7 +36,6 @@ import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.domain.media.entities.Media
 import coil.request.RequestDisposable
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaGridItem(
@@ -52,13 +52,14 @@ internal data class MediaGridItem(
      * @param position current position
      * @param payloads optional payloads which maybe empty
      * @param stateFlow observable to broadcast click events
+     * @param selectionMode action mode helper or null if none was provided
      */
-    @ExperimentalCoroutinesApi
     override fun bind(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>
+        stateFlow: MutableStateFlow<ClickableItem?>,
+        selectionMode: ISupportSelectionMode<Long>?
     ) {
         val binding = MediaGridItemBinding.bind(view)
         if (entity != null) {
