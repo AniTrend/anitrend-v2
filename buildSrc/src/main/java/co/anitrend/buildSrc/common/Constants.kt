@@ -26,9 +26,9 @@ internal const val domain = "app-domain"
 internal const val navigation = "app-navigation"
 
 internal const val androidCore = "android-core"
-internal const val onBoarding = "app-onboarding"
-internal const val splash = "app-splash"
-internal const val auth = "app-auth"
+internal const val onBoarding = "android-onboarding"
+internal const val splash = "android-splash"
+internal const val auth = "android-auth"
 
 internal const val character = "feature-character"
 internal const val staff = "feature-staff"
@@ -48,18 +48,30 @@ internal const val news = "feature-news"
 
 internal val baseModules = listOf(app, core, data, domain, navigation)
 
+internal val androidModules = listOf(
+    androidCore, onBoarding, splash, auth
+)
+
 internal val featureModules = listOf(
     character, staff, studio, media, notification, mediaList, review, forum,
     trending, settings, search, profile, account, about, news
 )
 
+private const val coreFeatureModulePattern = "android-"
+private const val featureModulePattern = "feature-"
 private const val commonModulePattern = "common-"
+private const val baseModulePattern = "app-"
 
 fun Project.isAppModule() = name == app
 fun Project.isDataModule() = name == data
 fun Project.isDomainModule() = name == domain
 fun Project.isCoreModule() = name == core
 fun Project.isNavigationModule() = name == navigation
-fun Project.isFeatureModule() = !baseModules.contains(name)
+fun Project.isAndroidCoreModule() = name == androidCore
+
+fun Project.isBaseModule() = name.startsWith(baseModulePattern)
+fun Project.isFeatureModule() = name.startsWith(featureModulePattern)
+fun Project.isCoreFeatureModule() = name.startsWith(coreFeatureModulePattern)
 fun Project.isCommonFeatureModule() = name.startsWith(commonModulePattern)
+
 fun Project.hasCoroutineSupport() = name != navigation || name != domain

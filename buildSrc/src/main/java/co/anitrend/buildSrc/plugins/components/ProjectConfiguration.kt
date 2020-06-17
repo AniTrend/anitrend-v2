@@ -20,26 +20,89 @@ package co.anitrend.buildSrc.plugins.components
 import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.common.hasCoroutineSupport
 import co.anitrend.buildSrc.common.isAppModule
-import co.anitrend.buildSrc.common.isFeatureModule
+import co.anitrend.buildSrc.common.isBaseModule
+import co.anitrend.buildSrc.plugins.extensions.baseAppExtension
 import co.anitrend.buildSrc.plugins.extensions.baseExtension
 import co.anitrend.buildSrc.plugins.extensions.libraryExtension
+import com.android.build.OutputFile
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
 
+private fun configureMultipleBuilds(project: Project) {
+    val abiMap = mapOf(
+        "armeabi" to 1,
+        "armeabi-v7a" to 2,
+        "arm64-v8a" to 3,
+        "mips" to 5,
+        "mips64" to 6,
+        "x86" to 8,
+        "x86_64" to 9
+    )
+    project.baseAppExtension().run {
+        flavorDimensions("version")
+        productFlavors {
+            create("fdroid") {
+                dimension = "version"
+                applicationIdSuffix = ".fdroid"
+                versionNameSuffix = "-fdroid"
+                versionCode = 1000 * defaultConfig.versionCode
+            }
+        }
+        splits {
+            abi {
+                isEnable = true
+                reset()
+                include(*abiMap.keys.toTypedArray())
+                isUniversalApk = true
+            }
+        }
+        applicationVariants.all {
+            outputs.map { it as BaseVariantOutputImpl }.forEach { output ->
+                val original = output.outputFileName
+                val versionCode = defaultConfig.versionCode
+                val versionName = defaultConfig.versionName
+                val currentName = "app-${output.name}.apk"
+                val prefix = "anitrend_v${versionName}_rc_${versionCode}"
+                val outputFileName = when (output.name) {
+                    "release" -> {
+                        val abi = output.getFilter(OutputFile.ABI) ?: "universal"
+                        original.replace(
+                            currentName, "${prefix}_${abi}-${output.name}.apk"
+                        )
+                    }
+                    else ->
+                        original.replace(
+                            currentName, "${prefix}-${output.name}.apk"
+                        )
+                }
+                output.outputFileName = outputFileName
+            }
+        }
+    }
+}
+
 @Suppress("UnstableApiUsage")
 private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
-    if (project.isAppModule())
+    if (project.isAppModule()) {
         applicationId = "co.anitrend"
+        // TODO: Configure flavours and multiple apk support
+        //configureMultipleBuilds(project)
+    }
     else
         consumerProguardFiles.add(File("consumer-rules.pro"))
 
-    if (project.isFeatureModule()) {
-        project.libraryExtension().buildFeatures {
-            viewBinding = true
+    if (!project.isBaseModule()) {
+        if (!project.isAppModule()) {
+            println("Applying view binding feature for module -> ${project.path}")
+            project.libraryExtension().buildFeatures {
+                viewBinding = true
+            }
         }
 
         println("Applying vector drawables configuration for module -> ${project.path}")

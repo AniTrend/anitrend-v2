@@ -19,17 +19,17 @@ package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.common.app
 import co.anitrend.buildSrc.common.data
+import co.anitrend.buildSrc.common.core
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginContainer
 
 private fun addAndroidPlugin(name: String, pluginContainer: PluginContainer) {
-    if (name == app)
-        pluginContainer.apply("com.android.application")
+    if (name == app) pluginContainer.apply("com.android.application")
     else pluginContainer.apply("com.android.library")
 }
 
 private fun addAnnotationProcessor(name: String, pluginContainer: PluginContainer) {
-    if (name == data || name == app)
+    if (name == data || name == app || name == core)
         pluginContainer.apply("kotlin-kapt")
 }
 
