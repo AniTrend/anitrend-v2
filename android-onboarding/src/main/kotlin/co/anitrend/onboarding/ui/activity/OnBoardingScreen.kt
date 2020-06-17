@@ -19,10 +19,10 @@ package co.anitrend.onboarding.ui.activity
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
-import co.anitrend.arch.extension.gone
-import co.anitrend.arch.extension.invisible
-import co.anitrend.arch.extension.visible
+import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.gone
+import co.anitrend.arch.extension.ext.invisible
+import co.anitrend.arch.extension.ext.visible
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity

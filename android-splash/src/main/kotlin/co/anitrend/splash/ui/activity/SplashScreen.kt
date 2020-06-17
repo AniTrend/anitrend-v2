@@ -20,7 +20,7 @@ package co.anitrend.splash.ui.activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
 import co.anitrend.core.extensions.commit
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
