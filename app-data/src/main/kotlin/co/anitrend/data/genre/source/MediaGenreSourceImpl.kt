@@ -17,7 +17,7 @@
 
 package co.anitrend.data.genre.source
 
-import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
@@ -26,7 +26,6 @@ import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.source.contract.MediaGenreSource
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -40,7 +39,6 @@ internal class MediaGenreSourceImpl(
     dispatchers: SupportDispatchers
 ) : MediaGenreSource(dispatchers) {
 
-    @ExperimentalCoroutinesApi
     override val observable =
         localSource.findAllFlow().map {
             converter.convertFrom(it)

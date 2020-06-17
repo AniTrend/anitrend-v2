@@ -22,7 +22,7 @@ import android.os.Build
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
-import co.anitrend.arch.extension.getCompatColor
+import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.core.R
 import co.anitrend.core.extensions.isEnvironmentNightMode
 import co.anitrend.core.settings.common.theme.IThemeSettings

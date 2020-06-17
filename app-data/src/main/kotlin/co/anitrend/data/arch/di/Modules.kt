@@ -20,7 +20,7 @@ package co.anitrend.data.arch.di
 import android.content.Context
 import android.net.ConnectivityManager
 import co.anitrend.arch.extension.network.SupportConnectivity
-import co.anitrend.arch.extension.systemServiceOf
+import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.converter.AniTrendConverterFactory
 import co.anitrend.data.api.helper.cache.CacheHelper

@@ -23,8 +23,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
 import co.anitrend.R
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
-import co.anitrend.arch.extension.extra
+import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.extensions.commit
 import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
