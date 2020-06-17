@@ -22,24 +22,5 @@ plugins {
 }
 
 dependencies {
-
-    /** Material Design */
-    implementation(Libraries.Google.Material.material)
-    implementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
-    implementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
-
-    /** Timber Trees */
-    implementation(Libraries.treessence)
-
-    /** debugImplementation because LeakCanary should only run in debug builds. */
-    debugImplementation(Libraries.Square.LeakCanary.leakCanary)
-
-    /** debugImplementation because debug-db should only run in debug builds */
-    debugImplementation(Libraries.debugDb)
+    implementation(Libraries.AndroidX.Preference.preferenceKtx)
 }
-
-if (file("google-services.json").exists()) {
-    plugins.apply("com.google.gms.google-services")
-    plugins.apply("com.google.firebase.crashlytics")
-}
-

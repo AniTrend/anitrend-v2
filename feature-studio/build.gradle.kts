@@ -16,23 +16,9 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
-
-apply from: "../gradle/gradle-common-config.gradle"
-
-android {
-    defaultConfig {
-        consumerProguardFiles 'consumer-rules.pro'
-    }
+    id("co.anitrend.plugin")
 }
 
 dependencies {
-    /** Platform Dependencies */
-    implementation project(":support-domain")
 
-    /** Testing-only dependencies */
-    testImplementation("junit:junit:$junit")
 }

@@ -16,21 +16,9 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
-}
-
-apply from: "../gradle/gradle-common-config.gradle"
-apply from: "../gradle/gradle-common-config-app.gradle"
-apply from: "../gradle/gradle-common-dependencies.gradle"
-
-
-ext {
-    preference = '1.1.0'
+    id("co.anitrend.plugin")
 }
 
 dependencies {
-    implementation("androidx.preference:preference:$preference")
+
 }

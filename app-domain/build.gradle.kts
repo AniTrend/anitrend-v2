@@ -16,16 +16,8 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
+    id("co.anitrend.plugin")
 }
-
-apply from: "../gradle/gradle-common-config.gradle"
-apply from: "../gradle/gradle-common-config-app.gradle"
-apply from: "../gradle/gradle-common-dependencies.gradle"
-
 
 dependencies {
 

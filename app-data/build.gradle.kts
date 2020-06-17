@@ -1,3 +1,5 @@
+import co.anitrend.buildSrc.Libraries
+
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -16,24 +18,11 @@
  */
 
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    id("co.anitrend.plugin")
 }
 
-apply from: "../gradle/gradle-common-config.gradle"
-apply from: "../gradle/gradle-common-dependencies.gradle"
-
-android {
-    defaultConfig {
-        defaultConfig {
-            consumerProguardFiles 'consumer-rules.pro'
-        }
-    }
-}
 
 dependencies {
-    /** Architecture Components */
-    implementation("androidx.core:core-ktx:$ktx")
-    implementation("androidx.activity:activity:$material")
-    implementation("androidx.fragment:fragment:$fragmentKtx")
+    debugImplementation(Libraries.Chuncker.debug)
+    releaseImplementation(Libraries.Chuncker.release)
 }
