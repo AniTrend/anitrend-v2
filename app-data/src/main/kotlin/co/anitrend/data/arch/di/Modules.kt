@@ -27,6 +27,7 @@ import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.arch.logger.GraphLogger
+import co.anitrend.data.arch.logger.OkHttpLogger
 import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.tag.koin.mediaTagModules
@@ -137,7 +138,9 @@ private val interceptorModules = module {
 
         when {
             BuildConfig.DEBUG -> {
-                val httpLoggingInterceptor = HttpLoggingInterceptor()
+                val httpLoggingInterceptor = HttpLoggingInterceptor(
+                    logger = OkHttpLogger()
+                )
                 httpLoggingInterceptor.level = interceptorLogLevel
                 okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
             }
