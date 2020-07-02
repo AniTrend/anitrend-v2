@@ -43,7 +43,9 @@ private val classCache = object : LruCache<String, Class<*>>(8) {
      * key.
      */
     override fun create(key: String): Class<*>? {
-        Timber.tag(moduleTag).v("Creating new class reference for key: $key")
+        Timber.tag(moduleTag).v(
+            "Creating new navigation target class reference for key: $key"
+        )
         return Class.forName(key)
     }
 }
