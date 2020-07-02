@@ -18,8 +18,7 @@
 package co.anitrend.data.api.provider
 
 import androidx.collection.LruCache
-import co.anitrend.arch.extension.BuildConfig
-import co.anitrend.arch.extension.ext.LAZY_MODE_SYNCHRONIZED
+import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.interceptor.GraphAuthenticator
 import co.anitrend.data.api.interceptor.GraphClientInterceptor
@@ -31,7 +30,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 import retrofit2.Retrofit
 import timber.log.Timber
-import java.util.*
 
 /**
  * Factory to supply types retrofit instances
@@ -44,10 +42,9 @@ internal object RetrofitProvider {
     private fun provideOkHttpClient(endpointType: EndpointType, scope: Scope) : OkHttpClient {
         val builder = scope.get<OkHttpClient.Builder> {
             parametersOf(
-                when (endpointType) {
-                    EndpointType.GRAPH_QL -> HttpLoggingInterceptor.Level.BODY
-                    else -> HttpLoggingInterceptor.Level.HEADERS
-                }
+                if (BuildConfig.DEBUG)
+                    HttpLoggingInterceptor.Level.HEADERS
+                else HttpLoggingInterceptor.Level.BASIC
             )
         }
 

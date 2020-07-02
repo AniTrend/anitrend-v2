@@ -125,28 +125,21 @@ private val interceptorModules = module {
         )
     }
     factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
-        val okHttpClientBuilder = OkHttpClient.Builder()
+        OkHttpClient.Builder()
             .cache(
                 Cache(
                     androidContext().cacheDir,
                     CacheHelper.MAX_CACHE_SIZE
                 )
             )
+            .addInterceptor(
+                HttpLoggingInterceptor(
+                    logger = OkHttpLogger()
+                ).apply { level = interceptorLogLevel }
+            )
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
-
-        when {
-            BuildConfig.DEBUG -> {
-                val httpLoggingInterceptor = HttpLoggingInterceptor(
-                    logger = OkHttpLogger()
-                )
-                httpLoggingInterceptor.level = interceptorLogLevel
-                okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
-            }
-        }
-
-        okHttpClientBuilder
     }
 }
 
