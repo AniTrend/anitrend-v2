@@ -52,12 +52,20 @@ internal object GraphUtil {
 
     /**
      * Compacts the request body aiding in the shrinkage of the request payload
+     *
+     * @param shrink flag which allows or prevents minification
      */
     @AniTrendExperimentalFeature
-    internal fun minify(rawData: String?): String? {
-        if (!rawData.isNullOrBlank())
-            return rawData.trimIndent()
-        return rawData
+    internal fun String.minify(shrink: Boolean): String? {
+        return if (shrink) replace(
+            "\n\n", " "
+        ).replace(
+            '\t', ' '
+        ).replace(
+            '\n', ' '
+        ).replace(
+            "    ", " "
+        ) else this
     }
 
     /**

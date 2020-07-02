@@ -17,8 +17,11 @@
 
 package co.anitrend.data.api.converter.request
 
+import co.anitrend.data.BuildConfig
+import co.anitrend.data.arch.AniTrendExperimentalFeature
+import co.anitrend.data.util.graphql.GraphUtil.minify
 import com.google.gson.Gson
-import io.github.wax911.library.annotation.processor.GraphProcessor
+import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.request.GraphRequestConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,36 +29,27 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 internal class AniRequestConverter(
-    methodAnnotations: Array<Annotation>,
-    graphProcessor: GraphProcessor,
+    methodAnnotations: Array<out Annotation>,
+    processor: AbstractGraphProcessor,
     gson: Gson
-) : GraphRequestConverter(methodAnnotations, graphProcessor, gson) {
+) : GraphRequestConverter(methodAnnotations, processor, gson) {
 
     /**
      * Converter for the request body, gets the GraphQL query from the method annotation
      * and constructs a GraphQL request body to send over the network.
-     * <br></br>
      *
      * @param containerBuilder The constructed builder method of your query with variables
-     * @return Request body
      */
+    @AniTrendExperimentalFeature
     override fun convert(containerBuilder: QueryContainerBuilder): RequestBody {
-        val rawPayload = graphProcessor.getQuery(methodAnnotations)
-
-        /*val requestPayload = if (BuildConfig.DEBUG) rawPayload
-         else GraphUtil.minify(rawPayload)*/
-
-        val queryContainer = containerBuilder
-            .setQuery(rawPayload)
-            .build()
+        val query = graphProcessor.getQuery(methodAnnotations)?.minify(BuildConfig.DEBUG)
+        val queryContainer = containerBuilder.setQuery(query).build()
 
         val queryJson = gson.toJson(queryContainer)
-
-        val mediaType = MIME_TYPE.toMediaTypeOrNull()
-        return queryJson.toRequestBody(mediaType)
+        return queryJson.toRequestBody(MIME_TYPE)
     }
 
     companion object {
-        internal const val MIME_TYPE = "application/json"
+        internal val MIME_TYPE = "application/json".toMediaTypeOrNull()
     }
 }
