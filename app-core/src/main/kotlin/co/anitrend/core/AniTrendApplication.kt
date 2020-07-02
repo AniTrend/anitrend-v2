@@ -75,11 +75,7 @@ abstract class AniTrendApplication : Application(), Configuration.Provider, Imag
      * Initializes emoji helper global instance
      */
     protected open fun initializeEmoji() {
-        GlobalScope.launch(Dispatchers.IO) {
-            runCatching {
-                EmojiManager.initEmojiData(applicationContext)
-            }.exceptionOrNull()?.printStackTrace()
-        }
+
     }
 
     override fun onCreate() {
