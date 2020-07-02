@@ -42,7 +42,7 @@ class OnBoardingPresenter(
 
     fun onBoardingExperienceCompleted() {
         settings.isNewInstallation = false
-        NavigationTargets.Main(context)
+        NavigationTargets.Main(context).invoke()
     }
 
     companion object {

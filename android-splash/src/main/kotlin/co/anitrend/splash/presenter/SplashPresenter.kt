@@ -35,9 +35,9 @@ class SplashPresenter(
     suspend fun firstRunCheck(activity: FragmentActivity?) {
         delay(1200)
         if (settings.isNewInstallation)
-            NavigationTargets.OnBoarding(context)
+            NavigationTargets.OnBoarding(context).invoke()
         else
-            NavigationTargets.Main(context)
+            NavigationTargets.Main(context).invoke()
         activity?.finish()
     }
 }

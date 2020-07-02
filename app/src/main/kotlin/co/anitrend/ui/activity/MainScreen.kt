@@ -110,15 +110,15 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                NavigationTargets.Search(this)
+                NavigationTargets.Search(this).invoke()
                 return true
             }
             R.id.action_about -> {
-                NavigationTargets.About(this)
+                NavigationTargets.About(this).invoke()
                 return true
             }
             R.id.action_settings -> {
-                NavigationTargets.Settings(this)
+                NavigationTargets.Settings(this).invoke()
                 return true
             }
         }
@@ -140,7 +140,7 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
         val fragmentItem = when (menu) {
             R.id.nav_home -> {
                 state.selectedTitle = R.string.nav_home
-                val fragment = NavigationTargets.Discover.forFragment()
+                val fragment = NavigationTargets.Discover(applicationContext).forFragment()
                 fragment?.let {
                     FragmentItem(
                         fragment = it
