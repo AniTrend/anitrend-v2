@@ -23,7 +23,6 @@ import co.anitrend.arch.extension.ext.isLowRamDevice
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.helper.StorageHelper
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
 import co.anitrend.core.settings.common.cache.ICacheSettings
 import co.anitrend.core.util.config.ConfigurationUtil
@@ -37,9 +36,12 @@ import coil.fetch.VideoFrameFileFetcher
 import coil.fetch.VideoFrameUriFetcher
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
@@ -80,16 +82,23 @@ private val configurationModule = module {
         )
     }
     factory {
-        val isLowRamDevice = androidContext().isLowRamDevice()
-        val memoryLimit = if (isLowRamDevice) 0.15 else 0.35
-        val dispatchers = get<SupportDispatchers>()
         val context = androidContext()
+        val isLowRamDevice = context.isLowRamDevice()
+        val memoryLimit = if (isLowRamDevice) 0.15 else 0.35
+
+        val builder = get<OkHttpClient.Builder> {
+            parametersOf(
+                HttpLoggingInterceptor.Level.HEADERS
+            )
+        }
+
+        val dispatchers = get<SupportDispatchers>()
         val loader = ImageLoader.Builder(context)
             .availableMemoryPercentage(memoryLimit)
             .bitmapPoolPercentage(memoryLimit)
             .dispatcher(dispatchers.io)
             .okHttpClient {
-                OkHttpClient.Builder().cache(
+                builder.cache(
                     Cache(
                         StorageHelper.getImageCache(
                             context = androidContext()
@@ -101,10 +110,7 @@ private val configurationModule = module {
                             }
                         )
                     )
-                )
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(10, TimeUnit.SECONDS)
-                    .build()
+                ).build()
             }.componentRegistry {
                 if (Build.VERSION.SDK_INT >= 28)
                     add(ImageDecoderDecoder())

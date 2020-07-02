@@ -17,7 +17,6 @@
 
 package co.anitrend.core.extensions
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -25,30 +24,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.IdRes
-import androidx.fragment.app.*
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
+import androidx.lifecycle.LifecycleOwner
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.R
-import co.anitrend.core.extensions.commit
 import co.anitrend.core.ui.fragment.model.FragmentItem
+import co.anitrend.data.arch.AniTrendExperimentalFeature
 import com.afollestad.materialdialogs.DialogBehavior
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import org.koin.android.ext.android.get
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import timber.log.Timber
+
+
+const val moduleTag = "CoreExtensions"
 
 /**
  * Text separator character
  */
 const val CHARACTER_SEPARATOR: Char = '•'
 
+@AniTrendExperimentalFeature
 fun FragmentActivity.recreateModules() {
     val coreApplication = applicationContext as AniTrendApplication
     runCatching {
         coreApplication.restartDependencyInjection()
-    }.exceptionOrNull()?.printStackTrace()
+    }.onFailure {
+        Timber.tag(moduleTag).e(it)
+    }
 }
 
 /**
@@ -66,22 +74,22 @@ fun FragmentActivity?.createDialog(
 /**
  * Check if the system is in night mode
  */
-fun Context.isEnvironmentNightMode()=
+fun Context.isEnvironmentNightMode() =
     resources.getBoolean(R.bool.isNightMode)
 
 /**
  * Check if the system should use light status bar
  */
-fun Context.isLightStatusBar()=
+fun Context.isLightStatusBar() =
     resources.getBoolean(R.bool.isLightStatusBar)
 
 /**
  * Check if the system should use light navigation bar
  */
-fun Context.isLightNavigationBar()=
+fun Context.isLightNavigationBar() =
     resources.getBoolean(R.bool.isLightNavigationBar)
 
-fun Activity.makeStatusBarTransparent() {
+fun FragmentActivity.makeStatusBarTransparent() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -117,25 +125,10 @@ fun View.setMarginTop(marginTop: Int) {
 /**
  * Inject using lifecycle scope
  */
-inline fun <reified T: Any> FragmentActivity.injectScoped(
+inline fun <reified T: Any> LifecycleOwner.injectScoped(
     qualifier: Qualifier? = null,
     noinline parameters: ParametersDefinition? = null
-) = lazy {
-    lifecycleScope.get<T>(qualifier, parameters)
-}
-
-/**
- * Inject using lifecycle scope
- */
-inline fun <reified T: Any> Fragment.injectScoped(
-    qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
-) = lazy {
-    lifecycleScope.get<T>(qualifier, parameters)
-}
-
-
-const val moduleTag = "CoreExtensions"
+) = lazy { lifecycleScope.get<T>(qualifier, parameters) }
 
 /**
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise

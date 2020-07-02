@@ -18,27 +18,14 @@
 package co.anitrend.core
 
 import android.app.Application
-import android.util.Log
-import androidx.work.Configuration
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.util.theme.ThemeHelper
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import io.wax911.emojify.EmojiManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import timber.log.Timber
 
-abstract class AniTrendApplication : Application(), Configuration.Provider, ImageLoaderFactory {
-
-    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
-     *
-     * Initializes dependencies for the entire application, this function is automatically called
-     * in [onCreate] as the first call to assure all injections are available
-     */
-    protected abstract fun initializeDependencyInjection()
+abstract class AniTrendApplication : Application(), ImageLoaderFactory {
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
@@ -49,11 +36,9 @@ abstract class AniTrendApplication : Application(), Configuration.Provider, Imag
     /**
      * Timber logging tree depending on the build type we plant the appropriate tree
      */
-    protected open fun plantLoggingTree() {
-        when (BuildConfig.DEBUG) {
-            true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(get<ISupportAnalytics>() as Timber.Tree)
-        }
+    protected open fun plantAnalyticsTree() {
+        if (!BuildConfig.DEBUG)
+            Timber.plant(get<ISupportAnalytics>() as Timber.Tree)
     }
 
     /**
@@ -71,33 +56,11 @@ abstract class AniTrendApplication : Application(), Configuration.Provider, Imag
         //Settings(this).sharedPreferences.edit(commit = true) { clear() }
     }
 
-    /**
-     * Initializes emoji helper global instance
-     */
-    protected open fun initializeEmoji() {
-
-    }
-
     override fun onCreate() {
         super.onCreate()
-        initializeDependencyInjection()
         checkApplicationMigration()
-        plantLoggingTree()
-        initializeEmoji()
+        plantAnalyticsTree()
         applyNightMode()
-    }
-
-    /**
-     * @return The [Configuration] used to initialize WorkManager
-     */
-    override fun getWorkManagerConfiguration(): Configuration {
-        val logLevel = when (BuildConfig.DEBUG) {
-            true -> Log.VERBOSE
-            else -> Log.ERROR
-        }
-        return Configuration.Builder()
-            .setMinimumLoggingLevel(logLevel)
-            .build()
     }
 
     /**

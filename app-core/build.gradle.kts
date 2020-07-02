@@ -28,6 +28,5 @@ dependencies {
     implementation(Libraries.MaterialDialogs.lifecycle)
     implementation(Libraries.MaterialDialogs.bottomsheets)
 
-    /** Emoji */
-    implementation(Libraries.AniTrend.Emojify.emojify)
+    implementation(Libraries.Square.OkHttp.logging)
 }
