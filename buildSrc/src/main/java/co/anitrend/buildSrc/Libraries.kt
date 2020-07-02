@@ -221,8 +221,8 @@ object Libraries {
         }
 
         object Retrofit {
-            //private const val version = "0.11.0-alpha01" // not yet released w.i.p
-            private const val version = "0.10.3"
+            private const val version = "0.11.0-alpha01" // not production ready w.i.p
+            //private const val version = "develop-SNAPSHOT" // testing development snapshot
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
 
