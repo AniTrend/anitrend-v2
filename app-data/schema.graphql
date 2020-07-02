@@ -247,6 +247,8 @@ type Character {
         sort: [MediaSort],
         type: MediaType
     ): MediaConnection
+    "Notes for site moderators"
+    modNotes: String
     "The names of the character"
     name: CharacterName
     "The url for the character page on the AniList website"
@@ -306,6 +308,7 @@ type CharacterSubmission {
     id: Int!
     "Inner details of submission status"
     notes: String
+    source: String
     "Status of the submission"
     status: SubmissionStatus
     "The character submission changes"
@@ -524,6 +527,8 @@ type InternalPage {
     ): [AiringSchedule]
     characterSubmissions(
         characterId: Int,
+        "The order the results will be returned in"
+        sort: [SubmissionSort],
         "Filter by the status of the submission"
         status: SubmissionStatus,
         "Filter by the submitter of the submission"
@@ -749,6 +754,8 @@ type InternalPage {
     ): [MediaList]
     mediaSubmissions(
         mediaId: Int,
+        "The order the results will be returned in"
+        sort: [SubmissionSort],
         status: SubmissionStatus,
         submissionId: Int,
         "Filter by the media's type"
@@ -878,6 +885,8 @@ type InternalPage {
         sort: [StaffSort]
     ): [Staff]
     staffSubmissions(
+        "The order the results will be returned in"
+        sort: [SubmissionSort],
         staffId: Int,
         "Filter by the status of the submission"
         status: SubmissionStatus,
@@ -3141,6 +3150,8 @@ type Staff {
     isFavourite: Boolean!
     "The primary language of the staff member"
     language: StaffLanguage
+    "Notes for site moderators"
+    modNotes: String
     "The names of the staff member"
     name: StaffName
     "The url for the staff page on the AniList website"
@@ -3220,6 +3231,7 @@ type StaffSubmission {
     id: Int!
     "Inner details of submission status"
     notes: String
+    source: String
     "Staff that the submission is referencing"
     staff: Staff
     "Status of the submission"
@@ -4233,6 +4245,12 @@ enum StudioSort {
     NAME
     NAME_DESC
     SEARCH_MATCH
+}
+
+"Submission sort enums"
+enum SubmissionSort {
+    ID
+    ID_DESC
 }
 
 "Submission status"

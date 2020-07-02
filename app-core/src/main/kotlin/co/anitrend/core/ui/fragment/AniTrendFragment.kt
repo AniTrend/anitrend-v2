@@ -19,8 +19,8 @@ package co.anitrend.core.ui.fragment
 
 import android.content.Context
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.extension.attachComponent
-import co.anitrend.arch.extension.detachComponent
+import co.anitrend.arch.extension.ext.attachComponent
+import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.core.ui.ILifecycleFeature
 

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.api.interceptor
 
-import co.anitrend.data.api.converter.request.AniRequestConverter
+import io.github.wax911.library.converter.GraphConverter
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -32,11 +32,18 @@ internal class GraphClientInterceptor: Interceptor {
         val original = chain.request()
 
         val request = original.newBuilder()
-            .header("Content-Type", AniRequestConverter.MIME_TYPE)
-            .header("Accept", AniRequestConverter.MIME_TYPE)
+            .header(CONTENT_TYPE, GraphConverter.MimeType)
+            .header(ACCEPT, ACCEPT_TYPE)
             .method(original.method, original.body)
             .build()
 
         return chain.proceed(request)
+    }
+
+    companion object {
+        private const val CONTENT_TYPE = "Content-Type"
+        private const val ACCEPT = "Accept"
+
+        private const val ACCEPT_TYPE = "application/json"
     }
 }

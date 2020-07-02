@@ -18,8 +18,8 @@
 package co.anitrend.core.koin
 
 import android.os.Build
-import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.isLowRamDevice
+import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.ext.isLowRamDevice
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.helper.StorageHelper

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.database.extensions
 
-import co.anitrend.arch.extension.empty
+import co.anitrend.arch.extension.ext.empty
 
 internal fun List<*>.toCommaSeparatedValues(): String {
     return if (isNotEmpty()) {

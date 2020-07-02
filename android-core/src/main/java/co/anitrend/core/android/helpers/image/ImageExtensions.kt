@@ -23,13 +23,11 @@ import co.anitrend.arch.ui.view.image.SupportImageView
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import coil.Coil
-import coil.annotation.ExperimentalCoilApi
 import coil.request.LoadRequest
 import coil.request.RequestDisposable
 import coil.transition.CrossfadeTransition
 
 
-@OptIn(ExperimentalCoilApi::class)
 fun SupportImageView.using(requestImage: RequestImage<*>): RequestDisposable? {
     val requestBuilder = LoadRequest.Builder(context)
 
@@ -42,6 +40,7 @@ fun SupportImageView.using(requestImage: RequestImage<*>): RequestDisposable? {
         }
     }
 
+    @Suppress("EXPERIMENTAL_API_USAGE")
     val request = requestBuilder
         .transition(CrossfadeTransition(350))
         .data(requestImage).target(this).build()

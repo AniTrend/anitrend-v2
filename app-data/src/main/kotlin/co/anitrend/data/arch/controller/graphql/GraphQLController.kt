@@ -39,12 +39,11 @@ import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.data.common.ISupportPagingResponse
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.extension.fetchBodyWithRetry
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import io.github.wax911.library.model.body.GraphContainer
-import io.github.wax911.library.util.getError
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.Response

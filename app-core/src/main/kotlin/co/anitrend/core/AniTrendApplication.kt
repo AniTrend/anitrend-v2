@@ -21,7 +21,6 @@ import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
-import co.anitrend.core.analytics.AnalyticsLogger
 import co.anitrend.core.util.theme.ThemeHelper
 import coil.ImageLoader
 import coil.ImageLoaderFactory
@@ -53,7 +52,7 @@ abstract class AniTrendApplication : Application(), Configuration.Provider, Imag
     protected open fun plantLoggingTree() {
         when (BuildConfig.DEBUG) {
             true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(get<ISupportAnalytics>() as AnalyticsLogger)
+            else -> Timber.plant(get<ISupportAnalytics>() as Timber.Tree)
         }
     }
 
@@ -76,11 +75,7 @@ abstract class AniTrendApplication : Application(), Configuration.Provider, Imag
      * Initializes emoji helper global instance
      */
     protected open fun initializeEmoji() {
-        GlobalScope.launch(Dispatchers.IO) {
-            runCatching {
-                EmojiManager.initEmojiData(applicationContext)
-            }.exceptionOrNull()?.printStackTrace()
-        }
+
     }
 
     override fun onCreate() {

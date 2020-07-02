@@ -19,6 +19,7 @@ package co.anitrend.navigation.contract
 
 import android.content.Context
 import co.anitrend.navigation.extensions.loadIntentOrNull
+import timber.log.Timber
 
 /**
  * Intermediate construct for navigation components
@@ -42,10 +43,11 @@ abstract class NavigationComponent(
     operator fun invoke(context: Context?) {
         runCatching {
             context?.startActivity(navRouterIntent)
-        }.exceptionOrNull()?.printStackTrace()
+        }.onFailure { Timber.tag(TAG).w(it) }
     }
 
     companion object {
         private const val APP_PACKAGE = "co.anitrend"
+        private val TAG = NavigationComponent::class.java.simpleName
     }
 }

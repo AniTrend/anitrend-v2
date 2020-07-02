@@ -17,14 +17,12 @@
 
 package co.anitrend.core.controller
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Power management controller
  */
 interface PowerController {
-    @ExperimentalCoroutinesApi
     fun shouldSaveDataFlow(
         ignorePreference: Boolean
     ): StateFlow<SaveData>

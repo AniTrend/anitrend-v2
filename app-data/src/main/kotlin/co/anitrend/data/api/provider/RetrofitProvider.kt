@@ -19,7 +19,7 @@ package co.anitrend.data.api.provider
 
 import androidx.collection.LruCache
 import co.anitrend.arch.extension.BuildConfig
-import co.anitrend.arch.extension.LAZY_MODE_SYNCHRONIZED
+import co.anitrend.arch.extension.ext.LAZY_MODE_SYNCHRONIZED
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.interceptor.GraphAuthenticator
 import co.anitrend.data.api.interceptor.GraphClientInterceptor

@@ -33,11 +33,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:appCategory="social"
         android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
-        <!--
-        app:appCategory="social"-->
 
         <activity android:name=".ui.activity.MainScreen"
             android:launchMode="singleTop"/>

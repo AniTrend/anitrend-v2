@@ -1,3 +1,5 @@
+import co.anitrend.buildSrc.Libraries
+
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -15,8 +17,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
@@ -28,18 +28,8 @@ dependencies {
     implementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
     implementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
 
-    /** Architecture Components */
-    implementation(Libraries.AndroidX.Core.coreKtx)
-    implementation(Libraries.AndroidX.Fragment.fragmentKtx)
-    implementation(Libraries.AndroidX.Work.runtimeKtx)
-
-    implementation(Libraries.AndroidX.ContraintLayout.constraintLayout)
-
     /** Timber Trees */
     implementation(Libraries.treessence)
-
-    /** Coil */
-    implementation(Libraries.Coil.coil)
 
     /** debugImplementation because LeakCanary should only run in debug builds. */
     debugImplementation(Libraries.Square.LeakCanary.leakCanary)

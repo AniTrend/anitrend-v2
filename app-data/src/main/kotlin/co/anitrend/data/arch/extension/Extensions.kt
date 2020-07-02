@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.extension
 
-import co.anitrend.arch.extension.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.provider.RetrofitProvider

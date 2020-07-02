@@ -19,7 +19,7 @@ package co.anitrend.settings.ui.activity
 
 import android.os.Bundle
 import androidx.fragment.app.commit
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
 import co.anitrend.core.extensions.commit
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.presenter.CorePresenter

@@ -35,7 +35,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "4.2.0-alpha01"
+            private const val version = "4.2.0-alpha03"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -206,7 +206,7 @@ object Libraries {
         }
 
         object Emojify {
-            private const val version = "1.5.4-alpha01"
+            private const val version = "1.6.0-alpha01"
             const val emojify = "com.github.anitrend:android-emojify:$version"
         }
 
@@ -221,8 +221,8 @@ object Libraries {
         }
 
         object Retrofit {
-            //private const val version = "0.11.0-alpha01" // not yet released w.i.p
-            private const val version = "0.10.3"
+            private const val version = "0.11.0-alpha01" // not production ready w.i.p
+            //private const val version = "develop-SNAPSHOT" // testing development snapshot
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
 
@@ -321,6 +321,24 @@ object Libraries {
             object Android {
                 const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
             }
+
+            object Serialization {
+                const val serialization = "org.jetbrains.kotlin:kotlin-serialization:$version"
+            }
+        }
+
+        object KotlinX {
+            object Coroutines {
+                private const val version = "1.3.7"
+                const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+                const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+                const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
+            }
+
+            object Serialization {
+                private const val version = "0.20.0"
+                const val runtime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
+            }
         }
     }
 
@@ -338,6 +356,26 @@ object Libraries {
 
         object Gradle {
             const val plugin = "org.koin:koin-gradle-plugin:$version"
+        }
+    }
+
+    object Markwon {
+        private const val version = "4.4.0"
+        const val core = "io.noties.markwon:core:$version"
+        const val html = "io.noties.markwon:html:$version"
+        const val image = "io.noties.markwon:image:$version"
+        const val glide = "io.noties.markwon:image-glide:$version"
+        const val coil = "io.noties.markwon:image-coil:$version"
+        const val parser = "io.noties.markwon:inline-parser:$version"
+        const val linkify = "io.noties.markwon:linkify:$version"
+        const val simpleExt = "io.noties.markwon:simple-ext:$version"
+        const val syntaxHighlight = "io.noties.markwon:syntax-highlight:$version"
+
+        object Extension {
+            const val taskList = "io.noties.markwon:ext-tasklist:$version"
+            const val strikeThrough = "io.noties.markwon:ext-strikethrough:$version"
+            const val tables = "io.noties.markwon:ext-tables:$version"
+            const val latex = "io.noties.markwon:ext-latex:$version"
         }
     }
 
