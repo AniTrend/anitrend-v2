@@ -24,13 +24,13 @@ import timber.log.Timber
 /**
  * Intermediate construct for navigation components
  *
- * @param corePackage top level package path
+ * @param context context
  * @param className specific class name for component
  * @param packageName specific package name for the target class
  * excluding the application package name
  */
 abstract class NavigationComponent(
-    val corePackage: String = APP_PACKAGE,
+    internal val context: Context,
     override val className: String,
     override val packageName: String
 ) : INavigationRouter, INavigationTarget {
@@ -40,14 +40,13 @@ abstract class NavigationComponent(
     /**
      * Starts the target [navRouterIntent] for the implementation
      */
-    operator fun invoke(context: Context?) {
+    operator fun invoke() {
         runCatching {
-            context?.startActivity(navRouterIntent)
+            context.startActivity(navRouterIntent)
         }.onFailure { Timber.tag(TAG).w(it) }
     }
 
     companion object {
-        private const val APP_PACKAGE = "co.anitrend"
         private val TAG = NavigationComponent::class.java.simpleName
     }
 }

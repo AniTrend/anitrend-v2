@@ -17,36 +17,43 @@
 
 package co.anitrend.navigation
 
+import android.content.Context
 import co.anitrend.navigation.contract.NavigationComponent
 
 object NavigationTargets {
 
-    object Main : NavigationComponent(
+    class Main(context: Context) : NavigationComponent(
+        context = context,
         packageName = "ui.activity",
         className = "MainScreen"
     )
 
-    object OnBoarding : NavigationComponent(
+    class OnBoarding(context: Context) : NavigationComponent(
+        context = context,
         packageName = "onboarding.ui.activity",
         className = "OnBoardingScreen"
     )
 
-    object Search : NavigationComponent(
+    class Search(context: Context) : NavigationComponent(
+        context = context,
         packageName = "search.ui.activity",
         className = "SearchScreen"
     )
 
-    object Settings : NavigationComponent(
+    class Settings(context: Context) : NavigationComponent(
+        context = context,
         packageName = "settings.ui.activity",
         className = "SettingsScreen"
     )
 
-    object About : NavigationComponent(
+    class About(context: Context) : NavigationComponent(
+        context = context,
         packageName = "about.ui.activity",
         className = "AboutScreen"
     )
 
-    object Discover : NavigationComponent(
+    class Discover(context: Context) : NavigationComponent(
+        context = context,
         packageName = "media.ui.fragment",
         className = "DiscoverContent"
     )

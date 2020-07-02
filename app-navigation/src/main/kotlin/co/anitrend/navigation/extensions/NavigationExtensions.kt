@@ -17,6 +17,7 @@
 
 package co.anitrend.navigation.extensions
 
+import android.content.Context
 import android.content.Intent
 import androidx.collection.LruCache
 import androidx.fragment.app.Fragment
@@ -52,12 +53,10 @@ private val classCache = object : LruCache<String, Class<*>>(8) {
 
 private inline fun <reified T : Any> Any.castOrNull() = this as? T
 
-private fun Class<*>.forIntent(
-    packageName: String
-): Intent =
+private fun Class<*>.forIntent(context: Context): Intent =
     Intent(Intent.ACTION_VIEW)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        .setClassName(packageName, name)
+        .setClassName(context, name)
 
 @Throws(ClassNotFoundException::class)
 internal fun <T> String.loadClassOrNull(): Class<out T>? {
@@ -77,10 +76,10 @@ internal fun <T> String.loadOrNull(): T? =
  */
 internal fun NavigationComponent.loadIntentOrNull(): Intent? =
     try {
-        val packagePath = "$corePackage.$packageName"
+        val packagePath = "${context.packageName}.$packageName"
         val classPath = "$packagePath.$className"
         val `class` = classPath.loadClassOrNull<Any>()
-        `class`?.forIntent(packagePath)
+        `class`?.forIntent(context)
     } catch (e: ClassNotFoundException) {
         Timber.tag(moduleTag).e(e)
         null
