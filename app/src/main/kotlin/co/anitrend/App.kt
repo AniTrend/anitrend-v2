@@ -18,39 +18,15 @@
 package co.anitrend
 
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.koin.appModules
-import fr.bipi.tressence.file.FileLoggerTree
-import org.koin.android.ext.android.get
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import co.anitrend.core.helper.runtime.UncaughtExceptionHandler
 import org.koin.core.context.stopKoin
-import org.koin.core.parameter.parametersOf
-import timber.log.Timber
 
 class App : AniTrendApplication() {
 
     private fun createUncaughtExceptionHandler() {
-        val exceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler { t, e ->
-            Timber.tag(t.name).e(e)
-            exceptionHandler?.uncaughtException(t, e)
-        }
-    }
-
-    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
-     *
-     * Initializes dependencies for the entire application, this function is automatically called
-     * in [onCreate] as the first call to assure all injections are available
-     */
-    override fun initializeDependencyInjection() {
-        startKoin {
-            androidLogger()
-            androidContext(
-                applicationContext
-            )
-            modules(appModules)
-        }
+        Thread.setDefaultUncaughtExceptionHandler(
+            UncaughtExceptionHandler()
+        )
     }
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
@@ -59,18 +35,6 @@ class App : AniTrendApplication() {
      */
     override fun restartDependencyInjection() {
         stopKoin()
-        initializeDependencyInjection()
-    }
-
-    /**
-     * Timber logging tree depending on the build type we plant the appropriate tree
-     */
-    override fun plantLoggingTree() {
-        super.plantLoggingTree()
-        val fileLogger = get<FileLoggerTree> {
-            parametersOf("$packageName.log")
-        }
-        Timber.plant(fileLogger)
     }
 
     override fun onCreate() {

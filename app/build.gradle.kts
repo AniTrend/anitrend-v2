@@ -28,6 +28,8 @@ dependencies {
     implementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
     implementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
 
+    implementation(Libraries.AniTrend.Emojify.emojify)
+
     /** Timber Trees */
     implementation(Libraries.treessence)
 

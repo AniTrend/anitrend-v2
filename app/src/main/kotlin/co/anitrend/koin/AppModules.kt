@@ -17,33 +17,20 @@
 
 package co.anitrend.koin
 
-import android.util.Log
-import co.anitrend.BuildConfig
-import co.anitrend.core.helper.StorageHelper
-import co.anitrend.ui.activity.MainScreen
-import co.anitrend.presenter.MainPresenter
+import androidx.startup.AppInitializer
 import co.anitrend.core.koin.coreModules
 import co.anitrend.data.arch.di.dataModules
-import fr.bipi.tressence.file.FileLoggerTree
-import org.koin.android.ext.koin.androidApplication
+import co.anitrend.presenter.MainPresenter
+import co.anitrend.ui.activity.MainScreen
+import io.wax911.emojify.initializer.EmojiInitializer
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private val coreModule = module {
-    factory { (filename: String) ->
-        val logLevel = if (BuildConfig.DEBUG) Log.VERBOSE else Log.WARN
-        val loggingFile = StorageHelper.getLogsCache(androidContext())
-        val logFileSizeLimit = 850 * 1024
-
-        FileLoggerTree.Builder()
-            .withFileName(filename)
-            .withDirName(loggingFile.absolutePath)
-            .withSizeLimit(logFileSizeLimit)
-            .withFileLimit(1)
-            .withMinPriority(logLevel)
-            .appendToFile(true)
-            .build()
+    factory {
+        AppInitializer.getInstance(androidContext())
+            .initializeComponent(EmojiInitializer::class.java)
     }
 }
 

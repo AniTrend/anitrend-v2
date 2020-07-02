@@ -140,12 +140,13 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
         val fragmentItem = when (menu) {
             R.id.nav_home -> {
                 state.selectedTitle = R.string.nav_home
-                val fragment = NavigationTargets.Discover(applicationContext).forFragment()
-                fragment?.let {
-                    FragmentItem(
-                        fragment = it
-                    )
-                }
+                //val fragment = NavigationTargets.Discover(applicationContext).forFragment()
+                //fragment?.let {
+                //    FragmentItem(
+                //        fragment = it
+                //    )
+                //}
+                null
             }
             R.id.nav_episode_feed -> {
                 state.selectedTitle = R.string.nav_episodes
