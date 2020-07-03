@@ -23,6 +23,8 @@ plugins {
 
 
 dependencies {
+    implementation(Libraries.threeTenBp)
+
     debugImplementation(Libraries.Chuncker.debug)
     releaseImplementation(Libraries.Chuncker.release)
 }
