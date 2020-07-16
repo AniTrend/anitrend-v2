@@ -29,7 +29,6 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
@@ -51,7 +50,7 @@ private fun configureMultipleBuilds(project: Project) {
                 dimension = "version"
                 applicationIdSuffix = ".fdroid"
                 versionNameSuffix = "-fdroid"
-                versionCode = 1000 * defaultConfig.versionCode
+                versionCode = 1000 * defaultConfig.versionCode!!
             }
         }
         splits {
