@@ -35,7 +35,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "4.2.0-alpha03"
+            private const val version = "4.2.0-alpha04"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -99,6 +99,42 @@ object Libraries {
             const val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:$version"
         }
 
+        @Deprecated("Use Media2 instead")
+        object Media {
+            private const val version = "1.1.0"
+            const val media = "androidx.media:media:$version"
+        }
+
+        object Media2 {
+            private const val version = "1.0.0-alpha04"
+            const val media2 = "androidx.media2:media2:$version"
+
+            object Common {
+                private const val version = "1.1.0-alpha01"
+                const val common = "androidx.media2:media2-common:${version}"
+            }
+
+            object ExoPlayer {
+                private const val version = "1.1.0-alpha01"
+                const val exoPlayer = "androidx.media2:media2-exoplayer:${version}"
+            }
+
+            object Player {
+                private const val version = "1.1.0-alpha01"
+                const val player = "androidx.media2:media2-player:${version}"
+            }
+
+            object Session {
+                private const val version = "1.1.0-alpha01"
+                const val session = "androidx.media2:media2-session:${version}"
+            }
+
+            object Widget {
+                private const val version = "1.1.0-alpha01"
+                const val widget = "androidx.media2:media2-widget:${version}"
+            }
+        }
+
         object Navigation {
             private const val version = "2.3.0-rc01"
             const val common = "androidx.navigation:navigation-common:$version"
@@ -113,7 +149,7 @@ object Libraries {
             const val runtime = "androidx.navigation:navigation-runtime:$version"
             const val runtimeKtx = "androidx.navigation:navigation-runtime-ktx:$version"
 
-            const val safeArgsgenerator = "androidx.navigation:navigation-safe-args-generator:$version"
+            const val safeArgsGenerator = "androidx.navigation:navigation-safe-args-generator:$version"
             const val safeArgsGradlePlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
 
             const val test = "androidx.navigation:navigation-testing:$version"
@@ -129,6 +165,12 @@ object Libraries {
             const val runtimeKtx = "androidx.paging:paging-runtime-ktx:$version"
         }
 
+        object Palette {
+            private const val version = "1.0.0"
+            const val palette = "androidx.palette:palette:$version"
+            const val paletteKtx = "androidx.palette:palette-ktx:$version"
+        }
+
         object Preference {
             private const val version = "1.1.0"
             const val preference = "androidx.preference:preference:$version"
@@ -136,7 +178,6 @@ object Libraries {
         }
 
         object Recycler {
-            // TODO: Downgrade when material integrates merge adapter and state restoration
             private const val version = "1.2.0-alpha03"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
@@ -240,6 +281,16 @@ object Libraries {
         }
     }
 
+    object BlueLineLabs{
+        object Conductor {
+            private const val version = "3.0.0-rc5"
+            const val conductor = "com.bluelinelabs:conductor:$version"
+            const val transitions = "com.bluelinelabs:conductor-androidx-transition:$version"
+            const val viewPage = "com.bluelinelabs:conductor-viewpager:$version"
+            const val lifecycle = "com.bluelinelabs:conductor-archlifecycle:$version"
+        }
+    }
+
     object Chuncker {
         private const val version = "3.2.0"
 
@@ -257,6 +308,16 @@ object Libraries {
     }
 
     object Google {
+
+        object Exo {
+            private const val version = "2.11.7"
+            const val workManager = "com.google.android.exoplayer:extension-workmanager:$version"
+            const val okHttp = "com.google.android.exoplayer:extension-okhttp:$version"
+            const val core = "com.google.android.exoplayer:extension-core:$version"
+            const val dash = "com.google.android.exoplayer:extension-dash:$version"
+            const val hls = "com.google.android.exoplayer:exoplayer-hls:$version"
+            const val ui = "com.google.android.exoplayer:exoplayer-ui:$version"
+        }
 
         object Firebase {
             private const val version = "17.4.3"
@@ -277,6 +338,11 @@ object Libraries {
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
+        }
+
+        object FlexBox {
+            private const val version = "2.0.1"
+            const val flexBox = "com.google.android:flexbox:$version"
         }
 
         object Material {
@@ -401,6 +467,7 @@ object Libraries {
             private const val version = "2.9.0"
             const val retrofit = "com.squareup.retrofit2:retrofit:$version"
             const val gsonConverter =  "com.squareup.retrofit2:converter-gson:$version"
+            const val xmlConverter =  "com.squareup.retrofit2:converter-simplexml:$version"
         }
 
         object OkHttp {
