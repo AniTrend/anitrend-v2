@@ -16,9 +16,19 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="co.anitrend.onboarding">
 
     <application>
         <activity android:name=".ui.activity.OnBoardingScreen"/>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data android:name="co.anitrend.onboarding.initializer.DynamicFeatureInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 </manifest>

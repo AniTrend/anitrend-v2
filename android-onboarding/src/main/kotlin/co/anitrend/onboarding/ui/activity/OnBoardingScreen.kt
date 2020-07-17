@@ -27,7 +27,6 @@ import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.onboarding.databinding.OnboardingScreenBinding
-import co.anitrend.onboarding.koin.moduleHelper
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.ui.pager.OnBoardingPageAdapter
 
@@ -114,11 +113,6 @@ class OnBoardingScreen : AnitrendActivity() {
             finishAfterTransition()
         }
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper() = moduleHelper
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

@@ -15,22 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment
+package co.anitrend.onboarding.initializer
 
-import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.core.ui.ILifecycleFeature
+import android.content.Context
+import androidx.startup.Initializer
+import co.anitrend.core.initializers.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.onboarding.koin.moduleHelper
+import kotlinx.coroutines.launch
 
-abstract class AniTrendFragment : SupportFragment(), ILifecycleFeature {
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
+class DynamicFeatureInitializer : AbstractFeatureInitializer<Unit>() {
 
     /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
      */
-    override fun featureModuleHelper(): DynamicFeatureModuleHelper? = null
+    override fun create(context: Context) {
+        launch { moduleHelper.loadModules() }
+    }
 }

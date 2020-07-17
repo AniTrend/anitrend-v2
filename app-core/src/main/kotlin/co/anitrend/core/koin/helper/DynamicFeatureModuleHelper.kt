@@ -62,7 +62,7 @@ class DynamicFeatureModuleHelper(
     }
 
     companion object {
-        private fun DynamicFeatureModuleHelper.loadModules() = loadKoinModules(modules)
-        private fun DynamicFeatureModuleHelper.unloadModules() = unloadKoinModules(modules)
+        fun DynamicFeatureModuleHelper.loadModules() = loadKoinModules(modules)
+        fun DynamicFeatureModuleHelper.unloadModules() = unloadKoinModules(modules)
     }
 }
