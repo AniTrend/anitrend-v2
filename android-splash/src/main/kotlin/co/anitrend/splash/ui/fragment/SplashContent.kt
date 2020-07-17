@@ -50,9 +50,4 @@ class SplashContent(
             presenter.firstRunCheck(activity)
         }
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper() = moduleHelper
 }
