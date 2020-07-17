@@ -36,7 +36,6 @@ abstract class AnitrendActivity : SupportActivity(), ILifecycleFeature {
      */
     override fun configureActivity() {
         configurationUtil.onCreate(this)
-        featureModuleHelper()?.onCreate()
     }
 
     override fun attachBaseContext(newBase: Context?) {
@@ -52,10 +51,5 @@ abstract class AnitrendActivity : SupportActivity(), ILifecycleFeature {
     override fun onResume() {
         super.onResume()
         configurationUtil.onResume(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        featureModuleHelper()?.onDestroy()
     }
 }
