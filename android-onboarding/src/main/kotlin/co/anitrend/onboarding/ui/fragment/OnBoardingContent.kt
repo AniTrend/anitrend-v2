@@ -24,14 +24,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.ui.fragment.AniTrendFragment
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import co.anitrend.onboarding.model.OnBoarding
-import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import com.airbnb.lottie.LottieDrawable
-import org.koin.android.ext.android.inject
 
 class OnBoardingContent : AniTrendFragment() {
 
@@ -58,11 +54,6 @@ class OnBoardingContent : AniTrendFragment() {
             binding.lottieAnimationView.playAnimation()
         }
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): Nothing? = null
 
     /**
      * Called to have the fragment instantiate its user interface view.
