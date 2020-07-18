@@ -19,11 +19,12 @@ package co.anitrend.core.initializers
 
 import androidx.startup.Initializer
 import co.anitrend.arch.extension.coroutine.SupportCoroutine
+import co.anitrend.navigation.NavigationTargets
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Contract for feature initializer
+ * Contract for feature initializer with coroutine support for deferred initialization
  */
 abstract class AbstractFeatureInitializer<T> : Initializer<T>, SupportCoroutine {
 
@@ -36,11 +37,14 @@ abstract class AbstractFeatureInitializer<T> : Initializer<T>, SupportCoroutine 
      * @return A list of dependencies that this [Initializer] depends on. This is
      * used to determine initialization order of [Initializer]s.
      *
-     * For e.g. if a [Initializer] `B` defines another [Initializer] `A` as its dependency,
-     * then `A` gets initialized before `B`.
+     * By default a feature initializer should only start after koin has been initialized
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-        emptyList()
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        val koinInitializer = NavigationTargets.Main.koinInitializer<Initializer<Unit>>()
+        if (koinInitializer != null)
+            return listOf(koinInitializer)
+        return emptyList()
+    }
 
     /**
      * Coroutine dispatcher specification
