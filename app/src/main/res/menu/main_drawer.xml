@@ -71,6 +71,10 @@
                     android:id="@+id/nav_discord"
                     android:icon="@drawable/ic_discord_24dp"
                     android:title="@string/nav_discord" />
+                <item
+                    android:id="@+id/nav_faq"
+                    android:icon="@drawable/ic_help_24dp"
+                    android:title="@string/nav_faq" />
             </group>
         </menu>
     </item>

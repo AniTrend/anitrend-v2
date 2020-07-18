@@ -172,6 +172,10 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
                 Toast.makeText(this, "Discord", Toast.LENGTH_SHORT).show()
                 null
             }
+            R.id.nav_faq -> {
+                Toast.makeText(this, "FAQ", Toast.LENGTH_SHORT).show()
+                null
+            }
             else -> null
         }
 
