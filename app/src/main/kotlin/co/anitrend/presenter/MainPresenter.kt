@@ -24,6 +24,4 @@ import co.anitrend.core.settings.Settings
 class MainPresenter(
     context: Context,
     settings: Settings
-) : CorePresenter(context, settings) {
-
-}
+) : CorePresenter(context, settings)

@@ -93,9 +93,13 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
 
     override fun onBackPressed() {
         when (bottomDrawerBehavior.state) {
-            BottomSheetBehavior.STATE_EXPANDED,
+            BottomSheetBehavior.STATE_EXPANDED -> {
+                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                return
+            }
+            BottomSheetBehavior.STATE_COLLAPSED,
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 return
             }
             else -> super.onBackPressed()
