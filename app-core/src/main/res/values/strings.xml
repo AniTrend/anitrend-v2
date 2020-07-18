@@ -36,6 +36,7 @@
 
     <string name="nav_donate">Donate</string>
     <string name="nav_discord">Discord</string>
+    <string name="nav_faq">FAQ</string>
 
     <string name="nav_home">Discover</string>
     <string name="nav_feed">Status Feeds</string>

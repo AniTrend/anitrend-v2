@@ -93,9 +93,13 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
 
     override fun onBackPressed() {
         when (bottomDrawerBehavior.state) {
-            BottomSheetBehavior.STATE_EXPANDED,
+            BottomSheetBehavior.STATE_EXPANDED -> {
+                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                return
+            }
+            BottomSheetBehavior.STATE_COLLAPSED,
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 return
             }
             else -> super.onBackPressed()
@@ -170,6 +174,10 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
             }
             R.id.nav_discord -> {
                 Toast.makeText(this, "Discord", Toast.LENGTH_SHORT).show()
+                null
+            }
+            R.id.nav_faq -> {
+                Toast.makeText(this, "FAQ", Toast.LENGTH_SHORT).show()
                 null
             }
             else -> null

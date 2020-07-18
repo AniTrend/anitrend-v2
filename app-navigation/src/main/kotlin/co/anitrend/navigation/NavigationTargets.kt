@@ -19,6 +19,7 @@ package co.anitrend.navigation
 
 import android.content.Context
 import co.anitrend.navigation.contract.NavigationComponent
+import co.anitrend.navigation.extensions.loadClassOrNull
 
 object NavigationTargets {
 
@@ -26,7 +27,15 @@ object NavigationTargets {
         context = context,
         packageName = "ui.activity",
         className = "MainScreen"
-    )
+    ) {
+        companion object {
+            fun <T> koinInitializer(): Class<out T>? {
+                val packagePath = "co.anitrend.initializer"
+                val classPath = "$packagePath.KoinInitializer"
+                return classPath.loadClassOrNull()
+            }
+        }
+    }
 
     class OnBoarding(context: Context) : NavigationComponent(
         context = context,
