@@ -17,8 +17,10 @@
 
 package co.anitrend
 
+import androidx.startup.AppInitializer
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.helper.runtime.UncaughtExceptionHandler
+import co.anitrend.initializer.KoinInitializer
 import org.koin.core.context.stopKoin
 
 class App : AniTrendApplication() {
@@ -27,6 +29,16 @@ class App : AniTrendApplication() {
         Thread.setDefaultUncaughtExceptionHandler(
             UncaughtExceptionHandler()
         )
+    }
+
+    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
+     *
+     * Initializes dependencies for the entire application, this function is automatically called
+     * in [onCreate] as the first call to assure all injections are available
+     */
+    override fun initializeKoin() {
+        AppInitializer.getInstance(this)
+            .initializeComponent(KoinInitializer::class.java)
     }
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
