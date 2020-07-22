@@ -51,14 +51,14 @@ class OnBoardingContent : AniTrendFragment() {
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenResumed {
-            binding.lottieAnimationView.playAnimation()
+            binding.onBoardingLottieAnimationView.playAnimation()
         }
     }
 
     /**
      * Called to have the fragment instantiate its user interface view.
      * This is optional, and non-graphical fragments can return null. This will be called between
-     * [.onCreate] and [.onActivityCreated].
+     * [onCreate] and [onActivityCreated].
      *
      * A default View can be returned by calling [.Fragment] in your
      * constructor. Otherwise, this method returns null.
@@ -67,9 +67,8 @@ class OnBoardingContent : AniTrendFragment() {
      * It is recommended to **only** inflate the layout in this method and move
      * logic that operates on the returned View to [.onViewCreated].
      *
-     *
      * If you return a View from here, you will later be called in
-     * [.onDestroyView] when the view is being released.
+     * [onDestroyView] when the view is being released.
      *
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
@@ -95,32 +94,29 @@ class OnBoardingContent : AniTrendFragment() {
     }
 
     /**
-     * Called immediately after [.onCreateView]
+     * Called immediately after [onCreateView]
      * has returned, but before any saved state has been restored in to the view.
      * This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.  The fragment's
+     * they know their view hierarchy has been completely created. The fragment's
      * view hierarchy is not however attached to its parent at this point.
-     * @param view The View returned by [.onCreateView].
+     *
+     * @param view The View returned by [onCreateView].
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onBoarding?.apply {
-            view.background = view.context.getDrawable(backgroundColor)
+        if (onBoarding != null) {
+            binding.root.background = view.context.getDrawable(onBoarding!!.background)
 
-            binding.lottieAnimationView.repeatCount = LottieDrawable.INFINITE
-            binding.lottieAnimationView.setAnimation(resource)
+            binding.onBoardingLottieAnimationView.repeatCount = LottieDrawable.INFINITE
+            binding.onBoardingLottieAnimationView.setAnimation(onBoarding!!.resource)
 
-            binding.onBoardingTitle.setTextColor(
-                view.context.getCompatColor(
-                    textColor
-                )
-            )
-            binding.onBoardingTitle.text = text
+            binding.onBoardingTitle.text = onBoarding!!.title
+            binding.onBoardingSubTitle.text = onBoarding!!.subTitle
+            binding.onBoardingDescription.text = onBoarding!!.description
         }
     }
-
 
     companion object {
         private const val PARAM_KEY = "OnBoardingContent:OnBoarding"

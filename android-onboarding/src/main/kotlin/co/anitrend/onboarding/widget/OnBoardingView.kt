@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,22 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.onboarding.model
+package co.anitrend.onboarding.widget
 
-import android.os.Parcelable
-import android.text.SpannedString
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
+import android.content.Context
+import android.util.AttributeSet
+import com.jem.liquidswipe.layout.LiquidSwipeFrameLayout
 
-@Parcelize
-data class OnBoarding(
-    @RawRes val resource: Int,
-    @DrawableRes val background: Int,
-    val title: @RawValue SpannedString,
-    val subTitle: @RawValue SpannedString,
-    val description: @RawValue SpannedString,
-    @ColorRes val textColor: Int
-) : Parcelable
+class OnBoardingView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : LiquidSwipeFrameLayout(context, attrs, defStyleAttr, defStyleRes)

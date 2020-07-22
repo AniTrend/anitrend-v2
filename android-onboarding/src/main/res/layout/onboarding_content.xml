@@ -23,34 +23,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontalBottomGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.6"
-        android:orientation="horizontal"/>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@+id/lottieAnimationView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/horizontalBottomGuideLine"
-        />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/onBoardingTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_marginTop="@dimen/xl_margin"
+        android:layout_marginEnd="@dimen/xl_margin"
+        android:layout_marginStart="@dimen/xl_margin"
+        tools:text="Welcome placeholder title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/onBoardingSubTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/md_margin"
         android:layout_marginStart="@dimen/xl_margin"
         android:layout_marginEnd="@dimen/xl_margin"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/onBoardingTitle"
+        tools:text="Welcome placeholder subtitle with medium long text" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/onBoardingLottieAnimationView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/horizontalBottomGuideLine"
-        app:layout_constraintVertical_bias="0.3"
-        tools:text="Welcome message place holder" />
+        app:layout_constraintDimensionRatio="@string/on_boarding_ratio"
+        app:layout_constraintVertical_bias=".3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/onBoardingSubTitle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/onBoardingDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toEndOf="@+id/onBoardingLottieAnimationView"
+        app:layout_constraintStart_toStartOf="@+id/onBoardingLottieAnimationView"
+        app:layout_constraintTop_toBottomOf="@+id/onBoardingLottieAnimationView"
+        tools:text="Welcome place description with tones of detailed text about what to expect" />
 
 </com.jem.liquidswipe.layout.LiquidSwipeConstraintLayout>

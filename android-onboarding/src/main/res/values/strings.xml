@@ -17,5 +17,7 @@
 
 <resources>
 
-    <string name="onbaording_button_finish">Finish</string>
+    <string name="onbaording_button_get_started">Get started</string>
+    <string name="onbaording_button_next">Next</string>
+    <string name="onbaording_button_skip">Skip</string>
 </resources>
