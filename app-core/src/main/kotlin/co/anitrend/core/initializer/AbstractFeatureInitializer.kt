@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializers
+package co.anitrend.core.initializer
 
 import androidx.startup.Initializer
 import co.anitrend.arch.extension.coroutine.SupportCoroutine

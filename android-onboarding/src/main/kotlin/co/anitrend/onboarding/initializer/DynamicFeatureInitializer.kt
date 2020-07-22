@@ -18,8 +18,7 @@
 package co.anitrend.onboarding.initializer
 
 import android.content.Context
-import androidx.startup.Initializer
-import co.anitrend.core.initializers.AbstractFeatureInitializer
+import co.anitrend.core.initializer.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 import co.anitrend.onboarding.koin.moduleHelper
 import kotlinx.coroutines.launch

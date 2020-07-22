@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition android:id="@+id/onboarding_transition"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start"
+        app:motionInterpolator="easeInOut">
+        <KeyFrameSet>
+
+            <KeyAttribute
+                android:translationX="0dp"
+                app:framePosition="50"
+                app:motionTarget="@id/onbaording_button_skip" />
+
+            <KeyAttribute
+                android:translationX="-100dp"
+                app:framePosition="100"
+                app:motionTarget="@id/onbaording_button_skip" />
+
+            <KeyAttribute
+                android:translationX="0dp"
+                app:framePosition="50"
+                app:motionTarget="@id/onbaording_button_next"/>
+
+            <KeyAttribute
+                android:translationX="100dp"
+                app:framePosition="100"
+                app:motionTarget="@id/onbaording_button_next"/>
+
+            <KeyAttribute
+                android:translationY="100dp"
+                app:framePosition="50"
+                app:motionTarget="@id/onbaording_button_get_started"/>
+
+            <KeyAttribute
+                android:translationY="0dp"
+                app:framePosition="100"
+                app:motionTarget="@id/onbaording_button_get_started"/>
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/onbaording_button_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Constraint
+            android:id="@+id/onbaording_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Constraint
+            android:id="@+id/onbaording_button_get_started"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationY="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint
+            android:id="@id/onbaording_button_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="-100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Constraint
+            android:id="@id/onbaording_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Constraint
+            android:id="@id/onbaording_button_get_started"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationY="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </ConstraintSet>
+</MotionScene>

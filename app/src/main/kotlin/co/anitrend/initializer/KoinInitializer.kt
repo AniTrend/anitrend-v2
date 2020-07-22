@@ -3,7 +3,7 @@ package co.anitrend.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import co.anitrend.BuildConfig
-import co.anitrend.core.initializers.AbstractInitializer
+import co.anitrend.core.initializer.AbstractInitializer
 import co.anitrend.koin.appModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory

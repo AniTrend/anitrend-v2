@@ -18,12 +18,19 @@
 package co.anitrend.onboarding.model
 
 import android.os.Parcelable
+import android.text.SpannedString
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 @Parcelize
 data class OnBoarding(
-    val resource: Int,
-    val backgroundColor: Int,
-    val text: String,
-    val textColor: Int
+    @RawRes val resource: Int,
+    @DrawableRes val background: Int,
+    val title: @RawValue SpannedString,
+    val subTitle: @RawValue SpannedString,
+    val description: @RawValue SpannedString,
+    @ColorRes val textColor: Int
 ) : Parcelable

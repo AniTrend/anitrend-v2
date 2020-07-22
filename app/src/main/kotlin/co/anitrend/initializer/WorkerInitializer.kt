@@ -22,9 +22,10 @@ import android.util.Log
 import androidx.startup.Initializer
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import co.anitrend.core.BuildConfig
+import co.anitrend.BuildConfig
+import co.anitrend.core.initializer.AbstractInitializer
 
-class WorkerInitializer : Initializer<WorkManager> {
+class WorkerInitializer : AbstractInitializer<WorkManager>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -51,6 +52,6 @@ class WorkerInitializer : Initializer<WorkManager> {
      * For e.g. if a [Initializer] `B` defines another
      * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> =
+    override fun dependencies() =
         listOf(KoinInitializer::class.java)
 }

@@ -18,6 +18,8 @@
 package co.anitrend.onboarding.ui.activity
 
 import android.os.Bundle
+import android.view.View
+import androidx.core.view.size
 import androidx.viewpager.widget.ViewPager
 import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
 import co.anitrend.arch.extension.ext.gone
@@ -29,10 +31,14 @@ import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.onboarding.databinding.OnboardingScreenBinding
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.ui.pager.OnBoardingPageAdapter
+import kotlinx.android.synthetic.main.onboarding_content.view.*
+import kotlinx.coroutines.launch
 
 class OnBoardingScreen : AnitrendActivity() {
 
     private lateinit var binding: OnboardingScreenBinding
+
+    private val presenter by injectScoped<OnBoardingPresenter>()
 
     private val onBoardingPageAdapter by lazy(LAZY_MODE_UNSAFE) {
         OnBoardingPageAdapter(
@@ -73,12 +79,10 @@ class OnBoardingScreen : AnitrendActivity() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                if (position == 5) {
-                    binding.finishOnBoarding.visible()
-                    binding.inkPageIndicator.invisible()
-                } else {
-                    binding.finishOnBoarding.gone()
-                    binding.inkPageIndicator.visible()
+                //TODO: Updating motion layout progress seems to mess up the view pager
+                launch {
+                    val newProgress = (position + positionOffset) / presenter.pages
+                    binding.motionLayout.progress = newProgress
                 }
             }
 
@@ -93,8 +97,6 @@ class OnBoardingScreen : AnitrendActivity() {
             }
         }
 
-    private val presenter by injectScoped<OnBoardingPresenter>()
-
     override fun configureActivity() {
         super.configureActivity()
         hideStatusBarAndNavigationBar()
@@ -108,7 +110,14 @@ class OnBoardingScreen : AnitrendActivity() {
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
         onUpdateUserInterface()
-        binding.finishOnBoarding.setOnClickListener {
+        binding.onbaordingButtonNext.setOnClickListener {
+            val nextSlidePos: Int = binding.liquidSwipeViewPager.currentItem.plus(1)
+            binding.liquidSwipeViewPager.setCurrentItem(nextSlidePos, true)
+        }
+        binding.onbaordingButtonSkip.setOnClickListener {
+            binding.liquidSwipeViewPager.setCurrentItem(presenter.pages, true)
+        }
+        binding.onbaordingButtonGetStarted.setOnClickListener {
             presenter.onBoardingExperienceCompleted()
             finishAfterTransition()
         }
@@ -116,18 +125,12 @@ class OnBoardingScreen : AnitrendActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(
-            PAGER_STATE_KEY,
-            binding.liquidSwipeViewPager.currentItem
-        )
+        outState.putInt(PAGER_STATE_KEY, binding.liquidSwipeViewPager.currentItem)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val lastPosition = savedInstanceState.getInt(
-            PAGER_STATE_KEY,
-            0
-        )
+        val lastPosition = savedInstanceState.getInt(PAGER_STATE_KEY, 0)
         if (binding.liquidSwipeViewPager.currentItem != lastPosition)
             binding.liquidSwipeViewPager.setCurrentItem(
                 lastPosition,
@@ -146,9 +149,31 @@ class OnBoardingScreen : AnitrendActivity() {
     }
 
     private fun onUpdateUserInterface() {
-        binding.liquidSwipeViewPager.offscreenPageLimit = 1
+        // workaround, for some reason updating motion progress messes up the view pager
+        binding.liquidSwipeViewPager.offscreenPageLimit = presenter.pages - 1
         binding.liquidSwipeViewPager.adapter = onBoardingPageAdapter
+        /*binding.liquidSwipeViewPager.setPageTransformer(
+            false
+        ) { page, position ->
+            when {
+                position < -1 ->age.alpha = 1f
+                position <= 1 ->
+                    page.onBoardingLottieAnimationView.translationX = -position * (page.width / 2)
+                else -> page.alpha = 1f
+            }
+        }*/
         binding.inkPageIndicator.setViewPager(binding.liquidSwipeViewPager)
+    }
+
+    override fun onDestroy() {
+        listOf(
+            binding.onbaordingButtonNext,
+            binding.onbaordingButtonSkip,
+            binding.onbaordingButtonGetStarted
+        ).forEach {
+            it.setOnClickListener(null)
+        }
+        super.onDestroy()
     }
 
     companion object {

@@ -31,7 +31,7 @@ class OnBoardingPageAdapter(
     init {
         titles.addAll(
             onBoardingPages.map {
-                it.text
+                it.title.toString()
             }
         )
     }

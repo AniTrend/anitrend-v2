@@ -29,6 +29,13 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
+     * Initializes dependencies for the entire application, this function is automatically called
+     * in [onCreate] as the first call to assure all injections are available
+     */
+    protected abstract fun initializeKoin()
+
+    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
+     *
      * Restarts the global koin instance
      */
     abstract fun restartDependencyInjection()

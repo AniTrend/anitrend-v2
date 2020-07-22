@@ -15,21 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.initializer
+package co.anitrend.onboarding.widget
 
 import android.content.Context
-import co.anitrend.core.initializer.AbstractFeatureInitializer
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.splash.koin.moduleHelper
+import android.util.AttributeSet
+import com.jem.liquidswipe.layout.LiquidSwipeFrameLayout
 
-class DynamicFeatureInitializer : AbstractFeatureInitializer<Unit>() {
-
-    /**
-     * Initializes and a component given the application [Context]
-     *
-     * @param context The application context.
-     */
-    override fun create(context: Context) {
-        moduleHelper.loadModules()
-    }
-}
+class OnBoardingView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : LiquidSwipeFrameLayout(context, attrs, defStyleAttr, defStyleRes)
