@@ -320,21 +320,21 @@ object Libraries {
         }
 
         object Firebase {
-            private const val version = "17.4.3"
+            private const val version = "17.4.4"
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "17.4.3"
+                private const val version = "17.4.4"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "17.0.1"
+                private const val version = "17.1.1"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.1.1"
+                    private const val version = "2.2.0"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -346,7 +346,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.3.0-alpha01"
+            private const val version = "1.3.0-alpha02"
             const val material = "com.google.android.material:material:$version"
         }
 
