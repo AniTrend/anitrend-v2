@@ -159,7 +159,7 @@ object Libraries {
         }
 
         object Paging {
-            private const val version = "3.0.0-alpha01"
+            private const val version = "2.1.2"
             const val common = "androidx.paging:paging-common-ktx:$version"
             const val runtime = "androidx.paging:paging-runtime:$version"
             const val runtimeKtx = "androidx.paging:paging-runtime-ktx:$version"
@@ -184,7 +184,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.3.0-alpha01"
+            private const val version = "2.2.5"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
