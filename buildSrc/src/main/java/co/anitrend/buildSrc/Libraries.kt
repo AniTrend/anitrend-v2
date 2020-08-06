@@ -452,7 +452,7 @@ object Libraries {
     object Square {
 
         object LeakCanary {
-            private const val version = "2.3"
+            private const val version = "2.4"
             const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
         }
 
@@ -464,7 +464,7 @@ object Libraries {
         }
 
         object OkHttp {
-            private const val version = "4.7.2"
+            private const val version = "4.8.1"
             const val okhttp = "com.squareup.okhttp3:okhttp:$version"
             const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
             const val mockServer = "com.squareup.okhttp3:mockwebserver:$version"
