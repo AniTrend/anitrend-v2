@@ -19,10 +19,12 @@ package co.anitrend.core.ui
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 
+@Deprecated("Use androidx.startup instead to initialize dynamic module features")
 interface ILifecycleFeature {
 
     /**
      * Expects a module helper if one is available for the current scope, otherwise return null
      */
+    @Deprecated("Access DynamicFeatureModuleHelper directly in the androidx.startup initializer")
     fun featureModuleHelper(): DynamicFeatureModuleHelper?
 }

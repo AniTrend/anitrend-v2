@@ -20,14 +20,13 @@ package co.anitrend.core.android.animations
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
-import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 
 class AlphaAnimator(
     val from: Float = .85f,
     val to: Float = 1f
-) : ISupportAnimator {
+) : AbstractAnimator() {
     override val interpolator = LinearInterpolator()
 
     override fun getAnimators(view: View): Array<Animator> {

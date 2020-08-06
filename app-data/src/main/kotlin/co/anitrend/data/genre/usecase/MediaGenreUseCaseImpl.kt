@@ -17,8 +17,8 @@
 
 package co.anitrend.data.genre.usecase
 
-import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.repository.contract.ISupportRepository
+import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.genre.repository.MediaGenreRepository
 import co.anitrend.domain.genre.entities.Genre
 import co.anitrend.domain.genre.interactors.MediaGenreUseCase
@@ -36,4 +36,4 @@ internal class MediaGenreUseCaseImpl(
     }
 }
 
-typealias MediaGenreUseCaseContract = MediaGenreUseCase<UserInterfaceState<List<Genre>>>
+typealias MediaGenreUseCaseContract = MediaGenreUseCase<DataState<List<Genre>>>

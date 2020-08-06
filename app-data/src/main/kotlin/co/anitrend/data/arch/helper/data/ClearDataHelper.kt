@@ -19,7 +19,9 @@ package co.anitrend.data.arch.helper.data
 
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Helper for managing database on clear requests
@@ -33,13 +35,16 @@ internal class ClearDataHelper(
 ) {
 
     suspend inline operator fun invoke(
+        context: CoroutineContext,
         crossinline action: suspend () -> Unit
     ) {
         if (settings.clearDataOnSwipeRefresh) {
             if (connectivity.isConnected)
                 runCatching {
-                    action()
-                }.exceptionOrNull()?.also {
+                    withContext(context) {
+                        action()
+                    }
+                }.onFailure {
                     Timber.tag(moduleTag).e(it)
                 }
             return

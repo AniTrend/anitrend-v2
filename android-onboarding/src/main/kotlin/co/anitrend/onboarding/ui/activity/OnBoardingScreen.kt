@@ -21,7 +21,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.size
 import androidx.viewpager.widget.ViewPager
-import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.invisible
 import co.anitrend.arch.extension.ext.visible
@@ -40,10 +40,10 @@ class OnBoardingScreen : AnitrendActivity() {
 
     private val presenter by injectScoped<OnBoardingPresenter>()
 
-    private val onBoardingPageAdapter by lazy(LAZY_MODE_UNSAFE) {
+    private val onBoardingPageAdapter by lazy(UNSAFE) {
         OnBoardingPageAdapter(
             presenter.onBoardingItems,
-            this
+            supportFragmentManager
         )
     }
 

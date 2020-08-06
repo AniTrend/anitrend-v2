@@ -17,23 +17,25 @@
 
 package co.anitrend.data.tag.repository
 
-import co.anitrend.arch.data.model.UserInterfaceState
-import co.anitrend.arch.data.model.UserInterfaceState.Companion.create
+import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.repository.SupportRepository
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.tag.source.contract.MediaTagSource
 import co.anitrend.domain.tag.entities.Tag
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 
 internal class MediaTagRepository(
     private val source: MediaTagSource
-) : SupportRepository(source),
-    IMediaTagRepository<UserInterfaceState<List<Tag>>> {
+) : SupportRepository(source), IMediaTagRepository<DataState<List<Tag>>> {
 
     /**
      * @return media genres
      */
     override fun getMediaTags() =
         source.create(
-            model = source()
+            model = source().asLiveData(
+                source.coroutineContext
+            )
         )
 }

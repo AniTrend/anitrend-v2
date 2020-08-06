@@ -18,22 +18,18 @@
 package co.anitrend.settings.ui.activity
 
 import android.os.Bundle
-import androidx.fragment.app.commit
-import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.extensions.commit
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.settings.R
 import co.anitrend.settings.databinding.SettingsActivityBinding
 import co.anitrend.settings.ui.fragment.SettingsFragment
 import kotlinx.android.synthetic.main.settings_activity.*
-import org.koin.android.ext.android.inject
 
 class SettingsScreen : AnitrendActivity() {
 
-    private val binding by lazy(LAZY_MODE_UNSAFE) {
+    private val binding by lazy(UNSAFE) {
         SettingsActivityBinding.inflate(layoutInflater)
     }
 
@@ -52,11 +48,6 @@ class SettingsScreen : AnitrendActivity() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         onUpdateUserInterface()
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): Nothing? = null
 
     /**
      * Handles the updating, binding, creation or state change, depending on the context of views.

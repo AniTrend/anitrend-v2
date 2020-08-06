@@ -18,12 +18,10 @@
 package co.anitrend.splash.ui.activity
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.extensions.commit
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.splash.databinding.ActivitySplashBinding
@@ -32,7 +30,7 @@ import kotlinx.coroutines.launch
 
 class SplashScreen : AnitrendActivity() {
 
-    private val binding by lazy(LAZY_MODE_UNSAFE) {
+    private val binding by lazy(UNSAFE) {
         ActivitySplashBinding.inflate(layoutInflater)
     }
 
@@ -47,15 +45,10 @@ class SplashScreen : AnitrendActivity() {
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        launch {
+        lifecycleScope.launch {
             onUpdateUserInterface()
         }
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): Nothing? = null
 
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(fragment = SplashContent::class.java)

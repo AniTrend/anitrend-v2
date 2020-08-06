@@ -19,8 +19,6 @@ package co.anitrend.core.ui.activity
 
 import android.content.Context
 import co.anitrend.arch.ui.activity.SupportActivity
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.core.ui.ILifecycleFeature
 import co.anitrend.core.util.config.ConfigurationUtil
 import org.koin.android.ext.android.inject
 
@@ -28,7 +26,7 @@ import org.koin.android.ext.android.inject
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
  */
-abstract class AnitrendActivity : SupportActivity(), ILifecycleFeature {
+abstract class AnitrendActivity : SupportActivity() {
 
     protected val configurationUtil by inject<ConfigurationUtil>()
 
@@ -53,9 +51,4 @@ abstract class AnitrendActivity : SupportActivity(), ILifecycleFeature {
         super.onResume()
         configurationUtil.onResume(this)
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): DynamicFeatureModuleHelper? = null
 }

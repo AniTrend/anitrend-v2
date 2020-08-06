@@ -27,7 +27,7 @@ import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.DEFAULT_VIEW_TYPE
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.DIFFER
 import co.anitrend.common.media.ui.controller.model.MediaDetailItem
 import co.anitrend.common.media.ui.controller.model.MediaDetailItem.Companion.createDetailViewHolder
@@ -47,7 +47,7 @@ class MediaPagedAdapter(
     private val settings: ICustomizationSettings,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override var customSupportAnimator: ISupportAnimator? = AlphaAnimator(),
+    override var customSupportAnimator: AbstractAnimator? = AlphaAnimator(),
     override val mapper: (Media?) -> IRecyclerItem = {
         when (settings.preferredViewMode) {
             PreferredViewMode.DETAILED_LIST -> MediaDetailItem(it)
@@ -56,8 +56,9 @@ class MediaPagedAdapter(
         }
     }
 ) : SupportPagedListAdapter<Media>(DIFFER) {
+
     /**
-     * Assigned if the current adapter supports needs to supports action mode
+     * Assigned if the current adapter needs to support action mode
      * TODO: Might add a selection mode later to allow multi-select for batch operations
      */
     override var supportAction: ISupportSelectionMode<Long>? = null
@@ -106,9 +107,7 @@ class MediaPagedAdapter(
      */
     override fun getItemViewType(position: Int): Int {
         return when (val viewType = super.getItemViewType(position)) {
-            DEFAULT_VIEW_TYPE -> {
-                settings.preferredViewMode.ordinal
-            }
+            DEFAULT_VIEW_TYPE -> settings.preferredViewMode.ordinal
             else -> viewType
         }
     }

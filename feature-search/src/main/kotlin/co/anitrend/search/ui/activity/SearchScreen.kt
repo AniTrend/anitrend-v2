@@ -18,64 +18,23 @@
 package co.anitrend.search.ui.activity
 
 import android.os.Bundle
-import androidx.fragment.app.commit
-import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.extensions.commit
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
-import co.anitrend.multisearch.model.MultiSearchChangeListener
+import co.anitrend.multisearch.model.Search
 import co.anitrend.search.databinding.SearchScreenBinding
-import co.anitrend.search.koin.moduleHelper
 import co.anitrend.search.ui.fragment.SearchContentScreen
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.onEach
 
 class SearchScreen : AnitrendActivity() {
 
-    private val binding by lazy(LAZY_MODE_UNSAFE) {
+    private val binding by lazy(UNSAFE) {
         SearchScreenBinding.inflate(layoutInflater)
     }
-
-    private val searchChangeListener =
-        object : MultiSearchChangeListener {
-            /**
-             * Called when a search item has been selected
-             *
-             * @param index character index that has been changed
-             * @param charSequence stream of characters including changes
-             */
-            override fun onItemSelected(index: Int, charSequence: CharSequence) {
-
-            }
-
-            /**
-             * Called when an IME action of done is triggered
-             *
-             * @param index character index that has been changed
-             * @param charSequence stream of characters including changes
-             */
-            override fun onSearchComplete(index: Int, charSequence: CharSequence) {
-
-            }
-
-            /**
-             * Called when a search item has been removed
-             *
-             * @param index
-             */
-            override fun onSearchItemRemoved(index: Int) {
-
-            }
-
-            /**
-             * Called when text has been changed
-             *
-             * @param index character index that has been changed
-             * @param charSequence stream of characters including changes
-             */
-            override fun onTextChanged(index: Int, charSequence: CharSequence) {
-
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,14 +51,25 @@ class SearchScreen : AnitrendActivity() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        binding.multiSearch.setSearchViewListener(searchChangeListener)
+        lifecycleScope.launchWhenResumed {
+            binding.multiSearch.searchChangeFlow()
+                .filterNotNull()
+                .onEach { search ->
+                    when (search) {
+                        is Search.TextChanged -> {
+
+                        }
+                        is Search.Removed -> {
+
+                        }
+                        is Search.Selected -> {
+
+                        }
+                    }
+                }.collect()
+        }
         onUpdateUserInterface()
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): Nothing? = null
 
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(fragment = SearchContentScreen::class.java)
