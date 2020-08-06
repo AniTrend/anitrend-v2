@@ -43,7 +43,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-alpha06"
+            private const val version = "1.2.0-alpha07"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
@@ -73,7 +73,7 @@ object Libraries {
         }
 
         object ContraintLayout {
-            private const val version = "2.0.0-beta7"
+            private const val version = "2.0.0-rc1"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -84,7 +84,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.0-alpha06"
+            private const val version = "1.3.0-alpha07"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -136,7 +136,7 @@ object Libraries {
         }
 
         object Navigation {
-            private const val version = "2.3.0-rc01"
+            private const val version = "2.3.0"
             const val common = "androidx.navigation:navigation-common:$version"
             const val commonKtx = "androidx.navigation:navigation-common-ktx:$version"
 
@@ -172,13 +172,13 @@ object Libraries {
         }
 
         object Preference {
-            private const val version = "1.1.0"
+            private const val version = "1.1.1"
             const val preference = "androidx.preference:preference:$version"
             const val preferenceKtx = "androidx.preference:preference-ktx:$version"
         }
 
         object Recycler {
-            private const val version = "1.2.0-alpha03"
+            private const val version = "1.2.0-alpha05"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
         }
@@ -197,17 +197,17 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha01"
+            private const val version = "1.0.0-alpha02"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
         object SwipeRefresh {
-            private const val version = "1.1.0-rc01"
+            private const val version = "1.1.0"
             const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$version"
         }
 
         object Test {
-            private const val version = "1.3.0-rc01"
+            private const val version = "1.3.0-rc03"
             const val core = "androidx.test:core:$version"
             const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
@@ -219,14 +219,14 @@ object Libraries {
             }
 
             object Extension {
-                private const val version = "1.1.2-rc01"
+                private const val version = "1.1.2-rc03"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
         }
 
         object Work {
-            private const val version = "2.4.0-beta01"
+            private const val version = "2.4.0"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
