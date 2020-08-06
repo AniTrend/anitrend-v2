@@ -283,7 +283,7 @@ object Libraries {
 
     object BlueLineLabs{
         object Conductor {
-            private const val version = "3.0.0-rc5"
+            private const val version = "3.0.0-rc6"
             const val conductor = "com.bluelinelabs:conductor:$version"
             const val transitions = "com.bluelinelabs:conductor-androidx-transition:$version"
             const val viewPage = "com.bluelinelabs:conductor-viewpager:$version"
