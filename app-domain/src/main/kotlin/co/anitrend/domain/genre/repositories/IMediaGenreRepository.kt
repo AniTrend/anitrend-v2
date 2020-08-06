@@ -17,9 +17,9 @@
 
 package co.anitrend.domain.genre.repositories
 
-import co.anitrend.arch.domain.common.IUserInterfaceState
+import co.anitrend.arch.domain.state.UiState
 
-interface IMediaGenreRepository<R: IUserInterfaceState<*>> {
+interface IMediaGenreRepository<R: UiState<*>> {
 
     /**
      * @return media genres

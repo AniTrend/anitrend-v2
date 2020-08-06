@@ -18,10 +18,10 @@
 package co.anitrend.domain.tag.interactors
 
 import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.domain.common.IUserInterfaceState
+import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.tag.repositories.IMediaTagRepository
 
-abstract class MediaTagUseCase<R: IUserInterfaceState<*>>(
+abstract class MediaTagUseCase<R: UiState<*>>(
     protected val repository: IMediaTagRepository<R>
 ) : IUseCase {
 
