@@ -34,6 +34,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 /**
  * Extension to help us create a controller from a a mapper instance
@@ -64,8 +65,9 @@ private fun <T> Response<T>.bodyOrThrow(): T {
     return body()!!
 }
 
-private fun defaultShouldRetry(exception: Exception) = when (exception) {
+private fun defaultShouldRetry(exception: Throwable) = when (exception) {
     is HttpException -> exception.code() == 429
+    is SocketTimeoutException,
     is IOException -> true
     else -> false
 }
@@ -74,13 +76,15 @@ private suspend inline fun <T> Deferred<Response<T>>.executeWithRetry(
     dispatcher: CoroutineDispatcher,
     defaultDelay: Long = 100,
     maxAttempts: Int = 3,
-    shouldRetry: (Exception) -> Boolean = ::defaultShouldRetry
+    shouldRetry: (Throwable) -> Boolean = ::defaultShouldRetry
 ): Response<T> {
     repeat(maxAttempts) { attempt ->
         var nextDelay = attempt * attempt * defaultDelay
-        try {
-            return withContext(dispatcher) { await() }
-        } catch (e: Exception) {
+        runCatching {
+            withContext(dispatcher) {
+                await()
+            }
+        }.onFailure { e ->
             // The response failed, so lets see if we should retry again
             if (attempt == (maxAttempts - 1) || !shouldRetry(e)) {
                 throw e
@@ -99,9 +103,8 @@ private suspend inline fun <T> Deferred<Response<T>>.executeWithRetry(
                     }
                 }
             }
+            delay(nextDelay)
         }
-
-        delay(nextDelay)
     }
 
     // We should never hit here
@@ -123,5 +126,5 @@ internal suspend inline fun <T> Deferred<Response<T>>.fetchBodyWithRetry(
     dispatcher: CoroutineDispatcher,
     firstDelay: Long = 100,
     maxAttempts: Int = 3,
-    shouldRetry: (Exception) -> Boolean = ::defaultShouldRetry
+    shouldRetry: (Throwable) -> Boolean = ::defaultShouldRetry
 ) = executeWithRetry(dispatcher, firstDelay, maxAttempts, shouldRetry).bodyOrThrow()
