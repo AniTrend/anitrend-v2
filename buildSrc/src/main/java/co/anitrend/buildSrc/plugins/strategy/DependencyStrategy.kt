@@ -52,9 +52,9 @@ internal class DependencyStrategy(
     }
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
-        add("implementation", Libraries.JetBrains.Coroutines.android)
-        add("implementation", Libraries.JetBrains.Coroutines.core)
-        add("testImplementation", Libraries.JetBrains.Coroutines.test)
+        add("implementation", Libraries.JetBrains.KotlinX.Coroutines.android)
+        add("implementation", Libraries.JetBrains.KotlinX.Coroutines.core)
+        add("testImplementation", Libraries.JetBrains.KotlinX.Coroutines.test)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {

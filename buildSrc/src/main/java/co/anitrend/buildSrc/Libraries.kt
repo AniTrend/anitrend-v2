@@ -35,7 +35,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "4.2.0-alpha04"
+            private const val version = "4.2.0-alpha07"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -43,7 +43,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-alpha06"
+            private const val version = "1.2.0-alpha07"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
@@ -73,7 +73,7 @@ object Libraries {
         }
 
         object ContraintLayout {
-            private const val version = "2.0.0-beta7"
+            private const val version = "2.0.0-rc1"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -84,7 +84,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.0-alpha06"
+            private const val version = "1.3.0-alpha07"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -136,7 +136,7 @@ object Libraries {
         }
 
         object Navigation {
-            private const val version = "2.3.0-rc01"
+            private const val version = "2.3.0"
             const val common = "androidx.navigation:navigation-common:$version"
             const val commonKtx = "androidx.navigation:navigation-common-ktx:$version"
 
@@ -159,7 +159,7 @@ object Libraries {
         }
 
         object Paging {
-            private const val version = "3.0.0-alpha01"
+            private const val version = "2.1.2"
             const val common = "androidx.paging:paging-common-ktx:$version"
             const val runtime = "androidx.paging:paging-runtime:$version"
             const val runtimeKtx = "androidx.paging:paging-runtime-ktx:$version"
@@ -172,19 +172,19 @@ object Libraries {
         }
 
         object Preference {
-            private const val version = "1.1.0"
+            private const val version = "1.1.1"
             const val preference = "androidx.preference:preference:$version"
             const val preferenceKtx = "androidx.preference:preference-ktx:$version"
         }
 
         object Recycler {
-            private const val version = "1.2.0-alpha03"
+            private const val version = "1.2.0-alpha05"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
         }
 
         object Room {
-            private const val version = "2.3.0-alpha01"
+            private const val version = "2.2.5"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
@@ -197,17 +197,17 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha01"
+            private const val version = "1.0.0-alpha02"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
         object SwipeRefresh {
-            private const val version = "1.1.0-rc01"
+            private const val version = "1.1.0"
             const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$version"
         }
 
         object Test {
-            private const val version = "1.3.0-rc01"
+            private const val version = "1.3.0-rc03"
             const val core = "androidx.test:core:$version"
             const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
@@ -219,14 +219,14 @@ object Libraries {
             }
 
             object Extension {
-                private const val version = "1.1.2-rc01"
+                private const val version = "1.1.2-rc03"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
         }
 
         object Work {
-            private const val version = "2.4.0-beta01"
+            private const val version = "2.4.0"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
@@ -236,7 +236,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-beta14"
+            private const val version = "51d6961c2e"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -257,12 +257,12 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "0.1.3"
+            private const val version = "3b58731979"
             const val multiSearch = "com.github.anitrend:material-multi-search:${version}"
         }
 
         object Retrofit {
-            private const val version = "0.11.0-alpha01" // not production ready w.i.p
+            private const val version = "0.11.0-alpha01"
             //private const val version = "develop-SNAPSHOT" // testing development snapshot
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
@@ -283,7 +283,7 @@ object Libraries {
 
     object BlueLineLabs{
         object Conductor {
-            private const val version = "3.0.0-rc5"
+            private const val version = "3.0.0-rc6"
             const val conductor = "com.bluelinelabs:conductor:$version"
             const val transitions = "com.bluelinelabs:conductor-androidx-transition:$version"
             const val viewPage = "com.bluelinelabs:conductor-viewpager:$version"
@@ -320,21 +320,21 @@ object Libraries {
         }
 
         object Firebase {
-            private const val version = "17.4.3"
+            private const val version = "17.4.4"
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "17.4.3"
+                private const val version = "17.4.4"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "17.0.1"
+                private const val version = "17.1.1"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.1.1"
+                    private const val version = "2.2.0"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -346,7 +346,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.3.0-alpha01"
+            private const val version = "1.3.0-alpha02"
             const val material = "com.google.android.material:material:$version"
         }
 
@@ -363,13 +363,6 @@ object Libraries {
     }
 
     object JetBrains {
-        object Coroutines {
-            private const val version = "1.3.7"
-            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
-            const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
-        }
-
         object Dokka {
             private const val version = "0.10.1"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
@@ -395,7 +388,7 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.3.7"
+                private const val version = "1.3.8"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -426,7 +419,7 @@ object Libraries {
     }
 
     object Markwon {
-        private const val version = "4.4.0"
+        private const val version = "4.5.0"
         const val core = "io.noties.markwon:core:$version"
         const val html = "io.noties.markwon:html:$version"
         const val image = "io.noties.markwon:image:$version"
@@ -459,7 +452,7 @@ object Libraries {
     object Square {
 
         object LeakCanary {
-            private const val version = "2.3"
+            private const val version = "2.4"
             const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
         }
 
@@ -471,7 +464,7 @@ object Libraries {
         }
 
         object OkHttp {
-            private const val version = "4.7.2"
+            private const val version = "4.8.1"
             const val okhttp = "com.squareup.okhttp3:okhttp:$version"
             const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
             const val mockServer = "com.squareup.okhttp3:mockwebserver:$version"
