@@ -236,7 +236,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-beta14"
+            private const val version = "51d6961c2e"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -257,12 +257,12 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "0.1.3"
+            private const val version = "3b58731979"
             const val multiSearch = "com.github.anitrend:material-multi-search:${version}"
         }
 
         object Retrofit {
-            private const val version = "0.11.0-alpha01" // not production ready w.i.p
+            private const val version = "0.11.0-alpha01"
             //private const val version = "develop-SNAPSHOT" // testing development snapshot
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
