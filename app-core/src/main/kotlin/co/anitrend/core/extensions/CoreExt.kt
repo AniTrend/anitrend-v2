@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleOwner
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.R
 import co.anitrend.core.ui.fragment.model.FragmentItem
@@ -36,7 +37,7 @@ import co.anitrend.data.arch.AniTrendExperimentalFeature
 import com.afollestad.materialdialogs.DialogBehavior
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import org.koin.androidx.scope.lifecycleScope
+import org.koin.androidx.scope.lifecycleScope as koinLifecycleScope
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import timber.log.Timber
@@ -123,12 +124,24 @@ fun View.setMarginTop(marginTop: Int) {
 }
 
 /**
- * Inject using lifecycle scope
+ * Koin lifecycle scope alias
+ */
+fun LifecycleOwner.koinScope() = koinLifecycleScope
+
+/**
+ * Inject using koin lifecycle scope
+ *
+ * @param lazyMode [LazyThreadSafetyMode] that defaults to [UNSAFE]
+ * @param qualifier definition for an object
+ * @param parameters optional parameters to pass into initialized object
+ *
+ * @return [Lazy]
  */
 inline fun <reified T: Any> LifecycleOwner.injectScoped(
+    lazyMode: LazyThreadSafetyMode = UNSAFE,
     qualifier: Qualifier? = null,
     noinline parameters: ParametersDefinition? = null
-) = lazy { lifecycleScope.get<T>(qualifier, parameters) }
+) = lazy(lazyMode) { koinLifecycleScope.get<T>(qualifier, parameters) }
 
 /**
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise

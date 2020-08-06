@@ -17,8 +17,8 @@
 
 package co.anitrend.data.tag.usecase
 
-import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.repository.contract.ISupportRepository
+import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.domain.tag.entities.Tag
 import co.anitrend.domain.tag.interactors.MediaTagUseCase
@@ -36,4 +36,4 @@ internal class MediaTagUseCaseImpl(
     }
 }
 
-typealias MediaTagUseCaseContract = MediaTagUseCase<UserInterfaceState<List<Tag>>>
+typealias MediaTagUseCaseContract = MediaTagUseCase<DataState<List<Tag>>>

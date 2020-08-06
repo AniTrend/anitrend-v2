@@ -23,7 +23,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
 import co.anitrend.R
-import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.extensions.commit
 import co.anitrend.core.extensions.injectScoped
@@ -31,7 +31,6 @@ import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.model.ScreenState
 import co.anitrend.navigation.NavigationTargets
-import co.anitrend.navigation.extensions.forFragment
 import co.anitrend.presenter.MainPresenter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
@@ -43,7 +42,7 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     private val redirectItem by extra(ARG_KEY_REDIRECT, R.id.nav_home)
 
     private val bottomDrawerBehavior
-            by lazy(LAZY_MODE_UNSAFE) {
+            by lazy(UNSAFE) {
                 BottomSheetBehavior.from(bottomNavigationDrawer)
             }
 
@@ -74,11 +73,6 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
         bottomNavigationView.setCheckedItem(state.selectedItem)
         onUpdateUserInterface()
     }
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): Nothing? = null
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(ARG_KEY_NAVIGATION_STATE, state)

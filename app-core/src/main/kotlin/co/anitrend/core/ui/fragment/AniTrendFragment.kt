@@ -19,18 +19,11 @@ package co.anitrend.core.ui.fragment
 
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.core.ui.ILifecycleFeature
 
-abstract class AniTrendFragment : SupportFragment(), ILifecycleFeature {
+abstract class AniTrendFragment : SupportFragment() {
 
     /**
      * Proxy for a view model state if one exists
      */
     override fun viewModelState(): ISupportViewModelState<*>? = null
-
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper(): DynamicFeatureModuleHelper? = null
 }

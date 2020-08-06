@@ -17,6 +17,7 @@
 
 package co.anitrend.data.tag.source
 
+import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
@@ -24,8 +25,10 @@ import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
+import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
 import co.anitrend.data.tag.source.contract.MediaTagSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -39,28 +42,29 @@ internal class MediaTagSourceImpl(
     dispatchers: SupportDispatchers
 ) : MediaTagSource(dispatchers) {
 
+    private val strategy = OnlineStrategy.create<List<TagEntity>>()
+
     override val observable =
         localSource.findAllFlow().map {
             converter.convertFrom(it)
         }.flowOn(dispatchers.computation)
 
 
-    override suspend fun getTags() {
+    override suspend fun getTags(callback: RequestCallback) {
         val deferred = async {
             remoteSource.getMediaTags()
         }
 
-        val controller =
-            mapper.controller(dispatchers, OnlineStrategy.create())
+        val controller = mapper.controller(dispatchers, strategy)
 
-        controller(deferred, networkState)
+        controller(deferred, callback)
     }
 
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
-    override suspend fun clearDataSource() {
-        clearDataHelper {
+    override suspend fun clearDataSource(context: CoroutineDispatcher) {
+        clearDataHelper(context) {
             localSource.clear()
         }
     }

@@ -18,15 +18,15 @@
 package co.anitrend.onboarding.ui.pager
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import co.anitrend.arch.ui.pager.SupportPageAdapter
 import co.anitrend.onboarding.model.OnBoarding
 import co.anitrend.onboarding.ui.fragment.OnBoardingContent
 
 class OnBoardingPageAdapter(
     private val onBoardingPages: List<OnBoarding>,
-    context: FragmentActivity
-) : SupportPageAdapter(context, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    fragmentManager: FragmentManager
+) : SupportPageAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     init {
         titles.addAll(

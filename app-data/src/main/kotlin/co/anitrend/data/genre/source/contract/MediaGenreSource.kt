@@ -17,26 +17,28 @@
 
 package co.anitrend.data.genre.source.contract
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
-import co.anitrend.arch.data.source.coroutine.SupportCoroutineDataSource
+import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.domain.genre.entities.Genre
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 
 internal abstract class MediaGenreSource(
     supportDispatchers: SupportDispatchers
-) : SupportCoroutineDataSource(supportDispatchers) {
+) : SupportCoreDataSource(supportDispatchers) {
 
     protected abstract val observable: Flow<List<Genre>>
 
-    protected abstract suspend fun getGenres()
+    protected abstract suspend fun getGenres(callback: RequestCallback)
 
-    internal operator fun invoke(): LiveData<List<Genre>> =
-        liveData(coroutineContext) {
-            emitSource(observable.asLiveData())
-            retry = { getGenres() }
-            getGenres()
+    internal operator fun invoke(): Flow<List<Genre>> =
+        flow {
+            emitAll(observable)
+            requestHelper.runIfNotRunning(
+                IRequestHelper.RequestType.INITIAL
+            ) { getGenres(it) }
         }
 }

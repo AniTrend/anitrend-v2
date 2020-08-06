@@ -26,7 +26,7 @@ import co.anitrend.data.tag.model.remote.MediaTagCollection
 internal class MediaTagResponseMapper(
     private val localSource: MediaTagLocalSource,
     private val converter: TagModelConverter = TagModelConverter()
-) : GraphQLMapper<MediaTagCollection, List<TagEntity>?>() {
+) : GraphQLMapper<MediaTagCollection, List<TagEntity>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects
@@ -46,8 +46,8 @@ internal class MediaTagResponseMapper(
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<TagEntity>?) {
-        if (!mappedData.isNullOrEmpty())
+    override suspend fun onResponseDatabaseInsert(mappedData: List<TagEntity>) {
+        if (mappedData.isNotEmpty())
             localSource.upsert(mappedData)
         else
             onEmptyResponse()

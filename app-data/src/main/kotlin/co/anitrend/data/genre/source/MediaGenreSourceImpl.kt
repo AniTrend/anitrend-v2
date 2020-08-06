@@ -17,6 +17,7 @@
 
 package co.anitrend.data.genre.source
 
+import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
@@ -24,8 +25,10 @@ import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
+import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.source.contract.MediaGenreSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -39,27 +42,29 @@ internal class MediaGenreSourceImpl(
     dispatchers: SupportDispatchers
 ) : MediaGenreSource(dispatchers) {
 
-    override val observable =
-        localSource.findAllFlow().map {
-            converter.convertFrom(it)
-        }.flowOn(dispatchers.computation)
+    private val strategy = OnlineStrategy.create<List<GenreEntity>>()
 
-    override suspend fun getGenres() {
+    override val observable =
+        localSource.findAllFlow()
+            .flowOn(dispatchers.io) // fetch from db on io thread
+            .map { converter.convertFrom(it) }
+            .flowOn(dispatchers.computation) // map on computational thread
+
+    override suspend fun getGenres(callback: RequestCallback) {
         val deferred = async {
             remoteSource.getMediaGenres()
         }
 
-        val controller =
-            mapper.controller(dispatchers, OnlineStrategy.create())
+        val controller = mapper.controller(dispatchers, strategy)
 
-        controller(deferred, networkState)
+        controller(deferred, callback)
     }
 
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
-    override suspend fun clearDataSource() {
-        clearDataHelper {
+    override suspend fun clearDataSource(context: CoroutineDispatcher) {
+        clearDataHelper(context) {
             localSource.clear()
         }
     }

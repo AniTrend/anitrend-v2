@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.helper.paging
 
-import androidx.paging.PagingRequestHelper
+import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import timber.log.Timber
 
@@ -45,24 +45,24 @@ internal object PagingConfigHelper {
      * @param action what need to be run to return the number of available records
      */
     suspend inline operator fun invoke(
-        requestType: PagingRequestHelper.RequestType,
+        requestType: IRequestHelper.RequestType,
         pagingHelper: SupportPagingHelper,
         crossinline action: suspend () -> Int
     ) {
         when (requestType) {
-            PagingRequestHelper.RequestType.BEFORE -> {
+            IRequestHelper.RequestType.BEFORE -> {
                 Timber.tag(moduleTag).v(
                     "Triggered request: $requestType on paging helper configuration"
                 )
                 if (!pagingHelper.isFirstPage()) {
                     runCatching {
                         // TODO: implement on previous paging calculator
-                    }.exceptionOrNull()?.also {
+                    }.onFailure {
                         Timber.tag(moduleTag).e(it)
                     }
                 }
             }
-            PagingRequestHelper.RequestType.AFTER -> {
+            IRequestHelper.RequestType.AFTER -> {
                 Timber.tag(moduleTag).v(
                     "Triggered request: $requestType on paging helper configuration"
                 )
@@ -70,7 +70,7 @@ internal object PagingConfigHelper {
                     runCatching {
                         val count = action()
                         setupPagingFrom(count, pagingHelper)
-                    }.exceptionOrNull()?.also {
+                    }.onFailure {
                         Timber.tag(moduleTag).e(it)
                     }
                 }
