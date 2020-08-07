@@ -68,6 +68,20 @@ internal object RetrofitProvider {
                         }
                     )
             }
+            EndpointType.RELATION_MOE -> {
+                Timber.tag(moduleTag).d("""
+                    Adding request interceptors for request: ${endpointType.name}
+                    """.trimIndent()
+                )
+                if (BuildConfig.DEBUG)
+                    builder.addInterceptor(
+                        scope.get<ChuckerInterceptor> {
+                            parametersOf(
+                                emptySet<String>()
+                            )
+                        }
+                    )
+            }
             else -> {
 
             }
