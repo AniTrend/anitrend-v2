@@ -257,7 +257,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "3b58731979"
+            private const val version = "a368f32ed8"
             const val multiSearch = "com.github.anitrend:material-multi-search:${version}"
         }
 
@@ -281,7 +281,7 @@ object Libraries {
         }
     }
 
-    object BlueLineLabs{
+    object BlueLineLabs {
         object Conductor {
             private const val version = "3.0.0-rc6"
             const val conductor = "com.bluelinelabs:conductor:$version"
