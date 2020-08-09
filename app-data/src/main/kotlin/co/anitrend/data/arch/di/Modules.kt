@@ -30,6 +30,7 @@ import co.anitrend.data.arch.logger.GraphLogger
 import co.anitrend.data.arch.logger.OkHttpLogger
 import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.genre.koin.mediaGenreModules
+import co.anitrend.data.source.koin.sourceModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -148,4 +149,4 @@ val dataModules = listOf(
     retrofitModule,
     networkModule,
     interceptorModules
-) + mediaTagModules + mediaGenreModules
+) + mediaTagModules + mediaGenreModules + sourceModules
