@@ -15,17 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.api.contract
+package co.anitrend.data.source.entity
 
-import co.anitrend.data.BuildConfig
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-internal enum class EndpointType(val url: HttpUrl) {
-    GRAPH_QL(BuildConfig.apiUrl.toHttpUrl()),
-    RELATION_MOE(BuildConfig.relationUrl.toHttpUrl());
-
-    companion object {
-        const val BASE_ENDPOINT_PATH = "/"
-    }
-}
+@Entity(
+    tableName = "source_entity",
+    primaryKeys = ["anilist"]
+)
+internal data class SourceEntity(
+    @ColumnInfo(name = "anilist") val anilist: Long = 0,
+    @ColumnInfo(name = "anidb") val aniDb: Long?,
+    @ColumnInfo(name = "kitsu") val kitsu: Long?,
+    @ColumnInfo(name = "mal") val mal: Long?
+)

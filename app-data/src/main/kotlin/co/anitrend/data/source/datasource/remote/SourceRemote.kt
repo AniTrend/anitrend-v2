@@ -15,17 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.api.contract
+package co.anitrend.data.source.datasource.remote
 
-import co.anitrend.data.BuildConfig
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import co.anitrend.data.arch.JSON
+import co.anitrend.data.source.model.local.SourceQuery
+import co.anitrend.data.source.model.remote.SourceResult
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 
-internal enum class EndpointType(val url: HttpUrl) {
-    GRAPH_QL(BuildConfig.apiUrl.toHttpUrl()),
-    RELATION_MOE(BuildConfig.relationUrl.toHttpUrl());
+internal interface SourceRemote {
 
-    companion object {
-        const val BASE_ENDPOINT_PATH = "/"
-    }
+    @JSON
+    @POST("/api/ids/source")
+    suspend fun getFromSource(
+        @Body sourceQuery: SourceQuery
+    ) : Response<SourceResult>
 }

@@ -15,17 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.api.contract
+package co.anitrend.data.source.model.local
 
-import co.anitrend.data.BuildConfig
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import com.google.gson.annotations.SerializedName
 
-internal enum class EndpointType(val url: HttpUrl) {
-    GRAPH_QL(BuildConfig.apiUrl.toHttpUrl()),
-    RELATION_MOE(BuildConfig.relationUrl.toHttpUrl());
-
-    companion object {
-        const val BASE_ENDPOINT_PATH = "/"
-    }
-}
+/**
+ * Query for relation request
+ */
+internal data class SourceQuery(
+    @SerializedName("source") val source: Source,
+    @SerializedName("id") val id: Int
+)
