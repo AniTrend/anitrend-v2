@@ -127,6 +127,7 @@ private fun Project.applyBaseModuleDependencies() {
 
             dependencies.add("implementation", Libraries.Square.Retrofit.retrofit)
             dependencies.add("implementation", Libraries.Square.Retrofit.gsonConverter)
+            dependencies.add("implementation", Libraries.Square.Retrofit.xmlConverter)
             dependencies.add("implementation", Libraries.Square.OkHttp.logging)
 
             dependencies.add("implementation", Libraries.AniTrend.Retrofit.graphQL)

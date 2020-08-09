@@ -27,12 +27,12 @@ import io.github.wax911.library.annotation.processor.contract.AbstractGraphProce
 import io.github.wax911.library.converter.GraphConverter
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.simpleframework.xml.convert.AnnotationStrategy
-import org.simpleframework.xml.core.Persister
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import org.simpleframework.xml.convert.AnnotationStrategy
+import org.simpleframework.xml.core.Persister
 import java.lang.reflect.Type
 
 internal class AniTrendConverterFactory(
@@ -84,7 +84,7 @@ internal class AniTrendConverterFactory(
                 is XML -> {
                     return SimpleXmlConverterFactory.createNonStrict(
                         Persister(AnnotationStrategy())
-                    ).responseBodyConverter(type!!, annotations, retrofit)
+                    ).responseBodyConverter(type, annotations, retrofit)
                 }
                 is JSON -> {
                     return GsonConverterFactory.create(gson)
