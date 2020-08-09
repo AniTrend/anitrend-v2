@@ -37,6 +37,19 @@ internal interface SourceLocal : ILocalSource<SourceEntity> {
     override suspend fun clear()
 
     @Query("""
+        delete from source_entity
+        where anilist = :anilist
+    """)
+    suspend fun clear(anilist: Long)
+
+    @Query("""
+        select count(anilist)
+        from source_entity
+        where anilist = :anilist
+    """)
+    suspend fun count(anilist: Long): Int
+
+    @Query("""
         select * from source_entity
         where anilist = :anilist
     """)
