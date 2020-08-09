@@ -59,8 +59,10 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
     }
 
     /**
-     * Sets subtitle text in the following format **2018 • TV • 25 Episodes** for anime
-     * other wise for manga **2018 • Novel • 48 Chapters**
+     * Sets subtitle text in the following format for anime and manga respectively
+     * > **2018** • TV • 25 Episodes
+     *
+     * > **2018** • Novel • 48 Chapters
      */
     fun setMediaSubTitleUsing(media: Media) {
         val builder = SpannableStringBuilder()
