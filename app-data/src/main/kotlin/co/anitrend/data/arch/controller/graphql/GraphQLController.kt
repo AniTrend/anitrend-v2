@@ -53,11 +53,14 @@ internal class GraphQLController<S, D> private constructor(
      *
      * @return resource fetched if present
      */
-    @Throws(RequestError::class, IOException::class, HttpException::class)
     override suspend fun invoke(
         resource: Deferred<Response<GraphContainer<S>>>,
         requestCallback: RequestCallback
     ) = strategy(requestCallback) {
+        /**
+         * Suppressing this because: https://discuss.kotlinlang.org/t/warning-inappropriate-blocking-method-call-with-coroutines-how-to-fix/16903
+         */
+        @Suppress("BlockingMethodInNonBlockingContext")
         val response = resource.fetchBodyWithRetry(dispatchers.io)
 
         val error = response.errors?.also { errors ->
