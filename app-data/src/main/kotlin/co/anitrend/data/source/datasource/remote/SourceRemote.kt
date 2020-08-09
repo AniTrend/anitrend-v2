@@ -30,5 +30,5 @@ internal interface SourceRemote {
     @POST("/api/ids/source")
     suspend fun getFromSource(
         @Body sourceQuery: SourceQuery
-    ) : Response<SourceResult>
+    ) : Response<SourceResult?>
 }
