@@ -20,10 +20,10 @@ package co.anitrend.data.source.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.source.entity.SourceEntity
 import co.anitrend.data.source.model.remote.SourceResult
-import co.anitrend.domain.media.contract.IMediaId
-import co.anitrend.domain.media.entities.MediaId
+import co.anitrend.domain.media.contract.IMediaSourceId
+import co.anitrend.domain.media.entities.MediaSourceId
 
-internal object SourceModelConverter : SupportConverter<SourceResult, SourceEntity>() {
+internal class SourceModelConverter : SupportConverter<SourceResult, SourceEntity>() {
     /**
      * Function reference from converting from [M] to [E] which will
      * be called by [convertFrom]
@@ -46,13 +46,13 @@ internal object SourceModelConverter : SupportConverter<SourceResult, SourceEnti
     }
 }
 
-internal object SourceEntityConverter : SupportConverter<SourceEntity, IMediaId>() {
+internal class SourceEntityConverter : SupportConverter<SourceEntity, IMediaSourceId>() {
     /**
      * Function reference from converting from [M] to [E] which will
      * be called by [convertFrom]
      */
-    override val fromType: (SourceEntity) -> MediaId = { entity ->
-        MediaId(
+    override val fromType: (SourceEntity) -> MediaSourceId = { entity ->
+        MediaSourceId(
             anilist = entity.anilist,
             aniDb = entity.aniDb,
             kitsu = entity.kitsu,
@@ -64,7 +64,7 @@ internal object SourceEntityConverter : SupportConverter<SourceEntity, IMediaId>
      * Function reference from converting from [E] to [M] which will
      * be called by [convertTo]
      */
-    override val toType: (IMediaId) -> SourceEntity = {
+    override val toType: (IMediaSourceId) -> SourceEntity = {
         throw NotImplementedError()
     }
 }
