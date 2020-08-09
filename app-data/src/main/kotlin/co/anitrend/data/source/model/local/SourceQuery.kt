@@ -24,5 +24,5 @@ import com.google.gson.annotations.SerializedName
  */
 internal data class SourceQuery(
     @SerializedName("source") val source: Source,
-    @SerializedName("id") val id: Int
+    @SerializedName("id") val id: Long
 )
