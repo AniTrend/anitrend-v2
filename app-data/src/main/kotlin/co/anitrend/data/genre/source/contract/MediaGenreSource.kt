@@ -22,9 +22,11 @@ import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.domain.genre.entities.Genre
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 internal abstract class MediaGenreSource(
     supportDispatchers: SupportDispatchers
@@ -34,11 +36,12 @@ internal abstract class MediaGenreSource(
 
     protected abstract suspend fun getGenres(callback: RequestCallback)
 
-    internal operator fun invoke(): Flow<List<Genre>> =
-        flow {
-            emitAll(observable)
+    internal operator fun invoke(): Flow<List<Genre>> {
+        launch(coroutineContext, CoroutineStart.LAZY) {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.INITIAL
             ) { getGenres(it) }
         }
+        return observable
+    }
 }
