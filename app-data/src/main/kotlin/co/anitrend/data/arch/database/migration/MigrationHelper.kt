@@ -19,6 +19,7 @@ package co.anitrend.data.arch.database.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import timber.log.Timber
 
 internal val MIGRATION_1_2 = object : Migration(1, 2) {
     /**
@@ -32,9 +33,24 @@ internal val MIGRATION_1_2 = object : Migration(1, 2) {
      * @param database The database instance
      */
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.apply {
-
+        database.beginTransaction()
+        runCatching {
+            val tableName = "source_entity"
+            database.execSQL("""
+                CREATE TABLE IF NOT EXISTS `$tableName` (
+                    `anilist` INTEGER NOT NULL, 
+                    `anidb` INTEGER, 
+                    `kitsu` INTEGER, 
+                    `mal` INTEGER,
+                    PRIMARY KEY(`anilist`)
+                )
+            """.trimIndent())
+        }.onSuccess {
+            database.setTransactionSuccessful()
+        }.onFailure {
+            Timber.tag("MIGRATION_1_2").e(it)
         }
+        database.endTransaction()
     }
 }
 

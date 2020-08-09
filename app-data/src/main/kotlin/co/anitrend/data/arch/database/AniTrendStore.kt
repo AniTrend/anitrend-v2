@@ -25,18 +25,19 @@ import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.database.migration.migrations
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.source.entity.SourceEntity
 import co.anitrend.data.tag.entity.TagEntity
 
 @Database(
     entities = [
-        JsonWebToken::class, TagEntity::class, GenreEntity::class
+        JsonWebToken::class, TagEntity::class, GenreEntity::class, SourceEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION
 )
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 1
+        const val DATABASE_SCHEMA_VERSION = 2
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(
