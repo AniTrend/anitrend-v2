@@ -17,12 +17,15 @@
 
 package co.anitrend.data.arch.extension
 
+import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.provider.RetrofitProvider
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
+import co.anitrend.data.arch.controller.strategy.policy.OfflineStrategy
+import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.mapper.GraphQLMapper
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,6 +38,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 /**
  * Extension to help us create a controller from a a mapper instance
@@ -58,6 +62,16 @@ internal inline fun <reified T> Scope.api(endpointType: EndpointType): T =
  * Facade for supplying database contract
  */
 internal fun Scope.db() = get<IAniTrendStore>()
+
+/**
+ * Facade for supplying online strategy
+ */
+internal fun <T> Scope.online() = OnlineStrategy.create<T>(get())
+
+/**
+ * Facade for supplying offline strategy
+ */
+internal fun <T> Scope.offline() = OfflineStrategy.create<T>()
 
 @Throws(HttpException::class)
 private fun <T> Response<T>.bodyOrThrow(): T {
@@ -121,7 +135,7 @@ private suspend inline fun <T> Deferred<Response<T>>.executeWithRetry(
  *
  * @throws HttpException
  */
-@Throws(HttpException::class)
+@Throws(RequestError::class, IOException::class, HttpException::class, UnknownHostException::class)
 internal suspend inline fun <T> Deferred<Response<T>>.fetchBodyWithRetry(
     dispatcher: CoroutineDispatcher,
     firstDelay: Long = 100,

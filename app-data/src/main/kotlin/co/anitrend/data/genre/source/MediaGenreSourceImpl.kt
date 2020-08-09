@@ -19,6 +19,7 @@ package co.anitrend.data.genre.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
@@ -28,6 +29,7 @@ import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.source.contract.MediaGenreSource
+import co.anitrend.data.source.entity.SourceEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
@@ -38,17 +40,16 @@ internal class MediaGenreSourceImpl(
     private val localSource: MediaGenreLocalSource,
     private val mapper: MediaGenreResponseMapper,
     private val clearDataHelper: ClearDataHelper,
+    private val strategy: ControllerStrategy<List<GenreEntity>>,
     converter: GenreEntityConverter = GenreEntityConverter(),
     dispatchers: SupportDispatchers
 ) : MediaGenreSource(dispatchers) {
-
-    private val strategy = OnlineStrategy.create<List<GenreEntity>>()
 
     override val observable =
         localSource.findAllFlow()
             .flowOn(dispatchers.io) // fetch from db on io thread
             .map { converter.convertFrom(it) }
-            .flowOn(dispatchers.computation) // map on computational thread
+            .flowOn(coroutineContext) // map on computational thread
 
     override suspend fun getGenres(callback: RequestCallback) {
         val deferred = async {

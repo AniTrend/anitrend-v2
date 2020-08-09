@@ -66,7 +66,9 @@ internal class OnlineStrategy<D> private constructor(
         }
     }.getOrNull()
 
-    companion object : KoinComponent {
-        fun <T> create() = OnlineStrategy<T>(get())
+    companion object {
+        fun <T> create(
+            connectivity: SupportConnectivity
+        ) = OnlineStrategy<T>(connectivity)
     }
 }

@@ -22,9 +22,11 @@ import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.domain.tag.entities.Tag
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 internal abstract class MediaTagSource(
     supportDispatchers: SupportDispatchers
@@ -34,11 +36,12 @@ internal abstract class MediaTagSource(
 
     protected abstract suspend fun getTags(callback: RequestCallback)
 
-    internal operator fun invoke(): Flow<List<Tag>> =
-        flow {
-            emitAll(observable)
+    internal operator fun invoke(): Flow<List<Tag>> {
+        launch(coroutineContext, CoroutineStart.LAZY) {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.INITIAL
             ) { getTags(it) }
         }
+        return observable
+    }
 }

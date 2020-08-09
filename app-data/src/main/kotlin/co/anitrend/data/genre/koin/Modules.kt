@@ -20,10 +20,11 @@ package co.anitrend.data.genre.koin
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.data.genre.source.MediaGenreSourceImpl
+import co.anitrend.data.arch.extension.online
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.repository.MediaGenreRepository
+import co.anitrend.data.genre.source.MediaGenreSourceImpl
+import co.anitrend.data.genre.source.contract.MediaGenreSource
 import co.anitrend.data.genre.usecase.MediaGenreUseCaseContract
 import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
 import org.koin.dsl.module
@@ -35,7 +36,8 @@ private val sourceModule = module {
             remoteSource = api(EndpointType.GRAPH_QL),
             mapper = get(),
             clearDataHelper = get(),
-            dispatchers = get()
+            dispatchers = get(),
+            strategy = online()
         )
     }
 }
