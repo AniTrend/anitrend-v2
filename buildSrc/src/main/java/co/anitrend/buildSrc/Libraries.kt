@@ -276,7 +276,7 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.4.0"
+            private const val version = "3.4.1"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
     }
@@ -324,13 +324,13 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "17.4.4"
+                private const val version = "17.5.4"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "17.1.1"
+                private const val version = "17.2.1"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
@@ -369,7 +369,7 @@ object Libraries {
         }
 
         object Kotlin {
-            private const val version = "1.3.72"
+            private const val version = "1.4.0"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -388,7 +388,7 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.3.8"
+                private const val version = "1.3.9"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
