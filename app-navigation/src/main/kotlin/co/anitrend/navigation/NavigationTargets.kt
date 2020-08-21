@@ -27,6 +27,12 @@ object Main : NavigationRouter() {
     interface Provider : INavigationProvider
 }
 
+object Splash : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
 object OnBoarding : NavigationRouter() {
     override val provider by inject<Provider>()
 
@@ -51,7 +57,25 @@ object About : NavigationRouter() {
     interface Provider : INavigationProvider
 }
 
-object Discover : NavigationRouter() {
+object Media : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object Character : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object Staff : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object User : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
