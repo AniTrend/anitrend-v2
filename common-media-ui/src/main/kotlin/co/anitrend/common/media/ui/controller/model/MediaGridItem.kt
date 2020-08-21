@@ -23,7 +23,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickType
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -34,7 +33,7 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaGridItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
-import co.anitrend.domain.media.entities.Media
+import co.anitrend.domain.media.entity.Media
 import coil.request.RequestDisposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -64,11 +63,11 @@ internal data class MediaGridItem(
         val binding = MediaGridItemBinding.bind(view)
         if (entity != null) {
             disposable = binding.mediaImage.using(
-                MediaRequestImage(entity.coverImage, MediaRequestImage.ImageType.POSTER)
+                MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
             )
             binding.mediaStatusWidget.setBackgroundUsing(entity.status)
             binding.mediaSubTitleWidget.setMediaSubTitleUsing(entity)
-            binding.mediaTitle.text = SpannableString(entity.title?.userPreferred)
+            binding.mediaTitle.text = SpannableString(entity.title.userPreferred)
             binding.mediaCardContainer.setOnClickListener {
                 Toast.makeText(view.context, "Opens media screen", Toast.LENGTH_SHORT).show()
             }

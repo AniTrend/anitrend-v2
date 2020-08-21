@@ -21,13 +21,12 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.common.media.ui.databinding.MediaListItemBinding
-import co.anitrend.domain.media.entities.Media
+import co.anitrend.domain.media.entity.Media
 import coil.request.RequestDisposable
 import kotlinx.coroutines.flow.MutableStateFlow
 

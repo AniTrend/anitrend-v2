@@ -20,41 +20,43 @@ package co.anitrend.common.media.ui.widgets
 import android.content.Context
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
-import androidx.annotation.VisibleForTesting
 import androidx.core.text.bold
 import co.anitrend.common.media.ui.R
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
-import co.anitrend.domain.media.entities.Media
-import co.anitrend.domain.media.entities.MediaAttributes
-import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.contract.MediaCategory
 import com.google.android.material.textview.MaterialTextView
 
 internal class MediaSubTitleWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
-    private fun buildEpisodeTextUsing(attributes: MediaAttributes, builder: SpannableStringBuilder) {
-        val episodes = attributes.episodes
-        if (episodes != null) {
-            builder.append(" $CHARACTER_SEPARATOR ")
-            if (episodes > 1) builder.append(
-                "$episodes ${context.getString(R.string.label_episode_plural)}"
-            )
-            else builder.append(
-                "$episodes ${context.getString(R.string.label_episode_singular)}"
-            )
-        }
-    }
-
-    private fun buildChaptersTextUsing(attributes: MediaAttributes, builder: SpannableStringBuilder) {
-        val chapters = attributes.chapters
-        if (chapters != null) {
-            if (chapters > 1) builder.append(
-                "$CHARACTER_SEPARATOR $chapters ${context.getString(R.string.label_chapter_plural)}"
-            )
-            else builder.append(
-                "$CHARACTER_SEPARATOR $chapters ${context.getString(R.string.label_chapter_singular)}"
-            )
+    private fun buildTextUsing(category: MediaCategory, builder: SpannableStringBuilder) {
+        val unknown = context.getString(R.string.label_place_holder_to_be_announced)
+        when(category) {
+            is MediaCategory.Anime -> {
+                when {
+                    category.episodes == 0.toUShort() -> builder.append(unknown)
+                    category.episodes > 1u -> builder.append(
+                        "${category.episodes} ${context.getString(R.string.label_episode_plural)}"
+                    )
+                    else -> builder.append(
+                        "${category.episodes} ${context.getString(R.string.label_episode_singular)}"
+                    )
+                }
+            }
+            is MediaCategory.Manga -> {
+                when {
+                    category.chapters == 0.toUShort() -> builder.append(unknown)
+                    category.chapters > 1u -> builder.append(
+                        "$CHARACTER_SEPARATOR ${category.chapters} ${context.getString(R.string.label_chapter_singular)}"
+                    )
+                    else -> builder.append(
+                        "$CHARACTER_SEPARATOR ${category.chapters} ${context.getString(R.string.label_chapter_singular)}"
+                    )
+                }
+            }
         }
     }
 
@@ -70,29 +72,15 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
             R.string.label_place_holder_to_be_announced
         )
         builder.bold {
-            append("${media.startDate?.year ?: unknown}")
+            if (media.startDate.year == FuzzyDate.UNKNOWN) append(unknown)
+            else append("${media.startDate.year}")
         }.append(" $CHARACTER_SEPARATOR ")
 
 
-        val mediaFormat = media.attributes.format
+        val mediaFormat = media.format
         if (mediaFormat != null)
             builder.append("$mediaFormat")
-
-        text = when (media.attributes.type) {
-            MediaType.ANIME -> {
-                buildEpisodeTextUsing(media.attributes, builder)
-                builder
-            }
-            MediaType.MANGA -> {
-                buildChaptersTextUsing(media.attributes, builder)
-                builder
-            }
-            null -> {
-                context.getString(
-                    R.string.label_place_holder_to_be_announced
-                )
-            }
-        }
-
+        buildTextUsing(media.category, builder)
+        text = builder
     }
 }

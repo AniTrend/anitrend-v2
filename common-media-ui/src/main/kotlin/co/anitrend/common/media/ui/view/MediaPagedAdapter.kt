@@ -38,7 +38,7 @@ import co.anitrend.common.media.ui.controller.model.MediaListItem.Companion.crea
 import co.anitrend.core.android.animations.AlphaAnimator
 import co.anitrend.core.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.settings.common.customize.common.PreferredViewMode
-import co.anitrend.domain.media.entities.Media
+import co.anitrend.domain.media.entity.Media
 
 /**
  * Adapter for paged list

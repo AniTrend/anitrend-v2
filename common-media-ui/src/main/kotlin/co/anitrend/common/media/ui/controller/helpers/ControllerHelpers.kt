@@ -18,7 +18,7 @@
 package co.anitrend.common.media.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
-import co.anitrend.domain.media.entities.Media
+import co.anitrend.domain.media.entity.Media
 
 
 internal val DIFFER =

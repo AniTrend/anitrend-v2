@@ -17,9 +17,9 @@
 
 package co.anitrend.core.android.helpers.image.model
 
-import co.anitrend.domain.common.entity.IEntityImage
-import co.anitrend.domain.common.model.CoverImage
-import co.anitrend.domain.media.entities.MediaImage
+import co.anitrend.domain.common.entity.contract.IEntityImage
+import co.anitrend.domain.common.entity.shared.CoverImage
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
 
 sealed class RequestImage<T : IEntityImage>(
     val image: T?
