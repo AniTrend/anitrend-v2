@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.ui.activity
+package co.anitrend.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -30,7 +30,10 @@ import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.model.ScreenState
-import co.anitrend.navigation.NavigationTargets
+import co.anitrend.navigation.About
+import co.anitrend.navigation.Search
+import co.anitrend.navigation.Settings
+import co.anitrend.navigation.extensions.forActivity
 import co.anitrend.presenter.MainPresenter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
@@ -108,15 +111,15 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                NavigationTargets.Search(this).invoke()
+                Search.forActivity(this)
                 return true
             }
             R.id.action_about -> {
-                NavigationTargets.About(this).invoke()
+                About.forActivity(this)
                 return true
             }
             R.id.action_settings -> {
-                NavigationTargets.Settings(this).invoke()
+                Settings.forActivity(this)
                 return true
             }
         }
@@ -177,7 +180,7 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
             else -> null
         }
 
-        launch { attachSelectedNavigationItem(menu, fragmentItem) }
+        launch(coroutineContext) { attachSelectedNavigationItem(menu, fragmentItem) }
     }
 
     /**

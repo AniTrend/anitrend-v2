@@ -1,10 +1,27 @@
-package co.anitrend.initializer
+/*
+ * Copyright (C) 2020  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package co.anitrend.core.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.BuildConfig
-import co.anitrend.core.initializer.AbstractInitializer
-import co.anitrend.koin.appModules
+import co.anitrend.core.BuildConfig
+import co.anitrend.core.initializer.contract.AbstractInitializer
+import co.anitrend.core.koin.coreModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
@@ -14,7 +31,7 @@ import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import timber.log.Timber
 
-class KoinInitializer : AbstractInitializer<Unit>() {
+class InjectorInitializer : AbstractInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -22,12 +39,15 @@ class KoinInitializer : AbstractInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val logLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
+        // val logLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
+        // https://github.com/InsertKoinIO/koin/issues/847 koin crashes after upgrading to 1.4.0
+        // this is a temporary fix for now
+        val logLevel = Level.NONE
         startKoin {
             fragmentFactory()
             androidContext(context)
             logger(KoinLogger(logLevel))
-            modules(appModules)
+            modules(coreModules)
         }
     }
 

@@ -15,21 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer
+package co.anitrend.provider
 
-import androidx.startup.Initializer
+import android.content.Context
+import android.content.Intent
+import co.anitrend.navigation.Main
+import co.anitrend.ui.MainScreen
 
-/**
- * Contract for initializer
- */
-abstract class AbstractInitializer<T> : Initializer<T> {
-
-    /**
-     * @return A list of dependencies that this [Initializer] depends on. This is
-     * used to determine initialization order of [Initializer]s.
-     *
-     * For e.g. if a [Initializer] `B` defines another [Initializer] `A` as its dependency,
-     * then `A` gets initialized before `B`.
-     */
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+class FeatureProvider : Main.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, MainScreen::class.java)
 }

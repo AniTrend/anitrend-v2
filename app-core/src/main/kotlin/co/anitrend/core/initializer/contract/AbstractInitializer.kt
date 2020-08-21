@@ -1,7 +1,5 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,19 +15,21 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.core.initializer.contract
 
-dependencies {
+import androidx.startup.Initializer
 
-    /** Material Dialogs */
-    implementation(Libraries.MaterialDialogs.core)
-    implementation(Libraries.MaterialDialogs.lifecycle)
-    implementation(Libraries.MaterialDialogs.bottomsheets)
+/**
+ * Contract for initializer
+ */
+abstract class AbstractInitializer<T> : Initializer<T> {
 
-    implementation(Libraries.Square.OkHttp.logging)
-
-    /** Timber Trees */
-    implementation(Libraries.treessence)
+    /**
+     * @return A list of dependencies that this [Initializer] depends on. This is
+     * used to determine initialization order of [Initializer]s.
+     *
+     * For e.g. if a [Initializer] `B` defines another [Initializer] `A` as its dependency,
+     * then `A` gets initialized before `B`.
+     */
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

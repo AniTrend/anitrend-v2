@@ -38,7 +38,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
 
-        <activity android:name=".ui.activity.MainScreen"
+        <activity android:name=".ui.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider
@@ -56,11 +56,9 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data  android:name="co.anitrend.initializer.KoinInitializer"
+            <meta-data  android:name="co.anitrend.initializer.ApplicationInitializer"
                 android:value="androidx.startup" />
             <meta-data  android:name="co.anitrend.initializer.WorkerInitializer"
-                android:value="androidx.startup" />
-            <meta-data  android:name="co.anitrend.initializer.TimberInitializer"
                 android:value="androidx.startup" />
             <!-- Disable automatic startup for emojify -->
             <meta-data android:name="io.wax911.emojify.initializer.EmojiInitializer"

@@ -20,7 +20,7 @@ package co.anitrend
 import androidx.startup.AppInitializer
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.core.helper.runtime.UncaughtExceptionHandler
-import co.anitrend.initializer.KoinInitializer
+import co.anitrend.core.initializer.InjectorInitializer
 import org.koin.core.context.stopKoin
 
 class App : AniTrendApplication() {
@@ -38,7 +38,7 @@ class App : AniTrendApplication() {
      */
     override fun initializeKoin() {
         AppInitializer.getInstance(this)
-            .initializeComponent(KoinInitializer::class.java)
+            .initializeComponent(InjectorInitializer::class.java)
     }
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
