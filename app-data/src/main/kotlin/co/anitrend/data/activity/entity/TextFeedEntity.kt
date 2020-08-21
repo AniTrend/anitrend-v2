@@ -19,10 +19,10 @@ package co.anitrend.data.activity.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 @Entity
 internal class TextFeedEntity(
     @PrimaryKey
     override val id: Long
-) : IEntity
+) : Identity

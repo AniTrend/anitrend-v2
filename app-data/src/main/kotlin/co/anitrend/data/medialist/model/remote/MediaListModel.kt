@@ -19,14 +19,14 @@ package co.anitrend.data.medialist.model.remote
 
 import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.medialist.model.contract.IMediaList
-import co.anitrend.domain.common.model.FuzzyDate
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
  * List of anime or manga
  *
  */
-internal data class MediaList(
+internal data class MediaListModel(
     override val id: Long,
     override val advancedScores: Map<String, String>?,
     override val completedAt: FuzzyDate?,

@@ -4,5 +4,7 @@ fragment UserCore on User {
     avatar {
         ... UserAvatar
     }
+    bannerImage
     isFollowing
+    isFollower
 }

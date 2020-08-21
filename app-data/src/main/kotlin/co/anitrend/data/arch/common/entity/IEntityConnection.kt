@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.common.entity
 
-import co.anitrend.domain.common.entity.IEntityPageInfo
+import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 
 /**
  * Connection contract to supply paging information

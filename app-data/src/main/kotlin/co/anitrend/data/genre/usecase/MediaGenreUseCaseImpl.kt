@@ -20,8 +20,8 @@ package co.anitrend.data.genre.usecase
 import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.genre.repository.MediaGenreRepository
-import co.anitrend.domain.genre.entities.Genre
-import co.anitrend.domain.genre.interactors.MediaGenreUseCase
+import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.genre.interactor.MediaGenreUseCase
 
 internal class MediaGenreUseCaseImpl(
     repository: MediaGenreRepository

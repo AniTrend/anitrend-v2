@@ -22,8 +22,8 @@ import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.domain.genre.entities.Genre
-import co.anitrend.domain.genre.repositories.IMediaGenreRepository
+import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.genre.repository.IMediaGenreRepository
 
 internal class MediaGenreRepository(
     private val source: MediaGenreSource

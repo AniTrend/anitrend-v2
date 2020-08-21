@@ -20,7 +20,7 @@ package co.anitrend.data.mediatrend.model.remote.connection
 import co.anitrend.data.mediatrend.model.remote.MediaTrend
 import co.anitrend.data.mediatrend.model.remote.edge.MediaTrendEdge
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.domain.common.entity.IEntityPageInfo
+import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 
 /** [MediaTrendConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendconnection.doc.html)
  * Media trend connection
@@ -29,5 +29,4 @@ internal data class MediaTrendConnection(
     override val edges: List<MediaTrendEdge>?,
     override val nodes: List<MediaTrend>?,
     override val pageInfo: IEntityPageInfo?
-
 ) : IEntityConnection<MediaTrendEdge, MediaTrend>

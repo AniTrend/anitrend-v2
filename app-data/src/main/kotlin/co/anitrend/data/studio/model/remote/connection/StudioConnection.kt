@@ -20,7 +20,7 @@ package co.anitrend.data.studio.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.studio.model.remote.Studio
 import co.anitrend.data.studio.model.remote.edge.StudioEdge
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 
 /** [StudioConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/studioconnection.doc.html)
  * Studio Connection

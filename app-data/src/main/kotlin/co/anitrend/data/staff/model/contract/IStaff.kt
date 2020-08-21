@@ -17,12 +17,12 @@
 
 package co.anitrend.data.staff.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.common.entity.IEntityImage
-import co.anitrend.domain.common.entity.IEntityName
+import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.shared.model.SharedImage
+import co.anitrend.data.shared.model.SharedName
 import co.anitrend.domain.staff.enums.StaffLanguage
 
-/** [Staff](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/staff.doc.html)
+/** [Staff](https://anilist.github.io/ApiV2-GraphQL-Docs/staff.doc.html)
  * Voice actors or production staff
  *
  * @property description A general description of the staff member
@@ -34,13 +34,13 @@ import co.anitrend.domain.staff.enums.StaffLanguage
  * @property siteUrl The url for the staff page on the AniList website
  * @property updatedAt When the staff's data was last updated
  */
-interface IStaff : IEntity {
+internal interface IStaff : Identity {
     val description: String?
     val favourites: Int
-    val image: IEntityImage?
+    val image: SharedImage?
     val isFavourite: Boolean
     val language: StaffLanguage?
-    val name: IEntityName?
+    val name: SharedName?
     val siteUrl: String?
     val updatedAt: Long?
 }

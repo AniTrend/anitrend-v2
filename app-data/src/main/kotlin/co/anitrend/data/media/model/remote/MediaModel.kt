@@ -20,8 +20,7 @@ package co.anitrend.data.media.model.remote
 import co.anitrend.data.airing.model.remote.AiringSchedule
 import co.anitrend.data.media.model.contract.IMedia
 import co.anitrend.domain.common.CountryCode
-import co.anitrend.domain.common.model.FuzzyDate
-import co.anitrend.domain.common.model.MediaCover
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.*
 import com.google.gson.annotations.SerializedName
 
@@ -34,7 +33,7 @@ internal data class MediaModel(
     @SerializedName("bannerImage") override val bannerImage: String?,
     @SerializedName("chapters") override val chapters: Int?,
     @SerializedName("countryOfOrigin") override val countryOfOrigin: CountryCode?,
-    @SerializedName("coverImage") override val coverImage: MediaCover?,
+    @SerializedName("coverImage") override val coverImage: MediaCoverImage?,
     @SerializedName("description") override val description: String?,
     @SerializedName("duration") override val duration: Int?,
     @SerializedName("endDate") override val endDate: FuzzyDate?,
@@ -43,7 +42,7 @@ internal data class MediaModel(
     @SerializedName("favourites") override val favourites: Int,
     @SerializedName("format") override val format: MediaFormat?,
     @SerializedName("genres") override val genres: List<String>?,
-    @SerializedName("hashtag") override val hashtag: String?,
+    @SerializedName("hashtag") override val hashTag: String?,
     @SerializedName("idMal") override val idMal: Long?,
     @SerializedName("isAdult") override val isAdult: Boolean?,
     @SerializedName("isFavourite") override val isFavourite: Boolean,

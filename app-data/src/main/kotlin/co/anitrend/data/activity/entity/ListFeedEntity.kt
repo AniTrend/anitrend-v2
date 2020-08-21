@@ -18,9 +18,9 @@
 package co.anitrend.data.activity.entity
 
 import androidx.room.Entity
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 @Entity
 internal class ListFeedEntity(
     override val id: Long
-) : IEntity
+) : Identity

@@ -20,8 +20,10 @@ package co.anitrend.data.arch.extension
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.provider.RetrofitProvider
+import co.anitrend.data.arch.common.model.paging.PageQuery
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.controller.strategy.policy.OfflineStrategy
@@ -142,3 +144,5 @@ internal suspend inline fun <T> Deferred<Response<T>>.fetchBodyWithRetry(
     maxAttempts: Int = 3,
     shouldRetry: (Throwable) -> Boolean = ::defaultShouldRetry
 ) = executeWithRetry(dispatcher, firstDelay, maxAttempts, shouldRetry).bodyOrThrow()
+
+internal fun SupportPagingHelper.toPageQuery() = PageQuery(page, pageSize)

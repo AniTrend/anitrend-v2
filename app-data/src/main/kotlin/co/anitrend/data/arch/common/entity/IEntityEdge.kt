@@ -17,13 +17,14 @@
 
 package co.anitrend.data.arch.common.entity
 
+import co.anitrend.data.shared.common.Identity
+
 /**
  * Edge contract to supply Id and node relations
  *
  * @property id The id of the connection
  * @property node The node for the connection
  */
-internal interface IEntityEdge<N> {
-    val id: Long
+internal interface IEntityEdge<N> : Identity {
     val node: N?
 }

@@ -20,7 +20,7 @@ package co.anitrend.data.media.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.data.media.model.remote.edge.MediaEdge
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 
 /** [MediaConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaconnection.doc.html)
  * Media connection

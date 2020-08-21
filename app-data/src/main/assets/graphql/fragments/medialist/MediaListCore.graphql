@@ -1,15 +1,10 @@
 fragment MediaListCore on MediaList {
-    advancedScores
     completedAt {
         ... FuzzyDate
     }
     createdAt
-    customLists(asArray: true)
     hiddenFromStatusLists
     id
-    media {
-        ... MediaCore
-    }
     mediaId
     notes
     priority

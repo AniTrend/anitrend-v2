@@ -20,7 +20,7 @@ package co.anitrend.data.airing.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.airing.model.remote.AiringSchedule
 import co.anitrend.data.airing.model.remote.edge.AiringScheduleEdge
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 
 /**
  * Airing schedule connection

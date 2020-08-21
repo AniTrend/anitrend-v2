@@ -20,7 +20,7 @@ package co.anitrend.data.staff.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.staff.model.remote.Staff
 import co.anitrend.data.staff.model.remote.edge.StaffEdge
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 
 /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
  * Staff Connection

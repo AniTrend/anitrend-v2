@@ -17,15 +17,15 @@
 
 package co.anitrend.data.media.model.contract
 
-import co.anitrend.data.airing.model.remote.contract.IAiringSchedule
+import co.anitrend.data.airing.model.remote.AiringSchedule
+import co.anitrend.data.media.model.remote.*
+import co.anitrend.data.media.model.remote.MediaExternalLink
+import co.anitrend.data.media.model.remote.MediaRank
+import co.anitrend.data.media.model.remote.MediaTitle
+import co.anitrend.data.media.model.remote.MediaTrailer
 import co.anitrend.domain.common.CountryCode
-import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.common.entity.IEntityMediaCover
-import co.anitrend.domain.common.model.FuzzyDate
-import co.anitrend.domain.media.contract.IMediaExternalLink
-import co.anitrend.domain.media.contract.IMediaRank
-import co.anitrend.domain.media.contract.IMediaTitle
-import co.anitrend.domain.media.contract.IMediaTrailer
+import co.anitrend.data.shared.common.Identity
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.*
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
@@ -69,30 +69,30 @@ import co.anitrend.domain.media.enums.*
  * @property updatedAt When the media's data was last updated
  * @property volumes The amount of volumes the manga has when complete
  */
-internal interface IMedia : IEntity {
+internal interface IMedia : Identity {
     val averageScore: Int?
     val bannerImage: String?
     val chapters: Int?
     val countryOfOrigin: CountryCode?
-    val coverImage: IEntityMediaCover?
+    val coverImage: MediaCoverImage?
     val description: String?
     val duration: Int?
     val endDate: FuzzyDate?
     val episodes: Int?
-    val externalLinks: List<IMediaExternalLink>?
+    val externalLinks: List<MediaExternalLink>?
     val favourites: Int
     val format: MediaFormat?
     val genres: List<String>?
-    val hashtag: String?
+    val hashTag: String?
     val idMal: Long?
     val isAdult: Boolean?
     val isFavourite: Boolean
     val isLicensed: Boolean?
     val isLocked: Boolean?
     val meanScore: Int?
-    val nextAiringEpisode: IAiringSchedule?
+    val nextAiringEpisode: AiringSchedule?
     val popularity: Int?
-    val rankings: List<IMediaRank>?
+    val rankings: List<MediaRank>?
     val season: MediaSeason?
     val siteUrl: String?
     val source: MediaSource?
@@ -100,8 +100,8 @@ internal interface IMedia : IEntity {
     val status: MediaStatus?
     val synonyms: List<String>?
     val tags: List<IMediaTag>?
-    val title: IMediaTitle?
-    val trailer: IMediaTrailer?
+    val title: MediaTitle?
+    val trailer: MediaTrailer?
     val trending: Int?
     val type: MediaType?
     val updatedAt: Long?

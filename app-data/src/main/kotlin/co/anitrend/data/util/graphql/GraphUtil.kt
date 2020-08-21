@@ -17,9 +17,13 @@
 
 package co.anitrend.data.util.graphql
 
+import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.arch.common.model.paging.PageQuery
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
+import co.anitrend.data.arch.extension.toPageQuery
+import co.anitrend.domain.common.enums.contract.ISortable
+import co.anitrend.domain.common.graph.IGraphPayload
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
 /**
@@ -39,15 +43,35 @@ internal object GraphUtil {
     const val PAGING_LIMIT = 30
 
     /**
-     * Builder provider helper method, that provides a default GraphQL Query and Variable Builder
-     * @param pageQuery paging
+     * Provides a default GraphQL Query and Variable Builder
+     *
+     * @param paging Optional paging helper
+     * @param settings Optional sort order settings
      */
-    fun getDefaultQuery(pageQuery: PageQuery? = null): QueryContainerBuilder {
-        val queryContainer = QueryContainerBuilder()
-        pageQuery?.apply {
-            queryContainer.putVariables(toMap())
+    internal fun IGraphPayload.toQueryContainerBuilder(
+        paging: SupportPagingHelper? = null,
+        settings: ISortOrderSettings? = null
+    ): QueryContainerBuilder {
+        val queryContainerBuilder = QueryContainerBuilder()
+        paging?.apply {
+            queryContainerBuilder.putVariables(toPageQuery().toMap())
         }
-        return queryContainer
+        // A better way might be to perform changes on the `toMap()` contract itself
+        val variables = toMap().toMutableMap()
+        if (settings != null)
+            variables
+                .filter { it.value is List<*> }
+                .forEach { entry ->
+                    val mapped = (entry.value as List<*>).map {
+                        if (it is Enum<*> && it is ISortable)
+                            return@map it.applySortOrderUsing(settings)
+                        it
+                    }
+                    variables[entry.key] = mapped
+                }
+
+        queryContainerBuilder.putVariables(variables)
+        return queryContainerBuilder
     }
 
     /**

@@ -19,9 +19,11 @@ package co.anitrend.data.staff.model.remote
 
 import co.anitrend.data.character.model.remote.connection.CharacterConnection
 import co.anitrend.data.media.model.remote.connection.MediaConnection
+import co.anitrend.data.shared.model.SharedImage
+import co.anitrend.data.shared.model.SharedName
 import co.anitrend.data.staff.model.contract.IStaff
-import co.anitrend.domain.common.model.CoverImage
-import co.anitrend.domain.common.model.CoverName
+import co.anitrend.domain.common.entity.shared.CoverImage
+import co.anitrend.domain.common.entity.shared.CoverName
 import co.anitrend.domain.staff.enums.StaffLanguage
 
 /** [Staff](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/staff.doc.html)
@@ -36,10 +38,10 @@ internal data class Staff(
     override val id: Long,
     override val description: String?,
     override val favourites: Int,
-    override val image: CoverImage?,
+    override val image: SharedImage?,
     override val isFavourite: Boolean,
     override val language: StaffLanguage?,
-    override val name: CoverName?,
+    override val name: SharedName?,
     override val siteUrl: String?,
     override val updatedAt: Long?
 ) : IStaff

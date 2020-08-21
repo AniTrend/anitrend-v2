@@ -17,11 +17,10 @@
 
 package co.anitrend.data.medialist.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.media.model.contract.IMedia
-import co.anitrend.domain.common.model.FuzzyDate
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.medialist.enums.MediaListStatus
-
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
  * MediaList contract for anime or manga
@@ -45,7 +44,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @property updatedAt When the entry data was last updated
  * @property userId The id of the user owner of the list entry
  */
-internal interface IMediaList : IEntity {
+internal interface IMediaList : Identity {
     val advancedScores: Map<String, String>?
     val completedAt: FuzzyDate?
     val createdAt: Long?

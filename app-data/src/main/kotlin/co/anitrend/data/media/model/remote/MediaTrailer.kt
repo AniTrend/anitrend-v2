@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.remote
 
-import co.anitrend.domain.media.contract.IMediaTrailer
+import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
 
 /** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
  * Media trailer or advertisement

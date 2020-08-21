@@ -20,11 +20,15 @@ fragment MediaCore on Media {
         ... FuzzyDate
     }
     episodes
+    duration
     chapters
     volumes
     isAdult
     isFavourite
     nextAiringEpisode {
         ... AiringSchedule
+    }
+    mediaListEntry {
+        ... MediaListCore
     }
 }

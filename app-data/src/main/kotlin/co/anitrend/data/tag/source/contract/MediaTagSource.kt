@@ -21,11 +21,9 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.domain.tag.entities.Tag
+import co.anitrend.domain.tag.entity.Tag
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaTagSource(

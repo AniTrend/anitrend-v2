@@ -17,7 +17,7 @@
 
 package co.anitrend.data.airing.model.remote.contract
 
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 /** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
  * Media Airing Schedule without media relation object
@@ -28,7 +28,7 @@ import co.anitrend.domain.common.entity.IEntity
  * @property timeUntilAiring Seconds until episode starts airing
  * @property id The id of the airing schedule item
  */
-interface IAiringSchedule : IEntity {
+internal interface IAiringSchedule : Identity {
     val airingAt: Long
     val episode: Int
     val mediaId: Long

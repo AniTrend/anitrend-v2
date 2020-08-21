@@ -19,11 +19,11 @@ package co.anitrend.data.genre.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 @Entity
 internal data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
     override val id: Long = 0,
     val genre: String
-) : IEntity
+) : Identity

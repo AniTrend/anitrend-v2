@@ -19,7 +19,7 @@ package co.anitrend.data.user.model.remote
 
 import co.anitrend.data.favourite.model.remote.Favourites
 import co.anitrend.data.medialist.model.remote.MediaListOptions
-import co.anitrend.domain.common.model.CoverImage
+import co.anitrend.data.shared.model.SharedImage
 import co.anitrend.data.user.model.contract.IUser
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
@@ -35,7 +35,7 @@ internal data class User(
     override val id: Long,
     override val name: String,
     override val about: String?,
-    override val avatar: CoverImage?,
+    override val avatar: SharedImage?,
     override val bannerImage: String?,
     override val isFollowing: Boolean?,
     override val options: UserOptions?,

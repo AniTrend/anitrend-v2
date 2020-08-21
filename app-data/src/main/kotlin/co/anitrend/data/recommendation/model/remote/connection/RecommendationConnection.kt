@@ -20,7 +20,7 @@ package co.anitrend.data.recommendation.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.recommendation.model.remote.Recommendation
 import co.anitrend.data.recommendation.model.remote.edge.RecommendationEdge
-import co.anitrend.domain.common.entity.IEntityPageInfo
+import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 
 /** [RecommendationConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/recommendationconnection.doc.html)
  * Review connection

@@ -19,8 +19,10 @@ package co.anitrend.data.character.model.remote
 
 import co.anitrend.data.character.model.contract.ICharacter
 import co.anitrend.data.media.model.remote.connection.MediaConnection
-import co.anitrend.domain.common.model.CoverImage
-import co.anitrend.domain.common.model.CoverName
+import co.anitrend.data.shared.model.SharedImage
+import co.anitrend.data.shared.model.SharedName
+import co.anitrend.domain.common.entity.shared.CoverImage
+import co.anitrend.domain.common.entity.shared.CoverName
 
 /** [Character](https://anilist.github.io/ApiV2-GraphQL-Docs/character.doc.html)
  * A character that features in an anime or manga
@@ -31,10 +33,10 @@ internal class Character(
     val media: MediaConnection?,
     override val description: String?,
     override val favourites: Int?,
-    override val id: Long,
-    override val image: CoverImage?,
+    override val image: SharedImage?,
     override val isFavourite: Boolean,
-    override val name: CoverName?,
+    override val name: SharedName?,
     override val siteUrl: String?,
-    override val updatedAt: Long?
+    override val updatedAt: Long?,
+    override val id: Long,
 ) : ICharacter

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
  * Media tag contract
@@ -30,7 +30,7 @@ import co.anitrend.domain.common.entity.IEntity
  * @property isMediaSpoiler If the tag is a spoiler for this media
  * @property isAdult If the tag is only for adult 18+ media
  */
-internal interface IMediaTag : IEntity {
+internal interface IMediaTag : Identity {
     val name: String
     val description: String?
     val category: String?

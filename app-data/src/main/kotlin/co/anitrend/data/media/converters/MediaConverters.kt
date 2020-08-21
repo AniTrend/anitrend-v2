@@ -17,3 +17,50 @@
 
 package co.anitrend.data.media.converters
 
+import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.model.remote.MediaModel
+import co.anitrend.domain.media.entity.Media
+
+internal class MediaEntityConverter(
+    override val fromType: (MediaEntity) -> Media = { from().transform(it) },
+    override val toType: (Media) -> MediaEntity = { to().transform(it) }
+) : SupportConverter<MediaEntity, Media>() {
+    companion object {
+        private fun from() =
+            object : ISupportMapperHelper<MediaEntity, Media> {
+                override fun transform(source: MediaEntity): Media {
+                    TODO("Not yet implemented")
+                }
+            }
+        
+        private fun to() =
+            object : ISupportMapperHelper<Media, MediaEntity> {
+                override fun transform(source: Media): MediaEntity {
+                    throw NotImplementedError()
+                }
+            }
+    }
+}
+
+internal class MediaModelConverter(
+    override val fromType: (MediaModel) -> MediaEntity = { from().transform(it) },
+    override val toType: (MediaEntity) -> MediaModel = { to().transform(it) }
+) : SupportConverter<MediaModel, MediaEntity>() {
+    companion object {
+        private fun from() =
+            object : ISupportMapperHelper<MediaModel, MediaEntity> {
+                override fun transform(source: MediaModel): MediaEntity {
+                    TODO("Not yet implemented")
+                }
+            }
+
+        private fun to() =
+            object : ISupportMapperHelper<MediaEntity, MediaModel> {
+                override fun transform(source: MediaEntity): MediaModel {
+                    throw NotImplementedError()
+                }
+            }
+    }
+}

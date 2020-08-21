@@ -17,7 +17,6 @@
 
 package co.anitrend.data.medialist.model.remote
 
-import co.anitrend.data.medialist.model.remote.MediaList
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
@@ -30,7 +29,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @param status status of current group, one of [co.anitrend.domain.enums.medialist.MediaListStatusContract]
  */
 internal data class MediaListGroup(
-    val entries: List<MediaList>?,
+    val entries: List<MediaListModel>?,
     val isCustomList: Boolean,
     val isSplitCompletedList: Boolean,
     val name: String,

@@ -27,19 +27,6 @@ internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource,
     private val converter: GenreModelConverter = GenreModelConverter()
 ) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
-
-    /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects
-     *
-     * @param source the incoming data source type
-     * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     */
-    override suspend fun onResponseMapFrom(
-        source: GenreCollection
-    ) = converter.convertTo(
-        source.genreCollection
-    )
-
     /**
      * Inserts the given object into the implemented room database
      *
@@ -51,4 +38,16 @@ internal class MediaGenreResponseMapper(
         else
             onEmptyResponse()
     }
+
+    /**
+     * Creates mapped objects and handles the database operations which may be required to map various objects
+     *
+     * @param source the incoming data source type
+     * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
+     */
+    override suspend fun onResponseMapFrom(
+        source: GenreCollection
+    ) = converter.convertFrom(
+        source.genreCollection
+    )
 }

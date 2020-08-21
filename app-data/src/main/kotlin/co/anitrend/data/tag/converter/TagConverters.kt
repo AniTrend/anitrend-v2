@@ -21,7 +21,7 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.media.model.remote.MediaTag
 import co.anitrend.data.tag.entity.TagEntity
-import co.anitrend.domain.tag.entities.Tag
+import co.anitrend.domain.tag.entity.Tag
 
 internal class TagEntityConverter(
     override val fromType: (TagEntity) -> Tag = { from().transform(it) },

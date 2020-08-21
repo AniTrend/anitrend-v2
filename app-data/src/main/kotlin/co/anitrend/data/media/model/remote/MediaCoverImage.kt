@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,12 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.common.model
-
-import co.anitrend.domain.common.entity.IEntityMediaCover
+package co.anitrend.data.media.model.remote
 
 /** [MediaCover](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
- * An image model for [co.anitrend.domain.media.entities.IMedia]
  *
  * @param color Average #hex color of cover image
  * @param extraLarge The cover image url of the media at its largest size.
@@ -28,9 +25,9 @@ import co.anitrend.domain.common.entity.IEntityMediaCover
  * @param large The cover image at its large size
  * @param medium The cover image at medium size
  */
-data class MediaCover(
-    override val color: String?,
-    override val extraLarge: String?,
-    override val large: String?,
-    override val medium: String?
-) : IEntityMediaCover
+data class MediaCoverImage(
+    val color: String?,
+    val extraLarge: String?,
+    val large: String?,
+    val medium: String?
+)

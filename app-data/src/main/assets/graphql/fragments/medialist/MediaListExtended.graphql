@@ -1,0 +1,27 @@
+fragment MediaListExtended on MediaList {
+    advancedScores
+    completedAt {
+    ... FuzzyDate
+    }
+    createdAt
+    customLists(asArray: true)
+    hiddenFromStatusLists
+    id
+    media {
+    ... MediaCore
+    }
+    mediaId
+    notes
+    priority
+    private
+    progress
+    progressVolumes
+    repeat
+    score(format: $scoreFormat)
+    startedAt {
+    ...FuzzyDate
+    }
+    status
+    updatedAt
+    userId
+}

@@ -18,7 +18,7 @@
 package co.anitrend.data.media.model.remote.page
 
 import co.anitrend.data.media.model.remote.MediaModel
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 import com.google.gson.annotations.SerializedName
 
 internal data class MediaPage(

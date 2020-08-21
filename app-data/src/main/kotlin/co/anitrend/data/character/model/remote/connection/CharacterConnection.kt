@@ -20,7 +20,7 @@ package co.anitrend.data.character.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.character.model.remote.Character
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 
 /** [CharacterConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/characterconnection.doc.html)
  * Character Connection

@@ -17,7 +17,8 @@
 
 package co.anitrend.data.media.model.remote
 
-import co.anitrend.domain.media.contract.IMediaRank
+import co.anitrend.data.shared.common.Identity
+import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
@@ -26,12 +27,12 @@ import co.anitrend.domain.media.enums.MediaSeason
  * The ranking of a media in a particular time span and format compared to other media
  */
 internal data class MediaRank(
-    override val allTime: Boolean?,
-    override val context: String,
-    override val format: MediaFormat,
-    override val rank: Int,
-    override val season: MediaSeason?,
-    override val type: MediaRankType,
-    override val year: Int?,
+    val allTime: Boolean?,
+    val context: String,
+    val format: MediaFormat,
+    val rank: Int,
+    val season: MediaSeason?,
+    val type: MediaRankType,
+    val year: Int?,
     override val id: Long
-) : IMediaRank
+) : Identity

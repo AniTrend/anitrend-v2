@@ -17,7 +17,7 @@
 
 package co.anitrend.data.activity.model.remote.common
 
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.user.model.contract.IUser
 import co.anitrend.domain.activity.enums.ActivityType
 
@@ -30,7 +30,7 @@ import co.anitrend.domain.activity.enums.ActivityType
  * @property siteUrl The url for the activity page on the AniList website
  * @property type The type of activity
  */
-internal interface IFeed : IEntity {
+internal interface IFeed : Identity {
     val createdAt: Long
     val likes: List<IUser>?
     val replyCount: Int

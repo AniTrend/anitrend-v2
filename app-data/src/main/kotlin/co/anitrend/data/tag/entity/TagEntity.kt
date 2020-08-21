@@ -19,7 +19,7 @@ package co.anitrend.data.tag.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 @Entity
 internal data class TagEntity(
@@ -32,4 +32,4 @@ internal data class TagEntity(
     val isGeneralSpoiler: Boolean,
     val isMediaSpoiler: Boolean,
     val isAdult: Boolean
-) : IEntity
+) : Identity

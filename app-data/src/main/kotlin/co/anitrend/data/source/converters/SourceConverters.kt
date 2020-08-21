@@ -20,8 +20,8 @@ package co.anitrend.data.source.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.source.entity.SourceEntity
 import co.anitrend.data.source.model.remote.SourceResult
-import co.anitrend.domain.media.contract.IMediaSourceId
-import co.anitrend.domain.media.entities.MediaSourceId
+import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
+import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 
 internal class SourceModelConverter : SupportConverter<SourceResult, SourceEntity>() {
     /**
@@ -53,10 +53,10 @@ internal class SourceEntityConverter : SupportConverter<SourceEntity, IMediaSour
      */
     override val fromType: (SourceEntity) -> MediaSourceId = { entity ->
         MediaSourceId(
-            anilist = entity.anilist,
-            aniDb = entity.aniDb,
-            kitsu = entity.kitsu,
-            mal = entity.mal
+            anilist = entity.anilist.toUInt(),
+            aniDb = entity.aniDb?.toUInt(),
+            kitsu = entity.kitsu?.toUInt(),
+            mal = entity.mal?.toUInt()
         )
     }
 

@@ -20,7 +20,7 @@ package co.anitrend.data.genre.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
 import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.domain.genre.entities.Genre
+import co.anitrend.domain.genre.entity.Genre
 
 internal class GenreEntityConverter(
     override val fromType: (GenreEntity) -> Genre = { from().transform(it) },
@@ -45,21 +45,21 @@ internal class GenreEntityConverter(
 }
 
 internal class GenreModelConverter(
-    override val fromType: (GenreEntity) -> String = { from().transform(it) },
-    override val toType: (String) -> GenreEntity = { to().transform(it) }
-) : SupportConverter<GenreEntity, String>() {
+    override val fromType: (String) -> GenreEntity = { from().transform(it) },
+    override val toType: (GenreEntity) -> String = { to().transform(it) }
+) : SupportConverter<String, GenreEntity>() {
 
     companion object {
         private fun from() =
-            object : ISupportMapperHelper<GenreEntity, String> {
-                override fun transform(source: GenreEntity) = source.genre
+            object : ISupportMapperHelper<String, GenreEntity> {
+                override fun transform(source: String): GenreEntity = GenreEntity(
+                    genre = source
+                )
             }
 
         private fun to() =
-            object : ISupportMapperHelper<String, GenreEntity> {
-                override fun transform(source: String) = GenreEntity(
-                    genre = source
-                )
+            object : ISupportMapperHelper<GenreEntity, String> {
+                override fun transform(source: GenreEntity): String = source.genre
             }
     }
 }

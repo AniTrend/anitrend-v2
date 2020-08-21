@@ -21,7 +21,35 @@ query MediaListCollection(
     $userId: Int,
     $userName: String
 ) {
-    MediaListCollection {
-
+    MediaListCollection(
+        chunk: $chunk,
+        completedAt: $completedAt,
+        completedAt_greater: $completedAt_greater,
+        completedAt_lesser: $completedAt_lesser,
+        completedAt_like: $completedAt_like,
+        forceSingleCompletedList: $forceSingleCompletedList,
+        notes: $notes,
+        notes_like: $notes_like,
+        perChunk: $perChunk,
+        sort: $sort,
+        startedAt: $startedAt,
+        startedAt_greater: $startedAt_greater,
+        startedAt_lesser: $startedAt_lesser,
+        startedAt_like: $startedAt_like,
+        status: $status,
+        status_in: $status_in,
+        status_not: $status_not,
+        status_not_in: $status_not_in,
+        type: $type,
+        userId: $userId,
+        userName: $userName
+    ) {
+        hasNextChunk
+        lists {
+            ... MediaListExtended
+        }
+        user {
+            ... UserCore
+        }
     }
 }

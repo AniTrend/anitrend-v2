@@ -20,7 +20,7 @@ package co.anitrend.data.review.model.remote.connection
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.review.model.remote.Review
 import co.anitrend.data.review.model.remote.edge.ReviewEdge
-import co.anitrend.domain.common.model.PageInfo
+import co.anitrend.domain.common.entity.shared.PageInfo
 
 /** [ReviewConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/reviewconnection.doc.html)
  * Review connection

@@ -22,8 +22,7 @@ import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.source.model.local.SourceQuery
-import co.anitrend.domain.media.contract.IMediaSourceId
-import co.anitrend.domain.media.entities.MediaSourceId
+import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

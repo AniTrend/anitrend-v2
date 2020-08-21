@@ -21,7 +21,7 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.media.model.remote.page.MediaPage
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.body.GraphContainer
-import io.github.wax911.library.model.request.QueryContainer
+import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -31,6 +31,6 @@ internal interface MediaRemoteSource {
     @POST(EndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("MediaPaged")
     suspend fun getMediaPaged(
-        @Body queryContainer: QueryContainer
+        @Body queryContainer: QueryContainerBuilder
     ): Response<GraphContainer<MediaPage>>
 }

@@ -17,9 +17,9 @@
 
 package co.anitrend.data.character.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.common.entity.IEntityImage
-import co.anitrend.domain.common.entity.IEntityName
+import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.shared.model.SharedImage
+import co.anitrend.data.shared.model.SharedName
 
 /** [Character](https://anilist.github.io/ApiV2-GraphQL-Docs/character.doc.html)
  * Character contract without any connections
@@ -33,12 +33,12 @@ import co.anitrend.domain.common.entity.IEntityName
  * @property siteUrl The url for the character page on the AniList website
  * @property updatedAt When the character's data was last updated
  */
-internal interface ICharacter : IEntity {
+internal interface ICharacter : Identity {
     val description: String?
     val favourites: Int?
-    val image: IEntityImage?
+    val image: SharedImage?
     val isFavourite: Boolean
-    val name: IEntityName?
+    val name: SharedName?
     val siteUrl: String?
     val updatedAt: Long?
 }

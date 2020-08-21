@@ -29,11 +29,7 @@ fragment MediaExtended on Media {
     isLocked
     meanScore
     nextAiringEpisode {
-        id
-        airingAt
-        episode
-        mediaId
-        timeUntilAiring
+        ... AiringSchedule
     }
     popularity
     rankings {
@@ -69,4 +65,7 @@ fragment MediaExtended on Media {
     type
     updatedAt
     volumes
+    mediaListEntry {
+        ... MediaListExtended
+    }
 }

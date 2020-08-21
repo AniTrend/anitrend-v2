@@ -17,7 +17,7 @@
 
 package co.anitrend.data.studio.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 /** [Studio](https://anilist.github.io/ApiV2-GraphQL-Docs/studio.doc.html)
  * Studio contract, without connections
@@ -29,7 +29,7 @@ import co.anitrend.domain.common.entity.IEntity
  * @property name The name of the studio
  * @property siteUrl The url for the studio page on the AniList website
 */
-internal interface IStudio : IEntity {
+internal interface IStudio : Identity {
     val favourites: Int?
     val isAnimationStudio: Boolean
     val isFavourite: Boolean

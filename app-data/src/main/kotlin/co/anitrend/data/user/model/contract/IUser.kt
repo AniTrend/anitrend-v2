@@ -17,8 +17,8 @@
 
 package co.anitrend.data.user.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
-import co.anitrend.domain.common.entity.IEntityImage
+import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.shared.model.SharedImage
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
  * A user from the anilist platform without the favourites, media options and stats
@@ -36,10 +36,10 @@ import co.anitrend.domain.common.entity.IEntityImage
  * @property moderatorStatus If the user is a moderator or data moderator
  * @property updatedAt When the user's data was last updated
  */
-internal interface IUser : IEntity {
+internal interface IUser : Identity {
     val name: String
     val about: String?
-    val avatar: IEntityImage?
+    val avatar: SharedImage?
     val bannerImage: String?
     val isFollowing: Boolean?
     val options: IUserOptions?

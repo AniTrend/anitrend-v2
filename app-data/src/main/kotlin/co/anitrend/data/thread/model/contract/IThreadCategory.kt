@@ -17,13 +17,13 @@
 
 package co.anitrend.data.thread.model.contract
 
-import co.anitrend.domain.common.entity.IEntity
+import co.anitrend.data.shared.common.Identity
 
 /** [ThreadCategory](https://anilist.github.io/ApiV2-GraphQL-Docs/threadcategory.doc.html)
  * Thread category contract
  *
  * @property name The name of the category
  */
-internal interface IThreadCategory : IEntity {
+internal interface IThreadCategory : Identity {
     val name: String
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.common.entity
+package co.anitrend.data.shared.model
 
 /**
- * Image contract
+ * Name contract
  *
- * @property large Image at it's largest size
- * @property medium Image at it's medium size
+ * @property alternative Other names that might be referred to as (pen names)
+ * @property first First name
+ * @property full Full name
+ * @property last Last name
+ * @property native The full name in the native language
  */
-interface IEntityImage {
-    val large: String?
-    val medium: String?
-}
+internal data class SharedName(
+    val alternative: List<String>?,
+    val first: String?,
+    val full: String?,
+    val last: String?,
+    val native: String?
+)
