@@ -15,14 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.initializer
+package co.anitrend.search.initializer
 
 import android.content.Context
-import co.anitrend.core.initializer.AbstractFeatureInitializer
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.splash.koin.moduleHelper
+import co.anitrend.search.koin.moduleHelper
+import kotlinx.coroutines.launch
 
-class DynamicFeatureInitializer : AbstractFeatureInitializer<Unit>() {
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -30,6 +31,6 @@ class DynamicFeatureInitializer : AbstractFeatureInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        moduleHelper.loadModules()
+        launch { moduleHelper.loadModules() }
     }
 }

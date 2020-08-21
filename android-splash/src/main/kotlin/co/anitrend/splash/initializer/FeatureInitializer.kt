@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,31 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.presenter
+package co.anitrend.splash.initializer
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
-import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
-import co.anitrend.navigation.Main
-import co.anitrend.navigation.OnBoarding
-import co.anitrend.navigation.extensions.forActivity
-import kotlinx.coroutines.delay
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.splash.koin.moduleHelper
 
-class SplashPresenter(
-    context: Context,
-    settings: Settings
-) : CorePresenter(context, settings) {
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
 
     /**
-     * Decide which screen to open
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
      */
-    suspend fun firstRunCheck(activity: FragmentActivity?) {
-        delay(1200)
-        if (settings.isNewInstallation)
-            OnBoarding.forActivity(context)
-        else
-            Main.forActivity(context)
-        activity?.finish()
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
     }
 }

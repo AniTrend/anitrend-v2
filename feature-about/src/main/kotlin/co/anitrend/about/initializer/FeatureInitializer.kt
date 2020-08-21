@@ -15,16 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.onboarding.initializer
+package co.anitrend.about.initializer
 
 import android.content.Context
-import co.anitrend.core.initializer.AbstractFeatureInitializer
+import co.anitrend.about.koin.moduleHelper
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.onboarding.koin.moduleHelper
 import kotlinx.coroutines.launch
 
-class DynamicFeatureInitializer : AbstractFeatureInitializer<Unit>() {
-
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
     /**
      * Initializes and a component given the application [Context]
      *

@@ -21,7 +21,8 @@ import android.content.Context
 import androidx.core.text.buildSpannedString
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
-import co.anitrend.navigation.NavigationTargets
+import co.anitrend.navigation.Main
+import co.anitrend.navigation.extensions.forActivity
 import co.anitrend.onboarding.R
 import co.anitrend.onboarding.model.OnBoarding
 
@@ -121,6 +122,6 @@ class OnBoardingPresenter(
 
     fun onBoardingExperienceCompleted() {
         settings.isNewInstallation = false
-        NavigationTargets.Main(context).invoke()
+        Main.forActivity(context)
     }
 }
