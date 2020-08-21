@@ -18,14 +18,17 @@
 package co.anitrend.onboarding.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.navigation.Main
+import co.anitrend.navigation.OnBoarding
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
+import co.anitrend.onboarding.provider.FeatureProvider
 import co.anitrend.onboarding.ui.activity.OnBoardingScreen
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private val presenterModule = module {
-    scope(named<OnBoardingScreen>()) {
+    scope<OnBoardingScreen> {
         scoped {
             OnBoardingPresenter(
                 context = androidContext(),
@@ -35,8 +38,10 @@ private val presenterModule = module {
     }
 }
 
-internal val moduleHelper by lazy {
-    DynamicFeatureModuleHelper(
-        listOf(presenterModule)
-    )
+private val featureModule = module {
+    factory<OnBoarding.Provider> {
+        FeatureProvider()
+    }
 }
+
+internal val moduleHelper = DynamicFeatureModuleHelper(listOf(presenterModule, featureModule))

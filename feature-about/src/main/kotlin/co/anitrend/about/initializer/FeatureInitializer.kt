@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,9 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.contract
+package co.anitrend.about.initializer
 
-internal interface INavigationTarget {
-    val packageName: String
-    val className: String
+import android.content.Context
+import co.anitrend.about.koin.moduleHelper
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import kotlinx.coroutines.launch
+
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        launch { moduleHelper.loadModules() }
+    }
 }

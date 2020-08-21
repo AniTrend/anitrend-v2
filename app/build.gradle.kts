@@ -30,9 +30,6 @@ dependencies {
 
     implementation(Libraries.AniTrend.Emojify.emojify)
 
-    /** Timber Trees */
-    implementation(Libraries.treessence)
-
     /** debugImplementation because LeakCanary should only run in debug builds. */
     debugImplementation(Libraries.Square.LeakCanary.leakCanary)
 

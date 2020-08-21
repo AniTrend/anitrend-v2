@@ -18,32 +18,21 @@
 package co.anitrend.initializer
 
 import android.content.Context
-import android.util.Log
 import androidx.startup.Initializer
-import androidx.work.Configuration
-import androidx.work.WorkManager
-import co.anitrend.BuildConfig
 import co.anitrend.core.initializer.InjectorInitializer
 import co.anitrend.core.initializer.contract.AbstractInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.koin.appModules
 
-class WorkerInitializer : AbstractInitializer<WorkManager>() {
+class ApplicationInitializer : AbstractInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
      *
      * @param context The application context.
      */
-    override fun create(context: Context): WorkManager {
-        val logLevel = when (BuildConfig.DEBUG) {
-            true -> Log.VERBOSE
-            else -> Log.ERROR
-        }
-
-        val configuration = Configuration.Builder()
-            .setMinimumLoggingLevel(logLevel)
-            .build()
-        WorkManager.initialize(context, configuration)
-        return WorkManager.getInstance(context)
+    override fun create(context: Context) {
+        appModules.loadModules()
     }
 
     /**
@@ -53,6 +42,6 @@ class WorkerInitializer : AbstractInitializer<WorkManager>() {
      * For e.g. if a [Initializer] `B` defines another
      * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
-    override fun dependencies() =
+    override fun dependencies(): List<Class<out Initializer<*>>> =
         listOf(InjectorInitializer::class.java)
 }

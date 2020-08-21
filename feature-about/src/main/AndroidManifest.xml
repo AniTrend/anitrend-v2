@@ -17,9 +17,20 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="co.anitrend.about">
 
     <application>
-        <activity android:name=".ui.activity.AboutScreen" />
+        <activity android:name=".ui.activity.AboutScreen"
+            android:label="@string/title_activity_about_screen" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data  android:name="co.anitrend.about.initializer.FeatureInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 </manifest>

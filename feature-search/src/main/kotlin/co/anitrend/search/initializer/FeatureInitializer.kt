@@ -15,21 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer
+package co.anitrend.search.initializer
 
-import androidx.startup.Initializer
+import android.content.Context
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.search.koin.moduleHelper
+import kotlinx.coroutines.launch
 
-/**
- * Contract for initializer
- */
-abstract class AbstractInitializer<T> : Initializer<T> {
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
 
     /**
-     * @return A list of dependencies that this [Initializer] depends on. This is
-     * used to determine initialization order of [Initializer]s.
+     * Initializes and a component given the application [Context]
      *
-     * For e.g. if a [Initializer] `B` defines another [Initializer] `A` as its dependency,
-     * then `A` gets initialized before `B`.
+     * @param context The application context.
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+    override fun create(context: Context) {
+        launch { moduleHelper.loadModules() }
+    }
 }

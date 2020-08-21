@@ -29,4 +29,7 @@ dependencies {
     implementation(Libraries.MaterialDialogs.bottomsheets)
 
     implementation(Libraries.Square.OkHttp.logging)
+
+    /** Timber Trees */
+    implementation(Libraries.treessence)
 }

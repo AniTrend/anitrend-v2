@@ -15,21 +15,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.koin
+package co.anitrend.koin
 
+import androidx.startup.AppInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.Splash
-import co.anitrend.splash.presenter.SplashPresenter
-import co.anitrend.splash.provider.FeatureProvider
-import co.anitrend.splash.ui.fragment.SplashContent
+import co.anitrend.navigation.Main
+import co.anitrend.presenter.MainPresenter
+import co.anitrend.provider.FeatureProvider
+import co.anitrend.ui.MainScreen
+import io.wax911.emojify.initializer.EmojiInitializer
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+private val coreModule = module {
+    factory {
+        AppInitializer.getInstance(androidContext())
+            .initializeComponent(EmojiInitializer::class.java)
+    }
+}
+
 private val presenterModule = module {
-    scope<SplashContent> {
+    scope<MainScreen> {
         scoped {
-            SplashPresenter(
+            MainPresenter(
                 context = androidContext(),
                 settings = get()
             )
@@ -38,9 +46,11 @@ private val presenterModule = module {
 }
 
 private val featureModule = module {
-    factory<Splash.Provider> {
+    factory<Main.Provider> {
         FeatureProvider()
     }
 }
 
-internal val moduleHelper = DynamicFeatureModuleHelper(listOf(presenterModule, featureModule))
+internal val appModules = DynamicFeatureModuleHelper(
+    listOf(coreModule, presenterModule, featureModule)
+)

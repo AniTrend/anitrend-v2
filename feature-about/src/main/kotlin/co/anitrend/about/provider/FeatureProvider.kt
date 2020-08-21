@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,17 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import co.anitrend.buildSrc.Libraries
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.about.provider
 
-dependencies {
-    implementation(project(":app-domain"))
+import android.content.Context
+import android.content.Intent
+import co.anitrend.about.ui.activity.AboutScreen
+import co.anitrend.navigation.About
 
-    implementation(Libraries.Koin.core)
-    implementation(Libraries.Koin.extension)
-    implementation(Libraries.Koin.AndroidX.fragment)
-    testImplementation(Libraries.Koin.test)
+internal class FeatureProvider : About.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, AboutScreen::class.java)
 }

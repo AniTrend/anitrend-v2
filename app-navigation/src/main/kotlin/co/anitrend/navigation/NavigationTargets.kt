@@ -17,53 +17,66 @@
 
 package co.anitrend.navigation
 
-import android.content.Context
-import co.anitrend.navigation.contract.NavigationComponent
-import co.anitrend.navigation.extensions.loadClassOrNull
+import co.anitrend.navigation.provider.INavigationProvider
+import co.anitrend.navigation.router.NavigationRouter
+import org.koin.core.inject
 
-object NavigationTargets {
+object Main : NavigationRouter() {
+    override val provider by inject<Provider>()
 
-    class Main(context: Context) : NavigationComponent(
-        context = context,
-        packageName = "ui.activity",
-        className = "MainScreen"
-    ) {
-        companion object {
-            fun <T> koinInitializer(): Class<out T>? {
-                val packagePath = "co.anitrend.initializer"
-                val classPath = "$packagePath.KoinInitializer"
-                return classPath.loadClassOrNull()
-            }
-        }
-    }
+    interface Provider : INavigationProvider
+}
 
-    class OnBoarding(context: Context) : NavigationComponent(
-        context = context,
-        packageName = "onboarding.ui.activity",
-        className = "OnBoardingScreen"
-    )
+object Splash : NavigationRouter() {
+    override val provider by inject<Provider>()
 
-    class Search(context: Context) : NavigationComponent(
-        context = context,
-        packageName = "search.ui.activity",
-        className = "SearchScreen"
-    )
+    interface Provider : INavigationProvider
+}
 
-    class Settings(context: Context) : NavigationComponent(
-        context = context,
-        packageName = "settings.ui.activity",
-        className = "SettingsScreen"
-    )
+object OnBoarding : NavigationRouter() {
+    override val provider by inject<Provider>()
 
-    class About(context: Context) : NavigationComponent(
-        context = context,
-        packageName = "about.ui.activity",
-        className = "AboutScreen"
-    )
+    interface Provider : INavigationProvider
+}
 
-    class Discover(context: Context) : NavigationComponent(
-        context = context,
-        packageName = "media.ui.fragment",
-        className = "DiscoverContent"
-    )
+object Search : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object Settings : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object About : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object Media : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object Character : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object Staff : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object User : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
 }

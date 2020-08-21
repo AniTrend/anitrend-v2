@@ -28,6 +28,7 @@ import co.anitrend.core.settings.common.cache.ICacheSettings
 import co.anitrend.core.util.config.ConfigurationUtil
 import co.anitrend.core.util.locale.LocaleHelper
 import co.anitrend.core.util.theme.ThemeHelper
+import co.anitrend.data.arch.di.dataModules
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -131,6 +132,6 @@ private val configurationModule = module {
 }
 
 
-val coreModules = listOf(
+internal val coreModules = listOf(
     coreModule, configurationModule
-)
+) + dataModules

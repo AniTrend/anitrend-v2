@@ -15,21 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.splash.initializer
+package co.anitrend.onboarding.provider
 
 import android.content.Context
-import co.anitrend.core.initializer.AbstractFeatureInitializer
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.splash.koin.moduleHelper
+import android.content.Intent
+import co.anitrend.navigation.OnBoarding
+import co.anitrend.onboarding.ui.activity.OnBoardingScreen
 
-class DynamicFeatureInitializer : AbstractFeatureInitializer<Unit>() {
-
-    /**
-     * Initializes and a component given the application [Context]
-     *
-     * @param context The application context.
-     */
-    override fun create(context: Context) {
-        moduleHelper.loadModules()
-    }
+internal class FeatureProvider : OnBoarding.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, OnBoardingScreen::class.java)
 }

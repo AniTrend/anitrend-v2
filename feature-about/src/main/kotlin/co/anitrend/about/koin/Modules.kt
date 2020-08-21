@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.contract
+package co.anitrend.about.koin
 
-import android.content.Intent
+import co.anitrend.about.provider.FeatureProvider
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.navigation.About
+import org.koin.dsl.module
 
-internal interface INavigationRouter {
-    val navRouterIntent: Intent?
+private val featureModule = module {
+    factory<About.Provider> {
+        FeatureProvider()
+    }
 }
+
+internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule))

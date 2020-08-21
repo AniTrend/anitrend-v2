@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,29 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.koin
+package co.anitrend.settings.koin
 
-import androidx.startup.AppInitializer
-import co.anitrend.core.koin.coreModules
-import co.anitrend.data.arch.di.dataModules
-import co.anitrend.presenter.MainPresenter
-import co.anitrend.ui.activity.MainScreen
-import io.wax911.emojify.initializer.EmojiInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.navigation.Settings
+import co.anitrend.settings.presenter.SettingsPresenter
+import co.anitrend.settings.provider.FeatureProvider
+import co.anitrend.settings.ui.activity.SettingsScreen
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private val coreModule = module {
-    factory {
-        AppInitializer.getInstance(androidContext())
-            .initializeComponent(EmojiInitializer::class.java)
-    }
-}
-
 private val presenterModule = module {
-    scope(named<MainScreen>()) {
+    scope<SettingsScreen> {
         scoped {
-            MainPresenter(
+            SettingsPresenter(
                 context = androidContext(),
                 settings = get()
             )
@@ -45,6 +36,12 @@ private val presenterModule = module {
     }
 }
 
-internal val appModules = listOf(
-    coreModule, presenterModule
-) + coreModules + dataModules
+private val featureModule = module {
+    factory<Settings.Provider> {
+        FeatureProvider()
+    }
+}
+
+internal val moduleHelper = DynamicFeatureModuleHelper(
+    listOf(presenterModule, featureModule)
+)

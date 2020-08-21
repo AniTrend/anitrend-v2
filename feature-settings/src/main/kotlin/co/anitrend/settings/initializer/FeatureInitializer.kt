@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,17 +14,22 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import co.anitrend.buildSrc.Libraries
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.settings.initializer
 
-dependencies {
-    implementation(project(":app-domain"))
+import android.content.Context
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.settings.koin.moduleHelper
+import kotlinx.coroutines.launch
 
-    implementation(Libraries.Koin.core)
-    implementation(Libraries.Koin.extension)
-    implementation(Libraries.Koin.AndroidX.fragment)
-    testImplementation(Libraries.Koin.test)
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        launch { moduleHelper.loadModules() }
+    }
 }
