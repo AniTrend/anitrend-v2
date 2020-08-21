@@ -15,9 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.contract
+package co.anitrend.navigation.router
 
-internal interface INavigationTarget {
-    val packageName: String
-    val className: String
+import co.anitrend.navigation.provider.INavigationProvider
+import org.koin.core.KoinComponent
+
+/**
+ * Router for navigation components
+ */
+abstract class NavigationRouter : KoinComponent {
+    internal val moduleTag = javaClass.simpleName
+
+    /**
+     * Feature provider contract
+     */
+    internal abstract val provider: INavigationProvider
 }

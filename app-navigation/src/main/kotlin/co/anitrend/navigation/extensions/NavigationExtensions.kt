@@ -19,13 +19,11 @@ package co.anitrend.navigation.extensions
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.collection.LruCache
-import androidx.fragment.app.Fragment
-import co.anitrend.navigation.contract.NavigationComponent
+import co.anitrend.navigation.model.NavPayload
+import co.anitrend.navigation.router.NavigationRouter
 import timber.log.Timber
-
-
-private const val moduleTag = "NavigationExtensions"
 
 private val classCache = object : LruCache<String, Class<*>>(8) {
     /**
@@ -44,7 +42,7 @@ private val classCache = object : LruCache<String, Class<*>>(8) {
      * key.
      */
     override fun create(key: String): Class<*>? {
-        Timber.tag(moduleTag).v(
+        Timber.tag("classCache").v(
             "Creating new navigation target class reference for key: $key"
         )
         return Class.forName(key)
@@ -53,51 +51,48 @@ private val classCache = object : LruCache<String, Class<*>>(8) {
 
 private inline fun <reified T : Any> Any.castOrNull() = this as? T
 
-private fun Class<*>.forIntent(context: Context): Intent =
+private fun Class<*>.forIntent(packageName: String): Intent =
     Intent(Intent.ACTION_VIEW)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        .setClassName(context, name)
+        .setClassName(packageName, name)
 
 @Throws(ClassNotFoundException::class)
-internal fun <T> String.loadClassOrNull(): Class<out T>? {
-    return classCache.get(this)?.castOrNull()
-}
+internal fun <T> String.loadClassOrNull(): Class<out T>? =
+    classCache.get(this)?.castOrNull()
 
-internal fun <T> String.loadOrNull(): T? =
-    try {
-        loadClassOrNull<T>()?.newInstance()
-    } catch (e: ClassNotFoundException) {
-        Timber.tag(moduleTag).e(e)
-        null
-    }
-
-/**
- * Builds an intent path for the navigation component target
- */
-internal fun NavigationComponent.loadIntentOrNull(): Intent? =
-    try {
-        val packagePath = "${context.packageName}.$packageName"
-        val classPath = "$packagePath.$className"
-        val `class` = classPath.loadClassOrNull<Any>()
-        `class`?.forIntent(context)
-    } catch (e: ClassNotFoundException) {
-        Timber.tag(moduleTag).e(e)
-        null
-    }
+internal fun String.loadIntentOrNull(packageName: String): Intent? =
+    runCatching {
+        classCache.get(this)?.run {
+            forIntent(packageName)
+        }
+    }.onFailure {
+        Timber.tag("loadIntentOrNull").e(it)
+    }.getOrNull()
 
 /**
  * Build fragment class from the navigation component
  */
-fun NavigationComponent.forFragment() =
-    loadIntentOrNull()?.component?.className
-        ?.loadClassOrNull<Fragment>()
+fun NavigationRouter.forFragment() = provider.fragment()
 
 /**
- * Creates a new instance of the given type [T]. Assure that the
- * required type is **constructorless**
- *
- * Suggested use would make heavy use of interfaces on base types
+ * Builds an activity intent and starts it
  */
-fun <T> NavigationComponent.forInstance() =
-    loadIntentOrNull()?.component?.className
-        ?.loadOrNull<T>()
+fun NavigationRouter.forActivity(
+    context: Context?,
+    navPayload: NavPayload? = null,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+    options: Bundle? = null
+) {
+    runCatching {
+        val intent = provider.activity(context)
+        intent?.flags = flags
+        intent?.action = action
+        navPayload?.also {
+            intent?.putExtra(it.key, it.parcel)
+        }
+        context?.startActivity(intent, options)
+    }.onFailure {
+        Timber.tag(moduleTag).e(it)
+    }
+}

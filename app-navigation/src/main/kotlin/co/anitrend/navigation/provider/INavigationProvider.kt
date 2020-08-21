@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.contract
+package co.anitrend.navigation.provider
 
+import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.Fragment
 
-internal interface INavigationRouter {
-    val navRouterIntent: Intent?
+/**
+ * Provider for navigation components
+ */
+interface INavigationProvider {
+    fun activity(context: Context?): Intent? = null
+    fun fragment(): Class<out Fragment>? = null
 }
