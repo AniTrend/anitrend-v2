@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.medialist.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Media list sort enums
  */
-enum class MediaListSort {
+enum class MediaListSort : ISortable {
     ADDED_TIME,
     FINISHED_ON,
     MEDIA_ID,

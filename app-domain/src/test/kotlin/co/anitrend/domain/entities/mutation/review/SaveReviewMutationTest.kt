@@ -17,7 +17,7 @@
 
 package co.anitrend.domain.entities.mutation.review
 
-import co.anitrend.domain.review.models.mutation.SaveReviewMutation
+import co.anitrend.domain.review.model.mutation.SaveReviewMutation
 import org.junit.Test
 
 import org.junit.Assert.*

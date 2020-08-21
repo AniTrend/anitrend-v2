@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.studio.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Studio sort enums
  */
-enum class StudioSort {
+enum class StudioSort : ISortable {
     FAVOURITES,
     ID,
     NAME,

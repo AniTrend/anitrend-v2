@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.character.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Character sort enums
  */
-enum class CharacterSort {
+enum class CharacterSort : ISortable {
     ID,
     ROLE,
     SEARCH_MATCH

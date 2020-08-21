@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.user.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * User sort enums
  */
-enum class UserSort {
+enum class UserSort : ISortable {
     CHAPTERS_READ,
     ID,
     SEARCH_MATCH,

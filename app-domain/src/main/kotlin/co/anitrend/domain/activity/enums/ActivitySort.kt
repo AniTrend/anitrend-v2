@@ -17,9 +17,11 @@
 
 package co.anitrend.domain.activity.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Activity sort enums
  */
-enum class ActivitySort {
+enum class ActivitySort : ISortable {
     ID
 }

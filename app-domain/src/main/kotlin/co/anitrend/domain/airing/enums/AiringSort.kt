@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.airing.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Airing schedule sort enums
  */
-enum class AiringSort {
+enum class AiringSort : ISortable {
     ID,
     MEDIA_ID,
     TIME,

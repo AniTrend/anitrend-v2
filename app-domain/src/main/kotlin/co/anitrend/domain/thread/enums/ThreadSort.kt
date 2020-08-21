@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.thread.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Thread sort enums
  */
-enum class ThreadSort {
+enum class ThreadSort : ISortable {
     CREATED_AT,
     ID,
     IS_STICKY,

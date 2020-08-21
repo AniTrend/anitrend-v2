@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.recommendation.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Recommendation sort enums
  */
-enum class RecommendationSort {
+enum class RecommendationSort : ISortable {
     ID,
     RATING
 }

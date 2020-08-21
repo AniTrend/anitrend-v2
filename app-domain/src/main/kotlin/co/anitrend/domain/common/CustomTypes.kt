@@ -24,7 +24,7 @@ package co.anitrend.domain.common
  * E.g. 2016: 20160000
  * May 1976: 19760500
  */
-typealias FuzzyDateInt = String
+typealias FuzzyDateInt = CharSequence
 
 /**
  * A query filter type for FuzzyDateInt,
@@ -34,9 +34,9 @@ typealias FuzzyDateInt = String
  * E.g 2019: 2019%
  * May 2011: 201105%
  */
-typealias FuzzyDateLike = String
+typealias FuzzyDateLike = CharSequence
 
 /**
  * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) Two-letter country codes
  */
-typealias CountryCode = String
+typealias CountryCode = CharSequence

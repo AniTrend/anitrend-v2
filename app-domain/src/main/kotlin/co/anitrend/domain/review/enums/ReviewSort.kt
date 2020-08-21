@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.review.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Review sort enums
  */
-enum class ReviewSort {
+enum class ReviewSort : ISortable {
     CREATED_AT,
     ID,
     RATING,

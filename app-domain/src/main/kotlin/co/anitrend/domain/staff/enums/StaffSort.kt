@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.staff.enums
 
+import co.anitrend.domain.common.enums.contract.ISortable
+
 /**
  * Staff sort enums
  */
-enum class StaffSort {
+enum class StaffSort : ISortable {
     FAVOURITES,
     ID,
     LANGUAGE,
