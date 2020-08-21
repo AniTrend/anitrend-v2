@@ -14,11 +14,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import co.anitrend.buildSrc.Libraries
 
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
+    implementation(project(":app-domain"))
 
+    implementation(Libraries.Koin.core)
+    implementation(Libraries.Koin.extension)
+    implementation(Libraries.Koin.AndroidX.fragment)
+    testImplementation(Libraries.Koin.test)
 }
