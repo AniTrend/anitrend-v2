@@ -281,6 +281,11 @@ object Libraries {
         }
     }
 
+    object Blitz {
+        private const val version = "1.0.9"
+        const val blitz = "com.github.perfomer:blitz:$version"
+    }
+
     object BlueLineLabs {
         object Conductor {
             private const val version = "3.0.0-rc6"
