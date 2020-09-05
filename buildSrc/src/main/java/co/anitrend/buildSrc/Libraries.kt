@@ -43,7 +43,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-alpha07"
+            private const val version = "1.2.0-alpha08"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
@@ -61,7 +61,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.5.0-alpha01"
+            private const val version = "1.5.0-alpha02"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -72,8 +72,8 @@ object Libraries {
             }
         }
 
-        object ContraintLayout {
-            private const val version = "2.0.0-rc1"
+        object ConstraintLayout {
+            private const val version = "2.0.1"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -84,7 +84,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.0-alpha07"
+            private const val version = "1.3.0-alpha08"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -197,7 +197,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha02"
+            private const val version = "1.0.0-alpha03"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
@@ -207,7 +207,7 @@ object Libraries {
         }
 
         object Test {
-            private const val version = "1.3.0-rc03"
+            private const val version = "1.3.0"
             const val core = "androidx.test:core:$version"
             const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
@@ -219,7 +219,7 @@ object Libraries {
             }
 
             object Extension {
-                private const val version = "1.1.2-rc03"
+                private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
@@ -262,7 +262,7 @@ object Libraries {
         }
 
         object Retrofit {
-            private const val version = "0.11.0-alpha01"
+            private const val version = "0.11.0-alpha02"
             //private const val version = "develop-SNAPSHOT" // testing development snapshot
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
@@ -276,9 +276,14 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.4.1"
+            private const val version = "3.4.2"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
+    }
+
+    object Blitz {
+        private const val version = "1.0.9"
+        const val blitz = "com.github.perfomer:blitz:$version"
     }
 
     object BlueLineLabs {
@@ -299,7 +304,7 @@ object Libraries {
     }
 
     object Coil {
-        private const val version = "0.11.0"
+        private const val version = "1.0.0-rc2"
         const val coil = "io.coil-kt:coil:$version"
         const val base = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
@@ -402,7 +407,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.1.6"
+        private const val version = "2.2.0-alpha-1"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
@@ -419,7 +424,7 @@ object Libraries {
     }
 
     object Markwon {
-        private const val version = "4.5.0"
+        private const val version = "4.5.1"
         const val core = "io.noties.markwon:core:$version"
         const val html = "io.noties.markwon:html:$version"
         const val image = "io.noties.markwon:image:$version"
