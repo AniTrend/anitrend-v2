@@ -219,7 +219,7 @@ object Libraries {
             }
 
             object Extension {
-                private const val version = "1.1.2-rc03"
+                private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
