@@ -207,7 +207,7 @@ object Libraries {
         }
 
         object Test {
-            private const val version = "1.3.0-rc03"
+            private const val version = "1.3.0"
             const val core = "androidx.test:core:$version"
             const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
