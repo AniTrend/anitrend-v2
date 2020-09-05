@@ -15,9 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.controller
+package co.anitrend.core.android.controller.contract
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Power management controller
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface PowerController {
     fun shouldSaveDataFlow(
         ignorePreference: Boolean
-    ): StateFlow<SaveData>
+    ): Flow<SaveData>
     fun shouldSaveData(): SaveData
 }
 
