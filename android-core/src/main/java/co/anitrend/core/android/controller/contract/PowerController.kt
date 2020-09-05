@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.contract
+package co.anitrend.core.android.controller.contract
+
+import kotlinx.coroutines.flow.Flow
 
 /**
- * Media genre contract
+ * Power management controller
  */
-internal interface IMediaGenre {
-    val genre: String
+interface PowerController {
+    fun shouldSaveDataFlow(
+        ignorePreference: Boolean
+    ): Flow<SaveData>
+    fun shouldSaveData(): SaveData
+}
+
+sealed class SaveData {
+    object Disabled : SaveData()
+    data class Enabled(
+        val reason: SaveDataReason
+    ) : SaveData()
+}
+
+enum class SaveDataReason {
+    PREFERENCE, SYSTEM_DATA_SAVER, SYSTEM_POWER_SAVER
 }

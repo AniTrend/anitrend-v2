@@ -15,27 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.controller
+package co.anitrend.core.android.settings.power
 
-import kotlinx.coroutines.flow.StateFlow
+interface IPowerSettings {
 
-/**
- * Power management controller
- */
-interface PowerController {
-    fun shouldSaveDataFlow(
-        ignorePreference: Boolean
-    ): StateFlow<SaveData>
-    fun shouldSaveData(): SaveData
-}
-
-sealed class SaveData {
-    object Disabled : SaveData()
-    data class Enabled(
-        val reason: SaveDataReason
-    ) : SaveData()
-}
-
-enum class SaveDataReason {
-    PREFERENCE, SYSTEM_DATA_SAVER, SYSTEM_POWER_SAVER
 }
