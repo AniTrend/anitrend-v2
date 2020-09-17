@@ -21,7 +21,9 @@ import co.anitrend.domain.common.FuzzyDateLike
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaStatus
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 class MockQuery(
     val isAdult: Boolean? = null,
     val id_in: List<Int>? = null,
