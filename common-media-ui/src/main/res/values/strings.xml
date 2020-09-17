@@ -22,4 +22,45 @@
 
     <string name="label_chapter_singular">Chapter</string>
     <string name="label_chapter_plural">Chapters</string>
+
+    <!-- Ep 5 • 3 days from now -->
+    <string name="label_episode_airing_in_time" translatable="false">Ep %d • %s</string>
+
+    <!-- Airs October 21st -->
+    <string name="label_episode_airing_on_date">Airs %s</string>
+
+    <!-- Carousel see all button -->
+    <string name="label_carousel_see_all">See All</string>
+
+    <!-- Catalog Anime titles and descriptions -->
+    <string name="label_carousel_airing_anime">Airing Soon</string>
+    <string name="label_carousel_airing_anime_description">Showing that are airing soon.</string>
+
+    <string name="label_carousel_popular_anime">All Time Popular • Anime</string>
+    <string name="label_carousel_popular_anime_description">Most popular anime of all time.</string>
+
+    <string name="label_carousel_trending_anime">Trending Right Now • Anime</string>
+    <string name="label_carousel_trending_anime_description">Shows that are getting a lot of attention.</string>
+
+    <string name="label_carousel_popular_season_anime">Popular This Season • Anime</string>
+    <string name="label_carousel_popular_season_anime_description">Shows with the most popularity this season.</string>
+
+    <string name="label_carousel_recently_added_anime">Recently Added • Anime</string>
+    <string name="label_carousel_recently_added_anime_description">Shows that have been recently added.</string>
+
+    <string name="label_carousel_anticipated_anime">Anticipated Next Season • Anime</string>
+    <string name="label_carousel_anticipated_anime_description">Shows to look forward to next season</string>
+
+    <!-- Catalog Manga titles and descriptions -->
+    <string name="label_carousel_popular_manga">All Time Popular • Manga</string>
+    <string name="label_carousel_popular_manga_description">Most popular manga of all time.</string>
+
+    <string name="label_carousel_trending_manga">Trending Right Now • Manga</string>
+    <string name="label_carousel_trending_manga_description">Manga that are getting a lot of attention.</string>
+
+    <string name="label_carousel_popular_manhwa">Popular Manhwa</string>
+    <string name="label_carousel_popular_manhwa_description">Popular comics from Korea.</string>
+
+    <string name="label_carousel_recently_added_manga">Recently Added • Manga</string>
+    <string name="label_carousel_recently_added_manga_description">Manga that has been recently added.</string>
 </resources>

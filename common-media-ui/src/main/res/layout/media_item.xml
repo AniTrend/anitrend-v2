@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2020  AniTrend
   ~
   ~     This program is free software: you can redistribute it and/or modify
@@ -21,7 +20,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaCardContainer"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/series_image_sm"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/lg_margin"
     style="@style/AppTheme.MediaCard">
@@ -31,6 +30,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <co.anitrend.arch.ui.view.image.SupportImageView
+            android:id="@+id/mediaImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:aspectRatio="1.6"
+            tools:src="@sample/poster"
+            tools:scaleType="centerCrop"/>
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -39,11 +47,9 @@
                 android:id="@+id/mediaStatusWidget"
                 android:layout_gravity="center_vertical"
                 android:layout_width="@dimen/lg_margin"
-                android:layout_height="@dimen/lg_margin" />
-
-            <Space
-                android:layout_width="@dimen/sm_margin"
-                android:layout_height="wrap_content" />
+                android:layout_height="@dimen/lg_margin"
+                android:layout_marginEnd="@dimen/sm_margin"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mediaTitle"
@@ -67,5 +73,12 @@
             />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <co.anitrend.common.media.ui.widgets.MediaRatingWidget
+        android:id="@+id/mediaRatingWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/lg_margin"/>
 
 </com.google.android.material.card.MaterialCardView>

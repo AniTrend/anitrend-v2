@@ -1,5 +1,5 @@
-<!--
-  ~ Copyright (C) 2019  AniTrend
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2020  AniTrend
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,13 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dist="http://schemas.android.com/apk/distribution"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    package="co.anitrend.media">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bubble_background">
 
-
-    <application>
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data  android:name="co.anitrend.media.initializer.FeatureInitializer"
-                android:value="androidx.startup" />
-        </provider>
-    </application>
-
-</manifest>
+</androidx.appcompat.widget.LinearLayoutCompat>

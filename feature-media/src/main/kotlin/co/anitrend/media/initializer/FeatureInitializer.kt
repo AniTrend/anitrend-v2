@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.media.initializer
 
-dependencies {
-    implementation(project(":common-media-ui"))
+import android.content.Context
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.media.koin.moduleHelper
+import kotlinx.coroutines.launch
+
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
+    }
 }

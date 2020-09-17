@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.media.provider
 
-dependencies {
-    implementation(project(":common-media-ui"))
+import androidx.fragment.app.Fragment
+import co.anitrend.media.component.carousel.ui.CarouselContent
+import co.anitrend.media.component.discover.ui.DiscoverContent
+import co.anitrend.navigation.MediaRouter
+
+class FeatureProvider : MediaRouter.Provider {
+    override fun discover() = DiscoverContent::class.java
+    override fun carousel() = CarouselContent::class.java
+
+    // TODO: Replace with media detail fragment
+    override fun fragment(): Class<out Fragment>? = null
 }

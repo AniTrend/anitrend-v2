@@ -26,15 +26,15 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.common.media.ui.databinding.MediaListItemBinding
-import co.anitrend.domain.media.entity.Media
-import coil.request.RequestDisposable
+import co.anitrend.domain.media.entity.base.IMedia
+import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaListItem(
-    val media: Media?
+    val media: IMedia?
 ) : RecyclerItem(media?.id) {
 
-    private var disposable: RequestDisposable? = null
+    private var disposable: Disposable? = null
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -61,7 +61,8 @@ internal class MediaListItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        TODO("Not yet implemented")
+        disposable?.dispose()
+        disposable = null
     }
 
     /**
