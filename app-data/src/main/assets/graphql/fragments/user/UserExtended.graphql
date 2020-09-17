@@ -1,0 +1,44 @@
+fragment UserExtended on User {
+    id
+    name
+    avatar {
+        ... UserAvatar
+    }
+    bannerImage
+    isFollowing
+    isFollower
+    about
+    options {
+        airingNotifications
+        displayAdultContent
+        notificationOptions {
+            enabled
+            type
+        }
+        profileColor
+        titleLanguage
+    }
+    unreadNotificationCount
+    donatorTier
+    donatorBadge
+    siteUrl
+    updatedAt
+    mediaListOptions {
+        animeList {
+            advancedScoring
+            advancedScoringEnabled
+            customLists
+            sectionOrder
+            splitCompletedSectionByFormat
+        }
+        mangaList {
+            advancedScoring
+            advancedScoringEnabled
+            customLists
+            sectionOrder
+            splitCompletedSectionByFormat
+        }
+        rowOrder
+        scoreFormat
+    }
+}

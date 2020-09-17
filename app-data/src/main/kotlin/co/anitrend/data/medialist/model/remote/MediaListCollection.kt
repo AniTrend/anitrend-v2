@@ -17,7 +17,9 @@
 
 package co.anitrend.data.medialist.model.remote
 
-import co.anitrend.data.user.model.remote.User
+import co.anitrend.data.user.model.remote.UserModelCore
+import co.anitrend.domain.medialist.enums.MediaListStatus
+import com.google.gson.annotations.SerializedName
 
 /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
  * List of anime or manga
@@ -27,7 +29,25 @@ import co.anitrend.data.user.model.remote.User
  * @param user The owner of the list
  */
 internal data class MediaListCollection(
-    val lists: List<MediaListGroup>,
-    val hasNextChunk: Boolean,
-    val user: User?
-)
+    @SerializedName("lists") val lists: List<MediaListGroup>,
+    @SerializedName("hasNextChunk") val hasNextChunk: Boolean,
+    @SerializedName("user") val user: UserModelCore?
+) {
+
+    /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
+     * List group of anime or manga entries
+     *
+     * @param entries Media list entries
+     * @param name name of the current group
+     * @param isCustomList If the current group is a custom list
+     * @param isSplitCompletedList If this grouping is split by types of of media, e.g movies, tv, specials, etc
+     * @param status status of current group, one of [co.anitrend.domain.medialist.enums.MediaListStatus]
+     */
+    internal data class MediaListGroup(
+        @SerializedName("entries") val entries: List<MediaListModelCore>?,
+        @SerializedName("isCustomList") val isCustomList: Boolean,
+        @SerializedName("isSplitCompletedList") val isSplitCompletedList: Boolean,
+        @SerializedName("name") val name: String,
+        @SerializedName("status") val status: MediaListStatus
+    )
+}

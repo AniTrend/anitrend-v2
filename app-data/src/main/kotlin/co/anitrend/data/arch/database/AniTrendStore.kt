@@ -21,18 +21,30 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.arch.database.converter.TypeConverterEnum
+import co.anitrend.data.arch.database.converter.TypeConverterObject
 import co.anitrend.data.arch.database.migration.migrations
+import co.anitrend.data.auth.entity.JwtEntity
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.source.entity.SourceEntity
 import co.anitrend.data.tag.entity.TagEntity
 
 @Database(
     entities = [
-        JsonWebToken::class, TagEntity::class, GenreEntity::class, SourceEntity::class
+        JwtEntity::class, TagEntity::class, GenreEntity::class, SourceEntity::class,
+        MediaEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION
+)
+@TypeConverters(
+    value = [
+        TypeConverterObject::class,
+        TypeConverterEnum::class
+    ]
 )
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 

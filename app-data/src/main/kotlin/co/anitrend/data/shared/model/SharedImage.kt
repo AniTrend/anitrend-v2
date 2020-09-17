@@ -24,6 +24,6 @@ package co.anitrend.data.shared.model
  * @property medium Image at it's medium size
  */
 internal data class SharedImage(
-    val large: CharSequence?,
-    val medium: CharSequence?
+    val large: String?,
+    val medium: String?
 )

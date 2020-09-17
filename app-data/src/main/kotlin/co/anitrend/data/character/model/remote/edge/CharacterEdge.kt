@@ -18,10 +18,12 @@
 package co.anitrend.data.character.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
-import co.anitrend.data.character.model.remote.Character
-import co.anitrend.data.media.model.remote.MediaModel
-import co.anitrend.data.staff.model.remote.Staff
+import co.anitrend.data.character.model.remote.CharacterModel
+import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModelExtended
+import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
+import com.google.gson.annotations.SerializedName
 
 /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
  * Character connection edge
@@ -32,10 +34,10 @@ import co.anitrend.domain.character.enums.CharacterRole
  * @param voiceActors The voice actors of the character
  */
 internal data class CharacterEdge(
-    val favouriteOrder: Int?,
-    val media: List<MediaModel>?,
-    val role: CharacterRole?,
-    val voiceActors: List<Staff>?,
-    override val id: Long,
-    override val node: Character?
-) : IEntityEdge<Character>
+    @SerializedName("favouriteOrder") val favouriteOrder: Int?,
+    @SerializedName("media") val media: List<MediaModelCore>?,
+    @SerializedName("role") val role: CharacterRole?,
+    @SerializedName("voiceActors") val voiceActors: List<StaffModel>?,
+    @SerializedName("id") override val id: Long,
+    @SerializedName("node") override val node: CharacterModel?
+) : IEntityEdge<CharacterModel>

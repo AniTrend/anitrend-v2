@@ -17,25 +17,11 @@
 
 package co.anitrend.data.auth.model
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
-
 /**
  * Json Web Token from Implicit Grant see implicit grant manual docs at:
- * https://anilist.gitbook.io/anilist-apiv2-docs/overview/oauth/implicit-grant
+ * [implicit-grant](https://anilist.gitbook.io/anilist-apiv2-docs/overview/oauth/implicit-grant)
  */
-@Entity(
-    indices = [
-        Index(
-            value = ["userId", "accessToken"],
-            unique = true
-        )
-    ]
-)
 internal data class JsonWebToken(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long,
     val userId: Long,
     val accessToken: String
 ) {

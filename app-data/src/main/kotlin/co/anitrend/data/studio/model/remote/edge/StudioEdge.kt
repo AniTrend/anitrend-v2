@@ -18,7 +18,7 @@
 package co.anitrend.data.studio.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
-import co.anitrend.data.studio.model.remote.Studio
+import co.anitrend.data.studio.model.remote.StudioModel
 
 /** [StudioEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/studioedge.doc.html)
  * Studio connection edge
@@ -30,5 +30,5 @@ internal data class StudioEdge(
     val favouriteOrder: Int?,
     val isMain: Boolean,
     override val id: Long,
-    override val node: Studio?
-) : IEntityEdge<Studio>
+    override val node: StudioModel?
+) : IEntityEdge<StudioModel>

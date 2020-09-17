@@ -1,0 +1,47 @@
+/*
+ * Copyright (C) 2019  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package co.anitrend.data.medialist.model.remote
+
+import co.anitrend.data.medialist.model.contract.IMediaListModelCore
+import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.medialist.enums.MediaListStatus
+
+/** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
+ * List of anime or manga
+ *
+ */
+internal data class MediaListModelCore(
+    override val advancedScores: Map<String, String>?,
+    override val completedAt: FuzzyDate?,
+    override val createdAt: Long?,
+    override val customLists: Map<String, String>?,
+    override val hiddenFromStatusLists: Boolean?,
+    override val mediaId: Int,
+    override val notes: String?,
+    override val priority: Int?,
+    override val private: Boolean?,
+    override val progress: Int?,
+    override val progressVolumes: Int?,
+    override val repeat: Int?,
+    override val score: Float?,
+    override val startedAt: FuzzyDate?,
+    override val status: MediaListStatus?,
+    override val updatedAt: Long?,
+    override val userId: Int,
+    override val id: Long
+) : IMediaListModelCore

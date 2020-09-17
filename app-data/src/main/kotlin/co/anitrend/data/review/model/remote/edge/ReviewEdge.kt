@@ -18,12 +18,12 @@
 package co.anitrend.data.review.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
-import co.anitrend.data.review.model.remote.Review
+import co.anitrend.data.review.model.remote.ReviewModel
 
 /** [ReviewEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/reviewedge.doc.html)
  * Review connection edge
  */
 internal data class ReviewEdge(
     override val id: Long,
-    override val node: Review?
-) : IEntityEdge<Review>
+    override val node: ReviewModel?
+) : IEntityEdge<ReviewModel>

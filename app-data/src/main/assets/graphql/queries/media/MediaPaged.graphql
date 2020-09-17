@@ -66,7 +66,8 @@ query MediaPaged(
     $type: MediaType,
     $volumes: Int,
     $volumes_greater: Int,
-    $volumes_lesser: Int
+    $volumes_lesser: Int,
+    $scoreFormat: ScoreFormat
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {
@@ -140,7 +141,7 @@ query MediaPaged(
             volumes_greater: $volumes_greater,
             volumes_lesser: $volumes_lesser
         ) {
-            ... MediaExtended
+            ... MediaCore
         }
     }
 }

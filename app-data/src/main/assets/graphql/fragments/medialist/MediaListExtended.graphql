@@ -1,14 +1,13 @@
 fragment MediaListExtended on MediaList {
     advancedScores
+    customLists(asArray: true)
     completedAt {
-    ... FuzzyDate
+        ... FuzzyDate
     }
     createdAt
-    customLists(asArray: true)
     hiddenFromStatusLists
-    id
     media {
-    ... MediaCore
+        ... MediaCore
     }
     mediaId
     notes
@@ -19,9 +18,10 @@ fragment MediaListExtended on MediaList {
     repeat
     score(format: $scoreFormat)
     startedAt {
-    ...FuzzyDate
+        ...FuzzyDate
     }
     status
     updatedAt
     userId
+    id
 }

@@ -17,12 +17,11 @@
 
 package co.anitrend.data.activity.model.remote
 
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
-import co.anitrend.data.activity.entity.ListFeedEntity
-import co.anitrend.data.activity.model.remote.common.IFeed
-import co.anitrend.data.media.model.remote.MediaModel
-import co.anitrend.data.user.model.remote.User
+import co.anitrend.data.activity.model.remote.common.IFeedModel
+import co.anitrend.data.media.model.MediaModelExtended
+import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.activity.enums.ActivityType
+import com.google.gson.annotations.SerializedName
 
 /** [ListActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/listactivity.doc.html)
  * User text activity
@@ -37,26 +36,16 @@ import co.anitrend.domain.activity.enums.ActivityType
  */
 internal data class ListFeed(
     val replies: List<ReplyFeed>?,
-    val media: MediaModel?,
+    val media: MediaModelExtended?,
     val status: String?,
     val isLocked: Boolean,
     val progress: String?,
-    val user: User?,
+    val user: UserModelCore?,
     val userId: Long?,
-    override val id: Long,
-    override val createdAt: Long,
-    override val likes: List<User>?,
-    override val siteUrl: String?,
-    override val type: ActivityType?,
-    override val replyCount: Int
-) : IFeed {
-
-    companion object : ISupportMapperHelper<ListFeed, ListFeedEntity> {
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: ListFeed): ListFeedEntity {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    }
-}
+    @SerializedName("id") override val id: Long,
+    @SerializedName("createdAt") override val createdAt: Long,
+    @SerializedName("likes") override val likes: List<UserModelCore>?,
+    @SerializedName("siteUrl") override val siteUrl: String?,
+    @SerializedName("type") override val type: ActivityType?,
+    @SerializedName("replyCount") override val replyCount: Int
+) : IFeedModel

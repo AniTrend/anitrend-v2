@@ -1,0 +1,8 @@
+query CurrentUserProfile {
+    Viewer {
+        ... UserExtended
+        statistics {
+            ... UserStatisticsTypesExtended
+        }
+    }
+}

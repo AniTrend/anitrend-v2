@@ -23,9 +23,9 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.media.model.remote.MediaModel
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.model.query.MediaQuery
+import co.anitrend.data.media.model.query.MediaQuery
+import co.anitrend.domain.common.graph.IGraphPayload
 import kotlinx.coroutines.launch
 
 internal abstract class MediaPagedSource(
@@ -38,8 +38,8 @@ internal abstract class MediaPagedSource(
 
     protected abstract suspend fun getMedia(requestCallback: RequestCallback)
 
-    operator fun invoke(mediaQuery: MediaQuery): LiveData<PagedList<Media>> {
-        query = mediaQuery
+    operator fun invoke(mediaQuery: IGraphPayload): LiveData<PagedList<Media>> {
+        query = mediaQuery as MediaQuery
         return observable
     }
 

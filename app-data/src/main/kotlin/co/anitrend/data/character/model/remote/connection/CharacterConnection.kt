@@ -18,7 +18,7 @@
 package co.anitrend.data.character.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.character.model.remote.Character
+import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
 import co.anitrend.domain.common.entity.shared.PageInfo
 
@@ -27,6 +27,6 @@ import co.anitrend.domain.common.entity.shared.PageInfo
  */
 internal data class CharacterConnection(
     override val edges: List<CharacterEdge>?,
-    override val nodes: List<Character>?,
+    override val nodes: List<CharacterModel>?,
     override val pageInfo: PageInfo?
-) : IEntityConnection<CharacterEdge, Character>
+) : IEntityConnection<CharacterEdge, CharacterModel>

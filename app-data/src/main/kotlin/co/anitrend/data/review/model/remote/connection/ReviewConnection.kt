@@ -18,7 +18,7 @@
 package co.anitrend.data.review.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.review.model.remote.Review
+import co.anitrend.data.review.model.remote.ReviewModel
 import co.anitrend.data.review.model.remote.edge.ReviewEdge
 import co.anitrend.domain.common.entity.shared.PageInfo
 
@@ -27,6 +27,6 @@ import co.anitrend.domain.common.entity.shared.PageInfo
  */
 internal data class ReviewConnection(
     override val edges: List<ReviewEdge>?,
-    override val nodes: List<Review>?,
+    override val nodes: List<ReviewModel>?,
     override val pageInfo: PageInfo?
-) : IEntityConnection<ReviewEdge, Review>
+) : IEntityConnection<ReviewEdge, ReviewModel>

@@ -19,7 +19,7 @@ package co.anitrend.data.source.datasource.remote
 
 import co.anitrend.data.arch.JSON
 import co.anitrend.data.source.model.local.SourceQuery
-import co.anitrend.data.source.model.remote.SourceResult
+import co.anitrend.data.source.model.remote.SourceResultModel
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -30,5 +30,5 @@ internal interface SourceRemote {
     @POST("/api/ids/source")
     suspend fun getFromSource(
         @Body sourceQuery: SourceQuery
-    ) : Response<SourceResult?>
+    ) : Response<SourceResultModel?>
 }

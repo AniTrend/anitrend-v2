@@ -20,11 +20,13 @@
 package co.anitrend.data.api.converter
 
 import co.anitrend.data.api.converter.request.AniRequestConverter
+import co.anitrend.data.api.converter.response.AniGraphResponseConverter
 import co.anitrend.data.arch.JSON
 import co.anitrend.data.arch.XML
 import com.google.gson.Gson
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.GraphConverter
+import io.github.wax911.library.converter.response.GraphResponseConverter
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -92,7 +94,6 @@ internal class AniTrendConverterFactory(
                 }
             }
         }
-        // Default for GraphQl marked queries
-        return super.responseBodyConverter(type, annotations, retrofit)
+        return AniGraphResponseConverter<Any>(type, gson)
     }
 }

@@ -82,9 +82,6 @@ internal object RetrofitProvider {
                         }
                     )
             }
-            else -> {
-
-            }
         }
 
         return builder.build()

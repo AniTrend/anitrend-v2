@@ -1,0 +1,6 @@
+fragment AiringScheduleExtended on AiringSchedule {
+    id
+    media {
+        ... MediaCore
+    }
+}

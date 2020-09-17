@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.remote.statistics
 
-import co.anitrend.data.media.model.remote.MediaTag
+import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
 
 /** [UserTagStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/usertagstatistic.doc.html)
@@ -25,7 +25,7 @@ import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
  * @param tag media tag
  */
 internal data class UserTagStatistic(
-    val tag: MediaTag?,
+    val tag: MediaModelExtended.Tag?,
     override val chaptersRead: Int,
     override val count: Int,
     override val meanScore: Float,

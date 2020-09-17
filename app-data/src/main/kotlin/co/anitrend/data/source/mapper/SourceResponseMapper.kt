@@ -21,12 +21,12 @@ import co.anitrend.arch.data.mapper.SupportResponseMapper
 import co.anitrend.data.source.converters.SourceModelConverter
 import co.anitrend.data.source.datasource.local.SourceLocal
 import co.anitrend.data.source.entity.SourceEntity
-import co.anitrend.data.source.model.remote.SourceResult
+import co.anitrend.data.source.model.remote.SourceResultModel
 
 internal class SourceResponseMapper(
     private val localSource: SourceLocal,
     private val converter: SourceModelConverter = SourceModelConverter()
-) : SupportResponseMapper<SourceResult, SourceEntity>() {
+) : SupportResponseMapper<SourceResultModel, SourceEntity>() {
 
     var anilistId: Long = 0
 
@@ -48,6 +48,6 @@ internal class SourceResponseMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: SourceResult
+        source: SourceResultModel
     ) = converter.convertFrom(source).copy(anilist = anilistId)
 }

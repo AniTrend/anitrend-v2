@@ -21,10 +21,13 @@ plugins {
     id("co.anitrend.plugin")
 }
 
-
 dependencies {
-    implementation(Libraries.threeTenBp)
+    implementation(Libraries.AniTrend.Sync.plugin)
+    implementation(Libraries.CashApp.Copper.copper)
 
     debugImplementation(Libraries.Chuncker.debug)
     releaseImplementation(Libraries.Chuncker.release)
+
+    androidTestImplementation(Libraries.AndroidX.Room.test)
+    androidTestImplementation(Libraries.Square.OkHttp.mockServer)
 }

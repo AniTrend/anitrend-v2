@@ -1,0 +1,27 @@
+query MediaCarousel(
+    $page: Int = 1,
+    $perPage: Int = 10,
+    $isAdult: Boolean,
+    $scoreFormat: ScoreFormat
+) {
+    AllTimePopular: Page(page: $page, perPage: $perPage) {
+        media(sort: [POPULARITY_DESC], type: MANGA, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    TrendingRightNow: Page(page: $page, perPage: $perPage) {
+        media(sort: [TRENDING_DESC], type: MANGA, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    PopularManhwa: Page(page: $page, perPage: $perPage) {
+        media(sort: [POPULARITY_DESC], type: MANGA, countryOfOrigin: "KR", isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    RecentlyAdded: Page(page: $page, perPage: $perPage) {
+        media(sort: [ID_DESC], type: MANGA, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+}

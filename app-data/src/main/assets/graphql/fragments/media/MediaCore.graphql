@@ -26,7 +26,7 @@ fragment MediaCore on Media {
     isAdult
     isFavourite
     nextAiringEpisode {
-        ... AiringSchedule
+        ... AiringScheduleCore
     }
     mediaListEntry {
         ... MediaListCore

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.remote.statistics
 
-import co.anitrend.data.studio.model.remote.Studio
+import co.anitrend.data.studio.model.remote.StudioModel
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
 
 /** [UserStudioStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userstudiostatistic.doc.html)
@@ -25,7 +25,7 @@ import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
  * @param studio studio
  */
 internal data class UserStudioStatistic(
-    val studio: Studio?,
+    val studio: StudioModel?,
     override val chaptersRead: Int,
     override val count: Int,
     override val meanScore: Float,

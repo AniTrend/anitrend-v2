@@ -18,13 +18,14 @@
 package co.anitrend.data.user.model.remote.statistics
 
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
+import co.anitrend.domain.common.CountryCode
 
 /** [UserCountryStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/usercountrystatistic.doc.html)
  *
  * @param country country code
  */
 internal data class UserCountryStatistic(
-    val country: co.anitrend.domain.common.CountryCode?,
+    val country: CountryCode?,
     override val chaptersRead: Int,
     override val count: Int,
     override val meanScore: Float,

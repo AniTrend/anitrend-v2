@@ -47,10 +47,12 @@ internal object GraphUtil {
      *
      * @param paging Optional paging helper
      * @param settings Optional sort order settings
+     * @param ignoreNulls Ignore null values, defaults to true
      */
     internal fun IGraphPayload.toQueryContainerBuilder(
         paging: SupportPagingHelper? = null,
-        settings: ISortOrderSettings? = null
+        settings: ISortOrderSettings? = null,
+        ignoreNulls: Boolean = true
     ): QueryContainerBuilder {
         val queryContainerBuilder = QueryContainerBuilder()
         paging?.apply {
@@ -58,7 +60,7 @@ internal object GraphUtil {
         }
         // A better way might be to perform changes on the `toMap()` contract itself
         val variables = toMap().toMutableMap()
-        if (settings != null)
+        if (settings != null) {
             variables
                 .filter { it.value is List<*> }
                 .forEach { entry ->
@@ -69,8 +71,12 @@ internal object GraphUtil {
                     }
                     variables[entry.key] = mapped
                 }
-
-        queryContainerBuilder.putVariables(variables)
+        }
+        queryContainerBuilder.putVariables(
+            if (ignoreNulls)
+                variables.filterValues { it != null }
+            else variables
+        )
         return queryContainerBuilder
     }
 
