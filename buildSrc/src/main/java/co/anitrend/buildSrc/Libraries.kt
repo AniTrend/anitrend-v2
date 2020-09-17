@@ -371,6 +371,11 @@ object Libraries {
         const val video = "io.coil-kt:coil-video:$version"
     }
 
+    object Dropbox {
+        private const val version = "4.0.0-alpha07"
+        const val store = "com.dropbox.mobile.store:store4:$version"
+    }
+
     object Google {
 
         object Exo {
