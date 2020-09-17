@@ -22,4 +22,13 @@ data class MediaTitle(
     override val english: CharSequence?,
     override val native: CharSequence?,
     override val userPreferred: CharSequence?
-) : IMediaTitle
+) : IMediaTitle {
+    companion object {
+        fun empty() = MediaTitle(
+            null,
+            null,
+            null,
+            null,
+        )
+    }
+}

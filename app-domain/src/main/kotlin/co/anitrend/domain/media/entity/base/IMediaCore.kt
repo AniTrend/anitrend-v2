@@ -21,13 +21,15 @@ import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.medialist.enums.ScoreFormat
 
 interface IMediaCore : IMedia {
     val format: MediaFormat?
     val season: MediaSeason?
     val status: MediaStatus?
-    val meanScore: UInt
-    val averageScore: UInt
+    val meanScore: Int
+    val scoreFormat: ScoreFormat?
+    val averageScore: Int
     val startDate: FuzzyDate
     val endDate: FuzzyDate
 }

@@ -25,9 +25,9 @@ data class MediaRank(
     override val allTime: Boolean?,
     override val context: CharSequence,
     override val format: MediaFormat,
-    override val rank: UInt,
+    override val rank: Int,
     override val season: MediaSeason?,
     override val type: MediaRankType,
-    override val year: UShort? = null,
+    override val year: Int? = null,
     override val id: Long
 ) : IMediaRank

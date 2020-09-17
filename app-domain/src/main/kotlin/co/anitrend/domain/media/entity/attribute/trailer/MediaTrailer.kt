@@ -19,5 +19,6 @@ package co.anitrend.domain.media.entity.attribute.trailer
 
 data class MediaTrailer(
     override val id: CharSequence?,
-    override val site: CharSequence?
+    override val site: CharSequence?,
+    override val thumbnail: CharSequence?
 ) : IMediaTrailer

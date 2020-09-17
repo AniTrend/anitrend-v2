@@ -19,6 +19,6 @@ package co.anitrend.domain.media.entity.base
 
 import co.anitrend.domain.medialist.entity.base.IMediaListCore
 
-interface IMediaExtendedWithMediaList {
-    val mediaListEntry: IMediaListCore?
+interface IMediaExtendedWithMediaList : IMediaExtended {
+    val mediaListEntry: IMediaListCore
 }

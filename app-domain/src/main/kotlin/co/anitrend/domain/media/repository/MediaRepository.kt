@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.remote
+package co.anitrend.domain.media.repository
 
-import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.common.graph.IGraphPayload
 
-/** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
- * The official titles of the media in various languages
- */
-internal data class MediaTitle(
-    override val romaji: String?,
-    override val english: String?,
-    override val native: String?,
-    override val userPreferred: String?
-) : IMediaTitle
+interface MediaRepository<State: UiState<*>> {
+    fun getMediaPaged(query: IGraphPayload): State
+
+    fun getMediaPagedByNetwork(query: IGraphPayload): State
+}
+
+interface MediaCarouselRepository<State: UiState<*>> {
+    fun getMediaCarousel(query: IGraphPayload): State
+}

@@ -36,12 +36,20 @@ sealed class MediaCategory(
      * @param schedule The media's next episode airing schedule
      */
     data class Anime(
-        val episodes: UShort,
-        val duration: UShort,
+        val episodes: Int,
+        val duration: Int,
         val schedule: AiringSchedule?
     ) : MediaCategory(
         MediaType.ANIME
-    )
+    ) {
+        companion object {
+            fun empty() = Anime(
+                0,
+                0,
+                null
+            )
+        }
+    }
 
     /**
      * Asian comic
@@ -50,9 +58,16 @@ sealed class MediaCategory(
      * @param volumes The amount of volumes the manga has when complete
      */
     data class Manga(
-        val chapters: UShort,
-        val volumes: UShort
+        val chapters: Int,
+        val volumes: Int
     ) : MediaCategory(
         MediaType.MANGA
-    )
+    ) {
+        companion object {
+            fun empty() = Manga(
+                0,
+                0
+            )
+        }
+    }
 }
