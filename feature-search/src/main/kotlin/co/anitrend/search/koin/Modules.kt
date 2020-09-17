@@ -18,17 +18,17 @@
 package co.anitrend.search.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.Search
+import co.anitrend.navigation.SearchRouter
 import co.anitrend.search.presenter.SearchPresenter
 import co.anitrend.search.provider.FeatureProvider
-import co.anitrend.search.ui.fragment.SearchContentScreen
+import co.anitrend.search.ui.fragment.SearchContent
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.qualifier.named
+import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
 
 private val presenterModule = module {
-    scope<SearchContentScreen> {
+    scope<SearchContent> {
         scoped {
             SearchPresenter(
                 context = androidContext(),
@@ -38,16 +38,22 @@ private val presenterModule = module {
     }
 }
 
+private val fragmentModule = module {
+    fragment {
+        SearchContent()
+    }
+}
+
 private val viewModelModule = module {
 
 }
 
 private val featureModule = module {
-    factory<Search.Provider> {
+    factory<SearchRouter.Provider> {
         FeatureProvider()
     }
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-        listOf(presenterModule, featureModule)
+        listOf(presenterModule, fragmentModule, featureModule)
 )

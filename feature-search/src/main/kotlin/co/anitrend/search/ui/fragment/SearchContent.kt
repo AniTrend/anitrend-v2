@@ -18,14 +18,13 @@
 package co.anitrend.search.ui.fragment
 
 import android.os.Bundle
-import co.anitrend.core.extensions.injectScoped
+import co.anitrend.core.ui.inject
 import co.anitrend.core.ui.fragment.AniTrendFragment
-import co.anitrend.search.koin.moduleHelper
 import co.anitrend.search.presenter.SearchPresenter
 
-class SearchContentScreen : AniTrendFragment() {
+class SearchContent : AniTrendFragment() {
 
-    private val presenter by injectScoped<SearchPresenter>()
+    private val presenter by inject<SearchPresenter>()
 
     /**
      * Invoke view model observer to watch for changes, this will be called

@@ -20,12 +20,12 @@ package co.anitrend.search.ui.activity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.extensions.commit
+import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.multisearch.model.Search
 import co.anitrend.search.databinding.SearchScreenBinding
-import co.anitrend.search.ui.fragment.SearchContentScreen
+import co.anitrend.search.ui.fragment.SearchContent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
@@ -72,7 +72,7 @@ class SearchScreen : AnitrendActivity() {
     }
 
     private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(fragment = SearchContentScreen::class.java)
+        currentFragmentTag = FragmentItem(fragment = SearchContent::class.java)
             .commit(binding.searchContent, this) {}
     }
 }

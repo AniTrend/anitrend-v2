@@ -20,7 +20,7 @@ package co.anitrend.splash.ui.activity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.extensions.commit
+import co.anitrend.core.ui.commit
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem

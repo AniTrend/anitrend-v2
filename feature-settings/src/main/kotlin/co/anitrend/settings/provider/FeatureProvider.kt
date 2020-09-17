@@ -19,10 +19,10 @@ package co.anitrend.settings.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.navigation.Settings
+import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.ui.activity.SettingsScreen
 
-internal class FeatureProvider : Settings.Provider {
+internal class FeatureProvider : SettingsRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, SettingsScreen::class.java)
 }

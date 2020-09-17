@@ -19,10 +19,9 @@ package co.anitrend.splash.ui.fragment
 
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.fragment.AniTrendFragment
+import co.anitrend.core.ui.inject
 import co.anitrend.splash.R
-import co.anitrend.splash.koin.moduleHelper
 import co.anitrend.splash.presenter.SplashPresenter
 
 class SplashContent(
@@ -37,7 +36,7 @@ class SplashContent(
 
     }
 
-    private val presenter by injectScoped<SplashPresenter>()
+    private val presenter by inject<SplashPresenter>()
 
     /**
      * Additional initialization to be done in this method, this method will be called in

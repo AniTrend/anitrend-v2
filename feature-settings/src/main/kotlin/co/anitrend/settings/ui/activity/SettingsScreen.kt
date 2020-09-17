@@ -19,7 +19,7 @@ package co.anitrend.settings.ui.activity
 
 import android.os.Bundle
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.extensions.commit
+import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
 import co.anitrend.settings.R
@@ -55,7 +55,8 @@ class SettingsScreen : AnitrendActivity() {
      * **N.B.** Where this is called is up to the developer
      */
     private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(fragment = SettingsFragment::class.java)
-            .commit(R.id.contentFrame, this) {}
+        currentFragmentTag = FragmentItem(
+            fragment = SettingsFragment::class.java
+        ).commit(R.id.contentFrame, this) {}
     }
 }

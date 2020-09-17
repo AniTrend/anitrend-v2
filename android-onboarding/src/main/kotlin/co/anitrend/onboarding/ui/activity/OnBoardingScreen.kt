@@ -18,27 +18,21 @@
 package co.anitrend.onboarding.ui.activity
 
 import android.os.Bundle
-import android.view.View
-import androidx.core.view.size
 import androidx.viewpager.widget.ViewPager
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.extension.ext.invisible
-import co.anitrend.arch.extension.ext.visible
 import co.anitrend.core.extensions.hideStatusBarAndNavigationBar
-import co.anitrend.core.extensions.injectScoped
 import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.core.ui.inject
 import co.anitrend.onboarding.databinding.OnboardingScreenBinding
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.ui.pager.OnBoardingPageAdapter
-import kotlinx.android.synthetic.main.onboarding_content.view.*
 import kotlinx.coroutines.launch
 
 class OnBoardingScreen : AnitrendActivity() {
 
     private lateinit var binding: OnboardingScreenBinding
 
-    private val presenter by injectScoped<OnBoardingPresenter>()
+    private val presenter by inject<OnBoardingPresenter>()
 
     private val onBoardingPageAdapter by lazy(UNSAFE) {
         OnBoardingPageAdapter(

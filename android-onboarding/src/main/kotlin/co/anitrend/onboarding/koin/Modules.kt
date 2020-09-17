@@ -18,13 +18,13 @@
 package co.anitrend.onboarding.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.Main
-import co.anitrend.navigation.OnBoarding
+import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.onboarding.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.provider.FeatureProvider
 import co.anitrend.onboarding.ui.activity.OnBoardingScreen
+import co.anitrend.onboarding.ui.fragment.OnBoardingContent
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.qualifier.named
+import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
 private val presenterModule = module {
@@ -38,10 +38,18 @@ private val presenterModule = module {
     }
 }
 
+private val fragmentModule = module {
+    fragment {
+        OnBoardingContent()
+    }
+}
+
 private val featureModule = module {
-    factory<OnBoarding.Provider> {
+    factory<OnBoardingRouter.Provider> {
         FeatureProvider()
     }
 }
 
-internal val moduleHelper = DynamicFeatureModuleHelper(listOf(presenterModule, featureModule))
+internal val moduleHelper = DynamicFeatureModuleHelper(
+    listOf(presenterModule, fragmentModule, featureModule)
+)

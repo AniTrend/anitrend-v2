@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.core.ui.fragment.AniTrendFragment
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import co.anitrend.onboarding.model.OnBoarding

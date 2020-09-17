@@ -21,9 +21,9 @@ import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
-import co.anitrend.navigation.Main
-import co.anitrend.navigation.OnBoarding
-import co.anitrend.navigation.extensions.forActivity
+import co.anitrend.navigation.MainRouter
+import co.anitrend.navigation.OnBoardingRouter
+import co.anitrend.navigation.extensions.startActivity
 import kotlinx.coroutines.delay
 
 class SplashPresenter(
@@ -37,9 +37,9 @@ class SplashPresenter(
     suspend fun firstRunCheck(activity: FragmentActivity?) {
         delay(1200)
         if (settings.isNewInstallation)
-            OnBoarding.forActivity(context)
+            OnBoardingRouter.startActivity(context)
         else
-            Main.forActivity(context)
+            MainRouter.startActivity(context)
         activity?.finish()
     }
 }

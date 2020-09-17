@@ -20,9 +20,9 @@ package co.anitrend.about.provider
 import android.content.Context
 import android.content.Intent
 import co.anitrend.about.ui.activity.AboutScreen
-import co.anitrend.navigation.About
+import co.anitrend.navigation.AboutRouter
 
-internal class FeatureProvider : About.Provider {
+internal class FeatureProvider : AboutRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, AboutScreen::class.java)
 }

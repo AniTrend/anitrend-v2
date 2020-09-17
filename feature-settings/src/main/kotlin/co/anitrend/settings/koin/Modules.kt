@@ -18,11 +18,13 @@
 package co.anitrend.settings.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.Settings
+import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.presenter.SettingsPresenter
 import co.anitrend.settings.provider.FeatureProvider
 import co.anitrend.settings.ui.activity.SettingsScreen
+import co.anitrend.settings.ui.fragment.SettingsFragment
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
 private val presenterModule = module {
@@ -36,12 +38,18 @@ private val presenterModule = module {
     }
 }
 
+private val fragmentModule = module {
+    fragment {
+        SettingsFragment()
+    }
+}
+
 private val featureModule = module {
-    factory<Settings.Provider> {
+    factory<SettingsRouter.Provider> {
         FeatureProvider()
     }
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(presenterModule, featureModule)
+    listOf(presenterModule, fragmentModule, featureModule)
 )

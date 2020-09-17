@@ -19,11 +19,11 @@ package co.anitrend.about.koin
 
 import co.anitrend.about.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.About
+import co.anitrend.navigation.AboutRouter
 import org.koin.dsl.module
 
 private val featureModule = module {
-    factory<About.Provider> {
+    factory<AboutRouter.Provider> {
         FeatureProvider()
     }
 }

@@ -18,12 +18,12 @@
 package co.anitrend.splash.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.Splash
+import co.anitrend.navigation.SplashRouter
 import co.anitrend.splash.presenter.SplashPresenter
 import co.anitrend.splash.provider.FeatureProvider
 import co.anitrend.splash.ui.fragment.SplashContent
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.qualifier.named
+import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
 private val presenterModule = module {
@@ -37,10 +37,18 @@ private val presenterModule = module {
     }
 }
 
+private val fragmentModule = module {
+    fragment {
+        SplashContent()
+    }
+}
+
 private val featureModule = module {
-    factory<Splash.Provider> {
+    factory<SplashRouter.Provider> {
         FeatureProvider()
     }
 }
 
-internal val moduleHelper = DynamicFeatureModuleHelper(listOf(presenterModule, featureModule))
+internal val moduleHelper = DynamicFeatureModuleHelper(
+    listOf(presenterModule, fragmentModule, featureModule)
+)
