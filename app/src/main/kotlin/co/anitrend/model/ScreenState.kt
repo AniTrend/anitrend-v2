@@ -17,14 +17,36 @@
 
 package co.anitrend.model
 
-import android.os.Parcelable
+import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import androidx.fragment.app.FragmentActivity
 import co.anitrend.R
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.arch.extension.ext.extra
 
-@Parcelize
-data class ScreenState(
-    @IdRes var selectedItem: Int = R.id.nav_home,
+internal class ScreenState(screen: FragmentActivity) {
+    private val uiRedirection by screen.extra(ARG_KEY_REDIRECT, R.id.nav_home)
+
+    @IdRes var selectedItem: Int = uiRedirection ?: R.id.nav_home
     @StringRes var selectedTitle: Int = R.string.nav_home
-) : Parcelable
+
+
+    fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(ARG_KEY_SELECTED_ITEM, selectedItem)
+        outState.putInt(ARG_KEY_SELECTED_TITLE, selectedTitle)
+    }
+
+    fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        if (savedInstanceState.containsKey(ARG_KEY_SELECTED_ITEM))
+            selectedItem = savedInstanceState.getInt(ARG_KEY_SELECTED_ITEM)
+        if (savedInstanceState.containsKey(ARG_KEY_SELECTED_TITLE))
+            selectedTitle = savedInstanceState.getInt(ARG_KEY_SELECTED_TITLE)
+    }
+
+    companion object {
+        internal const val ARG_KEY_REDIRECT = "ARG_KEY_REDIRECT"
+
+        internal const val ARG_KEY_SELECTED_ITEM = "ARG_KEY_NAVIGATION_STATE"
+        internal const val ARG_KEY_SELECTED_TITLE = "ARG_KEY_NAVIGATION_STATE"
+    }
+}

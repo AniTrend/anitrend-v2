@@ -24,43 +24,42 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.extensions.commit
-import co.anitrend.core.extensions.injectScoped
+import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.activity.AnitrendActivity
 import co.anitrend.core.ui.fragment.model.FragmentItem
-import co.anitrend.model.ScreenState
-import co.anitrend.navigation.About
-import co.anitrend.navigation.Search
-import co.anitrend.navigation.Settings
-import co.anitrend.navigation.extensions.forActivity
+import co.anitrend.navigation.AboutRouter
+import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.SettingsRouter
+import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.presenter.MainPresenter
+import co.anitrend.viewmodel.MainScreenViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
+import co.anitrend.core.ui.inject
+import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val redirectItem by extra(ARG_KEY_REDIRECT, R.id.nav_home)
+    private val bottomDrawerBehavior by lazy(UNSAFE) {
+        BottomSheetBehavior.from(bottomNavigationDrawer)
+    }
 
-    private val bottomDrawerBehavior
-            by lazy(UNSAFE) {
-                BottomSheetBehavior.from(bottomNavigationDrawer)
-            }
+    private val viewModel by viewModel<MainScreenViewModel> {
+        parametersOf(this)
+    }
 
-    private lateinit var state: ScreenState
-
-    private val presenter by injectScoped<MainPresenter>()
+    private val presenter by inject<MainPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(bottomAppBar)
         bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        state = ScreenState()
-        if (redirectItem != null)
-            state.selectedItem = redirectItem!!
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
@@ -73,19 +72,18 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
             Toast.makeText(this, "Fab Clicked", Toast.LENGTH_SHORT).show()
         }
         bottomNavigationView.setNavigationItemSelectedListener(this)
-        bottomNavigationView.setCheckedItem(state.selectedItem)
+        bottomNavigationView.setCheckedItem(viewModel.state.selectedItem)
         onUpdateUserInterface()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(ARG_KEY_NAVIGATION_STATE, state)
+        viewModel.state.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState.containsKey(ARG_KEY_NAVIGATION_STATE))
-            state = savedInstanceState.getParcelable(ARG_KEY_NAVIGATION_STATE)!!
+        viewModel.state.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onBackPressed() {
@@ -111,15 +109,15 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                Search.forActivity(this)
+                SearchRouter.startActivity(this)
                 return true
             }
             R.id.action_about -> {
-                About.forActivity(this)
+                AboutRouter.startActivity(this)
                 return true
             }
             R.id.action_settings -> {
-                Settings.forActivity(this)
+                SettingsRouter.startActivity(this)
                 return true
             }
         }
@@ -127,10 +125,10 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        if (state.selectedItem != item.itemId) {
+        if (viewModel.state.selectedItem != item.itemId) {
             if (item.groupId != R.id.nav_group_support) {
-                state.selectedItem = item.itemId
-                onNavigate(state.selectedItem)
+                viewModel.state.selectedItem = item.itemId
+                onNavigate(viewModel.state.selectedItem)
             } else
                 onNavigate(item.itemId)
         }
@@ -140,29 +138,25 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     private fun onNavigate(@IdRes menu: Int) {
         val fragmentItem = when (menu) {
             R.id.nav_home -> {
-                state.selectedTitle = R.string.nav_home
-                //val fragment = NavigationTargets.Discover(applicationContext).forFragment()
-                //fragment?.let {
-                //    FragmentItem(
-                //        fragment = it
-                //    )
-                //}
-                null
+                viewModel.state.selectedTitle = R.string.nav_home
+                FragmentItem(
+                    fragment = MediaRouter.forCarousel()
+                )
             }
             R.id.nav_episode_feed -> {
-                state.selectedTitle = R.string.nav_episodes
+                viewModel.state.selectedTitle = R.string.nav_episodes
                 null
             }
             R.id.nav_news -> {
-                state.selectedTitle = R.string.nav_news
+                viewModel.state.selectedTitle = R.string.nav_news
                 null
             }
             R.id.nav_feed -> {
-                state.selectedTitle = R.string.nav_feed
+                viewModel.state.selectedTitle = R.string.nav_feed
                 null
             }
             R.id.nav_review -> {
-                state.selectedTitle = R.string.nav_review
+                viewModel.state.selectedTitle = R.string.nav_review
                 null
             }
             R.id.nav_donate -> {
@@ -186,21 +180,15 @@ class MainScreen : AnitrendActivity(), NavigationView.OnNavigationItemSelectedLi
     /**
      * Replaces the current content with that in the selected fragment
      */
-    private fun attachSelectedNavigationItem(@IdRes menu: Int, fragmentItem: FragmentItem<*>?) {
+    private fun attachSelectedNavigationItem(@IdRes menu: Int, fragmentItem: FragmentItem?) {
         currentFragmentTag = fragmentItem?.commit(R.id.contentFrame, this) {}
         if (menu != R.id.nav_discord || menu != R.id.nav_donate) {
-            bottomAppBar.setTitle(state.selectedTitle)
+            bottomAppBar.setTitle(viewModel.state.selectedTitle)
             bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
     private fun onUpdateUserInterface() {
-        onNavigate(state.selectedItem)
-    }
-
-    companion object {
-        private const val ARG_KEY_REDIRECT = "ARG_KEY_REDIRECT"
-
-        private const val ARG_KEY_NAVIGATION_STATE = "ARG_KEY_NAVIGATION_STATE"
+        onNavigate(viewModel.state.selectedItem)
     }
 }

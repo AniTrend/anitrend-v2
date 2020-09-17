@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.remote
+package co.anitrend.viewmodel
 
-import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import co.anitrend.model.ScreenState
 
-/** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
- * Media trailer or advertisement
- */
-internal data class MediaTrailer(
-    override val id: String?,
-    override val site: String?,
-    val thumbnail: String?
-) : IMediaTrailer
+class MainScreenViewModel(screen: FragmentActivity) : ViewModel() {
+    internal val state = ScreenState(screen)
+}

@@ -17,14 +17,17 @@
 
 package co.anitrend.koin
 
+import androidx.fragment.app.FragmentActivity
 import androidx.startup.AppInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.Main
+import co.anitrend.navigation.MainRouter
 import co.anitrend.presenter.MainPresenter
 import co.anitrend.provider.FeatureProvider
 import co.anitrend.ui.MainScreen
+import co.anitrend.viewmodel.MainScreenViewModel
 import io.wax911.emojify.initializer.EmojiInitializer
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val coreModule = module {
@@ -45,12 +48,20 @@ private val presenterModule = module {
     }
 }
 
+private val viewModelModule = module {
+    viewModel { (activity: FragmentActivity) ->
+        MainScreenViewModel(
+            screen = activity
+        )
+    }
+}
+
 private val featureModule = module {
-    factory<Main.Provider> {
+    factory<MainRouter.Provider> {
         FeatureProvider()
     }
 }
 
 internal val appModules = DynamicFeatureModuleHelper(
-    listOf(coreModule, presenterModule, featureModule)
+    listOf(coreModule, presenterModule, viewModelModule, featureModule)
 )
