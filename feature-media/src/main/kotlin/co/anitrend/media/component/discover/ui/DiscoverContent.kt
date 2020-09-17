@@ -15,28 +15,35 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.media.ui.fragment
+package co.anitrend.media.component.discover.ui
 
-import co.anitrend.arch.core.model.ISupportViewModelState
+import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.ui.fragment.list.AniTrendListFragment
+import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.enums.MediaSort
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.media.R
-import org.koin.android.ext.android.inject
+import co.anitrend.media.component.discover.viewmodel.DiscoverViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DiscoverContent(
-    override val defaultSpanSize: Int = R.integer.single_list_size
-) : AniTrendListFragment<Nothing>() {
+    override val stateConfig: StateLayoutConfig,
+    override val supportViewAdapter: ISupportAdapter<IMedia>,
+    override val defaultSpanSize: Int = R.integer.grid_list_x2
+) : AniTrendListFragment<IMedia>() {
 
-    /**
-     * State configuration for any underlying state representing widgets
-     */
-    override val stateConfig: StateLayoutConfig by inject()
+    private val viewModel by viewModel<DiscoverViewModel>()
 
-    /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
-     */
-    override fun featureModuleHelper() = null
+    private val mediaQuery by argument(
+        MediaQuery.TAG,
+        MediaQuery(
+            type = MediaType.ANIME,
+            sort = listOf(MediaSort.TRENDING)
+        )
+    )
 
     /**
      * Stub to trigger the loading of data, by default this is only called
@@ -47,7 +54,9 @@ class DiscoverContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-
+        viewModelState().invoke(
+            requireNotNull(mediaQuery)
+        )
     }
 
     /**
@@ -55,18 +64,13 @@ class DiscoverContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
+        viewModelState().model.observe(viewLifecycleOwner) {
+            onPostModelChange(it)
+        }
     }
 
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
-
-    /**
-     * Adapter that should be used for the recycler view, by default [StateRestorationPolicy]
-     * is set to [StateRestorationPolicy.PREVENT_WHEN_EMPTY]
-     */
-    override val supportViewAdapter: ISupportAdapter<Nothing>
-        get() = TODO("Not yet implemented")
+    override fun viewModelState() = viewModel.state
 }
