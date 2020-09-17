@@ -17,9 +17,11 @@
 
 package co.anitrend.domain.thread.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Thread comments sort enums
  */
-enum class ThreadCommentSort {
-    ID
+enum class ThreadCommentSort(override val alias: CharSequence) : IAliasable {
+    ID("Id")
 }

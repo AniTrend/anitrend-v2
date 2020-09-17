@@ -17,15 +17,16 @@
 
 package co.anitrend.domain.user.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * User sort enums
  */
-enum class UserSort : ISortable {
-    CHAPTERS_READ,
-    ID,
-    SEARCH_MATCH,
-    USERNAME,
-    WATCHED_TIME
+enum class UserSort(override val alias: CharSequence) : IAliasable, ISortable {
+    CHAPTERS_READ("Chapters read"),
+    ID("Id"),
+    SEARCH_MATCH("Search match"),
+    USERNAME("Username"),
+    WATCHED_TIME("Watched time")
 }

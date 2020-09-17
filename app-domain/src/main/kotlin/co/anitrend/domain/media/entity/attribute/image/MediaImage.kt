@@ -17,12 +17,22 @@
 
 package co.anitrend.domain.media.entity.attribute.image
 
-import co.anitrend.domain.common.entity.contract.IEntityMediaCover
+import co.anitrend.domain.common.entity.contract.IMediaCover
 
 data class MediaImage(
     override val color: String?,
     override val extraLarge: String?,
     override val large: String?,
     override val medium: String?,
-    val banner: String?
-) : IEntityMediaCover
+    override val banner: String?
+) : IMediaCover {
+    companion object {
+        fun empty() = MediaImage(
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+}

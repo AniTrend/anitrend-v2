@@ -17,20 +17,22 @@
 
 package co.anitrend.domain.user.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * The language the user wants to see media titles in
  */
-enum class UserTitleLanguage {
+enum class UserTitleLanguage(override val alias: CharSequence) : IAliasable {
     /** The official english title */
-    ENGLISH,
+    ENGLISH("English"),
     /** The official english title, stylised by media creator */
-    ENGLISH_STYLISED,
+    ENGLISH_STYLISED("English stylised"),
     /** Official title in it's native language */
-    NATIVE,
+    NATIVE("Native"),
     /** Official title in it's native language, stylised by media creator */
-    NATIVE_STYLISED,
+    NATIVE_STYLISED("Native stylised"),
     /** The romanization of the native language title */
-    ROMAJI,
+    ROMAJI("Romaji"),
     /** The romanization of the native language title, stylised by media creator */
-    ROMAJI_STYLISED
+    ROMAJI_STYLISED("Romaji stylised")
 }

@@ -17,15 +17,16 @@
 
 package co.anitrend.domain.staff.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Staff sort enums
  */
-enum class StaffSort : ISortable {
-    FAVOURITES,
-    ID,
-    LANGUAGE,
-    ROLE,
-    SEARCH_MATCH
+enum class StaffSort(override val alias: CharSequence) : IAliasable, ISortable {
+    FAVOURITES("Favourites"),
+    ID("Id"),
+    LANGUAGE("Language"),
+    ROLE("Role"),
+    SEARCH_MATCH("Search match")
 }

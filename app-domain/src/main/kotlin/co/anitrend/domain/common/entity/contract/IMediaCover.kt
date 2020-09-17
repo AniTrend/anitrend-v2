@@ -15,15 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.remote
+package co.anitrend.domain.common.entity.contract
 
-import co.anitrend.data.media.model.contract.IMediaGenre
-import com.google.gson.annotations.SerializedName
+import co.anitrend.domain.common.HexColor
 
-/**
- * If AniList ever duplicates genres we're screwed! **R.I.P**
+/** [MediaCoverImage](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
+ * Contract for media cover images
+ * 
+ * @property color Average #hex color of cover image
+ * @property extraLarge The cover image url of the media at its largest size. If this size isn't available, large will be provided instead.
  */
-internal data class MediaGenre(
-    @SerializedName("genre")
-    override val genre: String
-) : IMediaGenre
+interface IMediaCover : ICoverImage {
+    val color: HexColor?
+    val extraLarge: String?
+    val banner: String?
+}

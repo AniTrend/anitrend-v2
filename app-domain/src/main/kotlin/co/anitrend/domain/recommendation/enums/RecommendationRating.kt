@@ -17,11 +17,13 @@
 
 package co.anitrend.domain.recommendation.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Recommendation rating enums
  */
-enum class RecommendationRating {
-    NO_RATING,
-    RATE_DOWN,
-    RATE_UP
+enum class RecommendationRating(override val alias: CharSequence) : IAliasable {
+    NO_RATING("No rating"),
+    RATE_DOWN("Rating down"),
+    RATE_UP("Rating up")
 }

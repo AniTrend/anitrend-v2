@@ -22,9 +22,11 @@ package co.anitrend.domain.media.entity.attribute.trailer
  *
  * @property id The trailer video id
  * @property site The site the video is hosted by
+ * @property thumbnail The url for the thumbnail image of the video
  * (Currently either **YouTube** or **DailyMotion**)
  */
 interface IMediaTrailer {
     val id: CharSequence?
     val site: CharSequence?
+    val thumbnail: CharSequence?
 }

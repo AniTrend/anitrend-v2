@@ -17,34 +17,36 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Type of relation media has to its parent
  */
-enum class MediaRelation {
+enum class MediaRelation(override val alias: CharSequence) : IAliasable {
     /** An adaption of this media into a different format */
-    ADAPTATION,
+    ADAPTATION("Adaptation"),
     /** An alternative version of the same media */
-    ALTERNATIVE,
+    ALTERNATIVE("Alternative"),
     /** Shares at least 1 character */
-    CHARACTER,
+    CHARACTER("Shares cast"),
     /** Version 2 only */
-    COMPILATION,
+    COMPILATION("Compilation"),
     /** Version 2 only */
-    CONTAINS,
+    CONTAINS("Contains"),
     /** Other */
-    OTHER,
+    OTHER("Other"),
     /** The media a side story is from */
-    PARENT,
+    PARENT("Parent"),
     /** Released before the relation */
-    PREQUEL,
+    PREQUEL("Prequel"),
     /** Released after the relation */
-    SEQUEL,
+    SEQUEL("Sequel"),
     /** A side story of the parent media */
-    SIDE_STORY,
+    SIDE_STORY("Side story"),
     /** Version 2 only. The source material the media was adapted from */
-    SOURCE,
+    SOURCE("Source"),
     /** An alternative version of the media with a different primary focus */
-    SPIN_OFF,
+    SPIN_OFF("Spin off"),
     /** A shortened and summarized version */
-    SUMMARY
+    SUMMARY("Summary")
 }

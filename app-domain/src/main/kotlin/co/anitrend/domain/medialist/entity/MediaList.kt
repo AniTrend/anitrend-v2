@@ -17,8 +17,45 @@
 
 package co.anitrend.domain.medialist.entity
 
+import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.common.extension.INVALID_ID
 import co.anitrend.domain.medialist.entity.base.IMediaListExtended
+import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
+import co.anitrend.domain.medialist.entity.contract.MediaListProgress
+import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.domain.medialist.enums.ScoreFormat
 
-class MediaList(
+data class MediaList(
+    override val advancedScores: Map<String, Int>,
+    override val customLists: Collection<CharSequence>,
+    override val userId: Long,
+    override val priority: Float,
+    override val createdOn: Long,
+    override val startedOn: FuzzyDate,
+    override val finishedOn: FuzzyDate,
+    override val mediaId: Long,
+    override val score: Float,
+    override val status: MediaListStatus,
+    override val progress: MediaListProgress,
+    override val privacy: MediaListPrivacy,
+    override val id: Long
+) : IMediaListExtended {
 
-)
+    companion object {
+        fun empty() = MediaList(
+            advancedScores = emptyMap(),
+            customLists = emptyList(),
+            userId = 0,
+            priority = 0f,
+            createdOn = 0,
+            startedOn = FuzzyDate.empty(),
+            finishedOn = FuzzyDate.empty(),
+            mediaId = 0,
+            score = 0f,
+            status = MediaListStatus.COMPLETED,
+            progress = MediaListProgress.Anime.empty(),
+            privacy = MediaListPrivacy.empty(),
+            id = INVALID_ID,
+        )
+    }
+}

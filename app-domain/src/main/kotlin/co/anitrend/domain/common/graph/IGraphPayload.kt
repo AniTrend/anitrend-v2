@@ -17,10 +17,12 @@
 
 package co.anitrend.domain.common.graph
 
+import android.os.Parcelable
+
 /**
  * Model query or mutation contract, enforces implementation of map conversion
  */
-interface IGraphPayload {
+interface IGraphPayload : Parcelable {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API

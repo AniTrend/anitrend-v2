@@ -18,6 +18,7 @@
 package co.anitrend.domain.common.entity.shared
 
 import co.anitrend.domain.common.graph.IGraphPayload
+import kotlinx.android.parcel.Parcelize
 
 /** [FuzzyDate](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydate.doc.html)
  * Date object that allows for incomplete date values (fuzzy) Unknown dates represented by 0.
@@ -26,10 +27,11 @@ import co.anitrend.domain.common.graph.IGraphPayload
  * @param month Month annotated to have a minimum of 0 and maximum of 12
  * @param day Day annotated to have a minimum of 0 and maximum of 31
  */
+@Parcelize
 data class FuzzyDate(
-    val year: Int = UNKNOWN,
-    val month: Int = UNKNOWN,
-    val day: Int = UNKNOWN
+    val year: Int,
+    val month: Int,
+    val day: Int
 ) : IGraphPayload {
 
     /**
@@ -53,5 +55,13 @@ data class FuzzyDate(
          * Default representation of null or not set
          */
         const val UNKNOWN = 0
+
+        fun empty() = FuzzyDate(
+            UNKNOWN,
+            UNKNOWN,
+            UNKNOWN
+        )
+
+        fun FuzzyDate?.orEmpty() = this ?: empty()
     }
 }

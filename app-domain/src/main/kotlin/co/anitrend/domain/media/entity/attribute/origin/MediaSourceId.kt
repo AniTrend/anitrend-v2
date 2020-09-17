@@ -18,9 +18,19 @@
 package co.anitrend.domain.media.entity.attribute.origin
 
 data class MediaSourceId(
-    override val mal: UInt? = null,
-    override val aniDb: UInt? = null,
-    override val trakt: UInt? = null,
-    override val kitsu: UInt? = null,
-    override val anilist: UInt? = null
-) : IMediaSourceId
+    override val mal: Long?,
+    override val aniDb: Long?,
+    override val trakt: Long?,
+    override val kitsu: Long?,
+    override val anilist: Long?
+) : IMediaSourceId {
+    companion object {
+        fun empty() = MediaSourceId(
+            null,
+            null,
+            null,
+            null,
+            null,
+        )
+    }
+}

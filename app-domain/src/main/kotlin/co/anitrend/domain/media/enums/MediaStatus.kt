@@ -17,16 +17,18 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * The current releasing status of the media
  */
-enum class MediaStatus {
+enum class MediaStatus(override val alias: CharSequence) : IAliasable {
     /** Ended before the work could be finished */
-    CANCELLED,
+    CANCELLED("Cancelled"),
     /** Has completed and is no longer being released */
-    FINISHED,
+    FINISHED("Finished"),
     /** To be released at a later date */
-    NOT_YET_RELEASED,
+    NOT_YET_RELEASED("Not yet released"),
     /** Currently releasing */
-    RELEASING
+    RELEASING("Releasing")
 }

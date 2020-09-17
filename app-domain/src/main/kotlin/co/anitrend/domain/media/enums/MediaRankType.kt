@@ -17,12 +17,14 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * The type of ranking
  */
-enum class MediaRankType {
+enum class MediaRankType(override val alias: CharSequence) : IAliasable {
     /** Ranking is based on the media's popularity */
-    POPULAR,
+    POPULAR("Popular"),
     /** Ranking is based on the media's ratings/score */
-    RATED
+    RATED("Rated")
 }

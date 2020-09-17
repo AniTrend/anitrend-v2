@@ -17,15 +17,16 @@
 
 package co.anitrend.domain.review.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Review sort enums
  */
-enum class ReviewSort : ISortable {
-    CREATED_AT,
-    ID,
-    RATING,
-    SCORE,
-    UPDATED_AT
+enum class ReviewSort(override val alias: CharSequence) : IAliasable, ISortable {
+    CREATED_AT("Created at"),
+    ID("Id"),
+    RATING("Rating"),
+    SCORE("Score"),
+    UPDATED_AT("Update at")
 }

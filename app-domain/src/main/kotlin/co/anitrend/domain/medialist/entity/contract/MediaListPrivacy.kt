@@ -25,7 +25,16 @@ package co.anitrend.domain.medialist.entity.contract
  * @param notes Users notes
  */
 data class MediaListPrivacy(
-    val isPrivate: Boolean = false,
-    val isHidden: Boolean = false,
+    val isPrivate: Boolean,
+    val isHidden: Boolean,
     val notes: CharSequence?
-)
+) {
+
+    companion object {
+        fun empty() = MediaListPrivacy(
+            isPrivate = false,
+            isHidden = false,
+            notes = null
+        )
+    }
+}

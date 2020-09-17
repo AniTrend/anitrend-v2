@@ -37,8 +37,8 @@ interface IMediaRank : IEntity {
     val allTime: Boolean?
     val context: CharSequence
     val format: MediaFormat
-    val rank: UInt
+    val rank: Int
     val season: MediaSeason?
     val type: MediaRankType
-    val year: UShort?
+    val year: Int?
 }

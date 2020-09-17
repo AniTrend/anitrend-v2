@@ -17,14 +17,16 @@
 
 package co.anitrend.domain.character.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * The role the character plays in the media
  */
-enum class CharacterRole {
+enum class CharacterRole(override val alias: CharSequence) : IAliasable {
     /** A primary character role in the media */
-    MAIN,
+    MAIN("Main"),
     /** A supporting character role in the media */
-    SUPPORTING,
+    SUPPORTING("Supporting"),
     /** A background character in the media */
-    BACKGROUND
+    BACKGROUND("Background")
 }

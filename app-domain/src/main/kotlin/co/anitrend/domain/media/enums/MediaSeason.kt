@@ -17,17 +17,18 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Media season enums
  */
-enum class MediaSeason {
-
+enum class MediaSeason(override val alias: CharSequence) : IAliasable {
     /** Months September to November */
-    FALL,
+    FALL("Fall"),
     /** Months March to May */
-    SPRING,
+    SPRING("Spring"),
     /** Months June to August */
-    SUMMER,
+    SUMMER("Summer"),
     /** Months December to February */
-    WINTER
+    WINTER("Winter")
 }

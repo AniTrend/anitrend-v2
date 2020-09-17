@@ -18,14 +18,14 @@
 package co.anitrend.domain.media.entity.base
 
 import co.anitrend.domain.common.entity.contract.IEntity
-import co.anitrend.domain.common.entity.contract.IEntityMediaCover
+import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.entity.contract.MediaCategory
 
 interface IMedia : IEntity {
     val title: IMediaTitle
-    val image: IEntityMediaCover
+    val image: IMediaCover
     val category: MediaCategory
-    val isAdult: Boolean
+    val isAdult: Boolean?
     val isFavourite: Boolean
 }

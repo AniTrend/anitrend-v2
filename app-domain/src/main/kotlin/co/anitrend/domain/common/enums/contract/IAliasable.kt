@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.remote
+package co.anitrend.domain.common.enums.contract
 
-import co.anitrend.domain.media.entity.attribute.link.IMediaExternalLink
-
-/** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
- * An external link to another site related to the media
- */
-internal data class MediaExternalLink(
-    override val site: String,
-    override val url: String,
-    override val id: Long
-) : IMediaExternalLink
+/** Contract for aliasing emum values */
+interface IAliasable {
+    val alias: CharSequence
+}
