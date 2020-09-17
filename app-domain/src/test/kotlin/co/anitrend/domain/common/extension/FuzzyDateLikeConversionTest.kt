@@ -31,14 +31,14 @@ class FuzzyDateLikeConversionTest {
     @Test
     fun `should produce unknown fuzzy date like pattern`() {
         /** new instance of the fuzzy date object should return all fields defaulted to [FuzzyDate.UNKNOWN] */
-        val fuzzyDate = FuzzyDate()
+        val fuzzyDate = FuzzyDate.empty()
 
         Assert.assertEquals("0", fuzzyDate.toFuzzyDateLike())
     }
 
     @Test
     fun `should produce fuzzy date like pattern with missing day`() {
-        val fuzzyDate = FuzzyDate(
+        val fuzzyDate = FuzzyDate.empty().copy(
             year = 1976,
             month = 5
         )
@@ -48,14 +48,14 @@ class FuzzyDateLikeConversionTest {
 
     @Test
     fun `should produce fuzzy date like pattern with missing month`() {
-        val fuzzyDate = FuzzyDate(
+        val fuzzyDate = FuzzyDate.empty().copy(
             year = 1843,
             day = 10
         )
 
         Assert.assertEquals("1843%10", fuzzyDate.toFuzzyDateLike())
 
-        val fuzzyDateYear = FuzzyDate(
+        val fuzzyDateYear = FuzzyDate.empty().copy(
             year = 1843
         )
 
@@ -64,7 +64,7 @@ class FuzzyDateLikeConversionTest {
 
     @Test
     fun `should produce fuzzy date like pattern with missing year`() {
-        val fuzzyDate = FuzzyDate(
+        val fuzzyDate = FuzzyDate.empty().copy(
             month = 8,
             day = 10
         )

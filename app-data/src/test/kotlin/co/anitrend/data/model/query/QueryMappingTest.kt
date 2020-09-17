@@ -57,7 +57,7 @@ class QueryMappingTest {
     fun `mapping of media query has correct keys and values`() {
         val mediaQuery = MediaQuery(
             type = MediaType.ANIME,
-            endDate = FuzzyDate(
+            endDate = FuzzyDate.empty().copy(
                 year = 2018,
                 month = 5
             ).toFuzzyDateInt(),
