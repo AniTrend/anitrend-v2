@@ -313,6 +313,14 @@ object Libraries {
             private const val version = "3.4.2"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
+
+        object Epoxy {
+            private const val version = "4.0.0-beta6"
+            const val epoxy = "com.airbnb.android:epoxy:$version"
+            const val paging = "com.airbnb.android:epoxy-paging:$version"
+            const val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
+            const val processor = "com.airbnb.android:epoxy-processor:$version"
+        }
     }
 
     object Blitz {
