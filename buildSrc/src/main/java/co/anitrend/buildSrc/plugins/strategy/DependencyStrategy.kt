@@ -41,6 +41,7 @@ internal class DependencyStrategy(
         add("androidTestImplementation", Libraries.AndroidX.Test.coreKtx)
         add("androidTestImplementation", Libraries.AndroidX.Test.rules)
         add("androidTestImplementation", Libraries.AndroidX.Test.runner)
+        add("androidTestImplementation", Libraries.AndroidX.Test.Espresso.core)
         add("androidTestImplementation", Libraries.AndroidX.Test.Extension.junitKtx)
     }
 
@@ -55,12 +56,14 @@ internal class DependencyStrategy(
         add("implementation", Libraries.JetBrains.KotlinX.Coroutines.android)
         add("implementation", Libraries.JetBrains.KotlinX.Coroutines.core)
         add("testImplementation", Libraries.JetBrains.KotlinX.Coroutines.test)
+        add("testImplementation", Libraries.CashApp.Turbine.turbine)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
         add("implementation", Libraries.Koin.core)
         add("implementation", Libraries.Koin.extension)
         add("testImplementation", Libraries.Koin.test)
+        add("androidTestImplementation", Libraries.Koin.test)
         if (module != data || module != core || module != androidCore) {
             add("implementation", Libraries.Koin.AndroidX.scope)
             add("implementation", Libraries.Koin.AndroidX.fragment)
