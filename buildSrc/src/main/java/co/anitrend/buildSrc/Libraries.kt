@@ -34,6 +34,8 @@ object Libraries {
 
     const val scalingImageView = "com.davemorrissey.labs:subsampling-scale-image-view-androidx:${Versions.scalingImageView}"
 
+    const val prettyTime = "org.ocpsoft.prettytime:prettytime:${Versions.prettyTime}"
+
     object Android {
 
         object Tools {
