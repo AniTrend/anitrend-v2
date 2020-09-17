@@ -31,14 +31,14 @@ class FuzzyDateIntConversionTest {
     @Test
     fun `should produce fuzzy date int unknown`() {
         /** new instance of the fuzzy date object should return all fields defaulted to [FuzzyDate.UNKNOWN] */
-        val fuzzyDate = FuzzyDate()
+        val fuzzyDate = FuzzyDate.empty()
 
         assertEquals("0", fuzzyDate.toFuzzyDateInt())
     }
 
     @Test
     fun `should produce fuzzy date int with no day postfix`() {
-        val fuzzyDate = FuzzyDate(
+        val fuzzyDate = FuzzyDate.empty().copy(
             year = 1976,
             month = 5
         )
@@ -48,7 +48,7 @@ class FuzzyDateIntConversionTest {
 
     @Test
     fun `should produce fuzzy date int with no month`() {
-        val fuzzyDate = FuzzyDate(
+        val fuzzyDate = FuzzyDate.empty().copy(
             year = 1843,
             day = 10
         )
@@ -58,7 +58,7 @@ class FuzzyDateIntConversionTest {
 
     @Test
     fun `should produce fuzzy date int with no year`() {
-        val fuzzyDate = FuzzyDate(
+        val fuzzyDate = FuzzyDate.empty().copy(
             month = 8,
             day = 10
         )
