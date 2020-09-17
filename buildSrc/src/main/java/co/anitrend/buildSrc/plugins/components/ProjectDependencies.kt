@@ -45,9 +45,11 @@ private fun Project.applyFeatureModuleDependencies() {
     dependencies.add("implementation", Libraries.AndroidX.StartUp.startUpRuntime)
     dependencies.add("implementation", Libraries.AndroidX.Collection.collectionKtx)
     dependencies.add("implementation", Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
-    dependencies.add("implementation", Libraries.AndroidX.ContraintLayout.constraintLayout)
+    dependencies.add("implementation", Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.add("implementation", Libraries.Google.Material.material)
+
+    dependencies.add("implementation", Libraries.threeTenBp)
 
     dependencies.add("implementation", project(":$core"))
     dependencies.add("implementation", project(":$data"))
@@ -81,7 +83,7 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.add("implementation", Libraries.AndroidX.Activity.activityKtx)
     dependencies.add("implementation", Libraries.AndroidX.Fragment.fragmentKtx)
     dependencies.add("implementation", Libraries.AndroidX.StartUp.startUpRuntime)
-    dependencies.add("implementation", Libraries.AndroidX.ContraintLayout.constraintLayout)
+    dependencies.add("implementation", Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.add("implementation", Libraries.Coil.coil)
 }
@@ -90,6 +92,7 @@ private fun Project.applyBaseModuleDependencies() {
     println("Applying base module dependencies for module -> $path")
     when (name) {
         core -> {
+            dependencies.add("implementation", project(":$androidCore"))
             dependencies.add("implementation", project(":$navigation"))
             dependencies.add("implementation", project(":$domain"))
             dependencies.add("implementation", project(":$data"))
@@ -102,7 +105,7 @@ private fun Project.applyBaseModuleDependencies() {
             dependencies.add("implementation", Libraries.AndroidX.Fragment.fragmentKtx)
             dependencies.add("implementation", Libraries.AndroidX.StartUp.startUpRuntime)
             dependencies.add("implementation", Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
-            dependencies.add("implementation", Libraries.AndroidX.ContraintLayout.constraintLayout)
+            dependencies.add("implementation", Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
             dependencies.add("implementation", Libraries.AndroidX.Collection.collectionKtx)
             dependencies.add("implementation", Libraries.AndroidX.Recycler.recyclerView)
@@ -131,6 +134,7 @@ private fun Project.applyBaseModuleDependencies() {
             dependencies.add("implementation", Libraries.Square.OkHttp.logging)
 
             dependencies.add("implementation", Libraries.AniTrend.Retrofit.graphQL)
+            dependencies.add("implementation", Libraries.threeTenBp)
         }
         domain -> {
             dependencies.add("implementation", Libraries.AniTrend.Arch.domain)
@@ -161,17 +165,18 @@ private fun Project.applyAndroidCoreModuleDependencies() {
     dependencies.add("implementation", Libraries.AndroidX.Fragment.fragmentKtx)
     dependencies.add("implementation", Libraries.AndroidX.StartUp.startUpRuntime)
     dependencies.add("implementation", Libraries.AndroidX.Collection.collectionKtx)
-    dependencies.add("implementation", Libraries.AndroidX.ContraintLayout.constraintLayout)
+    dependencies.add("implementation", Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.add("implementation", Libraries.Google.Material.material)
 
     dependencies.add("implementation", Libraries.Coil.coil)
+    dependencies.add("implementation", Libraries.threeTenBp)
 
-    dependencies.add("implementation", project(":$core"))
     dependencies.add("implementation", project(":$data"))
     dependencies.add("implementation", project(":$domain"))
     dependencies.add("implementation", project(":$navigation"))
     if (!isAndroidCoreModule()) {
+        dependencies.add("implementation", project(":$core"))
         dependencies.add("implementation", project(":$androidCore"))
     }
 }
@@ -194,18 +199,33 @@ private fun Project.applyCommonModuleDependencies() {
     dependencies.add("implementation", Libraries.AndroidX.Fragment.fragmentKtx)
     dependencies.add("implementation", Libraries.AndroidX.StartUp.startUpRuntime)
     dependencies.add("implementation", Libraries.AndroidX.Collection.collectionKtx)
-    dependencies.add("implementation", Libraries.AndroidX.ContraintLayout.constraintLayout)
+    dependencies.add("implementation", Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.add("implementation", Libraries.Google.Material.material)
 
     dependencies.add("implementation", Libraries.Coil.coil)
     dependencies.add("implementation", Libraries.Glide.glide)
 
+    dependencies.add("implementation", Libraries.threeTenBp)
+
     dependencies.add("implementation", project(":$androidCore"))
     dependencies.add("implementation", project(":$core"))
     dependencies.add("implementation", project(":$data"))
     dependencies.add("implementation", project(":$domain"))
     dependencies.add("implementation", project(":$navigation"))
+}
+
+private fun Project.applyComposeDependencies() {
+    println("Applying compose dependencies for feature module -> $path")
+
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Foundation.foundation)
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Material.material)
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Material.Icons.core)
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Material.Icons.extended)
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Runtime.liveData)
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Ui.tooling)
+    dependencies.add("implementation", Libraries.AndroidX.Compose.Ui.ui)
+    dependencies.add("androidTestImplementation", Libraries.AndroidX.Compose.Test.test)
 }
 
 internal fun Project.configureDependencies() {
@@ -222,4 +242,5 @@ internal fun Project.configureDependencies() {
     if (isBaseModule()) applyBaseModuleDependencies()
     if (isCoreFeatureModule()) applyAndroidCoreModuleDependencies()
     if (isCommonFeatureModule()) applyCommonModuleDependencies()
+    /*if (hasComposeSupport()) applyComposeDependencies()*/
 }
