@@ -36,9 +36,9 @@ import kotlinx.coroutines.flow.onStart
 
 class AndroidPowerController(
     private val context: Context,
-    private val connectivitySettings: IConnectivitySettings,
-    private val powerManager: PowerManager = context.systemServiceOf(Context.POWER_SERVICE)!!,
-    private val connectivityManager: ConnectivityManager = context.systemServiceOf(Context.CONNECTIVITY_SERVICE)!!
+    private val powerManager: PowerManager?,
+    private val connectivityManager: ConnectivityManager?,
+    private val connectivitySettings: IConnectivitySettings
 ) : PowerController {
 
     override fun shouldSaveDataFlow(ignorePreference: Boolean): Flow<SaveData> {
@@ -69,7 +69,7 @@ class AndroidPowerController(
         connectivitySettings.isDataSaverOn -> {
             SaveData.Enabled(SaveDataReason.PREFERENCE)
         }
-        powerManager.isPowerSaveMode -> {
+        powerManager?.isPowerSaveMode == true -> {
             SaveData.Enabled(SaveDataReason.SYSTEM_POWER_SAVER)
         }
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isBackgroundDataRestricted() -> {
@@ -80,7 +80,7 @@ class AndroidPowerController(
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun isBackgroundDataRestricted(): Boolean {
-        return connectivityManager.restrictBackgroundStatus ==
+        return connectivityManager?.restrictBackgroundStatus ==
                 ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED
     }
 }

@@ -1,7 +1,5 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,21 +15,25 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.core.ui.component
 
-dependencies {
+import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.data.arch.AniTrendExperimentalFeature
+import org.koin.core.context.GlobalContext
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.ScopeID
+import timber.log.Timber
 
-    /** Material Dialogs */
-    implementation(Libraries.MaterialDialogs.core)
-    implementation(Libraries.MaterialDialogs.lifecycle)
-    implementation(Libraries.MaterialDialogs.bottomsheets)
+@AniTrendExperimentalFeature
+class KoinScope : KoinScopeComponent {
 
-    implementation(Libraries.Square.OkHttp.logging)
+    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
 
-    /** Timber Trees */
-    implementation(Libraries.treessence)
+    override val koin by lazy(UNSAFE) {
+        GlobalContext.get()
+    }
 
-    implementation(Libraries.prettyTime)
+    override val scope by lazy(UNSAFE) {
+        createScope(scopeID, getScopeName(), this)
+    }
 }

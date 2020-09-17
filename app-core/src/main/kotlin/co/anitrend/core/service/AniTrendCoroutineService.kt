@@ -1,7 +1,5 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,21 +15,16 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.core.service
 
-dependencies {
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
-    /** Material Dialogs */
-    implementation(Libraries.MaterialDialogs.core)
-    implementation(Libraries.MaterialDialogs.lifecycle)
-    implementation(Libraries.MaterialDialogs.bottomsheets)
+abstract class AniTrendCoroutineService : AniTrendLifecycleService(), CoroutineScope by MainScope() {
 
-    implementation(Libraries.Square.OkHttp.logging)
-
-    /** Timber Trees */
-    implementation(Libraries.treessence)
-
-    implementation(Libraries.prettyTime)
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
+    }
 }

@@ -18,23 +18,45 @@
 package co.anitrend.core.ui.activity
 
 import android.content.Context
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.core.ui.inject
 import co.anitrend.core.util.config.ConfigurationUtil
-import org.koin.android.ext.android.inject
+import org.koin.android.ext.android.getKoin
+import org.koin.androidx.fragment.android.setupKoinFragmentFactory
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.ScopeID
 
 /**
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
  */
-abstract class AnitrendActivity : SupportActivity() {
+abstract class AnitrendActivity : SupportActivity(), KoinScopeComponent {
 
     protected val configurationUtil by inject<ConfigurationUtil>()
+
+    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
+
+    override val koin by lazy(UNSAFE) {
+        getKoin()
+    }
+
+    override val scope by lazy(UNSAFE) {
+        createScope(scopeID, getScopeName(), this)
+    }
 
     /**
      * Can be used to configure custom theme styling as desired
      */
     override fun configureActivity() {
         configurationUtil.onCreate(this)
+        lifecycleScope.launchWhenCreated {
+            runCatching {
+                koin._logger.debug("Open activity scope: $scope")
+                setupKoinFragmentFactory(scope)
+            }
+        }
     }
 
     override fun attachBaseContext(newBase: Context?) {
@@ -50,5 +72,13 @@ abstract class AnitrendActivity : SupportActivity() {
     override fun onResume() {
         super.onResume()
         configurationUtil.onResume(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        runCatching {
+            koin._logger.debug("Close activity scope: $scope")
+            scope.close()
+        }
     }
 }

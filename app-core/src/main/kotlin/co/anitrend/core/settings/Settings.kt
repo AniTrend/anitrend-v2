@@ -21,6 +21,8 @@ import android.content.Context
 import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportSettings
 import co.anitrend.core.R
+import co.anitrend.core.android.settings.connectivity.IConnectivitySettings
+import co.anitrend.core.android.settings.power.IPowerSettings
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.settings.common.customize.common.PreferredViewMode
@@ -36,7 +38,8 @@ import co.anitrend.data.arch.database.settings.ISortOrderSettings
 
 class Settings(context: Context) : SupportSettings(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
-    ISortOrderSettings, IRefreshBehaviourSettings, ICustomizationSettings {
+    ISortOrderSettings, IRefreshBehaviourSettings, ICustomizationSettings,
+    IPowerSettings, IConnectivitySettings {
 
     override var locale by EnumPreference(
         R.string.settings_configuration_locale,
@@ -76,7 +79,7 @@ class Settings(context: Context) : SupportSettings(context),
 
     override var isSortOrderDescending by BooleanPreference(
         R.string.settings_is_sort_order_desc,
-        false,
+        true,
         context.resources
     )
 
@@ -104,6 +107,12 @@ class Settings(context: Context) : SupportSettings(context),
         context.resources
     )
 
+    override var isDataSaverOn by BooleanPreference(
+        R.string.settings_data_saver,
+        false,
+        context.resources
+    )
+
     companion object {
 
         /**
@@ -114,7 +123,7 @@ class Settings(context: Context) : SupportSettings(context),
             ILocaleSettings::class, IThemeSettings::class,
             IAuthenticationSettings::class, IPrivacySettings::class,
             ISortOrderSettings::class, IRefreshBehaviourSettings::class,
-            ICustomizationSettings::class
+            ICustomizationSettings::class, IPowerSettings::class, IConnectivitySettings::class
         )
     }
 }

@@ -15,18 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment
+package co.anitrend.core.service
 
-import android.os.Bundle
-import android.view.View
-import co.anitrend.arch.core.model.ISupportViewModelState
+import androidx.lifecycle.LifecycleService
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.ui.fragment.SupportFragment
 import org.koin.android.ext.android.getKoin
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.ScopeID
 
-abstract class AniTrendFragment : SupportFragment(), KoinScopeComponent {
+abstract class AniTrendLifecycleService : LifecycleService(), KoinScopeComponent {
 
     private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
 
@@ -38,26 +35,17 @@ abstract class AniTrendFragment : SupportFragment(), KoinScopeComponent {
         createScope(scopeID, getScopeName(), this)
     }
 
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate() {
+        super.onCreate()
         runCatching {
-            koin._logger.debug("Open fragment scope: $scope")
+            koin._logger.debug("Open activity scope: $scope")
         }
     }
 
-    /**
-     * Called when the fragment is no longer in use.  This is called
-     * after [.onStop] and before [.onDetach].
-     */
     override fun onDestroy() {
         super.onDestroy()
         runCatching {
-            koin._logger.debug("Close fragment scope: $scope")
+            koin._logger.debug("Close service scope: $scope")
             scope.close()
         }
     }

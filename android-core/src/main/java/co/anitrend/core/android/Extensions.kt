@@ -21,9 +21,27 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import co.anitrend.domain.airing.entity.AiringSchedule
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import org.koin.core.context.GlobalContext
+import org.ocpsoft.prettytime.PrettyTime
+import org.threeten.bp.Instant
+import java.util.*
+
+/**
+ * Helper to resolve koin dependencies
+ */
+inline fun <reified T> koinOf(): T =
+    GlobalContext.get().get(T::class)
+
+/**
+ * Pretty time reference as a singleton
+ */
+val prettyTime by lazy {
+    koinOf<PrettyTime>()
+}
 
 /**
  * Creates a callback flow a [BroadcastReceiver] using the given [IntentFilter]
@@ -42,4 +60,40 @@ fun Context.flowOfBroadcast(intentFilter: IntentFilter): Flow<Intent> = callback
     awaitClose {
         unregisterReceiver(receiver)
     }
+}
+
+/**
+ * Helper value formatter
+ *
+ * @param digits Number of decimal places
+ *
+ * @author [Andrey Breslav](https://stackoverflow.com/a/23088000/1725347)
+ */
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
+
+/**
+ * Helper value formatter for [Float] types
+ *
+ * @param digits Number of decimal places
+ */
+fun Float.format(digits: Int) = "%.${digits}f".format(this)
+
+/**
+ * Creates a string with locale applied from pretty time
+ *
+ * @return 2 hours from now, 3 hours ago .e.t.c
+ */
+fun AiringSchedule.getPrettyTime(): String {
+    return prettyTime.format(
+        Date(airingAt * 1000)
+    )
+}
+
+/**
+ * Creates a string with locale applied from pretty time
+ *
+ * @return 2 hours from now, 3 hours ago .e.t.c
+ */
+fun Instant.getPrettyTime(): String {
+    return prettyTime.format(Date(toEpochMilli()))
 }
