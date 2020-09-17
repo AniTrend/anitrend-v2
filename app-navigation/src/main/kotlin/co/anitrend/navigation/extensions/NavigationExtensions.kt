@@ -75,9 +75,14 @@ internal fun String.loadIntentOrNull(packageName: String): Intent? =
 fun NavigationRouter.forFragment() = provider.fragment()
 
 /**
+ * Builds an activity intent from the navigation component
+ */
+fun NavigationRouter.forActivity(context: Context) = provider.activity(context)
+
+/**
  * Builds an activity intent and starts it
  */
-fun NavigationRouter.forActivity(
+fun NavigationRouter.startActivity(
     context: Context?,
     navPayload: NavPayload? = null,
     flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
@@ -90,6 +95,29 @@ fun NavigationRouter.forActivity(
         intent?.action = action
         navPayload?.also {
             intent?.putExtra(it.key, it.parcel)
+        }
+        context?.startActivity(intent, options)
+    }.onFailure {
+        Timber.tag(moduleTag).e(it)
+    }
+}
+
+/**
+ * Builds an activity intent and starts it
+ */
+fun NavigationRouter.start(
+    context: Context?,
+    bundle: Bundle? = null,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+    options: Bundle? = null
+) {
+    runCatching {
+        val intent = provider.activity(context)
+        intent?.flags = flags
+        intent?.action = action
+        bundle?.also {
+            intent?.putExtras(it)
         }
         context?.startActivity(intent, options)
     }.onFailure {
