@@ -18,13 +18,14 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.Libraries.AndroidX
 import co.anitrend.buildSrc.common.hasCoroutineSupport
 import co.anitrend.buildSrc.common.isAppModule
 import co.anitrend.buildSrc.common.isBaseModule
+import co.anitrend.buildSrc.common.hasComposeSupport
 import co.anitrend.buildSrc.plugins.extensions.baseAppExtension
 import co.anitrend.buildSrc.plugins.extensions.baseExtension
 import co.anitrend.buildSrc.plugins.extensions.libraryExtension
-import com.android.build.OutputFile
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
@@ -70,7 +71,7 @@ private fun configureMultipleBuilds(project: Project) {
                 val prefix = "anitrend_v${versionName}_rc_${versionCode}"
                 val outputFileName = when (output.name) {
                     "release" -> {
-                        val abi = output.getFilter(OutputFile.ABI) ?: "universal"
+                        val abi = output.getFilter("ABI") ?: "universal"
                         original.replace(
                             currentName, "${prefix}_${abi}-${output.name}.apk"
                         )
@@ -90,7 +91,8 @@ private fun configureMultipleBuilds(project: Project) {
 private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
     if (project.isAppModule()) {
         applicationId = "co.anitrend"
-        // TODO: Configure flavours and multiple apk support
+        // TODO: Configure flavours and multiple apk support,
+        // this might be deprecated in favour of app bundles
         //configureMultipleBuilds(project)
     }
     else
@@ -101,6 +103,8 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             println("Applying view binding feature for module -> ${project.path}")
             project.libraryExtension().buildFeatures {
                 viewBinding = true
+                /*if (project.hasComposeSupport())
+                    compose = true*/
             }
         }
 
@@ -140,6 +144,14 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         exclude("META-INF/NOTICE.txt")
         exclude("META-INF/LICENSE")
         exclude("META-INF/LICENSE.txt")
+        // Exclude consumer proguard files
+        exclude("META-INF/proguard/*")
+        // Exclude AndroidX version files
+        exclude("META-INF/*.version")
+        // Exclude the Firebase/Fabric/other random properties files
+        exclude("META-INF/*.properties")
+        exclude("/*.properties")
+        exclude("fabric/*.properties")
     }
 
     sourceSets {
@@ -165,15 +177,23 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    tasks.withType(KotlinJvmCompile::class.java) {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            /*if (project.hasComposeSupport())
+                useIR = true*/
+        }
+    }
+
     tasks.withType(KotlinCompile::class.java) {
         val compilerArgumentOptions = if (hasCoroutineSupport()) {
             listOf(
                 "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                "-Xuse-experimental=kotlin.Experimental",
                 "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
-                "-Xopt-in=kotlin.Experimental"
+                "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.Experimental",
+                "-Xopt-in=coil.annotation.ExperimentalCoilApi",
+                "-Xuse-experimental=kotlin.Experimental"
             )
         } else {
             listOf(
@@ -189,9 +209,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
     }
 
-    tasks.withType(KotlinJvmCompile::class.java) {
-        kotlinOptions {
-            jvmTarget = "1.8"
+    /*if (project.hasComposeSupport()) {
+        composeOptions {
+            kotlinCompilerExtensionVersion = AndroidX.Compose.version
         }
-    }
+    }*/
 }
