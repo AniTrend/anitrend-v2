@@ -39,10 +39,7 @@ class InjectorInitializer : AbstractInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        // val logLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
-        // https://github.com/InsertKoinIO/koin/issues/847 koin crashes after upgrading to 1.4.0
-        // this is a temporary fix for now
-        val logLevel = Level.NONE
+        val logLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
         startKoin {
             fragmentFactory()
             androidContext(context)
