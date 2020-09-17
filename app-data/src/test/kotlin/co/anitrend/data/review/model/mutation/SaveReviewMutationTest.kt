@@ -17,7 +17,8 @@
 
 package co.anitrend.data.review.model.mutation;
 
-import static org.junit.Assert.*;
+import org.junit.Assert.*;
+import org.junit.Test
 
 class SaveReviewMutationTest {
 
