@@ -17,23 +17,23 @@
 
 package co.anitrend.core.android.helpers.image.model
 
-import co.anitrend.domain.common.entity.contract.IEntityImage
+import co.anitrend.domain.common.entity.contract.ICoverImage
+import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.entity.shared.CoverImage
-import co.anitrend.domain.media.entity.attribute.image.MediaImage
 
-sealed class RequestImage<T : IEntityImage>(
+sealed class RequestImage<T : ICoverImage>(
     val image: T?
 )
 
 class MediaRequestImage(
-    mediaImage: MediaImage?,
+    mediaImage: IMediaCover?,
     val type: ImageType
-) : RequestImage<MediaImage>(mediaImage) {
+) : RequestImage<IMediaCover>(mediaImage) {
     enum class ImageType {
         BANNER, POSTER
     }
 }
 
 class CoverRequestImage(
-    coverImage: CoverImage?
-) : RequestImage<CoverImage>(coverImage)
+    coverImage: ICoverImage?
+) : RequestImage<ICoverImage>(coverImage)
