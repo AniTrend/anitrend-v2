@@ -17,13 +17,48 @@
 
 package co.anitrend.core.ui.fragment.list
 
+import android.os.Bundle
+import android.view.View
+import co.anitrend.arch.core.model.ISupportViewModelState
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.core.ui.ILifecycleFeature
+import org.koin.android.ext.android.getKoin
+import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.scope.ScopeID
 
-abstract class AniTrendListFragment<M> : SupportFragmentList<M>(), ILifecycleFeature {
+abstract class AniTrendListFragment<M> : SupportFragmentList<M>(), KoinScopeComponent {
+
+    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
+
+    override val koin by lazy(UNSAFE) {
+        getKoin()
+    }
+
+    override val scope by lazy(UNSAFE) {
+        createScope(scopeID, getScopeName(), this)
+    }
+
     /**
-     * Expects a module helper if one is available for the current scope, otherwise return null
+     * Proxy for a view model state if one exists
      */
-    override fun featureModuleHelper(): DynamicFeatureModuleHelper? = null
+    override fun viewModelState(): ISupportViewModelState<*>? = null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        runCatching {
+            koin._logger.debug("Open fragment scope: $scope")
+        }
+    }
+
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after [.onStop] and before [.onDetach].
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        runCatching {
+            koin._logger.debug("Close fragment scope: $scope")
+            scope.close()
+        }
+    }
 }
