@@ -32,4 +32,6 @@ dependencies {
 
     /** Timber Trees */
     implementation(Libraries.treessence)
+
+    implementation(Libraries.prettyTime)
 }
