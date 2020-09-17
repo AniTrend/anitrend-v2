@@ -16,5 +16,5 @@
   -->
 
 <resources>
-
+    <string name="template_character_separator" translatable="false">•</string>
 </resources>

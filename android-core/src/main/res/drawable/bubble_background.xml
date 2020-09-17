@@ -20,17 +20,17 @@
 
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorTransparentImageBackground" />
+            <solid android:color="#6e000000" />
             <corners android:radius="50dp" />
-            <padding android:bottom="10dp" android:left="30dp" android:right="30dp" android:top="10dp" />
+            <padding android:bottom="@dimen/lg_margin" android:left="@dimen/xl_margin" android:right="@dimen/xl_margin" android:top="@dimen/lg_margin" />
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorTransparentImageBackground"/>
+            <solid android:color="#6e000000"/>
             <corners android:radius="50dp" />
-            <padding android:bottom="10dp" android:left="30dp" android:right="30dp" android:top="10dp" />
+            <padding android:bottom="@dimen/lg_margin" android:left="@dimen/xl_margin" android:right="@dimen/xl_margin" android:top="@dimen/lg_margin" />
         </shape>
     </item>
 </selector>
