@@ -79,7 +79,7 @@ class Settings(context: Context) : SupportSettings(context),
 
     override var isSortOrderDescending by BooleanPreference(
         R.string.settings_is_sort_order_desc,
-        false,
+        true,
         context.resources
     )
 
