@@ -23,8 +23,17 @@ object Versions {
     const val targetSdk = 29
     const val minSdk = 21
 
-    const val versionCode = 20017
-    const val versionName = "2.0.0-alpha17"
+     /**
+      * **RR**_X.Y.Z_
+      * > **RR** reserved for build flavours and **X.Y.Z** follow the [versionName] convention
+      */
+    const val versionCode = 1020018
+
+    /**
+     * Naming schema: X.Y.Z-variant##
+     * > **X**(Major).**Y**(Minor).**Z**(Patch)
+     */
+    const val versionName = "2.0.0-alpha18"
 
     const val mockk = "1.10.0"
     const val junit = "4.13"
@@ -36,4 +45,7 @@ object Versions {
     const val treesSence = "0.3.2"
 
     const val liquidSwipe = "1.3"
+
+    const val prettyTime = "4.0.4.Final"
+    const val scalingImageView = "3.10.0"
 }

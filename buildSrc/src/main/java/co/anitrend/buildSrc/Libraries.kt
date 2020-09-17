@@ -32,10 +32,14 @@ object Libraries {
     const val junit = "junit:junit:${Versions.junit}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
 
+    const val scalingImageView = "com.davemorrissey.labs:subsampling-scale-image-view-androidx:${Versions.scalingImageView}"
+
+    const val prettyTime = "org.ocpsoft.prettytime:prettytime:${Versions.prettyTime}"
+
     object Android {
 
         object Tools {
-            private const val version = "4.2.0-alpha07"
+            private const val version = "4.2.0-alpha10"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -58,6 +62,36 @@ object Libraries {
             private const val version = "1.1.0"
             const val collection = "androidx.collection:collection:$version"
             const val collectionKtx = "androidx.collection:collection-ktx:$version"
+        }
+
+        object Compose {
+            internal const val version = "1.0.0-alpha02"
+
+            object Foundation {
+                const val foundation = "androidx.compose.foundation:foundation:$version"
+            }
+
+            object Material {
+                const val material = "androidx.compose.material:material:$version"
+
+                object Icons {
+                    const val core = "androidx.compose.material:material-icons-core:$version"
+                    const val extended = "androidx.compose.material:material-icons-extended:$version"
+                }
+            }
+
+            object Runtime {
+                const val liveData = "androidx.compose.runtime:runtime-livedata:$version"
+            }
+
+            object Test {
+                const val test = "androidx.ui:ui-test:$version"
+            }
+
+            object Ui {
+                const val ui = "androidx.compose.ui:ui:$version"
+                const val tooling = "androidx.ui:ui-tooling:$version"
+            }
         }
 
         object Core {
@@ -236,7 +270,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "0770fc6ace"
+            private const val version = "8bbfed60fe"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -279,6 +313,14 @@ object Libraries {
             private const val version = "3.4.2"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
+
+        object Epoxy {
+            private const val version = "4.0.0-beta6"
+            const val epoxy = "com.airbnb.android:epoxy:$version"
+            const val paging = "com.airbnb.android:epoxy-paging:$version"
+            const val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
+            const val processor = "com.airbnb.android:epoxy-processor:$version"
+        }
     }
 
     object Blitz {
@@ -296,6 +338,23 @@ object Libraries {
         }
     }
 
+    object CashApp {
+        object Copper {
+            private const val version = "1.0.0"
+            const val copper = "app.cash.copper:copper-flow:$version"
+        }
+
+        object Contour {
+            private const val version = "0.1.7"
+            const val contour = "app.cash.contour:contour:$version"
+        }
+
+        object Turbine {
+            private const val version = "0.2.1"
+            const val turbine = "app.cash.turbine:turbine:$version"
+        }
+    }
+
     object Chuncker {
         private const val version = "3.2.0"
 
@@ -304,12 +363,17 @@ object Libraries {
     }
 
     object Coil {
-        private const val version = "1.0.0-rc2"
+        private const val version = "0.13.0"
         const val coil = "io.coil-kt:coil:$version"
         const val base = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
         const val svg = "io.coil-kt:coil-svg:$version"
         const val video = "io.coil-kt:coil-video:$version"
+    }
+
+    object Dropbox {
+        private const val version = "4.0.0-alpha07"
+        const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
     object Google {
@@ -339,7 +403,7 @@ object Libraries {
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.2.0"
+                    private const val version = "2.2.1"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -374,7 +438,7 @@ object Libraries {
         }
 
         object Kotlin {
-            private const val version = "1.4.0"
+            private const val version = "1.4.10"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -407,7 +471,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.2.0-alpha-1"
+        private const val version = "2.2.0-beta-1"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
