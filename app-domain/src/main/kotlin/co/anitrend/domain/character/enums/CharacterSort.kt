@@ -17,13 +17,14 @@
 
 package co.anitrend.domain.character.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Character sort enums
  */
-enum class CharacterSort : ISortable {
-    ID,
-    ROLE,
-    SEARCH_MATCH
+enum class CharacterSort(override val alias: CharSequence) : IAliasable, ISortable {
+    ID("Id"),
+    ROLE("Role"),
+    SEARCH_MATCH("Search match")
 }

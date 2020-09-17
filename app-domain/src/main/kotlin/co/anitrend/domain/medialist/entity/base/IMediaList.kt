@@ -23,7 +23,8 @@ import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 interface IMediaList : IEntity {
-    val mediaId: UInt
+    val userId: Long
+    val mediaId: Long
     val score: Float
     val status: MediaListStatus?
     val progress: MediaListProgress

@@ -17,26 +17,28 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Source type the media was adapted from
  */
-enum class MediaSource {
+enum class MediaSource(override val alias: CharSequence) : IAliasable {
     /** Version 2 only. Japanese Anime */
-    ANIME,
+    ANIME("Anime"),
     /** Version 2 only. Self-published works */
-    DOUJINSHI,
+    DOUJINSHI("Doujinshi"),
     /** Written work published in volumes */
-    LIGHT_NOVEL,
+    LIGHT_NOVEL("Light novel"),
     /** Asian comic book */
-    MANGA,
+    MANGA("Manga"),
     /** Version 2 only. Written works not published in volumes */
-    NOVEL,
+    NOVEL("Novel"),
     /** An original production not based of another work */
-    ORIGINAL,
+    ORIGINAL("Original"),
     /** Other */
-    OTHER,
+    OTHER("Other"),
     /** Video game */
-    VIDEO_GAME,
+    VIDEO_GAME("Video game"),
     /** Video game driven primary by text and narrative */
-    VISUAL_NOVEL
+    VISUAL_NOVEL("Visual novel")
 }

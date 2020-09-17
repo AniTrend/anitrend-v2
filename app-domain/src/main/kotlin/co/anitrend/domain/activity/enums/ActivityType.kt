@@ -17,18 +17,20 @@
 
 package co.anitrend.domain.activity.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Activity type enum
  */
-enum class ActivityType {
+enum class ActivityType(override val alias: CharSequence) : IAliasable {
     /** A text activity */
-    TEXT,
+    TEXT("Text"),
     /** A anime list update activity */
-    ANIME_LIST,
+    ANIME_LIST("Anime list"),
     /** A manga list update activity */
-    MANGA_LIST,
+    MANGA_LIST("Manga list"),
     /** A text message activity sent to another user */
-    MESSAGE,
+    MESSAGE("Message"),
     /** Anime & Manga list update, only used in query arguments */
-    MEDIA_LIST
+    MEDIA_LIST("Media list")
 }

@@ -18,6 +18,7 @@
 package co.anitrend.domain.airing.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.extension.INVALID_ID
 
 /**
 * @param airingAt The time the episode airs at
@@ -27,9 +28,20 @@ import co.anitrend.domain.common.entity.contract.IEntity
 * @param id The id of the airing schedule item
 */
 data class AiringSchedule(
-    val airingAt: UInt,
-    val episode: UInt,
-    val mediaId: UInt,
-    val timeUntilAiring: UInt,
+    val airingAt: Long,
+    val episode: Int,
+    val mediaId: Long,
+    val timeUntilAiring: Long,
     override val id: Long
-) : IEntity
+) : IEntity {
+
+    companion object {
+        fun empty() = AiringSchedule(
+            airingAt = 0,
+            episode = 0,
+            mediaId = INVALID_ID,
+            timeUntilAiring = 0,
+            id = INVALID_ID
+        )
+    }
+}

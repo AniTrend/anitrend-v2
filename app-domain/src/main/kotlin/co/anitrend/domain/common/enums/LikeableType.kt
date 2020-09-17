@@ -17,12 +17,14 @@
 
 package co.anitrend.domain.common.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Types that can be liked
  */
-enum class LikeableType {
-    ACTIVITY,
-    ACTIVITY_REPLY,
-    THREAD,
-    THREAD_COMMENT
+enum class LikeableType(override val alias: CharSequence) : IAliasable {
+    ACTIVITY("Activity"),
+    ACTIVITY_REPLY("Activity reply"),
+    THREAD("Thread"),
+    THREAD_COMMENT("Thread comment")
 }

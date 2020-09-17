@@ -17,12 +17,14 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Media type enum, anime or manga
  */
-enum class MediaType {
+enum class MediaType(override val alias: CharSequence) : IAliasable {
     /** Japanese Anime */
-    ANIME,
+    ANIME("Anime"),
     /** Asian comic */
-    MANGA
+    MANGA("Manga")
 }

@@ -17,14 +17,15 @@
 
 package co.anitrend.domain.user.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * User statistics sort enum
  */
-enum class UserStatisticsSort : ISortable {
-    COUNT,
-    ID,
-    MEAN_SCORE,
-    PROGRESS
+enum class UserStatisticsSort(override val alias: CharSequence) : IAliasable, ISortable {
+    COUNT("Count"),
+    ID("Id"),
+    MEAN_SCORE("Mean score"),
+    PROGRESS("Progress")
 }

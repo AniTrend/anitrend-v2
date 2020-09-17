@@ -17,13 +17,16 @@
 
 package co.anitrend.domain.common.entity.contract
 
+import co.anitrend.domain.common.HexColor
+
 /** [MediaCoverImage](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
  * Contract for media cover images
  * 
  * @property color Average #hex color of cover image
  * @property extraLarge The cover image url of the media at its largest size. If this size isn't available, large will be provided instead.
  */
-interface IEntityMediaCover : IEntityImage {
-    val color: String?
+interface IMediaCover : ICoverImage {
+    val color: HexColor?
     val extraLarge: String?
+    val banner: String?
 }

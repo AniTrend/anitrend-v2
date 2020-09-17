@@ -17,19 +17,20 @@
 
 package co.anitrend.domain.thread.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Thread sort enums
  */
-enum class ThreadSort : ISortable {
-    CREATED_AT,
-    ID,
-    IS_STICKY,
-    REPLIED_AT,
-    REPLY_COUNT,
-    SEARCH_MATCH,
-    TITLE,
-    UPDATED_AT,
-    VIEW_COUNT
+enum class ThreadSort(override val alias: CharSequence) : IAliasable, ISortable {
+    CREATED_AT("Created at"),
+    ID("Id"),
+    IS_STICKY("Is sticky"),
+    REPLIED_AT("Replied at"),
+    REPLY_COUNT("Reply count"),
+    SEARCH_MATCH("Search match"),
+    TITLE("Title"),
+    UPDATED_AT("Updated at"),
+    VIEW_COUNT("View count")
 }

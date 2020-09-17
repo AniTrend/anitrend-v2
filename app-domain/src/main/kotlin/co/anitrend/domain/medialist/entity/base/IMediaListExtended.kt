@@ -18,6 +18,6 @@
 package co.anitrend.domain.medialist.entity.base
 
 interface IMediaListExtended : IMediaListCore {
-    val advancedScores: Map<String, UShort>
+    val advancedScores: Map<String, Int>
     val customLists: Collection<CharSequence>
 }

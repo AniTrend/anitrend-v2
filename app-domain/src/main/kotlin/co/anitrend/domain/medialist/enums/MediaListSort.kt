@@ -17,25 +17,26 @@
 
 package co.anitrend.domain.medialist.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Media list sort enums
  */
-enum class MediaListSort : ISortable {
-    ADDED_TIME,
-    FINISHED_ON,
-    MEDIA_ID,
-    MEDIA_POPULARITY,
-    MEDIA_TITLE_ENGLISH,
-    MEDIA_TITLE_NATIVE,
-    MEDIA_TITLE_ROMAJI,
-    PRIORITY,
-    PROGRESS,
-    PROGRESS_VOLUMES,
-    REPEAT,
-    SCORE,
-    STARTED_ON,
-    STATUS,
-    UPDATED_TIME
+enum class MediaListSort(override val alias: CharSequence) : IAliasable, ISortable {
+    ADDED_TIME("Added time"),
+    FINISHED_ON("Finished on"),
+    MEDIA_ID("Id"),
+    MEDIA_POPULARITY("Popularity"),
+    MEDIA_TITLE_ENGLISH("Title english"),
+    MEDIA_TITLE_NATIVE("Title native"),
+    MEDIA_TITLE_ROMAJI("Title Romaji"),
+    PRIORITY("Priority"),
+    PROGRESS("Progress"),
+    PROGRESS_VOLUMES("Progress volumes"),
+    REPEAT("Repeat"),
+    SCORE("Score"),
+    STARTED_ON("Started on"),
+    STATUS("Status"),
+    UPDATED_TIME("Updated time")
 }

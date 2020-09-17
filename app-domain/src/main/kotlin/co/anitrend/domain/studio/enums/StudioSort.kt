@@ -17,14 +17,15 @@
 
 package co.anitrend.domain.studio.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Studio sort enums
  */
-enum class StudioSort : ISortable {
-    FAVOURITES,
-    ID,
-    NAME,
-    SEARCH_MATCH
+enum class StudioSort(override val alias: CharSequence) : IAliasable, ISortable {
+    FAVOURITES("Favourites"),
+    ID("Id"),
+    NAME("Name"),
+    SEARCH_MATCH("Search match")
 }

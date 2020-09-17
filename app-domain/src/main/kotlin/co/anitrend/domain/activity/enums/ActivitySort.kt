@@ -17,11 +17,12 @@
 
 package co.anitrend.domain.activity.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Activity sort enums
  */
-enum class ActivitySort : ISortable {
-    ID
+enum class ActivitySort(override val alias: CharSequence) : IAliasable, ISortable {
+    ID("Id")
 }

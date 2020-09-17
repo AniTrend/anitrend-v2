@@ -17,14 +17,15 @@
 
 package co.anitrend.domain.airing.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.enums.contract.ISortable
 
 /**
  * Airing schedule sort enums
  */
-enum class AiringSort : ISortable {
-    ID,
-    MEDIA_ID,
-    TIME,
-    EPISODE
+enum class AiringSort(override val alias: CharSequence) : IAliasable, ISortable {
+    ID("Id"),
+    MEDIA_ID("Media id"),
+    TIME("Time"),
+    EPISODE("Episode")
 }

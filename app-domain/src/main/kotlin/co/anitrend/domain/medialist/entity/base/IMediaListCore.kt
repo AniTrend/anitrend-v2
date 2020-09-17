@@ -20,9 +20,8 @@ package co.anitrend.domain.medialist.entity.base
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 
 interface IMediaListCore : IMediaList {
-    val userId: UInt
     val priority: Float
-    val createdOn: UInt
+    val createdOn: Long
     val startedOn: FuzzyDate
     val finishedOn: FuzzyDate
 }

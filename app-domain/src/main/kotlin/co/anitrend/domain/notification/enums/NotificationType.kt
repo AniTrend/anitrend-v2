@@ -17,36 +17,38 @@
 
 package co.anitrend.domain.notification.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Notification type enum
  */
-enum class NotificationType {
+enum class NotificationType(override val alias: CharSequence) : IAliasable {
     /** A user has liked your activity */
-    ACTIVITY_LIKE,
+    ACTIVITY_LIKE("Activity like"),
     /** A user has mentioned you in their activity */
-    ACTIVITY_MENTION,
+    ACTIVITY_MENTION("Activity mention"),
     /** A user has sent you message */
-    ACTIVITY_MESSAGE,
+    ACTIVITY_MESSAGE("Activity message"),
     /** A user has replied to your activity */
-    ACTIVITY_REPLY,
+    ACTIVITY_REPLY("Activity reply"),
     /** A user has liked your activity reply */
-    ACTIVITY_REPLY_LIKE,
+    ACTIVITY_REPLY_LIKE("Activity reply like"),
     /** A user has replied to activity you have also replied to */
-    ACTIVITY_REPLY_SUBSCRIBED,
+    ACTIVITY_REPLY_SUBSCRIBED("Activity reply subscribed"),
     /** An anime you are currently watching has aired */
-    AIRING,
+    AIRING("Airing"),
     /** A user has followed you */
-    FOLLOWING,
+    FOLLOWING("Following"),
     /** A new anime or manga has been added to the site where its related media is on the user's list */
-    RELATED_MEDIA_ADDITION,
+    RELATED_MEDIA_ADDITION("Related media addition"),
     /** A user has liked your forum comment */
-    THREAD_COMMENT_LIKE,
+    THREAD_COMMENT_LIKE("Thread comment like"),
     /** A user has mentioned you in a forum comment */
-    THREAD_COMMENT_MENTION,
+    THREAD_COMMENT_MENTION("Thread comment mention"),
     /** A user has replied to your forum comment */
-    THREAD_COMMENT_REPLY,
+    THREAD_COMMENT_REPLY("Thread comment reply"),
     /** A user has liked your forum thread */
-    THREAD_LIKE,
+    THREAD_LIKE("Thread like"),
     /** A user has commented in one of your subscribed forum threads */
-    THREAD_SUBSCRIBED
+    THREAD_SUBSCRIBED("Thread subscribed")
 }

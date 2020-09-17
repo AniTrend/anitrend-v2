@@ -17,15 +17,17 @@
 
 package co.anitrend.domain.media.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Media trend sort enums
  */
-enum class MediaTrendSort {
-    DATE,
-    EPISODE,
-    ID,
-    MEDIA_ID,
-    POPULARITY,
-    SCORE,
-    TRENDING
+enum class MediaTrendSort(override val alias: CharSequence) : IAliasable {
+    DATE("Date"),
+    EPISODE("Episode"),
+    ID("Id"),
+    MEDIA_ID("Media id"),
+    POPULARITY("Popularity"),
+    SCORE("Score"),
+    TRENDING("Trending")
 }

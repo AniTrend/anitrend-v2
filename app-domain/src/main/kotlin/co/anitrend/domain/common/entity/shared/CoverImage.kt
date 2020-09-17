@@ -17,7 +17,7 @@
 
 package co.anitrend.domain.common.entity.shared
 
-import co.anitrend.domain.common.entity.contract.IEntityImage
+import co.anitrend.domain.common.entity.contract.ICoverImage
 
 /**
  * Shared model between [co.anitrend.domain.character.entities.Character],
@@ -30,4 +30,4 @@ import co.anitrend.domain.common.entity.contract.IEntityImage
 data class CoverImage(
     override val large: String?,
     override val medium: String?
-) : IEntityImage
+) : ICoverImage

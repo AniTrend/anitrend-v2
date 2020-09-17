@@ -51,9 +51,9 @@ fun FuzzyDate.toFuzzyDateInt() : FuzzyDateInt {
  *
  * @see FuzzyDate
  */
-fun FuzzyDateInt.toFuzzyDate() : FuzzyDate {
-    if (this == "0")
-        return FuzzyDate()
+fun FuzzyDateInt?.toFuzzyDate() : FuzzyDate {
+    if (this == "0" || this == null)
+        return FuzzyDate.empty()
 
     val fuzzyDateIntYear = substring(0, 4).toInt()
     val fuzzyDateIntMonth = substring(4, 6).toInt()

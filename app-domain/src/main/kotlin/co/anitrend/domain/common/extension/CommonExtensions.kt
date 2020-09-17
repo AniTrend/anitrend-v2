@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.model.remote
+package co.anitrend.domain.common.extension
 
-import co.anitrend.data.media.model.contract.IMediaGenre
-import com.google.gson.annotations.SerializedName
+import co.anitrend.domain.common.entity.contract.IEntity
+
+internal const val INVALID_ID = 0L
 
 /**
- * If AniList ever duplicates genres we're screwed! **R.I.P**
+ * Represents an empty entity
  */
-internal data class MediaGenre(
-    @SerializedName("genre")
-    override val genre: String
-) : IMediaGenre
+fun IEntity.isValid() = id != INVALID_ID

@@ -17,7 +17,7 @@
 
 package co.anitrend.domain.user.entity.contract
 
-import co.anitrend.domain.common.entity.contract.IEntityImage
+import co.anitrend.domain.common.entity.contract.ICoverImage
 
 /**
  * A user's avatars
@@ -26,4 +26,4 @@ data class UserImage(
     override val large: CharSequence?,
     override val medium: CharSequence?,
     val banner: CharSequence?
-) : IEntityImage
+) : ICoverImage

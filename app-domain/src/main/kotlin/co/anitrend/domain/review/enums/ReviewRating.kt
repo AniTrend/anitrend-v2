@@ -17,11 +17,13 @@
 
 package co.anitrend.domain.review.enums
 
+import co.anitrend.domain.common.enums.contract.IAliasable
+
 /**
  * Review rating enums
  */
-enum class ReviewRating {
-    DOWN_VOTE,
-    NO_VOTE,
-    UP_VOTE
+enum class ReviewRating(override val alias: CharSequence) : IAliasable {
+    DOWN_VOTE("Down vote"),
+    NO_VOTE("No vote"),
+    UP_VOTE("Up vote")
 }
