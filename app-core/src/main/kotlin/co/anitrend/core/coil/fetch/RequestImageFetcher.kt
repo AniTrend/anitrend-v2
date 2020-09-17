@@ -15,11 +15,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.coil.fetch
+package co.anitrend.core.coil.fetch
 
-import co.anitrend.coil.mapper.RequestImageMapper
+import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import coil.bitmappool.BitmapPool
+import coil.bitmap.BitmapPool
 import coil.decode.DataSource
 import coil.decode.Options
 import coil.fetch.FetchResult
@@ -49,7 +49,6 @@ class RequestImageFetcher(
         null
     }
 
-
     /**
      * Load the [data] into memory. Perform any necessary fetching operations.
      *
@@ -64,7 +63,7 @@ class RequestImageFetcher(
         size: Size,
         options: Options
     ): FetchResult {
-        val url = mapper.map(data, size)
+        val url = mapper.map(data)
         // TODO: will probably crash on a network error, unless coil handles exceptions internally
         val source = fetchDataSourceUsing(url)!!
         return SourceResult(

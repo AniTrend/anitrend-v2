@@ -15,21 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.coil.mapper
+package co.anitrend.core.coil.mapper
 
 import co.anitrend.core.android.helpers.image.model.CoverRequestImage
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.controller.PowerController
-import co.anitrend.core.controller.SaveData
-import coil.map.MeasuredMapper
-import coil.size.Size
+import co.anitrend.core.android.controller.contract.PowerController
+import co.anitrend.core.android.controller.contract.SaveData
+import co.anitrend.domain.common.entity.contract.IMediaCover
+import coil.map.Mapper
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class RequestImageMapper(
     private val powerController: PowerController
-) : MeasuredMapper<RequestImage<*>, HttpUrl> {
+) : Mapper<RequestImage<*>, HttpUrl> {
 
     internal fun getImageUrlUsing(requestImage: RequestImage<*>): String? {
         val saveData = powerController.shouldSaveData()
@@ -48,14 +48,14 @@ class RequestImageMapper(
                     requestImage.image?.large
                 else
                     requestImage.image?.medium
-        }
+        }.toString()
     }
 
     /** Return true if this can convert [data]. */
     override fun handles(data: RequestImage<*>) = true
 
     /** Convert [data] into [HttpUrl]. */
-    override fun map(data: RequestImage<*>, size: Size): HttpUrl {
+    override fun map(data: RequestImage<*>): HttpUrl {
         return getImageUrlUsing(data)?.toHttpUrl() ?: FALLBACK_URL
     }
 
