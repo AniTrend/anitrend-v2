@@ -61,7 +61,15 @@ object AboutRouter : NavigationRouter() {
 object MediaRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider
+    interface Provider : INavigationProvider {
+        fun discover(): Class<out Fragment>?
+        fun carousel(): Class<out Fragment>?
+
+        companion object {
+            fun MediaRouter.forDiscover() = provider.discover()
+            fun MediaRouter.forCarousel() = provider.carousel()
+        }
+    }
 }
 
 object CharacterRouter : NavigationRouter() {
