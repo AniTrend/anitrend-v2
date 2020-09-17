@@ -338,6 +338,23 @@ object Libraries {
         }
     }
 
+    object CashApp {
+        object Copper {
+            private const val version = "1.0.0"
+            const val copper = "app.cash.copper:copper-flow:$version"
+        }
+
+        object Contour {
+            private const val version = "0.1.7"
+            const val contour = "app.cash.contour:contour:$version"
+        }
+
+        object Turbine {
+            private const val version = "0.2.1"
+            const val turbine = "app.cash.turbine:turbine:$version"
+        }
+    }
+
     object Chuncker {
         private const val version = "3.2.0"
 
