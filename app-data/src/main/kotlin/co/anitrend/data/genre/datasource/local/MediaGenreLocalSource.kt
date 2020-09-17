@@ -27,25 +27,25 @@ import kotlinx.coroutines.flow.Flow
 internal interface MediaGenreLocalSource: ILocalSource<GenreEntity> {
 
     @Query("""
-        select count(id) from GenreEntity
+        select count(id) from genre
         """
     )
     override suspend fun count(): Int
 
     @Query("""
-            delete from GenreEntity
+            delete from genre
         """
     )
     override suspend fun clear()
 
     @Query("""
-        select * from GenreEntity order by genre asc
+        select * from genre order by genre asc
         """
     )
     suspend fun findAll(): List<GenreEntity>
 
     @Query("""
-        select * from GenreEntity order by genre asc
+        select * from genre order by genre asc
         """
     )
     fun findAllFlow(): Flow<List<GenreEntity>>

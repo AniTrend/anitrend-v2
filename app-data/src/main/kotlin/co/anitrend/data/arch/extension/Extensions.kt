@@ -96,11 +96,9 @@ private suspend inline fun <T> Deferred<Response<T>>.executeWithRetry(
 ): Response<T> {
     repeat(maxAttempts) { attempt ->
         var nextDelay = attempt * attempt * defaultDelay
-        runCatching {
-            withContext(dispatcher) {
-                await()
-            }
-        }.onFailure { e ->
+        try {
+            return withContext(dispatcher) { await() }
+        } catch (e: Exception) {
             // The response failed, so lets see if we should retry again
             if (attempt == (maxAttempts - 1) || !shouldRetry(e)) {
                 throw e

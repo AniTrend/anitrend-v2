@@ -1,7 +1,0 @@
-fragment AiringSchedule on AiringSchedule {
-    id
-    airingAt
-    timeUntilAiring
-    episode
-    mediaId
-}

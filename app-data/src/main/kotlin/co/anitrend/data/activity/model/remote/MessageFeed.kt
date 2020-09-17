@@ -17,11 +17,10 @@
 
 package co.anitrend.data.activity.model.remote
 
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
-import co.anitrend.data.activity.entity.MessageFeedEntity
-import co.anitrend.data.activity.model.remote.common.IFeed
-import co.anitrend.data.user.model.remote.User
+import co.anitrend.data.activity.model.remote.common.IFeedModel
+import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.activity.enums.ActivityType
+import com.google.gson.annotations.SerializedName
 
 /** [MessageActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/messageactivity.doc.html)
  * User message activity
@@ -36,26 +35,16 @@ import co.anitrend.domain.activity.enums.ActivityType
  */
 internal data class MessageFeed(
     val replies: List<ReplyFeed>?,
-    val recipient : User?,
+    val recipient : UserModelCore?,
     val recipientId : Long?,
     val isLocked: Boolean,
     val message: String?,
-    val messenger: User?,
+    val messenger: UserModelCore?,
     val messengerId: Long?,
-    override val id: Long,
-    override val createdAt: Long,
-    override val likes: List<User>?,
-    override val siteUrl: String?,
-    override val type: ActivityType?,
-    override val replyCount: Int
-) : IFeed {
-
-    companion object : ISupportMapperHelper<MessageFeed, MessageFeedEntity> {
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: MessageFeed): MessageFeedEntity {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-    }
-}
+    @SerializedName("id") override val id: Long,
+    @SerializedName("createdAt") override val createdAt: Long,
+    @SerializedName("likes") override val likes: List<UserModelCore>?,
+    @SerializedName("siteUrl") override val siteUrl: String?,
+    @SerializedName("type") override val type: ActivityType?,
+    @SerializedName("replyCount") override val replyCount: Int
+) : IFeedModel

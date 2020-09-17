@@ -17,10 +17,9 @@
 
 package co.anitrend.data.arch.di
 
-import android.content.Context
 import android.net.ConnectivityManager
-import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.ext.systemServiceOf
+import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.converter.AniTrendConverterFactory
 import co.anitrend.data.api.helper.cache.CacheHelper
@@ -30,6 +29,7 @@ import co.anitrend.data.arch.logger.GraphLogger
 import co.anitrend.data.arch.logger.OkHttpLogger
 import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.genre.koin.mediaGenreModules
+import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.source.koin.sourceModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -94,9 +94,7 @@ private val networkModule = module {
     factory {
         SupportConnectivity(
             connectivityManager = androidContext()
-                .systemServiceOf<ConnectivityManager>(
-                    Context.CONNECTIVITY_SERVICE
-                )
+                .systemServiceOf<ConnectivityManager>()
         )
     }
     factory {
@@ -149,4 +147,4 @@ val dataModules = listOf(
     retrofitModule,
     networkModule,
     interceptorModules
-) + mediaTagModules + mediaGenreModules + sourceModules
+) + mediaTagModules + mediaGenreModules + sourceModules + mediaModules

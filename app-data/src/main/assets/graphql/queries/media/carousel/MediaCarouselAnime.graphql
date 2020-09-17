@@ -1,0 +1,42 @@
+query MediaCarousel(
+    $page: Int = 1,
+    $perPage: Int = 10,
+    $season: MediaSeason,
+    $seasonYear: Int,
+    $nextSeason: MediaSeason,
+    $nextYear: Int,
+    $isAdult: Boolean,
+    $currentTime: Int,
+    $scoreFormat: ScoreFormat
+) {
+    AiringSoon: Page(page: $page, perPage: $perPage) {
+        airingSchedules(airingAt_greater: $currentTime) {
+            ... AiringScheduleExtended
+        }
+    }
+    AllTimePopular: Page(page: $page, perPage: $perPage) {
+        media(sort: [POPULARITY_DESC], type: ANIME, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    TrendingRightNow: Page(page: $page, perPage: $perPage) {
+        media(sort: [TRENDING_DESC], type: ANIME, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    PopularThisSeason: Page(page: $page, perPage: $perPage) {
+        media(season: $season, seasonYear: $seasonYear, sort: [POPULARITY_DESC], type: ANIME, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    RecentlyAdded: Page(page: $page, perPage: $perPage) {
+        media(sort: [ID_DESC], type: ANIME, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    AnticipatedNexSeason: Page(page: $page, perPage: $perPage) {
+        media(season: $nextSeason, seasonYear: $nextYear, sort: [POPULARITY_DESC], type: ANIME, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+}

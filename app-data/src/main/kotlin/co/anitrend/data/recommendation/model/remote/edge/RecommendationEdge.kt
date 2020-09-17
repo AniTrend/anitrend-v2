@@ -18,12 +18,12 @@
 package co.anitrend.data.recommendation.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
-import co.anitrend.data.recommendation.model.remote.Recommendation
+import co.anitrend.data.recommendation.model.remote.RecommendationModel
 
 /** [RecommendationEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/recommendationedge.doc.html)
  * Recommendation edge connection
  */
 internal class RecommendationEdge(
     override val id: Long,
-    override val node: Recommendation?
-) : IEntityEdge<Recommendation>
+    override val node: RecommendationModel?
+) : IEntityEdge<RecommendationModel>

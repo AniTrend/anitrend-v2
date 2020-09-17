@@ -27,25 +27,25 @@ import kotlinx.coroutines.flow.Flow
 internal interface MediaTagLocalSource : ILocalSource<TagEntity> {
 
     @Query("""
-        select count(id) from TagEntity
+        select count(id) from tag
     """)
     override suspend fun count(): Int
 
     @Query("""
-        delete from TagEntity
+        delete from tag
     """
     )
     override suspend fun clear()
 
     @Query("""
-        select * from TagEntity 
+        select * from tag 
         order by category, name asc
         """
     )
     suspend fun findAll(): List<TagEntity>
 
     @Query("""
-        select * from TagEntity 
+        select * from tag 
         order by category, name asc
         """
     )

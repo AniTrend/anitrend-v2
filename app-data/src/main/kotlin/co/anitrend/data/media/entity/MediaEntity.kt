@@ -18,60 +18,95 @@
 package co.anitrend.data.media.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import co.anitrend.data.airing.model.remote.AiringSchedule
-import co.anitrend.data.media.model.contract.IMediaTag
-import co.anitrend.data.media.model.remote.*
-import co.anitrend.data.media.model.remote.MediaExternalLink
-import co.anitrend.data.media.model.remote.MediaRank
-import co.anitrend.data.media.model.remote.MediaTitle
-import co.anitrend.data.media.model.remote.MediaTrailer
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.FuzzyDateInt
-import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.*
 
 @Entity(
-    tableName = "media_entity"
+    tableName = "media",
+    primaryKeys = ["id"]
 )
 internal data class MediaEntity(
-    @PrimaryKey @ColumnInfo(name = "id") override val id: Long,
+    @Embedded(prefix = "cover_") val coverImage: CoverImage,
+    @Embedded(prefix = "title_") val title: Title,
+    @Embedded(prefix = "trailer_") val trailer: Trailer? = null,
     @ColumnInfo(name = "average_score") val averageScore: Int? = null,
-    @ColumnInfo(name = "banner_image") val bannerImage: String? = null,
     @ColumnInfo(name = "chapters") val chapters: Int? = null,
     @ColumnInfo(name = "country_of_origin") val countryOfOrigin: CountryCode? = null,
-    @ColumnInfo(name = "cover_image") val coverImage: MediaCoverImage? = null,
     @ColumnInfo(name = "description") val description: String? = null,
     @ColumnInfo(name = "duration") val duration: Int? = null,
     @ColumnInfo(name = "end_date") val endDate: FuzzyDateInt? = null,
     @ColumnInfo(name = "episodes") val episodes: Int? = null,
-    @ColumnInfo(name = "external_links") val externalLinks: List<MediaExternalLink> = emptyList(),
     @ColumnInfo(name = "favourites") val favourites: Int,
-    @ColumnInfo(name = "format") val format: MediaFormat? = null,
-    @ColumnInfo(name = "genres") val genres: List<String>? = null,
+    @ColumnInfo(name = "media_format") val format: MediaFormat? = null,
     @ColumnInfo(name = "hash_tag") val hashTag: String? = null,
-    @ColumnInfo(name = "id_mal") val idMal: Long? = null,
     @ColumnInfo(name = "is_adult") val isAdult: Boolean? = null,
     @ColumnInfo(name = "is_favourite") val isFavourite: Boolean,
     @ColumnInfo(name = "is_licensed") val isLicensed: Boolean? = null,
     @ColumnInfo(name = "is_locked") val isLocked: Boolean? = null,
     @ColumnInfo(name = "mean_score") val meanScore: Int? = null,
-    @ColumnInfo(name = "next_airing_episode") val nextAiringEpisode: AiringSchedule? = null,
     @ColumnInfo(name = "popularity") val popularity: Int? = null,
-    @ColumnInfo(name = "rankings") val rankings: List<MediaRank>? = emptyList(),
     @ColumnInfo(name = "season") val season: MediaSeason? = null,
     @ColumnInfo(name = "site_url") val siteUrl: String? = null,
     @ColumnInfo(name = "source") val source: MediaSource? = null,
     @ColumnInfo(name = "start_date") val startDate: FuzzyDateInt? = null,
     @ColumnInfo(name = "status") val status: MediaStatus? = null,
-    @ColumnInfo(name = "synonyms") val synonyms: List<String>? = null,
-    @ColumnInfo(name = "tags") val tags: List<IMediaTag>? = null,
-    @ColumnInfo(name = "title") val title: MediaTitle? = null,
-    @ColumnInfo(name = "trailer") val trailer: MediaTrailer? = null,
+    @ColumnInfo(name = "synonyms") val synonyms: List<String> = emptyList(),
     @ColumnInfo(name = "trending") val trending: Int? = null,
-    @ColumnInfo(name = "type") val type: MediaType? = null,
+    @ColumnInfo(name = "media_type") val type: MediaType,
     @ColumnInfo(name = "updated_at") val updatedAt: Long? = null,
-    @ColumnInfo(name = "volumes") val volumes: Int? = null
-) : Identity
+    @ColumnInfo(name = "volumes") val volumes: Int? = null,
+    @ColumnInfo(name = "id") override val id: Long
+) : Identity {
+
+    internal data class CoverImage(
+        @ColumnInfo(name = "color") val color: String? = null,
+        @ColumnInfo(name = "extra_large") val extraLarge: String? = null,
+        @ColumnInfo(name = "large") val large: String? = null,
+        @ColumnInfo(name = "medium") val medium: String? = null,
+        @ColumnInfo(name = "banner") val banner: String? = null
+    )
+
+    internal data class Title(
+        @ColumnInfo(name = "romaji") var romaji: String? = null,
+        @ColumnInfo(name = "english") var english: String? = null,
+        @ColumnInfo(name = "native") val native: String? = null,
+        @ColumnInfo(name = "user_preferred") var userPreferred: String? = null
+    )
+
+    internal data class Trailer(
+        @ColumnInfo(name = "id") val id: String,
+        @ColumnInfo(name = "site") val site: String? = null,
+        @ColumnInfo(name = "thumbnail") val thumbnail: String? = null
+    )
+
+    @Entity(
+        tableName = "media_link",
+        primaryKeys = ["id"]
+    )
+    internal data class Link(
+        @ColumnInfo(name = "site") val site: String,
+        @ColumnInfo(name = "url") val url: String,
+        @ColumnInfo(name ="media_id") val mediaId: Long,
+        @ColumnInfo(name = "id") override val id: Long
+    ) : Identity
+
+    @Entity(
+        tableName = "media_rank",
+        primaryKeys = ["id"]
+    )
+    internal data class Rank(
+        @ColumnInfo(name = "allTime") val allTime: Boolean? = null,
+        @ColumnInfo(name = "context") val context: String,
+        @ColumnInfo(name = "format") val format: MediaFormat,
+        @ColumnInfo(name = "rank") val rank: Int,
+        @ColumnInfo(name = "season") val season: MediaSeason? = null,
+        @ColumnInfo(name = "type") val type: MediaRankType,
+        @ColumnInfo(name = "year") val year: Int? = null,
+        @ColumnInfo(name ="media_id") val mediaId: Long,
+        @ColumnInfo(name = "id") override val id: Long
+    ) : Identity
+}

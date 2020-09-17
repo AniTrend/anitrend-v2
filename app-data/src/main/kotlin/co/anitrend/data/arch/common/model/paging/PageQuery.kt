@@ -22,12 +22,14 @@ import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
 import co.anitrend.domain.common.entity.contract.IEntityPageQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.data.util.graphql.GraphUtil
+import kotlinx.android.parcel.Parcelize
 
 /** [Page query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
  * @param page The page number
  * @param perPage The amount of entries per page, max 50
  */
+@Parcelize
 internal data class PageQuery(
     override var page: Int,
     @IntRange(from = 0, to = 50)

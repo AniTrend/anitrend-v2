@@ -17,19 +17,29 @@
 
 package co.anitrend.data.tag.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import co.anitrend.data.shared.common.Identity
 
-@Entity
+@Entity(
+    tableName = "tag",
+    primaryKeys = ["id"],
+    indices = [
+        Index(
+            value = ["name"],
+            unique = true
+        )
+    ]
+)
 internal data class TagEntity(
-    @PrimaryKey
-    override val id: Long,
-    val name: String,
-    val description: String?,
-    val category: String?,
-    val rank: Int?,
-    val isGeneralSpoiler: Boolean,
-    val isMediaSpoiler: Boolean,
-    val isAdult: Boolean
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(name = "category") val category: String?,
+    @ColumnInfo(name = "rank") val rank: Int?,
+    @ColumnInfo(name = "is_general_spoiler") val isGeneralSpoiler: Boolean,
+    @ColumnInfo(name = "is_media_spoiler") val isMediaSpoiler: Boolean,
+    @ColumnInfo(name = "is_adult") val isAdult: Boolean,
+    @ColumnInfo(name = "id") override val id: Long
 ) : Identity

@@ -17,11 +17,10 @@
 
 package co.anitrend.data.activity.model.remote
 
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
-import co.anitrend.data.activity.entity.TextFeedEntity
-import co.anitrend.data.activity.model.remote.common.IFeed
-import co.anitrend.data.user.model.remote.User
+import co.anitrend.data.activity.model.remote.common.IFeedModel
+import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.activity.enums.ActivityType
+import com.google.gson.annotations.SerializedName
 
 /** [TextActivity](https://anilist.github.io/ApiV2-GraphQL-Docs/textactivity.doc.html)
  * User text activity
@@ -34,23 +33,13 @@ import co.anitrend.domain.activity.enums.ActivityType
 internal data class TextFeed(
     val replies: List<ReplyFeed>?,
     val isLocked: Boolean,
-    val user: User?,
+    val user: UserModelCore?,
     val userId: Long?,
     val text: String?,
-    override val id: Long,
-    override val createdAt: Long,
-    override val likes: List<User>?,
-    override val siteUrl: String?,
-    override val type: ActivityType?,
-    override val replyCount: Int
-) : IFeed {
-
-    companion object : ISupportMapperHelper<TextFeed, TextFeedEntity> {
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: TextFeed): TextFeedEntity {
-            TODO("Not yet implemented")
-        }
-    }
-}
+    @SerializedName("id") override val id: Long,
+    @SerializedName("createdAt") override val createdAt: Long,
+    @SerializedName("likes") override val likes: List<UserModelCore>?,
+    @SerializedName("siteUrl") override val siteUrl: String?,
+    @SerializedName("type") override val type: ActivityType?,
+    @SerializedName("replyCount") override val replyCount: Int
+) : IFeedModel

@@ -814,7 +814,7 @@ type InternalPage {
         "Filter by trending amount"
         trending_not: Int
     ): [MediaTrend]
-    modActions(userId: Int): [ModAction]
+    modActions(modId: Int, userId: Int): [ModAction]
     notifications(
         "Reset the unread notification count to 0 on load"
         resetNotificationCount: Boolean,

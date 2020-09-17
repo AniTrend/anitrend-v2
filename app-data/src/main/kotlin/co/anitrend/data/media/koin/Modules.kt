@@ -17,22 +17,102 @@
 
 package co.anitrend.data.media.koin
 
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.db
+import co.anitrend.data.arch.extension.offline
+import co.anitrend.data.arch.extension.online
+import co.anitrend.data.media.mapper.carousel.MediaCarouselAnimeMapper
+import co.anitrend.data.media.mapper.carousel.MediaCarouselMangaMapper
+import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
+import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
+import co.anitrend.data.media.repository.MediaCarouselRepositoryImpl
+import co.anitrend.data.media.repository.MediaRepositoryImpl
+import co.anitrend.data.media.source.carousel.MediaCarouselSourceImpl
+import co.anitrend.data.media.source.carousel.contract.MediaCarouselSource
+import co.anitrend.data.media.source.paged.combined.MediaPagedSourceImpl
+import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
+import co.anitrend.data.media.source.paged.network.factory.MediaPagedNetworkSourceFactory
+import co.anitrend.data.media.usecase.MediaCarouselUseCaseContract
+import co.anitrend.data.media.usecase.MediaCarouselUseCaseImpl
+import co.anitrend.data.media.usecase.MediaUseCaseContract
+import co.anitrend.data.media.usecase.MediaUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule = module {
-
+    factory {
+        MediaPagedNetworkSourceFactory(
+            remoteSource = api(EndpointType.GRAPH_QL),
+            mapper = get(),
+            strategy = online(),
+            sortOrderSettings = get(),
+            dispatchers = get()
+        )
+    }
+    factory<MediaPagedSource> {
+        MediaPagedSourceImpl(
+            remoteSource = api(EndpointType.GRAPH_QL),
+            localSource = db().mediaDao(),
+            clearDataHelper = get(),
+            strategy = offline(),
+            mapper = get(),
+            sortOrderSettings = get(),
+            dispatchers = get()
+        )
+    }
+    factory<MediaCarouselSource> {
+        MediaCarouselSourceImpl(
+            remoteSource = api(EndpointType.GRAPH_QL),
+            animeMapper = get(),
+            mangaMapper = get(),
+            strategy = online(),
+            dispatchers = get()
+        )
+    }
 }
 
 private val mapperModule = module {
-
+    factory {
+        MediaPagedCombinedMapper(
+            localSource = db().mediaDao()
+        )
+    }
+    factory {
+        MediaPagedNetworkMapper()
+    }
+    factory {
+        MediaCarouselAnimeMapper()
+    }
+    factory {
+        MediaCarouselMangaMapper()
+    }
 }
 
 private val useCaseModule = module {
-
+    factory<MediaUseCaseContract> {
+        MediaUseCaseImpl(
+            repository = get()
+        )
+    }
+    factory<MediaCarouselUseCaseContract> {
+        MediaCarouselUseCaseImpl(
+            repository = get()
+        )
+    }
 }
 
 private val repositoryModule = module {
-
+    factory {
+        MediaRepositoryImpl(
+            source = get(),
+            sourceFactory = get()
+        )
+    }
+    factory {
+        MediaCarouselRepositoryImpl(
+            source = get()
+        )
+    }
 }
 
 internal val mediaModules = listOf(

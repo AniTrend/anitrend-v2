@@ -1,0 +1,20 @@
+fragment StaffCore on Staff {
+    description
+    favourites
+    image {
+        large
+        medium
+    }
+    isFavourite
+    language
+    name {
+        alternative
+        first
+        full
+        last
+        native
+    }
+    siteUrl
+    updatedAt
+    id
+}

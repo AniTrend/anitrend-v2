@@ -18,7 +18,7 @@
 package co.anitrend.data.staff.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.staff.model.remote.Staff
+import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.data.staff.model.remote.edge.StaffEdge
 import co.anitrend.domain.common.entity.shared.PageInfo
 
@@ -28,6 +28,6 @@ import co.anitrend.domain.common.entity.shared.PageInfo
  */
 internal data class StaffConnection(
     override val edges: List<StaffEdge>?,
-    override val nodes: List<Staff>?,
+    override val nodes: List<StaffModel>?,
     override val pageInfo: PageInfo?
-) : IEntityConnection<StaffEdge, Staff>
+) : IEntityConnection<StaffEdge, StaffModel>

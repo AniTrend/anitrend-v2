@@ -3,7 +3,7 @@
   "schemaPath": "schema.graphql",
   "extensions": {
     "endpoints": {
-      "Default GraphQL Endpoint": {
+      "AniList GraphQL Endpoint": {
         "url": "https://graphql.anilist.co",
         "headers": {
           "user-agent": "JS GraphQL"

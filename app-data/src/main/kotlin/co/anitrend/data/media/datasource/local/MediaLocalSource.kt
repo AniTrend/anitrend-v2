@@ -31,7 +31,7 @@ internal interface MediaLocalSource : ILocalSource<MediaEntity> {
      * Count the number of entities
      */
     @Query("""
-            select count(id) from media_entity
+            select count(id) from media
         """)
     override suspend fun count(): Int
 
@@ -39,18 +39,18 @@ internal interface MediaLocalSource : ILocalSource<MediaEntity> {
      * Removes all records from table
      */
     @Query("""
-        delete from media_entity
+        delete from media
         """)
     override suspend fun clear()
 
     @Query("""
-        select * from media_entity
+        select * from media
         where id = :id
     """)
     fun getMediaByIdFlow(id: Long): Flow<MediaEntity>
 
     @Query("""
-        select * from media_entity
+        select * from media
     """)
     fun getAllMediaFactory(): DataSource.Factory<Int, MediaEntity>
 }

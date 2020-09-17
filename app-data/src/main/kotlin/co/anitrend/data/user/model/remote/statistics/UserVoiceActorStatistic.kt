@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.remote.statistics
 
-import co.anitrend.data.staff.model.remote.Staff
+import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
 
 /** [UserVoiceActorStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/uservoiceactorstatistic.doc.html)
@@ -26,7 +26,7 @@ import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
  */
 
 internal data class UserVoiceActorStatistic(
-    val voiceActor: Staff?,
+    val voiceActor: StaffModel?,
     override val chaptersRead: Int,
     override val count: Int,
     override val meanScore: Float,

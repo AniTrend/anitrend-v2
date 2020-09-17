@@ -29,7 +29,7 @@ fragment MediaExtended on Media {
     isLocked
     meanScore
     nextAiringEpisode {
-        ... AiringSchedule
+        ... AiringScheduleCore
     }
     popularity
     rankings {

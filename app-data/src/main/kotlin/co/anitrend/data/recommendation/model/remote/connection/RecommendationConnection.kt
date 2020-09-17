@@ -18,7 +18,7 @@
 package co.anitrend.data.recommendation.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.recommendation.model.remote.Recommendation
+import co.anitrend.data.recommendation.model.remote.RecommendationModel
 import co.anitrend.data.recommendation.model.remote.edge.RecommendationEdge
 import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 
@@ -27,6 +27,6 @@ import co.anitrend.domain.common.entity.contract.IEntityPageInfo
  */
 internal class RecommendationConnection(
     override val edges: List<RecommendationEdge>?,
-    override val nodes: List<Recommendation>?,
+    override val nodes: List<RecommendationModel>?,
     override val pageInfo: IEntityPageInfo?
-) : IEntityConnection<RecommendationEdge, Recommendation>
+) : IEntityConnection<RecommendationEdge, RecommendationModel>

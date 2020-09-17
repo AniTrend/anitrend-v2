@@ -18,7 +18,8 @@
 package co.anitrend.data.staff.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
-import co.anitrend.data.staff.model.remote.Staff
+import co.anitrend.data.staff.model.remote.StaffModel
+import com.google.gson.annotations.SerializedName
 
 /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
  * Staff connection edge
@@ -27,8 +28,8 @@ import co.anitrend.data.staff.model.remote.Staff
  * @param role The role of the staff member in the production of the media
  */
 internal data class StaffEdge(
-    val favouriteOrder: Int?,
-    val role: String?,
-    override val id: Long,
-    override val node: Staff?
-) : IEntityEdge<Staff>
+    @SerializedName("favouriteOrder") val favouriteOrder: Int?,
+    @SerializedName("role") val role: String?,
+    @SerializedName("id") override val id: Long,
+    @SerializedName("node") override val node: StaffModel?
+) : IEntityEdge<StaffModel>

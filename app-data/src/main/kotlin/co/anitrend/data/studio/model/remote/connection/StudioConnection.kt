@@ -18,7 +18,7 @@
 package co.anitrend.data.studio.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.studio.model.remote.Studio
+import co.anitrend.data.studio.model.remote.StudioModel
 import co.anitrend.data.studio.model.remote.edge.StudioEdge
 import co.anitrend.domain.common.entity.shared.PageInfo
 
@@ -26,7 +26,7 @@ import co.anitrend.domain.common.entity.shared.PageInfo
  * Studio Connection
  */
 internal data class StudioConnection(
-    override val edges: List<Studio>?,
-    override val nodes: List<StudioEdge>?,
+    override val edges: List<StudioEdge>?,
+    override val nodes: List<StudioModel>?,
     override val pageInfo: PageInfo?
-) : IEntityConnection<Studio, StudioEdge>
+) : IEntityConnection<StudioEdge, StudioModel>

@@ -17,13 +17,23 @@
 
 package co.anitrend.data.genre.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import co.anitrend.data.shared.common.Identity
 
-@Entity
+@Entity(
+    tableName = "genre",
+    indices = [
+        Index(
+            value = ["genre"],
+            unique = true
+        )
+    ]
+)
 internal data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
-    override val id: Long = 0,
-    val genre: String
+    @ColumnInfo(name = "id") override val id: Long = 0,
+    @ColumnInfo(name = "genre") val genre: String
 ) : Identity
