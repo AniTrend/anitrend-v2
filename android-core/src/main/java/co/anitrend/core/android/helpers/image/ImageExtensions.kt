@@ -19,31 +19,73 @@ package co.anitrend.core.android.helpers.image
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import androidx.annotation.ColorInt
+import androidx.appcompat.widget.AppCompatImageView
+import co.anitrend.arch.extension.ext.dipToPx
 import co.anitrend.arch.ui.view.image.SupportImageView
-import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.core.android.R
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
+import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.domain.common.HexColor
 import coil.Coil
-import coil.request.LoadRequest
-import coil.request.RequestDisposable
+import coil.request.Disposable
+import coil.request.ImageRequest
+import coil.transform.RoundedCornersTransformation
+import coil.transform.Transformation
 import coil.transition.CrossfadeTransition
 
+/**
+ * Convert a hex color and return the corresponding color-int
+ */
+@ColorInt
+fun HexColor.toColorInt(): Int {
+    // TODO: increase colour contrast if the shade is below 500 e.g shows like Dr. Stone have poor contrast especially in light themes
+    return Color.parseColor(toString())
+}
 
-fun SupportImageView.using(requestImage: RequestImage<*>): RequestDisposable? {
-    val requestBuilder = LoadRequest.Builder(context)
+/**
+ * Creates a new ColorDrawable with the specified color.
+ */
+fun HexColor.toDrawable() = ColorDrawable(toColorInt())
+
+/**
+ * Draws an image onto the image view
+ *
+ * @param requestImage Request image model
+ * @param transformations Optional image transformations, providing this with an empty list will
+ * bypass the default [RoundedCornersTransformation] on bottom corners.
+ *
+ * @return A [Disposable] contract 
+ */
+fun AppCompatImageView.using(
+    requestImage: RequestImage<*>,
+    transformations: List<Transformation>? = null
+): Disposable {
+    val requestBuilder = ImageRequest.Builder(context)
 
     if (requestImage is MediaRequestImage) {
         val color = requestImage.image?.color
-        if (color != null) {
-            val colorInt = Color.parseColor(color)
-            val colorDrawable = ColorDrawable(colorInt)
-            requestBuilder.placeholder(colorDrawable)
+        if (color != null)
+            requestBuilder.placeholder(color.toDrawable())
+
+        if (transformations == null) {
+            val radius = resources.getDimensionPixelSize(R.dimen.sm_margin).toFloat()
+            RoundedCornersTransformation(
+                bottomLeft = radius,
+                bottomRight = radius
+            )
+        } else if (transformations.isNotEmpty()) {
+            requestBuilder.transformations(
+                transformations
+            )
         }
     }
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
     val request = requestBuilder
         .transition(CrossfadeTransition(350))
-        .data(requestImage).target(this).build()
+        .data(requestImage)
+        .target(this)
+        .build()
 
-    return Coil.imageLoader(context).execute(request)
+    return Coil.imageLoader(context).enqueue(request)
 }
