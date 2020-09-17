@@ -15,26 +15,35 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.common.media.ui.controller.model
+package co.anitrend.common.media.ui.controller.model.carousel
 
 import android.content.res.Resources
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
+import co.anitrend.arch.recycler.common.ClickType
 import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import co.anitrend.common.media.ui.databinding.MediaDetailItemBinding
+import co.anitrend.common.media.ui.R
+import co.anitrend.common.media.ui.databinding.MediaItemBinding
+import co.anitrend.core.android.helpers.image.model.MediaRequestImage
+import co.anitrend.core.android.helpers.image.using
 import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.base.IMediaExtendedWithMediaList
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
-internal data class MediaDetailItem(
-    val media: IMedia?
-) : RecyclerItem(media?.id) {
+internal class MediaItem(
+    val entity: IMedia?
+) : RecyclerItem(entity?.id) {
 
     private var disposable: Disposable? = null
+    private var binding: MediaItemBinding? = null
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -53,7 +62,30 @@ internal data class MediaDetailItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        TODO("Not yet implemented")
+        if (entity == null) return
+        binding = MediaItemBinding.bind(view)
+        disposable = binding?.mediaImage?.using(
+            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
+        )
+        entity as IMediaExtendedWithMediaList
+        binding?.mediaRatingWidget?.setupUsingMedia(entity, true)
+        binding?.mediaSubTitleWidget?.setUpSubTitle(entity)
+        binding?.mediaStatusWidget?.setBackgroundUsing(entity.status)
+        binding?.mediaScheduleTitleWidget?.setUpAiringSchedule(entity)
+        binding?.mediaTitle?.text = SpannableString(entity.title.userPreferred)
+        binding?.mediaCardContainer?.setOnClickListener {
+            Toast.makeText(view.context, "Opens media screen", Toast.LENGTH_SHORT).show()
+        }
+        binding?.mediaCardContainer?.setOnLongClickListener {
+            stateFlow.value =
+                DefaultClickableItem(
+                    clickType = ClickType.LONG,
+                    data = entity,
+                    view = view
+                )
+            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT).show()
+            true
+        }
     }
 
     /**
@@ -61,7 +93,11 @@ internal data class MediaDetailItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        TODO("Not yet implemented")
+        binding?.mediaCardContainer?.setOnLongClickListener(null)
+        binding?.mediaCardContainer?.setOnClickListener(null)
+        disposable?.dispose()
+        disposable = null
+        binding = null
     }
 
     /**
@@ -71,14 +107,13 @@ internal data class MediaDetailItem(
      * @param position position of the current item
      * @param resources optionally useful for dynamic size check with different configurations
      */
-    override fun getSpanSize(spanCount: Int, position: Int, resources: Resources): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getSpanSize(spanCount: Int, position: Int, resources: Resources) =
+        resources.getInteger(R.integer.grid_list_x3)
 
     companion object {
-        internal fun LayoutInflater.createDetailViewHolder(
+        internal fun LayoutInflater.createMediaItemViewHolder(
             viewGroup: ViewGroup
-        ) = MediaDetailItemBinding.inflate(
+        ) = MediaItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

@@ -18,21 +18,40 @@
 package co.anitrend.common.media.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
+import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.base.IMedia
 
 
-internal val DIFFER =
-    object : DiffUtil.ItemCallback<Media>() {
+internal val MEDIA_DIFFER =
+    object : DiffUtil.ItemCallback<IMedia>() {
         override fun areItemsTheSame(
-            oldItem: Media,
-            newItem: Media
+            oldItem: IMedia,
+            newItem: IMedia
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: Media,
-            newItem: Media
+            oldItem: IMedia,
+            newItem: IMedia
+        ): Boolean {
+            return oldItem.hashCode() == newItem.hashCode()
+        }
+    }
+
+internal val ENTITY_DIFFER =
+    object : DiffUtil.ItemCallback<IEntity>() {
+        override fun areItemsTheSame(
+            oldItem: IEntity,
+            newItem: IEntity
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: IEntity,
+            newItem: IEntity
         ): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }

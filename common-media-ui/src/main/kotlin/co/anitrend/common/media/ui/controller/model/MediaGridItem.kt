@@ -33,15 +33,17 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaGridItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
-import co.anitrend.domain.media.entity.Media
-import coil.request.RequestDisposable
+import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.base.IMediaExtendedWithMediaList
+import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaGridItem(
-    val entity: Media?
+    val entity: IMedia?
 ) : RecyclerItem(entity?.id) {
 
-    private var disposable: RequestDisposable? = null
+    private var disposable: Disposable? = null
+    private var binding: MediaGridItemBinding? = null
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -60,26 +62,29 @@ internal data class MediaGridItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        val binding = MediaGridItemBinding.bind(view)
-        if (entity != null) {
-            disposable = binding.mediaImage.using(
-                MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
-            )
-            binding.mediaStatusWidget.setBackgroundUsing(entity.status)
-            binding.mediaSubTitleWidget.setMediaSubTitleUsing(entity)
-            binding.mediaTitle.text = SpannableString(entity.title.userPreferred)
-            binding.mediaCardContainer.setOnClickListener {
-                Toast.makeText(view.context, "Opens media screen", Toast.LENGTH_SHORT).show()
-            }
-            binding.mediaCardContainer.setOnLongClickListener {
-                stateFlow.value =
-                    DefaultClickableItem(
-                        clickType = ClickType.LONG,
-                        data = entity,
-                        view = view
-                    )
-                true
-            }
+        if (entity == null) return
+        binding = MediaGridItemBinding.bind(view)
+        disposable = binding?.mediaImage?.using(
+            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
+        )
+        entity as IMediaExtendedWithMediaList
+        binding?.mediaRatingWidget?.setupUsingMedia(entity)
+        binding?.mediaSubTitleWidget?.setUpSubTitle(entity)
+        binding?.mediaStatusWidget?.setBackgroundUsing(entity.status)
+        binding?.mediaScheduleTitleWidget?.setUpAiringSchedule(entity)
+        binding?.mediaTitle?.text = SpannableString(entity.title.userPreferred)
+        binding?.mediaCardContainer?.setOnClickListener {
+            Toast.makeText(view.context, "Opens media screen", Toast.LENGTH_SHORT).show()
+        }
+        binding?.mediaCardContainer?.setOnLongClickListener {
+            stateFlow.value =
+                DefaultClickableItem(
+                    clickType = ClickType.LONG,
+                    data = entity,
+                    view = view
+                )
+            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT).show()
+            true
         }
     }
 
@@ -88,11 +93,11 @@ internal data class MediaGridItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        val binding = MediaGridItemBinding.bind(view)
-        binding.mediaCardContainer.setOnLongClickListener(null)
-        binding.mediaCardContainer.setOnClickListener(null)
+        binding?.mediaCardContainer?.setOnLongClickListener(null)
+        binding?.mediaCardContainer?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
+        binding = null
     }
 
     /**

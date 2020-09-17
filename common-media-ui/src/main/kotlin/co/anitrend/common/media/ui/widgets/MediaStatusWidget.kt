@@ -32,6 +32,35 @@ internal class MediaStatusWidget @JvmOverloads constructor(
     init { onInit(context, attrs, defStyleAttr) }
 
     /**
+     * Sets the background of the view using a color from [mediaStatus]
+     */
+    fun setBackgroundUsing(mediaStatus: MediaStatus?) {
+        when (mediaStatus) {
+            MediaStatus.NOT_YET_RELEASED -> {
+                background = context.getCompatDrawable(
+                    R.drawable.dot_indicator, R.color.orange_A700
+                )
+            }
+            MediaStatus.RELEASING -> {
+                background = context.getCompatDrawable(
+                    R.drawable.dot_indicator, R.color.blue_A700
+                )
+            }
+            MediaStatus.CANCELLED -> {
+                background = context.getCompatDrawable(
+                    R.drawable.dot_indicator, R.color.red_A700
+                )
+            }
+            MediaStatus.FINISHED -> {
+                background = context.getCompatDrawable(
+                    R.drawable.dot_indicator, R.color.green_A700
+                )
+            }
+            else -> background = null
+        }
+    }
+
+    /**
      * Callable in view constructors to perform view inflation and attribute initialization
      *
      * @param context view context
@@ -40,24 +69,6 @@ internal class MediaStatusWidget @JvmOverloads constructor(
      */
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (isInEditMode)
-            background = context.getCompatDrawable(R.drawable.dashed_background)
-    }
-
-    /**
-     * Sets the background of the view using a color from [mediaStatus]
-     */
-    fun setBackgroundUsing(mediaStatus: MediaStatus?) {
-        val colorTint = when (mediaStatus) {
-            MediaStatus.CANCELLED -> R.color.red_A700
-            MediaStatus.FINISHED -> R.color.green_A700
-            MediaStatus.NOT_YET_RELEASED -> R.color.orange_A700
-            MediaStatus.RELEASING -> R.color.blue_A700
-            else -> null
-        }
-        colorTint?.also {
-            background = context.getCompatDrawable(
-                R.drawable.dashed_background, it
-            )
-        }
+            setBackgroundUsing(MediaStatus.NOT_YET_RELEASED)
     }
 }

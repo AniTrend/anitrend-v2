@@ -21,40 +21,52 @@ import android.content.Context
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.core.text.bold
+import androidx.core.text.color
+import androidx.core.text.italic
+import co.anitrend.arch.extension.ext.capitalizeWords
+import co.anitrend.arch.extension.ext.getCompatColor
+import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
+import co.anitrend.core.android.helpers.image.toColorInt
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
+import co.anitrend.domain.media.entity.base.IMediaCore
 import co.anitrend.domain.media.entity.contract.MediaCategory
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaFormat.Companion.isQuantitative
 import com.google.android.material.textview.MaterialTextView
 
 internal class MediaSubTitleWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : MaterialTextView(context, attrs, defStyleAttr) {
+) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
+
+    init { onInit(context, attrs, defStyleAttr) }
 
     private fun buildTextUsing(category: MediaCategory, builder: SpannableStringBuilder) {
         val unknown = context.getString(R.string.label_place_holder_to_be_announced)
         when(category) {
             is MediaCategory.Anime -> {
                 when {
-                    category.episodes == 0.toUShort() -> builder.append(unknown)
-                    category.episodes > 1u -> builder.append(
-                        "${category.episodes} ${context.getString(R.string.label_episode_plural)}"
-                    )
-                    else -> builder.append(
-                        "${category.episodes} ${context.getString(R.string.label_episode_singular)}"
-                    )
+                    category.episodes == 0 -> builder.italic { append(unknown) }
+                    category.episodes > 1 -> builder.bold {
+                        append("${category.episodes} ${context.getString(R.string.label_episode_plural)}")
+                    }
+                    else -> builder.bold{
+                        append("${category.episodes} ${context.getString(R.string.label_episode_singular)}")
+                    }
                 }
             }
             is MediaCategory.Manga -> {
                 when {
-                    category.chapters == 0.toUShort() -> builder.append(unknown)
-                    category.chapters > 1u -> builder.append(
-                        "$CHARACTER_SEPARATOR ${category.chapters} ${context.getString(R.string.label_chapter_singular)}"
-                    )
-                    else -> builder.append(
-                        "$CHARACTER_SEPARATOR ${category.chapters} ${context.getString(R.string.label_chapter_singular)}"
-                    )
+                    category.chapters == 0 -> builder.italic { append(unknown) }
+                    category.chapters > 1 -> builder.bold {
+                        append("${category.chapters} ${context.getString(R.string.label_chapter_plural)}")
+                    }
+                    else -> builder.bold {
+                        append("${category.chapters} ${context.getString(R.string.label_chapter_singular)}")
+                    }
                 }
             }
         }
@@ -66,21 +78,50 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
      *
      * > **2018** • Novel • 48 Chapters
      */
-    fun setMediaSubTitleUsing(media: Media) {
+    fun setUpSubTitle(media: IMediaCore) {
+        val color = media.image.color?.toColorInt() ?: context.getCompatColor(R.color.primaryTextColor)
+
         val builder = SpannableStringBuilder()
         val unknown = context.getString(
             R.string.label_place_holder_to_be_announced
         )
         builder.bold {
-            if (media.startDate.year == FuzzyDate.UNKNOWN) append(unknown)
-            else append("${media.startDate.year}")
-        }.append(" $CHARACTER_SEPARATOR ")
+            color(color) {
+                if (media.startDate.isDateNotSet()) append(unknown)
+                else append("${media.startDate.year}")
+            }
+        }
+        builder.append(" $CHARACTER_SEPARATOR ")
 
+        val isQuantitative = media.format.isQuantitative()
 
-        val mediaFormat = media.format
-        if (mediaFormat != null)
-            builder.append("$mediaFormat")
-        buildTextUsing(media.category, builder)
+        if (media.format != null) {
+            builder.bold { append(media.format!!.alias) }
+            if (isQuantitative)
+                builder.append(" $CHARACTER_SEPARATOR ")
+        }
+
+        if (isQuantitative)
+            buildTextUsing(media.category, builder)
         text = builder
+    }
+
+    /**
+     * Callable in view constructors to perform view inflation and attribute initialization
+     *
+     * @param context view context
+     * @param attrs view attributes if applicable
+     * @param styleAttr style attribute if applicable
+     */
+    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
+        if (isInEditMode) {
+            val media: IMediaCore = Media.empty().copy(
+                image = MediaImage.empty().copy(color = "#e4a15d"),
+                startDate = FuzzyDate.empty().copy(2018),
+                format = MediaFormat.TV,
+                category = MediaCategory.Anime.empty().copy(25)
+            )
+            setUpSubTitle(media)
+        }
     }
 }
