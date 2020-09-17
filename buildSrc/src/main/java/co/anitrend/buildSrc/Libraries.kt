@@ -36,6 +36,14 @@ object Libraries {
 
     const val prettyTime = "org.ocpsoft.prettytime:prettytime:${Versions.prettyTime}"
 
+    /**
+     * Using Jitpack until AndroidX migration is out.
+     * See https://github.com/openid/AppAuth-Android/pull/508
+     *
+     * https://jitpack.io/#openid/AppAuth-Android
+     */
+    const val appauth = "com.github.openid:AppAuth-Android:master-SNAPSHOT"
+
     object Android {
 
         object Tools {

@@ -75,3 +75,4 @@ fun Project.isCoreFeatureModule() = name.startsWith(coreFeatureModulePattern)
 fun Project.isCommonFeatureModule() = name.startsWith(commonModulePattern)
 
 fun Project.hasCoroutineSupport() = name != navigation || name != domain
+fun Project.hasComposeSupport() = isFeatureModule() || isCommonFeatureModule()
