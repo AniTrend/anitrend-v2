@@ -36,4 +36,5 @@ object Versions {
     const val treesSence = "0.3.2"
 
     const val liquidSwipe = "1.3"
+    const val scalingImageView = "3.10.0"
 }
