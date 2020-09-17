@@ -37,8 +37,8 @@ import kotlinx.coroutines.flow.onStart
 class AndroidPowerController(
     private val context: Context,
     private val connectivitySettings: IConnectivitySettings,
-    private val powerManager: PowerManager = context.systemServiceOf(Context.POWER_SERVICE)!!,
-    private val connectivityManager: ConnectivityManager = context.systemServiceOf(Context.CONNECTIVITY_SERVICE)!!
+    private val powerManager: PowerManager = context.systemServiceOf()!!,
+    private val connectivityManager: ConnectivityManager = context.systemServiceOf()!!
 ) : PowerController {
 
     override fun shouldSaveDataFlow(ignorePreference: Boolean): Flow<SaveData> {
