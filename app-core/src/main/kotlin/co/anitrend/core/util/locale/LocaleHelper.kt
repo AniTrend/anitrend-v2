@@ -40,12 +40,18 @@ class LocaleHelper(private val settings: ILocaleSettings) {
         return context?.createConfigurationContext(configuration)
     }
 
-    @Deprecated("Use applyLocale instead")
+    @Deprecated(
+        "Use applyLocale instead",
+        ReplaceWith("applyLocale"),
+        DeprecationLevel.WARNING
+    )
     internal fun applyApplicationLocale(context: Context) {
         Locale.setDefault(locale)
         val resources: Resources = context.resources
         val configuration = Configuration(resources.configuration)
+        @Suppress("DEPRECATION")
         configuration.locale = locale
+        @Suppress("DEPRECATION")
         resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
