@@ -17,65 +17,66 @@
 
 package co.anitrend.navigation
 
+import androidx.fragment.app.Fragment
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
 import org.koin.core.inject
 
-object Main : NavigationRouter() {
+object MainRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object Splash : NavigationRouter() {
+object SplashRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object OnBoarding : NavigationRouter() {
+object OnBoardingRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object Search : NavigationRouter() {
+object SearchRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object Settings : NavigationRouter() {
+object SettingsRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object About : NavigationRouter() {
+object AboutRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object Media : NavigationRouter() {
+object MediaRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object Character : NavigationRouter() {
+object CharacterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object Staff : NavigationRouter() {
+object StaffRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
 }
 
-object User : NavigationRouter() {
+object UserRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
