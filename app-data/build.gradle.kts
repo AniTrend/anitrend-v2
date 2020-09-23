@@ -24,6 +24,7 @@ plugins {
 dependencies {
     implementation(Libraries.AniTrend.Sync.plugin)
     implementation(Libraries.CashApp.Copper.copper)
+    implementation(Libraries.Dropbox.store)
 
     debugImplementation(Libraries.Chuncker.debug)
     releaseImplementation(Libraries.Chuncker.release)
