@@ -46,12 +46,12 @@ internal object GraphUtil {
      *
      * @param paging Optional paging helper
      * @param settings Optional sort order settings
-     * @param ignoreNulls Ignore null values, defaults to true
+     * @param ignoreNulls Ignore null values, defaults to false
      */
     internal fun IGraphPayload.toQueryContainerBuilder(
         paging: SupportPagingHelper? = null,
         settings: ISortOrderSettings? = null,
-        ignoreNulls: Boolean = true
+        ignoreNulls: Boolean = false
     ): QueryContainerBuilder {
         val queryContainerBuilder = QueryContainerBuilder()
         paging?.apply {
