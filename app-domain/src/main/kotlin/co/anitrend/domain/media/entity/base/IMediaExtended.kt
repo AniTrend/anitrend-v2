@@ -18,6 +18,7 @@
 package co.anitrend.domain.media.entity.base
 
 import co.anitrend.domain.common.CountryCode
+import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.attribute.link.IMediaExternalLink
 import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
@@ -32,7 +33,7 @@ interface IMediaExtended : IMediaCore {
     val description: CharSequence?
     val externalLinks: Collection<MediaExternalLink>
     val favouritesCount: Long
-    val genres: Collection<CharSequence>
+    val genres: Collection<Genre>
     val twitterTag: CharSequence?
     val isLicensed: Boolean?
     val isLocked: Boolean?

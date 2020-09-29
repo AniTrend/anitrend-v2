@@ -28,7 +28,7 @@ interface IMediaCore : IMedia {
     val season: MediaSeason?
     val status: MediaStatus?
     val meanScore: Int
-    val scoreFormat: ScoreFormat?
+    val scoreFormat: ScoreFormat
     val averageScore: Int
     val startDate: FuzzyDate
     val endDate: FuzzyDate

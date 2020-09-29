@@ -20,6 +20,7 @@ package co.anitrend.domain.media.entity
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.extension.INVALID_ID
+import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
@@ -42,7 +43,7 @@ data class Media(
     override val description: CharSequence?,
     override val externalLinks: Collection<MediaExternalLink>,
     override val favouritesCount: Long,
-    override val genres: Collection<CharSequence>,
+    override val genres: Collection<Genre>,
     override val twitterTag: CharSequence?,
     override val isLicensed: Boolean?,
     override val isLocked: Boolean?,
@@ -56,7 +57,7 @@ data class Media(
     override val format: MediaFormat?,
     override val season: MediaSeason?,
     override val status: MediaStatus?,
-    override val scoreFormat: ScoreFormat?,
+    override val scoreFormat: ScoreFormat,
     override val meanScore: Int,
     override val averageScore: Int,
     override val startDate: FuzzyDate,
@@ -109,7 +110,7 @@ data class Media(
         result = 31 * result + (format?.hashCode() ?: 0)
         result = 31 * result + (season?.hashCode() ?: 0)
         result = 31 * result + (status?.hashCode() ?: 0)
-        result = 31 * result + (scoreFormat?.hashCode() ?: 0)
+        result = 31 * result + (scoreFormat.hashCode())
         result = 31 * result + meanScore
         result = 31 * result + averageScore
         result = 31 * result + startDate.hashCode()
@@ -145,7 +146,7 @@ data class Media(
             format = null,
             season = null,
             status = null,
-            scoreFormat = null,
+            scoreFormat = ScoreFormat.POINT_10,
             meanScore = 0,
             averageScore = 0,
             startDate = FuzzyDate.empty(),
