@@ -18,6 +18,7 @@
 package co.anitrend.data.cache.model
 
 enum class CacheRequest(val alias: String) {
+    CAROUSEL("carousel"),
     AIRING("airing"),
     CHARACTER("character"),
     GENRE("genre"),

@@ -20,6 +20,7 @@ package co.anitrend.data.arch.database.converter
 import androidx.room.TypeConverter
 import co.anitrend.data.arch.database.extensions.fromEnum
 import co.anitrend.data.arch.database.extensions.toEnum
+import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.domain.media.enums.*
 
 internal class TypeConverterEnum {
@@ -41,4 +42,7 @@ internal class TypeConverterEnum {
 
     @TypeConverter fun fromMediaRankType(value: MediaRankType?) = value?.fromEnum()
     @TypeConverter fun toMediaRankType(value: String?) = value?.toEnum<MediaRankType>()
+
+    @TypeConverter fun fromCacheRequest(value: CacheRequest?) = value?.fromEnum()
+    @TypeConverter fun toCacheRequest(value: String?) = value?.toEnum<CacheRequest>()
 }

@@ -17,18 +17,25 @@
 
 package co.anitrend.data.cache.repository.contract
 
+import co.anitrend.data.cache.helper.instantInPast
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
 
-internal interface CacheStorePolicy {
+internal interface ICacheStorePolicy {
 
     /**
      * Checks if the given [entityId] has been requested before a certain time [instant]
+     *
+     * @param entityId Unique identifier for the cache item
+     * @param instant Specific point in time
      */
     suspend fun isRequestBefore(entityId: Long, instant: Instant): Boolean
 
     /**
      * Checks if the given [entityId] has expired using a [threshold]
+     *
+     * @param entityId Unique identifier for the cache item
+     * @param threshold Threshold expirey bias
      *
      * @see isRequestBefore
      */
@@ -36,14 +43,32 @@ internal interface CacheStorePolicy {
 
     /**
      * Checks if the given [entityId] has been requested before, regardless of when
+     *
+     * @param entityId Unique identifier for the cache item
      */
     suspend fun hasBeenRequested(entityId: Long): Boolean
 
     /**
      * Check if a resource with a given [entityId] is permitted to refresh
+     *
+     * @param entityId Unique identifier for the cache item
+     * @param expiresAfter defaults to 2 hours
      */
     suspend fun shouldRefresh(
         entityId: Long,
-        expiresAfter: Instant
+        expiresAfter: Instant = instantInPast(hours = 2)
     ): Boolean
+
+    /**
+     * Updates the last request [timestamp] for the given [entityId]
+     */
+    suspend fun updateLastRequest(
+        entityId: Long,
+        timestamp: Instant = Instant.now()
+    )
+
+    /**
+     * Invalidates cache records for the given [entityId]
+     */
+    suspend fun invalidateLastRequest(entityId: Long)
 }

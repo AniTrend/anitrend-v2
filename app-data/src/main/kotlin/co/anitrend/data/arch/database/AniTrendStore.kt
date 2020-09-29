@@ -29,6 +29,7 @@ import co.anitrend.data.arch.database.converter.TypeConverterEnum
 import co.anitrend.data.arch.database.converter.TypeConverterObject
 import co.anitrend.data.arch.database.migration.migrations
 import co.anitrend.data.auth.entity.JwtEntity
+import co.anitrend.data.cache.entity.CacheEntity
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.source.entity.SourceEntity
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.TestOnly
 @Database(
     entities = [
         JwtEntity::class, TagEntity::class, GenreEntity::class, SourceEntity::class,
-        MediaEntity::class, AiringScheduleEntity::class
+        MediaEntity::class, AiringScheduleEntity::class, CacheEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION
 )

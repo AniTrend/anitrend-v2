@@ -15,8 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.datasource.local.carousel
+package co.anitrend.data.cache.datasource
 
-internal interface IMediaCarouselStore {
-    fun carouselDao(): MediaCarouselLocalStore
+internal interface ICacheStore {
+    fun cacheDao(): CacheLocalSource
 }

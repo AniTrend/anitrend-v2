@@ -17,22 +17,22 @@
 
 package co.anitrend.data.cache.repository
 
-import co.anitrend.data.cache.datasource.local.CacheDao
+import co.anitrend.data.cache.datasource.CacheLocalSource
 import co.anitrend.data.cache.entity.CacheEntity
 import co.anitrend.data.cache.helper.inPast
 import co.anitrend.data.cache.model.CacheRequest
-import co.anitrend.data.cache.repository.contract.CacheStorePolicy
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
 
-internal abstract class CacheStore(
+internal abstract class CacheStorePolicy(
     private val request: CacheRequest,
-    private val dao: CacheDao
-) : CacheStorePolicy {
+    private val localSource: CacheLocalSource
+) : ICacheStorePolicy {
 
     private suspend fun getRequestInstant(
         entityId: Long
-    ) = dao.getCacheLog(request, entityId)?.timestamp
+    ) = localSource.getCacheLog(request, entityId)?.timestamp
 
     /**
      * Checks if the given [entityId] has been requested before a certain time [instant]
@@ -57,10 +57,13 @@ internal abstract class CacheStore(
      */
     override suspend fun hasBeenRequested(
         entityId: Long
-    ) = dao.countMatching(request, entityId) > 0
-    
-    suspend fun updateLastRequest(entityId: Long, timestamp: Instant = Instant.now()) {
-        dao.upsert(
+    ) = localSource.countMatching(request, entityId) > 0
+
+    /**
+     * Updates the last request [timestamp] for the given [entityId]
+     */
+    override suspend fun updateLastRequest(entityId: Long, timestamp: Instant) {
+        localSource.upsert(
             CacheEntity(
                 request = request,
                 cacheItemId = entityId,
@@ -69,6 +72,10 @@ internal abstract class CacheStore(
         )
     }
 
-    suspend fun invalidateLastRequest(entityId: Long) =
+    /**
+     * Invalidates cache records for the given [entityId]
+     */
+    override suspend fun invalidateLastRequest(entityId: Long) =
         updateLastRequest(entityId, Instant.EPOCH)
+
 }
