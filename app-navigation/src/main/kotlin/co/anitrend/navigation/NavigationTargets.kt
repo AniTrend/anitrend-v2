@@ -20,7 +20,7 @@ package co.anitrend.navigation
 import androidx.fragment.app.Fragment
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
-import org.koin.core.inject
+import org.koin.core.component.inject
 
 object MainRouter : NavigationRouter() {
     override val provider by inject<Provider>()

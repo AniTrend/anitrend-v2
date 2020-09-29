@@ -18,7 +18,7 @@
 package co.anitrend.navigation.router
 
 import co.anitrend.navigation.provider.INavigationProvider
-import org.koin.core.KoinComponent
+import org.koin.core.component.KoinComponent
 
 /**
  * Router for navigation components
