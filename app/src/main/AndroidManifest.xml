@@ -35,8 +35,7 @@
         android:theme="@style/AppTheme"
         android:appCategory="social"
         android:fullBackupContent="@xml/backup_descriptor"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:label">
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".ui.MainScreen"
             android:launchMode="singleTop"/>
