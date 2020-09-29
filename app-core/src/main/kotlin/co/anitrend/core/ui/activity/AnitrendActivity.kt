@@ -53,7 +53,7 @@ abstract class AnitrendActivity : SupportActivity(), KoinScopeComponent {
         configurationUtil.onCreate(this)
         lifecycleScope.launchWhenCreated {
             runCatching {
-                koin._logger.debug("Open activity scope: $scope")
+                koin.logger.debug("Open activity scope: $scope")
                 setupKoinFragmentFactory(scope)
             }
         }
@@ -77,7 +77,7 @@ abstract class AnitrendActivity : SupportActivity(), KoinScopeComponent {
     override fun onDestroy() {
         super.onDestroy()
         runCatching {
-            koin._logger.debug("Close activity scope: $scope")
+            koin.logger.debug("Close activity scope: $scope")
             scope.close()
         }
     }
