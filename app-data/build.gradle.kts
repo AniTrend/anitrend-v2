@@ -19,9 +19,12 @@ import co.anitrend.buildSrc.Libraries
 
 plugins {
     id("co.anitrend.plugin")
+    id("kotlinx-serialization")
 }
 
 dependencies {
+    implementation(Libraries.JetBrains.KotlinX.Serialization.json)
+
     implementation(Libraries.AniTrend.Sync.plugin)
     implementation(Libraries.CashApp.Copper.copper)
     implementation(Libraries.Dropbox.store)
