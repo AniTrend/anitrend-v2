@@ -31,6 +31,7 @@ import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.arch.logger.GraphLogger
 import co.anitrend.data.arch.logger.OkHttpLogger
 import co.anitrend.data.auth.util.AuthenticationHelper
+import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.source.koin.sourceModules
@@ -152,4 +153,4 @@ val dataModules = listOf(
     networkModule,
     interceptorModules
 ) + airingModules + mediaTagModules + mediaGenreModules +
-        sourceModules + mediaModules
+        sourceModules + mediaModules + carouselModules

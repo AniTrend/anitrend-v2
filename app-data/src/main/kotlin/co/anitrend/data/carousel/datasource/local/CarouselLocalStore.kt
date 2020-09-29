@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.datasource.local.carousel
+package co.anitrend.data.carousel.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
@@ -28,7 +28,7 @@ import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class MediaCarouselLocalStore : ILocalSource<MediaEntity> {
+internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
 
     @Query("""
         select count(id) from media

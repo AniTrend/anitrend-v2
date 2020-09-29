@@ -15,23 +15,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.source.carousel.contract
+package co.anitrend.data.carousel.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.media.model.query.MediaCarouselQuery
+import co.anitrend.data.cache.repository.CacheStorePolicy
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.MediaCarousel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-internal abstract class MediaCarouselSource(
+internal abstract class CarouselSource(
+    protected val cachePolicy: ICacheStorePolicy,
     dispatchers: SupportDispatchers
 ) : SupportCoreDataSource(dispatchers) {
 
-    protected lateinit var query: MediaCarouselQuery
+    protected val carouselAnimeId = 10L
+    protected val carouselMangaId = 11L
+
+    protected lateinit var query: CarouselQuery
         private set
 
     protected abstract fun observable(): Flow<List<MediaCarousel>>
@@ -41,17 +47,23 @@ internal abstract class MediaCarouselSource(
     protected abstract suspend fun getMediaCarouselManga(requestCallback: RequestCallback)
 
     operator fun invoke(carouselQuery: IGraphPayload): Flow<List<MediaCarousel>> {
-        query = carouselQuery as MediaCarouselQuery
+        query = carouselQuery as CarouselQuery
         launch {
-            requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
-            ) { getMediaCarouselAnime(it) }
+            if (cachePolicy.shouldRefresh(carouselAnimeId)) {
+                val ran = requestHelper.runIfNotRunning(
+                    IRequestHelper.RequestType.INITIAL
+                ) { getMediaCarouselAnime(it) }
+                if (ran) cachePolicy.updateLastRequest(carouselAnimeId)
+            }
         }
 
        launch {
-            requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.AFTER
-            ) { getMediaCarouselManga(it) }
+           if (cachePolicy.shouldRefresh(carouselMangaId)) {
+               val ran = requestHelper.runIfNotRunning(
+                   IRequestHelper.RequestType.AFTER
+               ) { getMediaCarouselManga(it) }
+               if (ran) cachePolicy.updateLastRequest(carouselMangaId)
+           }
         }
 
         return observable()

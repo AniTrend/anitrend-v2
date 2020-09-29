@@ -15,19 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.source.carousel
+package co.anitrend.data.carousel.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.extension.controller
+import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.media.converters.MediaEntityConverter
-import co.anitrend.data.media.datasource.local.carousel.MediaCarouselLocalStore
+import co.anitrend.data.carousel.datasource.local.CarouselLocalStore
+import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.mapper.carousel.MediaCarouselAnimeMapper
-import co.anitrend.data.media.mapper.carousel.MediaCarouselMangaMapper
-import co.anitrend.data.media.source.carousel.contract.MediaCarouselSource
+import co.anitrend.data.carousel.mapper.CarouselAnimeMapper
+import co.anitrend.data.carousel.mapper.CarouselMangaMapper
+import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.extension.toFuzzyDateLike
@@ -37,18 +40,23 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 
-internal class MediaCarouselSourceImpl(
-    private val remoteSource: MediaRemoteSource,
-    private val localSource: MediaCarouselLocalStore,
-    private val animeMapper: MediaCarouselAnimeMapper,
-    private val mangaMapper: MediaCarouselMangaMapper,
+internal class CarouselSourceImpl(
+    private val remoteSource: CarouselRemoteSource,
+    private val localSource: CarouselLocalStore,
+    private val animeMapper: CarouselAnimeMapper,
+    private val mangaMapper: CarouselMangaMapper,
+    private val clearDataHelper: IClearDataHelper,
     private val strategy: ControllerStrategy<List<MediaEntity>>,
     private val converter: MediaEntityConverter = MediaEntityConverter(),
+    cachePolicy: ICacheStorePolicy,
     dispatchers: SupportDispatchers
-) : MediaCarouselSource(dispatchers) {
+) : CarouselSource(cachePolicy, dispatchers) {
 
-    private fun Flow<List<MediaEntity>>.toMediaList() =
-        map { converter.convertFrom(it) }
+    private fun Flow<List<MediaEntity>>.toMediaList() = mapNotNull {
+        if (it.isNotEmpty())
+            converter.convertFrom(it)
+        else null
+    }
 
     override fun observable(): Flow<List<MediaCarousel>> = flow {
         val flows = listOf(
@@ -108,7 +116,7 @@ internal class MediaCarouselSourceImpl(
                 mediaType = MediaType.ANIME,
                 season = query.nextSeason,
                 seasonYear = FuzzyDate(
-                    year = query.nextYear,
+                    year = query.nextSeasonYear,
                     month = FuzzyDate.UNKNOWN,
                     day = FuzzyDate.UNKNOWN,
                 ).toFuzzyDateLike()
@@ -165,11 +173,9 @@ internal class MediaCarouselSourceImpl(
     }
 
     override suspend fun getMediaCarouselAnime(requestCallback: RequestCallback) {
-        val queryBuilder = query.toQueryContainerBuilder(
-            ignoreNulls = false
-        )
+        val queryBuilder = query.toQueryContainerBuilder()
         val deferred = async {
-            remoteSource.getMediaCarouselAnime(queryBuilder)
+            remoteSource.getCarouselAnime(queryBuilder)
         }
         val controller = animeMapper.controller(dispatchers, strategy)
 
@@ -181,7 +187,7 @@ internal class MediaCarouselSourceImpl(
             ignoreNulls = false
         )
         val deferred = async {
-            remoteSource.getMediaCarouselManga(queryBuilder)
+            remoteSource.getCarouselManga(queryBuilder)
         }
         val controller = mangaMapper.controller(dispatchers, strategy)
 
@@ -194,6 +200,10 @@ internal class MediaCarouselSourceImpl(
      * @param context Dispatcher context to run in
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
-
+        clearDataHelper(context) {
+            cachePolicy.invalidateLastRequest(carouselAnimeId)
+            cachePolicy.invalidateLastRequest(carouselMangaId)
+            localSource.clear()
+        }
     }
 }

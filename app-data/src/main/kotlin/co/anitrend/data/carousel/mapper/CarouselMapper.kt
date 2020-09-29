@@ -15,7 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.mapper.carousel
+/*
+ * Copyright (C) 2020  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package co.anitrend.data.carousel.mapper
 
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
@@ -23,14 +40,14 @@ import co.anitrend.data.arch.mapper.GraphQLMapper
 import co.anitrend.data.media.converters.MediaModelConverter
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
-import co.anitrend.data.media.model.MediaCarouselAnimeModel
-import co.anitrend.data.media.model.MediaCarouselMangaModel
+import co.anitrend.data.carousel.model.CarouselAnimeModel
+import co.anitrend.data.carousel.model.CarouselMangaModel
 
-internal class MediaCarouselAnimeMapper(
+internal class CarouselAnimeMapper(
     private val combinedMapper: MediaPagedCombinedMapper,
     private val airingMapper: AiringSchedulePagedMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
-) : GraphQLMapper<MediaCarouselAnimeModel, List<MediaEntity>>() {
+) : GraphQLMapper<CarouselAnimeModel, List<MediaEntity>>() {
 
     /**
      * Inserts the given object into the implemented room database,
@@ -61,7 +78,7 @@ internal class MediaCarouselAnimeMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: MediaCarouselAnimeModel
+        source: CarouselAnimeModel
     ) = (
             source.airingSoon?.airingSchedules?.mapNotNull { it.media }.orEmpty() +
             source.allTimePopular?.media.orEmpty() +
@@ -72,10 +89,10 @@ internal class MediaCarouselAnimeMapper(
     ).map { converter.convertFrom(it) }
 }
 
-internal class MediaCarouselMangaMapper(
+internal class CarouselMangaMapper(
     private val combinedMapper: MediaPagedCombinedMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
-) : GraphQLMapper<MediaCarouselMangaModel, List<MediaEntity>>() {
+) : GraphQLMapper<CarouselMangaModel, List<MediaEntity>>() {
 
     /**
      * Inserts the given object into the implemented room database,
@@ -93,7 +110,7 @@ internal class MediaCarouselMangaMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: MediaCarouselMangaModel
+        source: CarouselMangaModel
     ) = (
             source.allTimePopular?.media.orEmpty() +
             source.popularManhwa?.media.orEmpty() +
