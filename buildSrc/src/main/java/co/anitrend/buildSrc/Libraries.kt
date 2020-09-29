@@ -479,7 +479,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.2.0-beta-1"
+        private const val version = "2.2.0-beta-2"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
@@ -487,7 +487,9 @@ object Libraries {
         object AndroidX {
             const val scope = "org.koin:koin-androidx-scope:$version"
             const val fragment = "org.koin:koin-androidx-fragment:$version"
-            const val viewmodel = "org.koin:koin-androidx-viewmodel:$version"
+            const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
+            const val workManager = "org.koin:koin-androidx-workmanager:$version"
+            const val compose = "org.koin:koin-androidx-compose:$version"
         }
 
         object Gradle {
