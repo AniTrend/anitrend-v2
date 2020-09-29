@@ -1,10 +1,10 @@
-query MediaCarousel(
+query CarouselAnime(
     $page: Int = 1,
     $perPage: Int = 10,
     $season: MediaSeason,
     $seasonYear: Int,
     $nextSeason: MediaSeason,
-    $nextYear: Int,
+    $nextSeasonYear: Int,
     $isAdult: Boolean,
     $currentTime: Int,
     $scoreFormat: ScoreFormat
@@ -35,7 +35,7 @@ query MediaCarousel(
         }
     }
     AnticipatedNexSeason: Page(page: $page, perPage: $perPage) {
-        media(season: $nextSeason, seasonYear: $nextYear, sort: [POPULARITY_DESC], type: ANIME, isAdult: $isAdult) {
+        media(season: $nextSeason, seasonYear: $nextSeasonYear, sort: [POPULARITY_DESC], type: ANIME, isAdult: $isAdult) {
             ... MediaCore
         }
     }

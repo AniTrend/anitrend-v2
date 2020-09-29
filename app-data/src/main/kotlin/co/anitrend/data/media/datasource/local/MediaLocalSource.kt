@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.datasource.local.media
+package co.anitrend.data.media.datasource.local
 
 import androidx.paging.DataSource
 import androidx.room.Dao

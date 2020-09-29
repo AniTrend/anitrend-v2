@@ -24,7 +24,7 @@ import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
 import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.media.converters.MediaModelConverter
-import co.anitrend.data.media.datasource.local.media.MediaLocalSource
+import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.model.page.MediaPageModel
 

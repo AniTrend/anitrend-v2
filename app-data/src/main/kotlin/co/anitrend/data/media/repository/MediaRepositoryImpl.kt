@@ -17,20 +17,16 @@
 
 package co.anitrend.data.media.repository
 
-import androidx.lifecycle.asLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
-import co.anitrend.data.media.source.carousel.contract.MediaCarouselSource
 import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
 import co.anitrend.data.media.source.paged.network.factory.MediaPagedNetworkSourceFactory
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.MediaCarousel
-import co.anitrend.domain.media.repository.MediaCarouselRepository
 import co.anitrend.domain.media.repository.MediaRepository
 
 internal class MediaRepositoryImpl(
@@ -59,13 +55,4 @@ internal class MediaRepositoryImpl(
         super.onCleared()
         sourceFactory.getLatestSource()?.cancelAllChildren()
     }
-}
-
-internal class MediaCarouselRepositoryImpl(
-    private val source: MediaCarouselSource
-) : SupportRepository(source), MediaCarouselRepository<DataState<List<MediaCarousel>>> {
-    override fun getMediaCarousel(query: IGraphPayload) =
-        source.create(
-            model = source(query).asLiveData()
-        )
 }

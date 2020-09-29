@@ -1,4 +1,4 @@
-query MediaCarousel(
+query CarouselManga(
     $page: Int = 1,
     $perPage: Int = 10,
     $isAdult: Boolean,

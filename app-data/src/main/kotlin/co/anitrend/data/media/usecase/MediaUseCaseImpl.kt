@@ -20,11 +20,8 @@ package co.anitrend.data.media.usecase
 import androidx.paging.PagedList
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.media.repository.MediaCarouselRepositoryImpl
 import co.anitrend.data.media.repository.MediaRepositoryImpl
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.MediaCarousel
-import co.anitrend.domain.media.interactor.MediaCarouselUseCase
 import co.anitrend.domain.media.interactor.MediaUseCase
 
 internal class MediaUseCaseImpl(
@@ -41,18 +38,3 @@ internal class MediaUseCaseImpl(
 }
 
 typealias MediaUseCaseContract = MediaUseCase<DataState<PagedList<Media>>>
-
-internal class MediaCarouselUseCaseImpl(
-    repository: MediaCarouselRepositoryImpl
-) : MediaCarouselUseCaseContract(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as SupportRepository
-        repository.onCleared()
-    }
-}
-
-typealias MediaCarouselUseCaseContract = MediaCarouselUseCase<DataState<List<MediaCarousel>>>

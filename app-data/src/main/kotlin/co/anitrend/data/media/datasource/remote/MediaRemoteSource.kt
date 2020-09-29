@@ -18,8 +18,6 @@
 package co.anitrend.data.media.datasource.remote
 
 import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.media.model.MediaCarouselAnimeModel
-import co.anitrend.data.media.model.MediaCarouselMangaModel
 import co.anitrend.data.media.model.page.MediaPageModel
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.body.GraphContainer
@@ -35,16 +33,4 @@ internal interface MediaRemoteSource {
     suspend fun getMediaPaged(
         @Body queryContainer: QueryContainerBuilder
     ): Response<GraphContainer<MediaPageModel>>
-
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("MediaCarouselAnime")
-    suspend fun getMediaCarouselAnime(
-        @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphContainer<MediaCarouselAnimeModel>>
-
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("MediaCarouselManga")
-    suspend fun getMediaCarouselManga(
-        @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphContainer<MediaCarouselMangaModel>>
 }
