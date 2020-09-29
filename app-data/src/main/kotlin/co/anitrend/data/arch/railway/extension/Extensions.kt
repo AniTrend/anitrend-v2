@@ -19,19 +19,19 @@ package co.anitrend.data.arch.railway.extension
 
 import co.anitrend.data.arch.railway.OutCome
 
-infix fun <T,U> OutCome<T>.then(
-    spec: (T) -> OutCome<U>
+suspend infix fun <T,U> OutCome<T>.then(
+    spec: suspend (T) -> OutCome<U>
 ) = when (this) {
     is OutCome.Pass -> spec(result)
     is OutCome.Fail -> OutCome.Fail(errors)
 }
 
-infix fun <T,U> T.to(
-    spec: (T) -> OutCome<U>
+suspend infix fun <T,U> T.evaluate(
+    spec: suspend (T) -> OutCome<U>
 ) = OutCome.Pass(this) then spec
 
-infix fun <T> OutCome<T>.otherwise(
-    spec: (List<Throwable>) -> Unit
+suspend infix fun <T> OutCome<T>.otherwise(
+    spec: suspend (List<Throwable>) -> Unit
 ) = when (this) {
     is OutCome.Fail -> spec(errors)
     else -> Unit
