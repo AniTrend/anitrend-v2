@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         classpath(co.anitrend.buildSrc.Libraries.Android.Tools.buildGradle)
         classpath(co.anitrend.buildSrc.Libraries.JetBrains.Kotlin.Gradle.plugin)
+        classpath(co.anitrend.buildSrc.Libraries.JetBrains.Kotlin.Serialization.serialization)
 
         classpath(co.anitrend.buildSrc.Libraries.Koin.Gradle.plugin)
         
