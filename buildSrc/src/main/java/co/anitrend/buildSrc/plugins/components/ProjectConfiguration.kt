@@ -21,6 +21,7 @@ import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.Libraries.AndroidX
 import co.anitrend.buildSrc.common.hasCoroutineSupport
 import co.anitrend.buildSrc.common.isAppModule
+import co.anitrend.buildSrc.common.isDataModule
 import co.anitrend.buildSrc.common.isBaseModule
 import co.anitrend.buildSrc.common.hasComposeSupport
 import co.anitrend.buildSrc.plugins.extensions.baseAppExtension
@@ -51,7 +52,7 @@ private fun configureMultipleBuilds(project: Project) {
                 dimension = "version"
                 applicationIdSuffix = ".fdroid"
                 versionNameSuffix = "-fdroid"
-                versionCode = 1000 * defaultConfig.versionCode!!
+                versionCode = defaultConfig.versionCode!!.times(10)
             }
         }
         splits {
@@ -127,6 +128,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = false
             isTestCoverageEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -135,8 +137,14 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
 
         getByName("debug") {
+            isDebuggable = true
             isMinifyEnabled = false
+            isShrinkResources = false
             isTestCoverageEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -144,6 +152,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         exclude("META-INF/NOTICE.txt")
         exclude("META-INF/LICENSE")
         exclude("META-INF/LICENSE.txt")
+        // Exclude potential duplicate kotlin_module files
+        exclude("META-INF/*kotlin_module")
         // Exclude consumer proguard files
         exclude("META-INF/proguard/*")
         // Exclude AndroidX version files
@@ -186,22 +196,21 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     tasks.withType(KotlinCompile::class.java) {
-        val compilerArgumentOptions = if (hasCoroutineSupport()) {
-            listOf(
-                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
-                "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                "-Xopt-in=kotlin.Experimental",
-                "-Xopt-in=coil.annotation.ExperimentalCoilApi",
-                "-Xuse-experimental=kotlin.Experimental"
-            )
-        } else {
-            listOf(
-                "-Xuse-experimental=kotlin.Experimental",
-                "-Xopt-in=kotlin.ExperimentalUnsignedTypes",
-                "-Xopt-in=kotlin.Experimental"
-            )
+        val compilerArgumentOptions = mutableListOf(
+            "-Xopt-in=org.koin.core.component.KoinExperimentalAPI",
+            "-Xopt-in=org.koin.core.component.KoinApiExtension",
+            "-Xuse-experimental=kotlin.Experimental",
+            "-Xopt-in=kotlin.ExperimentalStdlibApi",
+            "-Xopt-in=kotlin.Experimental"
+        )
+
+        if (hasCoroutineSupport()) {
+            compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+            compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.FlowPreview")
+            if (!isBaseModule())
+                compilerArgumentOptions.add("-Xopt-in=coil.annotation.ExperimentalCoilApi")
         }
+
         kotlinOptions {
             allWarningsAsErrors = false
             // Filter out modules that won't be using coroutines

@@ -19,21 +19,29 @@ package co.anitrend.buildSrc.common
 
 object Versions {
 
-    const val compileSdk = 29
-    const val targetSdk = 29
+    private const val major = 2
+    private const val minor = 0
+    private const val patch = 0
+    private const val candidate = 18
+
+    const val compileSdk = 30
+    const val targetSdk = 30
     const val minSdk = 21
 
      /**
       * **RR**_X.Y.Z_
       * > **RR** reserved for build flavours and **X.Y.Z** follow the [versionName] convention
       */
-    const val versionCode = 1020018
+    const val versionCode = major.times(10_000) +
+             minor.times(1000) +
+             patch.times(100) +
+             candidate.times(10)
 
     /**
      * Naming schema: X.Y.Z-variant##
      * > **X**(Major).**Y**(Minor).**Z**(Patch)
      */
-    const val versionName = "2.0.0-alpha18"
+    const val versionName = "$major.$minor.$patch-alpha$candidate"
 
     const val mockk = "1.10.0"
     const val junit = "4.13"
