@@ -23,78 +23,87 @@ import co.anitrend.buildSrc.common.core
 import co.anitrend.buildSrc.common.data
 import co.anitrend.buildSrc.common.domain
 import co.anitrend.buildSrc.common.navigation
+import co.anitrend.buildSrc.plugins.extensions.implementation
+import co.anitrend.buildSrc.plugins.extensions.test
+import co.anitrend.buildSrc.plugins.extensions.androidTest
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal class DependencyStrategy(
     private val module: String
 ) {
     private fun DependencyHandler.applyDefaultDependencies() {
-        add("implementation", Libraries.JetBrains.Kotlin.stdlib)
+        implementation(Libraries.JetBrains.Kotlin.stdlib)
         if (module != domain)
-            add("implementation", Libraries.timber)
+            implementation(Libraries.timber)
 
-        add("testImplementation", Libraries.junit)
-        add("testImplementation", Libraries.mockk)
+        test(Libraries.junit)
+        test(Libraries.mockk)
+
+        /** Work around for crashing tests when startup.initializer is not found in *.test packages */
+        androidTest(Libraries.AndroidX.StartUp.startUpRuntime)
     }
 
     private fun DependencyHandler.applyAndroidTestDependencies() {
-        add("androidTestImplementation", Libraries.AndroidX.Test.coreKtx)
-        add("androidTestImplementation", Libraries.AndroidX.Test.rules)
-        add("androidTestImplementation", Libraries.AndroidX.Test.runner)
-        add("androidTestImplementation", Libraries.AndroidX.Test.Espresso.core)
-        add("androidTestImplementation", Libraries.AndroidX.Test.Extension.junitKtx)
+        androidTest(Libraries.AndroidX.Test.coreKtx)
+        androidTest(Libraries.AndroidX.Test.rules)
+        androidTest(Libraries.AndroidX.Test.runner)
+        androidTest(Libraries.AndroidX.Test.Espresso.core)
+        androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
+        androidTest(Libraries.mockk)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
-        add("implementation", Libraries.AndroidX.Lifecycle.liveDataCoreKtx)
-        add("implementation", Libraries.AndroidX.Lifecycle.runTimeKtx)
-        add("implementation", Libraries.AndroidX.Lifecycle.liveDataKtx)
-        add("implementation", Libraries.AndroidX.Lifecycle.extensions)
+        implementation(Libraries.AndroidX.Lifecycle.liveDataCoreKtx)
+        implementation(Libraries.AndroidX.Lifecycle.runTimeKtx)
+        implementation(Libraries.AndroidX.Lifecycle.liveDataKtx)
+        implementation(Libraries.AndroidX.Lifecycle.extensions)
     }
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
-        add("implementation", Libraries.JetBrains.KotlinX.Coroutines.android)
-        add("implementation", Libraries.JetBrains.KotlinX.Coroutines.core)
-        add("testImplementation", Libraries.JetBrains.KotlinX.Coroutines.test)
-        add("testImplementation", Libraries.CashApp.Turbine.turbine)
+        implementation(Libraries.JetBrains.KotlinX.Coroutines.android)
+        implementation(Libraries.JetBrains.KotlinX.Coroutines.core)
+
+        test(Libraries.JetBrains.KotlinX.Coroutines.test)
+        androidTest(Libraries.CashApp.Turbine.turbine)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
-        add("implementation", Libraries.Koin.core)
-        add("implementation", Libraries.Koin.extension)
-        add("testImplementation", Libraries.Koin.test)
-        add("androidTestImplementation", Libraries.Koin.test)
+        implementation(Libraries.Koin.core)
+        implementation(Libraries.Koin.core)
+        implementation(Libraries.Koin.extension)
+        androidTest(Libraries.Koin.test)
         if (module != data || module != core || module != androidCore) {
-            add("implementation", Libraries.Koin.AndroidX.scope)
-            add("implementation", Libraries.Koin.AndroidX.fragment)
-            add("implementation", Libraries.Koin.AndroidX.viewmodel)
+            implementation(Libraries.Koin.AndroidX.scope)
+            implementation(Libraries.Koin.AndroidX.fragment)
+            implementation(Libraries.Koin.AndroidX.viewModel)
+            implementation(Libraries.Koin.AndroidX.workManager)
         }
     }
 
     private fun DependencyHandler.applyOtherDependencies() {
         when (module) {
             app -> {
-                add("implementation", Libraries.AniTrend.Arch.recycler)
-                add("implementation", Libraries.AniTrend.Arch.domain)
-                add("implementation", Libraries.AniTrend.Arch.theme)
-                add("implementation", Libraries.AniTrend.Arch.core)
-                add("implementation", Libraries.AniTrend.Arch.data)
-                add("implementation", Libraries.AniTrend.Arch.ext)
-                add("implementation", Libraries.AniTrend.Arch.ui)
+                implementation(Libraries.AniTrend.Arch.recycler)
+                implementation(Libraries.AniTrend.Arch.domain)
+                implementation(Libraries.AniTrend.Arch.theme)
+                implementation(Libraries.AniTrend.Arch.core)
+                implementation(Libraries.AniTrend.Arch.data)
+                implementation(Libraries.AniTrend.Arch.ext)
+                implementation(Libraries.AniTrend.Arch.ui)
             }
             core -> {
-                add("implementation", Libraries.AniTrend.Arch.recycler)
-                add("implementation", Libraries.AniTrend.Arch.domain)
-                add("implementation", Libraries.AniTrend.Arch.theme)
-                add("implementation", Libraries.AniTrend.Arch.core)
-                add("implementation", Libraries.AniTrend.Arch.data)
-                add("implementation", Libraries.AniTrend.Arch.ext)
-                add("implementation", Libraries.AniTrend.Arch.ui)
+                implementation(Libraries.AniTrend.Arch.recycler)
+                implementation(Libraries.AniTrend.Arch.domain)
+                implementation(Libraries.AniTrend.Arch.theme)
+                implementation(Libraries.AniTrend.Arch.core)
+                implementation(Libraries.AniTrend.Arch.data)
+                implementation(Libraries.AniTrend.Arch.ext)
+                implementation(Libraries.AniTrend.Arch.ui)
             }
             data -> {
-                add("implementation", Libraries.AniTrend.Arch.domain)
-                add("implementation", Libraries.AniTrend.Arch.data)
-                add("implementation", Libraries.AniTrend.Arch.ext)
+                implementation(Libraries.AniTrend.Arch.domain)
+                implementation(Libraries.AniTrend.Arch.data)
+                implementation(Libraries.AniTrend.Arch.ext)
             }
         }
     }
