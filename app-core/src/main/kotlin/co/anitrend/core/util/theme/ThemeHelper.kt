@@ -32,6 +32,7 @@ import co.anitrend.core.settings.common.theme.IThemeSettings
  *
  * @param settings instance of theme settings
  */
+@Suppress("DEPRECATION")
 class ThemeHelper(private val settings: IThemeSettings) {
 
     @TargetApi(Build.VERSION_CODES.O)
