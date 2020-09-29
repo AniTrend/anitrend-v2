@@ -20,12 +20,12 @@ package co.anitrend.domain.tag.entity
 import co.anitrend.domain.common.entity.contract.IEntity
 
 data class Tag(
-    override val id: Long,
     val name: String,
     val description: String? = null,
     val category: String? = null,
     val rank: Int,
     val isGeneralSpoiler: Boolean,
     val isMediaSpoiler: Boolean,
-    val isAdult: Boolean
+    val isAdult: Boolean,
+    override val id: Long,
 ) : IEntity
