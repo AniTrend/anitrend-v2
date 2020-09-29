@@ -380,7 +380,7 @@ object Libraries {
     }
 
     object Dropbox {
-        private const val version = "4.0.0-alpha07"
+        private const val version = "4.0.0-beta01"
         const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
@@ -472,14 +472,14 @@ object Libraries {
             }
 
             object Serialization {
-                private const val version = "0.20.0"
-                const val runtime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
+                private const val version = "1.0.0-RC2"
+                const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
     }
 
     object Koin {
-        private const val version = "2.2.0-beta-1"
+        private const val version = "2.2.0-beta-2"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
@@ -487,7 +487,9 @@ object Libraries {
         object AndroidX {
             const val scope = "org.koin:koin-androidx-scope:$version"
             const val fragment = "org.koin:koin-androidx-fragment:$version"
-            const val viewmodel = "org.koin:koin-androidx-viewmodel:$version"
+            const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
+            const val workManager = "org.koin:koin-androidx-workmanager:$version"
+            const val compose = "org.koin:koin-androidx-compose:$version"
         }
 
         object Gradle {
