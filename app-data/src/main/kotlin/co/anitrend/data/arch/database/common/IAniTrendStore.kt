@@ -17,16 +17,24 @@
 
 package co.anitrend.data.arch.database.common
 
-import co.anitrend.data.auth.datasource.local.JwtLocalSource
-import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
-import co.anitrend.data.media.datasource.local.MediaLocalSource
-import co.anitrend.data.source.datasource.local.SourceLocal
-import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
+import co.anitrend.data.airing.datasource.local.IAiringStore
+import co.anitrend.data.auth.datasource.local.IAuthStore
+import co.anitrend.data.genre.datasource.local.IMediaGenreStore
+import co.anitrend.data.media.datasource.local.carousel.IMediaCarouselStore
+import co.anitrend.data.media.datasource.local.media.IMediaStore
+import co.anitrend.data.source.datasource.local.ISourceStore
+import co.anitrend.data.tag.datasource.local.IMediaTagStore
 
-internal interface IAniTrendStore {
-    fun jsonWebTokenDao(): JwtLocalSource
-    fun mediaTagDao(): MediaTagLocalSource
-    fun mediaGenreDao(): MediaGenreLocalSource
-    fun mediaDao(): MediaLocalSource
-    fun sourceDao(): SourceLocal
+internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStore,
+    ISourceStore, IAuthStore, IAiringStore, IMediaCarouselStore {
+
+    companion object {
+
+        /** Binding types for [IAniTrendStore] */
+        internal val BINDINGS = arrayOf(
+            IMediaStore::class, IMediaTagStore::class, IMediaGenreStore::class,
+            ISourceStore::class, IAuthStore::class, IAiringStore::class,
+            IMediaCarouselStore::class
+        )
+    }
 }

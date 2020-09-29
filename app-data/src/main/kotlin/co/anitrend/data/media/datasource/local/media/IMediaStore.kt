@@ -15,27 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.entity.embedded
+package co.anitrend.data.media.datasource.local.media
 
-import androidx.room.Embedded
-import androidx.room.Relation
-import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.media.entity.MediaEntity
-
-internal data class MediaEntityWithAiring(
-    @Embedded val media: MediaEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "media_id"
-    )
-    val nextAiring: AiringScheduleEntity?
-)
-
-internal data class MediaEntityWithList(
-    @Embedded val media: MediaEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "media_id"
-    )
-    val nextAiring: AiringScheduleEntity?,
-)
+internal interface IMediaStore {
+    fun mediaDao(): MediaLocalSource
+}

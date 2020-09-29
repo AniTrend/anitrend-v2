@@ -63,6 +63,7 @@ private val sourceModule = module {
     factory<MediaCarouselSource> {
         MediaCarouselSourceImpl(
             remoteSource = api(EndpointType.GRAPH_QL),
+            localSource = db().carouselDao(),
             animeMapper = get(),
             mangaMapper = get(),
             strategy = online(),
@@ -74,17 +75,23 @@ private val sourceModule = module {
 private val mapperModule = module {
     factory {
         MediaPagedCombinedMapper(
-            localSource = db().mediaDao()
+            localSource = db().mediaDao(),
+            scheduleMapper = get()
         )
     }
     factory {
         MediaPagedNetworkMapper()
     }
     factory {
-        MediaCarouselAnimeMapper()
+        MediaCarouselAnimeMapper(
+            combinedMapper = get(),
+            airingMapper = get()
+        )
     }
     factory {
-        MediaCarouselMangaMapper()
+        MediaCarouselMangaMapper(
+            combinedMapper = get()
+        )
     }
 }
 

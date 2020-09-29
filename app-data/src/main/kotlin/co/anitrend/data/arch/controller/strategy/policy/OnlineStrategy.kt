@@ -21,8 +21,6 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import org.koin.core.KoinComponent
-import org.koin.core.get
 import timber.log.Timber
 
 /**

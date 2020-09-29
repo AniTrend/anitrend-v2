@@ -15,16 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.entity.reference
+package co.anitrend.data.source.datasource.local
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-
-@Entity(
-    tableName = "media_tag_ref",
-    primaryKeys = ["media_id", "media_tag_id"]
-)
-internal data class MediaTagRefEntity(
-    @ColumnInfo(name="media_id") val mediaId: Long,
-    @ColumnInfo(name="media_tag_id") val mediaTagId: Long
-)
+internal interface ISourceStore {
+    fun sourceDao(): SourceLocal
+}

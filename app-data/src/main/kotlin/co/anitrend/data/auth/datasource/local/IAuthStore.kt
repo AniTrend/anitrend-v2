@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,31 +17,6 @@
 
 package co.anitrend.data.auth.datasource.local
 
-import androidx.room.Dao
-import androidx.room.Query
-import co.anitrend.data.arch.database.dao.ILocalSource
-import co.anitrend.data.auth.entity.JwtEntity
-
-@Dao
-internal abstract class JwtLocalSource : ILocalSource<JwtEntity?> {
-
-    @Query("""
-        select count(id) from jwt
-        """)
-    abstract override suspend fun count(): Int
-
-    @Query("""
-        delete from jwt
-        """)
-    abstract override suspend fun clear()
-
-    @Query("""
-            select * from jwt order by id desc limit 1
-            """)
-    abstract fun findLatest(): JwtEntity?
-
-    @Query("""
-        select * from jwt
-        """)
-    abstract fun findAll(): List<JwtEntity>?
+internal interface IAuthStore {
+    fun jsonWebTokenDao(): JwtLocalSource
 }

@@ -28,7 +28,7 @@ data class MediaCarouselQuery(
     val seasonYear: Int,
     val nextSeason: MediaSeason,
     val nextYear: Int,
-    val isAdult: Boolean? = null,
+    val isAdult: Boolean? = false,
     val currentTime: Long,
     val scoreFormat: ScoreFormat? = null
 ) : IGraphPayload {

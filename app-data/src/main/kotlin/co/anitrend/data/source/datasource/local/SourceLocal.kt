@@ -24,36 +24,36 @@ import co.anitrend.data.source.entity.SourceEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal interface SourceLocal : ILocalSource<SourceEntity> {
+internal abstract class SourceLocal : ILocalSource<SourceEntity> {
 
     @Query("""
         select count(anilist) from source_entity
     """)
-    override suspend fun count(): Int
+    abstract override suspend fun count(): Int
 
     @Query("""
         delete from source_entity
     """)
-    override suspend fun clear()
+    abstract override suspend fun clear()
 
     @Query("""
         delete from source_entity
         where anilist = :anilist
     """)
-    suspend fun clear(anilist: Long)
+    abstract suspend fun clear(anilist: Long)
 
     @Query("""
         select count(anilist)
         from source_entity
         where anilist = :anilist
     """)
-    suspend fun count(anilist: Long): Int
+    abstract suspend fun count(anilist: Long): Int
 
     @Query("""
         select * from source_entity
         where anilist = :anilist
     """)
-    fun withAniListIdX(
+    abstract fun withAniListIdX(
         anilist: Long
     ): Flow<SourceEntity?>
 
@@ -61,7 +61,7 @@ internal interface SourceLocal : ILocalSource<SourceEntity> {
         select * from source_entity
         where anilist = :anilist
     """)
-    suspend fun withAniListId(
+    abstract suspend fun withAniListId(
         anilist: Long
     ): SourceEntity?
 }
