@@ -29,7 +29,7 @@ package co.anitrend.domain.user.entity.contract
  */
 data class UserStatus(
     val donationBadge: CharSequence?,
-    val donationTier: UShort?,
+    val donationTier: Int?,
     val isFollowing: Boolean?,
     val isFollower: Boolean?,
     val isBlocked: Boolean?,
