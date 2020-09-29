@@ -17,17 +17,19 @@
 
 package co.anitrend.data.core
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import androidx.test.platform.app.InstrumentationRegistry
+import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.database.AniTrendStore
+import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.initializeKoin
 import com.google.gson.GsonBuilder
 import org.junit.After
-import org.junit.Assert
+import org.junit.Assert.assertNotNull
 import org.junit.Before
-import org.junit.runner.RunWith
-import java.net.URI
+import org.koin.core.KoinApplication
+import org.koin.test.KoinTest
+import org.koin.test.inject
+import java.io.InputStreamReader
+import kotlin.reflect.javaType
 import kotlin.reflect.typeOf
 
 /**
@@ -35,18 +37,14 @@ import kotlin.reflect.typeOf
  *
  * @see [Testing documentation](http://d.android.com/tools/testing).
  */
-internal open class CoreTestSuite {
+internal open class CoreTestSuite : KoinTest {
 
-    protected val context: Context by lazy {
-        InstrumentationRegistry.getInstrumentation().context
-    }
+    private val source = CoreTestSuite::class.java
 
-    protected val store: AniTrendStore by lazy {
-        Room.inMemoryDatabaseBuilder(
-            context,
-            AniTrendStore::class.java
-        ).build()
-    }
+    protected val store by inject<IAniTrendStore>()
+    protected val dispatchers by inject<SupportDispatchers>()
+
+    protected val koin: KoinApplication by lazy { initializeKoin() }
 
     private val gson by lazy {
         GsonBuilder()
@@ -54,18 +52,24 @@ internal open class CoreTestSuite {
             .create()
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    protected inline fun <reified T> String.load(): T? {
-        val resource = javaClass.getResourceAsStream(this)?.bufferedReader()
-        val superType = typeOf<T>().javaClass
-        return gson.fromJson<T>(resource, superType)
+    @Before
+    fun startUp() {
+        // runs for every test
+        runCatching { koin }
     }
 
-    /**
-     * Should invoke `store.close()` if applicable
-     */
+    protected inline fun <reified T> String.load(): T? {
+        val resource = source.getResourceAsStream("templates/${this}")
+        assertNotNull(resource)
+        val inputStreamReader = InputStreamReader(resource)
+        val superType = typeOf<T>().javaType
+        val result: T? = gson.fromJson(inputStreamReader, superType)
+        assertNotNull(result)
+        return result
+    }
+
     @After
     open fun shutdown() {
-        store.close()
+        // (store as AniTrendStore).close()
     }
 }

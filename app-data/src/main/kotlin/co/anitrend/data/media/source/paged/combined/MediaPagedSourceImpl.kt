@@ -27,7 +27,7 @@ import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.media.converters.MediaEntityConverter
-import co.anitrend.data.media.datasource.local.MediaLocalSource
+import co.anitrend.data.media.datasource.local.media.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
@@ -48,7 +48,7 @@ internal class MediaPagedSourceImpl(
 ) : MediaPagedSource(dispatchers) {
 
     override val observable = liveData {
-        val result =  localSource.getAllMediaFactory().map { converter.convertFrom(it) }
+        val result =  localSource.allMediaFactory().map { converter.convertFrom(it) }
         emitSource(
             result.toLiveData(
                 config = PAGING_CONFIGURATION,

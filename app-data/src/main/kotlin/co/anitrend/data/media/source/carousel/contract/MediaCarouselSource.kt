@@ -17,18 +17,15 @@
 
 package co.anitrend.data.media.source.carousel.contract
 
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.liveData
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
-import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.media.model.query.MediaCarouselQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.MediaCarousel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
 internal abstract class MediaCarouselSource(
     dispatchers: SupportDispatchers
@@ -37,36 +34,26 @@ internal abstract class MediaCarouselSource(
     protected lateinit var query: MediaCarouselQuery
         private set
 
-    protected abstract suspend fun getMediaCarouselAnime(
-        requestCallback: RequestCallback
-    ): List<MediaCarousel>
+    protected abstract fun observable(): Flow<List<MediaCarousel>>
 
-    protected abstract suspend fun getMediaCarouselManga(
-        requestCallback: RequestCallback
-    ): List<MediaCarousel>
+    protected abstract suspend fun getMediaCarouselAnime(requestCallback: RequestCallback)
+
+    protected abstract suspend fun getMediaCarouselManga(requestCallback: RequestCallback)
 
     operator fun invoke(carouselQuery: IGraphPayload): Flow<List<MediaCarousel>> {
         query = carouselQuery as MediaCarouselQuery
-        val anime = channelFlow {
+        launch {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.INITIAL
-            ) {
-                val result = getMediaCarouselAnime(it)
-                offer(result)
-            }
+            ) { getMediaCarouselAnime(it) }
         }
 
-       val manga = channelFlow {
+       launch {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.AFTER
-            ) {
-                val result = getMediaCarouselManga(it)
-                offer(result)
-            }
+            ) { getMediaCarouselManga(it) }
         }
 
-        return anime.combine(manga) { a, m ->
-            a + m
-        }.flowOn(dispatchers.io)
+        return observable()
     }
 }

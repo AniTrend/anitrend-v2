@@ -22,21 +22,23 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.database.converter.TypeConverterEnum
 import co.anitrend.data.arch.database.converter.TypeConverterObject
 import co.anitrend.data.arch.database.migration.migrations
 import co.anitrend.data.auth.entity.JwtEntity
-import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.source.entity.SourceEntity
 import co.anitrend.data.tag.entity.TagEntity
+import org.jetbrains.annotations.TestOnly
 
 @Database(
     entities = [
         JwtEntity::class, TagEntity::class, GenreEntity::class, SourceEntity::class,
-        MediaEntity::class
+        MediaEntity::class, AiringScheduleEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION
 )
@@ -49,7 +51,7 @@ import co.anitrend.data.tag.entity.TagEntity
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 2
+        const val DATABASE_SCHEMA_VERSION = 3
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(
@@ -57,6 +59,19 @@ internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
                 AniTrendStore::class.java,
                 "anitrend-db"
             ).fallbackToDestructiveMigration()
+                .addMigrations(*migrations)
+                .build()
+        }
+
+        @TestOnly
+        internal fun create(
+            applicationContext: Context,
+            migrations: Array<Migration>
+        ): IAniTrendStore {
+            return Room.inMemoryDatabaseBuilder(
+                applicationContext,
+                AniTrendStore::class.java,
+            ).allowMainThreadQueries()
                 .addMigrations(*migrations)
                 .build()
         }

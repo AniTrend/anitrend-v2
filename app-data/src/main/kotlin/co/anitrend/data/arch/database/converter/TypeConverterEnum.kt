@@ -38,4 +38,7 @@ internal class TypeConverterEnum {
 
     @TypeConverter fun fromMediaType(value: MediaType?) = value?.fromEnum()
     @TypeConverter fun toMediaType(value: String?) = value?.toEnum<MediaType>()
+
+    @TypeConverter fun fromMediaRankType(value: MediaRankType?) = value?.fromEnum()
+    @TypeConverter fun toMediaRankType(value: String?) = value?.toEnum<MediaRankType>()
 }

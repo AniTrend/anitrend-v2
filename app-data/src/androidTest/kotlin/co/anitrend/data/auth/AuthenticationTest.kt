@@ -18,17 +18,15 @@
 package co.anitrend.data.auth
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.auth.util.AuthenticationHelper
-import co.anitrend.data.core.CoreTestSuite
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.net.URLDecoder
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-internal class AuthenticationTest : CoreTestSuite() {
+class AuthenticationTest {
 
     @Test
     fun callBackUrlIsCorrect() {
@@ -38,12 +36,5 @@ internal class AuthenticationTest : CoreTestSuite() {
         val actual = URLDecoder.decode(authUri.toString(), "UTF-8")
 
         assertEquals(expected, actual)
-    }
-
-    /**
-     * Should invoke `store.close()` if applicable
-     */
-    override fun shutdown() {
-
     }
 }

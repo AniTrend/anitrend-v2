@@ -18,25 +18,38 @@
 package co.anitrend.data.genre.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.remote.GenreCollection
+import kotlinx.coroutines.runBlocking
 
 internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource,
     private val converter: GenreModelConverter = GenreModelConverter()
 ) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
+
+    override suspend fun persistChanges(data: List<GenreEntity>): OutCome<Nothing?> {
+        return runCatching {
+            localSource.upsert(data)
+            OutCome.Pass(null)
+        }.getOrElse { OutCome.Fail(listOf(it)) }
+    }
+
     /**
      * Inserts the given object into the implemented room database
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<GenreEntity>) {
-        if (mappedData.isNotEmpty())
-            localSource.upsert(mappedData)
-        else
-            onEmptyResponse()
+        mappedData evaluate
+                ::checkValidity then
+                ::persistChanges otherwise
+                ::handleException
     }
 
     /**

@@ -18,15 +18,41 @@
 package co.anitrend.data.tag.mapper
 
 import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
+import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.MediaTagCollection
+import kotlinx.coroutines.runBlocking
 
 internal class MediaTagResponseMapper(
     private val localSource: MediaTagLocalSource,
     private val converter: TagModelConverter = TagModelConverter()
 ) : GraphQLMapper<MediaTagCollection, List<TagEntity>>() {
+
+    override suspend fun persistChanges(data: List<TagEntity>): OutCome<Nothing?> {
+        return runCatching {
+            localSource.upsert(data)
+            OutCome.Pass(null)
+        }.getOrElse { OutCome.Fail(listOf(it)) }
+    }
+
+    /**
+     * Inserts the given object into the implemented room database
+     *
+     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
+     */
+    override suspend fun onResponseDatabaseInsert(mappedData: List<TagEntity>) {
+        mappedData evaluate
+                ::checkValidity then
+                ::persistChanges otherwise
+                ::handleException
+    }
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects
@@ -36,20 +62,7 @@ internal class MediaTagResponseMapper(
      */
     override suspend fun onResponseMapFrom(
         source: MediaTagCollection
-    ) =
-        converter.convertFrom(
-            source.mediaTagCollection
-        )
-
-    /**
-     * Inserts the given object into the implemented room database
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<TagEntity>) {
-        if (mappedData.isNotEmpty())
-            localSource.upsert(mappedData)
-        else
-            onEmptyResponse()
-    }
+    ) = converter.convertFrom(
+        source.mediaTagCollection
+    )
 }

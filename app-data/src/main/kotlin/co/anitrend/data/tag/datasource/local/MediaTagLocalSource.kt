@@ -24,30 +24,30 @@ import co.anitrend.data.tag.entity.TagEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal interface MediaTagLocalSource : ILocalSource<TagEntity> {
+internal abstract class MediaTagLocalSource : ILocalSource<TagEntity> {
 
     @Query("""
         select count(id) from tag
     """)
-    override suspend fun count(): Int
+    abstract override suspend fun count(): Int
 
     @Query("""
         delete from tag
     """
     )
-    override suspend fun clear()
+    abstract override suspend fun clear()
 
     @Query("""
         select * from tag 
         order by category, name asc
         """
     )
-    suspend fun findAll(): List<TagEntity>
+    abstract suspend fun findAll(): List<TagEntity>
 
     @Query("""
         select * from tag 
         order by category, name asc
         """
     )
-    fun findAllFlow(): Flow<List<TagEntity>>
+    abstract fun findAllFlow(): Flow<List<TagEntity>>
 }

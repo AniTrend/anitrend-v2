@@ -15,17 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.datasource.local
+package co.anitrend.data.media.datasource.local.media
 
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.embedded.MediaEntityWithAiring
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal interface MediaLocalSource : ILocalSource<MediaEntity> {
+internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
 
     /**
      * Count the number of entities
@@ -33,7 +35,7 @@ internal interface MediaLocalSource : ILocalSource<MediaEntity> {
     @Query("""
             select count(id) from media
         """)
-    override suspend fun count(): Int
+    abstract override suspend fun count(): Int
 
     /**
      * Removes all records from table
@@ -41,16 +43,40 @@ internal interface MediaLocalSource : ILocalSource<MediaEntity> {
     @Query("""
         delete from media
         """)
-    override suspend fun clear()
+    abstract override suspend fun clear()
 
     @Query("""
         select * from media
         where id = :id
     """)
-    fun getMediaByIdFlow(id: Long): Flow<MediaEntity>
+    abstract suspend fun mediaById(id: Long): MediaEntity?
+
+    @Query("""
+        select * from media
+        where id = :id
+    """)
+    @Transaction
+    abstract suspend fun mediaByIdWithAiring(
+        id: Long
+    ): MediaEntityWithAiring?
+
+    @Query("""
+        select * from media
+        where id = :id
+    """)
+    @Transaction
+    abstract fun mediaByIdWithAiringFlow(
+        id: Long
+    ): Flow<MediaEntityWithAiring>
+
+    @Query("""
+        select * from media
+        where id = :id
+    """)
+    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntity>
 
     @Query("""
         select * from media
     """)
-    fun getAllMediaFactory(): DataSource.Factory<Int, MediaEntity>
+    abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntity>
 }

@@ -24,6 +24,9 @@ import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.FuzzyDateInt
 import co.anitrend.domain.media.enums.*
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity(
     tableName = "media",
@@ -33,6 +36,11 @@ internal data class MediaEntity(
     @Embedded(prefix = "cover_") val coverImage: CoverImage,
     @Embedded(prefix = "title_") val title: Title,
     @Embedded(prefix = "trailer_") val trailer: Trailer? = null,
+    @Embedded(prefix = "airing_") val nextAiring: Airing? = null,
+    @ColumnInfo(name = "tags") val tags: List<Tag> = emptyList(),
+    @ColumnInfo(name = "genres") val genres: List<Genre> = emptyList(),
+    @ColumnInfo(name = "links") val links: List<Link> = emptyList(),
+    @ColumnInfo(name = "ranks") val ranks: List<Rank> = emptyList(),
     @ColumnInfo(name = "average_score") val averageScore: Int? = null,
     @ColumnInfo(name = "chapters") val chapters: Int? = null,
     @ColumnInfo(name = "country_of_origin") val countryOfOrigin: CountryCode? = null,
@@ -83,30 +91,47 @@ internal data class MediaEntity(
         @ColumnInfo(name = "thumbnail") val thumbnail: String? = null
     )
 
-    @Entity(
-        tableName = "media_link",
-        primaryKeys = ["id"]
+    internal data class Airing(
+        @ColumnInfo(name ="airing_at") val airingAt: Long,
+        @ColumnInfo(name ="episode") val episode: Int,
+        @ColumnInfo(name ="airing_id") val airingId: Long,
+        @ColumnInfo(name ="time_until_airing") val timeUntilAiring: Long,
     )
-    internal data class Link(
-        @ColumnInfo(name = "site") val site: String,
-        @ColumnInfo(name = "url") val url: String,
-        @ColumnInfo(name ="media_id") val mediaId: Long,
-        @ColumnInfo(name = "id") override val id: Long
+
+    @Serializable
+    internal data class Tag(
+        @SerialName("name") @ColumnInfo(name = "name") val name: String,
+        @SerialName("description") @ColumnInfo(name = "description") val description: String? = null,
+        @SerialName("category") @ColumnInfo(name = "category") val category: String? = null,
+        @SerialName("rank") @ColumnInfo(name = "rank") val rank: Int? = null,
+        @SerialName("isGeneralSpoiler") @ColumnInfo(name = "is_general_spoiler") val isGeneralSpoiler: Boolean? = null,
+        @SerialName("isMediaSpoiler") @ColumnInfo(name = "is_media_spoiler") val isMediaSpoiler: Boolean? = null,
+        @SerialName("isAdult") @ColumnInfo(name = "is_adult") val isAdult: Boolean? = null,
+        @SerialName("id") @ColumnInfo(name = "id") override val id: Long
     ) : Identity
 
-    @Entity(
-        tableName = "media_rank",
-        primaryKeys = ["id"]
+    @Serializable
+    internal data class Genre(
+        @SerialName("name")
+        @ColumnInfo(name = "name") val name: String
     )
+
+    @Serializable
+    internal data class Link(
+        @SerialName("site") @ColumnInfo(name = "site") val site: String,
+        @SerialName("url") @ColumnInfo(name = "url") val url: String,
+        @SerialName("id") @ColumnInfo(name = "id") override val id: Long
+    ) : Identity
+
+    @Serializable
     internal data class Rank(
-        @ColumnInfo(name = "allTime") val allTime: Boolean? = null,
-        @ColumnInfo(name = "context") val context: String,
-        @ColumnInfo(name = "format") val format: MediaFormat,
-        @ColumnInfo(name = "rank") val rank: Int,
-        @ColumnInfo(name = "season") val season: MediaSeason? = null,
-        @ColumnInfo(name = "type") val type: MediaRankType,
-        @ColumnInfo(name = "year") val year: Int? = null,
-        @ColumnInfo(name ="media_id") val mediaId: Long,
-        @ColumnInfo(name = "id") override val id: Long
+        @SerialName("allTime") @ColumnInfo(name = "all_time") val allTime: Boolean? = null,
+        @SerialName("context") @ColumnInfo(name = "context") val context: String,
+        @SerialName("format") @ColumnInfo(name = "format") val format: MediaFormat,
+        @SerialName("rank") @ColumnInfo(name = "rank") val rank: Int,
+        @SerialName("season") @ColumnInfo(name = "season") val season: MediaSeason? = null,
+        @SerialName("type") @ColumnInfo(name = "type") val type: MediaRankType,
+        @SerialName("year") @ColumnInfo(name = "year") val year: Int? = null,
+        @SerialName("id") @ColumnInfo(name = "id") override val id: Long
     ) : Identity
 }

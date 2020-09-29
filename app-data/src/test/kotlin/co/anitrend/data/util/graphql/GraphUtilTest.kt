@@ -20,20 +20,16 @@ package co.anitrend.data.util.graphql
 import co.anitrend.data.arch.common.model.paging.PageQuery
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.base.MockQuery
-import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.data.util.graphql.GraphUtil.applySortOrderUsing
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
-import co.anitrend.domain.common.enums.contract.ISortable
 import co.anitrend.domain.media.enums.MediaSort
-import io.mockk.InternalPlatformDsl.toStr
-import io.mockk.confirmVerified
+import co.anitrend.domain.medialist.enums.MediaListSort
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
-import org.junit.Assert.*
-import org.junit.Before
 
 class GraphUtilTest {
     private val settings = mockk<ISortOrderSettings>()

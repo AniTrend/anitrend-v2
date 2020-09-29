@@ -17,26 +17,55 @@
 
 package co.anitrend.data.media.mapper.paged
 
+import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
 import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.media.converters.MediaModelConverter
-import co.anitrend.data.media.datasource.local.MediaLocalSource
+import co.anitrend.data.media.datasource.local.media.MediaLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.model.page.MediaPageModel
 
 internal class MediaPagedCombinedMapper(
     private val localSource: MediaLocalSource,
+    private val scheduleMapper: AiringScheduleMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
 ) : GraphQLMapper<MediaPageModel, List<MediaEntity>>() {
+
+    private suspend fun saveAiringSchedule(source: MediaPageModel): List<MediaEntity> {
+        val media = source.page.media
+        scheduleMapper.onResponseMapFrom(
+            media.mapNotNull {
+                it.nextAiringEpisode
+            }
+        )
+        return converter.convertFrom(source.page.media)
+    }
+
+    /**
+     * Handles the persistence of [data] into a local source
+     *
+     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     */
+    override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
+        return runCatching {
+            localSource.upsert(data)
+            OutCome.Pass(null)
+        }.getOrElse { OutCome.Fail(listOf(it)) }
+    }
+
     /**
      * Inserts the given object into the implemented room database,
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
-        if (mappedData.isEmpty())
-            onEmptyResponse()
-        else
-            localSource.upsert(mappedData)
+        mappedData evaluate
+                ::checkValidity then
+                ::persistChanges otherwise
+                ::handleException
     }
 
     /**
@@ -47,7 +76,5 @@ internal class MediaPagedCombinedMapper(
      */
     override suspend fun onResponseMapFrom(
         source: MediaPageModel
-    ) = converter.convertFrom(
-        source.page.media
-    )
+    ) = saveAiringSchedule(source)
 }

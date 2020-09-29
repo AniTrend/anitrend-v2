@@ -18,91 +18,24 @@
 package co.anitrend.data.media.entity.embedded
 
 import androidx.room.Embedded
-import androidx.room.Junction
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.entity.reference.MediaTagRefEntity
-import co.anitrend.data.tag.entity.TagEntity
 
-internal data class MediaCoreEntity(
+internal data class MediaEntityWithAiring(
     @Embedded val media: MediaEntity,
     @Relation(
         parentColumn = "id",
         entityColumn = "media_id"
     )
-    val airingSchedules: List<AiringScheduleEntity>
+    val nextAiring: AiringScheduleEntity?
 )
 
-internal data class MediaExtendedEntity(
+internal data class MediaEntityWithList(
     @Embedded val media: MediaEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "mediaId"
-    )
-    val schedules: List<AiringScheduleEntity>,
-    @Relation(
-        parentColumn = "id",
-        entity = TagEntity::class,
-        entityColumn = "id",
-        associateBy = Junction(
-            MediaTagRefEntity::class,
-            parentColumn = "media_id",
-            entityColumn = "media_tag_id"
-        )
-    )
-    val tags: List<TagEntity>,
-    @Relation(
-        parentColumn = "id",
-        entity = GenreEntity::class,
-        entityColumn = "id",
-        associateBy = Junction(
-            MediaTagRefEntity::class,
-            parentColumn = "media_id",
-            entityColumn = "media_genre_id"
-        )
-    )
-    val genres: List<GenreEntity>
-)
-
-internal data class MediaFullEntity(
-    @Embedded val media: MediaEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "mediaId"
-    )
-    val schedules: List<AiringScheduleEntity>,
-    @Relation(
-        parentColumn = "id",
-        entity = TagEntity::class,
-        entityColumn = "id",
-        associateBy = Junction(
-            MediaTagRefEntity::class,
-            parentColumn = "media_id",
-            entityColumn = "media_tag_id"
-        )
-    )
-    val tags: List<TagEntity>,
-    @Relation(
-        parentColumn = "id",
-        entity = GenreEntity::class,
-        entityColumn = "id",
-        associateBy = Junction(
-            MediaTagRefEntity::class,
-            parentColumn = "media_id",
-            entityColumn = "media_genre_id"
-        )
-    )
-    val genres: List<GenreEntity>,
     @Relation(
         parentColumn = "id",
         entityColumn = "media_id"
     )
-    val links: List<MediaEntity.Link>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "media_id"
-    )
-    val ranks: List<MediaEntity.Rank>
+    val nextAiring: AiringScheduleEntity?,
 )

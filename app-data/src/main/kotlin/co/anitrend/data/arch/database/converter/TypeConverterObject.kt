@@ -20,10 +20,10 @@ package co.anitrend.data.arch.database.converter
 import androidx.room.TypeConverter
 import co.anitrend.data.arch.database.extensions.fromCommaSeparatedValues
 import co.anitrend.data.arch.database.extensions.toCommaSeparatedValues
-import co.anitrend.data.media.model.MediaModelExtended
-import com.google.gson.GsonBuilder
+import co.anitrend.data.media.entity.MediaEntity
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import org.threeten.bp.Instant
-import kotlin.reflect.typeOf
 
 internal class TypeConverterObject {
 
@@ -39,23 +39,63 @@ internal class TypeConverterObject {
     @TypeConverter fun fromCharSequence(value: CharSequence?) = value?.toString()
     @TypeConverter fun toCharSequence(value: String?) = value as? CharSequence
 
-    @TypeConverter fun fromMediaCover(value: MediaModelExtended.CoverImage?) = value?.let { gson.toJson(value) }
-    @OptIn(ExperimentalStdlibApi::class)
-    @TypeConverter fun toMediaCover(value: String?) = value?.let {
-        val type = typeOf<MediaModelExtended.CoverImage>().javaClass
-        gson.fromJson<MediaModelExtended.CoverImage>(it, type)
+    @TypeConverter fun fromMediaLink(value: List<MediaEntity.Link>): String {
+        val serializer = ListSerializer(
+            MediaEntity.Link.serializer()
+        )
+        return json.encodeToString(serializer, value)
+    }
+    @TypeConverter fun toMediaLink(value: String): List<MediaEntity.Link> {
+        val serializer = ListSerializer(
+            MediaEntity.Link.serializer()
+        )
+        return json.decodeFromString(serializer, value)
     }
 
-    @TypeConverter fun fromMediaTitle(value: MediaModelExtended.Title?) = value?.let { gson.toJson(value) }
-    @OptIn(ExperimentalStdlibApi::class)
-    @TypeConverter fun toMediaTitle(value: String?) = value?.let {
-        val type = typeOf<MediaModelExtended.Title>().javaClass
-        gson.fromJson<MediaModelExtended.Title>(it, type)
+    @TypeConverter fun fromMediaRank(value: List<MediaEntity.Rank>): String {
+        val serializer = ListSerializer(
+            MediaEntity.Rank.serializer()
+        )
+        return json.encodeToString(serializer, value)
+    }
+    @TypeConverter fun toMediaRank(value: String): List<MediaEntity.Rank> {
+        val serializer = ListSerializer(
+            MediaEntity.Rank.serializer()
+        )
+        return json.decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromMediaTagList(value: List<MediaEntity.Tag>): String {
+        val serializer = ListSerializer(
+            MediaEntity.Tag.serializer()
+        )
+        return json.encodeToString(serializer, value)
+    }
+    @TypeConverter fun toMediaTagList(value: String): List<MediaEntity.Tag> {
+        val serializer = ListSerializer(
+            MediaEntity.Tag.serializer()
+        )
+        return json.decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromMediaGenreList(value: List<MediaEntity.Genre>): String {
+        val serializer = ListSerializer(
+            MediaEntity.Genre.serializer()
+        )
+        return json.encodeToString(serializer, value)
+    }
+    @TypeConverter fun toMediaGenreList(value: String): List<MediaEntity.Genre> {
+        val serializer = ListSerializer(
+            MediaEntity.Genre.serializer()
+        )
+        return json.decodeFromString(serializer, value)
     }
 
     companion object {
-        internal val gson = GsonBuilder()
-            .setLenient()
-            .create()
+        internal val json by lazy {
+            Json {
+                isLenient = true
+            }
+        }
     }
 }

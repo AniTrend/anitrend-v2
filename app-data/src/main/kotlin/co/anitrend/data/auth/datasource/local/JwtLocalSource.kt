@@ -23,25 +23,25 @@ import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.auth.entity.JwtEntity
 
 @Dao
-internal interface JwtLocalSource : ILocalSource<JwtEntity?> {
+internal abstract class JwtLocalSource : ILocalSource<JwtEntity?> {
 
     @Query("""
         select count(id) from jwt
         """)
-    override suspend fun count(): Int
+    abstract override suspend fun count(): Int
 
     @Query("""
         delete from jwt
         """)
-    override suspend fun clear()
+    abstract override suspend fun clear()
 
     @Query("""
             select * from jwt order by id desc limit 1
             """)
-    fun findLatest(): JwtEntity?
+    abstract fun findLatest(): JwtEntity?
 
     @Query("""
         select * from jwt
         """)
-    fun findAll(): List<JwtEntity>?
+    abstract fun findAll(): List<JwtEntity>?
 }

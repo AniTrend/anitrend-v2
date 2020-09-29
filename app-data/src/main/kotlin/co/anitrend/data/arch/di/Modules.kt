@@ -21,9 +21,11 @@ import android.net.ConnectivityManager
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.BuildConfig
+import co.anitrend.data.airing.koin.airingModules
 import co.anitrend.data.api.converter.AniTrendConverterFactory
 import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.arch.database.AniTrendStore
+import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.arch.logger.GraphLogger
 import co.anitrend.data.arch.logger.OkHttpLogger
@@ -44,6 +46,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.binds
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
@@ -53,7 +56,7 @@ private val coreModule = module {
         AniTrendStore.create(
             applicationContext = androidContext()
         )
-    }
+    } binds IAniTrendStore.BINDINGS
     factory {
         AuthenticationHelper(
             settings = get()
@@ -147,4 +150,5 @@ val dataModules = listOf(
     retrofitModule,
     networkModule,
     interceptorModules
-) + mediaTagModules + mediaGenreModules + sourceModules + mediaModules
+) + airingModules + mediaTagModules + mediaGenreModules +
+        sourceModules + mediaModules

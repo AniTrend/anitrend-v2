@@ -13,6 +13,9 @@ fragment MediaCore on Media {
     status
     meanScore
     averageScore
+    countryOfOrigin
+    trending
+    popularity
     startDate {
         ... FuzzyDate
     }

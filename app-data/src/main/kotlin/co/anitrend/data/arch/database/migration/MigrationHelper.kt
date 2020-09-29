@@ -21,6 +21,18 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import timber.log.Timber
 
+private fun SupportSQLiteDatabase.usingTransaction(tag: String, query: String) {
+    beginTransaction()
+    runCatching {
+        execSQL(query)
+    }.onSuccess {
+        setTransactionSuccessful()
+    }.onFailure {
+        Timber.tag(tag).w(it)
+    }
+    endTransaction()
+}
+
 internal val MIGRATION_1_2 = object : Migration(1, 2) {
     /**
      * Should run the necessary migrations.
@@ -33,24 +45,17 @@ internal val MIGRATION_1_2 = object : Migration(1, 2) {
      * @param database The database instance
      */
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.beginTransaction()
-        runCatching {
-            val tableName = "source_entity"
-            database.execSQL("""
-                CREATE TABLE IF NOT EXISTS `$tableName` (
+        val tableName = "source_entity"
+        val createQuery = """
+            CREATE TABLE IF NOT EXISTS `$tableName` (
                     `anilist` INTEGER NOT NULL, 
                     `anidb` INTEGER, 
                     `kitsu` INTEGER, 
                     `mal` INTEGER,
                     PRIMARY KEY(`anilist`)
                 )
-            """.trimIndent())
-        }.onSuccess {
-            database.setTransactionSuccessful()
-        }.onFailure {
-            Timber.tag("MIGRATION_1_2").e(it)
-        }
-        database.endTransaction()
+        """.trimIndent()
+        database.usingTransaction("MIGRATION_1_2", createQuery)
     }
 }
 

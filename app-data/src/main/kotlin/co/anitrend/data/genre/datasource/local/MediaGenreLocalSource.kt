@@ -24,29 +24,29 @@ import co.anitrend.data.genre.entity.GenreEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal interface MediaGenreLocalSource: ILocalSource<GenreEntity> {
+internal abstract class MediaGenreLocalSource: ILocalSource<GenreEntity> {
 
     @Query("""
         select count(id) from genre
         """
     )
-    override suspend fun count(): Int
+    abstract override suspend fun count(): Int
 
     @Query("""
             delete from genre
         """
     )
-    override suspend fun clear()
+    abstract override suspend fun clear()
 
     @Query("""
         select * from genre order by genre asc
         """
     )
-    suspend fun findAll(): List<GenreEntity>
+    abstract suspend fun findAll(): List<GenreEntity>
 
     @Query("""
         select * from genre order by genre asc
         """
     )
-    fun findAllFlow(): Flow<List<GenreEntity>>
+    abstract fun findAllFlow(): Flow<List<GenreEntity>>
 }

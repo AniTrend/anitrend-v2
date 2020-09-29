@@ -17,23 +17,49 @@
 
 package co.anitrend.data.media.mapper.carousel
 
+import co.anitrend.data.airing.entity.AiringScheduleEntity
+import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
 import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.media.converters.MediaConverter
+import co.anitrend.data.media.converters.MediaModelConverter
+import co.anitrend.data.media.datasource.local.media.MediaLocalSource
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import co.anitrend.data.media.model.MediaCarouselAnimeModel
 import co.anitrend.data.media.model.MediaCarouselMangaModel
 import co.anitrend.domain.media.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 
 internal class MediaCarouselAnimeMapper(
-    private val converter: MediaConverter = MediaConverter()
-) : GraphQLMapper<MediaCarouselAnimeModel, List<MediaCarousel>>() {
+    private val combinedMapper: MediaPagedCombinedMapper,
+    private val airingMapper: AiringSchedulePagedMapper,
+    private val converter: MediaModelConverter = MediaModelConverter()
+) : GraphQLMapper<MediaCarouselAnimeModel, List<MediaEntity>>() {
+
     /**
      * Inserts the given object into the implemented room database,
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaCarousel>) {
-
+    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
+        combinedMapper.onResponseDatabaseInsert(mappedData)
+        airingMapper.onResponseDatabaseInsert(
+            mappedData.mapNotNull { entity ->
+                entity.nextAiring?.let {
+                    AiringScheduleEntity(
+                        airingAt = it.airingAt,
+                        episode = it.episode,
+                        mediaId = entity.id,
+                        timeUntilAiring = it.timeUntilAiring,
+                        id = it.airingId
+                    )
+                }
+            }
+        )
     }
 
     /**
@@ -44,62 +70,28 @@ internal class MediaCarouselAnimeMapper(
      */
     override suspend fun onResponseMapFrom(
         source: MediaCarouselAnimeModel
-    ) = listOf(
-            MediaCarousel(
-                MediaType.ANIME,
-                MediaCarousel.CarouselType.AIRING_SOON,
-                converter.convertFrom(
-                    source.airingSoon?.airingSchedules?.mapNotNull { it.media }.orEmpty()
-                )
-            ),
-            MediaCarousel(
-                MediaType.ANIME,
-                MediaCarousel.CarouselType.ALL_TIME_POPULAR,
-                converter.convertFrom(
-                    source.allTimePopular?.media.orEmpty()
-                )
-            ),
-            MediaCarousel(
-                MediaType.ANIME,
-                MediaCarousel.CarouselType.TRENDING_RIGHT_NOW,
-                converter.convertFrom(
-                    source.trendingRightNow?.media.orEmpty()
-                )
-            ),
-            MediaCarousel(
-                MediaType.ANIME,
-                MediaCarousel.CarouselType.POPULAR_THIS_SEASON,
-                converter.convertFrom(
-                    source.popularThisSeason?.media.orEmpty()
-                )
-            ),
-            MediaCarousel(
-                MediaType.ANIME,
-                MediaCarousel.CarouselType.RECENTLY_ADDED,
-                converter.convertFrom(
-                    source.recentlyAdded?.media.orEmpty()
-                )
-            ),
-            MediaCarousel(
-                MediaType.ANIME,
-                MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON,
-                converter.convertFrom(
-                    source.anticipatedNexSeason?.media.orEmpty()
-                )
-            )
-        )
+    ) = (
+            source.airingSoon?.airingSchedules?.mapNotNull { it.media }.orEmpty() +
+            source.allTimePopular?.media.orEmpty() +
+            source.trendingRightNow?.media.orEmpty() +
+            source.anticipatedNexSeason?.media.orEmpty() +
+            source.popularThisSeason?.media.orEmpty() +
+            source.recentlyAdded?.media.orEmpty()
+    ).map { converter.convertFrom(it) }
 }
 
 internal class MediaCarouselMangaMapper(
-    private val converter: MediaConverter = MediaConverter()
-) : GraphQLMapper<MediaCarouselMangaModel, List<MediaCarousel>>() {
+    private val combinedMapper: MediaPagedCombinedMapper,
+    private val converter: MediaModelConverter = MediaModelConverter()
+) : GraphQLMapper<MediaCarouselMangaModel, List<MediaEntity>>() {
+
     /**
      * Inserts the given object into the implemented room database,
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaCarousel>) {
-
+    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
+        combinedMapper.onResponseDatabaseInsert(mappedData)
     }
 
     /**
@@ -110,34 +102,10 @@ internal class MediaCarouselMangaMapper(
      */
     override suspend fun onResponseMapFrom(
         source: MediaCarouselMangaModel
-    ) = listOf(
-        MediaCarousel(
-            MediaType.MANGA,
-            MediaCarousel.CarouselType.ALL_TIME_POPULAR,
-            converter.convertFrom(
-                source.allTimePopular?.media.orEmpty()
-            )
-        ),
-        MediaCarousel(
-            MediaType.MANGA,
-            MediaCarousel.CarouselType.TRENDING_RIGHT_NOW,
-            converter.convertFrom(
-                source.trendingRightNow?.media.orEmpty()
-            )
-        ),
-        MediaCarousel(
-            MediaType.MANGA,
-            MediaCarousel.CarouselType.POPULAR_MANHWA,
-            converter.convertFrom(
-                source.popularManhwa?.media.orEmpty()
-            )
-        ),
-        MediaCarousel(
-            MediaType.MANGA,
-            MediaCarousel.CarouselType.RECENTLY_ADDED,
-            converter.convertFrom(
-                source.recentlyAdded?.media.orEmpty()
-            )
-        )
-    )
+    ) = (
+            source.allTimePopular?.media.orEmpty() +
+            source.popularManhwa?.media.orEmpty() +
+            source.recentlyAdded?.media.orEmpty() +
+            source.trendingRightNow?.media.orEmpty()
+    ).map { converter.convertFrom(it) }
 }
