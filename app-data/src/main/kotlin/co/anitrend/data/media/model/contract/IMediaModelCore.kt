@@ -22,7 +22,10 @@ import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.medialist.model.contract.IMediaListModelCore
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.common.entity.shared.FuzzyDate
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
  * Anime or Manga representation

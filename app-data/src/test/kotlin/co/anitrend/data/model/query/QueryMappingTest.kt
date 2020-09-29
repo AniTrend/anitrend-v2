@@ -17,10 +17,10 @@
 
 package co.anitrend.data.model.query
 
-import co.anitrend.domain.common.extension.toFuzzyDateInt
 import co.anitrend.data.arch.common.model.paging.PageQuery
-import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.data.media.model.query.MediaQuery
+import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.common.extension.toFuzzyDateInt
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus

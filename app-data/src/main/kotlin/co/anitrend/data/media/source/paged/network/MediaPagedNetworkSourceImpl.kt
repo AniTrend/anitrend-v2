@@ -23,7 +23,6 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.extension.controller
-import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
 import co.anitrend.data.media.source.paged.network.contract.MediaPagedNetworkSource

@@ -18,9 +18,8 @@
 package co.anitrend.data.notification.model.remote
 
 import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.MediaModelExtended
-import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.data.notification.model.contract.INotificationModel
+import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.notification.enums.NotificationType
 import com.google.gson.annotations.SerializedName
 

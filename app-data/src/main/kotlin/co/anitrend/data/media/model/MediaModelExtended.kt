@@ -24,7 +24,6 @@ import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.*
-import co.anitrend.domain.medialist.entity.base.IMediaListCore
 import com.google.gson.annotations.SerializedName
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)

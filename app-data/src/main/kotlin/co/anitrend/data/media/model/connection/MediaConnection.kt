@@ -19,7 +19,6 @@ package co.anitrend.data.media.model.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.media.model.edge.MediaEdge
 import co.anitrend.domain.common.entity.shared.PageInfo
 

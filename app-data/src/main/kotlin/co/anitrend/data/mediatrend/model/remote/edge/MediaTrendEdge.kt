@@ -17,8 +17,8 @@
 
 package co.anitrend.data.mediatrend.model.remote.edge
 
-import co.anitrend.data.mediatrend.model.remote.MediaTrendModel
 import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.mediatrend.model.remote.MediaTrendModel
 
 /** [MediaTrendEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendedge.doc.html)
  * Media trend connection edge

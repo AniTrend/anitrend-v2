@@ -28,10 +28,8 @@ import co.anitrend.data.arch.mapper.GraphQLMapper
 import io.github.wax911.library.model.body.GraphContainer
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
-import java.io.IOException
 
 /**
  * AniTrend controller that handles complex logic of making requests, capturing errors,

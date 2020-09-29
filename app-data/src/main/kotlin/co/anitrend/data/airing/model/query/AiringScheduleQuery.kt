@@ -17,9 +17,8 @@
 
 package co.anitrend.data.airing.model.query
 
-import android.os.Parcelable
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.airing.enums.AiringSort
+import co.anitrend.domain.common.graph.IGraphPayload
 import kotlinx.android.parcel.Parcelize
 
 /** [AiringSchedule query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]

@@ -18,7 +18,6 @@
 package co.anitrend.data.review.model.contract
 
 import co.anitrend.data.media.model.contract.IMediaModelCore
-import co.anitrend.data.media.model.contract.IMediaModelExtended
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.user.model.contract.IUserModelCore
 import co.anitrend.domain.media.enums.MediaType

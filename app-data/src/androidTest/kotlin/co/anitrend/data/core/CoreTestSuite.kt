@@ -18,7 +18,6 @@
 package co.anitrend.data.core
 
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
 import com.google.gson.GsonBuilder

@@ -20,19 +20,11 @@ package co.anitrend.data.media.mapper.carousel
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
 import co.anitrend.data.arch.mapper.GraphQLMapper
-import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.arch.railway.extension.otherwise
-import co.anitrend.data.arch.railway.extension.then
-import co.anitrend.data.media.converters.MediaConverter
 import co.anitrend.data.media.converters.MediaModelConverter
-import co.anitrend.data.media.datasource.local.media.MediaLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import co.anitrend.data.media.model.MediaCarouselAnimeModel
 import co.anitrend.data.media.model.MediaCarouselMangaModel
-import co.anitrend.domain.media.entity.MediaCarousel
-import co.anitrend.domain.media.enums.MediaType
 
 internal class MediaCarouselAnimeMapper(
     private val combinedMapper: MediaPagedCombinedMapper,

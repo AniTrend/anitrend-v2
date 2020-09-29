@@ -18,9 +18,7 @@
 package co.anitrend.data.review.model.remote
 
 import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.contract.IMediaModelExtended
 import co.anitrend.data.review.model.contract.IReviewModel
-import co.anitrend.data.user.model.contract.IUserModelCore
 import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating

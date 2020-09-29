@@ -17,9 +17,9 @@
 
 package co.anitrend.data.airing.model.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.airing.model.edge.AiringScheduleEdge
+import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.domain.common.entity.shared.PageInfo
 import com.google.gson.annotations.SerializedName
 

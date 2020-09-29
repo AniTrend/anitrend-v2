@@ -20,10 +20,8 @@ package co.anitrend.data.tag.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
-import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
