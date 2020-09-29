@@ -17,5 +17,38 @@
 
 package co.anitrend.data.airing.datasource.local
 
-internal interface AiringLocalSource {
+import androidx.room.Dao
+import androidx.room.Query
+import co.anitrend.data.airing.entity.AiringScheduleEntity
+import co.anitrend.data.arch.database.dao.ILocalSource
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+internal abstract class AiringLocalSource : ILocalSource<AiringScheduleEntity> {
+
+    @Query("""
+        select count(id) from airing_schedule
+    """)
+    abstract override suspend fun count(): Int
+
+    @Query("""
+        delete from airing_schedule
+    """)
+    abstract override suspend fun clear()
+
+    @Query("""
+        select * from airing_schedule
+        where media_id = :mediaId
+    """)
+    abstract suspend fun airingByMediaId(
+        mediaId: Long
+    ): AiringScheduleEntity?
+
+    @Query("""
+        select * from airing_schedule
+        where media_id = :mediaId
+    """)
+    abstract fun airingByMediaIdFlow(
+        mediaId: Long
+    ): Flow<AiringScheduleEntity>
 }

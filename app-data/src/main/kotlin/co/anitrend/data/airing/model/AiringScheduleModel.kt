@@ -23,7 +23,7 @@ import com.google.gson.annotations.SerializedName
 /** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
  * Media Airing Schedule
  *
- * @param media The associate media of the airing episode
+ * @param mediaId The associate media of the airing episode
  */
 internal data class AiringScheduleModel(
     @SerializedName("airingAt") val airingAt: Long,

@@ -17,6 +17,9 @@
 
 package co.anitrend.data.airing.koin
 
+import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
+import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
+import co.anitrend.data.arch.extension.db
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -24,7 +27,16 @@ private val sourceModule = module {
 }
 
 private val mapperModule = module {
-
+    factory {
+        AiringScheduleMapper(
+            localSource = db().airingScheduleDao()
+        )
+    }
+    factory {
+        AiringSchedulePagedMapper(
+            localSource = db().airingScheduleDao()
+        )
+    }
 }
 
 private val useCaseModule = module {
@@ -36,8 +48,8 @@ private val repositoryModule = module {
 }
 
 internal val airingModules = listOf(
-    sourceModule,
+    /*sourceModule,*/
     mapperModule,
-    useCaseModule,
-    repositoryModule
+    /*useCaseModule,
+    repositoryModule*/
 )

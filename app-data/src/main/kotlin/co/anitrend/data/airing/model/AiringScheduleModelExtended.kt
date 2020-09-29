@@ -28,5 +28,9 @@ import com.google.gson.annotations.SerializedName
  */
 internal data class AiringScheduleModelExtended(
     @SerializedName("media") val media: MediaModelExtended?,
+    @SerializedName("airingAt") val airingAt: Long,
+    @SerializedName("episode") val episode: Int,
+    @SerializedName("mediaId") val mediaId: Long,
+    @SerializedName("timeUntilAiring") val timeUntilAiring: Long,
     @SerializedName("id") override val id: Long
 ) : Identity
