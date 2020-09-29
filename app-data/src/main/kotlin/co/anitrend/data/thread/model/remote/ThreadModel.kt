@@ -18,7 +18,6 @@
 package co.anitrend.data.thread.model.remote
 
 import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.thread.model.contract.IThreadModel
 import co.anitrend.data.user.model.remote.UserModelCore

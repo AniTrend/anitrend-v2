@@ -20,7 +20,6 @@ package co.anitrend.data.tag.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import androidx.room.PrimaryKey
 import co.anitrend.data.shared.common.Identity
 
 @Entity(

@@ -24,7 +24,7 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.media.model.query.MediaCarouselQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.MediaCarousel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaCarouselSource(

@@ -23,9 +23,9 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.domain.media.entity.Media
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.launch
 
 internal abstract class MediaPagedSource(

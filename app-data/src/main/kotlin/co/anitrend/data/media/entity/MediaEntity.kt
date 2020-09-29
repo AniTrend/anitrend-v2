@@ -24,7 +24,6 @@ import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.FuzzyDateInt
 import co.anitrend.domain.media.enums.*
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

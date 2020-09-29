@@ -20,7 +20,6 @@ package co.anitrend.data.media.model.edge
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.enums.MediaRelation

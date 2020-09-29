@@ -19,7 +19,6 @@ package co.anitrend.data.arch.extension
 
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.provider.RetrofitProvider
@@ -37,7 +36,6 @@ import kotlinx.coroutines.withContext
 import org.koin.core.scope.Scope
 import retrofit2.HttpException
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

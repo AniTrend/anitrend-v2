@@ -22,13 +22,10 @@ import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
 import co.anitrend.data.arch.railway.extension.then
-import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.MediaTagCollection
-import kotlinx.coroutines.runBlocking
 
 internal class MediaTagResponseMapper(
     private val localSource: MediaTagLocalSource,

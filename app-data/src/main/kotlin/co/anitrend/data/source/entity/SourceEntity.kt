@@ -19,7 +19,6 @@ package co.anitrend.data.source.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "source_entity",

@@ -17,10 +17,8 @@
 
 package co.anitrend.data.media.model.query
 
-import android.os.Parcelable
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.FuzzyDateInt
-import co.anitrend.domain.common.FuzzyDateLike
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.*
 import kotlinx.android.parcel.Parcelize

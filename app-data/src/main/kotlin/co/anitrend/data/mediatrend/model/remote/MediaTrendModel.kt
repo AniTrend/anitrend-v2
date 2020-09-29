@@ -18,7 +18,6 @@
 package co.anitrend.data.mediatrend.model.remote
 
 import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.mediatrend.model.contract.IMediaTrendModel
 import com.google.gson.annotations.SerializedName
 

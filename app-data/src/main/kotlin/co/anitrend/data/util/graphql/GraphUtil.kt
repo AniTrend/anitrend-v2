@@ -19,7 +19,6 @@ package co.anitrend.data.util.graphql
 
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.arch.AniTrendExperimentalFeature
-import co.anitrend.data.arch.common.model.paging.PageQuery
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.extension.toPageQuery
 import co.anitrend.domain.common.enums.contract.ISortable

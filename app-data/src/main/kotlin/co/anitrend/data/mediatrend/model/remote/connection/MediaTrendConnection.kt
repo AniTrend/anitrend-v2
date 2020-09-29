@@ -17,9 +17,9 @@
 
 package co.anitrend.data.mediatrend.model.remote.connection
 
+import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.mediatrend.model.remote.MediaTrendModel
 import co.anitrend.data.mediatrend.model.remote.edge.MediaTrendEdge
-import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 
 /** [MediaTrendConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendconnection.doc.html)

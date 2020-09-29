@@ -17,8 +17,8 @@
 
 package co.anitrend.data.character.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.character.enums.CharacterSort
+import co.anitrend.domain.common.graph.IGraphPayload
 import kotlinx.android.parcel.Parcelize
 
 /** [Character query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)

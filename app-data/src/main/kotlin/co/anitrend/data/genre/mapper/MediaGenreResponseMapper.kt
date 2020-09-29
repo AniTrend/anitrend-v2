@@ -26,7 +26,6 @@ import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.remote.GenreCollection
-import kotlinx.coroutines.runBlocking
 
 internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource,

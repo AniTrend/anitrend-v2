@@ -20,7 +20,6 @@ package co.anitrend.data.genre.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.genre.converters.GenreEntityConverter
@@ -29,7 +28,6 @@ import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.data.source.entity.SourceEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn

@@ -19,9 +19,9 @@ package co.anitrend.data.arch.common.model.paging
 
 import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
+import co.anitrend.data.util.graphql.GraphUtil
 import co.anitrend.domain.common.entity.contract.IEntityPageQuery
 import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.data.util.graphql.GraphUtil
 import kotlinx.android.parcel.Parcelize
 
 /** [Page query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
