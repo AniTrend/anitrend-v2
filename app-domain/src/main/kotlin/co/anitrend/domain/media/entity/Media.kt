@@ -56,7 +56,7 @@ data class Media(
     override val format: MediaFormat?,
     override val season: MediaSeason?,
     override val status: MediaStatus?,
-    override val scoreFormat: ScoreFormat?,
+    override val scoreFormat: ScoreFormat,
     override val meanScore: Int,
     override val averageScore: Int,
     override val startDate: FuzzyDate,
