@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 2,
-    "identityHash": "b182a938fa84bab333a215a52c5f194b",
+    "version": 3,
+    "identityHash": "a517d2955bc2155f6915ce43c20f61ac",
     "entities": [
       {
         "tableName": "jwt",
@@ -191,8 +191,32 @@
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_native` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, `airing_airing_at` INTEGER, `airing_episode` INTEGER, `airing_airing_id` INTEGER, `airing_time_until_airing` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "tags",
+            "columnName": "tags",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genres",
+            "columnName": "genres",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "links",
+            "columnName": "links",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ranks",
+            "columnName": "ranks",
+            "affinity": "TEXT",
+            "notNull": true
+          },
           {
             "fieldPath": "averageScore",
             "columnName": "average_score",
@@ -398,12 +422,6 @@
             "notNull": false
           },
           {
-            "fieldPath": "title.native",
-            "columnName": "title_native",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "title.userPreferred",
             "columnName": "title_user_preferred",
             "affinity": "TEXT",
@@ -426,6 +444,74 @@
             "columnName": "trailer_thumbnail",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "nextAiring.airingAt",
+            "columnName": "airing_airing_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nextAiring.episode",
+            "columnName": "airing_episode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nextAiring.airingId",
+            "columnName": "airing_airing_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nextAiring.timeUntilAiring",
+            "columnName": "airing_time_until_airing",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "airing_schedule",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`airing_at` INTEGER NOT NULL, `episode` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `time_until_airing` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "airingAt",
+            "columnName": "airing_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episode",
+            "columnName": "episode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeUntilAiring",
+            "columnName": "time_until_airing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -441,7 +527,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b182a938fa84bab333a215a52c5f194b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a517d2955bc2155f6915ce43c20f61ac')"
     ]
   }
 }
