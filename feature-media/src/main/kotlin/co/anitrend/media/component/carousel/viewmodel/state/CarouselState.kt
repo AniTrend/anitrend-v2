@@ -22,13 +22,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.media.model.query.MediaCarouselQuery
-import co.anitrend.data.media.model.query.MediaQuery
-import co.anitrend.data.media.usecase.MediaCarouselUseCaseContract
+import co.anitrend.data.carousel.model.query.CarouselQuery
+import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
 import co.anitrend.domain.media.entity.MediaCarousel
 
 data class CarouselState(
-    private val useCase: MediaCarouselUseCaseContract
+    private val useCase: CarouselUseCaseContract
 ) : ISupportViewModelState<List<MediaCarousel>> {
 
     private val useCaseResult = MutableLiveData<DataState<List<MediaCarousel>>>()
@@ -43,7 +42,7 @@ data class CarouselState(
         Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
 
 
-    operator fun invoke(parameter: MediaCarouselQuery) {
+    operator fun invoke(parameter: CarouselQuery) {
         val result = useCase.getMediaCarousel(parameter)
         useCaseResult.postValue(result)
     }

@@ -18,10 +18,10 @@
 package co.anitrend.media.component.carousel.viewmodel
 
 import androidx.lifecycle.ViewModel
-import co.anitrend.data.media.usecase.MediaCarouselUseCaseContract
+import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
 import co.anitrend.media.component.carousel.viewmodel.state.CarouselState
 
-class CarouselViewModel(useCase: MediaCarouselUseCaseContract) : ViewModel() {
+class CarouselViewModel(useCase: CarouselUseCaseContract) : ViewModel() {
     val state = CarouselState(useCase)
 
     /**

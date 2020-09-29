@@ -20,20 +20,15 @@ package co.anitrend.media.component.carousel.ui
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.SupportDateHelper
-import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.ui.fragment.list.AniTrendListFragment
-import co.anitrend.core.ui.get
-import co.anitrend.data.media.model.query.MediaCarouselQuery
+import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.media.BuildConfig
 import co.anitrend.media.R
 import co.anitrend.media.component.carousel.viewmodel.CarouselViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,10 +70,10 @@ class CarouselContent(
             SeasonType.SUMMER -> MediaSeason.SUMMER
             SeasonType.FALL -> MediaSeason.FALL
         }
-        val mediaCarouselQuery = MediaCarouselQuery(
+        val mediaCarouselQuery = CarouselQuery(
             season = currentSeason,
             seasonYear = currentYear,
-            nextYear = when (currentSeason) {
+            nextSeasonYear = when (currentSeason) {
                 MediaSeason.FALL -> currentYear + 1
                 MediaSeason.SPRING -> currentYear
                 MediaSeason.SUMMER -> currentYear
