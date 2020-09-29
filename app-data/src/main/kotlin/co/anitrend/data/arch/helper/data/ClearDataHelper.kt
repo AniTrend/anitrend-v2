@@ -19,6 +19,7 @@ package co.anitrend.data.arch.helper.data
 
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
+import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
@@ -32,11 +33,17 @@ import kotlin.coroutines.CoroutineContext
 internal class ClearDataHelper(
     private val connectivity: SupportConnectivity,
     private val settings: IRefreshBehaviourSettings
-) {
+) : IClearDataHelper {
 
-    suspend inline operator fun invoke(
+    /**
+     * Executes an [action] in the provided [context]
+     *
+     * @param context A coroutine context to run the [action] in
+     * @param action The task that needs to be run
+     */
+    override suspend operator fun invoke(
         context: CoroutineContext,
-        crossinline action: suspend () -> Unit
+        action: suspend () -> Unit
     ) {
         if (settings.clearDataOnSwipeRefresh) {
             if (connectivity.isConnected)
