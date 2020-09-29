@@ -24,10 +24,13 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.activity.AnitrendActivity
+import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.fragment.model.FragmentItem
+import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AboutRouter
+import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
 import co.anitrend.navigation.SearchRouter
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.navigation.extensions.startActivity
@@ -37,9 +40,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
-import co.anitrend.core.ui.inject
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

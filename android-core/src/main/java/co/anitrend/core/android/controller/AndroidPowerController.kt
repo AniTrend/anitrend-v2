@@ -23,7 +23,6 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
-import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.core.android.controller.contract.PowerController
 import co.anitrend.core.android.controller.contract.SaveData
 import co.anitrend.core.android.controller.contract.SaveDataReason

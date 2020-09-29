@@ -18,7 +18,6 @@
 package co.anitrend.navigation
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.runner.RunWith
 

@@ -19,7 +19,6 @@ package co.anitrend.core.android.helpers.image.model
 
 import co.anitrend.domain.common.entity.contract.ICoverImage
 import co.anitrend.domain.common.entity.contract.IMediaCover
-import co.anitrend.domain.common.entity.shared.CoverImage
 
 sealed class RequestImage<T : ICoverImage>(
     val image: T?

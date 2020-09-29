@@ -23,7 +23,6 @@ import co.anitrend.domain.medialist.entity.base.IMediaListExtended
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
-import co.anitrend.domain.medialist.enums.ScoreFormat
 
 data class MediaList(
     override val advancedScores: Map<String, Int>,

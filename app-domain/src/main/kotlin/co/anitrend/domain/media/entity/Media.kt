@@ -28,12 +28,13 @@ import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
 import co.anitrend.domain.media.entity.base.IMedia
-import co.anitrend.domain.media.entity.base.IMediaExtended
 import co.anitrend.domain.media.entity.base.IMediaExtendedWithMediaList
 import co.anitrend.domain.media.entity.contract.MediaCategory
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.entity.base.IMediaListCore
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.tag.entity.Tag
 

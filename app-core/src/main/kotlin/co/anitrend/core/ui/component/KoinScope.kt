@@ -22,7 +22,6 @@ import co.anitrend.data.arch.AniTrendExperimentalFeature
 import org.koin.core.context.GlobalContext
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.ScopeID
-import timber.log.Timber
 
 @AniTrendExperimentalFeature
 class KoinScope : KoinScopeComponent {

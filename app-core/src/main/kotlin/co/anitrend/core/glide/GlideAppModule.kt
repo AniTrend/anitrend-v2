@@ -18,6 +18,7 @@
 package co.anitrend.core.glide
 
 import android.content.Context
+import co.anitrend.arch.extension.ext.isLowRamDevice
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.DecodeFormat
@@ -28,7 +29,6 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.load.engine.cache.MemorySizeCalculator
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
-import co.anitrend.arch.extension.ext.isLowRamDevice
 
 @GlideModule
 class GlideAppModule: AppGlideModule() {

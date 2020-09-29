@@ -32,9 +32,9 @@ import co.anitrend.core.settings.common.theme.IThemeSettings
 import co.anitrend.core.util.locale.AniTrendLocale
 import co.anitrend.core.util.theme.AniTrendTheme
 import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
+import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 
 class Settings(context: Context) : SupportSettings(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,

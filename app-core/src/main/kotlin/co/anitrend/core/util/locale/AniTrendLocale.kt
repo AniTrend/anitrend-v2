@@ -18,7 +18,7 @@
 package co.anitrend.core.util.locale
 
 import co.anitrend.arch.extension.ext.empty
-import java.util.Locale
+import java.util.*
 
 /**
  * Represents application locales, we might have the same locale for different countries so we

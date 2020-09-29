@@ -54,8 +54,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import org.ocpsoft.prettytime.PrettyTime
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
     factory {
