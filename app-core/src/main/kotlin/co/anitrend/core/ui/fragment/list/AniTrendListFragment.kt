@@ -46,7 +46,7 @@ abstract class AniTrendListFragment<M> : SupportFragmentList<M>(), KoinScopeComp
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         runCatching {
-            koin._logger.debug("Open fragment scope: $scope")
+            koin.logger.debug("Open fragment scope: $scope")
         }
     }
 
@@ -57,7 +57,7 @@ abstract class AniTrendListFragment<M> : SupportFragmentList<M>(), KoinScopeComp
     override fun onDestroy() {
         super.onDestroy()
         runCatching {
-            koin._logger.debug("Close fragment scope: $scope")
+            koin.logger.debug("Close fragment scope: $scope")
             scope.close()
         }
     }

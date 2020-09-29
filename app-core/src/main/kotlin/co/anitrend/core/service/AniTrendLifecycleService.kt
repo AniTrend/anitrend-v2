@@ -38,14 +38,14 @@ abstract class AniTrendLifecycleService : LifecycleService(), KoinScopeComponent
     override fun onCreate() {
         super.onCreate()
         runCatching {
-            koin._logger.debug("Open activity scope: $scope")
+            koin.logger.debug("Open activity scope: $scope")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         runCatching {
-            koin._logger.debug("Close service scope: $scope")
+            koin.logger.debug("Close service scope: $scope")
             scope.close()
         }
     }
