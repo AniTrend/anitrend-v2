@@ -472,8 +472,8 @@ object Libraries {
             }
 
             object Serialization {
-                private const val version = "0.20.0"
-                const val runtime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
+                private const val version = "1.0.0-RC2"
+                const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
     }
