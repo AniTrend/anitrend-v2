@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment.model
+package co.anitrend.core.ui.model
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

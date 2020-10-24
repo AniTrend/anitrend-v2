@@ -17,15 +17,14 @@
 
 package co.anitrend.core.extensions
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.core.R
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import com.afollestad.materialdialogs.DialogBehavior
 import com.afollestad.materialdialogs.MaterialDialog
@@ -60,53 +59,6 @@ fun FragmentActivity?.createDialog(
     MaterialDialog(this, dialogBehavior)
         .lifecycleOwner(this)
         .cancelOnTouchOutside(false)
-}
-
-/**
- * Check if the system is in night mode
- */
-fun Context.isEnvironmentNightMode() =
-    resources.getBoolean(R.bool.isNightMode)
-
-/**
- * Check if the system should use light status bar
- */
-fun Context.isLightStatusBar() =
-    resources.getBoolean(R.bool.isLightStatusBar)
-
-/**
- * Check if the system should use light navigation bar
- */
-fun Context.isLightNavigationBar() =
-    resources.getBoolean(R.bool.isLightNavigationBar)
-
-@Suppress("DEPRECATION", "DeprecatedCallableAddReplaceWith")
-@Deprecated("A couple of WindowManager layout params have been deprecated in API30")
-fun FragmentActivity.makeStatusBarTransparent() {
-    with (window) {
-        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
-        statusBarColor = Color.TRANSPARENT
-    }
-}
-
-@Suppress("DEPRECATION", "DeprecatedCallableAddReplaceWith")
-@Deprecated("systemUiVisibility on has been deprecated since API30")
-fun FragmentActivity.hideStatusBarAndNavigationBar() {
-    with(window) {
-        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LOW_PROFILE or
-                View.SYSTEM_UI_FLAG_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-    }
 }
 
 fun View.setMarginTop(marginTop: Int) {
