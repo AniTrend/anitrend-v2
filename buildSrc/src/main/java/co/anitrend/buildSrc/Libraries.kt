@@ -481,7 +481,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.2.0-beta-2"
+        private const val version = "2.2.0"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
