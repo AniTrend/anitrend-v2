@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,36 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.util.config.contract
+package co.anitrend.core.util.locale.contract
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
+import java.util.*
 
-interface IConfigurationUtil {
-
-    val moduleTag: String
+interface ILocaleHelper {
 
     /**
-     * Theme override option
+     * Current application locale
      */
-    var themeOverride: Int?
+    val locale: Locale
 
     /**
-     * Creates a new context with configuration
+     * Applies locale to context configuration
      */
-    fun attachContext(context: Context?): Context?
-
-    /**
-     * Applies configuration upon the create state of the current activity
-     *
-     * @param activity
-     */
-    fun onCreate(activity: FragmentActivity)
-
-    /**
-     * Applies configuration upon the resume state of the current activity
-     *
-     * @param activity
-     */
-    fun onResume(activity: FragmentActivity)
+    fun applyLocale(context: Context?): Context?
 }

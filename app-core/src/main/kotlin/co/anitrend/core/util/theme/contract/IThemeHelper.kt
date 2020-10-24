@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,36 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.util.config.contract
+package co.anitrend.core.util.theme.contract
 
-import android.content.Context
+import androidx.annotation.StyleRes
 import androidx.fragment.app.FragmentActivity
 
-interface IConfigurationUtil {
-
-    val moduleTag: String
+interface IThemeHelper {
 
     /**
-     * Theme override option
+     * Sets the default night mode based on the theme set in settings
      */
-    var themeOverride: Int?
+    fun applyDynamicNightModeFromTheme()
 
     /**
-     * Creates a new context with configuration
+     * Applies settings theme resource or provided [themeOverride] which overrides settings
      */
-    fun attachContext(context: Context?): Context?
-
-    /**
-     * Applies configuration upon the create state of the current activity
-     *
-     * @param activity
-     */
-    fun onCreate(activity: FragmentActivity)
-
-    /**
-     * Applies configuration upon the resume state of the current activity
-     *
-     * @param activity
-     */
-    fun onResume(activity: FragmentActivity)
+    fun applyApplicationTheme(
+        context: FragmentActivity,
+        @StyleRes themeOverride: Int? = null
+    )
 }
