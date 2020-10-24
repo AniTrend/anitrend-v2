@@ -39,7 +39,7 @@ internal const val notification = "feature-notification"
 internal const val mediaList = "feature-medialist"
 internal const val review = "feature-review"
 internal const val forum = "feature-forum"
-internal const val trending = "feature-trending"
+internal const val recommendation = "feature-recommendation"
 internal const val settings = "feature-settings"
 internal const val search = "feature-search"
 internal const val profile = "feature-profile"
@@ -55,7 +55,7 @@ internal val androidModules = listOf(
 
 internal val featureModules = listOf(
     character, staff, studio, media, notification, mediaList, review, forum,
-    trending, settings, search, profile, account, about, news
+    recommendation, settings, search, profile, account, about, news
 )
 
 private const val coreFeatureModulePattern = "android-"
