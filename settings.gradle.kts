@@ -8,6 +8,7 @@ include(
     ":android-splash",
     ":android-auth",
     ":app-navigation",
+    ":android-navigation",
     ":android-core",
     ":feature-character",
     ":feature-staff",
