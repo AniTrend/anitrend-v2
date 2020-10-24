@@ -19,13 +19,10 @@ package co.anitrend.core.ui
 
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
+import androidx.fragment.app.*
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.ui.component.KoinScope
-import co.anitrend.core.ui.fragment.model.FragmentItem
+import co.anitrend.core.component.scope.KoinScope
+import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier

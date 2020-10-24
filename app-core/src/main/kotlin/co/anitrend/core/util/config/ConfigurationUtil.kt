@@ -18,31 +18,37 @@
 package co.anitrend.core.util.config
 
 import android.content.Context
+import androidx.annotation.StyleRes
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.settings.common.IConfigurationSettings
 import co.anitrend.core.util.config.contract.IConfigurationUtil
 import co.anitrend.core.util.locale.AniTrendLocale
-import co.anitrend.core.util.locale.LocaleHelper
+import co.anitrend.core.util.locale.contract.ILocaleHelper
 import co.anitrend.core.util.theme.AniTrendTheme
-import co.anitrend.core.util.theme.ThemeHelper
+import co.anitrend.core.util.theme.contract.IThemeHelper
 
 /**
  * Configuration helper for the application
  */
 class ConfigurationUtil(
     private val settings: IConfigurationSettings,
-    private val localeHelper: LocaleHelper,
-    private val themeHelper: ThemeHelper
+    private val localeHelper: ILocaleHelper,
+    private val themeHelper: IThemeHelper
 ) : IConfigurationUtil {
 
     override val moduleTag: String = ConfigurationUtil::class.java.simpleName
+
+    @StyleRes
+    override var themeOverride: Int? = null
 
     // we might change this in future when we have more themes
     private var applicationTheme = AniTrendTheme.SYSTEM
     private var applicationLocale = AniTrendLocale.AUTOMATIC
 
-    fun attachContext(context: Context?) =
-        localeHelper.applyLocale(context)
+    /**
+     * Creates a new context with configuration
+     */
+    override fun attachContext(context: Context?) = localeHelper.applyLocale(context)
 
     /**
      * Applies configuration upon the create state of the current activity
@@ -52,8 +58,7 @@ class ConfigurationUtil(
     override fun onCreate(activity: FragmentActivity) {
         applicationTheme = settings.theme
         applicationLocale = settings.locale
-        //localeHelper.applyApplicationLocale(activity)
-        themeHelper.applyApplicationTheme(activity)
+        themeHelper.applyApplicationTheme(activity, themeOverride)
     }
 
     /**
@@ -67,7 +72,6 @@ class ConfigurationUtil(
             themeHelper.applyDynamicNightModeFromTheme()
         }
     }
-
 
     private fun FragmentActivity.resetActivity() {
         val currentIntent = intent

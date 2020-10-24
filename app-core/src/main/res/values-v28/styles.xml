@@ -22,6 +22,8 @@
         <item name="android:textViewStyle">@style/AppTheme.FontFamily</item>
         <item name="colorAccent">@color/anitrendColorAccent</item>
 
+        <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+
         <!-- ShapeAppearances -->
         <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
         <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>

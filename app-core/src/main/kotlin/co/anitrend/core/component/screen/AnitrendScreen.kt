@@ -15,14 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.activity
+package co.anitrend.core.component.screen
 
 import android.content.Context
 import androidx.lifecycle.lifecycleScope
+import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.ui.inject
-import co.anitrend.core.util.config.ConfigurationUtil
+import co.anitrend.core.util.config.contract.IConfigurationUtil
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.core.scope.KoinScopeComponent
@@ -32,11 +34,13 @@ import org.koin.core.scope.ScopeID
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
  */
-abstract class AnitrendActivity : SupportActivity(), KoinScopeComponent {
+abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
 
-    protected val configurationUtil by inject<ConfigurationUtil>()
+    protected val configurationUtil by inject<IConfigurationUtil>()
 
     private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
+
+    override var binding: B? = null
 
     override val koin by lazy(UNSAFE) {
         getKoin()
@@ -76,6 +80,7 @@ abstract class AnitrendActivity : SupportActivity(), KoinScopeComponent {
 
     override fun onDestroy() {
         super.onDestroy()
+        binding = null
         runCatching {
             koin.logger.debug("Close activity scope: $scope")
             scope.close()

@@ -20,29 +20,39 @@ package co.anitrend.core.util.theme
 import android.annotation.TargetApi
 import android.os.Build
 import android.view.View
+import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.extension.ext.getCompatColor
+import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.R
-import co.anitrend.core.extensions.isEnvironmentNightMode
 import co.anitrend.core.settings.common.theme.IThemeSettings
+import co.anitrend.core.util.theme.contract.IThemeHelper
 
 /**
  * Theme utility for applying decorations at runtime
  *
  * @param settings instance of theme settings
  */
-@Suppress("DEPRECATION")
-class ThemeHelper(private val settings: IThemeSettings) {
+internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper {
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun FragmentActivity.applyNightModeDecorations(systemUiOptions: Int) {
         val primaryColor = getCompatColor(R.color.colorPrimary)
         window.navigationBarColor = primaryColor
         window.statusBarColor = primaryColor
-        window.decorView.systemUiVisibility = systemUiOptions and
-                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR  and
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.setSystemBarsAppearance(
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = systemUiOptions and
+                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR  and
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -50,9 +60,17 @@ class ThemeHelper(private val settings: IThemeSettings) {
         val primaryColor = getCompatColor(R.color.colorPrimary)
         window.navigationBarColor = primaryColor
         window.statusBarColor = primaryColor
-        window.decorView.systemUiVisibility = systemUiOptions or
-                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or
-                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.setSystemBarsAppearance(
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = systemUiOptions or
+                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
     }
 
 
@@ -76,7 +94,7 @@ class ThemeHelper(private val settings: IThemeSettings) {
     /**
      * Sets the default night mode based on the theme set in settings
      */
-    internal fun applyDynamicNightModeFromTheme() {
+    override fun applyDynamicNightModeFromTheme() {
         val theme = settings.theme
         if (theme == AniTrendTheme.SYSTEM)
             AppCompatDelegate.setDefaultNightMode(
@@ -93,8 +111,17 @@ class ThemeHelper(private val settings: IThemeSettings) {
             }
     }
 
-    internal fun applyApplicationTheme(context: FragmentActivity) {
-        context.setTheme(settings.theme.styleAttribute)
+    /**
+     * Applies settings theme resource or provided [themeOverride] which overrides settings
+     */
+    override fun applyApplicationTheme(
+        context: FragmentActivity,
+        themeOverride: Int?
+    ) {
+        if (themeOverride != null)
+            context.setTheme(themeOverride)
+        else
+            context.setTheme(settings.theme.styleAttribute)
         context.applyWindowStyle()
     }
 }

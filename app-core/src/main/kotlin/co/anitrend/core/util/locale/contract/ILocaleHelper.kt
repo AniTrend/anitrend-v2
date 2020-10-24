@@ -15,17 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment.model
+package co.anitrend.core.util.locale.contract
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.content.Context
+import java.util.*
 
-/**
- * Fragment loader holder helper
- */
-data class FragmentItem(
-    val parameter: Bundle? = null,
-    val fragment: Class<out Fragment>?
-) {
-    fun tag() = fragment?.simpleName
+interface ILocaleHelper {
+
+    /**
+     * Current application locale
+     */
+    val locale: Locale
+
+    /**
+     * Applies locale to context configuration
+     */
+    fun applyLocale(context: Context?): Context?
 }

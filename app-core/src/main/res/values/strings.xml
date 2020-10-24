@@ -30,26 +30,10 @@
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
 
-    <string name="nav_header_navigation">Navigation</string>
-    <string name="nav_header_catalogs">Catalogs</string>
-    <string name="nav_header_support">Support</string>
-
-    <string name="nav_donate">Donate</string>
-    <string name="nav_discord">Discord</string>
-    <string name="nav_faq">FAQ</string>
-
-    <string name="nav_home">Discover</string>
-    <string name="nav_feed">Status Feeds</string>
-    <string name="nav_review">Series Reviews</string>
-
-    <string name="nav_news">Anime News</string>
-    <string name="nav_episodes">Latest Episodes</string>
-
     <string name="app_banner_text" translatable="false">AniTrend - </string>
 
     <string name="label_text_loading">Loading, please wait..</string>
     <string name="label_text_action_retry">Reload</string>
-
 
     <string name="label_place_holder_to_be_announced">TBA</string>
 </resources>

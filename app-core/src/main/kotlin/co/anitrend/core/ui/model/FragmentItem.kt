@@ -15,24 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.component
+package co.anitrend.core.ui.model
 
-import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.data.arch.AniTrendExperimentalFeature
-import org.koin.core.context.GlobalContext
-import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.ScopeID
+import android.os.Bundle
+import androidx.fragment.app.Fragment
 
-@AniTrendExperimentalFeature
-class KoinScope : KoinScopeComponent {
-
-    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
-
-    override val koin by lazy(UNSAFE) {
-        GlobalContext.get()
-    }
-
-    override val scope by lazy(UNSAFE) {
-        createScope(scopeID, getScopeName(), this)
-    }
+/**
+ * Fragment loader holder helper
+ */
+data class FragmentItem(
+    val parameter: Bundle? = null,
+    val fragment: Class<out Fragment>?
+) {
+    fun tag() = fragment?.simpleName
 }

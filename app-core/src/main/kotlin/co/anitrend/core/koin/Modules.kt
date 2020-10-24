@@ -30,14 +30,19 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.android.controller.AndroidPowerController
 import co.anitrend.core.android.controller.contract.PowerController
+import co.anitrend.core.android.shortcut.ShortcutFacade
+import co.anitrend.core.android.shortcut.contract.IShortcutFacade
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.core.helper.StorageHelper
 import co.anitrend.core.settings.Settings
 import co.anitrend.core.settings.common.cache.ICacheSettings
 import co.anitrend.core.util.config.ConfigurationUtil
+import co.anitrend.core.util.config.contract.IConfigurationUtil
 import co.anitrend.core.util.locale.LocaleHelper
+import co.anitrend.core.util.locale.contract.ILocaleHelper
 import co.anitrend.core.util.theme.ThemeHelper
+import co.anitrend.core.util.theme.contract.IThemeHelper
 import co.anitrend.data.arch.di.dataModules
 import coil.ImageLoader
 import coil.decode.GifDecoder
@@ -71,7 +76,7 @@ private val coreModule = module {
         )
     } bind IStateLayoutConfig::class
 
-    factory {
+    factory<IConfigurationUtil> {
         ConfigurationUtil(
             settings = get(),
             localeHelper = get(),
@@ -81,6 +86,12 @@ private val coreModule = module {
 
     single {
         SupportDispatchers()
+    }
+
+    factory<IShortcutFacade> {
+        ShortcutFacade(
+            context = androidContext()
+        )
     }
 
     factory {
@@ -98,19 +109,19 @@ private val coreModule = module {
     } bind PowerController::class
 
     factory {
-        val localeHelper = get<LocaleHelper>()
+        val localeHelper = get<ILocaleHelper>()
         PrettyTime(localeHelper.locale)
     }
 }
 
 private val configurationModule = module {
-    single {
+    single<ILocaleHelper> {
         LocaleHelper(
             settings = get()
         )
     }
 
-    single {
+    single<IThemeHelper> {
         ThemeHelper(
             settings = get()
         )
