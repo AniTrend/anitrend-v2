@@ -56,4 +56,5 @@ object Versions {
 
     const val prettyTime = "4.0.4.Final"
     const val scalingImageView = "3.10.0"
+    const val serializationConverter = "0.8.0"
 }

@@ -36,6 +36,8 @@ object Libraries {
 
     const val prettyTime = "org.ocpsoft.prettytime:prettytime:${Versions.prettyTime}"
 
+    const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
+
     /**
      * Using Jitpack until AndroidX migration is out.
      * See https://github.com/openid/AppAuth-Android/pull/508
