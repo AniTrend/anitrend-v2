@@ -17,4 +17,12 @@
 
 <resources>
     <string name="template_character_separator" translatable="false">•</string>
+
+    <string name="app_home_page_link" translatable="false">https://anitrend.co</string>
+    <string name="app_code_of_conduct_page_link" translatable="false">https://github.com/aniTrend/anitrend-v2/blob/develop/CODE_OF_CONDUCT.md</string>
+    <string name="app_terms_of_service_page_link" translatable="false">https://github.com/aniTrend/anitrend-v2/blob/develop/TERMS_OF_SERVICE.md</string>
+
+    <string name="app_faq_page_link" translatable="false">https://anitrend.gitbook.io/project/faq</string>
+    <string name="app_patreon_page_link" translatable="false">https://www.patreon.com/wax911</string>
+    <string name="app_discord_page_link" translatable="false">https://discord.gg/2wzTqnF</string>
 </resources>

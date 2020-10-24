@@ -1,0 +1,60 @@
+/*
+ * Copyright (C) 2020  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package co.anitrend.core.android.recycler.model
+
+import android.content.res.Resources
+import android.view.View
+import androidx.viewbinding.ViewBinding
+import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
+import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
+import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import co.anitrend.core.android.R
+import co.anitrend.core.android.binding.IBindingView
+import kotlinx.coroutines.flow.MutableStateFlow
+
+abstract class RecyclerItemBinding<B : ViewBinding>(
+    override val id: Long?,
+    override val supportsSelectionMode: Boolean = false
+) : IRecyclerItem, IBindingView<B> {
+
+    override var binding: B? = null
+
+    override val decorator = object : ISelectionDecorator { }
+
+    /**
+     * Called when the view needs to be recycled for reuse, clear any held references
+     * to objects, stop any asynchronous work, e.t.c
+     */
+    override fun unbind(view: View) {
+        binding = null
+    }
+
+    /**
+     * Provides a preferred span size for the item, defaulted to [R.integer.single_list_size]
+     *
+     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
+     * @param position position of the current item
+     * @param resources optionally useful for dynamic size check with different configurations
+     */
+    override fun getSpanSize(
+        spanCount: Int,
+        position: Int,
+        resources: Resources
+    )= resources.getInteger(R.integer.single_list_size)
+}

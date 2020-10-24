@@ -19,7 +19,9 @@ package co.anitrend.core.android.helpers.image
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import co.anitrend.core.android.R
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
@@ -80,8 +82,48 @@ fun AppCompatImageView.using(
     }
 
     val request = requestBuilder
-        .transition(CrossfadeTransition(350))
+        .transition(
+            CrossfadeTransition(
+                resources.getInteger(
+                    R.integer.motion_duration_large
+                )
+            )
+        )
         .data(requestImage)
+        .target(this)
+        .build()
+
+    return Coil.imageLoader(context).enqueue(request)
+}
+
+/**
+ * Draws an image onto the image view
+ *
+ * @param imageDrawable Drawable resource to load
+ * @param transformations Optional image transformations, providing this with an empty list will
+ * bypass the default [RoundedCornersTransformation] on bottom corners.
+ *
+ * @return A [Disposable] contract
+ */
+fun AppCompatImageView.using(
+    imageDrawable: Drawable?,
+    transformations: List<Transformation>? = null
+): Disposable {
+    val requestBuilder = ImageRequest.Builder(context)
+
+    if (!transformations.isNullOrEmpty()) {
+        requestBuilder.transformations(
+            transformations
+        )
+    }
+
+    val request = requestBuilder
+        .transition(
+            CrossfadeTransition(
+                resources.getInteger(R.integer.motion_duration_large)
+            )
+        )
+        .data(imageDrawable)
         .target(this)
         .build()
 

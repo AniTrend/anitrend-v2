@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,37 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.common.entity.contract
+package co.anitrend.core.android.components.action.menu
 
-/**
- * Page query contract
- *
- * @property page The page number
- * @property perPage The amount of entries per page, max 50
- */
-interface IEntityPageQuery {
-    var page: Int
-    val perPage: Int
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.annotation.IdRes
+import androidx.annotation.MenuRes
+import androidx.appcompat.view.ActionMode
+
+interface IFloatingActionMenu {
+
+    /**
+     * Find a menu item for the given [id]
+     */
+    fun findMenuItem(@IdRes id: Int): MenuItem?
+
+    /**
+     * Inflate menu
+     */
+    fun inflate(
+        menuInflater: MenuInflater?,
+        @MenuRes menuRes: Int,
+        clickListener: (item: MenuItem?) -> Boolean
+    )
+
+    /**
+     * Show action menu
+     */
+    fun show()
+
+    /**
+     * Close action menu
+     */
+    fun dismiss()
 }

@@ -1,6 +1,5 @@
-import co.anitrend.buildSrc.Libraries
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,11 +15,16 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.core.android.state
 
-dependencies {
-    implementation(Libraries.AniTrend.Arch.recycler)
-    implementation(Libraries.prettyTime)
+import android.os.Bundle
+
+/**
+ * Screen state contract
+ *
+ * A screen state is holder for building complex state
+ */
+interface IScreenState {
+    fun onSaveInstanceState(outState: Bundle)
+    fun onRestoreInstanceState(savedInstanceState: Bundle)
 }
