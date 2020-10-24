@@ -1,5 +1,3 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -16,6 +14,8 @@ import co.anitrend.buildSrc.Libraries
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import co.anitrend.buildSrc.Libraries
 
 plugins {
     id("co.anitrend.plugin")
