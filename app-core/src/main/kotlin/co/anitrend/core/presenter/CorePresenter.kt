@@ -18,10 +18,30 @@
 package co.anitrend.core.presenter
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.net.Uri
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.core.settings.Settings
+import timber.log.Timber
 
 abstract class CorePresenter(
     context: Context,
     settings: Settings
-) : SupportPresenter<Settings>(context, settings)
+) : SupportPresenter<Settings>(context, settings) {
+
+    /**
+     * Starts a view intent action given the [uri] as data
+     */
+    protected fun startViewIntent(uri: Uri) {
+        val intent = Intent().apply {
+            flags = FLAG_ACTIVITY_NEW_TASK
+            action = ACTION_VIEW
+            data = uri
+        }
+        runCatching {
+            context.startActivity(intent)
+        }.onFailure { Timber.tag(moduleTag).w(it) }
+    }
+}
