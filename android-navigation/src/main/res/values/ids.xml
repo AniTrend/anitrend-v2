@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tag_system_window_inset_top" type="id"/>
+    <item name="tag_view_top_snapshot" type="id"/>
+
+    <item name="navigation_home" type="id"/>
+    <item name="navigation_discover" type="id"/>
+    <item name="navigation_social" type="id"/>
+    <item name="navigation_reviews" type="id"/>
+    <item name="navigation_suggestions" type="id"/>
+
+    <item name="navigation_anime_list" type="id"/>
+    <item name="navigation_manga_list" type="id"/>
+
+    <item name="navigation_news" type="id"/>
+    <item name="navigation_forum" type="id"/>
+    <item name="navigation_episodes" type="id"/>
+
+    <item name="navigation_donate" type="id"/>
+    <item name="navigation_discord" type="id"/>
+    <item name="navigation_faq" type="id"/>
+
+    <item name="navigation_group_general" type="id"/>
+    <item name="navigation_group_manage" type="id"/>
+    <item name="navigation_group_catalog" type="id"/>
+    <item name="navigation_group_support" type="id"/>
+</resources>
