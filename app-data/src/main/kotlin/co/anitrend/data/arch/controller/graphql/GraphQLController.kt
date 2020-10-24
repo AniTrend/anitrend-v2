@@ -22,10 +22,10 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.extension.fetchBodyWithRetry
-import co.anitrend.data.arch.mapper.GraphQLMapper
-import io.github.wax911.library.model.body.GraphContainer
+import co.anitrend.data.arch.mapper.DefaultMapper
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -35,13 +35,13 @@ import timber.log.Timber
  * AniTrend controller that handles complex logic of making requests, capturing errors,
  * notifying state observers and providing input to response mappers
  *
- * @see GraphQLMapper
+ * @see DefaultMapper
  */
-internal class GraphQLController<S, D> private constructor(
-    private val mapper: GraphQLMapper<S, D>,
+internal class GraphQLController<S, out D> private constructor(
+    private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
     private val dispatchers: SupportDispatchers
-) : ISupportResponse<Deferred<Response<GraphContainer<S>>>, D> {
+) : ISupportResponse<Deferred<Response<GraphQLResponse<S>>>, D> {
 
     /**
      * Response handler for coroutine contexts which need to observe [NetworkState]
@@ -52,7 +52,7 @@ internal class GraphQLController<S, D> private constructor(
      * @return resource fetched if present
      */
     override suspend fun invoke(
-        resource: Deferred<Response<GraphContainer<S>>>,
+        resource: Deferred<Response<GraphQLResponse<S>>>,
         requestCallback: RequestCallback
     ) = strategy(requestCallback) {
         /**
@@ -88,7 +88,7 @@ internal class GraphQLController<S, D> private constructor(
         private val moduleTag = GraphQLController::class.java.simpleName
 
         fun <S, D> newInstance(
-            mapper: GraphQLMapper<S, D>,
+            mapper: DefaultMapper<S, D>,
             strategy: ControllerStrategy<D>,
             dispatchers: SupportDispatchers
         ) = GraphQLController(

@@ -24,6 +24,7 @@ import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.binds
@@ -32,6 +33,12 @@ import org.koin.dsl.module
 private val data = module {
     single {
         SupportDispatchers()
+    }
+    single {
+        Json {
+            coerceInputValues = true
+            isLenient = true
+        }
     }
 }
 

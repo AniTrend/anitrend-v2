@@ -35,17 +35,17 @@ internal class MediaRepositoryImpl(
 ) : SupportRepository(source), MediaRepository<DataState<PagedList<Media>>> {
 
     override fun getMediaPaged(query: IGraphPayload) =
-        source.create(
-            model = source(query)
-        )
+        source create source(query)
 
-    override fun getMediaPagedByNetwork(query: IGraphPayload) =
-        sourceFactory.create().using(query).create(
+    override fun getMediaPagedByNetwork(
+        query: IGraphPayload
+    ) = sourceFactory.create() create
             LivePagedListBuilder(
                 sourceFactory,
                 PAGING_CONFIGURATION
             ).build()
-        )
+
+
 
     /**
      * Deals with cancellation of any pending or on going operations that the repository

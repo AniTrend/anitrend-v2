@@ -79,4 +79,10 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
         select * from media
     """)
     abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntity>
+
+    @Query("""
+        select * from media
+        order by popularity desc
+    """)
+    abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntity>
 }

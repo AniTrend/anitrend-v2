@@ -34,7 +34,7 @@ import co.anitrend.data.auth.util.AuthenticationHelper
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.media.koin.mediaModules
-import co.anitrend.data.source.koin.sourceModules
+import co.anitrend.data.moe.koin.sourceModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -44,6 +44,7 @@ import io.github.wax911.library.annotation.processor.GraphProcessor
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.annotation.processor.plugin.AssetManagerDiscoveryPlugin
 import io.github.wax911.library.logger.contract.ILogger
+import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -87,9 +88,16 @@ private val retrofitModule = module {
             .setLenient()
             .create()
     }
+    single {
+        Json {
+            coerceInputValues = true
+            isLenient = true
+        }
+    }
     factory {
         AniTrendConverterFactory(
             processor = get(),
+            json = get(),
             gson = get()
         )
     }

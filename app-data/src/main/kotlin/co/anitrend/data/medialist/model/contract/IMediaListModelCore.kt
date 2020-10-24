@@ -17,8 +17,8 @@
 
 package co.anitrend.data.medialist.model.contract
 
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
@@ -46,7 +46,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
 internal interface IMediaListModelCore : Identity {
     val advancedScores: Map<String, String>?
     val customLists: Map<String, String>?
-    val completedAt: FuzzyDate?
+    val completedAt: FuzzyDateModel?
     val createdAt: Long?
     val hiddenFromStatusLists: Boolean?
     val mediaId: Int
@@ -57,7 +57,7 @@ internal interface IMediaListModelCore : Identity {
     val progressVolumes: Int?
     val repeat: Int?
     val score: Float?
-    val startedAt: FuzzyDate?
+    val startedAt: FuzzyDateModel?
     val status: MediaListStatus?
     val updatedAt: Long?
     val userId: Int

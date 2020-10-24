@@ -75,8 +75,10 @@ internal abstract class MediaPagedSource(
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.BEFORE
             ) {
-                supportPagingHelper.onPagePrevious()
-                getMedia(it)
+                if (!supportPagingHelper.isFirstPage()) {
+                    supportPagingHelper.onPagePrevious()
+                    getMedia(it)
+                }
             }
         }
     }

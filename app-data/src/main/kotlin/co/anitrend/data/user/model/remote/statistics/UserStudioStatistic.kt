@@ -19,16 +19,19 @@ package co.anitrend.data.user.model.remote.statistics
 
 import co.anitrend.data.studio.model.remote.StudioModel
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [UserStudioStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userstudiostatistic.doc.html)
  *
  * @param studio studio
  */
+@Serializable
 internal data class UserStudioStatistic(
-    val studio: StudioModel?,
-    override val chaptersRead: Int,
-    override val count: Int,
-    override val meanScore: Float,
-    override val mediaIds: List<Int>,
-    override val minutesWatched: Int
+    @SerialName("studio") val studio: StudioModel?,
+    @SerialName("chaptersRead") override val chaptersRead: Int,
+    @SerialName("count") override val count: Int,
+    @SerialName("meanScore") override val meanScore: Float,
+    @SerialName("mediaIds") override val mediaIds: List<Int>,
+    @SerialName("minutesWatched") override val minutesWatched: Int
 ) : IStatistic

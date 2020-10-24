@@ -27,6 +27,10 @@ annotation class AniTrendExperimentalFeature
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
+internal annotation class GRAPHQL
+
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FUNCTION)
 internal annotation class JSON
 
 @Retention(AnnotationRetention.RUNTIME)

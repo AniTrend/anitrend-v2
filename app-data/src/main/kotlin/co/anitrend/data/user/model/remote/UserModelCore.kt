@@ -19,6 +19,8 @@ package co.anitrend.data.user.model.remote
 
 import co.anitrend.data.shared.model.SharedImage
 import co.anitrend.data.user.model.contract.IUserModelCore
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
  * A user from the anilist platform
@@ -26,11 +28,12 @@ import co.anitrend.data.user.model.contract.IUserModelCore
  * @param mediaListOptions The user's media list options
  * @param favourites The users favourites
  */
+@Serializable
 internal data class UserModelCore(
-    override val id: Long,
-    override val name: String,
-    override val avatar: SharedImage?,
-    override val bannerImage: String?,
-    override val isFollowing: Boolean?,
-    override val isFollower: Boolean?,
+    @SerialName("id") override val id: Long,
+    @SerialName("name") override val name: String,
+    @SerialName("avatar") override val avatar: SharedImage?,
+    @SerialName("bannerImage") override val bannerImage: String?,
+    @SerialName("isFollowing") override val isFollowing: Boolean?,
+    @SerialName("isFollower") override val isFollower: Boolean?,
 ) : IUserModelCore

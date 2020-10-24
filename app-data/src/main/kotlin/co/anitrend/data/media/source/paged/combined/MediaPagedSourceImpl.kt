@@ -25,7 +25,7 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.extension.controller
-import co.anitrend.data.arch.helper.data.ClearDataHelper
+import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.media.converters.MediaEntityConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
@@ -39,7 +39,7 @@ import kotlinx.coroutines.async
 internal class MediaPagedSourceImpl(
     private val remoteSource: MediaRemoteSource,
     private val localSource: MediaLocalSource,
-    private val clearDataHelper: ClearDataHelper,
+    private val clearDataHelper: IClearDataHelper,
     private val strategy: ControllerStrategy<List<MediaEntity>>,
     private val mapper: MediaPagedCombinedMapper,
     private val sortOrderSettings: ISortOrderSettings,
@@ -48,7 +48,7 @@ internal class MediaPagedSourceImpl(
 ) : MediaPagedSource(dispatchers) {
 
     override val observable = liveData {
-        val result =  localSource.allMediaFactory().map { converter.convertFrom(it) }
+        val result =  localSource.popularityDescFactory().map { converter.convertFrom(it) }
         emitSource(
             result.toLiveData(
                 config = PAGING_CONFIGURATION,

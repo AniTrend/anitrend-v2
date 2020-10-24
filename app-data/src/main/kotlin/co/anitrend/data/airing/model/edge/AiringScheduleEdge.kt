@@ -20,11 +20,14 @@ package co.anitrend.data.airing.model.edge
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * AiringSchedule connection edge
  */
+@Serializable
 internal data class AiringScheduleEdge(
-    @SerializedName("id") override val id: Long,
-    @SerializedName("node") override val node: AiringScheduleModel?
+    @SerialName("id") override val id: Long,
+    @SerialName("node") override val node: AiringScheduleModel?
 ) : IEntityEdge<AiringScheduleModel>

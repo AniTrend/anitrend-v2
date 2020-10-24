@@ -18,16 +18,19 @@
 package co.anitrend.data.staff.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.data.staff.model.remote.edge.StaffEdge
-import co.anitrend.domain.common.entity.shared.PageInfo
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
  * Staff Connection
  *
  */
+@Serializable
 internal data class StaffConnection(
-    override val edges: List<StaffEdge>?,
-    override val nodes: List<StaffModel>?,
-    override val pageInfo: PageInfo?
+    @SerialName("edges") override val edges: List<StaffEdge>?,
+    @SerialName("nodes") override val nodes: List<StaffModel>?,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<StaffEdge, StaffModel>

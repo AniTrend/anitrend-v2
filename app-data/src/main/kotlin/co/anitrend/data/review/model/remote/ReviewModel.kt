@@ -23,25 +23,28 @@ import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [Review](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/review.doc.html)
  * A Review that features in an anime or manga
  */
+@Serializable
 internal class ReviewModel(
-    @SerializedName("body") override val body: String?,
-    @SerializedName("createdAt") override val createdAt: Long,
-    @SerializedName("media") override val media: MediaModelCore?,
-    @SerializedName("mediaId") override val mediaId: Long,
-    @SerializedName("mediaType") override val mediaType: MediaType?,
-    @SerializedName("private") override val private: Boolean?,
-    @SerializedName("rating") override val rating: Int?,
-    @SerializedName("ratingAmount") override val ratingAmount: Int?,
-    @SerializedName("score") override val score: Int?,
-    @SerializedName("siteUrl") override val siteUrl: String?,
-    @SerializedName("summary") override val summary: String?,
-    @SerializedName("updatedAt") override val updatedAt: Long,
-    @SerializedName("user") override val user: UserModelCore?,
-    @SerializedName("userId") override val userId: Long,
-    @SerializedName("userRating") override val userRating: ReviewRating?,
-    @SerializedName("id") override val id: Long
+    @SerialName("body") override val body: String?,
+    @SerialName("createdAt") override val createdAt: Long,
+    @SerialName("media") override val media: MediaModelCore?,
+    @SerialName("mediaId") override val mediaId: Long,
+    @SerialName("mediaType") override val mediaType: MediaType?,
+    @SerialName("private") override val private: Boolean?,
+    @SerialName("rating") override val rating: Int?,
+    @SerialName("ratingAmount") override val ratingAmount: Int?,
+    @SerialName("score") override val score: Int?,
+    @SerialName("siteUrl") override val siteUrl: String?,
+    @SerialName("summary") override val summary: String?,
+    @SerialName("updatedAt") override val updatedAt: Long,
+    @SerialName("user") override val user: UserModelCore?,
+    @SerialName("userId") override val userId: Long,
+    @SerialName("userRating") override val userRating: ReviewRating?,
+    @SerialName("id") override val id: Long
 ) : IReviewModel

@@ -18,10 +18,10 @@
 package co.anitrend.data.media.model.contract
 
 import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.data.medialist.model.contract.IMediaListModelCore
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
@@ -60,8 +60,8 @@ internal interface IMediaModelCore : Identity {
     val status: MediaStatus?
     val meanScore: Int?
     val averageScore: Int?
-    val startDate: FuzzyDate?
-    val endDate: FuzzyDate?
+    val startDate: FuzzyDateModel?
+    val endDate: FuzzyDateModel?
     val episodes: Int?
     val duration: Int?
     val chapters: Int?

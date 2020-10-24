@@ -17,6 +17,9 @@
 
 package co.anitrend.data.shared.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
  * Name contract
  *
@@ -26,10 +29,11 @@ package co.anitrend.data.shared.model
  * @property last Last name
  * @property native The full name in the native language
  */
+@Serializable
 internal data class SharedName(
-    val alternative: List<String>?,
-    val first: String?,
-    val full: String?,
-    val last: String?,
-    val native: String?
+    @SerialName("alternative") val alternative: List<String>?,
+    @SerialName("first") val first: String?,
+    @SerialName("full") val full: String?,
+    @SerialName("last") val last: String?,
+    @SerialName("native") val native: String?
 )

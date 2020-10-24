@@ -33,9 +33,5 @@ internal class MediaTagRepository(
      * @return media genres
      */
     override fun getMediaTags() =
-        source.create(
-            model = source().asLiveData(
-                source.coroutineContext
-            )
-        )
+        source create source().asLiveData()
 }

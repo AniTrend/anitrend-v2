@@ -17,6 +17,8 @@
 
 package co.anitrend.data.medialist.model.query
 
+import co.anitrend.data.arch.FuzzyDateInt
+import co.anitrend.data.arch.FuzzyDateLike
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListSort
@@ -61,19 +63,19 @@ data class MediaListQuery(
     val mediaId_not_in: List<Int>? = null,
     val isFollowing: Boolean? = null,
     val notes: String? = null,
-    val startedAt: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val completedAt: co.anitrend.domain.common.FuzzyDateInt? = null,
+    val startedAt: FuzzyDateInt? = null,
+    val completedAt: FuzzyDateInt? = null,
     val userId_in: List<Long>? = null,
     val notes_like: String? = null,
     val status_in: List<MediaListStatus>? = null,
     val status_not: List<MediaListStatus>? = null,
     val status_not_in: List<MediaListStatus>? = null,
-    val startedAt_greater: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val startedAt_lesser: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val startedAt_like: co.anitrend.domain.common.FuzzyDateLike? = null,
-    val completedAt_greater: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val completedAt_lesser: co.anitrend.domain.common.FuzzyDateInt? = null,
-    val completedAt_like: co.anitrend.domain.common.FuzzyDateLike? = null,
+    val startedAt_greater: FuzzyDateInt? = null,
+    val startedAt_lesser: FuzzyDateInt? = null,
+    val startedAt_like: FuzzyDateLike? = null,
+    val completedAt_greater: FuzzyDateInt? = null,
+    val completedAt_lesser: FuzzyDateInt? = null,
+    val completedAt_like: FuzzyDateLike? = null,
     val sort: List<MediaListSort>?,
     val compareWithAuthList: Boolean
 ) : IGraphPayload {

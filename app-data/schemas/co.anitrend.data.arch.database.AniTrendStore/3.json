@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "070889013e33d9325f3fb3afabaabd84",
+    "identityHash": "738a6be6f1da2ad8aa6fc3ba72840ee3",
     "entities": [
       {
         "tableName": "jwt",
@@ -152,7 +152,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "source_entity",
+        "tableName": "moe_entity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`anilist` INTEGER NOT NULL, `anidb` INTEGER, `kitsu` INTEGER, `mal` INTEGER, PRIMARY KEY(`anilist`))",
         "fields": [
           {
@@ -574,7 +574,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '070889013e33d9325f3fb3afabaabd84')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '738a6be6f1da2ad8aa6fc3ba72840ee3')"
     ]
   }
 }

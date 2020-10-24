@@ -17,7 +17,7 @@
 
 package co.anitrend.data.tag.mapper
 
-import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
@@ -30,7 +30,7 @@ import co.anitrend.data.tag.model.remote.MediaTagCollection
 internal class MediaTagResponseMapper(
     private val localSource: MediaTagLocalSource,
     private val converter: TagModelConverter = TagModelConverter()
-) : GraphQLMapper<MediaTagCollection, List<TagEntity>>() {
+) : DefaultMapper<MediaTagCollection, List<TagEntity>>() {
 
     override suspend fun persistChanges(data: List<TagEntity>): OutCome<Nothing?> {
         return runCatching {

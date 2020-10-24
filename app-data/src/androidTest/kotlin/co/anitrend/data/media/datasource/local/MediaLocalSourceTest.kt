@@ -18,11 +18,11 @@
 package co.anitrend.data.media.datasource.local
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.core.CoreTestSuite
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import co.anitrend.data.media.model.page.MediaPageModel
-import io.github.wax911.library.model.body.GraphContainer
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -36,8 +36,12 @@ import kotlin.time.ExperimentalTime
 @RunWith(AndroidJUnit4ClassRunner::class)
 internal class MediaLocalSourceTest : CoreTestSuite() {
 
-    private val pageModel: GraphContainer<MediaPageModel>? by lazy {
-        "media_paged_response.json".load()
+    private val pageModel: GraphQLResponse<MediaPageModel>? by lazy {
+        "media_paged_response.json".load(
+            GraphQLResponse.serializer(
+                MediaPageModel.serializer()
+            )
+        )
     }
 
     private suspend fun populateDatabase(model: MediaPageModel) {
@@ -67,7 +71,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entity = store.mediaDao().mediaById(id)
         // for some reason tests clear the native field
-        assertEquals(title.english, entity?.title?.english)
+        assertEquals(title, entity?.title)
 
         val total = store.mediaDao().count()
         assertEquals(50, total)
@@ -85,7 +89,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entity = store.mediaDao().mediaByIdWithAiring(id)
         // for some reason tests clear the native field
-        assertEquals(title.english, entity?.media?.title?.english)
+        assertEquals(title, entity?.media?.title)
 
         assertNotNull(entity?.nextAiring)
     }

@@ -19,16 +19,19 @@ package co.anitrend.data.user.model.remote.statistics
 
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [UserStatusStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userstatusstatistic.doc.html)
  *
  * @param status media list status
  */
+@Serializable
 internal data class UserStatusStatistic(
-    val status: MediaListStatus,
-    override val chaptersRead: Int,
-    override val count: Int,
-    override val meanScore: Float,
-    override val mediaIds: List<Int>,
-    override val minutesWatched: Int
+    @SerialName("status") val status: MediaListStatus,
+    @SerialName("chaptersRead") override val chaptersRead: Int,
+    @SerialName("count") override val count: Int,
+    @SerialName("meanScore") override val meanScore: Float,
+    @SerialName("mediaIds") override val mediaIds: List<Int>,
+    @SerialName("minutesWatched") override val minutesWatched: Int
 ) : IStatistic

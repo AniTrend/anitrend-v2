@@ -20,6 +20,8 @@ package co.anitrend.data.medialist.model.remote
 import co.anitrend.data.user.model.remote.UserModelCore
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
  * List of anime or manga
@@ -28,10 +30,11 @@ import com.google.gson.annotations.SerializedName
  * @param hasNextChunk If there is another chunk
  * @param user The owner of the list
  */
+@Serializable
 internal data class MediaListCollection(
-    @SerializedName("lists") val lists: List<MediaListGroup>,
-    @SerializedName("hasNextChunk") val hasNextChunk: Boolean,
-    @SerializedName("user") val user: UserModelCore?
+    @SerialName("lists") val lists: List<MediaListGroup>,
+    @SerialName("hasNextChunk") val hasNextChunk: Boolean,
+    @SerialName("user") val user: UserModelCore?
 ) {
 
     /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
@@ -43,11 +46,12 @@ internal data class MediaListCollection(
      * @param isSplitCompletedList If this grouping is split by types of of media, e.g movies, tv, specials, etc
      * @param status status of current group, one of [co.anitrend.domain.medialist.enums.MediaListStatus]
      */
+    @Serializable
     internal data class MediaListGroup(
-        @SerializedName("entries") val entries: List<MediaListModelCore>?,
-        @SerializedName("isCustomList") val isCustomList: Boolean,
-        @SerializedName("isSplitCompletedList") val isSplitCompletedList: Boolean,
-        @SerializedName("name") val name: String,
-        @SerializedName("status") val status: MediaListStatus
+        @SerialName("entries") val entries: List<MediaListModelCore>?,
+        @SerialName("isCustomList") val isCustomList: Boolean,
+        @SerialName("isSplitCompletedList") val isSplitCompletedList: Boolean,
+        @SerialName("name") val name: String,
+        @SerialName("status") val status: MediaListStatus
     )
 }

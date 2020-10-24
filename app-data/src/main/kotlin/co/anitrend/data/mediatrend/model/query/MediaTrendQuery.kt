@@ -17,7 +17,7 @@
 
 package co.anitrend.data.mediatrend.model.query
 
-import co.anitrend.domain.common.FuzzyDateInt
+import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaTrendSort
 import kotlinx.android.parcel.Parcelize
