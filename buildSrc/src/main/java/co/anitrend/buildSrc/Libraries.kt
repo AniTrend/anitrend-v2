@@ -475,7 +475,7 @@ object Libraries {
             }
 
             object Serialization {
-                private const val version = "1.0.0-RC2"
+                private const val version = "1.0.0"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
