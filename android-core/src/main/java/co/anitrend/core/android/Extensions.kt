@@ -40,7 +40,7 @@ import java.util.*
  * Helper to resolve koin dependencies
  */
 inline fun <reified T> koinOf(): T =
-    GlobalContext.get().get(T::class)
+    GlobalContext.get().get()
 
 /**
  * Retrieve a style from the current [android.content.res.Resources.Theme].
