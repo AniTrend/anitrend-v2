@@ -17,7 +17,7 @@ include(
     ":feature-medialist",
     ":feature-review",
     ":feature-forum",
-    ":feature-trending",
+    ":feature-recommendation",
     ":feature-settings",
     ":feature-search",
     ":feature-profile",
