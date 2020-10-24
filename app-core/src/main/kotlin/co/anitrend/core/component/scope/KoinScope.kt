@@ -15,50 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.fragment.list
+package co.anitrend.core.component.scope
 
-import android.os.Bundle
-import android.view.View
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.ui.fragment.list.SupportFragmentList
-import org.koin.android.ext.android.getKoin
+import co.anitrend.data.arch.AniTrendExperimentalFeature
+import org.koin.core.context.GlobalContext
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.ScopeID
 
-abstract class AniTrendListFragment<M> : SupportFragmentList<M>(), KoinScopeComponent {
+@AniTrendExperimentalFeature
+class KoinScope : KoinScopeComponent {
 
     private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
 
     override val koin by lazy(UNSAFE) {
-        getKoin()
+        GlobalContext.get()
     }
 
     override val scope by lazy(UNSAFE) {
         createScope(scopeID, getScopeName(), this)
-    }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        runCatching {
-            koin.logger.debug("Open fragment scope: $scope")
-        }
-    }
-
-    /**
-     * Called when the fragment is no longer in use.  This is called
-     * after [.onStop] and before [.onDetach].
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        runCatching {
-            koin.logger.debug("Close fragment scope: $scope")
-            scope.close()
-        }
     }
 }
