@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.common
+package co.anitrend.domain.news.entity
 
-/**
- * A hex colour character sequence, that can be any of the following:
- * - #RRGGBB
- * - #AARRGGBB
- */
-typealias HexColor = CharSequence
+import co.anitrend.domain.common.entity.contract.IEntity
+
+data class News(
+    override val id: Long
+) : IEntity
