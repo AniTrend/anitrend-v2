@@ -17,15 +17,14 @@
 
 package co.anitrend.media.koin
 
-import co.anitrend.arch.extension.util.date.SupportDateHelper
-import co.anitrend.common.media.ui.view.MediaCarouselAdapter
-import co.anitrend.common.media.ui.view.MediaPagedAdapter
+import co.anitrend.common.media.ui.adapter.MediaCarouselAdapter
+import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.media.component.carousel.ui.CarouselContent
+import co.anitrend.media.component.carousel.content.CarouselContent
 import co.anitrend.media.component.carousel.viewmodel.CarouselViewModel
-import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.media.component.discover.ui.DiscoverContent
 import co.anitrend.media.component.discover.viewmodel.DiscoverViewModel
+import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.navigation.MediaRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment

@@ -19,10 +19,10 @@ package co.anitrend.onboarding.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.OnBoardingRouter
-import co.anitrend.onboarding.presenter.OnBoardingPresenter
+import co.anitrend.onboarding.component.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.provider.FeatureProvider
-import co.anitrend.onboarding.ui.activity.OnBoardingScreen
-import co.anitrend.onboarding.ui.fragment.OnBoardingContent
+import co.anitrend.onboarding.component.screen.OnBoardingScreen
+import co.anitrend.onboarding.component.content.OnBoardingContent
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module

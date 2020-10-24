@@ -15,4 +15,33 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest package="co.anitrend.auth" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.anitrend.auth">
+
+    <application>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data  android:name="co.anitrend.auth.initializer.FeatureInitializer"
+                android:value="androidx.startup" />
+        </provider>
+        <activity android:name=".component.screen.AuthScreen"
+            android:launchMode="singleInstance"
+            android:theme="@style/SupportTheme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="auth/oauth/v2/callback"
+                    android:scheme="app.anitrend" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

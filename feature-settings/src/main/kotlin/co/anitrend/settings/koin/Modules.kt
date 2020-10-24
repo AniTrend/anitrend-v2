@@ -19,10 +19,10 @@ package co.anitrend.settings.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
-import co.anitrend.settings.presenter.SettingsPresenter
+import co.anitrend.settings.component.presenter.SettingsPresenter
 import co.anitrend.settings.provider.FeatureProvider
-import co.anitrend.settings.ui.activity.SettingsScreen
-import co.anitrend.settings.ui.fragment.SettingsFragment
+import co.anitrend.settings.component.screen.SettingsScreen
+import co.anitrend.settings.component.content.SettingsContent
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
@@ -40,7 +40,7 @@ private val presenterModule = module {
 
 private val fragmentModule = module {
     fragment {
-        SettingsFragment()
+        SettingsContent()
     }
 }
 

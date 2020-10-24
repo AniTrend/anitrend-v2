@@ -23,8 +23,7 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.base.IMedia
 
 
-internal val MEDIA_DIFFER =
-    object : DiffUtil.ItemCallback<IMedia>() {
+internal object MediaDiffUtil : DiffUtil.ItemCallback<IMedia>() {
         override fun areItemsTheSame(
             oldItem: IMedia,
             newItem: IMedia
@@ -40,8 +39,7 @@ internal val MEDIA_DIFFER =
         }
     }
 
-internal val ENTITY_DIFFER =
-    object : DiffUtil.ItemCallback<IEntity>() {
+internal object EntityDiffUtil : DiffUtil.ItemCallback<IEntity>() {
         override fun areItemsTheSame(
             oldItem: IEntity,
             newItem: IEntity
