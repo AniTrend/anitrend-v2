@@ -27,6 +27,7 @@ import co.anitrend.core.ui.inject
 import co.anitrend.core.util.config.contract.IConfigurationUtil
 import org.koin.android.ext.android.getKoin
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
+import org.koin.androidx.scope.activityScope
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.ScopeID
 
@@ -38,17 +39,9 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
 
     protected val configurationUtil by inject<IConfigurationUtil>()
 
-    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
-
     override var binding: B? = null
 
-    override val koin by lazy(UNSAFE) {
-        getKoin()
-    }
-
-    override val scope by lazy(UNSAFE) {
-        createScope(scopeID, getScopeName(), this)
-    }
+    override val scope by lazy(UNSAFE) { activityScope() }
 
     /**
      * Can be used to configure custom theme styling as desired
@@ -57,7 +50,7 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
         configurationUtil.onCreate(this)
         lifecycleScope.launchWhenCreated {
             runCatching {
-                koin.logger.debug("Open activity scope: $scope")
+                getKoin().logger.debug("Open activity scope: $scope")
                 setupKoinFragmentFactory(scope)
             }
         }
@@ -81,9 +74,5 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
     override fun onDestroy() {
         super.onDestroy()
         binding = null
-        runCatching {
-            koin.logger.debug("Close activity scope: $scope")
-            scope.close()
-        }
     }
 }

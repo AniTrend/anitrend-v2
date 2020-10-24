@@ -40,7 +40,7 @@ inline fun <reified T : Any> KoinScopeComponent.get(
 ): T = runCatching {
     scope.get<T>(qualifier, parameters)
 }.getOrElse {
-    koin.get(qualifier, parameters)
+    getKoin().get(qualifier, parameters)
 }
 
 /**
@@ -54,9 +54,12 @@ inline fun <reified T : Any> KoinScopeComponent.inject(
     noinline parameters: ParametersDefinition? = null
 ) = lazy(UNSAFE) { get<T>(qualifier, parameters) }
 
+/**
+ * Provides scope for a given [source]
+ */
 @AniTrendExperimentalFeature
 @Suppress("FunctionName")
-fun ScopeComponent() = KoinScope()
+fun ScopeComponent(source: Any?) = KoinScope(source)
 
 
 /**
