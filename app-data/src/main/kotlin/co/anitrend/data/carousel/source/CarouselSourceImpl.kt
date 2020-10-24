@@ -19,21 +19,20 @@ package co.anitrend.data.carousel.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.extension.controller
+import co.anitrend.data.arch.extension.toFuzzyDateLike
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
-import co.anitrend.data.media.converters.MediaEntityConverter
 import co.anitrend.data.carousel.datasource.local.CarouselLocalStore
 import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
-import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.carousel.mapper.CarouselAnimeMapper
 import co.anitrend.data.carousel.mapper.CarouselMangaMapper
 import co.anitrend.data.carousel.source.contract.CarouselSource
+import co.anitrend.data.media.converters.MediaEntityConverter
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
-import co.anitrend.domain.common.entity.shared.FuzzyDate
-import co.anitrend.domain.common.extension.toFuzzyDateLike
 import co.anitrend.domain.media.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -62,6 +61,7 @@ internal class CarouselSourceImpl(
         val flows = listOf(
             localSource.airingSoonFlow(
                 mediaType = MediaType.ANIME,
+                pageSize = query.pageSize,
                 currentTime = query.currentTime
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
@@ -71,7 +71,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.allTimePopularFlow(
-                mediaType = MediaType.ANIME
+                mediaType = MediaType.ANIME,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.ANIME,
@@ -80,7 +81,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.trendingNowFlow(
-                mediaType = MediaType.ANIME
+                mediaType = MediaType.ANIME,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.ANIME,
@@ -90,11 +92,12 @@ internal class CarouselSourceImpl(
             },
             localSource.popularThisSeasonFlow(
                 mediaType = MediaType.ANIME,
+                pageSize = query.pageSize,
                 season = query.season,
-                seasonYear = FuzzyDate(
+                seasonYear = FuzzyDateModel(
                     year = query.seasonYear,
-                    month = FuzzyDate.UNKNOWN,
-                    day = FuzzyDate.UNKNOWN,
+                    month = FuzzyDateModel.UNKNOWN,
+                    day = FuzzyDateModel.UNKNOWN,
                 ).toFuzzyDateLike()
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
@@ -104,7 +107,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.recentlyAddedFlow(
-                mediaType = MediaType.ANIME
+                mediaType = MediaType.ANIME,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.ANIME,
@@ -114,11 +118,12 @@ internal class CarouselSourceImpl(
             },
             localSource.anticipatedNextSeasonFlow(
                 mediaType = MediaType.ANIME,
+                pageSize = query.pageSize,
                 season = query.nextSeason,
-                seasonYear = FuzzyDate(
+                seasonYear = FuzzyDateModel(
                     year = query.nextSeasonYear,
-                    month = FuzzyDate.UNKNOWN,
-                    day = FuzzyDate.UNKNOWN,
+                    month = FuzzyDateModel.UNKNOWN,
+                    day = FuzzyDateModel.UNKNOWN,
                 ).toFuzzyDateLike()
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
@@ -128,7 +133,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.allTimePopularFlow(
-                mediaType = MediaType.MANGA
+                mediaType = MediaType.MANGA,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.MANGA,
@@ -137,7 +143,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.trendingNowFlow(
-                mediaType = MediaType.MANGA
+                mediaType = MediaType.MANGA,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.MANGA,
@@ -146,7 +153,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.popularManhwaFlow(
-                mediaType = MediaType.MANGA
+                mediaType = MediaType.MANGA,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.MANGA,
@@ -155,7 +163,8 @@ internal class CarouselSourceImpl(
                 )
             },
             localSource.recentlyAddedFlow(
-                mediaType = MediaType.MANGA
+                mediaType = MediaType.MANGA,
+                pageSize = query.pageSize
             ).toMediaList().map { mediaCollection ->
                 MediaCarousel(
                     MediaType.MANGA,
@@ -172,17 +181,18 @@ internal class CarouselSourceImpl(
         emitAll(mergedFlows)
     }
 
-    override suspend fun getMediaCarouselAnime(requestCallback: RequestCallback) {
+    override suspend fun getMediaCarouselAnime(requestCallback: RequestCallback): Boolean {
         val queryBuilder = query.toQueryContainerBuilder()
         val deferred = async {
             remoteSource.getCarouselAnime(queryBuilder)
         }
         val controller = animeMapper.controller(dispatchers, strategy)
 
-        controller(deferred, requestCallback).orEmpty()
+        val result = controller(deferred, requestCallback)
+        return !result.isNullOrEmpty()
     }
 
-    override suspend fun getMediaCarouselManga(requestCallback: RequestCallback) {
+    override suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean {
         val queryBuilder = query.toQueryContainerBuilder(
             ignoreNulls = false
         )
@@ -191,7 +201,8 @@ internal class CarouselSourceImpl(
         }
         val controller = mangaMapper.controller(dispatchers, strategy)
 
-        controller(deferred, requestCallback).orEmpty()
+        val result = controller(deferred, requestCallback)
+        return !result.isNullOrEmpty()
     }
 
     /**

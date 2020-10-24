@@ -24,6 +24,8 @@ import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.enums.MediaRelation
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
  * Media connection edge
@@ -36,14 +38,15 @@ import com.google.gson.annotations.SerializedName
  * @property staffRole The role of the staff member in the production of the media
  * @property voiceActors The voice actors of the character
  */
+@Serializable
 internal data class MediaEdge(
-    @SerializedName("characterRole") val characterRole: CharacterRole?,
-    @SerializedName("characters") val characters: List<CharacterModel>?,
-    @SerializedName("favouriteOrder") val favouriteOrder: Int?,
-    @SerializedName("isMainStudio") val isMainStudio: Boolean,
-    @SerializedName("relationType") val relationType: MediaRelation?,
-    @SerializedName("staffRole") val staffRole: String?,
-    @SerializedName("voiceActors") val voiceActors: List<StaffModel>?,
-    @SerializedName("id") override val id: Long,
-    @SerializedName("node") override val node: MediaModelCore?
+    @SerialName("characterRole") val characterRole: CharacterRole?,
+    @SerialName("characters") val characters: List<CharacterModel>?,
+    @SerialName("favouriteOrder") val favouriteOrder: Int?,
+    @SerialName("isMainStudio") val isMainStudio: Boolean,
+    @SerialName("relationType") val relationType: MediaRelation?,
+    @SerialName("staffRole") val staffRole: String?,
+    @SerialName("voiceActors") val voiceActors: List<StaffModel>?,
+    @SerialName("id") override val id: Long,
+    @SerialName("node") override val node: MediaModelCore?
 ) : IEntityEdge<MediaModelCore>

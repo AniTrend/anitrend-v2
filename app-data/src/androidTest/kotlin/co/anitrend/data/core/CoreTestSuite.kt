@@ -21,6 +21,8 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
 import com.google.gson.GsonBuilder
+import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -40,16 +42,11 @@ internal open class CoreTestSuite : KoinTest {
 
     private val source = CoreTestSuite::class.java
 
+    protected val json by inject<Json>()
     protected val store by inject<IAniTrendStore>()
     protected val dispatchers by inject<SupportDispatchers>()
 
     protected val koin: KoinApplication by lazy { initializeKoin() }
-
-    private val gson by lazy {
-        GsonBuilder()
-            .setLenient()
-            .create()
-    }
 
     @Before
     fun startUp() {
@@ -57,12 +54,12 @@ internal open class CoreTestSuite : KoinTest {
         runCatching { koin }
     }
 
-    protected inline fun <reified T> String.load(): T? {
+    protected inline fun <reified T> String.load(deserializer: DeserializationStrategy<T>): T? {
         val resource = source.getResourceAsStream("templates/${this}")
         assertNotNull(resource)
-        val inputStreamReader = InputStreamReader(resource)
-        val superType = typeOf<T>().javaType
-        val result: T? = gson.fromJson(inputStreamReader, superType)
+        val result: T? = InputStreamReader(resource).use {
+            json.decodeFromString(deserializer, it.readText())
+        }
         assertNotNull(result)
         return result
     }

@@ -36,7 +36,10 @@ internal class MediaPagedNetworkSourceFactory(
     private val sortOrderSettings: ISortOrderSettings,
     private val dispatchers: SupportDispatchers
 ) : DataSource.Factory<IGraphPayload, Media>() {
-    private val stateSourceFlow = MutableStateFlow<MediaPagedNetworkSource?>(null)
+
+
+    private val stateSourceFlow =
+        MutableStateFlow<MediaPagedNetworkSource?>(null)
 
     fun getLatestSource() = stateSourceFlow.value
 

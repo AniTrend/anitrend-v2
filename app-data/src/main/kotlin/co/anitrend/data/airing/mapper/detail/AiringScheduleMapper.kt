@@ -21,7 +21,7 @@ import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
@@ -30,7 +30,7 @@ import co.anitrend.data.arch.railway.extension.then
 internal class AiringScheduleMapper(
     private val localSource: AiringLocalSource,
     private val converter: AiringModelConverter = AiringModelConverter()
-) : GraphQLMapper<AiringScheduleModel, AiringScheduleEntity>() {
+) : DefaultMapper<AiringScheduleModel, AiringScheduleEntity>() {
 
     /**
      * Handles the persistence of [data] into a local source

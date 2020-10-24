@@ -21,11 +21,16 @@ package co.anitrend.data.api.converter
 
 import co.anitrend.data.api.converter.request.AniRequestConverter
 import co.anitrend.data.api.converter.response.AniGraphResponseConverter
+import co.anitrend.data.arch.GRAPHQL
 import co.anitrend.data.arch.JSON
 import co.anitrend.data.arch.XML
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.GraphConverter
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.simpleframework.xml.convert.AnnotationStrategy
@@ -38,7 +43,8 @@ import java.lang.reflect.Type
 
 internal class AniTrendConverterFactory(
     processor: AbstractGraphProcessor,
-    gson: Gson
+    gson: Gson,
+    private val json: Json,
 ) : GraphConverter(processor, gson) {
 
     /**
@@ -73,7 +79,7 @@ internal class AniTrendConverterFactory(
      * @param type The generic type declared on the Call method
      *
      * @see Retrofit
-     * @see io.github.wax911.library.converter.response.GraphResponseConverter
+     * @see AniGraphResponseConverter
      */
     override fun responseBodyConverter(
         type: Type,
@@ -87,12 +93,17 @@ internal class AniTrendConverterFactory(
                         Persister(AnnotationStrategy())
                     ).responseBodyConverter(type, annotations, retrofit)
                 }
+                is GRAPHQL,
                 is JSON -> {
-                    return GsonConverterFactory.create(gson)
+                    json.asConverterFactory(CONTENT_TYPE)
                         .responseBodyConverter(type, annotations, retrofit)
                 }
             }
         }
         return AniGraphResponseConverter<Any>(type, gson)
+    }
+
+    companion object {
+        private val CONTENT_TYPE = "application/json".toMediaType()
     }
 }

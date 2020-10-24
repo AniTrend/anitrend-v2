@@ -20,14 +20,17 @@ package co.anitrend.data.airing.model.connection
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.airing.model.edge.AiringScheduleEdge
 import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.domain.common.entity.shared.PageInfo
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Airing schedule connection
  */
+@Serializable
 internal data class AiringScheduleConnection(
-    @SerializedName("edges") override val edges: List<AiringScheduleEdge>?,
-    @SerializedName("nodes") override val nodes: List<AiringScheduleModel>?,
-    @SerializedName("pageInfo") override val pageInfo: PageInfo?
+    @SerialName("edges") override val edges: List<AiringScheduleEdge>?,
+    @SerialName("nodes") override val nodes: List<AiringScheduleModel>?,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<AiringScheduleEdge, AiringScheduleModel>

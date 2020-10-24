@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.common.entity
 
-import co.anitrend.domain.common.entity.contract.IEntityPageInfo
+import co.anitrend.data.arch.common.model.paging.info.IPageInfo
 
 /**
  * Connection contract to supply paging information
@@ -29,5 +29,5 @@ import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 internal interface IEntityConnection<E, N> {
     val edges: List<E>?
     val nodes: List<N>?
-    val pageInfo: IEntityPageInfo?
+    val pageInfo: IPageInfo?
 }

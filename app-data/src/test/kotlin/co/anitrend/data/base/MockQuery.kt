@@ -17,7 +17,7 @@
 
 package co.anitrend.data.base
 
-import co.anitrend.domain.common.FuzzyDateLike
+import co.anitrend.data.arch.FuzzyDateLike
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaStatus

@@ -20,7 +20,7 @@ package co.anitrend.data.activity.model.query
 import android.os.Parcelable
 import co.anitrend.domain.activity.enums.ActivitySort
 import co.anitrend.domain.activity.enums.ActivityType
-import co.anitrend.domain.common.FuzzyDateInt
+import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import kotlinx.android.parcel.Parcelize
 

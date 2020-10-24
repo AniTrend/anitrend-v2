@@ -17,31 +17,34 @@
 
 package co.anitrend.data.medialist.model.remote
 
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.medialist.model.contract.IMediaListModelCore
-import co.anitrend.domain.common.entity.shared.FuzzyDate
+
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
  * List of anime or manga
- *
  */
+@Serializable
 internal data class MediaListModelCore(
-    override val advancedScores: Map<String, String>?,
-    override val completedAt: FuzzyDate?,
-    override val createdAt: Long?,
-    override val customLists: Map<String, String>?,
-    override val hiddenFromStatusLists: Boolean?,
-    override val mediaId: Int,
-    override val notes: String?,
-    override val priority: Int?,
-    override val private: Boolean?,
-    override val progress: Int?,
-    override val progressVolumes: Int?,
-    override val repeat: Int?,
-    override val score: Float?,
-    override val startedAt: FuzzyDate?,
-    override val status: MediaListStatus?,
-    override val updatedAt: Long?,
-    override val userId: Int,
-    override val id: Long
+    @SerialName("advancedScores") override val advancedScores: Map<String, String>?,
+    @SerialName("completedAt") override val completedAt: FuzzyDateModel?,
+    @SerialName("createdAt") override val createdAt: Long?,
+    @SerialName("customLists") override val customLists: Map<String, String>?,
+    @SerialName("hiddenFromStatusLists") override val hiddenFromStatusLists: Boolean?,
+    @SerialName("mediaId") override val mediaId: Int,
+    @SerialName("notes") override val notes: String?,
+    @SerialName("priority") override val priority: Int?,
+    @SerialName("private") override val private: Boolean?,
+    @SerialName("progress") override val progress: Int?,
+    @SerialName("progressVolumes") override val progressVolumes: Int?,
+    @SerialName("repeat") override val repeat: Int?,
+    @SerialName("score") override val score: Float?,
+    @SerialName("startedAt") override val startedAt: FuzzyDateModel?,
+    @SerialName("status") override val status: MediaListStatus?,
+    @SerialName("updatedAt") override val updatedAt: Long?,
+    @SerialName("userId") override val userId: Int,
+    @SerialName("id") override val id: Long
 ) : IMediaListModelCore

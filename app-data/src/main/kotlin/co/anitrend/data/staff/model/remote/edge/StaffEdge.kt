@@ -20,6 +20,8 @@ package co.anitrend.data.staff.model.remote.edge
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.staff.model.remote.StaffModel
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
  * Staff connection edge
@@ -27,9 +29,10 @@ import com.google.gson.annotations.SerializedName
  * @param favouriteOrder The order the staff should be displayed from the users favourites
  * @param role The role of the staff member in the production of the media
  */
+@Serializable
 internal data class StaffEdge(
-    @SerializedName("favouriteOrder") val favouriteOrder: Int?,
-    @SerializedName("role") val role: String?,
-    @SerializedName("id") override val id: Long,
-    @SerializedName("node") override val node: StaffModel?
+    @SerialName("favouriteOrder") val favouriteOrder: Int?,
+    @SerialName("role") val role: String?,
+    @SerialName("id") override val id: Long,
+    @SerialName("node") override val node: StaffModel?
 ) : IEntityEdge<StaffModel>

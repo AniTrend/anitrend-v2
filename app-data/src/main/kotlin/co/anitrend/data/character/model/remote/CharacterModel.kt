@@ -21,21 +21,23 @@ import co.anitrend.data.character.model.contract.ICharacterModel
 import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.shared.model.SharedImage
 import co.anitrend.data.shared.model.SharedName
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [Character](https://anilist.github.io/ApiV2-GraphQL-Docs/character.doc.html)
  * A character that features in an anime or manga
  *
  * @param description A general description of the character
  */
+@Serializable
 internal class CharacterModel(
-    val media: MediaConnection?,
-    @SerializedName("description") override val description: String?,
-    @SerializedName("favourites") override val favourites: Int?,
-    @SerializedName("image") override val image: SharedImage?,
-    @SerializedName("isFavourite") override val isFavourite: Boolean,
-    @SerializedName("name") override val name: SharedName?,
-    @SerializedName("siteUrl") override val siteUrl: String?,
-    @SerializedName("updatedAt") override val updatedAt: Long?,
-    @SerializedName("id") override val id: Long,
+    @SerialName("media") val media: MediaConnection?,
+    @SerialName("description") override val description: String?,
+    @SerialName("favourites") override val favourites: Int?,
+    @SerialName("image") override val image: SharedImage?,
+    @SerialName("isFavourite") override val isFavourite: Boolean,
+    @SerialName("name") override val name: SharedName?,
+    @SerialName("siteUrl") override val siteUrl: String?,
+    @SerialName("updatedAt") override val updatedAt: Long?,
+    @SerialName("id") override val id: Long,
 ) : ICharacterModel

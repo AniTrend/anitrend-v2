@@ -18,10 +18,11 @@
 package co.anitrend.data.carousel.datasource.remote
 
 import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.api.model.GraphQLResponse
+import co.anitrend.data.arch.GRAPHQL
 import co.anitrend.data.carousel.model.CarouselAnimeModel
 import co.anitrend.data.carousel.model.CarouselMangaModel
 import io.github.wax911.library.annotation.GraphQuery
-import io.github.wax911.library.model.body.GraphContainer
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
 import retrofit2.http.Body
@@ -29,15 +30,17 @@ import retrofit2.http.POST
 
 internal interface CarouselRemoteSource {
 
+    @GRAPHQL
     @POST(EndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("CarouselAnime")
     suspend fun getCarouselAnime(
         @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphContainer<CarouselAnimeModel>>
+    ): Response<GraphQLResponse<CarouselAnimeModel>>
 
+    @GRAPHQL
     @POST(EndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("CarouselManga")
     suspend fun getCarouselManga(
         @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphContainer<CarouselMangaModel>>
+    ): Response<GraphQLResponse<CarouselMangaModel>>
 }

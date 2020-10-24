@@ -18,13 +18,13 @@
 package co.anitrend.data.media.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.arch.data.transformer.ISupportTransformer
+import co.anitrend.data.arch.extension.asFuzzyDate
+import co.anitrend.data.arch.extension.toFuzzyDateInt
+import co.anitrend.data.arch.extension.toFuzzyDateModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.model.MediaModelExtended
 import co.anitrend.domain.airing.entity.AiringSchedule
-import co.anitrend.domain.common.entity.shared.FuzzyDate.Companion.orEmpty
-import co.anitrend.domain.common.extension.toFuzzyDate
-import co.anitrend.domain.common.extension.toFuzzyDateInt
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
@@ -45,13 +45,13 @@ internal class MediaConverter(
 ) : SupportConverter<MediaModelExtended, Media>() {
     companion object {
         private fun from() =
-            object : ISupportMapperHelper<MediaModelExtended, Media> {
+            object : ISupportTransformer<MediaModelExtended, Media> {
                 override fun transform(source: MediaModelExtended) = Media(
                     sourceId = MediaSourceId.empty().copy(
                         mal = source.idMal,
                         anilist = source.id
                     ),
-                    origin = source.countryOfOrigin,
+                    countryCode = source.countryOfOrigin,
                     description = source.description,
                     externalLinks = source.externalLinks?.map {
                         MediaExternalLink(
@@ -106,8 +106,8 @@ internal class MediaConverter(
                     scoreFormat = ScoreFormat.POINT_10_DECIMAL,// TODO: use user object to retrieve score format
                     meanScore = source.meanScore ?: 0,
                     averageScore = source.averageScore ?: 0,
-                    startDate = source.startDate.orEmpty(),
-                    endDate = source.endDate.orEmpty(),
+                    startDate = source.startDate.asFuzzyDate(),
+                    endDate = source.endDate.asFuzzyDate(),
                     title = MediaTitle(
                         romaji = source.title?.romaji,
                         english = source.title?.english,
@@ -158,7 +158,7 @@ internal class MediaModelConverter(
 ) : SupportConverter<MediaModelExtended, MediaEntity>() {
     companion object {
         private fun from() =
-            object : ISupportMapperHelper<MediaModelExtended, MediaEntity> {
+            object : ISupportTransformer<MediaModelExtended, MediaEntity> {
                 override fun transform(source: MediaModelExtended) = MediaEntity(
                     coverImage = MediaEntity.CoverImage(
                         color = source.coverImage?.color,
@@ -260,13 +260,13 @@ internal class MediaEntityConverter(
 ) : SupportConverter<MediaEntity, Media>() {
     companion object {
         private fun from() =
-            object : ISupportMapperHelper<MediaEntity, Media> {
+            object : ISupportTransformer<MediaEntity, Media> {
                 override fun transform(source: MediaEntity): Media {
                     return Media(
                         sourceId = MediaSourceId.empty().copy(
                             anilist = source.id
                         ),
-                        origin = source.countryOfOrigin,
+                        countryCode = source.countryOfOrigin,
                         description = source.description,
                         externalLinks = source.links.map {
                             MediaExternalLink(
@@ -325,8 +325,8 @@ internal class MediaEntityConverter(
                         scoreFormat = ScoreFormat.POINT_10_DECIMAL,// TODO: use user object to retrieve score format
                         meanScore = source.meanScore ?: 0,
                         averageScore = source.averageScore ?: 0,
-                        startDate = source.startDate.toFuzzyDate(),
-                        endDate = source.endDate.toFuzzyDate(),
+                        startDate = source.startDate.toFuzzyDateModel().asFuzzyDate(),
+                        endDate = source.endDate.toFuzzyDateModel().asFuzzyDate(),
                         title = MediaTitle(
                             romaji = source.title.romaji,
                             english = source.title.english,

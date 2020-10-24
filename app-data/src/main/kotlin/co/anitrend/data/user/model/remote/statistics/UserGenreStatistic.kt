@@ -18,16 +18,19 @@
 package co.anitrend.data.user.model.remote.statistics
 
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [UserGenreStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/usergenrestatistic.doc.html)
  *
  * @param genre media genre
  */
+@Serializable
 internal data class UserGenreStatistic(
-    val genre: String?,
-    override val chaptersRead: Int,
-    override val count: Int,
-    override val meanScore: Float,
-    override val mediaIds: List<Int>,
-    override val minutesWatched: Int
+    @SerialName("genre") val genre: String?,
+    @SerialName("chaptersRead") override val chaptersRead: Int,
+    @SerialName("count") override val count: Int,
+    @SerialName("meanScore") override val meanScore: Float,
+    @SerialName("mediaIds") override val mediaIds: List<Int>,
+    @SerialName("minutesWatched") override val minutesWatched: Int
 ) : IStatistic

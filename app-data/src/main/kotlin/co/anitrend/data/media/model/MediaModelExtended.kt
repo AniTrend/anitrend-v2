@@ -18,56 +18,58 @@
 package co.anitrend.data.media.model
 
 import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.contract.IMediaModelExtended
 import co.anitrend.data.medialist.model.remote.MediaListModelCore
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.domain.common.CountryCode
-import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.data.arch.CountryCode
 import co.anitrend.domain.media.enums.*
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
  * Anime or Manga representation
  */
+@Serializable
 internal data class MediaModelExtended(
-    @SerializedName("id") override val id: Long,
-    @SerializedName("averageScore") override val averageScore: Int? = null,
-    @SerializedName("bannerImage") override val bannerImage: String? = null,
-    @SerializedName("chapters") override val chapters: Int? = null,
-    @SerializedName("countryOfOrigin") override val countryOfOrigin: CountryCode? = null,
-    @SerializedName("coverImage") override val coverImage: CoverImage? = null,
-    @SerializedName("description") override val description: String? = null,
-    @SerializedName("duration") override val duration: Int? = null,
-    @SerializedName("endDate") override val endDate: FuzzyDate? = null,
-    @SerializedName("episodes") override val episodes: Int? = null,
-    @SerializedName("externalLinks") override val externalLinks: List<ExternalLink>? = null,
-    @SerializedName("favourites") override val favourites: Int,
-    @SerializedName("format") override val format: MediaFormat? = null,
-    @SerializedName("genres") override val genres: List<String>? = null,
-    @SerializedName("hashtag") override val hashTag: String? = null,
-    @SerializedName("idMal") override val idMal: Long? = null,
-    @SerializedName("isAdult") override val isAdult: Boolean? = null,
-    @SerializedName("isFavourite") override val isFavourite: Boolean,
-    @SerializedName("isLicensed") override val isLicensed: Boolean? = null,
-    @SerializedName("isLocked") override val isLocked: Boolean? = null,
-    @SerializedName("meanScore") override val meanScore: Int? = null,
-    @SerializedName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel? = null,
-    @SerializedName("popularity") override val popularity: Int? = null,
-    @SerializedName("rankings") override val rankings: List<Rank>? = null,
-    @SerializedName("season") override val season: MediaSeason? = null,
-    @SerializedName("siteUrl") override val siteUrl: String? = null,
-    @SerializedName("source") override val source: MediaSource? = null,
-    @SerializedName("startDate") override val startDate: FuzzyDate? = null,
-    @SerializedName("status") override val status: MediaStatus? = null,
-    @SerializedName("synonyms") override val synonyms: List<String>? = null,
-    @SerializedName("tags") override val tags: List<Tag>? = null,
-    @SerializedName("title") override val title: Title? = null,
-    @SerializedName("trailer") override val trailer: Trailer? = null,
-    @SerializedName("trending") override val trending: Int? = null,
-    @SerializedName("type") override val type: MediaType,
-    @SerializedName("updatedAt") override val updatedAt: Long? = null,
-    @SerializedName("volumes") override val volumes: Int? = null,
-    @SerializedName("mediaListEntry") override val mediaListEntry: MediaListModelCore? = null
+    @SerialName("id") override val id: Long,
+    @SerialName("averageScore") override val averageScore: Int? = null,
+    @SerialName("bannerImage") override val bannerImage: String? = null,
+    @SerialName("chapters") override val chapters: Int? = null,
+    @SerialName("countryOfOrigin") override val countryOfOrigin: CountryCode? = null,
+    @SerialName("coverImage") override val coverImage: CoverImage? = null,
+    @SerialName("description") override val description: String? = null,
+    @SerialName("duration") override val duration: Int? = null,
+    @SerialName("endDate") override val endDate: FuzzyDateModel? = null,
+    @SerialName("episodes") override val episodes: Int? = null,
+    @SerialName("externalLinks") override val externalLinks: List<ExternalLink>? = null,
+    @SerialName("favourites") override val favourites: Int,
+    @SerialName("format") override val format: MediaFormat? = null,
+    @SerialName("genres") override val genres: List<String>? = null,
+    @SerialName("hashtag") override val hashTag: String? = null,
+    @SerialName("idMal") override val idMal: Long? = null,
+    @SerialName("isAdult") override val isAdult: Boolean? = null,
+    @SerialName("isFavourite") override val isFavourite: Boolean,
+    @SerialName("isLicensed") override val isLicensed: Boolean? = null,
+    @SerialName("isLocked") override val isLocked: Boolean? = null,
+    @SerialName("meanScore") override val meanScore: Int? = null,
+    @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel? = null,
+    @SerialName("popularity") override val popularity: Int? = null,
+    @SerialName("rankings") override val rankings: List<Rank>? = null,
+    @SerialName("season") override val season: MediaSeason? = null,
+    @SerialName("siteUrl") override val siteUrl: String? = null,
+    @SerialName("source") override val source: MediaSource? = null,
+    @SerialName("startDate") override val startDate: FuzzyDateModel? = null,
+    @SerialName("status") override val status: MediaStatus? = null,
+    @SerialName("synonyms") override val synonyms: List<String>? = null,
+    @SerialName("tags") override val tags: List<Tag>? = null,
+    @SerialName("title") override val title: Title? = null,
+    @SerialName("trailer") override val trailer: Trailer? = null,
+    @SerialName("trending") override val trending: Int? = null,
+    @SerialName("type") override val type: MediaType,
+    @SerialName("updatedAt") override val updatedAt: Long? = null,
+    @SerialName("volumes") override val volumes: Int? = null,
+    @SerialName("mediaListEntry") override val mediaListEntry: MediaListModelCore? = null
 ) : IMediaModelExtended {
 
     /** [MediaCover](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
@@ -78,41 +80,45 @@ internal data class MediaModelExtended(
      * @param large The cover image at its large size
      * @param medium The cover image at medium size
      */
+    @Serializable
     internal data class CoverImage(
-        @SerializedName("color") val color: String? = null,
-        @SerializedName("extraLarge") val extraLarge: String? = null,
-        @SerializedName("large") val large: String? = null,
-        @SerializedName("medium") val medium: String? = null
+        @SerialName("color") val color: String? = null,
+        @SerialName("extraLarge") val extraLarge: String? = null,
+        @SerialName("large") val large: String? = null,
+        @SerialName("medium") val medium: String? = null
     )
 
     /** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
      * An external link to another site related to the media
      */
+    @Serializable
     internal data class ExternalLink(
-        @SerializedName("site") val site: String,
-        @SerializedName("url") val url: String,
-        @SerializedName("id") override val id: Long
+        @SerialName("site") val site: String,
+        @SerialName("url") val url: String,
+        @SerialName("id") override val id: Long
     ) : Identity
 
     /**
      * Genre as a single element
      */
+    @Serializable
     internal data class Genre(
-        @SerializedName("genre") val genre: String
+        @SerialName("genre") val genre: String
     )
 
     /** [MediaRank](https://anilist.github.io/ApiV2-GraphQL-Docs/mediarank.doc.html)
      * The ranking of a media in a particular time span and format compared to other media
      */
+    @Serializable
     internal data class Rank(
-        @SerializedName("allTime") val allTime: Boolean? = null,
-        @SerializedName("context") val context: String,
-        @SerializedName("format") val format: MediaFormat,
-        @SerializedName("rank") val rank: Int,
-        @SerializedName("season") val season: MediaSeason? = null,
-        @SerializedName("type") val type: MediaRankType,
-        @SerializedName("year") val year: Int? = null,
-        @SerializedName("id") override val id: Long
+        @SerialName("allTime") val allTime: Boolean? = null,
+        @SerialName("context") val context: String,
+        @SerialName("format") val format: MediaFormat,
+        @SerialName("rank") val rank: Int,
+        @SerialName("season") val season: MediaSeason? = null,
+        @SerialName("type") val type: MediaRankType,
+        @SerialName("year") val year: Int? = null,
+        @SerialName("id") override val id: Long
     ) : Identity
 
     /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
@@ -126,33 +132,36 @@ internal data class MediaModelExtended(
      * @param isMediaSpoiler If the tag is a spoiler for this media
      * @param isAdult If the tag is only for adult 18+ media
      */
+    @Serializable
     internal data class Tag(
-        @SerializedName("name") val name: String,
-        @SerializedName("description") val description: String? = null,
-        @SerializedName("category") val category: String? = null,
-        @SerializedName("rank") val rank: Int? = null,
-        @SerializedName("isGeneralSpoiler") val isGeneralSpoiler: Boolean? = null,
-        @SerializedName("isMediaSpoiler") val isMediaSpoiler: Boolean? = null,
-        @SerializedName("isAdult") val isAdult: Boolean? = null,
-        @SerializedName("id") override val id: Long
+        @SerialName("name") val name: String,
+        @SerialName("description") val description: String? = null,
+        @SerialName("category") val category: String? = null,
+        @SerialName("rank") val rank: Int? = null,
+        @SerialName("isGeneralSpoiler") val isGeneralSpoiler: Boolean? = null,
+        @SerialName("isMediaSpoiler") val isMediaSpoiler: Boolean? = null,
+        @SerialName("isAdult") val isAdult: Boolean? = null,
+        @SerialName("id") override val id: Long
     ) : Identity
 
     /** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
      * The official titles of the media in various languages
      */
+    @Serializable
     internal data class Title(
-        @SerializedName("romaji") val romaji: String? = null,
-        @SerializedName("english") val english: String? = null,
-        @SerializedName("native") val native: String? = null,
-        @SerializedName("userPreferred") val userPreferred: String? = null
+        @SerialName("romaji") val romaji: String? = null,
+        @SerialName("english") val english: String? = null,
+        @SerialName("native") val native: String? = null,
+        @SerialName("userPreferred") val userPreferred: String? = null
     )
 
     /** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
      * Media trailer or advertisement
      */
+    @Serializable
     internal data class Trailer(
-        @SerializedName("id") val id: String? = null,
-        @SerializedName("site") val site: String? = null,
-        @SerializedName("thumbnail") val thumbnail: String? = null
+        @SerialName("id") val id: String? = null,
+        @SerialName("site") val site: String? = null,
+        @SerialName("thumbnail") val thumbnail: String? = null
     )
 }

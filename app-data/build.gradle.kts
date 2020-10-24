@@ -29,6 +29,8 @@ dependencies {
     implementation(Libraries.CashApp.Copper.copper)
     implementation(Libraries.Dropbox.store)
 
+    implementation(Libraries.retrofitSerializer)
+
     debugImplementation(Libraries.Chuncker.debug)
     releaseImplementation(Libraries.Chuncker.release)
 

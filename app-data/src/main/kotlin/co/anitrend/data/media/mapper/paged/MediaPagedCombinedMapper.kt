@@ -18,7 +18,7 @@
 package co.anitrend.data.media.mapper.paged
 
 import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
-import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
@@ -32,7 +32,7 @@ internal class MediaPagedCombinedMapper(
     private val localSource: MediaLocalSource,
     private val scheduleMapper: AiringScheduleMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
-) : GraphQLMapper<MediaPageModel, List<MediaEntity>>() {
+) : DefaultMapper<MediaPageModel, List<MediaEntity>>() {
 
     private suspend fun saveAiringSchedule(source: MediaPageModel): List<MediaEntity> {
         val media = source.page.media

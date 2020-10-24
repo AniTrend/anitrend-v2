@@ -18,15 +18,18 @@
 package co.anitrend.data.recommendation.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import co.anitrend.data.recommendation.model.remote.RecommendationModel
 import co.anitrend.data.recommendation.model.remote.edge.RecommendationEdge
-import co.anitrend.domain.common.entity.contract.IEntityPageInfo
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [RecommendationConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/recommendationconnection.doc.html)
  * Review connection
  */
+@Serializable
 internal class RecommendationConnection(
-    override val edges: List<RecommendationEdge>?,
-    override val nodes: List<RecommendationModel>?,
-    override val pageInfo: IEntityPageInfo?
+    @SerialName("edges") override val edges: List<RecommendationEdge>?,
+    @SerialName("nodes") override val nodes: List<RecommendationModel>?,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<RecommendationEdge, RecommendationModel>

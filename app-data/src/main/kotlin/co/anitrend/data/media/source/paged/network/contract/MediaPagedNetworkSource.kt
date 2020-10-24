@@ -24,23 +24,21 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaSort
 import kotlinx.coroutines.launch
 
 internal abstract class MediaPagedNetworkSource(
     dispatchers: SupportDispatchers
 ) : SupportPagingLiveDataSource<IGraphPayload, Media>(dispatchers) {
 
-    protected lateinit var query: MediaQuery
+    protected val query: MediaQuery = MediaQuery(
+        sort = listOf(MediaSort.POPULARITY)
+    )
 
     protected abstract suspend fun getMedia(
         callback: RequestCallback,
         pageInfo: IRequestHelper.RequestType
     ) : List<Media>?
-
-    internal fun using(query: IGraphPayload): MediaPagedNetworkSource {
-        this.query = query as MediaQuery
-        return this
-    }
 
     /**
      * Load initial data.
@@ -66,7 +64,7 @@ internal abstract class MediaPagedNetworkSource(
                 IRequestHelper.RequestType.INITIAL
             ) {
                 val result = getMedia(it, IRequestHelper.RequestType.INITIAL)
-                callback.onResult(result.orEmpty(), null, null)
+                callback.onResult(result.orEmpty(), query, query)
             }
         }
     }
@@ -98,7 +96,7 @@ internal abstract class MediaPagedNetworkSource(
             ) {
                 supportPagingHelper.onPageNext()
                 val result = getMedia(it, IRequestHelper.RequestType.AFTER)
-                callback.onResult(result.orEmpty(), null)
+                callback.onResult(result.orEmpty(), params.key)
             }
         }
     }
@@ -131,7 +129,7 @@ internal abstract class MediaPagedNetworkSource(
                 if (!supportPagingHelper.isFirstPage()) {
                     supportPagingHelper.onPagePrevious()
                     val result = getMedia(it, IRequestHelper.RequestType.BEFORE)
-                    callback.onResult(result.orEmpty(), null)
+                    callback.onResult(result.orEmpty(), params.key)
                 }
             }
         }

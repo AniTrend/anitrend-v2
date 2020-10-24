@@ -18,17 +18,19 @@
 package co.anitrend.data.airing.model
 
 import co.anitrend.data.shared.common.Identity
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
  * Media Airing Schedule
  *
  * @param mediaId The associate media of the airing episode
  */
+@Serializable
 internal data class AiringScheduleModel(
-    @SerializedName("airingAt") val airingAt: Long,
-    @SerializedName("episode") val episode: Int,
-    @SerializedName("mediaId") val mediaId: Long,
-    @SerializedName("timeUntilAiring") val timeUntilAiring: Long,
-    @SerializedName("id") override val id: Long
+    @SerialName("airingAt") val airingAt: Long,
+    @SerialName("episode") val episode: Int,
+    @SerialName("mediaId") val mediaId: Long,
+    @SerialName("timeUntilAiring") val timeUntilAiring: Long,
+    @SerialName("id") override val id: Long
 ) : Identity
