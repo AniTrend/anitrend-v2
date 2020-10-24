@@ -30,6 +30,8 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.android.controller.AndroidPowerController
 import co.anitrend.core.android.controller.contract.PowerController
+import co.anitrend.core.android.shortcut.ShortcutFacade
+import co.anitrend.core.android.shortcut.contract.IShortcutFacade
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.core.helper.StorageHelper
@@ -84,6 +86,12 @@ private val coreModule = module {
 
     single {
         SupportDispatchers()
+    }
+
+    factory<IShortcutFacade> {
+        ShortcutFacade(
+            context = androidContext()
+        )
     }
 
     factory {
