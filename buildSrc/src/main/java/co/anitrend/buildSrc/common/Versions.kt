@@ -43,8 +43,8 @@ object Versions {
      */
     const val versionName = "$major.$minor.$patch-alpha$candidate"
 
-    const val mockk = "1.10.0"
-    const val junit = "4.13"
+    const val mockk = "1.10.2"
+    const val junit = "4.13.1"
 
     const val timber = "4.7.1"
     const val threeTenBp = "1.2.4"
@@ -56,4 +56,5 @@ object Versions {
 
     const val prettyTime = "4.0.4.Final"
     const val scalingImageView = "3.10.0"
+    const val serializationConverter = "0.8.0"
 }
