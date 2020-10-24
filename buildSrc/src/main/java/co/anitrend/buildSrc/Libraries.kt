@@ -404,17 +404,17 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "17.5.0"
+                private const val version = "17.6.0"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "17.2.1"
+                private const val version = "17.2.2"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.2.1"
+                    private const val version = "2.3.0"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
