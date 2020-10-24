@@ -6,7 +6,7 @@
 
     <application>
         <activity
-            android:name=".ui.activity.SettingsScreen"
+            android:name=".component.screen.SettingsScreen"
             android:label="@string/title_activity_settings_screen" />
 
         <provider

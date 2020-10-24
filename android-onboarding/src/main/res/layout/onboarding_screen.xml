@@ -16,7 +16,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<co.anitrend.onboarding.widget.OnBoardingView
+<co.anitrend.onboarding.component.widget.OnBoardingView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -42,7 +42,7 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.84"/>
 
-        <co.anitrend.core.android.ui.widget.indicator.InkPageIndicator
+        <co.anitrend.core.android.components.pageindicator.InkPageIndicator
             android:id="@+id/inkPageIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,4 +92,4 @@
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 
-</co.anitrend.onboarding.widget.OnBoardingView>
+</co.anitrend.onboarding.component.widget.OnBoardingView>

@@ -16,13 +16,13 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.constraintlayout.motion.widget.MotionLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="co.anitrend.splash.ui.activity.SplashScreen"
+    tools:context="co.anitrend.splash.component.screen.SplashScreen"
     app:layoutDescription="@xml/content_splash_scene">
 
     <ProgressBar
@@ -152,4 +152,4 @@
 
     </LinearLayout>
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

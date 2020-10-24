@@ -21,7 +21,7 @@
     package="co.anitrend.search">
 
     <application>
-        <activity android:name=".ui.activity.SearchScreen"
+        <activity android:name=".component.screen.SearchScreen"
             android:label="@string/title_activity_search_screen" />
 
         <provider

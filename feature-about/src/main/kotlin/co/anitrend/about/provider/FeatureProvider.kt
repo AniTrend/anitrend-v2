@@ -19,7 +19,7 @@ package co.anitrend.about.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.about.ui.activity.AboutScreen
+import co.anitrend.about.component.screen.AboutScreen
 import co.anitrend.navigation.AboutRouter
 
 internal class FeatureProvider : AboutRouter.Provider {

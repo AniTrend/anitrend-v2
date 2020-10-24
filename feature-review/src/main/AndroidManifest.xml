@@ -16,4 +16,9 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.anitrend.review" />
+    package="co.anitrend.review" >
+
+    <application>
+        <activity android:name=".component.screen.ReviewScreen" />
+    </application>
+</manifest>

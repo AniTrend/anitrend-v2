@@ -20,7 +20,7 @@ package co.anitrend.media.component.discover.ui
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.ui.fragment.list.AniTrendListFragment
+import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.media.entity.base.IMedia
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
@@ -33,7 +33,7 @@ class DiscoverContent(
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: ISupportAdapter<IMedia>,
     override val defaultSpanSize: Int = R.integer.grid_list_x2
-) : AniTrendListFragment<IMedia>() {
+) : AniTrendListContent<IMedia>() {
 
     private val viewModel by viewModel<DiscoverViewModel>()
 
@@ -41,7 +41,7 @@ class DiscoverContent(
         MediaQuery.TAG,
         MediaQuery(
             type = MediaType.ANIME,
-            sort = listOf(MediaSort.TRENDING)
+            sort = listOf(MediaSort.POPULARITY)
         )
     )
 
@@ -55,7 +55,7 @@ class DiscoverContent(
      */
     override fun onFetchDataInitialize() {
         viewModelState().invoke(
-            requireNotNull(mediaQuery)
+            requireNotNull(mediaQuery), false
         )
     }
 
