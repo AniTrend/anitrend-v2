@@ -21,12 +21,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.startup.AppInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MainRouter
-import co.anitrend.presenter.MainPresenter
+import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.provider.FeatureProvider
-import co.anitrend.ui.MainScreen
-import co.anitrend.viewmodel.MainScreenViewModel
+import co.anitrend.component.screen.MainScreen
+import co.anitrend.component.viewmodel.MainScreenViewModel
 import io.wax911.emojify.initializer.EmojiInitializer
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

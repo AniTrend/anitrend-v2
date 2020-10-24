@@ -15,14 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.provider
+package co.anitrend.component.viewmodel
 
-import android.content.Context
-import android.content.Intent
-import co.anitrend.navigation.MainRouter
-import co.anitrend.component.screen.MainScreen
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import co.anitrend.model.ScreenState
 
-class FeatureProvider : MainRouter.Provider {
-    override fun activity(context: Context?) =
-        Intent(context, MainScreen::class.java)
+class MainScreenViewModel(screen: FragmentActivity) : ViewModel() {
+    internal val state = ScreenState(screen)
 }

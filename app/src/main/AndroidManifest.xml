@@ -37,7 +37,7 @@
         android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.MainScreen"
+        <activity android:name=".component.screen.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider
