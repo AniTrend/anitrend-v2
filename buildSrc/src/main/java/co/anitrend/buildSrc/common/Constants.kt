@@ -26,6 +26,7 @@ internal const val domain = "app-domain"
 internal const val navigation = "app-navigation"
 
 internal const val androidCore = "android-core"
+internal const val androidNavigation = "android-navigation"
 internal const val onBoarding = "android-onboarding"
 internal const val splash = "android-splash"
 internal const val auth = "android-auth"
@@ -49,7 +50,7 @@ internal const val news = "feature-news"
 internal val baseModules = listOf(app, core, data, domain, navigation)
 
 internal val androidModules = listOf(
-    androidCore, onBoarding, splash, auth
+    androidCore, androidNavigation, onBoarding, splash, auth
 )
 
 internal val featureModules = listOf(
