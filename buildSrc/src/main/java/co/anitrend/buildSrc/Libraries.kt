@@ -242,7 +242,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha03"
+            private const val version = "1.0.0-rc01"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
