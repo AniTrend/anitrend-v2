@@ -24,24 +24,14 @@ import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.core.android.binding.IBindingView
-import org.koin.android.ext.android.getKoin
+import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.ScopeID
 
-abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeComponent,
-    IBindingView<B> {
-
-    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
+abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeComponent, IBindingView<B> {
 
     override var binding: B? = null
 
-    override val koin by lazy(UNSAFE) {
-        getKoin()
-    }
-
-    override val scope by lazy(UNSAFE) {
-        createScope(scopeID, getScopeName(), this)
-    }
+    override val scope by lazy(UNSAFE) { fragmentScope() }
 
     /**
      * Proxy for a view model state if one exists
@@ -51,7 +41,7 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeCo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         runCatching {
-            koin.logger.debug("Open fragment scope: $scope")
+            getKoin().logger.debug("Open fragment scope: $scope")
         }
     }
 
@@ -62,9 +52,5 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeCo
     override fun onDestroy() {
         super.onDestroy()
         binding = null
-        runCatching {
-            koin.logger.debug("Close fragment scope: $scope")
-            scope.close()
-        }
     }
 }

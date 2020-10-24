@@ -23,20 +23,13 @@ import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
 import org.koin.android.ext.android.getKoin
+import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.ScopeID
 
 abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeComponent {
 
-    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
-
-    override val koin by lazy(UNSAFE) {
-        getKoin()
-    }
-
-    override val scope by lazy(UNSAFE) {
-        createScope(scopeID, getScopeName(), this)
-    }
+    override val scope by lazy(UNSAFE) { fragmentScope() }
 
     /**
      * Proxy for a view model state if one exists
@@ -46,19 +39,7 @@ abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeCompo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         runCatching {
-            koin.logger.debug("Open fragment scope: $scope")
-        }
-    }
-
-    /**
-     * Called when the fragment is no longer in use.  This is called
-     * after [.onStop] and before [.onDetach].
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        runCatching {
-            koin.logger.debug("Close fragment scope: $scope")
-            scope.close()
+            getKoin().logger.debug("Open fragment scope: $scope")
         }
     }
 }

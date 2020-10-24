@@ -19,20 +19,12 @@ package co.anitrend.core.component.scope
 
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.arch.AniTrendExperimentalFeature
-import org.koin.core.context.GlobalContext
 import org.koin.core.scope.KoinScopeComponent
 import org.koin.core.scope.ScopeID
+import org.koin.core.scope.getScopeId
+import org.koin.core.scope.newScope
 
 @AniTrendExperimentalFeature
-class KoinScope : KoinScopeComponent {
-
-    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
-
-    override val koin by lazy(UNSAFE) {
-        GlobalContext.get()
-    }
-
-    override val scope by lazy(UNSAFE) {
-        createScope(scopeID, getScopeName(), this)
-    }
+class KoinScope(source: Any?) : KoinScopeComponent {
+    override val scope by lazy(UNSAFE) { newScope(source) }
 }

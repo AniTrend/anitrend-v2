@@ -19,34 +19,25 @@ package co.anitrend.core.service
 
 import androidx.lifecycle.LifecycleService
 import co.anitrend.arch.extension.ext.UNSAFE
-import org.koin.android.ext.android.getKoin
 import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.ScopeID
+import org.koin.core.scope.newScope
 
 abstract class AniTrendLifecycleService : LifecycleService(), KoinScopeComponent {
 
-    private val scopeID: ScopeID by lazy(UNSAFE) { getScopeId() }
-
-    override val koin by lazy(UNSAFE) {
-        getKoin()
-    }
-
-    override val scope by lazy(UNSAFE) {
-        createScope(scopeID, getScopeName(), this)
-    }
+    override val scope by lazy(UNSAFE) { newScope(this) }
 
     override fun onCreate() {
         super.onCreate()
         runCatching {
-            koin.logger.debug("Open activity scope: $scope")
+            getKoin().logger.debug("Open activity scope: $scope")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         runCatching {
-            koin.logger.debug("Close service scope: $scope")
-            scope.close()
+            getKoin().logger.debug("Close service scope: $scope")
+            closeScope()
         }
     }
 }
