@@ -17,7 +17,6 @@
 
 package co.anitrend.domain.media.entity
 
-import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.extension.INVALID_ID
 import co.anitrend.domain.genre.entity.Genre
@@ -40,7 +39,7 @@ import co.anitrend.domain.tag.entity.Tag
 
 data class Media(
     override val sourceId: MediaSourceId,
-    override val origin: CountryCode?,
+    override val countryCode: CharSequence?,
     override val description: CharSequence?,
     override val externalLinks: Collection<MediaExternalLink>,
     override val favouritesCount: Long,
@@ -93,7 +92,7 @@ data class Media(
 
     override fun hashCode(): Int {
         var result = sourceId.hashCode()
-        result = 31 * result + (origin?.hashCode() ?: 0)
+        result = 31 * result + (countryCode?.hashCode() ?: 0)
         result = 31 * result + (description?.hashCode() ?: 0)
         result = 31 * result + externalLinks.hashCode()
         result = 31 * result + favouritesCount.hashCode()
@@ -129,7 +128,7 @@ data class Media(
     companion object {
         fun empty() = Media(
             sourceId = MediaSourceId.empty(),
-            origin = null,
+            countryCode = null,
             description = null,
             externalLinks = emptyList(),
             favouritesCount = 0,

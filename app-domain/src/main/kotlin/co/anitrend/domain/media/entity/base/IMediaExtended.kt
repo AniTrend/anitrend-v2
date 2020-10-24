@@ -17,7 +17,6 @@
 
 package co.anitrend.domain.media.entity.base
 
-import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
@@ -28,7 +27,7 @@ import co.anitrend.domain.tag.entity.Tag
 
 interface IMediaExtended : IMediaCore {
     val sourceId: IMediaSourceId
-    val origin: CountryCode?
+    val countryCode: CharSequence?
     val description: CharSequence?
     val externalLinks: Collection<MediaExternalLink>
     val favouritesCount: Long
