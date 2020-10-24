@@ -247,7 +247,7 @@ object Libraries {
         }
 
         object SwipeRefresh {
-            private const val version = "1.1.0"
+            private const val version = "1.2.0-alpha01"
             const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$version"
         }
 
