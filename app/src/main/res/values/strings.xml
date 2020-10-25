@@ -19,7 +19,5 @@
 
     <string name="action_account">Accounts</string>
     <string name="action_notifications">Notifications</string>
-    <string name="action_recommendations">Recommendations</string>
     <string name="action_updates">Updates</string>
-    <string name="action_scroll_top">Scroll to top</string>
 </resources>
