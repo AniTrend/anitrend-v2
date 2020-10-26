@@ -38,16 +38,9 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeCo
      */
     override fun viewModelState(): ISupportViewModelState<*>? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        runCatching {
-            getKoin().logger.debug("Open fragment scope: $scope")
-        }
-    }
-
     /**
      * Called when the fragment is no longer in use.  This is called
-     * after [.onStop] and before [.onDetach].
+     * after [onStop] and before [onDetach].
      */
     override fun onDestroy() {
         super.onDestroy()

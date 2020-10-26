@@ -17,15 +17,11 @@
 
 package co.anitrend.core.component.content.list
 
-import android.os.Bundle
-import android.view.View
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
-import org.koin.android.ext.android.getKoin
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.ScopeID
 
 abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeComponent {
 
@@ -35,11 +31,4 @@ abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeCompo
      * Proxy for a view model state if one exists
      */
     override fun viewModelState(): ISupportViewModelState<*>? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        runCatching {
-            getKoin().logger.debug("Open fragment scope: $scope")
-        }
-    }
 }
