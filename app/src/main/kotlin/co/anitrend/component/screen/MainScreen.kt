@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.IdRes
+import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.UNSAFE
@@ -45,6 +46,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import timber.log.Timber
@@ -58,7 +60,6 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         )
     }
 
-    // TODO: When theme is changed we lose the fragment
     private val navigationDrawer: INavigationDrawer?
         get() = supportFragmentManager.findFragmentByTag(
             drawerFragmentItem.tag()
@@ -132,7 +133,13 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenResumed { setUpNavigationDrawer() }
         lifecycleScope.launchWhenResumed { observeNavigationDrawer() }
-        drawerFragmentItem.commit(requireBinding().bottomNavigation, this) {}
+        supportFragmentManager.commit {
+            replace<BottomDrawerContent>(
+                R.id.bottomNavigation,
+                drawerFragmentItem.parameter,
+                drawerFragmentItem.tag()
+            )
+        }
         onUpdateUserInterface()
     }
 
