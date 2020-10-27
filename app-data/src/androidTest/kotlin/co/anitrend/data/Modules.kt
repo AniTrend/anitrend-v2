@@ -51,6 +51,12 @@ private val store = module {
     } binds IAniTrendStore.BINDINGS
 }
 
+private val provider = module {
+    factory {
+        androidContext().contentResolver
+    }
+}
+
 private val mapper = module {
     single {
         AiringScheduleMapper(
@@ -65,7 +71,7 @@ private val mapper = module {
     }
 }
 
-internal val testModules = listOf(data, store, mapper)
+internal val testModules = listOf(data, store, provider, mapper)
 
 internal fun initializeKoin() = startKoin {
     androidContext(

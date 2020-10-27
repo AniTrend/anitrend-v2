@@ -45,6 +45,7 @@ internal open class CoreTestSuite : KoinTest {
     protected val json by inject<Json>()
     protected val store by inject<IAniTrendStore>()
     protected val dispatchers by inject<SupportDispatchers>()
+    protected val contentResolver by inject<ContentResolver>()
 
     protected val koin: KoinApplication by lazy { initializeKoin() }
 
