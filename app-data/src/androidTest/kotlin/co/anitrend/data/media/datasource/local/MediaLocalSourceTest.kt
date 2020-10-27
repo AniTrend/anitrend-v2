@@ -37,11 +37,7 @@ import kotlin.time.ExperimentalTime
 internal class MediaLocalSourceTest : CoreTestSuite() {
 
     private val pageModel: GraphQLResponse<MediaPageModel>? by lazy {
-        "media_paged_response.json".load(
-            GraphQLResponse.serializer(
-                MediaPageModel.serializer()
-            )
-        )
+        "media_paged_response.json".load()
     }
 
     private suspend fun populateDatabase(model: MediaPageModel) {

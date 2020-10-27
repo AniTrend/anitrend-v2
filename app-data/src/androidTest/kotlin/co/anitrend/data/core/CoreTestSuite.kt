@@ -17,10 +17,11 @@
 
 package co.anitrend.data.core
 
+import android.content.ContentResolver
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.json.Json
 import org.junit.After
@@ -30,7 +31,7 @@ import org.koin.core.KoinApplication
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import java.io.InputStreamReader
-import kotlin.reflect.javaType
+import kotlin.reflect.jvm.javaType
 import kotlin.reflect.typeOf
 
 /**
@@ -41,13 +42,13 @@ import kotlin.reflect.typeOf
 internal open class CoreTestSuite : KoinTest {
 
     private val source = CoreTestSuite::class.java
+    private val koin: KoinApplication by lazy { initializeKoin() }
 
     protected val json by inject<Json>()
     protected val store by inject<IAniTrendStore>()
     protected val dispatchers by inject<SupportDispatchers>()
     protected val contentResolver by inject<ContentResolver>()
 
-    protected val koin: KoinApplication by lazy { initializeKoin() }
 
     @Before
     fun startUp() {
@@ -55,11 +56,25 @@ internal open class CoreTestSuite : KoinTest {
         runCatching { koin }
     }
 
-    protected inline fun <reified T> String.load(deserializer: DeserializationStrategy<T>): T? {
+    protected inline fun <reified T> String.load(deserializer: DeserializationStrategy<T?>): T? {
         val resource = source.getResourceAsStream("templates/${this}")
         assertNotNull(resource)
         val result: T? = InputStreamReader(resource).use {
             json.decodeFromString(deserializer, it.readText())
+        }
+        assertNotNull(result)
+        return result
+    }
+
+    protected inline fun <reified T> String.load(): T? {
+        val resource = source.getResourceAsStream("templates/${this}")
+        assertNotNull(resource)
+        val result: T? = InputStreamReader(resource).use {
+            //val typeToken = object : TypeToken<T>(){}.type
+            Gson().fromJson<T>(
+                it.readText(),
+                typeOf<T>().javaType
+            )
         }
         assertNotNull(result)
         return result
