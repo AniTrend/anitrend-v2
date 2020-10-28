@@ -17,12 +17,9 @@
 
 package co.anitrend.core.extensions
 
-import android.graphics.Color
-import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.data.arch.AniTrendExperimentalFeature
@@ -38,6 +35,8 @@ const val moduleTag = "CoreExtensions"
  * Text separator character
  */
 const val CHARACTER_SEPARATOR: Char = '•'
+
+fun Bundle?.orEmpty(): Bundle = this ?: Bundle.EMPTY
 
 @AniTrendExperimentalFeature
 fun FragmentActivity.recreateModules() {
