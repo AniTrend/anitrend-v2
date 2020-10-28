@@ -15,16 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.helper.runtime
+package co.anitrend.core.crash.runtime
 
-import timber.log.Timber
+import co.anitrend.core.crash.contract.IExceptionCrashHandler
 
 /**
  * An uncaught exception handler for the application
  */
-class UncaughtExceptionHandler(
-    private val exceptionHandler: Thread.UncaughtExceptionHandler? =
-        Thread.getDefaultUncaughtExceptionHandler()
+internal class UncaughtExceptionHandler(
+    private val exceptionHandler: IExceptionCrashHandler
 ) : Thread.UncaughtExceptionHandler {
 
     /**
@@ -36,12 +35,6 @@ class UncaughtExceptionHandler(
      * @param throwable the exception
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
-        Timber.tag(TAG).e(throwable, thread.name)
-        exceptionHandler?.uncaughtException(thread, throwable)
-    }
-
-    companion object {
-        private val TAG =
-            UncaughtExceptionHandler::class.java.simpleName
+        exceptionHandler.onException(thread, throwable)
     }
 }

@@ -19,17 +19,10 @@ package co.anitrend
 
 import androidx.startup.AppInitializer
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.core.helper.runtime.UncaughtExceptionHandler
 import co.anitrend.core.initializer.InjectorInitializer
 import org.koin.core.context.stopKoin
 
 class App : AniTrendApplication() {
-
-    private fun createUncaughtExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(
-            UncaughtExceptionHandler()
-        )
-    }
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
@@ -47,11 +40,5 @@ class App : AniTrendApplication() {
      */
     override fun restartDependencyInjection() {
         stopKoin()
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        if (BuildConfig.DEBUG)
-            createUncaughtExceptionHandler()
     }
 }
