@@ -26,13 +26,14 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.common.media.ui.databinding.MediaDetailItemBinding
+import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.media.entity.base.IMedia
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaDetailItem(
-    val media: IMedia?
-) : RecyclerItem(media?.id) {
+    val media: IMedia
+) : RecyclerItemBinding<MediaDetailItemBinding>(media.id) {
 
     private var disposable: Disposable? = null
 
@@ -53,7 +54,7 @@ internal data class MediaDetailItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        TODO("Not yet implemented")
+        binding = MediaDetailItemBinding.bind(view)
     }
 
     /**
@@ -61,18 +62,9 @@ internal data class MediaDetailItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     * Provides a preferred span size for the item
-     *
-     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
-     * @param position position of the current item
-     * @param resources optionally useful for dynamic size check with different configurations
-     */
-    override fun getSpanSize(spanCount: Int, position: Int, resources: Resources): Int {
-        TODO("Not yet implemented")
+        disposable?.dispose()
+        disposable = null
+        super.unbind(view)
     }
 
     companion object {

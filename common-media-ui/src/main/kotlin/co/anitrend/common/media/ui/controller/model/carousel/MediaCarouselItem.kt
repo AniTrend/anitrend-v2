@@ -24,16 +24,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.FULL_SPAN_SIZE
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.arch.ui.extension.setUpWith
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
 import co.anitrend.common.media.ui.adapter.MediaItemAdapter
+import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
+import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.airing.enums.AiringSort
@@ -46,10 +48,9 @@ import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaCarouselItem(
-    val entity: IEntity?
-) : RecyclerItem(entity?.id) {
-
-    private var binding: MediaCarouselItemBinding? = null
+    private val entity: IEntity,
+    private val viewPool: RecyclerView.RecycledViewPool
+) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 
     private fun setUpCarouselItems(view: View, mediaItems: List<IMedia>) {
         val mediaItemAdapter = MediaItemAdapter(
@@ -57,23 +58,37 @@ internal class MediaCarouselItem(
             stateConfiguration = StateLayoutConfig()
         )
 
+        val layoutManager = LinearLayoutManager(
+            view.context,
+            if (mediaItems.isEmpty())
+                RecyclerView.VERTICAL
+            else RecyclerView.HORIZONTAL,
+            false
+        )
+
+        with(layoutManager) {
+            // allow prefetching to speed up recycler performance
+            isItemPrefetchEnabled = true
+            initialPrefetchItemCount = 5
+            // If the view types are not the same across RecyclerView then it may lead to performance degradation.
+            recycleChildrenOnDetach = true
+        }
+
         val animator = object : DefaultItemAnimator() {
             override fun getSupportsChangeAnimations() = false
         }
         animator.supportsChangeAnimations = false
 
-        binding?.mediaCarouselRecycler?.itemAnimator = animator
-        binding?.mediaCarouselRecycler?.setUpWith(
+        requireBinding().mediaCarouselRecycler.setRecycledViewPool(viewPool)
+        requireBinding().mediaCarouselRecycler.itemAnimator = animator
+        requireBinding().mediaCarouselRecycler.setUpWith(
             supportAdapter = mediaItemAdapter,
-            recyclerLayoutManager = LinearLayoutManager(
-                view.context, LinearLayoutManager.HORIZONTAL, false
-            ).apply {
-                // allow prefetching to speed up recycler performance
-                isItemPrefetchEnabled = true
-                initialPrefetchItemCount = 5
-            }
+            recyclerLayoutManager = layoutManager
         )
-        mediaItemAdapter.submitList(mediaItems)
+        if (mediaItems.isEmpty())
+            mediaItemAdapter.networkState = NetworkState.Loading
+        else
+            mediaItemAdapter.submitList(mediaItems)
     }
 
     private fun setUpHeadings(view: View, carousel: MediaCarousel) {
@@ -132,7 +147,7 @@ internal class MediaCarouselItem(
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_manga_description)
                 }
                 MediaQuery(
-                        type = carousel.mediaType,
+                    type = carousel.mediaType,
                     sort = listOf(MediaSort.ID)
                 )
             }
@@ -181,7 +196,6 @@ internal class MediaCarouselItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        if (entity == null) return
         binding = MediaCarouselItemBinding.bind(view)
         entity as MediaCarousel
         setUpHeadings(view, entity)
@@ -207,7 +221,7 @@ internal class MediaCarouselItem(
      */
     override fun unbind(view: View) {
         binding?.mediaCarouselAction?.setOnClickListener(null)
-        binding = null
+        super.unbind(view)
     }
 
     companion object {

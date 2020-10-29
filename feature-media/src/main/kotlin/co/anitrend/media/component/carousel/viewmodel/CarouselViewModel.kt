@@ -22,6 +22,7 @@ import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
 import co.anitrend.media.component.carousel.viewmodel.state.CarouselState
 
 class CarouselViewModel(useCase: CarouselUseCaseContract) : ViewModel() {
+
     val state = CarouselState(useCase)
 
     /**

@@ -29,7 +29,7 @@ import co.anitrend.core.android.binding.IBindingView
 import kotlinx.coroutines.flow.MutableStateFlow
 
 abstract class RecyclerItemBinding<B : ViewBinding>(
-    override val id: Long?,
+    override val id: Long,
     override val supportsSelectionMode: Boolean = false
 ) : IRecyclerItem, IBindingView<B> {
 

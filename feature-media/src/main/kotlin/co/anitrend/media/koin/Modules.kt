@@ -17,6 +17,7 @@
 
 package co.anitrend.media.koin
 
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.common.media.ui.adapter.MediaCarouselAdapter
 import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -47,6 +48,7 @@ private val fragmentModule = module {
             dateHelper = get(),
             stateConfig = get(),
             supportViewAdapter = MediaCarouselAdapter(
+                viewPool = RecyclerView.RecycledViewPool(),
                 resources = androidContext().resources,
                 stateConfiguration = get()
             )

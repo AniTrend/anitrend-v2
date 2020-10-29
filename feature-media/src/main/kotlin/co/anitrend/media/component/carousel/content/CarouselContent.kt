@@ -86,7 +86,7 @@ class CarouselContent(
                 SeasonType.FALL -> MediaSeason.WINTER
             },
             currentTime = Instant.now().epochSecond,
-            pageSize = resources.getInteger(R.integer.grid_list_x3).plus(2)
+            pageSize = resources.getInteger(R.integer.grid_list_x3).plus(6)
         )
         viewModel.state(mediaCarouselQuery)
     }

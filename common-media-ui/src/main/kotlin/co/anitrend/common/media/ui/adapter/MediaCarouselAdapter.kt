@@ -33,12 +33,11 @@ import co.anitrend.common.media.ui.controller.model.carousel.MediaCarouselItem.C
 import co.anitrend.domain.common.entity.contract.IEntity
 
 class MediaCarouselAdapter(
+    private val viewPool: RecyclerView.RecycledViewPool,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (IEntity?) -> IRecyclerItem = {
-        MediaCarouselItem(it)
-    }
+    override val mapper: (IEntity) -> IRecyclerItem = { MediaCarouselItem(it, viewPool) }
 ) : SupportListAdapter<IEntity>(EntityDiffUtil) {
 
     /**

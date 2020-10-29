@@ -26,7 +26,6 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.navigation.drawer.controller.helpers.NavigationDiffUtil
 import co.anitrend.navigation.drawer.controller.model.navigation.DividerNavigationItem
@@ -41,12 +40,11 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation.Companion.toNav
 class NavigationAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override val mapper: (Navigation?) -> IRecyclerItem = {
+    override val mapper: (Navigation) -> IRecyclerItem = {
         when (it) {
             is Navigation.Menu -> MenuNavigationItem(it)
             is Navigation.Group -> GroupNavigationItem(it)
             is Navigation.Divider -> DividerNavigationItem(it)
-            null -> SupportFooterLoadingItem(stateConfiguration)
         }
     },
     override val customSupportAnimator: AbstractAnimator? = null,

@@ -48,7 +48,7 @@ class MediaPagedAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (IMedia?) -> IRecyclerItem = {
+    override val mapper: (IMedia) -> IRecyclerItem = {
         when (settings.preferredViewMode) {
             PreferredViewMode.DETAILED_LIST -> MediaDetailItem(it)
             PreferredViewMode.SUMMARY_LIST -> MediaListItem(it)

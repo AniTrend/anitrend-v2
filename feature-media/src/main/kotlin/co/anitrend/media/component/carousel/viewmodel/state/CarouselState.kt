@@ -28,9 +28,9 @@ import co.anitrend.domain.media.entity.MediaCarousel
 
 data class CarouselState(
     private val useCase: CarouselUseCaseContract
-) : ISupportViewModelState<List<MediaCarousel>> {
+) : ISupportViewModelState<List<MediaCarousel>?> {
 
-    private val useCaseResult = MutableLiveData<DataState<List<MediaCarousel>>>()
+    private val useCaseResult = MutableLiveData<DataState<List<MediaCarousel>?>>()
 
     override val model =
         Transformations.switchMap(useCaseResult) { it.model }

@@ -36,9 +36,7 @@ class MediaItemAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (IMedia?) -> IRecyclerItem = {
-        MediaItem(it)
-    }
+    override val mapper: (IMedia) -> IRecyclerItem = { MediaItem(it) }
 ) : SupportListAdapter<IMedia>(MediaDiffUtil) {
 
     /**

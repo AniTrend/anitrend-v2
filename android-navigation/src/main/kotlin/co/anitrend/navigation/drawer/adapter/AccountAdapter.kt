@@ -26,7 +26,6 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.navigation.drawer.controller.helpers.AccountDiffUtil
 import co.anitrend.navigation.drawer.controller.model.account.AnonymousAccountItem
@@ -37,22 +36,31 @@ import co.anitrend.navigation.drawer.controller.model.account.AuthorizeAccountIt
 import co.anitrend.navigation.drawer.controller.model.account.AuthorizeAccountItem.Companion.createAuthorizeAccountViewHolder
 import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.model.account.Account.Companion.toAccountType
-import co.anitrend.navigation.drawer.model.navigation.Navigation.Companion.toNavType
 
 class AccountAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override val mapper: (Account?) -> IRecyclerItem = {
+    override val mapper: (Account) -> IRecyclerItem = {
         when (it) {
             is Account.Authenticated -> AuthenticatedAccountItem(it)
             is Account.Anonymous -> AnonymousAccountItem(it)
             is Account.Authorize -> AuthorizeAccountItem(it)
-            null -> SupportFooterLoadingItem(stateConfiguration)
         }
     },
     override val customSupportAnimator: AbstractAnimator? = null,
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Account>(AccountDiffUtil) {
+
+    /**
+     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
+     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
+     *
+     * The identifiable id of each item should unique, and if non exists
+     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
+     */
+    override fun getStableIdFor(item: Account?): Long {
+        return item?.id ?: RecyclerView.NO_ID
+    }
 
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.
@@ -88,16 +96,5 @@ class AccountAdapter(
         Account.ANONYMOUS -> layoutInflater.createAnonymousAccountViewHolder(parent)
         Account.AUTHENTICATED -> layoutInflater.createAuthenticatedAccountViewHolder(parent)
         else -> layoutInflater.createAuthorizeAccountViewHolder(parent)
-    }
-
-    /**
-     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
-     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
-     *
-     * The identifiable id of each item should unique, and if non exists
-     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
-     */
-    override fun getStableIdFor(item: Account?): Long {
-        return item?.id ?: RecyclerView.NO_ID
     }
 }

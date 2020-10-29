@@ -33,17 +33,17 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaGridItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
+import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.media.entity.base.IMedia
 import co.anitrend.domain.media.entity.base.IMediaExtendedWithMediaList
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaGridItem(
-    val entity: IMedia?
-) : RecyclerItem(entity?.id) {
+    val entity: IMedia
+) : RecyclerItemBinding<MediaGridItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
-    private var binding: MediaGridItemBinding? = null
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -62,21 +62,20 @@ internal data class MediaGridItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        if (entity == null) return
         binding = MediaGridItemBinding.bind(view)
-        disposable = binding?.mediaImage?.using(
+        disposable = requireBinding().mediaImage?.using(
             MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
         )
         entity as IMediaExtendedWithMediaList
-        binding?.mediaRatingWidget?.setupUsingMedia(entity)
-        binding?.mediaSubTitleWidget?.setUpSubTitle(entity)
-        binding?.mediaStatusWidget?.setBackgroundUsing(entity.status)
-        binding?.mediaScheduleTitleWidget?.setUpAiringSchedule(entity)
-        binding?.mediaTitle?.text = SpannableString(entity.title.userPreferred)
-        binding?.mediaCardContainer?.setOnClickListener {
+        requireBinding().mediaRatingWidget.setupUsingMedia(entity)
+        requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
+        requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
+        requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
+        requireBinding().mediaTitle.text = SpannableString(entity.title.userPreferred)
+        requireBinding().mediaCardContainer.setOnClickListener {
             Toast.makeText(view.context, "Opens media screen", Toast.LENGTH_SHORT).show()
         }
-        binding?.mediaCardContainer?.setOnLongClickListener {
+        requireBinding().mediaCardContainer.setOnLongClickListener {
             stateFlow.value =
                 DefaultClickableItem(
                     clickType = ClickType.LONG,
@@ -97,7 +96,7 @@ internal data class MediaGridItem(
         binding?.mediaCardContainer?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
-        binding = null
+        super.unbind(view)
     }
 
     /**
@@ -107,8 +106,11 @@ internal data class MediaGridItem(
      * @param position position of the current item
      * @param resources optionally useful for dynamic size check with different configurations
      */
-    override fun getSpanSize(spanCount: Int, position: Int, resources: Resources) =
-        resources.getInteger(R.integer.grid_list_x2)
+    override fun getSpanSize(
+        spanCount: Int,
+        position: Int,
+        resources: Resources
+    ) = resources.getInteger(R.integer.grid_list_x2)
 
     companion object {
         internal fun LayoutInflater.createGridViewHolder(
