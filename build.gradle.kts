@@ -1,5 +1,7 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 plugins {
-	id("com.github.ben-manes.versions") version "0.33.0"
+    id("com.github.ben-manes.versions")
 }
 
 buildscript {
@@ -42,7 +44,7 @@ tasks {
 
 tasks.named(
     "dependencyUpdates",
-    com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask::class.java
+    DependencyUpdatesTask::class.java
 ).configure {
     checkForGradleUpdate = false
     outputFormatter = "json"
