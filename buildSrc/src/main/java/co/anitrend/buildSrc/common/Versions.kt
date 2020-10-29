@@ -22,7 +22,7 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 18
+    private const val candidate = 20
 
     const val compileSdk = 30
     const val targetSdk = 30
@@ -47,14 +47,14 @@ object Versions {
     const val junit = "4.13.1"
 
     const val timber = "4.7.1"
-    const val threeTenBp = "1.2.4"
+    const val threeTenBp = "1.3.0"
 
     const val debugDB = "1.0.6"
     const val treesSence = "0.3.2"
 
     const val liquidSwipe = "1.3"
 
-    const val prettyTime = "4.0.4.Final"
+    const val prettyTime = "4.0.6.Final"
     const val scalingImageView = "3.10.0"
     const val serializationConverter = "0.8.0"
 }

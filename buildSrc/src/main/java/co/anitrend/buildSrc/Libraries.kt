@@ -117,7 +117,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.0.2"
+            private const val version = "2.0.3"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -242,7 +242,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-rc01"
+            private const val version = "1.0.0"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
@@ -271,7 +271,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.5.0-alpha03"
+            private const val version = "2.5.0-beta01"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
@@ -281,7 +281,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "f998eca6ae"
+            private const val version = "270ea26ba2"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -339,16 +339,6 @@ object Libraries {
         const val blitz = "com.github.perfomer:blitz:$version"
     }
 
-    object BlueLineLabs {
-        object Conductor {
-            private const val version = "3.0.0-rc6"
-            const val conductor = "com.bluelinelabs:conductor:$version"
-            const val transitions = "com.bluelinelabs:conductor-androidx-transition:$version"
-            const val viewPage = "com.bluelinelabs:conductor-viewpager:$version"
-            const val lifecycle = "com.bluelinelabs:conductor-archlifecycle:$version"
-        }
-    }
-
     object CashApp {
         object Copper {
             private const val version = "1.0.0"
@@ -404,7 +394,7 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "17.6.0"
+                private const val version = "18.0.0"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
@@ -468,14 +458,14 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.3.9"
+                private const val version = "1.4.0"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
             }
 
             object Serialization {
-                private const val version = "1.0.0"
+                private const val version = "1.0.1"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
