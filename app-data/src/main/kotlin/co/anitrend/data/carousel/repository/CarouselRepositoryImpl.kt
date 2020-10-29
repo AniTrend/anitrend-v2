@@ -29,7 +29,7 @@ import co.anitrend.domain.media.repository.MediaCarouselRepository
 
 internal class CarouselRepositoryImpl(
     private val source: CarouselSource
-) : SupportRepository(source), MediaCarouselRepository<DataState<List<MediaCarousel>>> {
+) : SupportRepository(source), MediaCarouselRepository<DataState<List<MediaCarousel>?>> {
     override fun getMediaCarousel(query: IGraphPayload) =
         source create source(query).asLiveData()
 }

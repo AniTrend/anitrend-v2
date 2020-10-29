@@ -41,19 +41,19 @@ internal abstract class CarouselSource(
     protected lateinit var query: CarouselQuery
         private set
 
-    protected abstract fun observable(): Flow<List<MediaCarousel>>
+    protected abstract fun observable(): Flow<List<MediaCarousel>?>
 
     protected abstract suspend fun getMediaCarouselAnime(requestCallback: RequestCallback): Boolean
 
     protected abstract suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean
 
-    operator fun invoke(carouselQuery: IGraphPayload): Flow<List<MediaCarousel>> {
+    operator fun invoke(carouselQuery: IGraphPayload): Flow<List<MediaCarousel>?> {
         query = carouselQuery as CarouselQuery
         launch {
-            if (cachePolicy.shouldRefresh(carouselAnimeId)) {
-                requestHelper.runIfNotRunning(
-                    IRequestHelper.RequestType.INITIAL
-                ) {
+            requestHelper.runIfNotRunning(
+                IRequestHelper.RequestType.INITIAL
+            ) {
+                if (cachePolicy.shouldRefresh(carouselAnimeId)) {
                     val success = getMediaCarouselAnime(it)
                     if (success)
                         cachePolicy.updateLastRequest(carouselAnimeId)
@@ -62,10 +62,10 @@ internal abstract class CarouselSource(
         }
 
        launch {
-           if (cachePolicy.shouldRefresh(carouselMangaId)) {
-               requestHelper.runIfNotRunning(
-                   IRequestHelper.RequestType.AFTER
-               ) {
+           requestHelper.runIfNotRunning(
+               IRequestHelper.RequestType.AFTER
+           ) {
+               if (cachePolicy.shouldRefresh(carouselMangaId)) {
                    val success = getMediaCarouselManga(it)
                    if (success)
                        cachePolicy.updateLastRequest(carouselMangaId)

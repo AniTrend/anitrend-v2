@@ -36,4 +36,4 @@ internal class CarouselUseCaseImpl(
     }
 }
 
-typealias CarouselUseCaseContract = MediaCarouselUseCase<DataState<List<MediaCarousel>>>
+typealias CarouselUseCaseContract = MediaCarouselUseCase<DataState<List<MediaCarousel>?>>

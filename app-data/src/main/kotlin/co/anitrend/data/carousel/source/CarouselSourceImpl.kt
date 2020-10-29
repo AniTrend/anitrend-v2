@@ -51,45 +51,47 @@ internal class CarouselSourceImpl(
     dispatchers: SupportDispatchers
 ) : CarouselSource(cachePolicy, dispatchers) {
 
-    private fun Flow<List<MediaEntity>>.toMediaList() = mapNotNull {
-        if (it.isNotEmpty())
-            converter.convertFrom(it)
-        else null
+    private fun Flow<List<MediaEntity>?>.toMediaCarousel(
+        mediaType: MediaType,
+        carouselType: MediaCarousel.CarouselType
+    ) = mapNotNull { entities->
+        entities?.let {
+            MediaCarousel(
+                mediaType,
+                carouselType,
+                converter.convertFrom(it)
+            )
+        }
     }
 
-    override fun observable(): Flow<List<MediaCarousel>> = flow {
-        val flows = listOf(
+    override fun observable(): Flow<List<MediaCarousel>?> = flow {
+
+        val carouselFlows = listOf(
             localSource.airingSoonFlow(
                 mediaType = MediaType.ANIME,
                 pageSize = query.pageSize,
                 currentTime = query.currentTime
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.ANIME,
-                    MediaCarousel.CarouselType.AIRING_SOON,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.ANIME,
+                MediaCarousel.CarouselType.AIRING_SOON
+            ),
+
             localSource.allTimePopularFlow(
                 mediaType = MediaType.ANIME,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.ANIME,
-                    MediaCarousel.CarouselType.ALL_TIME_POPULAR,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.ANIME,
+                MediaCarousel.CarouselType.ALL_TIME_POPULAR
+            ),
+
             localSource.trendingNowFlow(
                 mediaType = MediaType.ANIME,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.ANIME,
-                    MediaCarousel.CarouselType.TRENDING_RIGHT_NOW,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.ANIME,
+                MediaCarousel.CarouselType.TRENDING_RIGHT_NOW
+            ),
+
             localSource.popularThisSeasonFlow(
                 mediaType = MediaType.ANIME,
                 pageSize = query.pageSize,
@@ -99,23 +101,19 @@ internal class CarouselSourceImpl(
                     month = FuzzyDateModel.UNKNOWN,
                     day = FuzzyDateModel.UNKNOWN,
                 ).toFuzzyDateLike()
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.ANIME,
-                    MediaCarousel.CarouselType.POPULAR_THIS_SEASON,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.ANIME,
+                MediaCarousel.CarouselType.POPULAR_THIS_SEASON,
+            ),
+
             localSource.recentlyAddedFlow(
                 mediaType = MediaType.ANIME,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.ANIME,
-                    MediaCarousel.CarouselType.RECENTLY_ADDED,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.ANIME,
+                MediaCarousel.CarouselType.RECENTLY_ADDED
+            ),
+
             localSource.anticipatedNextSeasonFlow(
                 mediaType = MediaType.ANIME,
                 pageSize = query.pageSize,
@@ -125,58 +123,48 @@ internal class CarouselSourceImpl(
                     month = FuzzyDateModel.UNKNOWN,
                     day = FuzzyDateModel.UNKNOWN,
                 ).toFuzzyDateLike()
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.ANIME,
-                    MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.ANIME,
+                MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON
+            ),
+
             localSource.allTimePopularFlow(
                 mediaType = MediaType.MANGA,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.MANGA,
-                    MediaCarousel.CarouselType.ALL_TIME_POPULAR,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.MANGA,
+                MediaCarousel.CarouselType.ALL_TIME_POPULAR
+            ),
+
             localSource.trendingNowFlow(
                 mediaType = MediaType.MANGA,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.MANGA,
-                    MediaCarousel.CarouselType.TRENDING_RIGHT_NOW,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.MANGA,
+                MediaCarousel.CarouselType.TRENDING_RIGHT_NOW
+            ),
+
             localSource.popularManhwaFlow(
                 mediaType = MediaType.MANGA,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.MANGA,
-                    MediaCarousel.CarouselType.POPULAR_MANHWA,
-                    mediaCollection
-                )
-            },
+            ).toMediaCarousel(
+                MediaType.MANGA,
+                MediaCarousel.CarouselType.POPULAR_MANHWA
+            ),
+
             localSource.recentlyAddedFlow(
                 mediaType = MediaType.MANGA,
                 pageSize = query.pageSize
-            ).toMediaList().map { mediaCollection ->
-                MediaCarousel(
-                    MediaType.MANGA,
-                    MediaCarousel.CarouselType.RECENTLY_ADDED,
-                    mediaCollection
-                )
-            }
+            ).toMediaCarousel(
+                MediaType.MANGA,
+                MediaCarousel.CarouselType.RECENTLY_ADDED
+            )
         )
 
-        val mergedFlows = combine(flows) {
-            it.toList()
-        }
+        val mergedFlows =
+            combine(carouselFlows) { carouselItems ->
+                carouselItems.toList()
+            }
 
         emitAll(mergedFlows)
     }

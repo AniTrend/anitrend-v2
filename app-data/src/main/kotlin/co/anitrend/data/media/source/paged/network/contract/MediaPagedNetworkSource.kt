@@ -59,7 +59,7 @@ internal abstract class MediaPagedNetworkSource(
         params: LoadInitialParams<IGraphPayload>,
         callback: LoadInitialCallback<IGraphPayload, Media>
     ) {
-        launch(coroutineContext) {
+        launch {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.INITIAL
             ) {
@@ -90,7 +90,7 @@ internal abstract class MediaPagedNetworkSource(
         params: LoadParams<IGraphPayload>,
         callback: LoadCallback<IGraphPayload, Media>
     ) {
-        launch(coroutineContext) {
+        launch {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.AFTER
             ) {
@@ -122,7 +122,7 @@ internal abstract class MediaPagedNetworkSource(
         params: LoadParams<IGraphPayload>,
         callback: LoadCallback<IGraphPayload, Media>
     ) {
-        launch(coroutineContext) {
+        launch {
             requestHelper.runIfNotRunning(
                 IRequestHelper.RequestType.BEFORE
             ) {
