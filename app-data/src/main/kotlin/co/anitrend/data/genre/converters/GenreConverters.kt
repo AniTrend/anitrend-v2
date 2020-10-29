@@ -18,7 +18,7 @@
 package co.anitrend.data.genre.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.arch.data.mapper.contract.ISupportMapperHelper
+import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.domain.genre.entity.Genre
 
@@ -29,14 +29,14 @@ internal class GenreEntityConverter(
 
     companion object {
         private fun from() =
-            object : ISupportMapperHelper<GenreEntity, Genre> {
+            object : ISupportTransformer<GenreEntity, Genre> {
                 override fun transform(source: GenreEntity) = Genre(
                     name = source.genre
                 )
             }
 
         private fun to() =
-            object : ISupportMapperHelper<Genre, GenreEntity> {
+            object : ISupportTransformer<Genre, GenreEntity> {
                 override fun transform(source: Genre) = GenreEntity(
                     genre = source.name
                 )
@@ -51,14 +51,14 @@ internal class GenreModelConverter(
 
     companion object {
         private fun from() =
-            object : ISupportMapperHelper<String, GenreEntity> {
+            object : ISupportTransformer<String, GenreEntity> {
                 override fun transform(source: String): GenreEntity = GenreEntity(
                     genre = source
                 )
             }
 
         private fun to() =
-            object : ISupportMapperHelper<GenreEntity, String> {
+            object : ISupportTransformer<GenreEntity, String> {
                 override fun transform(source: GenreEntity): String = source.genre
             }
     }

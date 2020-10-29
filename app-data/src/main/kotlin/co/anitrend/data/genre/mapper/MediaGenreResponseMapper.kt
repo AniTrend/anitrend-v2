@@ -17,7 +17,7 @@
 
 package co.anitrend.data.genre.mapper
 
-import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
@@ -30,7 +30,7 @@ import co.anitrend.data.genre.model.remote.GenreCollection
 internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource,
     private val converter: GenreModelConverter = GenreModelConverter()
-) : GraphQLMapper<GenreCollection, List<GenreEntity>>() {
+) : DefaultMapper<GenreCollection, List<GenreEntity>>() {
 
     override suspend fun persistChanges(data: List<GenreEntity>): OutCome<Nothing?> {
         return runCatching {

@@ -18,7 +18,7 @@
 package co.anitrend.data.media.model.contract
 
 import co.anitrend.data.media.model.MediaModelExtended
-import co.anitrend.domain.common.CountryCode
+import co.anitrend.data.arch.CountryCode
 import co.anitrend.domain.media.enums.MediaSource
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)

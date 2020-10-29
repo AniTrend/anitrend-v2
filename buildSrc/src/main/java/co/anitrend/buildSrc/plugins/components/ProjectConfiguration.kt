@@ -92,6 +92,10 @@ private fun configureMultipleBuilds(project: Project) {
 private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
     if (project.isAppModule()) {
         applicationId = "co.anitrend"
+        project.baseAppExtension().buildFeatures {
+            viewBinding = true
+            //compose = true
+        }
         // TODO: Configure flavours and multiple apk support,
         // this might be deprecated in favour of app bundles
         //configureMultipleBuilds(project)

@@ -22,6 +22,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.ui.view.contract.CustomView
+import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 
 /**
@@ -31,17 +32,13 @@ import co.anitrend.data.arch.AniTrendExperimentalFeature
 @AniTrendExperimentalFeature
 abstract class LinearLayoutWithBinding<V : ViewBinding> @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
+) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView, IBindingView<V> {
 
-    protected var binding: V? = null
-        private set
+    override var binding: V? = null
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         binding = createBinding()
     }
-
-    @Throws(IllegalArgumentException::class)
-    protected fun requireBinding(): V = requireNotNull(binding)
 
     protected abstract fun createBinding(): V
 

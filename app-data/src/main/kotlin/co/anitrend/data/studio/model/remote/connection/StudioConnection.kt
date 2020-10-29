@@ -18,15 +18,18 @@
 package co.anitrend.data.studio.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import co.anitrend.data.studio.model.remote.StudioModel
 import co.anitrend.data.studio.model.remote.edge.StudioEdge
-import co.anitrend.domain.common.entity.shared.PageInfo
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [StudioConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/studioconnection.doc.html)
  * Studio Connection
  */
+@Serializable
 internal data class StudioConnection(
-    override val edges: List<StudioEdge>?,
-    override val nodes: List<StudioModel>?,
-    override val pageInfo: PageInfo?
+    @SerialName("edges") override val edges: List<StudioEdge>?,
+    @SerialName("nodes") override val nodes: List<StudioModel>?,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<StudioEdge, StudioModel>

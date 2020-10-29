@@ -19,16 +19,19 @@ package co.anitrend.data.user.model.remote.statistics
 
 import co.anitrend.data.user.model.remote.statistics.contract.IStatistic
 import co.anitrend.domain.media.enums.MediaFormat
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [UserFormatStatistic](https://anilist.github.io/ApiV2-GraphQL-Docs/userformatstatistic.doc.html)
  *
  * @param format media format
  */
+@Serializable
 internal data class UserFormatStatistic(
-    val format: MediaFormat?,
-    override val chaptersRead: Int,
-    override val count: Int,
-    override val meanScore: Float,
-    override val mediaIds: List<Int>,
-    override val minutesWatched: Int
+    @SerialName("format") val format: MediaFormat?,
+    @SerialName("chaptersRead") override val chaptersRead: Int,
+    @SerialName("count") override val count: Int,
+    @SerialName("meanScore") override val meanScore: Float,
+    @SerialName("mediaIds") override val mediaIds: List<Int>,
+    @SerialName("minutesWatched") override val minutesWatched: Int
 ) : IStatistic

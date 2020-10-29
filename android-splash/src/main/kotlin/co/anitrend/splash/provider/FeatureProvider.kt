@@ -20,7 +20,7 @@ package co.anitrend.splash.provider
 import android.content.Context
 import android.content.Intent
 import co.anitrend.navigation.SplashRouter
-import co.anitrend.splash.ui.activity.SplashScreen
+import co.anitrend.splash.component.screen.SplashScreen
 
 internal class FeatureProvider : SplashRouter.Provider {
     override fun activity(context: Context?) =

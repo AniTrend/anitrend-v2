@@ -36,7 +36,7 @@ package co.anitrend.data.carousel.mapper
 
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
-import co.anitrend.data.arch.mapper.GraphQLMapper
+import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.media.converters.MediaModelConverter
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
@@ -47,7 +47,7 @@ internal class CarouselAnimeMapper(
     private val combinedMapper: MediaPagedCombinedMapper,
     private val airingMapper: AiringSchedulePagedMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
-) : GraphQLMapper<CarouselAnimeModel, List<MediaEntity>>() {
+) : DefaultMapper<CarouselAnimeModel, List<MediaEntity>>() {
 
     /**
      * Inserts the given object into the implemented room database,
@@ -92,7 +92,7 @@ internal class CarouselAnimeMapper(
 internal class CarouselMangaMapper(
     private val combinedMapper: MediaPagedCombinedMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
-) : GraphQLMapper<CarouselMangaModel, List<MediaEntity>>() {
+) : DefaultMapper<CarouselMangaModel, List<MediaEntity>>() {
 
     /**
      * Inserts the given object into the implemented room database,

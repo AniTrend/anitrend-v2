@@ -20,7 +20,6 @@ package co.anitrend.data.arch.common.model.paging
 import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
 import co.anitrend.data.util.graphql.GraphUtil
-import co.anitrend.domain.common.entity.contract.IEntityPageQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import kotlinx.android.parcel.Parcelize
 
@@ -31,10 +30,10 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 internal data class PageQuery(
-    override var page: Int,
+    var page: Int,
     @IntRange(from = 0, to = 50)
-    override val perPage: Int = GraphUtil.PAGING_LIMIT
-): IGraphPayload, IEntityPageQuery, ISupportPagingHelper {
+    val perPage: Int = GraphUtil.PAGING_LIMIT
+): IGraphPayload, ISupportPagingHelper {
 
     /**
      * Resets the paging parameters to their default

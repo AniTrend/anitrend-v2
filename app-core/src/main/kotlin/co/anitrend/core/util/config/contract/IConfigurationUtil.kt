@@ -17,11 +17,22 @@
 
 package co.anitrend.core.util.config.contract
 
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 
 interface IConfigurationUtil {
 
     val moduleTag: String
+
+    /**
+     * Theme override option
+     */
+    var themeOverride: Int?
+
+    /**
+     * Creates a new context with configuration
+     */
+    fun attachContext(context: Context?): Context?
 
     /**
      * Applies configuration upon the create state of the current activity

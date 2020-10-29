@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/android-auth" />
             <option value="$PROJECT_DIR$/android-core" />
+            <option value="$PROJECT_DIR$/android-navigation" />
             <option value="$PROJECT_DIR$/android-onboarding" />
             <option value="$PROJECT_DIR$/android-splash" />
             <option value="$PROJECT_DIR$/app" />
@@ -31,15 +32,16 @@
             <option value="$PROJECT_DIR$/feature-news" />
             <option value="$PROJECT_DIR$/feature-notification" />
             <option value="$PROJECT_DIR$/feature-profile" />
+            <option value="$PROJECT_DIR$/feature-recommendation" />
             <option value="$PROJECT_DIR$/feature-review" />
             <option value="$PROJECT_DIR$/feature-search" />
             <option value="$PROJECT_DIR$/feature-settings" />
             <option value="$PROJECT_DIR$/feature-staff" />
             <option value="$PROJECT_DIR$/feature-studio" />
-            <option value="$PROJECT_DIR$/feature-trending" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

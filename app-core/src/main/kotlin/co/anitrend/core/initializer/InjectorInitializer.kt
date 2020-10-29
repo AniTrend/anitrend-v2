@@ -24,6 +24,7 @@ import co.anitrend.core.initializer.contract.AbstractInitializer
 import co.anitrend.core.koin.coreModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import org.koin.core.logger.KOIN_TAG
 import org.koin.core.logger.Level
@@ -41,9 +42,10 @@ class InjectorInitializer : AbstractInitializer<Unit>() {
     override fun create(context: Context) {
         val logLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
         startKoin {
-            fragmentFactory()
             androidContext(context)
             logger(KoinLogger(logLevel))
+            workManagerFactory()
+            fragmentFactory()
             modules(coreModules)
         }
     }

@@ -18,15 +18,18 @@
 package co.anitrend.data.character.model.remote.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
-import co.anitrend.domain.common.entity.shared.PageInfo
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [CharacterConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/characterconnection.doc.html)
  * Character Connection
  */
+@Serializable
 internal data class CharacterConnection(
-    override val edges: List<CharacterEdge>?,
-    override val nodes: List<CharacterModel>?,
-    override val pageInfo: PageInfo?
+    @SerialName("edges") override val edges: List<CharacterEdge>?,
+    @SerialName("nodes") override val nodes: List<CharacterModel>?,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<CharacterEdge, CharacterModel>

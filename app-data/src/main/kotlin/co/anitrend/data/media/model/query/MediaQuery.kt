@@ -17,8 +17,8 @@
 
 package co.anitrend.data.media.model.query
 
-import co.anitrend.domain.common.CountryCode
-import co.anitrend.domain.common.FuzzyDateInt
+import co.anitrend.data.arch.CountryCode
+import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.*
 import kotlinx.android.parcel.Parcelize
@@ -102,7 +102,7 @@ data class MediaQuery(
     var chapters: Int? = null,
     var chapters_greater: Int? = null,
     var chapters_lesser: Int? = null,
-    var countryOfOrigin: CountryCode? = null,
+    var countryOfOrigin: CharSequence? = null,
     var duration: Int? = null,
     var duration_greater: Int? = null,
     var duration_lesser: Int? = null,

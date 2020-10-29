@@ -20,7 +20,7 @@ package co.anitrend.search.provider
 import android.content.Context
 import android.content.Intent
 import co.anitrend.navigation.SearchRouter
-import co.anitrend.search.ui.activity.SearchScreen
+import co.anitrend.search.component.screen.SearchScreen
 
 internal class FeatureProvider : SearchRouter.Provider {
     override fun activity(context: Context?) =

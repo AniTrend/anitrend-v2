@@ -17,9 +17,9 @@
 
 package co.anitrend.data.medialist.model.remote
 
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.contract.IMediaModelCore
 import co.anitrend.data.medialist.model.contract.IMediaListModelExtended
-import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import com.google.gson.annotations.SerializedName
 
@@ -27,7 +27,7 @@ internal data class MediaListModelExtended(
     @SerializedName("media") override val media: IMediaModelCore?,
     @SerializedName("advancedScores") override val advancedScores: Map<String, String>?,
     @SerializedName("customLists") override val customLists: Map<String, String>?,
-    @SerializedName("completedAt") override val completedAt: FuzzyDate?,
+    @SerializedName("completedAt") override val completedAt: FuzzyDateModel?,
     @SerializedName("createdAt") override val createdAt: Long?,
     @SerializedName("hiddenFromStatusLists") override val hiddenFromStatusLists: Boolean?,
     @SerializedName("mediaId") override val mediaId: Int,
@@ -38,7 +38,7 @@ internal data class MediaListModelExtended(
     @SerializedName("progressVolumes") override val progressVolumes: Int?,
     @SerializedName("repeat") override val repeat: Int?,
     @SerializedName("score") override val score: Float?,
-    @SerializedName("startedAt") override val startedAt: FuzzyDate?,
+    @SerializedName("startedAt") override val startedAt: FuzzyDateModel?,
     @SerializedName("status") override val status: MediaListStatus?,
     @SerializedName("updatedAt") override val updatedAt: Long?,
     @SerializedName("userId") override val userId: Int,

@@ -21,6 +21,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.TypedValue
+import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
+import androidx.annotation.AttrRes
+import androidx.annotation.StyleRes
+import androidx.core.content.res.use
 import co.anitrend.domain.airing.entity.AiringSchedule
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +40,26 @@ import java.util.*
  * Helper to resolve koin dependencies
  */
 inline fun <reified T> koinOf(): T =
-    GlobalContext.get().get(T::class)
+    GlobalContext.get().get()
+
+/**
+ * Retrieve a style from the current [android.content.res.Resources.Theme].
+ */
+@StyleRes
+fun Context.themeStyle(@AttrRes attr: Int): Int {
+    val tv = TypedValue()
+    theme.resolveAttribute(attr, tv, true)
+    return tv.data
+}
+
+fun Context.themeInterpolator(@AttrRes attr: Int): Interpolator {
+    return AnimationUtils.loadInterpolator(
+        this,
+        obtainStyledAttributes(intArrayOf(attr)).use {
+            it.getResourceId(0, android.R.interpolator.fast_out_slow_in)
+        }
+    )
+}
 
 /**
  * Pretty time reference as a singleton

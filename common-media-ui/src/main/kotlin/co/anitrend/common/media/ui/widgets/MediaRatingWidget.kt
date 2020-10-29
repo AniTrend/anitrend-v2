@@ -101,8 +101,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                         }, null, null, null)
                 }
             }
-            null ->
-               mediaAverageScore?.text = averageScore.toString()
+            else -> mediaAverageScore?.text = averageScore.toString()
         }
     }
 

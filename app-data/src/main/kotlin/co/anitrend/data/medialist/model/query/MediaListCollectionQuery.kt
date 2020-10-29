@@ -17,7 +17,7 @@
 
 package co.anitrend.data.medialist.model.query
 
-import co.anitrend.domain.common.FuzzyDateInt
+import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListSort

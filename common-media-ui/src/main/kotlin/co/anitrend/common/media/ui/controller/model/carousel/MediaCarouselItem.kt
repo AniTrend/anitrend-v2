@@ -33,7 +33,7 @@ import co.anitrend.arch.ui.extension.setUpWith
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
-import co.anitrend.common.media.ui.view.MediaItemAdapter
+import co.anitrend.common.media.ui.adapter.MediaItemAdapter
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.airing.enums.AiringSort
@@ -44,7 +44,6 @@ import co.anitrend.domain.media.entity.base.IMedia
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.MutableStateFlow
-import timber.log.Timber
 
 internal class MediaCarouselItem(
     val entity: IEntity?
@@ -153,7 +152,7 @@ internal class MediaCarouselItem(
                 MediaQuery(
                     type = carousel.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    countryOfOrigin = carousel.mediaItems.first().origin
+                    countryOfOrigin = carousel.mediaItems.first().countryCode
 
                 )
             }

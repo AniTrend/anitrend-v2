@@ -19,11 +19,14 @@ package co.anitrend.data.recommendation.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.recommendation.model.remote.RecommendationModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [RecommendationEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/recommendationedge.doc.html)
  * Recommendation edge connection
  */
+@Serializable
 internal class RecommendationEdge(
-    override val id: Long,
-    override val node: RecommendationModel?
+    @SerialName("id") override val id: Long,
+    @SerialName("node") override val node: RecommendationModel?
 ) : IEntityEdge<RecommendationModel>

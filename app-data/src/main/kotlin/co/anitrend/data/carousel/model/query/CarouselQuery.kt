@@ -47,7 +47,8 @@ data class CarouselQuery(
     val nextSeasonYear: Int,
     val isAdult: Boolean? = false,
     val currentTime: Long,
-    val scoreFormat: ScoreFormat? = null
+    val scoreFormat: ScoreFormat? = null,
+    val pageSize: Int
 ) : IGraphPayload {
 
     /**
@@ -60,6 +61,7 @@ data class CarouselQuery(
         "nextSeasonYear" to nextSeasonYear,
         "isAdult" to isAdult,
         "currentTime" to currentTime,
-        "scoreFormat" to scoreFormat
+        "scoreFormat" to scoreFormat,
+        "perPage" to pageSize
     )
 }

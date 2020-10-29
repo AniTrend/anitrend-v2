@@ -37,7 +37,7 @@
         android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.MainScreen"
+        <activity android:name=".component.screen.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider
@@ -56,8 +56,6 @@
             android:exported="false"
             tools:node="merge">
             <meta-data  android:name="co.anitrend.initializer.ApplicationInitializer"
-                android:value="androidx.startup" />
-            <meta-data  android:name="co.anitrend.initializer.WorkerInitializer"
                 android:value="androidx.startup" />
             <!-- Disable automatic startup for emojify -->
             <meta-data android:name="io.wax911.emojify.initializer.EmojiInitializer"

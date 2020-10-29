@@ -17,22 +17,17 @@
 
 package co.anitrend.domain.common.entity.shared
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import kotlinx.android.parcel.Parcelize
-
-/** [FuzzyDate](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydate.doc.html)
- * Date object that allows for incomplete date values (fuzzy) Unknown dates represented by 0.
+/** FuzzyDate
  *
  * @param year Year annotated to have a minimum of 0
  * @param month Month annotated to have a minimum of 0 and maximum of 12
  * @param day Day annotated to have a minimum of 0 and maximum of 31
  */
-@Parcelize
 data class FuzzyDate(
     val year: Int,
     val month: Int,
     val day: Int
-) : IGraphPayload {
+) {
 
     /**
      * Checks if all date fields are not set
@@ -40,15 +35,6 @@ data class FuzzyDate(
      * @return [Boolean] true if the date fields are set to [UNKNOWN] otherwise false
      */
     fun isDateNotSet() = day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
-
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() = mapOf(
-        "year" to year,
-        "month" to month,
-        "day" to day
-    )
 
     companion object {
         /**
@@ -61,7 +47,5 @@ data class FuzzyDate(
             UNKNOWN,
             UNKNOWN
         )
-
-        fun FuzzyDate?.orEmpty() = this ?: empty()
     }
 }

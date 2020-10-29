@@ -16,4 +16,9 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.anitrend.studio" />
+    package="co.anitrend.studio" >
+
+    <application>
+        <activity android:name=".component.screen.StudioScreen" />
+    </application>
+</manifest>

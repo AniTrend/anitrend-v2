@@ -23,18 +23,18 @@ import co.anitrend.data.cache.datasource.ICacheStore
 import co.anitrend.data.genre.datasource.local.IMediaGenreStore
 import co.anitrend.data.carousel.datasource.local.ICarouselStore
 import co.anitrend.data.media.datasource.local.IMediaStore
-import co.anitrend.data.source.datasource.local.ISourceStore
+import co.anitrend.data.moe.datasource.local.IMoeStore
 import co.anitrend.data.tag.datasource.local.IMediaTagStore
 
 internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStore,
-    ISourceStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore {
+    IMoeStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore {
 
     companion object {
 
         /** Binding types for [IAniTrendStore] */
         internal val BINDINGS = arrayOf(
             IMediaStore::class, IMediaTagStore::class, IMediaGenreStore::class,
-            ISourceStore::class, IAuthStore::class, IAiringStore::class,
+            IMoeStore::class, IAuthStore::class, IAiringStore::class,
             ICarouselStore::class, ICacheStore::class
         )
     }

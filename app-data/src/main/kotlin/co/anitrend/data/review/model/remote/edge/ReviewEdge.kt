@@ -19,11 +19,14 @@ package co.anitrend.data.review.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.review.model.remote.ReviewModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [ReviewEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/reviewedge.doc.html)
  * Review connection edge
  */
+@Serializable
 internal data class ReviewEdge(
-    override val id: Long,
-    override val node: ReviewModel?
+    @SerialName("id") override val id: Long,
+    @SerialName("node") override val node: ReviewModel?
 ) : IEntityEdge<ReviewModel>

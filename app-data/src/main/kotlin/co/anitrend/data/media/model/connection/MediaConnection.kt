@@ -18,15 +18,18 @@
 package co.anitrend.data.media.model.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import co.anitrend.data.media.model.MediaModelCore
 import co.anitrend.data.media.model.edge.MediaEdge
-import co.anitrend.domain.common.entity.shared.PageInfo
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [MediaConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaconnection.doc.html)
  * Media connection
  */
+@Serializable
 internal data class MediaConnection(
-    override val edges: List<MediaEdge>?,
-    override val nodes: List<MediaModelCore>?,
-    override val pageInfo: PageInfo?
+    @SerialName("edges") override val edges: List<MediaEdge>?,
+    @SerialName("nodes") override val nodes: List<MediaModelCore>?,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<MediaEdge, MediaModelCore>

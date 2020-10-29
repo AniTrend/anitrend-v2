@@ -17,7 +17,7 @@
 
 package co.anitrend.data.medialist.model.mutation
 
-import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.data.arch.common.model.date.FuzzyDateQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import kotlinx.android.parcel.Parcelize
@@ -59,8 +59,8 @@ data class SaveMediaListEntryMutation(
     val hiddenFromStatusLists: Boolean = false,
     val customLists: List<String>? = null,
     val advancedScores: List<Float>? = null,
-    val startedAt: FuzzyDate?,
-    val completedAt: FuzzyDate?
+    val startedAt: FuzzyDateQuery?,
+    val completedAt: FuzzyDateQuery?
 ) : IGraphPayload {
 
     /**

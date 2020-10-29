@@ -21,5 +21,6 @@ plugins {
 }
 
 dependencies {
+    implementation(Libraries.AniTrend.Arch.recycler)
     implementation(Libraries.prettyTime)
 }

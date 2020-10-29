@@ -28,6 +28,12 @@ object MainRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 }
 
+object NavigationDrawerRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
 object SplashRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
@@ -53,6 +59,12 @@ object SettingsRouter : NavigationRouter() {
 }
 
 object AboutRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object AuthRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
@@ -84,7 +96,31 @@ object StaffRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 }
 
-object UserRouter : NavigationRouter() {
+object ProfileRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object ForumRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object SocialFeedRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object NotificationRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object UpdaterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider

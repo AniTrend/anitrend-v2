@@ -17,14 +17,17 @@
 
 package co.anitrend.data.media.model.page
 
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
 import co.anitrend.data.media.model.MediaModelExtended
-import co.anitrend.domain.common.entity.shared.PageInfo
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 internal data class MediaPageModel(
     @SerializedName("Page")
     val page: Page
 ) {
+    @Serializable
     data class Page(
         @SerializedName("pageInfo")
         val pageInfo: PageInfo?,

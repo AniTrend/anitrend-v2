@@ -31,7 +31,5 @@ internal class CarouselRepositoryImpl(
     private val source: CarouselSource
 ) : SupportRepository(source), MediaCarouselRepository<DataState<List<MediaCarousel>>> {
     override fun getMediaCarousel(query: IGraphPayload) =
-        source.create(
-            model = source(query).asLiveData()
-        )
+        source create source(query).asLiveData()
 }

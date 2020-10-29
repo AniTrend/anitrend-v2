@@ -23,6 +23,7 @@ import co.anitrend.data.arch.database.extensions.toCommaSeparatedValues
 import co.anitrend.data.media.entity.MediaEntity
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
+import org.koin.core.context.GlobalContext
 import org.threeten.bp.Instant
 
 internal class TypeConverterObject {
@@ -92,10 +93,8 @@ internal class TypeConverterObject {
     }
 
     companion object {
-        internal val json by lazy {
-            Json {
-                isLenient = true
-            }
+        internal val json: Json by lazy {
+            GlobalContext.get().get(Json::class)
         }
     }
 }

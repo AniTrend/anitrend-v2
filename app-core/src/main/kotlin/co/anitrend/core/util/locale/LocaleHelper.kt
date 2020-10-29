@@ -21,38 +21,30 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import co.anitrend.core.settings.common.locale.ILocaleSettings
+import co.anitrend.core.util.locale.contract.ILocaleHelper
 import java.util.*
 
-class LocaleHelper(private val settings: ILocaleSettings) {
+internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelper {
 
-    val locale: Locale
+    /**
+     * Current locale
+     */
+    override val locale: Locale
         get() {
             if (settings.locale == AniTrendLocale.AUTOMATIC)
                 return Locale.getDefault()
             return getPersonalizedLocale()
         }
 
-    internal fun applyLocale(context: Context?): Context? {
+    /**
+     * Applies locale to context configuration
+     */
+    override fun applyLocale(context: Context?): Context? {
         Locale.setDefault(locale)
         val resources = context?.resources
         val configuration = Configuration(resources?.configuration)
         configuration.setLocale(locale)
         return context?.createConfigurationContext(configuration)
-    }
-
-    @Deprecated(
-        "Use applyLocale instead",
-        ReplaceWith("applyLocale"),
-        DeprecationLevel.WARNING
-    )
-    internal fun applyApplicationLocale(context: Context) {
-        Locale.setDefault(locale)
-        val resources: Resources = context.resources
-        val configuration = Configuration(resources.configuration)
-        @Suppress("DEPRECATION")
-        configuration.locale = locale
-        @Suppress("DEPRECATION")
-        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
     private fun getPersonalizedLocale(): Locale {

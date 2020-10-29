@@ -21,8 +21,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.domain.common.CountryCode
-import co.anitrend.domain.common.FuzzyDateInt
+import co.anitrend.data.arch.CountryCode
+import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.domain.media.enums.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

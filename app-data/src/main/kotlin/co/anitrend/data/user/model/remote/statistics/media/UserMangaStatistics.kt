@@ -19,28 +19,31 @@ package co.anitrend.data.user.model.remote.statistics.media
 
 import co.anitrend.data.user.model.remote.statistics.*
 import co.anitrend.data.user.model.remote.statistics.contract.IUserStatistic
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [UserStatistics](https://anilist.github.io/ApiV2-GraphQL-Docs/UserStatistics.doc.html)
  *
  * @param chaptersRead TBA
  * @param volumesRead TBA
  */
+@Serializable
 internal data class UserMangaStatistics(
-    val chaptersRead: Int,
-    val volumesRead: Int,
-    override val count: Int,
-    override val countries: List<UserCountryStatistic>?,
-    override val formats: List<UserFormatStatistic>?,
-    override val genres: List<UserGenreStatistic>?,
-    override val lengths: List<UserLengthStatistic>?,
-    override val meanScore: Float,
-    override val releaseYears: List<UserReleaseYearStatistic>?,
-    override val scores: List<UserScoreStatistic>?,
-    override val staff: List<UserStaffStatistic>?,
-    override val standardDeviation: Float,
-    override val startYears: List<UserStartYearStatistic>?,
-    override val statuses: List<UserStatusStatistic>?,
-    override val studios: List<UserStudioStatistic>?,
-    override val tags: List<UserTagStatistic>?,
-    override val voiceActors: List<UserVoiceActorStatistic>?
+    @SerialName("chaptersRead") val chaptersRead: Int,
+    @SerialName("volumesRead") val volumesRead: Int,
+    @SerialName("count") override val count: Int,
+    @SerialName("countries") override val countries: List<UserCountryStatistic>?,
+    @SerialName("formats") override val formats: List<UserFormatStatistic>?,
+    @SerialName("genres") override val genres: List<UserGenreStatistic>?,
+    @SerialName("lengths") override val lengths: List<UserLengthStatistic>?,
+    @SerialName("meanScore") override val meanScore: Float,
+    @SerialName("releaseYears") override val releaseYears: List<UserReleaseYearStatistic>?,
+    @SerialName("scores") override val scores: List<UserScoreStatistic>?,
+    @SerialName("staff") override val staff: List<UserStaffStatistic>?,
+    @SerialName("standardDeviation") override val standardDeviation: Float,
+    @SerialName("startYears") override val startYears: List<UserStartYearStatistic>?,
+    @SerialName("statuses") override val statuses: List<UserStatusStatistic>?,
+    @SerialName("studios") override val studios: List<UserStudioStatistic>?,
+    @SerialName("tags") override val tags: List<UserTagStatistic>?,
+    @SerialName("voiceActors") override val voiceActors: List<UserVoiceActorStatistic>?
 ) : IUserStatistic

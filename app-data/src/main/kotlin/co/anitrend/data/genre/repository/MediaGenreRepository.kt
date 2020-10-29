@@ -33,9 +33,5 @@ internal class MediaGenreRepository(
      * @return media genres
      */
     override fun getMediaGenres() =
-        source.create(
-            model = source().asLiveData(
-                source.coroutineContext
-            )
-        )
+        source create source().asLiveData()
 }

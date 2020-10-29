@@ -17,13 +17,17 @@
 
 package co.anitrend.data.shared.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 /**
  * Image contract
  *
  * @property large Image at it's largest size
  * @property medium Image at it's medium size
  */
+@Serializable
 internal data class SharedImage(
-    val large: String?,
-    val medium: String?
+    @SerialName("large") val large: String?,
+    @SerialName("medium") val medium: String?
 )
