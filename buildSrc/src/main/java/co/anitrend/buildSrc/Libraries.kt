@@ -339,16 +339,6 @@ object Libraries {
         const val blitz = "com.github.perfomer:blitz:$version"
     }
 
-    object BlueLineLabs {
-        object Conductor {
-            private const val version = "3.0.0-rc6"
-            const val conductor = "com.bluelinelabs:conductor:$version"
-            const val transitions = "com.bluelinelabs:conductor-androidx-transition:$version"
-            const val viewPage = "com.bluelinelabs:conductor-viewpager:$version"
-            const val lifecycle = "com.bluelinelabs:conductor-archlifecycle:$version"
-        }
-    }
-
     object CashApp {
         object Copper {
             private const val version = "1.0.0"
