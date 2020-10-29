@@ -24,9 +24,10 @@ import co.anitrend.domain.media.enums.MediaType
 data class MediaCarousel(
     val mediaType: MediaType,
     val carouselType: CarouselType,
-    val mediaItems: List<IMediaExtendedWithMediaList>,
-    override val id: Long = mediaItems.hashCode().toLong()
+    val mediaItems: List<IMediaExtendedWithMediaList>
 ): IEntity {
+
+    override val id: Long = hashCode().toLong()
 
     enum class CarouselType {
         AIRING_SOON,
@@ -52,7 +53,7 @@ data class MediaCarousel(
      */
     override fun equals(other: Any?): Boolean {
         return when (other) {
-            is IEntity -> other.id == id
+            is MediaCarousel -> other.id == id
             else -> super.equals(other)
         }
     }
@@ -61,7 +62,6 @@ data class MediaCarousel(
         var result = mediaType.hashCode()
         result = 31 * result + carouselType.hashCode()
         result = 31 * result + mediaItems.hashCode()
-        result = 31 * result + id.hashCode()
         return result
     }
 }
