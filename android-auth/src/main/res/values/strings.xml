@@ -16,5 +16,17 @@
   -->
 
 <resources>
-    <string name="app_name">Authentication</string>
+    <string name="auth_label_authorize">Authorize</string>
+
+    <string name="auth_label_segment_first" translatable="false">Ani</string>
+    <string name="auth_label_segment_second">Trend</string>
+    <string name="label_allow_authorization">Please login using your anilist account</string>
+
+    <string name="auth_label_alternative_account">Or use anonymous account, please note that some features my not be available in this mode.</string>
+    <string name="auth_label_action_start_anonymous_account">Use anonymous account</string>
+
+    <string name="auth_label_having_trouble_logging_in">Having trouble logging in?</string>
+
+    <string name="auth_error_default_title">Authentication failed</string>
+    <string name="auth_error_default_message">AniTrend was unable to get a response from AniList. No detailed error was provided, please try again.</string>
 </resources>

@@ -20,26 +20,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="co.anitrend.auth">
 
+    <queries>
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <!--suppress AndroidElementNotAllowed -->
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <application>
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data  android:name="co.anitrend.auth.initializer.FeatureInitializer"
+            <meta-data android:name="co.anitrend.auth.initializer.FeatureInitializer"
                 android:value="androidx.startup" />
         </provider>
-        <activity android:name=".component.screen.AuthScreen"
-            android:launchMode="singleInstance"
-            android:theme="@style/SupportTheme.Translucent">
+
+        <activity android:name=".component.screen.AuthScreen">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="auth/oauth/v2/callback"
-                    android:scheme="app.anitrend" />
+                    android:scheme="@string/app_deep_link_scheme"
+                    android:host="@string/auth_deep_link_host"
+                    android:path="@string/auth_deep_link_path"/>
             </intent-filter>
         </activity>
     </application>
