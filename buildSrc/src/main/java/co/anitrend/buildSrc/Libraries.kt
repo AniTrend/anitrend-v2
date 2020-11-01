@@ -18,6 +18,7 @@
 package co.anitrend.buildSrc
 
 import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.common.*
 
 object Libraries {
 
@@ -44,7 +45,7 @@ object Libraries {
      *
      * https://jitpack.io/#openid/AppAuth-Android
      */
-    const val appauth = "com.github.openid:AppAuth-Android:master-SNAPSHOT"
+    const val appAuth = "com.github.openid:AppAuth-Android:master-SNAPSHOT"
 
     object Android {
 
@@ -296,6 +297,21 @@ object Libraries {
             const val emojify = "com.github.anitrend:android-emojify:$version"
         }
 
+        object CommonUi {
+            const val character = ":$commonCharacterUi"
+            const val forum = ":$commonForumUi"
+            const val media = ":$commonMediaUi"
+            const val recommendation = ":$commonRecommendationUi"
+            const val review = ":$commonReviewUi"
+            const val staff = ":$commonStaffUi"
+            const val user = ":$commonUserUi"
+            const val episode = ":$commonEpisodeUi"
+            const val news = ":$commonNewsUi"
+            const val editor = ":$commonEditorUi"
+            const val feed = ":$commonFeedUi"
+            const val studio = ":$commonStudioUi"
+        }
+
         object Markdown {
             private const val version = "0.1.0"
             const val markdown = "com.github.anitrend:support-markdown:${version}"
@@ -315,6 +331,20 @@ object Libraries {
         object Sync {
             private const val version = "0.1.0-alpha01"
             const val plugin = "com.github.anitrend:support-sync-plugin:${version}"
+        }
+
+        object Task {
+            const val character = ":$taskCharacter"
+            const val forum = ":$taskForum"
+            const val media = ":$taskMedia"
+            const val recommendation = ":$taskRecommendation"
+            const val review = ":$taskReview"
+            const val staff = ":$taskStaff"
+            const val user = ":$taskUser"
+            const val episode = ":$taskEpisode"
+            const val news = ":$taskNews"
+            const val feed = ":$taskFeed"
+            const val studio = ":$taskStudio"
         }
     }
 

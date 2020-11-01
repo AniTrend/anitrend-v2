@@ -22,7 +22,18 @@
             <option value="$PROJECT_DIR$/app-domain" />
             <option value="$PROJECT_DIR$/app-navigation" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/common-character-ui" />
+            <option value="$PROJECT_DIR$/common-editor-ui" />
+            <option value="$PROJECT_DIR$/common-episode-ui" />
+            <option value="$PROJECT_DIR$/common-feed-ui" />
+            <option value="$PROJECT_DIR$/common-forum-ui" />
             <option value="$PROJECT_DIR$/common-media-ui" />
+            <option value="$PROJECT_DIR$/common-news-ui" />
+            <option value="$PROJECT_DIR$/common-recommendation-ui" />
+            <option value="$PROJECT_DIR$/common-review-ui" />
+            <option value="$PROJECT_DIR$/common-staff-ui" />
+            <option value="$PROJECT_DIR$/common-studio-ui" />
+            <option value="$PROJECT_DIR$/common-user-ui" />
             <option value="$PROJECT_DIR$/feature-about" />
             <option value="$PROJECT_DIR$/feature-account" />
             <option value="$PROJECT_DIR$/feature-character" />
@@ -38,6 +49,17 @@
             <option value="$PROJECT_DIR$/feature-settings" />
             <option value="$PROJECT_DIR$/feature-staff" />
             <option value="$PROJECT_DIR$/feature-studio" />
+            <option value="$PROJECT_DIR$/task-character" />
+            <option value="$PROJECT_DIR$/task-episode" />
+            <option value="$PROJECT_DIR$/task-feed" />
+            <option value="$PROJECT_DIR$/task-forum" />
+            <option value="$PROJECT_DIR$/task-media" />
+            <option value="$PROJECT_DIR$/task-news" />
+            <option value="$PROJECT_DIR$/task-recommendation" />
+            <option value="$PROJECT_DIR$/task-review" />
+            <option value="$PROJECT_DIR$/task-staff" />
+            <option value="$PROJECT_DIR$/task-studio" />
+            <option value="$PROJECT_DIR$/task-user" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

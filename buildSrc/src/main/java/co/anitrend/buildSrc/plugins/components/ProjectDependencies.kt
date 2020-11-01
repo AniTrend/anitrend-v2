@@ -182,7 +182,7 @@ private fun Project.applyAndroidCoreModuleDependencies() {
 }
 
 private fun Project.applyCommonModuleDependencies() {
-    println("Applying common feature dependencies for feature module -> $path")
+    println("Applying common feature dependencies for module -> $path")
 
     dependencies.implementation(Libraries.AniTrend.Arch.ui)
     dependencies.implementation(Libraries.AniTrend.Arch.ext)
@@ -215,6 +215,27 @@ private fun Project.applyCommonModuleDependencies() {
     dependencies.implementation(project(":$navigation"))
 }
 
+private fun Project.applyTaskModuleDependencies() {
+    println("Applying task feature dependencies for module -> $path")
+
+    dependencies.implementation(Libraries.AniTrend.Arch.ext)
+    dependencies.implementation(Libraries.AniTrend.Arch.core)
+    dependencies.implementation(Libraries.AniTrend.Arch.data)
+    dependencies.implementation(Libraries.AniTrend.Arch.domain)
+
+    dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
+    dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
+    dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
+
+    dependencies.implementation(Libraries.threeTenBp)
+
+    dependencies.implementation(project(":$core"))
+    dependencies.implementation(project(":$data"))
+    dependencies.implementation(project(":$domain"))
+}
+
 private fun Project.applyComposeDependencies() {
     println("Applying compose dependencies for feature module -> $path")
 
@@ -242,5 +263,6 @@ internal fun Project.configureDependencies() {
     if (isBaseModule()) applyBaseModuleDependencies()
     if (isCoreFeatureModule()) applyAndroidCoreModuleDependencies()
     if (isCommonFeatureModule()) applyCommonModuleDependencies()
+    if (isTaskFeatureModule()) applyTaskModuleDependencies()
     /*if (hasComposeSupport()) applyComposeDependencies()*/
 }

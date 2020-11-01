@@ -15,10 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import co.anitrend.buildSrc.Libraries
+
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
-    implementation(project(":common-media-ui"))
+    implementation(project(Libraries.AniTrend.Task.media))
+    implementation(project(Libraries.AniTrend.CommonUi.media))
 }

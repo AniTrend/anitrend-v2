@@ -47,6 +47,31 @@ internal const val account = "feature-account"
 internal const val about = "feature-about"
 internal const val news = "feature-news"
 
+internal const val commonCharacterUi = "common-character-ui"
+internal const val commonForumUi = "common-forum-ui"
+internal const val commonMediaUi = "common-media-ui"
+internal const val commonRecommendationUi = "common-recommendation-ui"
+internal const val commonReviewUi = "common-review-ui"
+internal const val commonStaffUi = "common-staff-ui"
+internal const val commonUserUi = "common-user-ui"
+internal const val commonEpisodeUi = "common-episode-ui"
+internal const val commonNewsUi = "common-news-ui"
+internal const val commonEditorUi = "common-editor-ui"
+internal const val commonFeedUi = "common-feed-ui"
+internal const val commonStudioUi = "common-studio-ui"
+
+internal const val taskCharacter = "task-character"
+internal const val taskForum = "task-forum"
+internal const val taskMedia = "task-media"
+internal const val taskRecommendation = "task-recommendation"
+internal const val taskReview = "task-review"
+internal const val taskStaff = "task-staff"
+internal const val taskUser = "task-user"
+internal const val taskEpisode = "task-episode"
+internal const val taskNews = "task-news"
+internal const val taskFeed = "task-feed"
+internal const val taskStudio = "task-studio"
+
 internal val baseModules = listOf(app, core, data, domain, navigation)
 
 internal val androidModules = listOf(
@@ -61,6 +86,7 @@ internal val featureModules = listOf(
 private const val coreFeatureModulePattern = "android-"
 private const val featureModulePattern = "feature-"
 private const val commonModulePattern = "common-"
+private const val taskModulePattern = "task-"
 private const val baseModulePattern = "app-"
 
 fun Project.isAppModule() = name == app
@@ -74,6 +100,7 @@ fun Project.isBaseModule() = name.startsWith(baseModulePattern)
 fun Project.isFeatureModule() = name.startsWith(featureModulePattern)
 fun Project.isCoreFeatureModule() = name.startsWith(coreFeatureModulePattern)
 fun Project.isCommonFeatureModule() = name.startsWith(commonModulePattern)
+fun Project.isTaskFeatureModule() = name.startsWith(taskModulePattern)
 
 fun Project.hasCoroutineSupport() = name != navigation || name != domain
 fun Project.hasComposeSupport() = isFeatureModule() || isCommonFeatureModule()
