@@ -18,6 +18,7 @@
 package co.anitrend.navigation.drawer.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.core.settings.Settings
 import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.adapter.AccountAdapter
@@ -25,6 +26,8 @@ import co.anitrend.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
+import co.anitrend.navigation.drawer.component.viewmodel.state.NavigationState
 import co.anitrend.navigation.drawer.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
@@ -48,9 +51,15 @@ private val presenterModule = module {
 
 private val viewModelModule = module {
 	viewModel {
+		val settings = get<Settings>()
 		BottomDrawerViewModel(
-			settings = get(),
-			authPrefKey = androidContext().getString(R.string.settings_is_authenticated)
+			accountState = AccountState(
+				settings = settings,
+				useCase = get()
+			),
+			navigationState = NavigationState(),
+			authenticatedKey = androidContext().getString(R.string.settings_is_authenticated),
+			settings = settings
 		)
 	}
 }

@@ -17,43 +17,127 @@
 
 package co.anitrend.navigation.drawer.component.viewmodel.state
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.map
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.data.state.DataState
 import co.anitrend.core.settings.Settings
+import co.anitrend.data.account.action.AccountAction
+import co.anitrend.data.account.usecase.AccountUseCaseContract
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.account.Account
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 internal class AccountState(
-    private val scope: CoroutineScope,
-    private val settings: Settings
+    private val settings: IAuthenticationSettings,
+    private val useCase: AccountUseCaseContract
 ) : ISupportViewModelState<List<Account>> {
 
-    private var initialState = mutableListOf(
-        Account.Anonymous(
-            titleRes = R.string.label_account_anonymous,
-            imageRes = R.mipmap.ic_launcher_round,
-            isActiveUser = true
-        ),
-        Account.Authorize(
-            titleRes = R.string.label_account_add_new
-        )
-    )
+    private val useCaseResult = MutableLiveData<DataState<List<User>?>>()
 
-    private val _accountItems = MutableLiveData<List<Account>>(initialState)
+    override val model =
+        Transformations.switchMap(useCaseResult) { dataState ->
+            dataState.model.map { users ->
+                if (users.isNullOrEmpty())
+                    listOf(
+                        Account.Group(
+                            titleRes = R.string.account_header_active,
+                            groupId = R.id.account_group_active
+                        ),
+                        Account.Anonymous(
+                            titleRes = R.string.label_account_anonymous,
+                            imageRes = R.mipmap.ic_launcher,
+                            isActiveUser = true
+                        ),
+                        Account.Group(
+                            titleRes = R.string.account_header_other,
+                            groupId = R.id.account_group_other
+                        ),
+                        Account.Authorize(
+                            titleRes = R.string.label_account_add_new
+                        )
+                    )
+                else {
+                    val activeUser = users.firstOrNull { user ->
+                        settings.authenticatedUserId == user.id
+                    }
 
-    override val model: LiveData<List<Account>?>
-        get() = _accountItems
+                    val accounts = mutableListOf<Account>(
+                        Account.Group(
+                            titleRes = R.string.account_header_active,
+                            groupId = R.id.account_group_active
+                        )
+                    )
 
-    override val networkState: LiveData<NetworkState> = liveData {
-        emit(NetworkState.Loading)
+                    if (activeUser != null) {
+                        accounts.add(
+                            Account.Authenticated(
+                                id = activeUser.id,
+                                isActiveUser = true,
+                                userName = activeUser.name,
+                                coverImage = activeUser.avatar
+                            )
+                        )
+
+                        if (users.size > 1) {
+                            accounts.add(
+                                Account.Group(
+                                    titleRes = R.string.account_header_inactive,
+                                    groupId = R.id.account_group_inactive
+                                )
+                            )
+                            accounts += users.filter {
+                                activeUser.id != it.id
+                            }.map { user ->
+                                Account.Authenticated(
+                                    id = user.id,
+                                    isActiveUser = false,
+                                    userName = user.name,
+                                    coverImage = user.avatar
+                                )
+                            }
+                        }
+                    }
+
+                    accounts += listOf(
+                        Account.Group(
+                            titleRes = R.string.account_header_other,
+                            groupId = R.id.account_group_other
+                        ),
+                        Account.Authorize(
+                            titleRes = R.string.label_account_add_new
+                        )
+                    )
+                    accounts
+                }
+            }
+        }
+
+    override val networkState =
+        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData() }
+
+    override val refreshState =
+        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
+
+    operator fun invoke() {
+        val result = useCase.getAuthorizedAccounts()
+        useCaseResult.postValue(result)
     }
 
-    override val refreshState: LiveData<NetworkState>? = liveData {
-        emit(NetworkState.Loading)
+    fun signOut(account: Account) {
+        useCase.signOut(
+            AccountAction.SignOut(
+                userId = account.id
+            )
+        )
     }
 
     /**
@@ -64,20 +148,22 @@ internal class AccountState(
      * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
      */
     override fun onCleared() {
-
+        useCase.onCleared()
     }
 
     /**
      * Triggers use case to perform refresh operation
      */
     override suspend fun refresh() {
-        TODO("Not yet implemented")
+        val uiModel = useCaseResult.value
+        uiModel?.refresh?.invoke()
     }
 
     /**
      * Triggers use case to perform a retry operation
      */
     override suspend fun retry() {
-        TODO("Not yet implemented")
+        val uiModel = useCaseResult.value
+        uiModel?.retry?.invoke()
     }
 }

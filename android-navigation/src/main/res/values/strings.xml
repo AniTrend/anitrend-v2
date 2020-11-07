@@ -45,4 +45,9 @@
     <string name="label_account_add_new">Add new account</string>
     <string name="label_account_anonymous">Anonymous</string>
     <string name="label_account_sign_out">Sign out</string>
+
+
+    <string name="account_header_active">Active account</string>
+    <string name="account_header_inactive">Inactive accounts</string>
+    <string name="account_header_other">Other options</string>
 </resources>

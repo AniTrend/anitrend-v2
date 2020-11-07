@@ -24,6 +24,7 @@ import androidx.lifecycle.liveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.ext.replaceWith
+import co.anitrend.arch.extension.preference.model.PreferenceItem
 import co.anitrend.core.settings.Settings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
@@ -35,46 +36,24 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-internal class NavigationState(
-    scope: CoroutineScope,
-    private val settings: Settings,
-    private val authenticationKey: String
-) : ISupportViewModelState<List<Navigation>> {
-
-    private val moduleTag = NavigationState::class.java.simpleName
+internal class NavigationState : ISupportViewModelState<List<Navigation>> {
+    private val moduleTag = javaClass.simpleName
 
     private val state: MutableList<Navigation> = mutableListOf()
 
-    private val _navigationItems = MutableLiveData<List<Navigation>>(state)
+    private val _navigationItems = MutableLiveData<List<Navigation>>()
 
-    init {
-        state.addAll(createNavigationItems())
-        scope.launch {
-            observeAuthenticationStateChange()
-        }
+    override val model: LiveData<List<Navigation>?> = _navigationItems
+
+    override val networkState: LiveData<NetworkState> = liveData {
+        emit(NetworkState.Loading)
     }
 
-    private suspend fun observeAuthenticationStateChange() {
-        settings.preferenceChangeFlow
-            .filter {
-                it.key == authenticationKey
-            }.onEach {
-                val checked = state
-                    .filterIsInstance<Navigation.Menu>()
-                    .first(Navigation.Menu::isChecked)
-
-                state.replaceWith(createNavigationItems())
-                if (!setNavigationMenuItemChecked(checked.id))
-                    _navigationItems.value = state
-            }.catch { cause: Throwable ->
-                Timber.tag(moduleTag).e(
-                    cause,
-                    "observeAuthenticationStateChange() -> Uncaught threw an uncaught exception"
-                )
-            }.collect()
+    override val refreshState: LiveData<NetworkState>? = liveData {
+        emit(NetworkState.Loading)
     }
 
-    private fun createNavigationItems(): List<Navigation> {
+    private fun createNavigationItems(authenticated: Boolean): List<Navigation> {
         val navigationItems = mutableListOf<Navigation>()
         val generalItems = listOf(
             Navigation.Group(
@@ -170,7 +149,7 @@ internal class NavigationState(
         )
 
         navigationItems.addAll(generalItems)
-        if (settings.isAuthenticated)
+        if (authenticated)
             navigationItems.addAll(manageItems)
         navigationItems.addAll(catalogItems)
         navigationItems.addAll(supportItems)
@@ -178,14 +157,22 @@ internal class NavigationState(
         return navigationItems
     }
 
-    override val model: LiveData<List<Navigation>?> = _navigationItems
+    operator fun invoke(authenticated: Boolean) {
+        val checked = state
+            .filterIsInstance<Navigation.Menu>()
+            .firstOrNull(Navigation.Menu::isChecked)
 
-    override val networkState: LiveData<NetworkState> = liveData {
-        emit(NetworkState.Loading)
-    }
+        _navigationItems.value = emptyList()
 
-    override val refreshState: LiveData<NetworkState>? = liveData {
-        emit(NetworkState.Loading)
+        state.replaceWith(
+            createNavigationItems(
+                authenticated
+            )
+        )
+
+        if (checked != null)
+            if (!setNavigationMenuItemChecked(checked.id))
+                _navigationItems.value = state
     }
 
     /**
@@ -222,13 +209,13 @@ internal class NavigationState(
      * Triggers use case to perform refresh operation
      */
     override suspend fun refresh() {
-        TODO("Not yet implemented")
+
     }
 
     /**
      * Triggers use case to perform a retry operation
      */
     override suspend fun retry() {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException("$moduleTag does not support retry operation")
     }
 }

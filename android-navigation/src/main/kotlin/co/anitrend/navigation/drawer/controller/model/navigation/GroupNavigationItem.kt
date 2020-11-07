@@ -17,18 +17,16 @@
 
 package co.anitrend.navigation.drawer.controller.model.navigation
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.navigation.drawer.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.databinding.NavigationGroupItemBinding
+import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class GroupNavigationItem(
@@ -57,13 +55,13 @@ class GroupNavigationItem(
         /*val icon = view.context.getCompatDrawable(entity.icon)
         requireBinding().navGroupTitle.setCompoundDrawablesRelative(
             icon, null, null, null
-        )*/
+        )
         requireBinding().navGroupTitle.setOnClickListener {
             stateFlow.value = DefaultClickableItem(
                 data = entity,
                 view = it
             )
-        }
+        }*/
     }
 
     /**

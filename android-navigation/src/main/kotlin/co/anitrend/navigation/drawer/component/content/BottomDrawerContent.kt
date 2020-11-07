@@ -25,34 +25,32 @@ import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.navigation.drawer.R
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
-import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.common.DefaultClickableItem
-import co.anitrend.navigation.drawer.adapter.AccountAdapter
-import co.anitrend.navigation.drawer.adapter.NavigationAdapter
-import co.anitrend.navigation.drawer.callback.BottomNavigationDrawerCallback
-import co.anitrend.navigation.drawer.model.state.SandwichState
-import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.core.android.animations.lerp
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AuthRouter
-import co.anitrend.navigation.ProfileRouter
-import co.anitrend.navigation.drawer.action.*
+import co.anitrend.navigation.drawer.R
+import co.anitrend.navigation.drawer.action.OnSandwichSlideAction
+import co.anitrend.navigation.drawer.action.OnSlideAction
+import co.anitrend.navigation.drawer.action.OnStateChangedAction
+import co.anitrend.navigation.drawer.adapter.AccountAdapter
+import co.anitrend.navigation.drawer.adapter.NavigationAdapter
+import co.anitrend.navigation.drawer.callback.BottomNavigationDrawerCallback
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
+import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.model.navigation.Navigation
+import co.anitrend.navigation.drawer.model.state.SandwichState
 import co.anitrend.navigation.extensions.start
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.math.abs
@@ -228,8 +226,9 @@ class BottomDrawerContent(
                 .filterIsInstance<DefaultClickableItem<Account>>()
                 .onEach { clickable ->
                     when (clickable.data) {
-                        is Account.Authenticated -> ProfileRouter.start(clickable.view.context)
-                        else -> AuthRouter.start(clickable.view.context)
+                        is Account.Authenticated -> presenter.onAuthenticatedItemClicked(clickable, viewModel)
+                        is Account.Authorize -> AuthRouter.start(clickable.view.context)
+                        else -> { }
                     }
                 }.catch { cause: Throwable ->
                     Timber.tag(moduleTag).e(
@@ -238,6 +237,9 @@ class BottomDrawerContent(
                     )
                 }
                 .collect()
+        }
+        lifecycleScope.launchWhenResumed {
+            viewModel.accountState()
         }
     }
 
@@ -253,7 +255,9 @@ class BottomDrawerContent(
         }
         viewModel.navigationState.model.observe(
             viewLifecycleOwner
-        ) { navigationAdapter.submitList(it) }
+        ) {
+            navigationAdapter.submitList(it)
+        }
         viewModel.navigationState.setNavigationMenuItemChecked(R.id.navigation_home)
     }
 

@@ -20,8 +20,14 @@
     <item name="navigation_discord" type="id"/>
     <item name="navigation_faq" type="id"/>
 
+    <!-- nav groups -->
     <item name="navigation_group_general" type="id"/>
     <item name="navigation_group_manage" type="id"/>
     <item name="navigation_group_catalog" type="id"/>
     <item name="navigation_group_support" type="id"/>
+
+    <!-- account groups -->
+    <item name="account_group_active" type="id"/>
+    <item name="account_group_inactive" type="id"/>
+    <item name="account_group_other" type="id"/>
 </resources>

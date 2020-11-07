@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.drawer.controller.model.navigation
+package co.anitrend.navigation.drawer.controller.model.account
 
 import android.view.LayoutInflater
 import android.view.View
@@ -24,13 +24,13 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.navigation.drawer.databinding.NavigationDividerItemBinding
-import co.anitrend.navigation.drawer.model.navigation.Navigation
+import co.anitrend.navigation.drawer.databinding.AccountGroupItemBinding
+import co.anitrend.navigation.drawer.model.account.Account
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class DividerNavigationItem(
-    entity: Navigation.Divider
-) : RecyclerItemBinding<NavigationDividerItemBinding>(entity.id.toLong()) {
+class GroupAccountItem(
+    private val entity: Account.Group
+) : RecyclerItemBinding<AccountGroupItemBinding>(entity.id) {
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -49,13 +49,14 @@ class DividerNavigationItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = NavigationDividerItemBinding.bind(view)
+        binding = AccountGroupItemBinding.bind(view)
+        requireBinding().accountGroupTitle.setText(entity.titleRes)
     }
 
     companion object {
-        internal fun LayoutInflater.createNavDividerViewHolder(
+        internal fun LayoutInflater.createAccountGroupViewHolder(
             viewGroup: ViewGroup
-        ) = NavigationDividerItemBinding.inflate(
+        ) = AccountGroupItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

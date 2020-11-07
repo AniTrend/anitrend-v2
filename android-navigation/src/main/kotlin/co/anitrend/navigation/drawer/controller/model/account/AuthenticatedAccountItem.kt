@@ -20,7 +20,8 @@ package co.anitrend.navigation.drawer.controller.model.account
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.arch.extension.ext.getCompatDrawable
+import co.anitrend.arch.extension.ext.gone
+import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.common.DefaultClickableItem
@@ -28,8 +29,7 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.helpers.image.model.CoverRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.navigation.drawer.R
-import co.anitrend.navigation.drawer.databinding.AccountItemBinding
+import co.anitrend.navigation.drawer.databinding.AccountAuthenticatedItemBinding
 import co.anitrend.navigation.drawer.model.account.Account
 import coil.request.Disposable
 import coil.transform.CircleCropTransformation
@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class AuthenticatedAccountItem(
     private val entity: Account.Authenticated
-) : RecyclerItemBinding<AccountItemBinding>(entity.id) {
+) : RecyclerItemBinding<AccountAuthenticatedItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
 
@@ -58,7 +58,7 @@ class AuthenticatedAccountItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = AccountItemBinding.bind(view)
+        binding = AccountAuthenticatedItemBinding.bind(view)
         val imageRequest = CoverRequestImage(entity.coverImage)
         disposable = requireBinding().accountProfileImage.using(
             imageRequest,
@@ -66,19 +66,17 @@ class AuthenticatedAccountItem(
         )
         requireBinding().accountUserName.text = entity.userName
         if (entity.isActiveUser) {
-            requireBinding().accountUserName.isChecked = true
-            requireBinding().accountUserName.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null, null, view.context.getCompatDrawable(
-                    R.drawable.ic_check_24,
-                    R.color.anitrendColorAccent
-                ), null
-            )
-        } else {
-            requireBinding().accountUserName.isChecked = false
-            requireBinding().accountUserName.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                null, null, null, null
-            )
+            requireBinding().accountSignOut.visible()
+            requireBinding().accountSignOut.setOnClickListener {
+                stateFlow.value = DefaultClickableItem(
+                    data =  entity,
+                    view =  it
+                )
+            }
         }
+        else
+            requireBinding().accountSignOut.gone()
+
         requireBinding().accountContainer.setOnClickListener {
             stateFlow.value = DefaultClickableItem(
                 data =  entity,
@@ -93,6 +91,7 @@ class AuthenticatedAccountItem(
      */
     override fun unbind(view: View) {
         binding?.accountContainer?.setOnClickListener(null)
+        binding?.accountSignOut?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
         super.unbind(view)
@@ -101,7 +100,7 @@ class AuthenticatedAccountItem(
     companion object {
         internal fun LayoutInflater.createAuthenticatedAccountViewHolder(
             viewGroup: ViewGroup
-        ) = AccountItemBinding.inflate(
+        ) = AccountAuthenticatedItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

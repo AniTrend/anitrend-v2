@@ -38,7 +38,7 @@
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_skipCollapsed="true"
-        app:behavior_halfExpandedRatio="0.6">
+        app:behavior_halfExpandedRatio="0.5">
 
         <co.anitrend.arch.recycler.SupportRecyclerView
             android:id="@+id/accountRecycler"
@@ -69,20 +69,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/spacing_sm"
-            android:paddingTop="@dimen/spacing_sm"
+            android:layout_marginTop="@dimen/design_bottom_app_status_bar_height"
+            android:paddingTop="@dimen/design_bottom_app_status_bar_height"
             android:paddingBottom="@dimen/spacing_md">
 
             <co.anitrend.arch.recycler.SupportRecyclerView
                 android:id="@+id/navigationRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/spacing_sm"
+                android:paddingTop="@dimen/design_bottom_app_status_bar_height"
                 android:paddingBottom="@dimen/design_bottom_app_bar_height"
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="@integer/single_list_size" />
+                app:spanCount="@integer/single_list_size"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

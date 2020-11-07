@@ -27,7 +27,7 @@ import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.R
-import co.anitrend.navigation.drawer.databinding.AccountItemBinding
+import co.anitrend.navigation.drawer.databinding.AccountAnonymousItemBinding
 import co.anitrend.navigation.drawer.model.account.Account
 import coil.load
 import coil.request.Disposable
@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class AuthorizeAccountItem(
     private val entity: Account.Authorize
-) : RecyclerItemBinding<AccountItemBinding>(entity.id) {
+) : RecyclerItemBinding<AccountAnonymousItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
 
@@ -56,7 +56,7 @@ class AuthorizeAccountItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = AccountItemBinding.bind(view)
+        binding = AccountAnonymousItemBinding.bind(view)
         requireBinding().accountUserName.setText(entity.titleRes)
         disposable = requireBinding().accountProfileImage.load(
             view.context.getCompatDrawable(R.drawable.ic_account_add_24dp, R.color.primaryTextColor)
@@ -83,7 +83,7 @@ class AuthorizeAccountItem(
     companion object {
         internal fun LayoutInflater.createAuthorizeAccountViewHolder(
             viewGroup: ViewGroup
-        ) = AccountItemBinding.inflate(
+        ) = AccountAnonymousItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

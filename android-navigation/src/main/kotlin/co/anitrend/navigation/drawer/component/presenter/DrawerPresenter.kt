@@ -25,17 +25,21 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
+import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.helpers.image.model.CoverRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
+import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.*
 import co.anitrend.navigation.drawer.callback.BottomNavigationDrawerCallback
+import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.shape.SemiCircleEdgeCutoutTreatment
+import co.anitrend.navigation.extensions.start
 import coil.transform.CircleCropTransformation
 import com.google.android.material.shape.MaterialShapeDrawable
 
@@ -136,10 +140,27 @@ internal class DrawerPresenter(
                 listOf(CircleCropTransformation())
             )
             is Account.Anonymous -> imageView.using(
-                parentContext.getCompatDrawable(model.imageRes),
-                listOf(CircleCropTransformation())
+                parentContext.getCompatDrawable(model.imageRes)
             )
             else -> {}
+        }
+    }
+
+    fun onAuthenticatedItemClicked(
+        clickable: DefaultClickableItem<Account>,
+        viewModel: BottomDrawerViewModel
+    ) {
+        when (clickable.view.id) {
+            R.id.accountContainer -> {
+                if (clickable.data!!.isActiveUser)
+                    ProfileRouter.start(clickable.view.context)
+                else { /* TODO: Switch account to the selected one */ }
+            }
+            R.id.accountSignOut -> {
+                viewModel.accountState.signOut(
+                    clickable.data!!
+                )
+            }
         }
     }
 }

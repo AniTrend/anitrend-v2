@@ -34,6 +34,8 @@ import co.anitrend.navigation.drawer.controller.model.account.AuthenticatedAccou
 import co.anitrend.navigation.drawer.controller.model.account.AuthenticatedAccountItem.Companion.createAuthenticatedAccountViewHolder
 import co.anitrend.navigation.drawer.controller.model.account.AuthorizeAccountItem
 import co.anitrend.navigation.drawer.controller.model.account.AuthorizeAccountItem.Companion.createAuthorizeAccountViewHolder
+import co.anitrend.navigation.drawer.controller.model.account.GroupAccountItem
+import co.anitrend.navigation.drawer.controller.model.account.GroupAccountItem.Companion.createAccountGroupViewHolder
 import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.model.account.Account.Companion.toAccountType
 
@@ -45,6 +47,7 @@ class AccountAdapter(
             is Account.Authenticated -> AuthenticatedAccountItem(it)
             is Account.Anonymous -> AnonymousAccountItem(it)
             is Account.Authorize -> AuthorizeAccountItem(it)
+            is Account.Group -> GroupAccountItem(it)
         }
     },
     override val customSupportAnimator: AbstractAnimator? = null,
@@ -95,6 +98,7 @@ class AccountAdapter(
     ) = when (viewType) {
         Account.ANONYMOUS -> layoutInflater.createAnonymousAccountViewHolder(parent)
         Account.AUTHENTICATED -> layoutInflater.createAuthenticatedAccountViewHolder(parent)
+        Account.GROUP -> layoutInflater.createAccountGroupViewHolder(parent)
         else -> layoutInflater.createAuthorizeAccountViewHolder(parent)
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/accountContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/listPreferredItemHeight"
+    android:paddingHorizontal="@dimen/spacing_md"
+    android:background="?attr/selectableItemBackground">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/accountProfileImage"
+        android:layout_width="@dimen/spacing_sm"
+        android:layout_height="@dimen/spacing_sm"
+        android:scaleType="centerCrop"
+        android:layout_gravity="start|center_vertical"
+        tools:src="@tools:sample/avatars"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/accountUserName"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/listPreferredItemHeightSmall"
+        android:drawablePadding="@dimen/design_navigation_icon_padding"
+        android:paddingStart="@dimen/spacing_md"
+        android:paddingEnd="@dimen/spacing_md"
+        android:gravity="start|center_vertical"
+        android:layout_gravity="start|center_vertical"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:drawableTint="@color/color_navigation_drawer_menu_item"
+        style="@style/AppTheme.SingleLineText"
+        tools:layout_height="wrap_content"
+        tools:text="Anonymous User" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/accountSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center_vertical"
+        android:text="@string/label_account_sign_out"
+        android:textColor="@color/colorAccent"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
