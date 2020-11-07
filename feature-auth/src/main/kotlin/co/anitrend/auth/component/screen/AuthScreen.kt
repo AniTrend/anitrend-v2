@@ -18,19 +18,21 @@
 package co.anitrend.auth.component.screen
 
 import android.os.Bundle
-import co.anitrend.auth.R
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.databinding.AuthScreenBinding
 import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.navigation.AuthRouter
+import co.anitrend.navigation.extensions.forFragment
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class AuthScreen : AnitrendScreen<AuthScreenBinding>() {
 
-    /**
-     * Can be used to configure custom theme styling as desired
-     */
-    override fun configureActivity() {
-        configurationUtil.themeOverride = R.style.SupportTheme_Translucent
-        super.configureActivity()
-    }
+    private val viewModel by viewModel<AuthViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,16 @@ class AuthScreen : AnitrendScreen<AuthScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        lifecycleScope.launch {
+            onUpdateUserInterface()
+        }
+        lifecycleScope.launchWhenResumed {
+            viewModel.onIntentData(applicationContext, intent.data)
+        }
+    }
 
+    private fun onUpdateUserInterface() {
+        currentFragmentTag = FragmentItem(fragment = AuthRouter.forFragment())
+            .commit(requireBinding().splashFrame, this) {}
     }
 }

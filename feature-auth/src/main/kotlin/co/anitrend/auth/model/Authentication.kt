@@ -1,0 +1,45 @@
+/*
+ * Copyright (C) 2020  AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package co.anitrend.auth.model
+
+import co.anitrend.data.auth.helper.AuthenticationType
+import co.anitrend.domain.user.entity.User
+
+sealed class Authentication {
+    class Authenticating(
+        val accessToken: String,
+        val tokenType: String,
+        val expiresIn: Long
+    ): Authentication()
+
+    class Authenticated(
+        val user: User
+    ): Authentication()
+
+    class Error(
+        val title: String,
+        val message: String
+    ): Authentication()
+
+    class Pending(
+        authenticationType: AuthenticationType
+    ): Authentication()
+
+
+    object Idle: Authentication()
+}

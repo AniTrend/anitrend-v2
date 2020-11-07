@@ -42,15 +42,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/spacing_sm" />
 
-            <include android:id="@+id/anonymousControls"
-                layout="@layout/auth_anonymous_frame" />
+            <include android:id="@+id/authorizationControls"
+                layout="@layout/auth_authorization_frame" />
 
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/spacing_sm" />
 
-            <include android:id="@+id/authorizationControls"
-                layout="@layout/auth_authorization_frame" />
+            <include android:id="@+id/anonymousControls"
+                layout="@layout/auth_anonymous_frame" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
