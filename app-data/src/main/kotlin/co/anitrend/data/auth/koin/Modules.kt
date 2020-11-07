@@ -17,22 +17,56 @@
 
 package co.anitrend.data.auth.koin
 
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.db
+import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.auth.mapper.AuthMapper
+import co.anitrend.data.auth.repository.AuthRepositoryImpl
+import co.anitrend.data.auth.source.AuthSourceImpl
+import co.anitrend.data.auth.source.contract.AuthSource
+import co.anitrend.data.auth.usecase.AuthUseCaseContract
+import co.anitrend.data.auth.usecase.AuthUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule = module {
-
+    factory<AuthSource> {
+        AuthSourceImpl(
+            remoteSource = api(EndpointType.GRAPH_QL),
+            localSource = db().authDao(),
+            clearDataHelper = get(),
+            controller = graphQLController(
+                mapper = get<AuthMapper>()
+            ),
+            settings = get(),
+            userLocalSource = db().userDao(),
+            dispatchers = get()
+        )
+    }
 }
 
 private val mapperModule = module {
-
+    factory {
+        AuthMapper(
+            userLocalSource = db().userDao()
+        )
+    }
 }
 
 private val useCaseModule = module {
-
+    factory<AuthUseCaseContract> {
+        AuthUseCaseImpl(
+            repository = get()
+        )
+    }
 }
 
 private val repositoryModule = module {
-
+    factory {
+        AuthRepositoryImpl(
+            source = get()
+        )
+    }
 }
 
 internal val authModules = listOf(

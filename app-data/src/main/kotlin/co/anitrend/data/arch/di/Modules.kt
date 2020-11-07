@@ -21,16 +21,20 @@ import android.net.ConnectivityManager
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.BuildConfig
+import co.anitrend.data.account.koin.accountModules
 import co.anitrend.data.airing.koin.airingModules
+import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.api.converter.AniTrendConverterFactory
 import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.arch.logger.GraphLogger
 import co.anitrend.data.arch.logger.OkHttpLogger
-import co.anitrend.data.auth.util.AuthenticationHelper
+import co.anitrend.data.auth.helper.AuthenticationHelper
+import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.media.koin.mediaModules
@@ -45,6 +49,8 @@ import io.github.wax911.library.annotation.processor.contract.AbstractGraphProce
 import io.github.wax911.library.annotation.processor.plugin.AssetManagerDiscoveryPlugin
 import io.github.wax911.library.logger.contract.ILogger
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -62,7 +68,8 @@ private val coreModule = module {
     } binds IAniTrendStore.BINDINGS
     factory {
         AuthenticationHelper(
-            settings = get()
+            settings = get(),
+            localSource = db().authDao()
         )
     }
     factory<IClearDataHelper> {
@@ -83,13 +90,19 @@ private val retrofitModule = module {
             logger = GraphLogger(level)
         )
     }
-    factory {
+    single {
         GsonBuilder()
             .setLenient()
             .create()
     }
     single {
         Json {
+            serializersModule = SerializersModule {
+                polymorphic(AiringScheduleModel::class) {
+                    subclass(AiringScheduleModel.Core::class, AiringScheduleModel.Core.serializer())
+                    subclass(AiringScheduleModel.Extended::class, AiringScheduleModel.Extended.serializer())
+                }
+            }
             coerceInputValues = true
             isLenient = true
         }
@@ -161,4 +174,5 @@ val dataModules = listOf(
     networkModule,
     interceptorModules
 ) + airingModules + mediaTagModules + mediaGenreModules +
-        sourceModules + mediaModules + carouselModules
+        sourceModules + mediaModules + carouselModules +
+        authModules + accountModules

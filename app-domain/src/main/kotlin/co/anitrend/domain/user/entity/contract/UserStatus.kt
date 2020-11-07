@@ -20,6 +20,7 @@ package co.anitrend.domain.user.entity.contract
 /**
  * A users status
  *
+ * @param about The users bio
  * @param donationBadge Custom donation badge text
  * @param donationTier The donation tier of the user
  * @param isFollowing If the authenticated user if following this user
@@ -28,6 +29,7 @@ package co.anitrend.domain.user.entity.contract
  * @param pageUrl The url for the user page on the AniList website
  */
 data class UserStatus(
+    val about: CharSequence?,
     val donationBadge: CharSequence?,
     val donationTier: Int?,
     val isFollowing: Boolean?,

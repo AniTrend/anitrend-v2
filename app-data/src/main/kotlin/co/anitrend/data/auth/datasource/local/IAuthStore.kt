@@ -18,5 +18,5 @@
 package co.anitrend.data.auth.datasource.local
 
 internal interface IAuthStore {
-    fun jsonWebTokenDao(): JwtLocalSource
+    fun authDao(): AuthLocalSource
 }

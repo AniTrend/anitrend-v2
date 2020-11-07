@@ -17,21 +17,47 @@
 
 package co.anitrend.domain.user.entity
 
-import co.anitrend.domain.user.entity.attribute.option.UserMediaListOptions
+import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.user.entity.attribute.option.UserMediaListOption
 import co.anitrend.domain.user.entity.attribute.option.UserProfileOption
 import co.anitrend.domain.user.entity.attribute.statistic.UserMediaStatisticType
-import co.anitrend.domain.user.entity.base.IUserExtended
 import co.anitrend.domain.user.entity.contract.UserImage
 import co.anitrend.domain.user.entity.contract.UserStatus
 
-data class User(
-    override val about: CharSequence,
-    override val listOptions: UserMediaListOptions,
-    override val preferences: UserProfileOption,
-    override val statistics: UserMediaStatisticType,
-    override val unreadNotifications: Long,
-    override val name: CharSequence,
-    override val avatar: UserImage,
-    override val status: UserStatus,
-    override val id: Long
-) : IUserExtended
+/**
+ * User
+ */
+sealed class User : IEntity {
+
+    abstract val name: CharSequence
+    abstract val avatar: UserImage
+    abstract val status: UserStatus
+
+    data class Core(
+        override val name: CharSequence,
+        override val avatar: UserImage,
+        override val status: UserStatus,
+        override val id: Long
+    ) : User()
+
+    data class Extended(
+        val unreadNotifications: Int,
+        val listOptions: UserMediaListOption,
+        val profileOption: UserProfileOption,
+        override val name: CharSequence,
+        override val avatar: UserImage,
+        override val status: UserStatus,
+        override val id: Long
+    ) : User()
+
+    data class WithStats(
+        val unreadNotifications: Int,
+        val listOption: UserMediaListOption,
+        val profileOption: UserProfileOption,
+        val statistics: UserMediaStatisticType,
+        override val name: CharSequence,
+        override val avatar: UserImage,
+        override val status: UserStatus,
+        override val id: Long
+    ) : User()
+}

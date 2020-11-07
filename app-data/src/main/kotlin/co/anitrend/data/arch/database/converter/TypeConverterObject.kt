@@ -21,6 +21,8 @@ import androidx.room.TypeConverter
 import co.anitrend.data.arch.database.extensions.fromCommaSeparatedValues
 import co.anitrend.data.arch.database.extensions.toCommaSeparatedValues
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import org.koin.core.context.GlobalContext
@@ -92,8 +94,25 @@ internal class TypeConverterObject {
         return json.decodeFromString(serializer, value)
     }
 
+    @TypeConverter fun fromUserNotificationSettingList(
+        value: List<UserGeneralOptionEntity.NotificationOption>
+    ): String {
+        val serializer = ListSerializer(
+            UserGeneralOptionEntity.NotificationOption.serializer()
+        )
+        return json.encodeToString(serializer, value)
+    }
+    @TypeConverter fun toUserNotificationSettingList(
+        value: String
+    ): List<UserGeneralOptionEntity.NotificationOption> {
+        val serializer = ListSerializer(
+            UserGeneralOptionEntity.NotificationOption.serializer()
+        )
+        return json.decodeFromString(serializer, value)
+    }
+
     companion object {
-        internal val json: Json by lazy {
+        internal val json by lazy {
             GlobalContext.get().get(Json::class)
         }
     }

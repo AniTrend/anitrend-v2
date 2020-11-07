@@ -17,6 +17,7 @@
 
 package co.anitrend.data.auth.model
 
+
 /**
  * Json Web Token from Implicit Grant see implicit grant manual docs at:
  * [implicit-grant](https://anilist.gitbook.io/anilist-apiv2-docs/overview/oauth/implicit-grant)

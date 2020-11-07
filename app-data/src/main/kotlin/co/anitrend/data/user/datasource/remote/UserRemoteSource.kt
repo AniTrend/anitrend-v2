@@ -17,6 +17,29 @@
 
 package co.anitrend.data.user.datasource.remote
 
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.api.model.GraphQLResponse
+import co.anitrend.data.arch.GRAPHQL
+import co.anitrend.data.user.model.remote.container.UserModelContainer
+import io.github.wax911.library.annotation.GraphQuery
+import io.github.wax911.library.model.request.QueryContainerBuilder
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
+
 internal interface UserRemoteSource {
 
+    @GRAPHQL
+    @GraphQuery("User")
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    fun getUser(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<UserModelContainer>>
+
+    @GRAPHQL
+    @GraphQuery("UserWithStatistic")
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    fun getUserWithStatistic(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<UserModelContainer>>
 }

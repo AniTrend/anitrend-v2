@@ -69,6 +69,11 @@ object Libraries {
             const val appcompatResources = "androidx.appcompat:appcompat-resources:$version"
         }
 
+        object Browser {
+            private const val version = "1.3.0-beta01"
+            const val browser = "androidx.browser:browser:$version"
+        }
+
         object Collection {
             private const val version = "1.1.0"
             const val collection = "androidx.collection:collection:$version"
