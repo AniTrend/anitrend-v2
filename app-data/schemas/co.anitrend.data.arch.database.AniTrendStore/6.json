@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 5,
-    "identityHash": "6b6b04edbf3fddbe88ab7399b3217ace",
+    "version": 6,
+    "identityHash": "d1bbba353777a1124ab2ed0aba652a56",
     "entities": [
       {
         "tableName": "jwt",
@@ -191,7 +191,7 @@
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_native` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, `airing_airing_at` INTEGER, `airing_episode` INTEGER, `airing_airing_id` INTEGER, `airing_time_until_airing` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, `airing_airing_at` INTEGER, `airing_episode` INTEGER, `airing_airing_id` INTEGER, `airing_time_until_airing` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "tags",
@@ -422,12 +422,6 @@
             "notNull": false
           },
           {
-            "fieldPath": "title.native",
-            "columnName": "title_native",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "title.userPreferred",
             "columnName": "title_user_preferred",
             "affinity": "TEXT",
@@ -575,12 +569,206 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "user",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unread_notifications` INTEGER, `updated_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_caption` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `setting_list_row_order` TEXT, `setting_score_format` TEXT, `setting_airing_notifications` INTEGER, `setting_display_adult_content` INTEGER, `setting_notification` TEXT, `setting_title_language` TEXT, `setting_profile_color` TEXT, `setting_anime_custom_lists` TEXT, `setting_anime_section_order` TEXT, `setting_anime_advanced_scoring` TEXT, `setting_anime_advanced_scoring_enabled` INTEGER, `setting_anime_split_completed_section_by_format` INTEGER, `setting_manga_custom_lists` TEXT, `setting_manga_section_order` TEXT, `setting_manga_advanced_scoring` TEXT, `setting_manga_advanced_scoring_enabled` INTEGER, `setting_manga_split_completed_section_by_format` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "unreadNotification",
+            "columnName": "unread_notifications",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.name",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.caption",
+            "columnName": "user_caption",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "about.siteUrl",
+            "columnName": "user_site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.donatorTier",
+            "columnName": "user_donator_tier",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "about.donatorBadge",
+            "columnName": "user_donator_badge",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status.isFollowing",
+            "columnName": "user_is_following",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status.isFollower",
+            "columnName": "user_is_follower",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.large",
+            "columnName": "cover_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.medium",
+            "columnName": "cover_medium",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.banner",
+            "columnName": "cover_banner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.rowOrder",
+            "columnName": "setting_list_row_order",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.scoreFormat",
+            "columnName": "setting_score_format",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.airingNotifications",
+            "columnName": "setting_airing_notifications",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.displayAdultContent",
+            "columnName": "setting_display_adult_content",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.notification",
+            "columnName": "setting_notification",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.titleLanguage",
+            "columnName": "setting_title_language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.profileColor",
+            "columnName": "setting_profile_color",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.anime.customLists",
+            "columnName": "setting_anime_custom_lists",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.anime.sectionOrder",
+            "columnName": "setting_anime_section_order",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.anime.advancedScoring",
+            "columnName": "setting_anime_advanced_scoring",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.anime.advancedScoringEnabled",
+            "columnName": "setting_anime_advanced_scoring_enabled",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.anime.splitCompletedSectionByFormat",
+            "columnName": "setting_anime_split_completed_section_by_format",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.manga.customLists",
+            "columnName": "setting_manga_custom_lists",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.manga.sectionOrder",
+            "columnName": "setting_manga_section_order",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.manga.advancedScoring",
+            "columnName": "setting_manga_advanced_scoring",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.manga.advancedScoringEnabled",
+            "columnName": "setting_manga_advanced_scoring_enabled",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "settings.manga.splitCompletedSectionByFormat",
+            "columnName": "setting_manga_split_completed_section_by_format",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6b6b04edbf3fddbe88ab7399b3217ace')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd1bbba353777a1124ab2ed0aba652a56')"
     ]
   }
 }
