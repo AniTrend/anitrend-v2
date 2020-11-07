@@ -15,8 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.domain.auth.interactor
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.auth.repository.AuthRepository
+import co.anitrend.domain.common.graph.IGraphPayload
+
+abstract class AuthUseCase<State: UiState<*>>(
+    protected val repository: AuthRepository<State>
+) : IUseCase {
+
+    /**
+     * @param query Auth query
+     *
+     * @return Authenticated user or null
+     */
+    fun getAuthenticatedUser(query: IGraphPayload) =
+        repository.getAuthenticatedUser(query)
 }

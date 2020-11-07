@@ -15,8 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.user.entity.statistic
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.user.entity.UserEntity
+
+@Entity(
+    tableName = "user_statistic",
+    foreignKeys = [
+        ForeignKey(
+            entity = UserEntity::class,
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+            childColumns = ["user_id"],
+            parentColumns = ["id"]
+        )
+    ]
+)
+internal data class UserWithStatisticEntity(
+    @ColumnInfo(name = "user_id") override val id: Long
+) : Identity {
+    // This is going to be fun..
 }

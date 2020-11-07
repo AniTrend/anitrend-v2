@@ -15,8 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.user.model.remote.container
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
-}
+import co.anitrend.data.user.model.remote.UserModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal data class UserModelContainer(
+    @SerialName("User") val user: UserModel.Core
+)
+
+@Serializable
+internal data class UserViewerModelContainer(
+    @SerialName("Viewer") val user: UserModel.Extended
+)

@@ -22,10 +22,11 @@ import co.anitrend.data.arch.database.extensions.fromEnum
 import co.anitrend.data.arch.database.extensions.toEnum
 import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.user.enums.UserTitleLanguage
 
 internal class TypeConverterEnum {
-    @TypeConverter
-    fun fromMediaFormat(value: MediaFormat?) = value?.fromEnum()
+    @TypeConverter fun fromMediaFormat(value: MediaFormat?) = value?.fromEnum()
     @TypeConverter fun toMediaFormat(value: String?) = value?.toEnum<MediaFormat>()
 
     @TypeConverter fun fromMediaSeason(value: MediaSeason?) = value?.fromEnum()
@@ -45,4 +46,10 @@ internal class TypeConverterEnum {
 
     @TypeConverter fun fromCacheRequest(value: CacheRequest?) = value?.fromEnum()
     @TypeConverter fun toCacheRequest(value: String?) = value?.toEnum<CacheRequest>()
+
+    @TypeConverter fun fromScoreFormat(value: ScoreFormat?) = value?.fromEnum()
+    @TypeConverter fun toScoreFormat(value: String?) = value?.toEnum<ScoreFormat>()
+
+    @TypeConverter fun fromUserTitleLanguage(value: UserTitleLanguage?) = value?.fromEnum()
+    @TypeConverter fun toUserTitleLanguage(value: String?) = value?.toEnum<UserTitleLanguage>()
 }

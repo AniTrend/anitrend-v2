@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2019  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,8 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.user.model.remote.statistics.media
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+
+/**
+ * Contract for user statistics, applied on various items such as countries, formats, genres, years, staff e.t.c
+ *
+ * @property count Count for the statistic
+ * @property meanScore Mean score for the the statistic
+ * @property mediaIds List of media ids for the statistic
+ */
+internal interface IStatisticModel {
+    val count: Int
+    val meanScore: Float
+    val mediaIds: List<Long>
 }

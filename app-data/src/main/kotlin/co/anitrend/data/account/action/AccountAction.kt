@@ -15,8 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.account.action
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+import co.anitrend.domain.common.graph.IGraphPayload
+import kotlinx.android.parcel.Parcelize
+
+sealed class AccountAction : IGraphPayload {
+
+    override fun toMap(): Map<String, Any?> = emptyMap()
+
+    @Parcelize
+    data class SignOut(
+        val userId: Long
+    ) : AccountAction()
 }

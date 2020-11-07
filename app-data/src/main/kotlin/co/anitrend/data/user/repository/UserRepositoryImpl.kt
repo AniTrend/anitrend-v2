@@ -15,8 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.user.repository
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+internal class UserRepositoryImpl {
 }

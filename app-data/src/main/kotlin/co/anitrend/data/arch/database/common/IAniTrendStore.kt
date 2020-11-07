@@ -20,14 +20,15 @@ package co.anitrend.data.arch.database.common
 import co.anitrend.data.airing.datasource.local.IAiringStore
 import co.anitrend.data.auth.datasource.local.IAuthStore
 import co.anitrend.data.cache.datasource.ICacheStore
-import co.anitrend.data.genre.datasource.local.IMediaGenreStore
 import co.anitrend.data.carousel.datasource.local.ICarouselStore
+import co.anitrend.data.genre.datasource.local.IMediaGenreStore
 import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.moe.datasource.local.IMoeStore
 import co.anitrend.data.tag.datasource.local.IMediaTagStore
+import co.anitrend.data.user.datasource.local.IUserStore
 
 internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStore,
-    IMoeStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore {
+    IMoeStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore, IUserStore {
 
     companion object {
 
@@ -35,7 +36,7 @@ internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStor
         internal val BINDINGS = arrayOf(
             IMediaStore::class, IMediaTagStore::class, IMediaGenreStore::class,
             IMoeStore::class, IAuthStore::class, IAiringStore::class,
-            ICarouselStore::class, ICacheStore::class
+            ICarouselStore::class, ICacheStore::class, IUserStore::class
         )
     }
 }

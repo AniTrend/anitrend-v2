@@ -15,8 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.auth.source.contract
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
-}
+import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.model.remote.container.UserViewerModelContainer
+
+internal typealias AuthController = GraphQLController<UserViewerModelContainer, UserEntity>

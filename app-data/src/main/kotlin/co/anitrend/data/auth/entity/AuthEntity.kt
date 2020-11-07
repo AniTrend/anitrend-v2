@@ -15,8 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.auth.entity
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
-}
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+@Entity(
+    tableName = "auth",
+    indices = [
+        Index(
+            value = ["access_token"],
+            unique = true
+        )
+    ]
+)
+internal data class AuthEntity(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id") val id: Long,
+    @ColumnInfo(name = "user_id") val userId: Long,
+    @ColumnInfo(name = "expires_on") val expiresOn: Long,
+    @ColumnInfo(name = "token_type") val tokenType: String,
+    @ColumnInfo(name = "access_token") val accessToken: String
+)

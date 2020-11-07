@@ -15,8 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.auth.usecase
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+import co.anitrend.arch.data.repository.SupportRepository
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.auth.repository.AuthRepositoryImpl
+import co.anitrend.domain.auth.interactor.AuthUseCase
+import co.anitrend.domain.user.entity.User
+
+internal class AuthUseCaseImpl(
+    repository: AuthRepositoryImpl
+) : AuthUseCaseContract(repository) {
+
+    /**
+     * Informs underlying repositories or related components running background operations to stop
+     */
+    override fun onCleared() {
+        repository as SupportRepository
+        repository.onCleared()
+    }
 }
+
+typealias AuthUseCaseContract = AuthUseCase<DataState<User?>>

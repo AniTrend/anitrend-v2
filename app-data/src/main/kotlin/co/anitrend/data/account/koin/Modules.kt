@@ -15,8 +15,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.auth.datasource.local
+package co.anitrend.data.account.koin
 
-internal interface IAuthStore {
-    fun authDao(): AuthLocalSource
+import co.anitrend.data.account.repository.AccountRepositoryImpl
+import co.anitrend.data.account.usecase.AccountUseCaseContract
+import co.anitrend.data.account.usecase.AccountUseCaseImpl
+import org.koin.dsl.module
+
+private val useCaseModule = module {
+    factory<AccountUseCaseContract> {
+        AccountUseCaseImpl(
+            repository = get()
+        )
+    }
 }
+
+private val repositoryModule = module {
+    factory {
+        AccountRepositoryImpl(
+            source = get()
+        )
+    }
+}
+
+internal val accountModules = listOf(
+    useCaseModule, repositoryModule
+)
