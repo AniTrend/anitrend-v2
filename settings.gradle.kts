@@ -6,7 +6,7 @@ include(
     ":app-data",
     ":android-onboarding",
     ":android-splash",
-    ":android-auth",
+    ":feature-auth",
     ":app-navigation",
     ":android-navigation",
     ":android-core",
