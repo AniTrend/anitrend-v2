@@ -17,147 +17,221 @@
 
 package co.anitrend.domain.media.entity
 
+import co.anitrend.domain.airing.entity.AiringSchedule
+import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.extension.INVALID_ID
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
-import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
+import co.anitrend.domain.media.entity.attribute.link.IMediaExternalLink
+import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
-import co.anitrend.domain.media.entity.attribute.rank.MediaRank
+import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
+import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
-import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
-import co.anitrend.domain.media.entity.base.IMedia
-import co.anitrend.domain.media.entity.base.IMediaExtendedWithMediaList
-import co.anitrend.domain.media.entity.contract.MediaCategory
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.domain.media.enums.MediaSource
-import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
+import co.anitrend.domain.media.entity.contract.IMedia
+import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.entity.MediaList
+import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.tag.entity.Tag
 
-data class Media(
-    override val sourceId: MediaSourceId,
-    override val countryCode: CharSequence?,
-    override val description: CharSequence?,
-    override val externalLinks: Collection<MediaExternalLink>,
-    override val favouritesCount: Long,
-    override val genres: Collection<Genre>,
-    override val twitterTag: CharSequence?,
-    override val isLicensed: Boolean?,
-    override val isLocked: Boolean?,
-    override val isRecommendationBlocked: Boolean,
-    override val rankings: Collection<MediaRank>,
-    override val siteUrl: CharSequence?,
-    override val source: MediaSource?,
-    override val synonyms: Collection<CharSequence>,
-    override val tags: Collection<Tag>,
-    override val trailer: MediaTrailer?,
-    override val format: MediaFormat?,
-    override val season: MediaSeason?,
-    override val status: MediaStatus?,
-    override val scoreFormat: ScoreFormat,
-    override val meanScore: Int,
-    override val averageScore: Int,
-    override val startDate: FuzzyDate,
-    override val endDate: FuzzyDate,
-    override val title: MediaTitle,
-    override val image: MediaImage,
-    override val category: MediaCategory,
-    override val isAdult: Boolean?,
-    override val isFavourite: Boolean,
-    override val id: Long,
-    override val mediaListEntry: MediaList
-) : IMediaExtendedWithMediaList {
+sealed class Media : IMedia {
+
+    abstract val sourceId: IMediaSourceId
+    abstract val countryCode: CharSequence?
+    abstract val description: CharSequence?
+    abstract val favouritesCount: Long
+    abstract val genres: Collection<Genre>
+    abstract val twitterTag: CharSequence?
+    abstract val isLicensed: Boolean?
+    abstract val isLocked: Boolean?
+    abstract val isRecommendationBlocked: Boolean
+    abstract val siteUrl: CharSequence?
+    abstract val source: MediaSource?
+    abstract val synonyms: Collection<CharSequence>
+    abstract val tags: Collection<Tag>
+    abstract val category: Category
 
     /**
-     * Indicates whether some other object is "equal to" this one. Implementations must fulfil the following
-     * requirements:
+     * A category type of media
      *
-     * * Reflexive: for any non-null value `x`, `x.equals(x)` should return true.
-     * * Symmetric: for any non-null values `x` and `y`, `x.equals(y)` should return true if and only if `y.equals(x)` returns true.
-     * * Transitive:  for any non-null values `x`, `y`, and `z`, if `x.equals(y)` returns true and `y.equals(z)` returns true, then `x.equals(z)` should return true.
-     * * Consistent:  for any non-null values `x` and `y`, multiple invocations of `x.equals(y)` consistently return true or consistently return false, provided no information used in `equals` comparisons on the objects is modified.
-     * * Never equal to null: for any non-null value `x`, `x.equals(null)` should return false.
-     *
-     * Read more about [equality](https://kotlinlang.org/docs/reference/equality.html) in Kotlin.
+     * @param type A [MediaType] enum
      */
-    override fun equals(other: Any?): Boolean {
-        return when (other) {
-            is IMedia -> id == other.id
-            else -> super.equals(other)
+    sealed class Category(val type: MediaType) {
+
+        /**
+         * Japanese Anime
+         *
+         * @param episodes The amount of episodes the anime has when complete
+         * @param duration The general length of each anime episode in minutes
+         * @param schedule The media's next episode airing schedule
+         */
+        data class Anime(
+            val episodes: Int,
+            val duration: Int,
+            val schedule: AiringSchedule?
+        ) : Category(MediaType.ANIME) {
+            companion object {
+                fun empty() = Anime(
+                    0,
+                    0,
+                    null
+                )
+            }
+        }
+
+        /**
+         * Asian comic
+         *
+         * @param chapters The amount of chapters the manga has when complete
+         * @param volumes The amount of volumes the manga has when complete
+         */
+        data class Manga(
+            val chapters: Int,
+            val volumes: Int
+        ) : Category(MediaType.MANGA) {
+            companion object {
+                fun empty() = Manga(
+                    0,
+                    0
+                )
+            }
         }
     }
 
-    override fun hashCode(): Int {
-        var result = sourceId.hashCode()
-        result = 31 * result + (countryCode?.hashCode() ?: 0)
-        result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + externalLinks.hashCode()
-        result = 31 * result + favouritesCount.hashCode()
-        result = 31 * result + genres.hashCode()
-        result = 31 * result + (twitterTag?.hashCode() ?: 0)
-        result = 31 * result + (isLicensed?.hashCode() ?: 0)
-        result = 31 * result + (isLocked?.hashCode() ?: 0)
-        result = 31 * result + isRecommendationBlocked.hashCode()
-        result = 31 * result + rankings.hashCode()
-        result = 31 * result + (siteUrl?.hashCode() ?: 0)
-        result = 31 * result + (source?.hashCode() ?: 0)
-        result = 31 * result + synonyms.hashCode()
-        result = 31 * result + tags.hashCode()
-        result = 31 * result + (trailer?.hashCode() ?: 0)
-        result = 31 * result + (format?.hashCode() ?: 0)
-        result = 31 * result + (season?.hashCode() ?: 0)
-        result = 31 * result + (status?.hashCode() ?: 0)
-        result = 31 * result + (scoreFormat.hashCode())
-        result = 31 * result + meanScore
-        result = 31 * result + averageScore
-        result = 31 * result + startDate.hashCode()
-        result = 31 * result + endDate.hashCode()
-        result = 31 * result + title.hashCode()
-        result = 31 * result + image.hashCode()
-        result = 31 * result + category.hashCode()
-        result = 31 * result + (isAdult?.hashCode() ?: 0)
-        result = 31 * result + isFavourite.hashCode()
-        result = 31 * result + id.hashCode()
-        result = 31 * result + mediaListEntry.hashCode()
-        return result
+    data class Core(
+        override val title: IMediaTitle,
+        override val image: IMediaCover,
+        override val category: Category,
+        override val isAdult: Boolean?,
+        override val isFavourite: Boolean,
+        override val format: MediaFormat?,
+        override val season: MediaSeason?,
+        override val status: MediaStatus?,
+        override val meanScore: Int,
+        override val scoreFormat: ScoreFormat,
+        override val averageScore: Int,
+        override val startDate: FuzzyDate,
+        override val endDate: FuzzyDate,
+        override val mediaList: IMediaList,
+        override val id: Long,
+        override val sourceId: IMediaSourceId,
+        override val countryCode: CharSequence?,
+        override val description: CharSequence?,
+        override val favouritesCount: Long,
+        override val genres: Collection<Genre>,
+        override val twitterTag: CharSequence?,
+        override val isLicensed: Boolean?,
+        override val isLocked: Boolean?,
+        override val isRecommendationBlocked: Boolean,
+        override val siteUrl: CharSequence?,
+        override val source: MediaSource?,
+        override val synonyms: Collection<CharSequence>,
+        override val tags: Collection<Tag>
+    ) : Media() {
+        companion object {
+            fun empty() = Core(
+                sourceId = MediaSourceId.empty(),
+                countryCode = null,
+                description = null,
+                favouritesCount = 0,
+                genres = emptyList(),
+                twitterTag = null,
+                isLicensed = null,
+                isLocked = null,
+                isRecommendationBlocked = false,
+                siteUrl = null,
+                source = null,
+                synonyms = emptyList(),
+                tags = emptyList(),
+                format = null,
+                season = null,
+                status = null,
+                scoreFormat = ScoreFormat.POINT_10,
+                meanScore = 0,
+                averageScore = 0,
+                startDate = FuzzyDate.empty(),
+                endDate = FuzzyDate.empty(),
+                title = MediaTitle.empty(),
+                image = MediaImage.empty(),
+                category = Category.Anime.empty(),
+                isAdult = null,
+                isFavourite = false,
+                id = INVALID_ID,
+                mediaList = MediaList.empty()
+            )
+        }
     }
 
-    companion object {
-        fun empty() = Media(
-            sourceId = MediaSourceId.empty(),
-            countryCode = null,
-            description = null,
-            externalLinks = emptyList(),
-            favouritesCount = 0,
-            genres = emptyList(),
-            twitterTag = null,
-            isLicensed = null,
-            isLocked = null,
-            isRecommendationBlocked = false,
-            rankings = emptyList(),
-            siteUrl = null,
-            source = null,
-            synonyms = emptyList(),
-            tags = emptyList(),
-            trailer = null,
-            format = null,
-            season = null,
-            status = null,
-            scoreFormat = ScoreFormat.POINT_10,
-            meanScore = 0,
-            averageScore = 0,
-            startDate = FuzzyDate.empty(),
-            endDate = FuzzyDate.empty(),
-            title = MediaTitle.empty(),
-            image = MediaImage.empty(),
-            category = MediaCategory.Anime.empty(),
-            isAdult = null,
-            isFavourite = false,
-            id = INVALID_ID,
-            mediaListEntry = MediaList.empty()
-        )
+    data class Extended(
+        val externalLinks: Collection<IMediaExternalLink>,
+        val rankings: Collection<IMediaRank>,
+        val trailer: IMediaTrailer?,
+        override val title: IMediaTitle,
+        override val image: IMediaCover,
+        override val category: Category,
+        override val isAdult: Boolean?,
+        override val isFavourite: Boolean,
+        override val format: MediaFormat?,
+        override val season: MediaSeason?,
+        override val status: MediaStatus?,
+        override val meanScore: Int,
+        override val scoreFormat: ScoreFormat,
+        override val averageScore: Int,
+        override val startDate: FuzzyDate,
+        override val endDate: FuzzyDate,
+        override val mediaList: IMediaList,
+        override val id: Long,
+        override val sourceId: IMediaSourceId,
+        override val countryCode: CharSequence?,
+        override val description: CharSequence?,
+        override val favouritesCount: Long,
+        override val genres: Collection<Genre>,
+        override val twitterTag: CharSequence?,
+        override val isLicensed: Boolean?,
+        override val isLocked: Boolean?,
+        override val isRecommendationBlocked: Boolean,
+        override val siteUrl: CharSequence?,
+        override val source: MediaSource?,
+        override val synonyms: Collection<CharSequence>,
+        override val tags: Collection<Tag>
+    ) : Media() {
+        companion object {
+            fun empty() = Extended(
+                sourceId = MediaSourceId.empty(),
+                countryCode = null,
+                description = null,
+                externalLinks = emptyList(),
+                favouritesCount = 0,
+                genres = emptyList(),
+                twitterTag = null,
+                isLicensed = null,
+                isLocked = null,
+                isRecommendationBlocked = false,
+                rankings = emptyList(),
+                siteUrl = null,
+                source = null,
+                synonyms = emptyList(),
+                tags = emptyList(),
+                trailer = null,
+                format = null,
+                season = null,
+                status = null,
+                scoreFormat = ScoreFormat.POINT_10,
+                meanScore = 0,
+                averageScore = 0,
+                startDate = FuzzyDate.empty(),
+                endDate = FuzzyDate.empty(),
+                title = MediaTitle.empty(),
+                image = MediaImage.empty(),
+                category = Category.Anime.empty(),
+                isAdult = null,
+                isFavourite = false,
+                id = INVALID_ID,
+                mediaList = MediaList.empty()
+            )
+        }
     }
 }

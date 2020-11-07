@@ -17,21 +17,39 @@
 
 package co.anitrend.data.mediatrend.model.remote
 
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.mediatrend.model.contract.IMediaTrendModel
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [MediaTrend](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrend.doc.html)
  * Daily media statistics
  */
-internal data class MediaTrendModel(
-    @SerializedName("averageScore") override val averageScore: Int?,
-    @SerializedName("date") override val date: Long,
-    @SerializedName("episode") override val episode: Int?,
-    @SerializedName("inProgress") override val inProgress: Int?,
-    @SerializedName("media") override val media: MediaModelCore,
-    @SerializedName("mediaId") override val mediaId: Long,
-    @SerializedName("popularity") override val popularity: Int?,
-    @SerializedName("releasing") override val releasing: Boolean,
-    @SerializedName("trending") override val trending: Int
-) : IMediaTrendModel
+@Serializable
+internal sealed class MediaTrendModel : IMediaTrendModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("averageScore") override val averageScore: Int?,
+        @SerialName("date") override val date: Long,
+        @SerialName("episode") override val episode: Int?,
+        @SerialName("inProgress") override val inProgress: Int?,
+        @SerialName("mediaId") override val mediaId: Long,
+        @SerialName("popularity") override val popularity: Int?,
+        @SerialName("releasing") override val releasing: Boolean,
+        @SerialName("trending") override val trending: Int
+    ) : MediaTrendModel()
+
+    @Serializable
+    internal data class Extended(
+        @SerialName("media") val media: MediaModel.Core,
+        @SerialName("averageScore") override val averageScore: Int?,
+        @SerialName("date") override val date: Long,
+        @SerialName("episode") override val episode: Int?,
+        @SerialName("inProgress") override val inProgress: Int?,
+        @SerialName("mediaId") override val mediaId: Long,
+        @SerialName("popularity") override val popularity: Int?,
+        @SerialName("releasing") override val releasing: Boolean,
+        @SerialName("trending") override val trending: Int
+    ) : MediaTrendModel()
+}

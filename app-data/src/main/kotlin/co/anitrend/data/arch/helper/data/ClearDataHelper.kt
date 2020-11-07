@@ -58,7 +58,7 @@ internal class ClearDataHelper(
         }
 
         Timber.tag(moduleTag).v(
-            "Database table will not be cleared, setting prohibiting this"
+            "Database table will not be cleared, $settings prohibiting this"
         )
     }
 

@@ -17,10 +17,11 @@
 
 package co.anitrend.data.tag.model.remote
 
-import co.anitrend.data.media.model.MediaModelExtended
-import com.google.gson.annotations.SerializedName
+import co.anitrend.data.media.model.MediaModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 internal data class MediaTagCollection(
-    @SerializedName("MediaTagCollection")
-    val mediaTagCollection: List<MediaModelExtended.Tag>
+    @SerialName("MediaTagCollection") val mediaTagCollection: List<MediaModel.Tag>
 )

@@ -59,7 +59,7 @@ fun HexColor.toDrawable() = ColorDrawable(toColorInt())
  */
 fun AppCompatImageView.using(
     requestImage: RequestImage<*>,
-    transformations: List<Transformation>? = null
+    transformations: List<Transformation> = emptyList()
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
 
@@ -67,18 +67,16 @@ fun AppCompatImageView.using(
         val color = requestImage.image?.color
         if (color != null)
             requestBuilder.placeholder(color.toDrawable())
+    }
 
-        if (transformations == null) {
-            val radius = resources.getDimensionPixelSize(R.dimen.sm_margin).toFloat()
-            RoundedCornersTransformation(
-                bottomLeft = radius,
-                bottomRight = radius
-            )
-        } else if (transformations.isNotEmpty()) {
-            requestBuilder.transformations(
-                transformations
-            )
-        }
+    if (transformations.isNotEmpty())
+        requestBuilder.transformations(transformations)
+    else {
+        val radius = resources.getDimensionPixelSize(R.dimen.sm_margin).toFloat()
+        RoundedCornersTransformation(
+            bottomLeft = radius,
+            bottomRight = radius
+        )
     }
 
     val request = requestBuilder
@@ -107,15 +105,12 @@ fun AppCompatImageView.using(
  */
 fun AppCompatImageView.using(
     imageDrawable: Drawable?,
-    transformations: List<Transformation>? = null
+    transformations: List<Transformation> = emptyList()
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
 
-    if (!transformations.isNullOrEmpty()) {
-        requestBuilder.transformations(
-            transformations
-        )
-    }
+    if (transformations.isNotEmpty())
+        requestBuilder.transformations(transformations)
 
     val request = requestBuilder
         .transition(

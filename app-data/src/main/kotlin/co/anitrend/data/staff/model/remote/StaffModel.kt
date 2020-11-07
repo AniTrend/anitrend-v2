@@ -23,27 +23,41 @@ import co.anitrend.data.shared.model.SharedImage
 import co.anitrend.data.shared.model.SharedName
 import co.anitrend.data.staff.model.contract.IStaffModel
 import co.anitrend.domain.staff.enums.StaffLanguage
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** [Staff](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/staff.doc.html)
- * Voice actors or production staff
- *
- * @param character Characters voiced by the actor
- * @param staffMedia Media where the staff member has a production role
- */
 @Serializable
-internal data class StaffModel(
-    val character: CharacterConnection?,
-    val staffMedia: MediaConnection?,
-    @SerialName("description") override val description: String?,
-    @SerialName("favourites") override val favourites: Int,
-    @SerialName("image") override val image: SharedImage?,
-    @SerialName("isFavourite") override val isFavourite: Boolean,
-    @SerialName("language") override val language: StaffLanguage?,
-    @SerialName("name") override val name: SharedName?,
-    @SerialName("siteUrl") override val siteUrl: String?,
-    @SerialName("updatedAt") override val updatedAt: Long?,
-    @SerialName("id") override val id: Long
-) : IStaffModel
+internal sealed class StaffModel : IStaffModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("description") override val description: String?,
+        @SerialName("favourites") override val favourites: Int,
+        @SerialName("image") override val image: SharedImage?,
+        @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("language") override val language: StaffLanguage?,
+        @SerialName("name") override val name: SharedName?,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("id") override val id: Long
+    ) : StaffModel()
+
+    /**
+     * @param character Characters voiced by the actor
+     * @param staffMedia Media where the staff member has a production role
+     */
+    @Serializable
+    internal data class Extended(
+        @SerialName("character") val character: CharacterConnection?,
+        @SerialName("staffMedia") val staffMedia: MediaConnection?,
+        @SerialName("description") override val description: String?,
+        @SerialName("favourites") override val favourites: Int,
+        @SerialName("image") override val image: SharedImage?,
+        @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("language") override val language: StaffLanguage?,
+        @SerialName("name") override val name: SharedName?,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("id") override val id: Long
+    ) : StaffModel()
+}

@@ -26,18 +26,33 @@ import kotlinx.serialization.Serializable
 
 /** [Character](https://anilist.github.io/ApiV2-GraphQL-Docs/character.doc.html)
  * A character that features in an anime or manga
- *
- * @param description A general description of the character
  */
 @Serializable
-internal class CharacterModel(
-    @SerialName("media") val media: MediaConnection?,
-    @SerialName("description") override val description: String?,
-    @SerialName("favourites") override val favourites: Int?,
-    @SerialName("image") override val image: SharedImage?,
-    @SerialName("isFavourite") override val isFavourite: Boolean,
-    @SerialName("name") override val name: SharedName?,
-    @SerialName("siteUrl") override val siteUrl: String?,
-    @SerialName("updatedAt") override val updatedAt: Long?,
-    @SerialName("id") override val id: Long,
-) : ICharacterModel
+internal sealed class CharacterModel : ICharacterModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("description") override val description: String?,
+        @SerialName("favourites") override val favourites: Int?,
+        @SerialName("image") override val image: SharedImage?,
+        @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("name") override val name: SharedName?,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("id") override val id: Long,
+    ) : CharacterModel()
+
+    @Serializable
+    internal data class Extended(
+        @SerialName("media") val media: MediaConnection?,
+        @SerialName("description") override val description: String?,
+        @SerialName("favourites") override val favourites: Int?,
+        @SerialName("image") override val image: SharedImage?,
+        @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("name") override val name: SharedName?,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("id") override val id: Long,
+    ) : CharacterModel()
+}
+

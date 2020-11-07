@@ -21,7 +21,6 @@ import android.content.Context
 import android.os.Build
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
-import androidx.core.text.bold
 import androidx.core.text.color
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.gone
@@ -31,13 +30,12 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.core.android.getPrettyTime
 import co.anitrend.core.android.helpers.image.toColorInt
 import co.anitrend.domain.common.HexColor
-import co.anitrend.domain.media.entity.base.IMediaCore
-import co.anitrend.domain.media.entity.contract.MediaCategory
+import co.anitrend.domain.media.entity.Media
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import timber.log.Timber
+import kotlin.contracts.contract
 
 internal class MediaAiringScheduleWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -45,18 +43,18 @@ internal class MediaAiringScheduleWidget @JvmOverloads constructor(
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    private fun setDecoratedAiringText(media: MediaCategory.Anime, color: HexColor?) {
+    private fun setDecoratedAiringText(media: Media.Category.Anime, color: HexColor?) {
         val decoratorColor = color?.toColorInt() ?: context.getCompatColor(R.color.primaryTextColor)
-        val timeString = media.schedule!!.getPrettyTime()
+        val timeString = requireNotNull(media.schedule).getPrettyTime()
         val builder = SpannableStringBuilder().color(decoratorColor) {
-            append(context.getString(R.string.label_episode_airing_in_time, media.schedule!!.episode, timeString))
+            append(context.getString(R.string.label_episode_airing_in_time, requireNotNull(media.schedule).episode, timeString))
         }
         text = builder
     }
 
-    fun setUpAiringSchedule(media: IMediaCore) {
+    fun setUpAiringSchedule(media: Media) {
         val mediaCategory = media.category
-        if (mediaCategory !is MediaCategory.Anime || mediaCategory.schedule == null) {
+        if (mediaCategory !is Media.Category.Anime || mediaCategory.schedule == null) {
             gone()
             return
         }

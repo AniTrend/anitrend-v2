@@ -17,12 +17,11 @@
 
 package co.anitrend.data.review.model.remote
 
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.review.model.contract.IReviewModel
-import co.anitrend.data.user.model.remote.UserModelCore
+import co.anitrend.data.user.model.remote.UserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,21 +29,44 @@ import kotlinx.serialization.Serializable
  * A Review that features in an anime or manga
  */
 @Serializable
-internal class ReviewModel(
-    @SerialName("body") override val body: String?,
-    @SerialName("createdAt") override val createdAt: Long,
-    @SerialName("media") override val media: MediaModelCore?,
-    @SerialName("mediaId") override val mediaId: Long,
-    @SerialName("mediaType") override val mediaType: MediaType?,
-    @SerialName("private") override val private: Boolean?,
-    @SerialName("rating") override val rating: Int?,
-    @SerialName("ratingAmount") override val ratingAmount: Int?,
-    @SerialName("score") override val score: Int?,
-    @SerialName("siteUrl") override val siteUrl: String?,
-    @SerialName("summary") override val summary: String?,
-    @SerialName("updatedAt") override val updatedAt: Long,
-    @SerialName("user") override val user: UserModelCore?,
-    @SerialName("userId") override val userId: Long,
-    @SerialName("userRating") override val userRating: ReviewRating?,
-    @SerialName("id") override val id: Long
-) : IReviewModel
+internal sealed class ReviewModel : IReviewModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("body") override val body: String?,
+        @SerialName("createdAt") override val createdAt: Long,
+        @SerialName("mediaId") override val mediaId: Long,
+        @SerialName("mediaType") override val mediaType: MediaType?,
+        @SerialName("private") override val private: Boolean?,
+        @SerialName("rating") override val rating: Int?,
+        @SerialName("ratingAmount") override val ratingAmount: Int?,
+        @SerialName("score") override val score: Int?,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("summary") override val summary: String?,
+        @SerialName("updatedAt") override val updatedAt: Long,
+        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("userId") override val userId: Long,
+        @SerialName("userRating") override val userRating: ReviewRating?,
+        @SerialName("id") override val id: Long
+    ) : ReviewModel()
+
+    @Serializable
+    internal data class Extended(
+        @SerialName("media") val media: MediaModel.Core?,
+        @SerialName("body") override val body: String?,
+        @SerialName("createdAt") override val createdAt: Long,
+        @SerialName("mediaId") override val mediaId: Long,
+        @SerialName("mediaType") override val mediaType: MediaType?,
+        @SerialName("private") override val private: Boolean?,
+        @SerialName("rating") override val rating: Int?,
+        @SerialName("ratingAmount") override val ratingAmount: Int?,
+        @SerialName("score") override val score: Int?,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("summary") override val summary: String?,
+        @SerialName("updatedAt") override val updatedAt: Long,
+        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("userId") override val userId: Long,
+        @SerialName("userRating") override val userRating: ReviewRating?,
+        @SerialName("id") override val id: Long
+    ) : ReviewModel()
+}

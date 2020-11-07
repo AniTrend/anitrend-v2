@@ -17,12 +17,14 @@
 
 package co.anitrend.data.moe.model.local
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Query for relation request
  */
+@Serializable
 internal data class MoeSourceQuery(
-    @SerializedName("source") val source: MoeSourceType,
-    @SerializedName("id") val id: Long
+    @SerialName("source") val source: MoeSourceType,
+    @SerialName("id") val id: Long
 )

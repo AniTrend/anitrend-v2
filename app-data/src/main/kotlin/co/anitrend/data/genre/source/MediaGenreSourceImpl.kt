@@ -19,14 +19,11 @@ package co.anitrend.data.genre.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
-import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
+import co.anitrend.data.genre.source.contract.MediaGenreController
 import co.anitrend.data.genre.source.contract.MediaGenreSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -36,9 +33,8 @@ import kotlinx.coroutines.flow.map
 internal class MediaGenreSourceImpl(
     private val remoteSource: MediaGenreRemoteSource,
     private val localSource: MediaGenreLocalSource,
-    private val mapper: MediaGenreResponseMapper,
+    private val controller: MediaGenreController,
     private val clearDataHelper: ClearDataHelper,
-    private val strategy: ControllerStrategy<List<GenreEntity>>,
     converter: GenreEntityConverter = GenreEntityConverter(),
     dispatchers: SupportDispatchers
 ) : MediaGenreSource(dispatchers) {
@@ -53,8 +49,6 @@ internal class MediaGenreSourceImpl(
         val deferred = async {
             remoteSource.getMediaGenres()
         }
-
-        val controller = mapper.controller(dispatchers, strategy)
 
         controller(deferred, callback)
     }

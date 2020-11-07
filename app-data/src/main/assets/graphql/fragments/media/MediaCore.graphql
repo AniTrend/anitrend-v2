@@ -1,5 +1,6 @@
 fragment MediaCore on Media {
     id
+    idMal
     title {
         ... MediaTitle
     }
@@ -11,11 +12,21 @@ fragment MediaCore on Media {
     format
     season
     status
+    source
     meanScore
+    description
     averageScore
     countryOfOrigin
     trending
     popularity
+    synonyms
+    favourites
+    hashtag
+    siteUrl
+    genres
+    tags {
+        ... Tag
+    }
     startDate {
         ... FuzzyDate
     }
@@ -27,7 +38,11 @@ fragment MediaCore on Media {
     chapters
     volumes
     isAdult
+    isLocked
+    isLicensed
     isFavourite
+    isRecommendationBlocked
+    updatedAt
     nextAiringEpisode {
         ... AiringScheduleCore
     }

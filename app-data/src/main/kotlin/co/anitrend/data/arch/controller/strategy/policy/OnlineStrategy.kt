@@ -21,13 +21,15 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
+import co.anitrend.data.arch.network.model.NetworkMessage
 import timber.log.Timber
 
 /**
  * Runs connectivity check before prior to execution
  */
 internal class OnlineStrategy<D> private constructor(
-    private val connectivity: SupportConnectivity
+    private val connectivity: SupportConnectivity,
+    override val networkMessage: NetworkMessage
 ) : ControllerStrategy<D>() {
 
     /**
@@ -39,34 +41,40 @@ internal class OnlineStrategy<D> private constructor(
     override suspend fun invoke(
         callback: RequestCallback,
         block: suspend () -> D?
-    ) = kotlin.runCatching {
-        if (connectivity.isConnected) {
-            val result = block()
-            callback.recordSuccess()
-            result
-        } else {
-            callback.recordFailure(
-                RequestError(
-                    "No active connection",
-                    "Please check your internet connection",
-                    null
+    ): D? {
+        runCatching {
+            if (connectivity.isConnected)
+                block()
+            else
+                throw RequestError(
+                    networkMessage.connectivityErrorTittle,
+                    networkMessage.connectivityErrorMessage
                 )
-            )
-            null
+
+        }.onSuccess { result ->
+            callback.recordSuccess()
+            return result
+        }.onFailure { exception ->
+            Timber.tag(moduleTag).e(exception)
+            when (exception) {
+                is RequestError -> callback.recordFailure(exception)
+                else -> callback.recordFailure(
+                    RequestError(
+                        networkMessage.unrecoverableErrorTittle,
+                        exception.message,
+                        exception.cause
+                    )
+                )
+            }
         }
-    }.onFailure { e ->
-        Timber.tag(moduleTag).e(e)
-        when (e) {
-            is RequestError -> callback.recordFailure(e)
-            else -> callback.recordFailure(
-                RequestError("Unexpected error occurred", e.message, e.cause)
-            )
-        }
-    }.getOrNull()
+
+        return null
+    }
 
     companion object {
-        fun <T> create(
-            connectivity: SupportConnectivity
-        ) = OnlineStrategy<T>(connectivity)
+        internal fun <T> create(
+            connectivity: SupportConnectivity,
+            networkMessage: NetworkMessage
+        ) = OnlineStrategy<T>(connectivity, networkMessage)
     }
 }

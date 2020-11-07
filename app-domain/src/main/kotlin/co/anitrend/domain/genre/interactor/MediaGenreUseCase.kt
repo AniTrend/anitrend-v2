@@ -21,12 +21,12 @@ import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.genre.repository.IMediaGenreRepository
 
-abstract class MediaGenreUseCase<R: UiState<*>>(
-    protected val repository: IMediaGenreRepository<R>
+abstract class MediaGenreUseCase<State: UiState<*>>(
+    protected val repository: IMediaGenreRepository<State>
 ) : IUseCase {
 
     /**
      * @return media genres user interface state
      */
-    fun invoke()= repository.getMediaGenres()
+    fun getMediaGenres()= repository.getMediaGenres()
 }

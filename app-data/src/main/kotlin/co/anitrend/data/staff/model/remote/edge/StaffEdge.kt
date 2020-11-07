@@ -19,7 +19,6 @@ package co.anitrend.data.staff.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.staff.model.remote.StaffModel
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -34,5 +33,5 @@ internal data class StaffEdge(
     @SerialName("favouriteOrder") val favouriteOrder: Int?,
     @SerialName("role") val role: String?,
     @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: StaffModel?
+    @SerialName("node") override val node: StaffModel.Core?
 ) : IEntityEdge<StaffModel>

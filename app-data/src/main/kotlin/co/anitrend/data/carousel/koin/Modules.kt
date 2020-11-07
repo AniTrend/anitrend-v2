@@ -19,8 +19,8 @@ package co.anitrend.data.carousel.koin
 
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.graphQLController
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.online
 import co.anitrend.data.carousel.cache.CarouselCache
 import co.anitrend.data.carousel.mapper.CarouselAnimeMapper
 import co.anitrend.data.carousel.mapper.CarouselMangaMapper
@@ -39,9 +39,12 @@ private val sourceModule = module {
             cachePolicy = CarouselCache(
                 db().cacheDao()
             ),
-            animeMapper = get(),
-            mangaMapper = get(),
-            strategy = online(),
+            animeController = graphQLController(
+                mapper = get<CarouselAnimeMapper>()
+            ),
+            mangaController = graphQLController(
+                mapper = get<CarouselMangaMapper>()
+            ),
             clearDataHelper = get(),
             dispatchers = get()
         )

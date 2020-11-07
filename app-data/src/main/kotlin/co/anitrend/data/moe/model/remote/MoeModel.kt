@@ -17,11 +17,13 @@
 
 package co.anitrend.data.moe.model.remote
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 internal data class MoeModel(
-    @SerializedName("anidb") val aniDb: Long?,
-    @SerializedName("kitsu") val kitsu: Long?,
-    @SerializedName("anilist") val anilist: Long?,
-    @SerializedName("myanimelist") val mal: Long?
+    @SerialName("anidb") val aniDb: Long?,
+    @SerialName("kitsu") val kitsu: Long?,
+    @SerialName("anilist") val anilist: Long?,
+    @SerialName("myanimelist") val mal: Long?
 )

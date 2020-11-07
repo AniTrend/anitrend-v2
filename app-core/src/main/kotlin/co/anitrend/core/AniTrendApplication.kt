@@ -66,12 +66,13 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
     }
 
     private fun createUncaughtExceptionHandler() {
-        if (BuildConfig.DEBUG)
-            Thread.setDefaultUncaughtExceptionHandler(
-                UncaughtExceptionHandler(
-                    ExceptionCrashHandler()
-                )
+        val defaultHandler =
+            Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(
+            UncaughtExceptionHandler(
+                ExceptionCrashHandler(defaultHandler)
             )
+        )
     }
 
     override fun onCreate() {

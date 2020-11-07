@@ -44,6 +44,7 @@ import co.anitrend.core.util.locale.contract.ILocaleHelper
 import co.anitrend.core.util.theme.ThemeHelper
 import co.anitrend.core.util.theme.contract.IThemeHelper
 import co.anitrend.data.arch.di.dataModules
+import co.anitrend.data.arch.network.model.NetworkMessage
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -66,6 +67,15 @@ private val coreModule = module {
             context = androidContext()
         )
     } binds(Settings.BINDINGS)
+
+    factory {
+        val context = androidContext()
+        NetworkMessage(
+            unrecoverableErrorTittle = context.getString(R.string.error_message_unrecoverable),
+            connectivityErrorTittle = context.getString(R.string.error_message_no_connection_title),
+            connectivityErrorMessage = context.getString(R.string.error_message_no_connection_message)
+        )
+    }
 
     single {
         StateLayoutConfig(

@@ -20,7 +20,9 @@
 
     <style name="AppTheme" parent="SupportTheme.AppTheme">
         <item name="android:textViewStyle">@style/AppTheme.FontFamily</item>
+
         <item name="colorAccent">@color/anitrendColorAccent</item>
+        <item name="colorControlNormal">@color/secondaryTextColor</item>
 
         <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
 

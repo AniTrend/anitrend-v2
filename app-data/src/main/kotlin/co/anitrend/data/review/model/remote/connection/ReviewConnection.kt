@@ -30,6 +30,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ReviewConnection(
     @SerialName("edges") override val edges: List<ReviewEdge>?,
-    @SerialName("nodes") override val nodes: List<ReviewModel>?,
+    @SerialName("nodes") override val nodes: List<ReviewModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<ReviewEdge, ReviewModel>

@@ -19,29 +19,24 @@ package co.anitrend.data.moe.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.extension.fetchBodyWithRetry
 import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.moe.converters.SourceEntityConverter
 import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.datasource.remote.MoeRemoteSource
-import co.anitrend.data.moe.entity.MoeEntity
-import co.anitrend.data.moe.mapper.MoeResponseMapper
 import co.anitrend.data.moe.model.local.MoeSourceQuery
+import co.anitrend.data.moe.source.contract.MoeController
 import co.anitrend.data.moe.source.contract.MoeSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 
 internal class MoeSourceImpl(
     private val remoteSource: MoeRemoteSource,
     private val localSource: MoeLocalSource,
-    private val mapper: MoeResponseMapper,
+    private val controller: MoeController,
     private val clearDataHelper: ClearDataHelper,
-    private val strategy: ControllerStrategy<MoeEntity>,
     converter: SourceEntityConverter = SourceEntityConverter(),
     dispatchers: SupportDispatchers
 ) : MoeSource(dispatchers) {
@@ -55,21 +50,11 @@ internal class MoeSourceImpl(
 
 
     override suspend fun getSourceRelation(query: MoeSourceQuery, callback: RequestCallback) {
-        mapper.anilistId = query.id
         val deferred = async {
             remoteSource.getFromSource(query)
         }
 
-        strategy(callback) {
-            val response = deferred.fetchBodyWithRetry(dispatchers.io)
-            response?.let { data ->
-                val mapped = mapper.onResponseMapFrom(data)
-                withContext(dispatchers.io) {
-                    mapper.onResponseDatabaseInsert(mapped)
-                }
-                mapped
-            }
-        }
+        controller(deferred, callback)
     }
 
     /**

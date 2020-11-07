@@ -20,8 +20,8 @@ package co.anitrend.data.carousel.usecase
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.carousel.repository.CarouselRepositoryImpl
-import co.anitrend.domain.media.entity.MediaCarousel
-import co.anitrend.domain.media.interactor.MediaCarouselUseCase
+import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.carousel.interactor.MediaCarouselUseCase
 
 internal class CarouselUseCaseImpl(
     repository: CarouselRepositoryImpl

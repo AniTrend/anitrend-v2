@@ -19,7 +19,8 @@ package co.anitrend.data.auth
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import co.anitrend.data.BuildConfig
-import co.anitrend.data.auth.util.AuthenticationHelper
+import co.anitrend.data.auth.helper.AUTHENTICATION_URI
+import co.anitrend.data.auth.helper.AuthenticationHelper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,8 +33,7 @@ class AuthenticationTest {
     fun callBackUrlIsCorrect() {
         // This test may fail due to Uri class not being mock-able
         val expected = "https://${BuildConfig.apiAuthUrl}/authorize?client_id=${BuildConfig.clientId}&response_type=token"
-        val authUri = AuthenticationHelper.AUTHENTICATION_URI
-        val actual = URLDecoder.decode(authUri.toString(), "UTF-8")
+        val actual = URLDecoder.decode(AUTHENTICATION_URI.toString(), "UTF-8")
 
         assertEquals(expected, actual)
     }

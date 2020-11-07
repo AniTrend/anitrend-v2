@@ -21,11 +21,12 @@ import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.extension.fetchBodyWithRetry
 import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.arch.network.contract.NetworkClient
+import co.anitrend.data.arch.network.graphql.GraphNetworkClient
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -34,13 +35,12 @@ import timber.log.Timber
 /**
  * AniTrend controller that handles complex logic of making requests, capturing errors,
  * notifying state observers and providing input to response mappers
- *
- * @see DefaultMapper
  */
-internal class GraphQLController<S, out D> private constructor(
+internal class GraphQLController<S, out D>(
     private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
-    private val dispatchers: SupportDispatchers
+    private val dispatcher: CoroutineDispatcher,
+    private val client: NetworkClient<GraphQLResponse<S>>
 ) : ISupportResponse<Deferred<Response<GraphQLResponse<S>>>, D> {
 
     /**
@@ -55,16 +55,11 @@ internal class GraphQLController<S, out D> private constructor(
         resource: Deferred<Response<GraphQLResponse<S>>>,
         requestCallback: RequestCallback
     ) = strategy(requestCallback) {
-        /**
-         * Suppressing this because: https://discuss.kotlinlang.org/t/warning-inappropriate-blocking-method-call-with-coroutines-how-to-fix/16903
-         */
-        @Suppress("BlockingMethodInNonBlockingContext")
-        val response = resource.fetchBodyWithRetry(dispatchers.io)
+
+        val response = client.fetch(resource)
 
         val error = response.errors?.also { errors ->
-            errors.forEach {
-                Timber.tag(moduleTag).e(it.toString())
-            }
+            errors.forEach { Timber.tag(moduleTag).w(it.toString()) }
         }?.firstOrNull()
 
         // Only throw if data is null while we have an error
@@ -77,7 +72,7 @@ internal class GraphQLController<S, out D> private constructor(
 
         response.data?.let { data ->
             val mapped = mapper.onResponseMapFrom(data)
-            withContext(dispatchers.io) {
+            withContext(dispatcher) {
                 mapper.onResponseDatabaseInsert(mapped)
             }
             mapped
@@ -86,13 +81,5 @@ internal class GraphQLController<S, out D> private constructor(
 
     companion object {
         private val moduleTag = GraphQLController::class.java.simpleName
-
-        fun <S, D> newInstance(
-            mapper: DefaultMapper<S, D>,
-            strategy: ControllerStrategy<D>,
-            dispatchers: SupportDispatchers
-        ) = GraphQLController(
-            mapper, strategy, dispatchers
-        )
     }
 }

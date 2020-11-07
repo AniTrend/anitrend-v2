@@ -20,12 +20,12 @@ package co.anitrend.data.arch.logger
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 
-internal class OkHttpLogger: HttpLoggingInterceptor.Logger {
+internal class OkHttpLogger : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
-        Timber.tag(TAG).i(message)
+        Timber.tag(TAG).v(message)
     }
 
     companion object {
-        val TAG = OkHttpLogger::class.java.simpleName
+        private val TAG = OkHttpLogger::class.java.simpleName
     }
 }

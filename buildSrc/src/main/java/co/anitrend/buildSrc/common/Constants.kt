@@ -83,7 +83,7 @@ internal val featureModules = listOf(
     recommendation, settings, search, profile, account, about, news
 )
 
-private const val coreFeatureModulePattern = "android-"
+private const val coreAndroidModulePattern = "android-"
 private const val featureModulePattern = "feature-"
 private const val commonModulePattern = "common-"
 private const val taskModulePattern = "task-"
@@ -98,7 +98,7 @@ fun Project.isAndroidCoreModule() = name == androidCore
 
 fun Project.isBaseModule() = name.startsWith(baseModulePattern)
 fun Project.isFeatureModule() = name.startsWith(featureModulePattern)
-fun Project.isCoreFeatureModule() = name.startsWith(coreFeatureModulePattern)
+fun Project.isCoreAndroidModule() = name.startsWith(coreAndroidModulePattern)
 fun Project.isCommonFeatureModule() = name.startsWith(commonModulePattern)
 fun Project.isTaskFeatureModule() = name.startsWith(taskModulePattern)
 

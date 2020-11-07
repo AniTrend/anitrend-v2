@@ -36,4 +36,8 @@
     <string name="label_text_action_retry">Reload</string>
 
     <string name="label_place_holder_to_be_announced">TBA</string>
+
+    <string name="error_message_no_connection_title">No active connection</string>
+    <string name="error_message_no_connection_message">Please make sure you have an working internet connection</string>
+    <string name="error_message_unrecoverable">Unrecoverable error occurred</string>
 </resources>

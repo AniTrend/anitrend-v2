@@ -27,18 +27,18 @@ import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
-import co.anitrend.common.media.ui.controller.helpers.EntityDiffUtil
+import co.anitrend.common.media.ui.controller.helpers.CarouselDiffUtil
 import co.anitrend.common.media.ui.controller.model.carousel.MediaCarouselItem
 import co.anitrend.common.media.ui.controller.model.carousel.MediaCarouselItem.Companion.createCarouselViewHolder
-import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.carousel.entity.MediaCarousel
 
 class MediaCarouselAdapter(
     private val viewPool: RecyclerView.RecycledViewPool,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (IEntity) -> IRecyclerItem = { MediaCarouselItem(it, viewPool) }
-) : SupportListAdapter<IEntity>(EntityDiffUtil) {
+    override val mapper: (MediaCarousel) -> IRecyclerItem = { MediaCarouselItem(it, viewPool) }
+) : SupportListAdapter<MediaCarousel>(CarouselDiffUtil) {
 
     /**
      * Assigned if the current adapter needs to support action mode
@@ -53,7 +53,7 @@ class MediaCarouselAdapter(
      * The identifiable id of each item should unique, and if non exists
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
-    override fun getStableIdFor(item: IEntity?): Long {
+    override fun getStableIdFor(item: MediaCarousel?): Long {
         return item?.id ?: RecyclerView.NO_ID
     }
 

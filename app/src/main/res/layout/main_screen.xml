@@ -52,25 +52,4 @@
         app:backgroundTint="@color/anitrendColorAccent"
         app:srcCompat="@drawable/ic_explore_24dp"/>
 
-    <!--<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/xl_margin"
-        app:behavior_hideable="true"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        tools:visibility="gone">
-
-        <com.google.android.material.navigation.NavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bottom_dialog_background"
-            app:itemBackground="@drawable/nav_item_background"
-            app:itemIconTint="@color/secondaryTextColor"
-            app:itemTextColor="?contentColor"
-            app:headerLayout="@layout/nav_header_main"
-            app:insetForeground="@android:color/transparent"
-            app:menu="@menu/main_drawer"/>
-
-    </FrameLayout>-->
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

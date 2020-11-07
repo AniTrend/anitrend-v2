@@ -20,6 +20,7 @@ package co.anitrend.data.moe.koin
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
+import co.anitrend.data.arch.extension.defaultController
 import co.anitrend.data.arch.extension.online
 import co.anitrend.data.moe.mapper.MoeResponseMapper
 import co.anitrend.data.moe.source.MoeSourceImpl
@@ -31,9 +32,10 @@ private val sourceModule = module {
         MoeSourceImpl(
             remoteSource = api(EndpointType.RELATION_MOE),
             localSource = db().sourceDao(),
-            mapper = get(),
+            controller = defaultController(
+                mapper = get<MoeResponseMapper>()
+            ),
             clearDataHelper = get(),
-            strategy = online(),
             dispatchers = get()
         )
     }

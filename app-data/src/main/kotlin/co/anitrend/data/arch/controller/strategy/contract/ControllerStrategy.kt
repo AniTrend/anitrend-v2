@@ -18,13 +18,15 @@
 package co.anitrend.data.arch.controller.strategy.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.data.arch.network.model.NetworkMessage
 
 /**
  * Contract for controller strategy
  */
 internal abstract class ControllerStrategy<D> {
 
-    protected val moduleTag = javaClass.simpleName
+    protected val moduleTag: String = javaClass.simpleName
+    protected abstract val networkMessage: NetworkMessage
 
     /**
      * Execute a task under an implementation strategy

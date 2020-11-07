@@ -30,6 +30,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal class RecommendationConnection(
     @SerialName("edges") override val edges: List<RecommendationEdge>?,
-    @SerialName("nodes") override val nodes: List<RecommendationModel>?,
+    @SerialName("nodes") override val nodes: List<RecommendationModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<RecommendationEdge, RecommendationModel>

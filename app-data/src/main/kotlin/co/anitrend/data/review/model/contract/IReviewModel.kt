@@ -17,9 +17,8 @@
 
 package co.anitrend.data.review.model.contract
 
-import co.anitrend.data.media.model.contract.IMediaModelCore
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.data.user.model.contract.IUserModelCore
+import co.anitrend.data.user.model.remote.contract.IUserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
 
@@ -28,7 +27,6 @@ import co.anitrend.domain.review.enums.ReviewRating
  *
  * @property body The main review body text
  * @property createdAt The time of the thread creation
- * @property media The media the review is of
  * @property mediaId The id of the review's media
  * @property mediaType For which type of media the review is for
  * @property private If the review is not yet publicly published and is only viewable by creator
@@ -45,7 +43,6 @@ import co.anitrend.domain.review.enums.ReviewRating
 internal interface IReviewModel : Identity {
     val body: String?
     val createdAt: Long
-    val media: IMediaModelCore?
     val mediaId: Long
     val mediaType: MediaType?
     val private: Boolean?
@@ -55,7 +52,7 @@ internal interface IReviewModel : Identity {
     val siteUrl: String?
     val summary: String?
     val updatedAt: Long
-    val user: IUserModelCore?
+    val user: IUserModel?
     val userId: Long
     val userRating: ReviewRating?
 }

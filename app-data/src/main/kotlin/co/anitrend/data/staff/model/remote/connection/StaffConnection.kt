@@ -31,6 +31,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class StaffConnection(
     @SerialName("edges") override val edges: List<StaffEdge>?,
-    @SerialName("nodes") override val nodes: List<StaffModel>?,
+    @SerialName("nodes") override val nodes: List<StaffModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<StaffEdge, StaffModel>

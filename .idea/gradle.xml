@@ -11,7 +11,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/android-auth" />
             <option value="$PROJECT_DIR$/android-core" />
             <option value="$PROJECT_DIR$/android-navigation" />
             <option value="$PROJECT_DIR$/android-onboarding" />
@@ -36,6 +35,7 @@
             <option value="$PROJECT_DIR$/common-user-ui" />
             <option value="$PROJECT_DIR$/feature-about" />
             <option value="$PROJECT_DIR$/feature-account" />
+            <option value="$PROJECT_DIR$/feature-auth" />
             <option value="$PROJECT_DIR$/feature-character" />
             <option value="$PROJECT_DIR$/feature-forum" />
             <option value="$PROJECT_DIR$/feature-media" />

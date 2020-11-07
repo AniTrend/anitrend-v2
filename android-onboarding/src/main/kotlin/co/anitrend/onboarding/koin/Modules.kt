@@ -39,8 +39,10 @@ private val presenterModule = module {
 }
 
 private val fragmentModule = module {
-    fragment {
-        OnBoardingContent()
+    scope<OnBoardingScreen> {
+        fragment {
+            OnBoardingContent()
+        }
     }
 }
 

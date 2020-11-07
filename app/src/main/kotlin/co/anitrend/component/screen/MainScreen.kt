@@ -23,6 +23,7 @@ import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
+import androidx.savedstate.SavedStateRegistry
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.component.action.ChangeSettingsMenuStateAction

@@ -22,7 +22,7 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 20
+    private const val candidate = 21
 
     const val compileSdk = 30
     const val targetSdk = 30

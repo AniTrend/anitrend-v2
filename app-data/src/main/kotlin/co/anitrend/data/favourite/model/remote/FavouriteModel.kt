@@ -22,15 +22,17 @@ import co.anitrend.data.favourite.model.contract.IFavouriteModel
 import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.staff.model.remote.connection.StaffConnection
 import co.anitrend.data.studio.model.remote.connection.StudioConnection
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)
  * User's favourite anime, manga, characters, staff & studios
  */
+@Serializable
 internal data class FavouriteModel(
-    @SerializedName("anime") override val anime: MediaConnection?,
-    @SerializedName("characters") override val characters: CharacterConnection?,
-    @SerializedName("manga") override val manga: MediaConnection?,
-    @SerializedName("staff") override val staff: StaffConnection?,
-    @SerializedName("studios") override val studios: StudioConnection?
+    @SerialName("anime") override val anime: MediaConnection?,
+    @SerialName("characters") override val characters: CharacterConnection?,
+    @SerialName("manga") override val manga: MediaConnection?,
+    @SerialName("staff") override val staff: StaffConnection?,
+    @SerialName("studios") override val studios: StudioConnection?
 ) : IFavouriteModel

@@ -24,7 +24,7 @@ import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
-import co.anitrend.domain.media.entity.MediaCarousel
+import co.anitrend.domain.carousel.entity.MediaCarousel
 
 data class CarouselState(
     private val useCase: CarouselUseCaseContract
@@ -40,7 +40,6 @@ data class CarouselState(
 
     override val refreshState =
         Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
-
 
     operator fun invoke(parameter: CarouselQuery) {
         val result = useCase.getMediaCarousel(parameter)

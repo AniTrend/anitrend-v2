@@ -25,12 +25,12 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.databinding.MediaListItemBinding
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaListItem(
-    val media: IMedia
+    val media: Media
 ) : RecyclerItemBinding<MediaListItemBinding>(media.id) {
 
     private var disposable: Disposable? = null

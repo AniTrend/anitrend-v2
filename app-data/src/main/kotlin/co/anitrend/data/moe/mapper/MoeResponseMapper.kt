@@ -17,7 +17,11 @@
 
 package co.anitrend.data.moe.mapper
 
-import co.anitrend.arch.data.mapper.SupportResponseMapper
+import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.moe.converters.SourceModelConverter
 import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.entity.MoeEntity
@@ -26,9 +30,19 @@ import co.anitrend.data.moe.model.remote.MoeModel
 internal class MoeResponseMapper(
     private val localSource: MoeLocalSource,
     private val converter: SourceModelConverter = SourceModelConverter()
-) : SupportResponseMapper<MoeModel, MoeEntity>() {
+) : DefaultMapper<MoeModel, MoeEntity>() {
 
-    var anilistId: Long = 0
+    /**
+     * Handles the persistence of [data] into a local source
+     *
+     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     */
+    override suspend fun persistChanges(data: MoeEntity): OutCome<Nothing?> {
+        return runCatching {
+            localSource.upsert(data)
+            OutCome.Pass(null)
+        }.getOrElse { OutCome.Fail(listOf(it)) }
+    }
 
     /**
      * Inserts the given object into the implemented room database,
@@ -36,9 +50,10 @@ internal class MoeResponseMapper(
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
     override suspend fun onResponseDatabaseInsert(mappedData: MoeEntity) {
-        val count = localSource.count(mappedData.anilist)
-        if (count != 0) localSource.update(mappedData)
-        else localSource.insert(mappedData)
+        mappedData evaluate
+                ::checkValidity then
+                ::persistChanges otherwise
+                ::handleException
     }
 
     /**
@@ -49,5 +64,5 @@ internal class MoeResponseMapper(
      */
     override suspend fun onResponseMapFrom(
         source: MoeModel
-    ) = converter.convertFrom(source).copy(anilist = anilistId)
+    ) = converter.convertFrom(source)
 }

@@ -20,20 +20,18 @@ package co.anitrend.data.carousel.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.common.model.date.FuzzyDateModel
-import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.extension.toFuzzyDateLike
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.datasource.local.CarouselLocalStore
 import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
-import co.anitrend.data.carousel.mapper.CarouselAnimeMapper
-import co.anitrend.data.carousel.mapper.CarouselMangaMapper
+import co.anitrend.data.carousel.source.contract.AnimeController
 import co.anitrend.data.carousel.source.contract.CarouselSource
-import co.anitrend.data.media.converters.MediaEntityConverter
+import co.anitrend.data.carousel.source.contract.MangaController
+import co.anitrend.data.media.converter.MediaEntityConverter
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
-import co.anitrend.domain.media.entity.MediaCarousel
+import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -42,10 +40,9 @@ import kotlinx.coroutines.flow.*
 internal class CarouselSourceImpl(
     private val remoteSource: CarouselRemoteSource,
     private val localSource: CarouselLocalStore,
-    private val animeMapper: CarouselAnimeMapper,
-    private val mangaMapper: CarouselMangaMapper,
     private val clearDataHelper: IClearDataHelper,
-    private val strategy: ControllerStrategy<List<MediaEntity>>,
+    private val animeController: AnimeController,
+    private val mangaController: MangaController,
     private val converter: MediaEntityConverter = MediaEntityConverter(),
     cachePolicy: ICacheStorePolicy,
     dispatchers: SupportDispatchers
@@ -164,7 +161,7 @@ internal class CarouselSourceImpl(
         val mergedFlows =
             combine(carouselFlows) { carouselItems ->
                 carouselItems.toList()
-            }
+            }.filter(List<MediaCarousel>::isNotEmpty)
 
         emitAll(mergedFlows)
     }
@@ -174,9 +171,8 @@ internal class CarouselSourceImpl(
         val deferred = async {
             remoteSource.getCarouselAnime(queryBuilder)
         }
-        val controller = animeMapper.controller(dispatchers, strategy)
 
-        val result = controller(deferred, requestCallback)
+        val result = animeController(deferred, requestCallback)
         return !result.isNullOrEmpty()
     }
 
@@ -187,9 +183,8 @@ internal class CarouselSourceImpl(
         val deferred = async {
             remoteSource.getCarouselManga(queryBuilder)
         }
-        val controller = mangaMapper.controller(dispatchers, strategy)
 
-        val result = controller(deferred, requestCallback)
+        val result = mangaController(deferred, requestCallback)
         return !result.isNullOrEmpty()
     }
 

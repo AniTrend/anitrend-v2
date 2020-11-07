@@ -17,29 +17,24 @@
 
 package co.anitrend.data.arch.common.model.date
 
+import co.anitrend.data.arch.common.model.date.contract.IFuzzyDateModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** [FuzzyDate](https://anilist.github.io/ApiV2-GraphQL-Docs/fuzzydate.doc.html)
- * Date object that allows for incomplete date values (fuzzy) Unknown dates represented by 0.
- *
- * @param year Year annotated to have a minimum of 0
- * @param month Month annotated to have a minimum of 0 and maximum of 12
- * @param day Day annotated to have a minimum of 0 and maximum of 31
- */
 @Serializable
 internal data class FuzzyDateModel(
-    @SerialName("year") val year: Int,
-    @SerialName("month") val month: Int,
-    @SerialName("day") val day: Int
-) {
+    @SerialName("year") override val year: Int = UNKNOWN,
+    @SerialName("month") override val month: Int = UNKNOWN,
+    @SerialName("day") override val day: Int = UNKNOWN
+) : IFuzzyDateModel {
 
     /**
      * Checks if all date fields are not set
      *
      * @return [Boolean] true if the date fields are set to [UNKNOWN] otherwise false
      */
-    fun isDateNotSet() = day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
+    override fun isDateNotSet() =
+        day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
 
     companion object {
 
@@ -54,6 +49,6 @@ internal data class FuzzyDateModel(
             UNKNOWN
         )
 
-        internal fun FuzzyDateModel?.orEmpty() = this ?: empty()
+        internal fun IFuzzyDateModel?.orEmpty() = this ?: empty()
     }
 }

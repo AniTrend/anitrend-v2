@@ -20,7 +20,6 @@ package co.anitrend.domain.media.interactor
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.repository.MediaCarouselRepository
 import co.anitrend.domain.media.repository.MediaRepository
 
 abstract class MediaUseCase<State: UiState<*>>(
@@ -31,11 +30,4 @@ abstract class MediaUseCase<State: UiState<*>>(
 
     fun getPagedMediaByNetwork(query: IGraphPayload) =
         repository.getMediaPagedByNetwork(query)
-}
-
-abstract class MediaCarouselUseCase<State: UiState<*>>(
-    protected val repository: MediaCarouselRepository<State>
-) : IUseCase {
-    fun getMediaCarousel(query: IGraphPayload) =
-        repository.getMediaCarousel(query)
 }

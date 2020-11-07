@@ -39,7 +39,7 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeCo
     override fun viewModelState(): ISupportViewModelState<*>? = null
 
     /**
-     * Called when the fragment is no longer in use.  This is called
+     * Called when the fragment is no longer in use. This is called
      * after [onStop] and before [onDetach].
      */
     override fun onDestroy() {

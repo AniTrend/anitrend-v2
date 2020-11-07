@@ -27,6 +27,6 @@ import co.anitrend.data.mediatrend.model.remote.edge.MediaTrendEdge
  */
 internal data class MediaTrendConnection(
     override val edges: List<MediaTrendEdge>?,
-    override val nodes: List<MediaTrendModel>?,
+    override val nodes: List<MediaTrendModel.Core>?,
     override val pageInfo: PageInfo?
 ) : IEntityConnection<MediaTrendEdge, MediaTrendModel>

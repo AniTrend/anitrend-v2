@@ -19,10 +19,10 @@ package co.anitrend.domain.genre.repository
 
 import co.anitrend.arch.domain.state.UiState
 
-interface IMediaGenreRepository<R: UiState<*>> {
+interface IMediaGenreRepository<State: UiState<*>> {
 
     /**
      * @return media genres
      */
-    fun getMediaGenres(): R
+    fun getMediaGenres(): State
 }

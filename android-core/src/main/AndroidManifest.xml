@@ -15,4 +15,23 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest package="co.anitrend.core.android" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.anitrend.core.android">
+
+    <queries>
+        <!--
+        Show custom text selection actions.
+        When users select text in your app, a text selection toolbar
+        shows the set of possible operations to perform on the selected text.
+        If this toolbar should show custom actions from other apps
+
+        See: https://material.io/design/platform-guidance/android-text-selection-toolbar/
+        -->
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
+</manifest>

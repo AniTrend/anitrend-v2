@@ -17,12 +17,13 @@
 
 package co.anitrend.data.arch.extension
 
-import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.data.arch.FuzzyDateLike
+import co.anitrend.data.arch.common.model.date.FuzzyDateModel
+import co.anitrend.data.arch.common.model.date.contract.IFuzzyDateModel
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 
-internal fun FuzzyDateModel?.asFuzzyDate(): FuzzyDate {
+internal fun IFuzzyDateModel?.asFuzzyDate(): FuzzyDate {
     val model = this ?: FuzzyDateModel.empty()
     return FuzzyDate(
         year = model.year,
@@ -31,7 +32,7 @@ internal fun FuzzyDateModel?.asFuzzyDate(): FuzzyDate {
     )
 }
 
-internal fun FuzzyDate?.asFuzzyDateModel(): FuzzyDateModel {
+internal fun FuzzyDate?.asFuzzyDateModel(): IFuzzyDateModel {
     val model = this ?: FuzzyDate.empty()
     return FuzzyDateModel(
         year = model.year,
@@ -44,7 +45,7 @@ internal fun FuzzyDate?.asFuzzyDateModel(): FuzzyDateModel {
  *
  * @see FuzzyDateInt
  */
-internal fun FuzzyDateModel.toFuzzyDateInt() : FuzzyDateInt {
+internal fun IFuzzyDateModel.toFuzzyDateInt() : FuzzyDateInt {
     if (isDateNotSet())
         return "0"
 
@@ -69,7 +70,7 @@ internal fun FuzzyDateModel.toFuzzyDateInt() : FuzzyDateInt {
  *
  * @see FuzzyDateModel
  */
-internal fun FuzzyDateInt?.toFuzzyDateModel() : FuzzyDateModel {
+internal fun FuzzyDateInt?.toFuzzyDateModel() : IFuzzyDateModel {
     if (this == "0" || this == null)
         return FuzzyDateModel.empty()
 
@@ -85,7 +86,7 @@ internal fun FuzzyDateInt?.toFuzzyDateModel() : FuzzyDateModel {
 }
 
 
-internal fun FuzzyDateModel.toFuzzyDateLike() : FuzzyDateLike {
+internal fun IFuzzyDateModel.toFuzzyDateLike() : FuzzyDateLike {
     if (isDateNotSet())
         return "0"
 

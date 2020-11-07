@@ -20,7 +20,7 @@ package co.anitrend.data.tag.koin
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.online
+import co.anitrend.data.arch.extension.graphQLController
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
 import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.data.tag.source.MediaTagSourceImpl
@@ -34,10 +34,11 @@ private val sourceModule = module {
         MediaTagSourceImpl(
             localSource = db().mediaTagDao(),
             remoteSource = api(EndpointType.GRAPH_QL),
-            mapper = get(),
+            controller = graphQLController(
+                mapper = get<MediaTagResponseMapper>()
+            ),
             clearDataHelper = get(),
-            dispatchers = get(),
-            strategy = online()
+            dispatchers = get()
         )
     }
 }

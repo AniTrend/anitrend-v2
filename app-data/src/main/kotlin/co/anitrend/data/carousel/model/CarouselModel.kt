@@ -19,23 +19,23 @@ package co.anitrend.data.carousel.model
 
 import co.anitrend.data.airing.model.page.AiringSchedulePageModel
 import co.anitrend.data.media.model.page.MediaPageModel
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class CarouselAnimeModel(
-    @SerializedName("AiringSoon") val airingSoon: AiringSchedulePageModel.Page?,
-    @SerializedName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
-    @SerializedName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
-    @SerializedName("PopularThisSeason") val popularThisSeason: MediaPageModel.Page?,
-    @SerializedName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?,
-    @SerializedName("AnticipatedNexSeason") val anticipatedNexSeason: MediaPageModel.Page?
+    @SerialName("AiringSoon") val airingSoon: AiringSchedulePageModel.Page?,
+    @SerialName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
+    @SerialName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
+    @SerialName("PopularThisSeason") val popularThisSeason: MediaPageModel.Page?,
+    @SerialName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?,
+    @SerialName("AnticipatedNexSeason") val anticipatedNexSeason: MediaPageModel.Page?
 )
 
 @Serializable
 internal data class CarouselMangaModel(
-    @SerializedName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
-    @SerializedName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
-    @SerializedName("PopularManhwa") val popularManhwa: MediaPageModel.Page?,
-    @SerializedName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?,
+    @SerialName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
+    @SerialName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
+    @SerialName("PopularManhwa") val popularManhwa: MediaPageModel.Page?,
+    @SerialName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?,
 )

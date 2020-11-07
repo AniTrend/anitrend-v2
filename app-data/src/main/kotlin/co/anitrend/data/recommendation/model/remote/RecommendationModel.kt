@@ -17,21 +17,23 @@
 
 package co.anitrend.data.recommendation.model.remote
 
-import co.anitrend.data.media.model.MediaModelCore
-import co.anitrend.data.media.model.MediaModelExtended
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.recommendation.model.contract.IRecommendationModel
-import co.anitrend.data.user.model.remote.UserModelCore
+import co.anitrend.data.user.model.remote.UserModel
 import co.anitrend.domain.recommendation.enums.RecommendationRating
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class RecommendationModel(
-    @SerialName("media") override val media: MediaModelCore?,
-    @SerialName("mediaRecommendation") override val mediaRecommendation: MediaModelExtended?,
-    @SerialName("rating") override val rating: Int?,
-    @SerialName("user") override val user: UserModelCore?,
-    @SerialName("userRating") override val userRating: RecommendationRating?,
-    @SerialName("id") override val id: Long
-) : IRecommendationModel
+internal sealed class RecommendationModel : IRecommendationModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("rating") override val rating: Int?,
+        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("media") override val media: MediaModel.Core?,
+        @SerialName("userRating") override val userRating: RecommendationRating?,
+        @SerialName("mediaRecommendation") override val mediaRecommendation: MediaModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : RecommendationModel()
+}

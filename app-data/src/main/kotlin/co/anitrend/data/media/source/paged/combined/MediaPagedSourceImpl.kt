@@ -22,15 +22,12 @@ import androidx.paging.toLiveData
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.arch.extension.controller
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.media.converters.MediaEntityConverter
+import co.anitrend.data.media.converter.MediaEntityConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
+import co.anitrend.data.media.source.paged.combined.contract.MediaPagedCombinedController
 import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,8 +37,7 @@ internal class MediaPagedSourceImpl(
     private val remoteSource: MediaRemoteSource,
     private val localSource: MediaLocalSource,
     private val clearDataHelper: IClearDataHelper,
-    private val strategy: ControllerStrategy<List<MediaEntity>>,
-    private val mapper: MediaPagedCombinedMapper,
+    private val controller: MediaPagedCombinedController,
     private val sortOrderSettings: ISortOrderSettings,
     converter: MediaEntityConverter = MediaEntityConverter(),
     dispatchers: SupportDispatchers
@@ -65,8 +61,6 @@ internal class MediaPagedSourceImpl(
             )
             remoteSource.getMediaPaged(queryBuilder)
         }
-
-        val controller = mapper.controller(dispatchers, strategy)
 
         controller(deferred, requestCallback)
     }

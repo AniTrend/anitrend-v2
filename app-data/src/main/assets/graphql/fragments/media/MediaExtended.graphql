@@ -1,38 +1,12 @@
 fragment MediaExtended on Media {
-    id
-    averageScore
-    bannerImage
-    chapters
-    countryOfOrigin
-    coverImage {
-        ... MediaImage
-    }
-    description
-    duration
-    endDate {
-        ... FuzzyDate
-    }
-    episodes
-    externalLinks {
-        site
-        url
+    ... MediaCore
+    trailer {
         id
+        site
+        thumbnail
     }
-    favourites
-    format
-    genres
-    hashtag
-    idMal
-    isAdult
-    isFavourite
-    isLicensed
-    isLocked
-    meanScore
-    nextAiringEpisode {
-        ... AiringScheduleCore
-    }
-    popularity
     rankings {
+        id
         allTime
         context
         format
@@ -40,32 +14,10 @@ fragment MediaExtended on Media {
         season
         type
         year
-        id
     }
-    season
-    siteUrl
-    source
-    startDate {
-        ... FuzzyDate
-    }
-    status
-    synonyms
-    tags {
-        ... Tag
-    }
-    title {
-        ... MediaTitle
-    }
-    trailer {
+    externalLinks {
         id
         site
-        thumbnail
-    }
-    trending
-    type
-    updatedAt
-    volumes
-    mediaListEntry {
-        ... MediaListExtended
+        url
     }
 }

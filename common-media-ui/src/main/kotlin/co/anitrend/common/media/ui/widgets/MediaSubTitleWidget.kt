@@ -23,7 +23,6 @@ import android.util.AttributeSet
 import androidx.core.text.bold
 import androidx.core.text.color
 import androidx.core.text.italic
-import co.anitrend.arch.extension.ext.capitalizeWords
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
@@ -32,8 +31,6 @@ import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
-import co.anitrend.domain.media.entity.base.IMediaCore
-import co.anitrend.domain.media.entity.contract.MediaCategory
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaFormat.Companion.isQuantitative
 import com.google.android.material.textview.MaterialTextView
@@ -44,10 +41,10 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    private fun buildTextUsing(category: MediaCategory, builder: SpannableStringBuilder) {
+    private fun buildTextUsing(category: Media.Category, builder: SpannableStringBuilder) {
         val unknown = context.getString(R.string.label_place_holder_to_be_announced)
         when(category) {
-            is MediaCategory.Anime -> {
+            is Media.Category.Anime -> {
                 when {
                     category.episodes == 0 -> builder.italic { append(unknown) }
                     category.episodes > 1 -> builder.bold {
@@ -58,7 +55,7 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
                     }
                 }
             }
-            is MediaCategory.Manga -> {
+            is Media.Category.Manga -> {
                 when {
                     category.chapters == 0 -> builder.italic { append(unknown) }
                     category.chapters > 1 -> builder.bold {
@@ -78,7 +75,7 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
      *
      * > **2018** • Novel • 48 Chapters
      */
-    fun setUpSubTitle(media: IMediaCore) {
+    fun setUpSubTitle(media: Media) {
         val color = media.image.color?.toColorInt() ?: context.getCompatColor(R.color.primaryTextColor)
 
         val builder = SpannableStringBuilder()
@@ -115,11 +112,11 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
      */
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (isInEditMode) {
-            val media: IMediaCore = Media.empty().copy(
+            val media: Media = Media.Core.empty().copy(
                 image = MediaImage.empty().copy(color = "#e4a15d"),
                 startDate = FuzzyDate.empty().copy(2018),
                 format = MediaFormat.TV,
-                category = MediaCategory.Anime.empty().copy(25)
+                category = Media.Category.Anime.empty().copy(25)
             )
             setUpSubTitle(media)
         }

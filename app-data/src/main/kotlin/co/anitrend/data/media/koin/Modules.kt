@@ -18,9 +18,9 @@
 package co.anitrend.data.media.koin
 
 import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.arch.extension.*
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.offline
 import co.anitrend.data.arch.extension.online
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
@@ -36,8 +36,9 @@ private val sourceModule = module {
     factory {
         MediaPagedNetworkSourceFactory(
             remoteSource = api(EndpointType.GRAPH_QL),
-            mapper = get(),
-            strategy = online(),
+            controller = graphQLController(
+                mapper = get<MediaPagedNetworkMapper>()
+            ),
             sortOrderSettings = get(),
             dispatchers = get()
         )
@@ -47,8 +48,9 @@ private val sourceModule = module {
             remoteSource = api(EndpointType.GRAPH_QL),
             localSource = db().mediaDao(),
             clearDataHelper = get(),
-            strategy = offline(),
-            mapper = get(),
+            controller = graphQLController(
+                mapper = get<MediaPagedCombinedMapper>()
+            ),
             sortOrderSettings = get(),
             dispatchers = get()
         )

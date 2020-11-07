@@ -19,14 +19,21 @@ package co.anitrend.core.crash
 
 import android.annotation.SuppressLint
 import android.util.Log
+import co.anitrend.core.BuildConfig
 import co.anitrend.core.crash.contract.IExceptionCrashHandler
 import timber.log.Timber
 import kotlin.system.exitProcess
 
-internal class ExceptionCrashHandler : IExceptionCrashHandler {
+internal class ExceptionCrashHandler(
+    private val handler: Thread.UncaughtExceptionHandler?
+) : IExceptionCrashHandler {
 
     private fun showCrashActivity(thread: Thread, throwable: Throwable) {
-        // TODO: might add an activity to show the crash
+        Timber.tag(TAG).e(throwable, thread.name)
+        if (BuildConfig.DEBUG) {
+            // TODO: might add an activity to show the crash
+        }
+        handler?.uncaughtException(thread, throwable)
     }
 
     /**
@@ -36,14 +43,13 @@ internal class ExceptionCrashHandler : IExceptionCrashHandler {
     @SuppressLint("LogNotTimber")
     override fun onException(thread: Thread, throwable: Throwable) {
         try {
-            Timber.tag(TAG).e(throwable, thread.name)
             showCrashActivity(thread, throwable)
         } catch (e: Exception) {
             // Timber may not have been initialized, so will log into the android logger
-            Log.e(TAG, "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
+            Log.w(TAG, "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
             Log.e(TAG, "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
         } finally {
-            exitProcess(0)
+            //exitProcess(0)
         }
     }
 

@@ -128,6 +128,12 @@ object Libraries {
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
 
+        object DataStore {
+            private const val version = "1.0.0-alpha02"
+            const val core = "androidx.datastore:datastore-core:$version"
+            const val preferences = "androidx.datastore:datastore-preferences:$version"
+        }
+
         object Emoji {
             private const val version = "1.1.0-rc01"
             const val appCompat = "androidx.emoji:emoji-appcompat:$version"
@@ -287,7 +293,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "270ea26ba2"
+            private const val version = "978c0eaa33"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"

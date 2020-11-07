@@ -27,6 +27,7 @@ import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.data.carousel.model.query.CarouselQuery
+import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.media.R
@@ -37,9 +38,9 @@ import org.threeten.bp.Instant
 class CarouselContent(
     private val dateHelper: SupportDateHelper,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<IEntity>,
+    override val supportViewAdapter: ISupportAdapter<MediaCarousel>,
     override val defaultSpanSize: Int = R.integer.single_list_size
-) : AniTrendListContent<IEntity>() {
+) : AniTrendListContent<MediaCarousel>() {
 
     private val viewModel by viewModel<CarouselViewModel>()
 
@@ -86,7 +87,7 @@ class CarouselContent(
                 SeasonType.FALL -> MediaSeason.WINTER
             },
             currentTime = Instant.now().epochSecond,
-            pageSize = resources.getInteger(R.integer.grid_list_x3).plus(6)
+            pageSize = resources.getInteger(R.integer.grid_list_x3).plus(9)
         )
         viewModel.state(mediaCarouselQuery)
     }

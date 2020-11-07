@@ -17,22 +17,20 @@
 
 package co.anitrend.common.media.ui.controller.model
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.common.media.ui.databinding.MediaDetailItemBinding
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaDetailItem(
-    val media: IMedia
+    val media: Media
 ) : RecyclerItemBinding<MediaDetailItemBinding>(media.id) {
 
     private var disposable: Disposable? = null

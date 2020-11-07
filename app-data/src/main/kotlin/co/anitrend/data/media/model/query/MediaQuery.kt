@@ -17,7 +17,6 @@
 
 package co.anitrend.data.media.model.query
 
-import co.anitrend.data.arch.CountryCode
 import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.*

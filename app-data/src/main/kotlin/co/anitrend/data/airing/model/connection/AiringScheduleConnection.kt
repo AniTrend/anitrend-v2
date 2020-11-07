@@ -21,7 +21,6 @@ import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.airing.model.edge.AiringScheduleEdge
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.arch.common.model.paging.info.PageInfo
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

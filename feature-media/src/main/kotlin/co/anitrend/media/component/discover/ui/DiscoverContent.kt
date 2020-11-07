@@ -21,19 +21,19 @@ import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.domain.media.entity.base.IMedia
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.data.media.model.query.MediaQuery
+import co.anitrend.domain.media.entity.Media
 import co.anitrend.media.R
 import co.anitrend.media.component.discover.viewmodel.DiscoverViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DiscoverContent(
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<IMedia>,
+    override val supportViewAdapter: ISupportAdapter<Media>,
     override val defaultSpanSize: Int = R.integer.grid_list_x2
-) : AniTrendListContent<IMedia>() {
+) : AniTrendListContent<Media>() {
 
     private val viewModel by viewModel<DiscoverViewModel>()
 

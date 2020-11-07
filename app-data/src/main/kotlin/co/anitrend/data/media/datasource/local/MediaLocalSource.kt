@@ -23,7 +23,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.entity.embedded.MediaEntityWithAiring
+import co.anitrend.data.media.entity.view.MediaEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -55,25 +55,23 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
         select * from media
         where id = :id
     """)
+    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntity?>
+
+    @Query("""
+        select * from media
+        where id = :id
+    """)
     @Transaction
     abstract suspend fun mediaByIdWithAiring(
         id: Long
-    ): MediaEntityWithAiring?
+    ): MediaEntityView.WithAiring?
 
     @Query("""
         select * from media
         where id = :id
     """)
     @Transaction
-    abstract fun mediaByIdWithAiringFlow(
-        id: Long
-    ): Flow<MediaEntityWithAiring>
-
-    @Query("""
-        select * from media
-        where id = :id
-    """)
-    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntity>
+    abstract fun mediaByIdWithAiringFlow(id: Long): Flow<MediaEntityView.WithAiring?>
 
     @Query("""
         select * from media

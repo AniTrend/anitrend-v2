@@ -257,11 +257,10 @@ internal fun Project.configureDependencies() {
         }
     )
     dependencyStrategy.applyDependenciesOn(dependencies)
-
-    if (isFeatureModule()) applyFeatureModuleDependencies()
     if (isAppModule()) applyAppModuleDependencies()
     if (isBaseModule()) applyBaseModuleDependencies()
-    if (isCoreFeatureModule()) applyAndroidCoreModuleDependencies()
+    if (isCoreAndroidModule()) applyAndroidCoreModuleDependencies()
+    if (isFeatureModule()) applyFeatureModuleDependencies()
     if (isCommonFeatureModule()) applyCommonModuleDependencies()
     if (isTaskFeatureModule()) applyTaskModuleDependencies()
     /*if (hasComposeSupport()) applyComposeDependencies()*/

@@ -17,8 +17,6 @@
 
 package co.anitrend.data.mediatrend.model.contract
 
-import co.anitrend.data.media.model.contract.IMediaModelCore
-
 /** [MediaTrend](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrend.doc.html)
  * Media trend contract
  *
@@ -26,7 +24,6 @@ import co.anitrend.data.media.model.contract.IMediaModelCore
  * @property date The day the data was recorded (timestamp)
  * @property episode The episode number of the anime released on this day
  * @property inProgress The number of users with watching/reading the media
- * @property media The related media
  * @property mediaId The id of the tag
  * @property popularity The number of users with the media on their list
  * @property releasing If the media was being released at this time
@@ -37,7 +34,6 @@ internal interface IMediaTrendModel {
     val date: Long
     val episode: Int?
     val inProgress: Int?
-    val media: IMediaModelCore
     val mediaId: Long
     val popularity: Int?
     val releasing: Boolean

@@ -28,8 +28,8 @@ import org.koin.core.scope.Scope
 /**
  * Facade for supplying retrofit interface types
  */
-internal inline fun <reified T> Scope.api(endpointType: EndpointType): T =
-    RetrofitProvider.provideRetrofit(endpointType, this).create(T::class.java)
+internal inline fun <reified T> Scope.api(type: EndpointType): T =
+    RetrofitProvider.provide(type, this).create(T::class.java)
 
 /**
  * Facade for supplying database contract
@@ -39,9 +39,16 @@ internal fun Scope.db() = get<IAniTrendStore>()
 /**
  * Facade for supplying online strategy
  */
-internal fun <T> Scope.online() = OnlineStrategy.create<T>(get())
+internal fun <T> Scope.online() =
+    OnlineStrategy.create<T>(
+        networkMessage = get(),
+        connectivity = get()
+    )
 
 /**
  * Facade for supplying offline strategy
  */
-internal fun <T> Scope.offline() = OfflineStrategy.create<T>()
+internal fun <T> Scope.offline() =
+    OfflineStrategy.create<T>(
+        networkMessage = get()
+    )

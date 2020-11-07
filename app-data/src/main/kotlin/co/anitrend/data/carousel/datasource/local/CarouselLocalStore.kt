@@ -19,11 +19,10 @@ package co.anitrend.data.carousel.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.arch.data.util.PAGING_CONFIGURATION
-import co.anitrend.data.arch.database.dao.ILocalSource
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.arch.CountryCode
 import co.anitrend.data.arch.FuzzyDateLike
+import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow

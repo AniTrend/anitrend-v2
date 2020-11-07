@@ -39,20 +39,23 @@ import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.airing.enums.AiringSort
-import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.entity.MediaCarousel
-import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.model.NavPayload
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaCarouselItem(
-    private val entity: IEntity,
+    private val entity: MediaCarousel,
     private val viewPool: RecyclerView.RecycledViewPool
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 
-    private fun setUpCarouselItems(view: View, mediaItems: List<IMedia>) {
+    private fun setUpCarouselItems(view: View, mediaItems: List<Media>) {
         val mediaItemAdapter = MediaItemAdapter(
             view.resources,
             stateConfiguration = StateLayoutConfig()
@@ -168,14 +171,20 @@ internal class MediaCarouselItem(
                     type = carousel.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
                     countryOfOrigin = carousel.mediaItems.first().countryCode
-
                 )
             }
         }
-        binding?.mediaCarouselAction?.setOnClickListener {
+        requireBinding().mediaCarouselAction.setOnClickListener {
             // TODO: Opens media discover/search screen and provides media query as parameter for the appropriate action
+            when (query) {
+                is MediaQuery -> {
+                    MediaRouter.startActivity(view.context, NavPayload(MediaQuery.TAG, query))
+                }
+                is AiringScheduleQuery -> {
+                    Toast.makeText(view.context, "Opens airing schedule screen", Toast.LENGTH_SHORT).show()
+                }
+            }
             // Media.startActivity(view.context, NavPayload(MediaQuery.TAG, query))
-            Toast.makeText(view.context, "Opens media discover/search screen", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -197,7 +206,6 @@ internal class MediaCarouselItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = MediaCarouselItemBinding.bind(view)
-        entity as MediaCarousel
         setUpHeadings(view, entity)
         setUpCarouselItems(view, entity.mediaItems)
     }

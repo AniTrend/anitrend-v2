@@ -19,11 +19,10 @@ package co.anitrend.data.media.source.paged.network.factory
 
 import androidx.paging.DataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
 import co.anitrend.data.media.source.paged.network.MediaPagedNetworkSourceImpl
+import co.anitrend.data.media.source.paged.network.contract.MediaPagedNetworkController
 import co.anitrend.data.media.source.paged.network.contract.MediaPagedNetworkSource
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.Media
@@ -31,8 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaPagedNetworkSourceFactory(
     private val remoteSource: MediaRemoteSource,
-    private val mapper: MediaPagedNetworkMapper,
-    private val strategy: ControllerStrategy<List<Media>>,
+    private val controller: MediaPagedNetworkController,
     private val sortOrderSettings: ISortOrderSettings,
     private val dispatchers: SupportDispatchers
 ) : DataSource.Factory<IGraphPayload, Media>() {
@@ -59,8 +57,7 @@ internal class MediaPagedNetworkSourceFactory(
     override fun create() =
         MediaPagedNetworkSourceImpl(
             remoteSource = remoteSource,
-            mapper = mapper,
-            strategy = strategy,
+            controller = controller,
             sortOrderSettings = sortOrderSettings,
             dispatchers = dispatchers
         ).also { stateSourceFlow.value = it }

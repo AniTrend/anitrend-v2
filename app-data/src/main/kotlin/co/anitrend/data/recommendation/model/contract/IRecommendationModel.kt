@@ -17,9 +17,9 @@
 
 package co.anitrend.data.recommendation.model.contract
 
-import co.anitrend.data.media.model.contract.IMediaModelCore
+import co.anitrend.data.media.model.contract.IMediaModel
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.data.user.model.contract.IUserModelCore
+import co.anitrend.data.user.model.remote.contract.IUserModel
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 
 /**
@@ -32,9 +32,9 @@ import co.anitrend.domain.recommendation.enums.RecommendationRating
  * @property userRating The rating of the recommendation by currently authenticated user
  */
 internal interface IRecommendationModel : Identity {
-    val media: IMediaModelCore?
-    val mediaRecommendation: IMediaModelCore?
     val rating: Int?
-    val user: IUserModelCore?
+    val user: IUserModel?
+    val media: IMediaModel?
     val userRating: RecommendationRating?
+    val mediaRecommendation: IMediaModel?
 }

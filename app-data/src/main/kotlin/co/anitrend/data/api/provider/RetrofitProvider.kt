@@ -22,7 +22,7 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.interceptor.GraphAuthenticator
 import co.anitrend.data.api.interceptor.GraphClientInterceptor
-import co.anitrend.data.auth.util.AuthenticationHelper
+import co.anitrend.data.auth.helper.AuthenticationHelper
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -37,21 +37,21 @@ import timber.log.Timber
 internal object RetrofitProvider {
 
     private val moduleTag = javaClass.simpleName
-    private val retrofitCache = LruCache<EndpointType, Retrofit>(3)
+    private val cache = LruCache<EndpointType, Retrofit>(3)
 
-    private fun provideOkHttpClient(endpointType: EndpointType, scope: Scope) : OkHttpClient {
+    private fun provideOkHttpClient(type: EndpointType, scope: Scope) : OkHttpClient {
         val builder = scope.get<OkHttpClient.Builder> {
             parametersOf(
                 if (BuildConfig.DEBUG)
                     HttpLoggingInterceptor.Level.HEADERS
-                else HttpLoggingInterceptor.Level.BASIC
+                else HttpLoggingInterceptor.Level.NONE
             )
         }
 
-        when (endpointType) {
+        when (type) {
             EndpointType.GRAPH_QL -> {
                 Timber.tag(moduleTag).d("""
-                    Adding authenticator and request interceptors for request: ${endpointType.name}
+                    Adding authenticator and request interceptors for request: ${type.name}
                     """.trimIndent()
                 )
                 builder.authenticator(
@@ -70,7 +70,21 @@ internal object RetrofitProvider {
             }
             EndpointType.RELATION_MOE -> {
                 Timber.tag(moduleTag).d("""
-                    Adding request interceptors for request: ${endpointType.name}
+                    Adding request interceptors for request: ${type.name}
+                    """.trimIndent()
+                )
+                if (BuildConfig.DEBUG)
+                    builder.addInterceptor(
+                        scope.get<ChuckerInterceptor> {
+                            parametersOf(
+                                emptySet<String>()
+                            )
+                        }
+                    )
+            }
+            EndpointType.OAUTH -> {
+                Timber.tag(moduleTag).d("""
+                    Adding request interceptors for request: ${type.name}
                     """.trimIndent()
                 )
                 if (BuildConfig.DEBUG)
@@ -87,37 +101,33 @@ internal object RetrofitProvider {
         return builder.build()
     }
 
-    private fun createRetrofit(endpointType: EndpointType, scope: Scope) : Retrofit {
-        return scope.get<Retrofit.Builder>()
-            .client(
-                provideOkHttpClient(
-                    endpointType,
-                    scope
-                )
-            )
-            .baseUrl(endpointType.url)
-            .build()
-    }
+    private fun create(endpointType: EndpointType, scope: Scope) = scope.get<Retrofit.Builder>()
+        .client(provideOkHttpClient(endpointType, scope))
+        .baseUrl(endpointType.url).build()
 
-    fun provideRetrofit(endpointType: EndpointType, scope: Scope): Retrofit {
-        val reference = retrofitCache.get(endpointType)
-        return if (reference != null) {
-            Timber.tag(moduleTag).d(
-                "Using cached retrofit instance for endpoint: ${endpointType.name}"
-            )
-            reference
-        }
-        else {
-            Timber.tag(moduleTag).d(
-                "Creating new retrofit instance for endpoint: ${endpointType.name}"
-            )
-            val retrofit =
-                createRetrofit(
-                    endpointType,
-                    scope
+    /**
+     * Provides retrofit instances for the given [type] while avoiding creating an instance every time
+     *
+     * @param type The type of endpoint, this behaves as a look up key
+     * @param scope The dependency injector scope that should be used to resolve internal dependencies
+     */
+    fun provide(type: EndpointType, scope: Scope): Retrofit {
+        val reference = cache.get(type)
+        return when {
+            reference != null -> {
+                Timber.tag(moduleTag).d(
+                    "Using cached retrofit instance for endpoint: ${type.name}"
                 )
-            retrofitCache.put(endpointType, retrofit)
-            retrofit
+                reference
+            }
+            else -> {
+                Timber.tag(moduleTag).d(
+                    "Creating new retrofit instance for endpoint: ${type.name}"
+                )
+                val retrofit = create(type, scope)
+                cache.put(type, retrofit)
+                retrofit
+            }
         }
     }
 }

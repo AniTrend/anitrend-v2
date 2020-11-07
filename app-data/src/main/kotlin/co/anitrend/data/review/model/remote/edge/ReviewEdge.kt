@@ -28,5 +28,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ReviewEdge(
     @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: ReviewModel?
+    @SerialName("node") override val node: ReviewModel.Core?
 ) : IEntityEdge<ReviewModel>

@@ -17,9 +17,7 @@
 
 package co.anitrend.data.api.interceptor
 
-import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.domain.extensions.isUnauthorized
-import co.anitrend.data.auth.util.AuthenticationHelper
+import co.anitrend.data.auth.helper.AuthenticationHelper
 import okhttp3.*
 
 /**
@@ -41,8 +39,7 @@ internal class GraphAuthenticator(
      * application interceptor, such as when implementing client-specific retries.
      */
     override fun authenticate(route: Route?, response: Response): Request? {
-        val networkState = NetworkState.Loading
-        if (networkState.isUnauthorized()) {
+        if (response.code == UNAUTHORIZED) {
             val requestBuilder = response.request.newBuilder()
             if (authenticationHelper.isAuthenticated) {
                 authenticationHelper(requestBuilder)
@@ -50,5 +47,9 @@ internal class GraphAuthenticator(
             }
         }
         return null
+    }
+
+    companion object {
+        private const val UNAUTHORIZED = 401
     }
 }

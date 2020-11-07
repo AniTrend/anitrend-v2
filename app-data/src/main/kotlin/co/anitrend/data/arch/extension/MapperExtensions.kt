@@ -18,18 +18,43 @@
 package co.anitrend.data.arch.extension
 
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.data.arch.controller.core.DefaultController
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.arch.network.default.DefaultNetworkClient
+import co.anitrend.data.arch.network.graphql.GraphNetworkClient
+import org.koin.core.scope.Scope
 
 /**
- * Extension to help us create a controller from a a mapper instance
+ * Extension to help us create a controller
  */
-internal fun <S, D> DefaultMapper<S, D>.controller(
-    supportDispatchers: SupportDispatchers,
-    strategy: ControllerStrategy<D>
-) = GraphQLController.newInstance(
-    mapper = this,
+internal fun <S, D> Scope.graphQLController(
+    mapper: DefaultMapper<S, D>,
+    strategy: ControllerStrategy<D> = online(),
+    dispatchers: SupportDispatchers = get()
+) = GraphQLController(
+    mapper = mapper,
     strategy = strategy,
-    dispatchers = supportDispatchers
+    dispatcher = dispatchers.io,
+    client = GraphNetworkClient(
+        gson = get(),
+        dispatcher = dispatchers.io
+    )
+)
+
+/**
+ * Extension to help us create a controller
+ */
+internal fun <S, D> Scope.defaultController(
+    mapper: DefaultMapper<S, D>,
+    strategy: ControllerStrategy<D> = online(),
+    dispatchers: SupportDispatchers = get()
+) = DefaultController(
+    mapper = mapper,
+    strategy = strategy,
+    dispatcher = dispatchers.io,
+    client =  DefaultNetworkClient(
+        dispatcher = dispatchers.io
+    )
 )

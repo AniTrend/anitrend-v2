@@ -18,38 +18,39 @@
 package co.anitrend.common.media.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
+import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.contract.IMedia
 
 
-internal object MediaDiffUtil : DiffUtil.ItemCallback<IMedia>() {
+internal object MediaDiffUtil : DiffUtil.ItemCallback<Media>() {
         override fun areItemsTheSame(
-            oldItem: IMedia,
-            newItem: IMedia
+            oldItem: Media,
+            newItem: Media
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: IMedia,
-            newItem: IMedia
+            oldItem: Media,
+            newItem: Media
         ): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
     }
 
-internal object EntityDiffUtil : DiffUtil.ItemCallback<IEntity>() {
+internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
         override fun areItemsTheSame(
-            oldItem: IEntity,
-            newItem: IEntity
+            oldItem: MediaCarousel,
+            newItem: MediaCarousel
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: IEntity,
-            newItem: IEntity
+            oldItem: MediaCarousel,
+            newItem: MediaCarousel
         ): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }

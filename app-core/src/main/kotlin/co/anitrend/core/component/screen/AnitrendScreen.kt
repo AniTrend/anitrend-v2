@@ -18,18 +18,20 @@
 package co.anitrend.core.component.screen
 
 import android.content.Context
+import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import androidx.savedstate.SavedStateRegistry
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
+import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.inject
 import co.anitrend.core.util.config.contract.IConfigurationUtil
-import org.koin.android.ext.android.getKoin
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityScope
 import org.koin.core.scope.KoinScopeComponent
-import org.koin.core.scope.ScopeID
+import timber.log.Timber
 
 /**
  * Abstract application based activity for anitrend, avoids further modification of the
@@ -37,11 +39,14 @@ import org.koin.core.scope.ScopeID
  */
 abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
 
+    protected val savedStateProviderKey by lazy { "${moduleTag}State" }
+    protected val savedStateProvider = SavedStateRegistry.SavedStateProvider { intent.extras.orEmpty() }
+
     protected val configurationUtil by inject<IConfigurationUtil>()
 
-    override var binding: B? = null
-
     override val scope by lazy(UNSAFE) { activityScope() }
+
+    override var binding: B? = null
 
     /**
      * Can be used to configure custom theme styling as desired
@@ -52,8 +57,19 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
             runCatching {
                 getKoin().logger.debug("Open activity scope: $scope")
                 setupKoinFragmentFactory(scope)
+            }.onFailure {
+                setupKoinFragmentFactory()
+                Timber.tag(moduleTag).w(it, "Defaulting to scope-less based fragment factory")
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedStateRegistry.registerSavedStateProvider(
+            savedStateProviderKey,
+            savedStateProvider
+        )
     }
 
     override fun attachBaseContext(newBase: Context?) {

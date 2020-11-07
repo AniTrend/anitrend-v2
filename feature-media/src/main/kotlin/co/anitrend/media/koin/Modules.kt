@@ -23,8 +23,10 @@ import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.component.carousel.content.CarouselContent
 import co.anitrend.media.component.carousel.viewmodel.CarouselViewModel
+import co.anitrend.media.component.carousel.viewmodel.state.CarouselState
 import co.anitrend.media.component.discover.ui.DiscoverContent
 import co.anitrend.media.component.discover.viewmodel.DiscoverViewModel
+import co.anitrend.media.component.discover.viewmodel.state.DiscoverState
 import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.navigation.MediaRouter
 import org.koin.android.ext.koin.androidContext
@@ -59,12 +61,16 @@ private val fragmentModule = module {
 private val viewModelModule = module {
     viewModel {
         DiscoverViewModel(
-            useCase = get()
+            state = DiscoverState(
+                useCase = get()
+            )
         )
     }
     viewModel {
         CarouselViewModel(
-            useCase = get()
+            state = CarouselState(
+                useCase = get()
+            )
         )
     }
 }

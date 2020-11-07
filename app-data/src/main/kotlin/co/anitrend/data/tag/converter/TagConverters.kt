@@ -19,7 +19,7 @@ package co.anitrend.data.tag.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.media.model.MediaModelExtended
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.domain.tag.entity.Tag
 
@@ -59,13 +59,13 @@ internal class TagEntityConverter(
 }
 
 internal class TagModelConverter(
-    override val fromType: (MediaModelExtended.Tag) -> TagEntity = { from().transform(it) },
-    override val toType: (TagEntity) -> MediaModelExtended.Tag = { to().transform(it) }
-) : SupportConverter<MediaModelExtended.Tag, TagEntity>() {
+    override val fromType: (MediaModel.Tag) -> TagEntity = { from().transform(it) },
+    override val toType: (TagEntity) -> MediaModel.Tag = { to().transform(it) }
+) : SupportConverter<MediaModel.Tag, TagEntity>() {
     companion object {
         fun from() =
-            object : ISupportTransformer<MediaModelExtended.Tag, TagEntity> {
-                override fun transform(source: MediaModelExtended.Tag) = TagEntity(
+            object : ISupportTransformer<MediaModel.Tag, TagEntity> {
+                override fun transform(source: MediaModel.Tag) = TagEntity(
                     id = source.id,
                     name = source.name,
                     description = source.description,
@@ -78,8 +78,8 @@ internal class TagModelConverter(
             }
 
         fun to() =
-            object : ISupportTransformer<TagEntity, MediaModelExtended.Tag> {
-                override fun transform(source: TagEntity) = MediaModelExtended.Tag(
+            object : ISupportTransformer<TagEntity, MediaModel.Tag> {
+                override fun transform(source: TagEntity) = MediaModel.Tag(
                     id = source.id,
                     name = source.name,
                     description = source.description,

@@ -22,6 +22,7 @@ import co.anitrend.navigation.SplashRouter
 import co.anitrend.splash.component.presenter.SplashPresenter
 import co.anitrend.splash.provider.FeatureProvider
 import co.anitrend.splash.component.content.SplashContent
+import co.anitrend.splash.component.screen.SplashScreen
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
@@ -38,8 +39,10 @@ private val presenterModule = module {
 }
 
 private val fragmentModule = module {
-    fragment {
-        SplashContent()
+    scope<SplashScreen> {
+        fragment {
+            SplashContent()
+        }
     }
 }
 

@@ -21,9 +21,9 @@ import androidx.lifecycle.ViewModel
 import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
 import co.anitrend.media.component.carousel.viewmodel.state.CarouselState
 
-class CarouselViewModel(useCase: CarouselUseCaseContract) : ViewModel() {
-
-    val state = CarouselState(useCase)
+class CarouselViewModel(
+    val state: CarouselState
+) : ViewModel() {
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.

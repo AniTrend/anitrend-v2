@@ -22,6 +22,7 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 internal enum class EndpointType(val url: HttpUrl) {
+    OAUTH("https://${BuildConfig.apiAuthUrl}".toHttpUrl()),
     GRAPH_QL(BuildConfig.apiUrl.toHttpUrl()),
     RELATION_MOE(BuildConfig.relationUrl.toHttpUrl());
 

@@ -1,13 +1,5 @@
 fragment UserExtended on User {
-    id
-    name
-    avatar {
-        ... UserAvatar
-    }
-    bannerImage
-    isFollowing
-    isFollower
-    about
+    ... UserCore
     options {
         airingNotifications
         displayAdultContent
@@ -19,10 +11,6 @@ fragment UserExtended on User {
         titleLanguage
     }
     unreadNotificationCount
-    donatorTier
-    donatorBadge
-    siteUrl
-    updatedAt
     mediaListOptions {
         animeList {
             advancedScoring

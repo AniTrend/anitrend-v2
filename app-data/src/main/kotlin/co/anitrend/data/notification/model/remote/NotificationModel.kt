@@ -17,27 +17,50 @@
 
 package co.anitrend.data.notification.model.remote
 
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.notification.model.contract.INotificationModel
-import co.anitrend.data.user.model.remote.UserModelCore
+import co.anitrend.data.user.model.remote.UserModel
 import co.anitrend.domain.notification.enums.NotificationType
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** [Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationunion.doc.html)
  * Notification with shared objects
  *
- * @param activityId The id of the activity which was liked
- * @param user The user related to this notification type
- * @param media The associated media of the airing schedule
- * @param contexts The notification context text
+ * @property activityId The id of the activity which was liked
+ * @property user The user related to this notification type
+ * @property media The associated media of the airing schedule
+ * @property contexts The notification context text
  */
-internal data class NotificationModel(
-    @SerializedName("activityId") val activityId: Int?,
-    @SerializedName("user") val user: UserModelCore?,
-    @SerializedName("media") val media: MediaModelCore?,
-    @SerializedName("contexts") val contexts: List<String>?,
-    @SerializedName("context") override val context: String?,
-    @SerializedName("createdAt") override val createdAt: Long?,
-    @SerializedName("type") override val type: NotificationType?,
-    @SerializedName("id") override val id: Long,
-) : INotificationModel
+@Serializable
+internal sealed class NotificationModel : INotificationModel {
+
+    abstract val activityId: Int?
+    abstract val user: UserModel?
+    abstract val media: MediaModel?
+    abstract val contexts: List<String>?
+
+    @Serializable
+    internal data class Core(
+        @SerialName("activityId") override val activityId: Int?,
+        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("media") override val media: MediaModel.Core?,
+        @SerialName("contexts") override val contexts: List<String>?,
+        @SerialName("context") override val context: String?,
+        @SerialName("createdAt") override val createdAt: Long?,
+        @SerialName("type") override val type: NotificationType?,
+        @SerialName("id") override val id: Long,
+    ) : NotificationModel()
+
+    @Serializable
+    internal data class Extended(
+        @SerialName("activityId") override val activityId: Int?,
+        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("media") override val media: MediaModel.Core?,
+        @SerialName("contexts") override val contexts: List<String>?,
+        @SerialName("context") override val context: String?,
+        @SerialName("createdAt") override val createdAt: Long?,
+        @SerialName("type") override val type: NotificationType?,
+        @SerialName("id") override val id: Long,
+    ) : NotificationModel()
+}

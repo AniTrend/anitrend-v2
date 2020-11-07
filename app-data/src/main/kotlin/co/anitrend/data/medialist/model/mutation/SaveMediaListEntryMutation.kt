@@ -17,7 +17,7 @@
 
 package co.anitrend.data.medialist.model.mutation
 
-import co.anitrend.data.arch.common.model.date.FuzzyDateQuery
+import co.anitrend.data.arch.common.model.date.query.FuzzyDateQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import kotlinx.android.parcel.Parcelize

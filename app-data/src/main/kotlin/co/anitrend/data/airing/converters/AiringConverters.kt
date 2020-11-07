@@ -20,15 +20,14 @@ package co.anitrend.data.airing.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.airing.model.AiringScheduleModelExtended
 import co.anitrend.domain.airing.entity.AiringSchedule
 
 internal class AiringConverter(
-    override val fromType: (AiringScheduleModelExtended) -> AiringSchedule = { from(it) },
-    override val toType: (AiringSchedule) -> AiringScheduleModelExtended = { throw NotImplementedError() }
-) : SupportConverter<AiringScheduleModelExtended, AiringSchedule>() {
+    override val fromType: (AiringScheduleModel) -> AiringSchedule = { from(it) },
+    override val toType: (AiringSchedule) -> AiringScheduleModel = { throw NotImplementedError() }
+) : SupportConverter<AiringScheduleModel, AiringSchedule>() {
     companion object {
-        private fun from(source: AiringScheduleModelExtended) = AiringSchedule(
+        private fun from(source: AiringScheduleModel) = AiringSchedule(
             airingAt = source.airingAt,
             episode = source.episode,
             mediaId = source.mediaId,
@@ -54,11 +53,11 @@ internal class AiringModelConverter(
 }
 
 internal class AiringExtendedModelConverter(
-    override val fromType: (AiringScheduleModelExtended) -> AiringScheduleEntity = { from(it) },
-    override val toType: (AiringScheduleEntity) -> AiringScheduleModelExtended = { throw NotImplementedError() }
-) : SupportConverter<AiringScheduleModelExtended, AiringScheduleEntity>() {
+    override val fromType: (AiringScheduleModel.Extended) -> AiringScheduleEntity = { from(it) },
+    override val toType: (AiringScheduleEntity) -> AiringScheduleModel.Extended = { throw NotImplementedError() }
+) : SupportConverter<AiringScheduleModel.Extended, AiringScheduleEntity>() {
     companion object {
-        private fun from(source: AiringScheduleModelExtended) = AiringScheduleEntity(
+        private fun from(source: AiringScheduleModel.Extended) = AiringScheduleEntity(
             airingAt = source.airingAt,
             episode = source.episode,
             mediaId = source.mediaId,

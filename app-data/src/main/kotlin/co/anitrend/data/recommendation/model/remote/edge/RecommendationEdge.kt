@@ -28,5 +28,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal class RecommendationEdge(
     @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: RecommendationModel?
+    @SerialName("node") override val node: RecommendationModel.Core?
 ) : IEntityEdge<RecommendationModel>

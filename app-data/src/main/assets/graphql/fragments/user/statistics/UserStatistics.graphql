@@ -1,0 +1,8 @@
+fragment UserStatistics on UserStatisticTypes {
+    anime {
+        ... UserAnimeStatistics
+    }
+    manga {
+        ... UserMangaStatistics
+    }
+}

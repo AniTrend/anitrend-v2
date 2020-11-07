@@ -17,9 +17,9 @@
 
 package co.anitrend.domain.medialist.entity
 
-import co.anitrend.domain.user.entity.base.IUserCore
+import co.anitrend.domain.user.entity.User
 
 data class MediaListCollection(
     val listEntries: Collection<MediaList>,
-    val user: IUserCore
+    val owner: User
 )

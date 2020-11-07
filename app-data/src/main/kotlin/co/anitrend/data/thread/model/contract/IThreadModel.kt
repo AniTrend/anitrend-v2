@@ -17,22 +17,20 @@
 
 package co.anitrend.data.thread.model.contract
 
-import co.anitrend.data.media.model.contract.IMediaModelCore
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.data.thread.model.remote.ThreadModel
-import co.anitrend.data.user.model.contract.IUserModelCore
+import co.anitrend.data.user.model.remote.contract.IUserModel
 
 /** [Thread](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/thread.doc.html)
  * Forum Thread Contract
  *
+ * @property id The id of the thread
  * @property body The text body of the thread (Markdown)
- * @property categories The categories of the thread
  * @property createdAt The time of the thread creation
+ * @property isLiked If the currently authenticated user liked the thread
  * @property isLocked If the thread is locked and can receive comments
  * @property isSticky If the thread is stickied and should be displayed at the top of the page
  * @property isSubscribed If the currently authenticated user is subscribed to the thread
- * @property likes The users who liked the thread
- * @property mediaCategories The media categories of the thread
+ * @property likeCount The amount of likes the thread has
  * @property repliedAt The time of the last reply
  * @property replyCommentId The id of the most recent comment on the thread
  * @property replyCount The number of comments on the thread
@@ -47,22 +45,21 @@ import co.anitrend.data.user.model.contract.IUserModelCore
  */
 internal interface IThreadModel : Identity {
     val body: String?
-    val categories: List<ThreadModel.ThreadCategory>?
     val createdAt: Long
+    val isLiked: Boolean
     val isLocked: Boolean
     val isSticky: Boolean
     val isSubscribed: Boolean
-    val likes: List<IUserModelCore>?
-    val mediaCategories: List<IMediaModelCore>?
+    val likeCount: Int
     val repliedAt: Long?
     val replyCommentId: Int?
     val replyCount: Int?
-    val replyUser: IUserModelCore?
+    val replyUser: IUserModel?
     val replyUserId: Long?
     val siteUrl: String
     val title: String
     val updatedAt: Long
-    val user: IUserModelCore
+    val user: IUserModel
     val userId: Long
     val viewCount: Int
 }

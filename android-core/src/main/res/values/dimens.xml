@@ -18,5 +18,6 @@
 
 <resources>
     <dimen name="design_bottom_app_bar_height">56dp</dimen>
+    <dimen name="design_bottom_app_status_bar_height">24dp</dimen>
     <dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 </resources>

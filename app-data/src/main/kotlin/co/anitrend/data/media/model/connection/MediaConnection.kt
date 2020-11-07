@@ -19,7 +19,7 @@ package co.anitrend.data.media.model.connection
 
 import co.anitrend.data.arch.common.entity.IEntityConnection
 import co.anitrend.data.arch.common.model.paging.info.PageInfo
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.media.model.edge.MediaEdge
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,6 +30,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class MediaConnection(
     @SerialName("edges") override val edges: List<MediaEdge>?,
-    @SerialName("nodes") override val nodes: List<MediaModelCore>?,
+    @SerialName("nodes") override val nodes: List<MediaModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<MediaEdge, MediaModelCore>
+) : IEntityConnection<MediaEdge, MediaModel>

@@ -30,14 +30,15 @@ import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil
 import co.anitrend.common.media.ui.controller.model.carousel.MediaItem
 import co.anitrend.common.media.ui.controller.model.carousel.MediaItem.Companion.createMediaItemViewHolder
-import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.contract.IMedia
 
 class MediaItemAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (IMedia) -> IRecyclerItem = { MediaItem(it) }
-) : SupportListAdapter<IMedia>(MediaDiffUtil) {
+    override val mapper: (Media) -> IRecyclerItem = { MediaItem(it) }
+) : SupportListAdapter<Media>(MediaDiffUtil) {
 
     /**
      * Assigned if the current adapter needs to support action mode
@@ -52,7 +53,7 @@ class MediaItemAdapter(
      * The identifiable id of each item should unique, and if non exists
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
-    override fun getStableIdFor(item: IMedia?): Long {
+    override fun getStableIdFor(item: Media?): Long {
         return item?.id ?: RecyclerView.NO_ID
     }
 

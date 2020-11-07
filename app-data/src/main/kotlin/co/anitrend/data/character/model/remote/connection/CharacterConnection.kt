@@ -30,6 +30,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class CharacterConnection(
     @SerialName("edges") override val edges: List<CharacterEdge>?,
-    @SerialName("nodes") override val nodes: List<CharacterModel>?,
+    @SerialName("nodes") override val nodes: List<CharacterModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
 ) : IEntityConnection<CharacterEdge, CharacterModel>

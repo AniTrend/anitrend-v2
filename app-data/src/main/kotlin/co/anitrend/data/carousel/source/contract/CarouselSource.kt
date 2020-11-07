@@ -23,10 +23,8 @@ import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.model.query.CarouselQuery
+import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.entity.MediaCarousel
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

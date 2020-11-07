@@ -27,7 +27,10 @@ import org.threeten.bp.Instant
 @Entity(
     tableName = "cache_log",
     indices = [
-        Index(value = ["cache_item_id"], unique = true)
+        Index(
+            value = ["cache_item_id"],
+            unique = true
+        )
     ]
 )
 internal data class CacheEntity(

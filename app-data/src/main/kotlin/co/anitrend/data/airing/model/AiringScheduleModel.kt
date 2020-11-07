@@ -17,20 +17,31 @@
 
 package co.anitrend.data.airing.model
 
+import co.anitrend.data.airing.model.contract.IAiringScheduleModel
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.shared.common.Identity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
- * Media Airing Schedule
- *
- * @param mediaId The associate media of the airing episode
- */
 @Serializable
-internal data class AiringScheduleModel(
-    @SerialName("airingAt") val airingAt: Long,
-    @SerialName("episode") val episode: Int,
-    @SerialName("mediaId") val mediaId: Long,
-    @SerialName("timeUntilAiring") val timeUntilAiring: Long,
-    @SerialName("id") override val id: Long
-) : Identity
+internal sealed class AiringScheduleModel : IAiringScheduleModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("airingAt") override val airingAt: Long,
+        @SerialName("episode") override val episode: Int,
+        @SerialName("mediaId") override val mediaId: Long,
+        @SerialName("timeUntilAiring") override val timeUntilAiring: Long,
+        @SerialName("id") override val id: Long
+    ) : AiringScheduleModel()
+
+    @Serializable
+    internal data class Extended(
+        @SerialName("media") val media: MediaModel.Core?,
+        @SerialName("airingAt") override val airingAt: Long,
+        @SerialName("episode") override val episode: Int,
+        @SerialName("mediaId") override val mediaId: Long,
+        @SerialName("timeUntilAiring") override val timeUntilAiring: Long,
+        @SerialName("id") override val id: Long
+    ) : AiringScheduleModel()
+}

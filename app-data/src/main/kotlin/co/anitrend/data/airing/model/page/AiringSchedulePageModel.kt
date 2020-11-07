@@ -17,21 +17,18 @@
 
 package co.anitrend.data.airing.model.page
 
-import co.anitrend.data.airing.model.AiringScheduleModelExtended
+import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.arch.common.model.paging.info.PageInfo
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class AiringSchedulePageModel(
-    @SerializedName("Page")
-    val page: Page
+    @SerialName("Page") val page: Page
 ) {
     @Serializable
     data class Page(
-        @SerializedName("pageInfo")
-        val pageInfo: PageInfo,
-        @SerializedName("airingSchedules")
-        val airingSchedules: List<AiringScheduleModelExtended>
+        @SerialName("pageInfo") val pageInfo: PageInfo,
+        @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended>
     )
 }

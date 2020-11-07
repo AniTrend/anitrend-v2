@@ -30,5 +30,5 @@ internal interface MoeRemoteSource {
     @POST("/api/ids/source")
     suspend fun getFromSource(
         @Body sourceQuery: MoeSourceQuery
-    ) : Response<MoeModel?>
+    ) : Response<MoeModel>
 }

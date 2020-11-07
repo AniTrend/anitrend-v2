@@ -28,19 +28,18 @@ import co.anitrend.arch.recycler.common.ClickType
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaGridItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.domain.media.entity.base.IMedia
-import co.anitrend.domain.media.entity.base.IMediaExtendedWithMediaList
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.contract.IMedia
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaGridItem(
-    val entity: IMedia
+    val entity: Media
 ) : RecyclerItemBinding<MediaGridItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
@@ -63,10 +62,9 @@ internal data class MediaGridItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = MediaGridItemBinding.bind(view)
-        disposable = requireBinding().mediaImage?.using(
+        disposable = requireBinding().mediaImage.using(
             MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
         )
-        entity as IMediaExtendedWithMediaList
         requireBinding().mediaRatingWidget.setupUsingMedia(entity)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)

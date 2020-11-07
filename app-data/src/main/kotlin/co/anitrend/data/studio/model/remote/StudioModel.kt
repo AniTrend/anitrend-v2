@@ -19,22 +19,36 @@ package co.anitrend.data.studio.model.remote
 
 import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.studio.model.contract.IStudioModel
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** [Studio](https://anilist.github.io/ApiV2-GraphQL-Docs/studio.doc.html)
  * Animation or production company
- *
- * @param favourites The amount of user's who have favourite the studio
  */
 @Serializable
-internal data class StudioModel(
-    val media: MediaConnection?,
-    @SerialName("favourites") override val favourites: Int?,
-    @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
-    @SerialName("isFavourite") override val isFavourite: Boolean,
-    @SerialName("name") override val name: String,
-    @SerialName("siteUrl") override val siteUrl: String?,
-    @SerialName("id") override val id: Long
-) : IStudioModel
+internal sealed class StudioModel : IStudioModel {
+
+    @Serializable
+    internal data class Core(
+        @SerialName("favourites") override val favourites: Int?,
+        @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
+        @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("name") override val name: String,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("id") override val id: Long
+    ) : StudioModel()
+
+    /**
+     * @param mediaConnection
+     */
+    @Serializable
+    internal data class Extended(
+        @SerialName("media") val mediaConnection: MediaConnection?,
+        @SerialName("favourites") override val favourites: Int?,
+        @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
+        @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("name") override val name: String,
+        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("id") override val id: Long
+    ) : StudioModel()
+}

@@ -23,8 +23,8 @@ import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.entity.MediaCarousel
-import co.anitrend.domain.media.repository.MediaCarouselRepository
+import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.carousel.repository.MediaCarouselRepository
 
 
 internal class CarouselRepositoryImpl(

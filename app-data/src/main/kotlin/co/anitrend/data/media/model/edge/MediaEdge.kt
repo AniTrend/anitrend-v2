@@ -19,11 +19,10 @@ package co.anitrend.data.media.model.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.CharacterModel
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.enums.MediaRelation
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -41,12 +40,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class MediaEdge(
     @SerialName("characterRole") val characterRole: CharacterRole?,
-    @SerialName("characters") val characters: List<CharacterModel>?,
+    @SerialName("characters") val characters: List<CharacterModel.Core>?,
     @SerialName("favouriteOrder") val favouriteOrder: Int?,
     @SerialName("isMainStudio") val isMainStudio: Boolean,
     @SerialName("relationType") val relationType: MediaRelation?,
     @SerialName("staffRole") val staffRole: String?,
-    @SerialName("voiceActors") val voiceActors: List<StaffModel>?,
+    @SerialName("voiceActors") val voiceActors: List<StaffModel.Core>?,
     @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: MediaModelCore?
-) : IEntityEdge<MediaModelCore>
+    @SerialName("node") override val node: MediaModel.Core?
+) : IEntityEdge<MediaModel>

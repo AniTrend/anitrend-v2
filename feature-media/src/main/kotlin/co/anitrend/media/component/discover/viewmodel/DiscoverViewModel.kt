@@ -22,10 +22,8 @@ import co.anitrend.data.media.usecase.MediaUseCaseContract
 import co.anitrend.media.component.discover.viewmodel.state.DiscoverState
 
 class DiscoverViewModel(
-    useCase: MediaUseCaseContract
+    val state: DiscoverState
 ) : ViewModel() {
-
-    val state = DiscoverState(useCase)
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.

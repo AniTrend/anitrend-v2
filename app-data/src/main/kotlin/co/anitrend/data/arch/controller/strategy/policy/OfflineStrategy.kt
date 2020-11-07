@@ -20,6 +20,7 @@ package co.anitrend.data.arch.controller.strategy.policy
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
+import co.anitrend.data.arch.network.model.NetworkMessage
 import timber.log.Timber
 
 /**
@@ -27,7 +28,9 @@ import timber.log.Timber
  * that may have caching on the network level through interception or cache-control from
  * the origin server.
  */
-internal class OfflineStrategy<D> private constructor() : ControllerStrategy<D>() {
+internal class OfflineStrategy<D> private constructor(
+    override val networkMessage: NetworkMessage
+) : ControllerStrategy<D>() {
 
     /**
      * Execute a task under an implementation strategy
@@ -38,22 +41,32 @@ internal class OfflineStrategy<D> private constructor() : ControllerStrategy<D>(
     override suspend fun invoke(
         callback: RequestCallback,
         block: suspend () -> D?
-    ) = kotlin.runCatching {
-        val result = block()
-        callback.recordSuccess()
-        result
-    }.onFailure { e ->
-        Timber.tag(moduleTag).e(e)
-        when (e) {
-            is RequestError -> callback.recordFailure(e)
-            else -> callback.recordFailure(
-                RequestError("Unexpected error occurred", e.message, e.cause)
-            )
+    ): D? {
+        runCatching {
+            block()
+        }.onSuccess {result ->
+            callback.recordSuccess()
+            return result
+        }.onFailure { exception ->
+            Timber.tag(moduleTag).e(exception)
+            when (exception) {
+                is RequestError -> callback.recordFailure(exception)
+                else -> callback.recordFailure(
+                    RequestError(
+                        networkMessage.unrecoverableErrorTittle,
+                        exception.message,
+                        exception.cause
+                    )
+                )
+            }
         }
-    }.getOrNull()
+
+        return null
+    }
 
     companion object {
-        fun <T> create() =
-            OfflineStrategy<T>()
+        internal fun <T> create(
+            networkMessage: NetworkMessage
+        ) = OfflineStrategy<T>(networkMessage)
     }
 }

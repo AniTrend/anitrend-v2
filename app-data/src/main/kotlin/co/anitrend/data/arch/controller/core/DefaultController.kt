@@ -19,55 +19,36 @@ package co.anitrend.data.arch.controller.core
 
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.arch.extension.fetchBodyWithRetry
 import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.arch.network.contract.NetworkClient
+import co.anitrend.data.arch.network.default.DefaultNetworkClient
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 /**
- * AniTrend controller that handles complex logic of making requests, capturing errors,
+ * General controller that handles complex logic of making requests, capturing errors,
  * notifying state observers and providing input to response mappers
- *
- * @see DefaultMapper
  */
-internal class DefaultController<S, out D> private constructor(
+internal class DefaultController<S, out D>(
     private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
-    private val dispatchers: SupportDispatchers
+    private val dispatcher: CoroutineDispatcher,
+    private val client: NetworkClient<S>
 ) : ISupportResponse<Deferred<Response<S>>, D> {
 
     override suspend fun invoke(
         resource: Deferred<Response<S>>,
         requestCallback: RequestCallback
     ) = strategy(requestCallback) {
-        /**
-         * Suppressing this because: https://discuss.kotlinlang.org/t/warning-inappropriate-blocking-method-call-with-coroutines-how-to-fix/16903
-         */
-        @Suppress("BlockingMethodInNonBlockingContext")
-        val response = resource.fetchBodyWithRetry(dispatchers.io)
+        val response = client.fetch(resource)
 
-        response?.let { data ->
-            val mapped = mapper.onResponseMapFrom(data)
-            withContext(dispatchers.io) {
-                mapper.onResponseDatabaseInsert(mapped)
-            }
-            mapped
+        val mapped = mapper.onResponseMapFrom(response)
+        withContext(dispatcher) {
+            mapper.onResponseDatabaseInsert(mapped)
         }
-    }
-
-
-    companion object {
-        private val moduleTag = DefaultController::class.java.simpleName
-
-        fun <S, D> newInstance(
-            mapper: DefaultMapper<S, D>,
-            strategy: ControllerStrategy<D>,
-            dispatchers: SupportDispatchers
-        ) = DefaultController(
-            mapper, strategy, dispatchers
-        )
+        mapped
     }
 }

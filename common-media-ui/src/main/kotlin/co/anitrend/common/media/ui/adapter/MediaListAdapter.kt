@@ -38,7 +38,7 @@ import co.anitrend.common.media.ui.controller.model.MediaListItem
 import co.anitrend.common.media.ui.controller.model.MediaListItem.Companion.createListViewHolder
 import co.anitrend.core.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.settings.common.customize.common.PreferredViewMode
-import co.anitrend.domain.media.entity.base.IMedia
+import co.anitrend.domain.media.entity.Media
 
 /**
  * Adapter for list without paging callbacks
@@ -48,14 +48,14 @@ class MediaListAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (IMedia) -> IRecyclerItem = {
+    override val mapper: (Media) -> IRecyclerItem = {
         when (settings.preferredViewMode) {
             PreferredViewMode.DETAILED_LIST -> MediaDetailItem(it)
             PreferredViewMode.SUMMARY_LIST -> MediaListItem(it)
             PreferredViewMode.GRID_LIST -> MediaGridItem(it)
         }
     }
-) : SupportListAdapter<IMedia>(MediaDiffUtil) {
+) : SupportListAdapter<Media>(MediaDiffUtil) {
 
     /**
      * Assigned if the current adapter needs to support action mode
@@ -70,7 +70,7 @@ class MediaListAdapter(
      * The identifiable id of each item should unique, and if non exists
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
-    override fun getStableIdFor(item: IMedia?): Long {
+    override fun getStableIdFor(item: Media?): Long {
         return item?.id ?: RecyclerView.NO_ID
     }
 

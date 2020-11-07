@@ -17,43 +17,80 @@
 
 package co.anitrend.data.thread.model.remote
 
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.thread.model.contract.IThreadModel
-import co.anitrend.data.user.model.remote.UserModelCore
+import co.anitrend.data.user.model.remote.UserModel
 
 /** [Thread](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/thread.doc.html)
  * Forum Thread
  *
+ *
+ * @property categories The categories of the thread
+ *
  */
-internal data class ThreadModel(
-    override val id: Long,
-    override val body: String?,
-    override val categories: List<ThreadCategory>?,
-    override val createdAt: Long,
-    override val isLocked: Boolean,
-    override val isSticky: Boolean,
-    override val isSubscribed: Boolean,
-    override val likes: List<UserModelCore>?,
-    override val mediaCategories: List<MediaModelCore>?,
-    override val repliedAt: Long?,
-    override val replyCommentId: Int?,
-    override val replyCount: Int?,
-    override val replyUser: UserModelCore?,
-    override val replyUserId: Long?,
-    override val siteUrl: String,
-    override val title: String,
-    override val updatedAt: Long,
-    override val user: UserModelCore,
-    override val userId: Long,
-    override val viewCount: Int
-) : IThreadModel {
+internal sealed class ThreadModel : IThreadModel {
+
+    abstract val categories: List<Category>?
 
     /** [ThreadCategory](https://anilist.github.io/ApiV2-GraphQL-Docs/threadcategory.doc.html)
      * A forum thread category
      */
-    internal data class ThreadCategory(
+    internal data class Category(
         val name: String,
         override val id: Long,
     ) : Identity
+
+    internal data class Core(
+        override val id: Long,
+        override val body: String?,
+        override val categories: List<Category>?,
+        override val createdAt: Long,
+        override val isLiked: Boolean = false,
+        override val isLocked: Boolean = false,
+        override val isSticky: Boolean = false,
+        override val isSubscribed: Boolean = false,
+        override val likeCount: Int,
+        override val repliedAt: Long?,
+        override val replyCommentId: Int?,
+        override val replyCount: Int?,
+        override val replyUser: UserModel?,
+        override val replyUserId: Long?,
+        override val siteUrl: String,
+        override val title: String,
+        override val updatedAt: Long,
+        override val user: UserModel.Core,
+        override val userId: Long,
+        override val viewCount: Int
+    ) : ThreadModel()
+
+    /**
+     *
+     * @param likes The users who liked the thread
+     * @param mediaCategories The media categories of the thread
+     */
+    internal data class Extended(
+        val likes: List<UserModel.Core>?,
+        val mediaCategories: List<MediaModel.Core>?,
+        override val body: String?,
+        override val categories: List<Category>?,
+        override val createdAt: Long,
+        override val isLiked: Boolean = false,
+        override val isLocked: Boolean = false,
+        override val isSticky: Boolean = false,
+        override val isSubscribed: Boolean = false,
+        override val likeCount: Int,
+        override val repliedAt: Long?,
+        override val replyCommentId: Int?,
+        override val replyCount: Int?,
+        override val replyUser: UserModel?,
+        override val replyUserId: Long?,
+        override val siteUrl: String,
+        override val title: String,
+        override val updatedAt: Long,
+        override val user: UserModel.Core,
+        override val userId: Long,
+        override val viewCount: Int,
+        override val id: Long
+    ) : ThreadModel()
 }

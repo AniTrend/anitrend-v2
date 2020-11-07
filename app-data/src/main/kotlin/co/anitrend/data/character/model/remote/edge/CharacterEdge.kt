@@ -19,10 +19,9 @@ package co.anitrend.data.character.model.remote.edge
 
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.CharacterModel
-import co.anitrend.data.media.model.MediaModelCore
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -37,9 +36,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class CharacterEdge(
     @SerialName("favouriteOrder") val favouriteOrder: Int?,
-    @SerialName("media") val media: List<MediaModelCore>?,
+    @SerialName("media") val media: List<MediaModel.Core>?,
     @SerialName("role") val role: CharacterRole?,
-    @SerialName("voiceActors") val voiceActors: List<StaffModel>?,
+    @SerialName("voiceActors") val voiceActors: List<StaffModel.Core>?,
+    @SerialName("node") override val node: CharacterModel.Core?,
     @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: CharacterModel?
 ) : IEntityEdge<CharacterModel>

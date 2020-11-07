@@ -21,11 +21,14 @@ import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.common.graph.IGraphPayload
 
 interface MediaRepository<State: UiState<*>> {
+
+    /**
+     *
+     */
     fun getMediaPaged(query: IGraphPayload): State
 
+    /**
+     *
+     */
     fun getMediaPagedByNetwork(query: IGraphPayload): State
-}
-
-interface MediaCarouselRepository<State: UiState<*>> {
-    fun getMediaCarousel(query: IGraphPayload): State
 }

@@ -1,0 +1,99 @@
+fragment UserMangaStatistics on UserStatistics {
+    count
+    meanScore
+    volumesRead
+    chaptersRead
+    standardDeviation
+    countries(sort: $statisticsSort) {
+        country
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    formats(sort: $statisticsSort) {
+        format
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    genres(sort: $statisticsSort) {
+        genre
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    lengths(sort: $statisticsSort) {
+        length
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    releaseYears(sort: $statisticsSort) {
+        releaseYear
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    scores(sort: $statisticsSort) {
+        score
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    staff(sort: $statisticsSort) {
+        staff {
+            ... StaffCore
+        }
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    startYears(sort: $statisticsSort) {
+        startYear
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    statuses(sort: $statisticsSort) {
+        status
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    studios(sort: $statisticsSort) {
+        studio {
+            ... StudioCore
+        }
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    tags(sort: $statisticsSort) {
+        tag {
+            ... Tag
+        }
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+    voiceActors(sort: $statisticsSort) {
+        voiceActor {
+            ... StaffCore
+        }
+        chaptersRead
+        count
+        meanScore
+        mediaIds
+    }
+}

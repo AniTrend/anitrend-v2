@@ -18,7 +18,7 @@
 package co.anitrend.data.media.mapper.paged
 
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.media.converters.MediaConverter
+import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.model.page.MediaPageModel
 import co.anitrend.domain.media.entity.Media
 

@@ -27,5 +27,5 @@ import co.anitrend.data.mediatrend.model.remote.MediaTrendModel
  */
 internal data class MediaTrendEdge(
     override val id: Long,
-    override val node: MediaTrendModel?
+    override val node: MediaTrendModel.Core?
 ) : IEntityEdge<MediaTrendModel>
