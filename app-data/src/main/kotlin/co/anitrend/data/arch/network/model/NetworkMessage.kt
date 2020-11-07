@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,18 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.user.model.remote
+package co.anitrend.data.arch.network.model
 
-import co.anitrend.data.user.model.remote.statistics.media.UserAnimeStatistics
-import co.anitrend.data.user.model.remote.statistics.media.UserMangaStatistics
-
-/** [UserStatisticTypes](https://anilist.github.io/ApiV2-GraphQL-Docs/UserStatisticTypes.doc.html)
- * A user's statistics
- *
- * @param anime TBA
- * @param manga TBA
+/**
+ * Predefined messages that need to be shown to the user
  */
-internal data class UserStatisticTypes(
-    val anime: UserAnimeStatistics,
-    val manga: UserMangaStatistics
+data class NetworkMessage(
+    val unrecoverableErrorTittle: String,
+    val connectivityErrorTittle: String,
+    val connectivityErrorMessage: String
 )

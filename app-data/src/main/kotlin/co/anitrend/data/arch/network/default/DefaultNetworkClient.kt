@@ -15,19 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.user.entity.base
+package co.anitrend.data.arch.network.default
 
-import co.anitrend.domain.user.entity.attribute.option.UserMediaListOptions
-import co.anitrend.domain.user.entity.attribute.option.UserProfileOption
-import co.anitrend.domain.user.entity.attribute.statistic.UserMediaStatisticType
+import co.anitrend.data.arch.network.contract.NetworkClient
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
-* A user with more information
-*/
-interface IUserExtended : IUserCore {
-    val about: CharSequence
-    val listOptions: UserMediaListOptions
-    val preferences: UserProfileOption
-    val statistics: UserMediaStatisticType
-    val unreadNotifications: Long
-}
+ * Default network client
+ */
+internal class DefaultNetworkClient<R>(
+    override val dispatcher: CoroutineDispatcher
+) : NetworkClient<R>()
