@@ -15,25 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.user.entity.contract
+package co.anitrend.domain.user.repository
 
-/**
- * A users status
- *
- * @param about The users bio
- * @param donationBadge Custom donation badge text
- * @param donationTier The donation tier of the user
- * @param isFollowing If the authenticated user if following this user
- * @param isFollower If this user if following the authenticated user
- * @param isBlocked If the user is blocked by the authenticated user
- * @param pageUrl The url for the user page on the AniList website
- */
-data class UserStatus(
-    val about: CharSequence?,
-    val donationBadge: CharSequence?,
-    val donationTier: Int?,
-    val isFollowing: Boolean?,
-    val isFollower: Boolean?,
-    val isBlocked: Boolean?,
-    val pageUrl: CharSequence?
-)
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.common.graph.IGraphPayload
+
+interface UserRepository<State: UiState<*>> {
+
+    fun getUserProfile(): State
+
+    fun getUserProfile(query: IGraphPayload): State
+}

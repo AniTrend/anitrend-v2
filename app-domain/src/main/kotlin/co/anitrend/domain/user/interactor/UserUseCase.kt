@@ -15,13 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.user.entity.attribute.option
+package co.anitrend.domain.user.interactor
 
-import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.user.repository.UserRepository
 
-data class UserMediaListOptions(
-    val scoreFormat: ScoreFormat,
-    val rowOrder: CharSequence,
-    val animeList: UserMediaListTypeOptions?,
-    val mangaList: UserMediaListTypeOptions?
-)
+abstract class UserUseCase<State: UiState<*>>(
+    protected val repository: UserRepository<State>
+) : IUseCase {
+
+    /**
+     * Get the user for the currently authenticated sessions
+     */
+    fun getUserProfile() = repository.getUserProfile()
+
+    /**
+     * Get a user defined in the [query]
+     */
+    fun getUserProfile(query: IGraphPayload) =
+        repository.getUserProfile(query)
+}
