@@ -56,8 +56,8 @@ class ConfigurationUtil(
      * @param activity
      */
     override fun onCreate(activity: FragmentActivity) {
-        applicationTheme = settings.theme
-        applicationLocale = settings.locale
+        applicationTheme = settings.theme.value
+        applicationLocale = settings.locale.value
         themeHelper.applyApplicationTheme(activity, themeOverride)
     }
 
@@ -67,7 +67,7 @@ class ConfigurationUtil(
      * @param activity
      */
     override fun onResume(activity: FragmentActivity) {
-        if (applicationTheme != settings.theme) {
+        if (applicationTheme != settings.theme.value) {
             activity.resetActivity()
             themeHelper.applyDynamicNightModeFromTheme()
         }

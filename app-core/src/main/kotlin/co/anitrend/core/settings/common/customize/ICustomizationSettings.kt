@@ -17,8 +17,9 @@
 
 package co.anitrend.core.settings.common.customize
 
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.settings.common.customize.common.PreferredViewMode
 
 interface ICustomizationSettings {
-    var preferredViewMode: PreferredViewMode
+    val preferredViewMode: AbstractSetting<PreferredViewMode>
 }

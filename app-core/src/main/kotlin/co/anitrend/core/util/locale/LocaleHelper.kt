@@ -31,7 +31,7 @@ internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelp
      */
     override val locale: Locale
         get() {
-            if (settings.locale == AniTrendLocale.AUTOMATIC)
+            if (settings.locale.value == AniTrendLocale.AUTOMATIC)
                 return Locale.getDefault()
             return getPersonalizedLocale()
         }
@@ -48,7 +48,7 @@ internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelp
     }
 
     private fun getPersonalizedLocale(): Locale {
-        val locale = settings.locale
+        val locale = settings.locale.value
         if (locale.country == null)
             return Locale(locale.language)
         return Locale(locale.language, locale.language)

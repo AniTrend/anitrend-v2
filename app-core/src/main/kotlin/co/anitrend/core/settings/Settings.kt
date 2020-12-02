@@ -19,7 +19,11 @@ package co.anitrend.core.settings
 
 import android.content.Context
 import co.anitrend.arch.extension.preference.*
-import co.anitrend.arch.extension.preference.contract.ISupportSettings
+import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.arch.extension.settings.BooleanSetting
+import co.anitrend.arch.extension.settings.EnumSetting
+import co.anitrend.arch.extension.settings.IntSetting
+import co.anitrend.arch.extension.settings.LongSetting
 import co.anitrend.core.R
 import co.anitrend.core.android.settings.connectivity.IConnectivitySettings
 import co.anitrend.core.android.settings.power.IPowerSettings
@@ -36,81 +40,93 @@ import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 
-class Settings(context: Context) : SupportSettings(context),
+class Settings(context: Context) : SupportPreference(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
     ISortOrderSettings, IRefreshBehaviourSettings, ICustomizationSettings,
     IPowerSettings, IConnectivitySettings {
 
-    override var locale by EnumPreference(
+    override val locale = EnumSetting(
         R.string.settings_configuration_locale,
         AniTrendLocale.AUTOMATIC,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var theme by EnumPreference(
+    override val theme = EnumSetting(
         R.string.settings_configuration_theme,
         AniTrendTheme.SYSTEM,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var isAnalyticsEnabled by BooleanPreference(
+    override val isAnalyticsEnabled = BooleanSetting(
         R.string.settings_privacy_usage_analytics,
         false,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var isCrashlyticsEnabled by BooleanPreference(
+    override val isCrashlyticsEnabled = BooleanSetting(
         R.string.settings_privacy_crash_analytics,
         true,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var authenticatedUserId by LongPreference(
+    override val authenticatedUserId = LongSetting(
         R.string.settings_authentication_id,
         INVALID_USER_ID,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var isAuthenticated by BooleanPreference(
+    override val isAuthenticated = BooleanSetting(
         R.string.settings_is_authenticated,
         false,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var isSortOrderDescending by BooleanPreference(
+    override val isSortOrderDescending = BooleanSetting(
         R.string.settings_is_sort_order_desc,
         true,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var isNewInstallation by BooleanPreference(
+    override val isNewInstallation = BooleanSetting(
         R.string.settings_is_new_installation,
         true,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var versionCode by IntPreference(
+    override val versionCode = IntSetting(
         R.string.settings_version_code,
         1,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var clearDataOnSwipeRefresh by BooleanPreference(
+    override val clearDataOnSwipeRefresh = BooleanSetting(
         R.string.settings_clear_on_swipe_refresh,
         true,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var preferredViewMode by EnumPreference(
+    override val preferredViewMode = EnumSetting(
         R.string.settings_view_mode_preferred,
         PreferredViewMode.GRID_LIST,
-        context.resources
+        context.resources,
+        this
     )
 
-    override var isDataSaverOn by BooleanPreference(
+    override val isDataSaverOn = BooleanSetting(
         R.string.settings_data_saver,
         false,
-        context.resources
+        context.resources,
+        this
     )
 
     companion object {
@@ -119,7 +135,7 @@ class Settings(context: Context) : SupportSettings(context),
          * Binding types for [Settings]
          */
         internal val BINDINGS = arrayOf(
-            ISupportSettings::class, IConfigurationSettings::class,
+            ISupportPreference::class, IConfigurationSettings::class,
             ILocaleSettings::class, IThemeSettings::class,
             IAuthenticationSettings::class, IPrivacySettings::class,
             ISortOrderSettings::class, IRefreshBehaviourSettings::class,

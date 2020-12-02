@@ -17,10 +17,12 @@
 
 package co.anitrend.data.auth.settings
 
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
+
 interface IAuthenticationSettings {
 
-    var authenticatedUserId: Long
-    var isAuthenticated: Boolean
+    val authenticatedUserId: AbstractSetting<Long>
+    val isAuthenticated: AbstractSetting<Boolean>
 
     companion object {
         const val INVALID_USER_ID: Long = -1

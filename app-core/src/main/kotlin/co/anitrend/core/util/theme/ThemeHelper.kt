@@ -95,7 +95,7 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
      * Sets the default night mode based on the theme set in settings
      */
     override fun applyDynamicNightModeFromTheme() {
-        val theme = settings.theme
+        val theme = settings.theme.value
         if (theme == AniTrendTheme.SYSTEM)
             AppCompatDelegate.setDefaultNightMode(
                 AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
@@ -121,7 +121,7 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
         if (themeOverride != null)
             context.setTheme(themeOverride)
         else
-            context.setTheme(settings.theme.styleAttribute)
+            context.setTheme(settings.theme.value.styleAttribute)
         context.applyWindowStyle()
     }
 }

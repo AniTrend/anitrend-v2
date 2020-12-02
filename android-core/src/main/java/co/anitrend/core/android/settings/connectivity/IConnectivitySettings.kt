@@ -17,6 +17,8 @@
 
 package co.anitrend.core.android.settings.connectivity
 
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
+
 interface IConnectivitySettings {
-    var isDataSaverOn: Boolean
+    val isDataSaverOn: AbstractSetting<Boolean>
 }

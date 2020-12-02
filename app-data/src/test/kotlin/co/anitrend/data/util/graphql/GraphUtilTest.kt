@@ -52,7 +52,7 @@ class GraphUtilTest {
 
         val sortType = MediaListSort.ADDED_TIME
 
-        every { settings.isSortOrderDescending } returns true
+        every { settings.isSortOrderDescending.value } returns true
 
         val actual = sortType.applySortOrderUsing(settings)
 
@@ -62,7 +62,7 @@ class GraphUtilTest {
 
     @Test
     fun `sorting helper does not append postfix to ignored values`() {
-        every { settings.isSortOrderDescending } returns false
+        every { settings.isSortOrderDescending.value } returns false
 
         val expected = "SEARCH_MATCH"
 
@@ -75,7 +75,7 @@ class GraphUtilTest {
 
     @Test
     fun `sorting helper appends postfix to non ignored values`() {
-        every { settings.isSortOrderDescending } returns true
+        every { settings.isSortOrderDescending.value } returns true
 
         val expected = "PROGRESS_VOLUMES_DESC"
 
@@ -88,7 +88,7 @@ class GraphUtilTest {
 
     @Test
     fun `sorting helper does not append postfix when preference order is not set to descending order`() {
-        every { settings.isSortOrderDescending } returns false
+        every { settings.isSortOrderDescending.value } returns false
 
         val expected = "PROGRESS_VOLUMES"
 
@@ -101,7 +101,7 @@ class GraphUtilTest {
 
     @Test
     fun `mock query with sorting parameter produces mapped sorting order using sort order settings as descending`() {
-        every { settings.isSortOrderDescending } returns true
+        every { settings.isSortOrderDescending.value } returns true
 
         val input = listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
         val mockQuery = MockQuery(sort=input)
@@ -116,7 +116,7 @@ class GraphUtilTest {
 
     @Test
     fun `mock query with sorting parameter produces mapped sorting order using sort order settings as ascending`() {
-        every { settings.isSortOrderDescending } returns false
+        every { settings.isSortOrderDescending.value } returns false
 
         val input = listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
         val mockQuery = MockQuery(sort=input)

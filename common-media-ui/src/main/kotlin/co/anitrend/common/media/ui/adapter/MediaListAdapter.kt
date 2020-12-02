@@ -49,7 +49,7 @@ class MediaListAdapter(
     override val stateConfiguration: IStateLayoutConfig,
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Media) -> IRecyclerItem = {
-        when (settings.preferredViewMode) {
+        when (settings.preferredViewMode.value) {
             PreferredViewMode.DETAILED_LIST -> MediaDetailItem(it)
             PreferredViewMode.SUMMARY_LIST -> MediaListItem(it)
             PreferredViewMode.GRID_LIST -> MediaGridItem(it)
@@ -107,7 +107,7 @@ class MediaListAdapter(
      */
     override fun getItemViewType(position: Int): Int {
         return when (val viewType = super.getItemViewType(position)) {
-            ISupportAdapter.DEFAULT_VIEW_TYPE -> settings.preferredViewMode.ordinal
+            ISupportAdapter.DEFAULT_VIEW_TYPE -> settings.preferredViewMode.value.ordinal
             else -> viewType
         }
     }

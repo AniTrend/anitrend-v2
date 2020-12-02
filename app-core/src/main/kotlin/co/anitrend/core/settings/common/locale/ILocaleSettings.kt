@@ -17,9 +17,10 @@
 
 package co.anitrend.core.settings.common.locale
 
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.util.locale.AniTrendLocale
 
 interface ILocaleSettings {
 
-    var locale: AniTrendLocale
+    val locale: AbstractSetting<AniTrendLocale>
 }

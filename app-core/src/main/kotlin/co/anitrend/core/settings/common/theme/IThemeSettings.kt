@@ -17,9 +17,10 @@
 
 package co.anitrend.core.settings.common.theme
 
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.util.theme.AniTrendTheme
 
 interface IThemeSettings {
 
-    var theme: AniTrendTheme
+    val theme: AbstractSetting<AniTrendTheme>
 }

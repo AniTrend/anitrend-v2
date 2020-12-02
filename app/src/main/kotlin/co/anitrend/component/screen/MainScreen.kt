@@ -182,7 +182,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 return true
             }
             R.id.action_account -> {
-                if (presenter.settings.isAuthenticated)
+                if (presenter.settings.isAuthenticated.value)
                     ProfileRouter.startActivity(this)
                 else
                     AuthRouter.startActivity(this)

@@ -39,7 +39,6 @@ import co.anitrend.common.media.ui.controller.model.MediaListItem.Companion.crea
 import co.anitrend.core.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.settings.common.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.contract.IMedia
 
 /**
  * Adapter for paged list
@@ -50,7 +49,7 @@ class MediaPagedAdapter(
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Media) -> IRecyclerItem = {
-        when (settings.preferredViewMode) {
+        when (settings.preferredViewMode.value) {
             PreferredViewMode.DETAILED_LIST -> MediaDetailItem(it)
             PreferredViewMode.SUMMARY_LIST -> MediaListItem(it)
             PreferredViewMode.GRID_LIST -> MediaGridItem(it)
@@ -108,7 +107,7 @@ class MediaPagedAdapter(
      */
     override fun getItemViewType(position: Int): Int {
         return when (val viewType = super.getItemViewType(position)) {
-            DEFAULT_VIEW_TYPE -> settings.preferredViewMode.ordinal
+            DEFAULT_VIEW_TYPE -> settings.preferredViewMode.value.ordinal
             else -> viewType
         }
     }
