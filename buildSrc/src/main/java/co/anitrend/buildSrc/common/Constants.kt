@@ -71,6 +71,8 @@ internal const val taskEpisode = "task-episode"
 internal const val taskNews = "task-news"
 internal const val taskFeed = "task-feed"
 internal const val taskStudio = "task-studio"
+internal const val taskGenre = "task-genre"
+internal const val taskTag = "task-tag"
 
 internal val baseModules = listOf(app, core, data, domain, navigation)
 

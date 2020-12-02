@@ -47,5 +47,7 @@ include(
     ":task-episode",
     ":task-news",
     ":task-feed",
-    ":task-studio"
+    ":task-studio",
+    ":task-genre",
+    ":task-tag"
 )

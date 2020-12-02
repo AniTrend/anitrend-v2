@@ -356,6 +356,8 @@ object Libraries {
             const val news = ":$taskNews"
             const val feed = ":$taskFeed"
             const val studio = ":$taskStudio"
+            const val genre = ":$taskGenre"
+            const val tag = ":$taskTag"
         }
     }
 
