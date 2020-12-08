@@ -22,7 +22,9 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 21
+    private const val candidate = 25
+
+    private const val channel = "alpha"
 
     const val compileSdk = 30
     const val targetSdk = 30
@@ -41,7 +43,7 @@ object Versions {
      * Naming schema: X.Y.Z-variant##
      * > **X**(Major).**Y**(Minor).**Z**(Patch)
      */
-    const val versionName = "$major.$minor.$patch-alpha$candidate"
+    const val versionName = "$major.$minor.$patch-$channel$candidate"
 
     const val mockk = "1.10.2"
     const val junit = "4.13.1"
