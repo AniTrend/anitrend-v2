@@ -45,7 +45,7 @@ internal class ClearDataHelper(
         context: CoroutineContext,
         action: suspend () -> Unit
     ) {
-        if (settings.clearDataOnSwipeRefresh) {
+        if (settings.clearDataOnSwipeRefresh.value) {
             if (connectivity.isConnected)
                 runCatching {
                     withContext(context) {

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.extension
 
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.controller.core.DefaultController
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
@@ -32,14 +32,14 @@ import org.koin.core.scope.Scope
 internal fun <S, D> Scope.graphQLController(
     mapper: DefaultMapper<S, D>,
     strategy: ControllerStrategy<D> = online(),
-    dispatchers: SupportDispatchers = get()
+    dispatcher: ISupportDispatcher = get()
 ) = GraphQLController(
     mapper = mapper,
     strategy = strategy,
-    dispatcher = dispatchers.io,
+    dispatcher = dispatcher.io,
     client = GraphNetworkClient(
-        gson = get(),
-        dispatcher = dispatchers.io
+        json = get(),
+        dispatcher = dispatcher.io
     )
 )
 
@@ -49,12 +49,12 @@ internal fun <S, D> Scope.graphQLController(
 internal fun <S, D> Scope.defaultController(
     mapper: DefaultMapper<S, D>,
     strategy: ControllerStrategy<D> = online(),
-    dispatchers: SupportDispatchers = get()
+    dispatcher: ISupportDispatcher = get()
 ) = DefaultController(
     mapper = mapper,
     strategy = strategy,
-    dispatcher = dispatchers.io,
+    dispatcher = dispatcher.io,
     client =  DefaultNetworkClient(
-        dispatcher = dispatchers.io
+        dispatcher = dispatcher.io
     )
 )
