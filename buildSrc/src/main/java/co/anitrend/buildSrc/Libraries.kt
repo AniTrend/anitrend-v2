@@ -403,7 +403,7 @@ object Libraries {
     object Google {
 
         object Exo {
-            private const val version = "r2.12.1"
+            private const val version = "2.12.2"
             const val workManager = "com.google.android.exoplayer:extension-workmanager:$version"
             const val okHttp = "com.google.android.exoplayer:extension-okhttp:$version"
             const val core = "com.google.android.exoplayer:extension-core:$version"
