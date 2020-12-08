@@ -18,10 +18,18 @@
 package co.anitrend.domain.common.extension
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 internal const val INVALID_ID = 0L
 
 /**
  * Represents an empty entity
  */
-fun IEntity.isValid() = id != INVALID_ID
+@OptIn(ExperimentalContracts::class)
+fun IEntity?.isValid(): Boolean {
+    contract {
+        returns(true) implies (this@isValid != null)
+    }
+    return this?.let { it.id != INVALID_ID } ?: false
+}
