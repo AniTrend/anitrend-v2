@@ -53,7 +53,9 @@ class SplashContent(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenResumed {
-            presenter.firstRunCheck(activity)
+            presenter.startGenreWorker(requireActivity())
+            presenter.startTagsWorker(requireActivity())
+            presenter.firstRunCheck(requireActivity())
         }
     }
 }
