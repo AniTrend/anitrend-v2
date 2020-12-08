@@ -103,3 +103,15 @@ inline fun FragmentItem.commit(
     fragmentActivity: FragmentActivity,
     action: FragmentTransaction.() -> Unit
 ) = commit(contentFrame.id, fragmentActivity, action)
+
+inline fun <reified T : Fragment> FragmentActivity.fragment() = lazy {
+    supportFragmentManager.fragmentFactory.instantiate(classLoader, T::class.java.name) as T
+}
+
+inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
+    tag: String, noinline factory: () -> T
+): Lazy<T> {
+    return lazy(LazyThreadSafetyMode.NONE) {
+        supportFragmentManager.findFragmentByTag(tag) as? T ?: factory()
+    }
+}
