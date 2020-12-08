@@ -55,6 +55,9 @@ abstract class FrameLayoutWithBinding<V : ViewBinding> @JvmOverloads constructor
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        onViewRecycled()
+        // TODO: Avoid setting binding to null in onDetach otherwise views don't get updated in a recycler
+        //onViewRecycled()
     }
+
+
 }
