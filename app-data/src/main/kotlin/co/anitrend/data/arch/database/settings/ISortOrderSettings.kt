@@ -17,7 +17,8 @@
 
 package co.anitrend.data.arch.database.settings
 
-interface ISortOrderSettings {
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
-    var isSortOrderDescending: Boolean
+interface ISortOrderSettings {
+    val isSortOrderDescending: AbstractSetting<Boolean>
 }
