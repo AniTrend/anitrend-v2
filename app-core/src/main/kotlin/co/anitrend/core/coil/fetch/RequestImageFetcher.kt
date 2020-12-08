@@ -17,6 +17,7 @@
 
 package co.anitrend.core.coil.fetch
 
+import co.anitrend.core.android.controller.contract.IPowerController
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import coil.bitmap.BitmapPool
@@ -80,7 +81,7 @@ class RequestImageFetcher(
      *
      * Returning null will prevent the result of [fetch] from being added to the memory cache.
      */
-    override fun key(data: RequestImage<*>): String? {
+    override fun key(data: RequestImage<*>): String {
         return mapper.getImageUrlUsing(data)
     }
 

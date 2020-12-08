@@ -17,8 +17,8 @@
 
 package co.anitrend.core.coil.mapper
 
-import co.anitrend.core.android.controller.contract.PowerController
-import co.anitrend.core.android.controller.contract.SaveData
+import co.anitrend.core.android.controller.contract.IPowerController
+import co.anitrend.core.android.controller.contract.PowerSaverState
 import co.anitrend.core.android.helpers.image.model.CoverRequestImage
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
@@ -27,26 +27,28 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class RequestImageMapper(
-    private val powerController: PowerController
+    private val powerController: IPowerController
 ) : Mapper<RequestImage<*>, HttpUrl> {
 
-    internal fun getImageUrlUsing(requestImage: RequestImage<*>): String? {
-        val saveData = powerController.shouldSaveData()
+    internal fun getImageUrlUsing(
+        requestImage: RequestImage<*>
+    ): String {
+        val powerSaverState = powerController.powerSaverState()
         return when (requestImage) {
             is MediaRequestImage -> when (requestImage.type) {
                 MediaRequestImage.ImageType.BANNER -> requestImage.image?.banner
                 MediaRequestImage.ImageType.POSTER -> {
-                    if (saveData == SaveData.Disabled)
-                        requestImage.image?.extraLarge
-                    else
-                        requestImage.image?.large
+                    when (powerSaverState) {
+                        PowerSaverState.Disabled -> requestImage.image?.extraLarge
+                        else -> requestImage.image?.large
+                    }
                 }
             }
             is CoverRequestImage ->
-                if (saveData == SaveData.Disabled)
-                    requestImage.image?.large
-                else
-                    requestImage.image?.medium
+                when (powerSaverState) {
+                    PowerSaverState.Disabled -> requestImage.image?.large
+                    else -> requestImage.image?.medium
+                }
         }.toString()
     }
 
@@ -55,7 +57,7 @@ class RequestImageMapper(
 
     /** Convert [data] into [HttpUrl]. */
     override fun map(data: RequestImage<*>): HttpUrl {
-        return getImageUrlUsing(data)?.toHttpUrl() ?: FALLBACK_URL
+        return getImageUrlUsing(data).toHttpUrl()
     }
 
     companion object {
