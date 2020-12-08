@@ -35,16 +35,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
 
-private fun configureMultipleBuilds(project: Project) {
-    val abiMap = mapOf(
-        "armeabi" to 1,
-        "armeabi-v7a" to 2,
-        "arm64-v8a" to 3,
-        "mips" to 5,
-        "mips64" to 6,
-        "x86" to 8,
-        "x86_64" to 9
-    )
+private fun configureBuildFlavours(project: Project) {
     project.baseAppExtension().run {
         flavorDimensions("version")
         productFlavors {
@@ -53,14 +44,6 @@ private fun configureMultipleBuilds(project: Project) {
                 applicationIdSuffix = ".fdroid"
                 versionNameSuffix = "-fdroid"
                 versionCode = defaultConfig.versionCode!!.times(10)
-            }
-        }
-        splits {
-            abi {
-                isEnable = true
-                reset()
-                include(*abiMap.keys.toTypedArray())
-                isUniversalApk = true
             }
         }
         applicationVariants.all {
@@ -96,9 +79,9 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             viewBinding = true
             //compose = true
         }
-        // TODO: Configure flavours and multiple apk support,
+        // TODO: Configure build flavours
         // this might be deprecated in favour of app bundles
-        //configureMultipleBuilds(project)
+        //configureBuildFlavours(project)
     }
     else
         consumerProguardFiles.add(File("consumer-rules.pro"))
@@ -213,6 +196,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.FlowPreview")
             if (!isBaseModule())
                 compilerArgumentOptions.add("-Xopt-in=coil.annotation.ExperimentalCoilApi")
+            if (isDataModule())
+                compilerArgumentOptions.add("-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi")
         }
 
         kotlinOptions {
