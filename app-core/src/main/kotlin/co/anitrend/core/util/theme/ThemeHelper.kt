@@ -22,6 +22,7 @@ import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
@@ -58,18 +59,18 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
     @TargetApi(Build.VERSION_CODES.O)
     private fun FragmentActivity.applyDayModeDecorations(systemUiOptions: Int) {
         val primaryColor = getCompatColor(R.color.colorPrimary)
-        window.navigationBarColor = primaryColor
-        window.statusBarColor = primaryColor
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.setSystemBarsAppearance(
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-            )
+            val controller = ViewCompat.getWindowInsetsController(window.decorView)
+            controller?.isAppearanceLightNavigationBars = true
+            controller?.isAppearanceLightStatusBars = true
+            window.statusBarColor = primaryColor
         } else {
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = systemUiOptions or
                     View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.navigationBarColor = primaryColor
+            window.statusBarColor = primaryColor
         }
     }
 
