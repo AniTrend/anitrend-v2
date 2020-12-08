@@ -234,6 +234,7 @@ private fun Project.applyTaskModuleDependencies() {
     dependencies.implementation(project(":$core"))
     dependencies.implementation(project(":$data"))
     dependencies.implementation(project(":$domain"))
+    dependencies.implementation(project(":$navigation"))
 }
 
 private fun Project.applyComposeDependencies() {
