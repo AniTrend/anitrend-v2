@@ -121,7 +121,7 @@ class OnBoardingPresenter(
     val pages = onBoardingItems.size.minus(1)
 
     fun onBoardingExperienceCompleted() {
-        settings.isNewInstallation = false
+        settings.isNewInstallation.value = false
         MainRouter.startActivity(context)
     }
 }
