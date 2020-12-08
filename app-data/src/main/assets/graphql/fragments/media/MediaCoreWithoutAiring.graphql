@@ -1,4 +1,4 @@
-fragment MediaCore on Media {
+fragment MediaCoreWithoutAiring on Media {
     id
     idMal
     title {
@@ -11,7 +11,7 @@ fragment MediaCore on Media {
     type
     format
     season
-    status(version: 2)
+    status
     source
     meanScore
     description
@@ -45,9 +45,6 @@ fragment MediaCore on Media {
     isFavourite
     isRecommendationBlocked
     updatedAt
-    nextAiringEpisode {
-        ... AiringScheduleCore
-    }
     mediaListEntry {
         ... MediaListCore
     }
