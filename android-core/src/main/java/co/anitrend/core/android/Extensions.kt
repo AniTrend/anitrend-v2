@@ -22,6 +22,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.TypedValue
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import androidx.annotation.AttrRes
@@ -121,4 +123,10 @@ fun AiringSchedule.getPrettyTime(): String {
  */
 fun Instant.getPrettyTime(): String {
     return prettyTime.format(Date(toEpochMilli()))
+}
+
+fun View.setMarginTop(marginTop: Int) {
+    val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
+    menuLayoutParams.setMargins(0, marginTop, 0, 0)
+    this.layoutParams = menuLayoutParams
 }

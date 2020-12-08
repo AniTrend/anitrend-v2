@@ -18,8 +18,6 @@
 package co.anitrend.core.extensions
 
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.data.arch.AniTrendExperimentalFeature
@@ -58,10 +56,4 @@ fun FragmentActivity?.createDialog(
     MaterialDialog(this, dialogBehavior)
         .lifecycleOwner(this)
         .cancelOnTouchOutside(false)
-}
-
-fun View.setMarginTop(marginTop: Int) {
-    val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-    menuLayoutParams.setMargins(0, marginTop, 0, 0)
-    this.layoutParams = menuLayoutParams
 }
