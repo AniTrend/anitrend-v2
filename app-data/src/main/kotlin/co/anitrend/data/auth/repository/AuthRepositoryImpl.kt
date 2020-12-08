@@ -17,7 +17,6 @@
 
 package co.anitrend.data.auth.repository
 
-import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -31,5 +30,5 @@ internal class AuthRepositoryImpl(
 ) : SupportRepository(source), AuthRepository<DataState<User?>>{
 
     override fun getAuthenticatedUser(query: IGraphPayload) =
-        source create source(query).asLiveData()
+        source create source(query)
 }

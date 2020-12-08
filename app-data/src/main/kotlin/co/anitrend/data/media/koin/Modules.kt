@@ -21,14 +21,14 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.*
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.online
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
 import co.anitrend.data.media.repository.MediaRepositoryImpl
 import co.anitrend.data.media.source.paged.combined.MediaPagedSourceImpl
 import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
 import co.anitrend.data.media.source.paged.network.factory.MediaPagedNetworkSourceFactory
-import co.anitrend.data.media.usecase.MediaUseCaseContract
+import co.anitrend.data.media.MediaUseInteractor
+import co.anitrend.data.media.converter.MediaEntityConverter
 import co.anitrend.data.media.usecase.MediaUseCaseImpl
 import org.koin.dsl.module
 
@@ -40,20 +40,28 @@ private val sourceModule = module {
                 mapper = get<MediaPagedNetworkMapper>()
             ),
             sortOrderSettings = get(),
-            dispatchers = get()
+            dispatcher = get()
         )
     }
     factory<MediaPagedSource> {
         MediaPagedSourceImpl(
             remoteSource = api(EndpointType.GRAPH_QL),
             localSource = db().mediaDao(),
+            carouselSource = get(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<MediaPagedCombinedMapper>()
             ),
             sortOrderSettings = get(),
-            dispatchers = get()
+            converter = get(),
+            dispatcher = get()
         )
+    }
+}
+
+private val converterModule = module {
+    factory {
+        MediaEntityConverter()
     }
 }
 
@@ -70,7 +78,7 @@ private val mapperModule = module {
 }
 
 private val useCaseModule = module {
-    factory<MediaUseCaseContract> {
+    factory<MediaUseInteractor> {
         MediaUseCaseImpl(
             repository = get()
         )
@@ -88,6 +96,7 @@ private val repositoryModule = module {
 
 internal val mediaModules = listOf(
     sourceModule,
+    converterModule,
     mapperModule,
     useCaseModule,
     repositoryModule

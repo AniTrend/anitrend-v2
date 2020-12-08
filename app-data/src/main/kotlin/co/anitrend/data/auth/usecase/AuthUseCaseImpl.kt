@@ -18,14 +18,12 @@
 package co.anitrend.data.auth.usecase
 
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.data.auth.repository.AuthRepositoryImpl
-import co.anitrend.domain.auth.interactor.AuthUseCase
-import co.anitrend.domain.user.entity.User
 
 internal class AuthUseCaseImpl(
     repository: AuthRepositoryImpl
-) : AuthUseCaseContract(repository) {
+) : AuthUserInteractor(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop
@@ -35,5 +33,3 @@ internal class AuthUseCaseImpl(
         repository.onCleared()
     }
 }
-
-typealias AuthUseCaseContract = AuthUseCase<DataState<User?>>

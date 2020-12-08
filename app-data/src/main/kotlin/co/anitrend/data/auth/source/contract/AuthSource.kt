@@ -19,8 +19,10 @@ package co.anitrend.data.auth.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.auth.action.AuthAction
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.user.entity.User
@@ -28,8 +30,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class AuthSource(
-    supportDispatchers: SupportDispatchers
-) : SupportCoreDataSource(supportDispatchers) {
+    dispatcher: ISupportDispatcher
+) : SupportCoreDataSource(dispatcher) {
 
     protected abstract val observable: Flow<User?>
     protected abstract val observables: Flow<List<User>?>
@@ -48,7 +50,7 @@ internal abstract class AuthSource(
     internal operator fun invoke(query: IGraphPayload): Flow<User?> {
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
+                Request.Default(String.empty(), Request.Type.INITIAL)
             ) { getAuthorizedUser(query as AuthAction.Login, it) }
         }
         return observable

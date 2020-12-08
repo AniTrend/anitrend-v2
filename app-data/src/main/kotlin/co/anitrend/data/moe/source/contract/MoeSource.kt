@@ -19,8 +19,10 @@ package co.anitrend.data.moe.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.moe.model.local.MoeSourceQuery
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import kotlinx.coroutines.CoroutineStart
@@ -28,8 +30,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MoeSource(
-    dispatchers: SupportDispatchers
-) : SupportCoreDataSource(dispatchers) {
+    dispatcher: ISupportDispatcher
+) : SupportCoreDataSource(dispatcher) {
     internal lateinit var query: MoeSourceQuery
 
     internal abstract val observable: Flow<IMediaSourceId>
@@ -43,7 +45,7 @@ internal abstract class MoeSource(
         query = sourceQuery
         launch(coroutineContext, CoroutineStart.LAZY) {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
+                Request.Default(String.empty(), Request.Type.INITIAL)
             ) { getSourceRelation(sourceQuery, it) }
         }
         return observable

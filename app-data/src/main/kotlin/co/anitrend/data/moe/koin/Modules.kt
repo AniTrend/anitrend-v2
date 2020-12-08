@@ -36,7 +36,7 @@ private val sourceModule = module {
                 mapper = get<MoeResponseMapper>()
             ),
             clearDataHelper = get(),
-            dispatchers = get()
+            dispatcher = get()
         )
     }
 }

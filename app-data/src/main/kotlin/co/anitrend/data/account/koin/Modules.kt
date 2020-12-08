@@ -18,12 +18,12 @@
 package co.anitrend.data.account.koin
 
 import co.anitrend.data.account.repository.AccountRepositoryImpl
-import co.anitrend.data.account.usecase.AccountUseCaseContract
 import co.anitrend.data.account.usecase.AccountUseCaseImpl
+import co.anitrend.data.account.AccountInteractor
 import org.koin.dsl.module
 
 private val useCaseModule = module {
-    factory<AccountUseCaseContract> {
+    factory<AccountInteractor> {
         AccountUseCaseImpl(
             repository = get()
         )

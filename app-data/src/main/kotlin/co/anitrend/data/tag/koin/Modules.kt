@@ -21,12 +21,15 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.tag.mapper.MediaTagResponseMapper
 import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.data.tag.source.MediaTagSourceImpl
 import co.anitrend.data.tag.source.contract.MediaTagSource
-import co.anitrend.data.tag.usecase.MediaTagUseCaseContract
 import co.anitrend.data.tag.usecase.MediaTagUseCaseImpl
+import co.anitrend.data.tag.MediaTagInteractor
+import co.anitrend.data.tag.cache.TagCache
+import co.anitrend.data.tag.converter.TagEntityConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -37,22 +40,38 @@ private val sourceModule = module {
             controller = graphQLController(
                 mapper = get<MediaTagResponseMapper>()
             ),
+            cachePolicy = get<TagCache>(),
             clearDataHelper = get(),
-            dispatchers = get()
+            converter = get(),
+            dispatcher = get()
         )
+    }
+}
+
+private val cacheModule = module {
+    factory {
+        TagCache(
+            localSource = db().cacheDao()
+        )
+    }
+}
+
+private val converterModule = module {
+    factory {
+        TagEntityConverter()
     }
 }
 
 private val mapperModule = module {
     factory {
         MediaTagResponseMapper(
-            localSource = get()
+            localSource = db().mediaTagDao()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<MediaTagUseCaseContract> {
+    factory<MediaTagInteractor> {
         MediaTagUseCaseImpl(
             repository = get()
         )
@@ -69,6 +88,8 @@ private val repositoryModule = module {
 
 internal val mediaTagModules = listOf(
     sourceModule,
+    cacheModule,
+    converterModule,
     mapperModule,
     useCaseModule,
     repositoryModule

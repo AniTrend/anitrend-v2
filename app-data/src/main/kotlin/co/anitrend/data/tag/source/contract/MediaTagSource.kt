@@ -19,27 +19,38 @@ package co.anitrend.data.tag.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.empty
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.tag.cache.TagCache
 import co.anitrend.domain.tag.entity.Tag
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaTagSource(
-    supportDispatchers: SupportDispatchers
-) : SupportCoreDataSource(supportDispatchers) {
+    private val cachePolicy: ICacheStorePolicy,
+    dispatcher: ISupportDispatcher
+) : SupportCoreDataSource(dispatcher) {
 
-    protected abstract val observable: Flow<List<Tag>>
+    protected abstract fun observable(): Flow<List<Tag>>
 
-    protected abstract suspend fun getTags(callback: RequestCallback)
+    protected abstract suspend fun getTags(callback: RequestCallback): Boolean
 
     internal operator fun invoke(): Flow<List<Tag>> {
-        launch(coroutineContext, CoroutineStart.LAZY) {
+        launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
-            ) { getTags(it) }
+                Request.Default(String.empty(), Request.Type.INITIAL)
+            ) {
+                if (cachePolicy.shouldRefresh(TagCache.ID)) {
+                    val success = getTags(it)
+                    if (success)
+                        cachePolicy.updateLastRequest(TagCache.ID)
+                }
+            }
         }
-        return observable
+        return observable()
     }
 }

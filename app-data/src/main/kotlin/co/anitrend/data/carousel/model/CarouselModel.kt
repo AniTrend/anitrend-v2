@@ -23,19 +23,24 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class CarouselAnimeModel(
-    @SerialName("AiringSoon") val airingSoon: AiringSchedulePageModel.Page?,
-    @SerialName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
-    @SerialName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
-    @SerialName("PopularThisSeason") val popularThisSeason: MediaPageModel.Page?,
-    @SerialName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?,
-    @SerialName("AnticipatedNexSeason") val anticipatedNexSeason: MediaPageModel.Page?
-)
+internal sealed class CarouselModel {
 
-@Serializable
-internal data class CarouselMangaModel(
-    @SerialName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
-    @SerialName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
-    @SerialName("PopularManhwa") val popularManhwa: MediaPageModel.Page?,
-    @SerialName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?,
-)
+    @Serializable
+    internal data class Core(
+        @SerialName("AllTimePopular") val allTimePopular: MediaPageModel.Page?,
+        @SerialName("TrendingRightNow") val trendingRightNow: MediaPageModel.Page?,
+        @SerialName("RecentlyAdded") val recentlyAdded: MediaPageModel.Page?
+    ) : CarouselModel()
+
+    @Serializable
+    internal data class Anime(
+        @SerialName("AiringSoon") val airingSoon: AiringSchedulePageModel.Page?,
+        @SerialName("PopularThisSeason") val popularThisSeason: MediaPageModel.Page?,
+        @SerialName("AnticipatedNexSeason") val anticipatedNexSeason: MediaPageModel.Page?
+    ) : CarouselModel()
+
+    @Serializable
+    internal data class Manga(
+        @SerialName("PopularManhwa") val popularManhwa: MediaPageModel.Page?
+    ) : CarouselModel()
+}

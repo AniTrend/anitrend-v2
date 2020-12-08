@@ -19,14 +19,15 @@ package co.anitrend.data.media.source.paged.network
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
+import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
-import co.anitrend.data.media.source.paged.network.contract.MediaPagedNetworkController
+import co.anitrend.data.media.MediaPagedNetworkController
+import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.paged.network.contract.MediaPagedNetworkSource
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -35,12 +36,13 @@ internal class MediaPagedNetworkSourceImpl(
     private val remoteSource: MediaRemoteSource,
     private val controller: MediaPagedNetworkController,
     private val sortOrderSettings: ISortOrderSettings,
-    dispatchers: SupportDispatchers
-) : MediaPagedNetworkSource(dispatchers) {
+    initialKey: IGraphPayload,
+    dispatcher: ISupportDispatcher
+) : MediaPagedNetworkSource(dispatcher, initialKey) {
 
     override suspend fun getMedia(
-        callback: RequestCallback,
-        pageInfo: IRequestHelper.RequestType
+        query: IGraphPayload,
+        callback: RequestCallback
     ): List<Media>? {
         val deferred = async {
             val builder = query.toQueryContainerBuilder(

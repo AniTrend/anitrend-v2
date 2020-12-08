@@ -85,5 +85,4 @@ internal interface IMediaModel : Identity {
     val isFavourite: Boolean
     val updatedAt: Long?
     val nextAiringEpisode: IAiringScheduleModel?
-    val mediaListEntry: IMediaListModel?
 }

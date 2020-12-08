@@ -17,40 +17,48 @@
 
 package co.anitrend.data.media.source.paged.combined
 
-import androidx.lifecycle.liveData
-import androidx.paging.toLiveData
+import androidx.paging.PagedList
+import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.cache.datasource.CacheLocalSource
+import co.anitrend.data.carousel.source.contract.CarouselSource
+import co.anitrend.data.media.MediaPagedCombinedController
 import co.anitrend.data.media.converter.MediaEntityConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.media.source.paged.combined.contract.MediaPagedCombinedController
 import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 
 internal class MediaPagedSourceImpl(
     private val remoteSource: MediaRemoteSource,
     private val localSource: MediaLocalSource,
+    private val carouselSource: CarouselSource,
     private val clearDataHelper: IClearDataHelper,
     private val controller: MediaPagedCombinedController,
     private val sortOrderSettings: ISortOrderSettings,
-    converter: MediaEntityConverter = MediaEntityConverter(),
-    dispatchers: SupportDispatchers
-) : MediaPagedSource(dispatchers) {
+    private val converter: MediaEntityConverter,
+    dispatcher: ISupportDispatcher
+) : MediaPagedSource(dispatcher) {
 
-    override val observable = liveData {
-        val result =  localSource.popularityDescFactory().map { converter.convertFrom(it) }
-        emitSource(
-            result.toLiveData(
-                config = PAGING_CONFIGURATION,
-                boundaryCallback = this@MediaPagedSourceImpl
-            )
-        )
+    override fun observable(): Flow<PagedList<Media>> {
+        val dataSourceFactory = localSource
+            .popularityDescFactory()
+            .map { converter.convertFrom(it) }
+
+        return FlowPagedListBuilder(
+            dataSourceFactory,
+            PAGING_CONFIGURATION,
+            null,
+            this
+        ).buildFlow()
     }
 
     override suspend fun getMedia(requestCallback: RequestCallback) {
@@ -71,6 +79,8 @@ internal class MediaPagedSourceImpl(
      * @param context Dispatcher context to run in
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
+        // Since carousel entities are media entities as well
+        carouselSource.clearDataSource(context)
         clearDataHelper(context) {
             localSource.clear()
         }

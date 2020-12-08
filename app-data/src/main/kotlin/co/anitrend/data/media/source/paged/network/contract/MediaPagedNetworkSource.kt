@@ -18,9 +18,10 @@
 package co.anitrend.data.media.source.paged.network.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.live.SupportPagingLiveDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.Media
@@ -28,16 +29,13 @@ import co.anitrend.domain.media.enums.MediaSort
 import kotlinx.coroutines.launch
 
 internal abstract class MediaPagedNetworkSource(
-    dispatchers: SupportDispatchers
-) : SupportPagingLiveDataSource<IGraphPayload, Media>(dispatchers) {
-
-    protected val query: MediaQuery = MediaQuery(
-        sort = listOf(MediaSort.POPULARITY)
-    )
+    dispatcher: ISupportDispatcher,
+    private val initialKey: IGraphPayload
+) : SupportPagingLiveDataSource<IGraphPayload, Media>(dispatcher) {
 
     protected abstract suspend fun getMedia(
-        callback: RequestCallback,
-        pageInfo: IRequestHelper.RequestType
+        query: IGraphPayload,
+        callback: RequestCallback
     ) : List<Media>?
 
     /**
@@ -61,13 +59,15 @@ internal abstract class MediaPagedNetworkSource(
     ) {
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
+                Request.Default("media_paged_network_initial", Request.Type.INITIAL)
             ) {
-                val result = getMedia(it, IRequestHelper.RequestType.INITIAL)
-                callback.onResult(result.orEmpty(), query, query)
+                val result = getMedia(initialKey, it)
+                callback.onResult(result.orEmpty(), null, initialKey)
             }
         }
     }
+
+
 
     /**
      * Append page with the key specified by [LoadParams.key].
@@ -90,12 +90,12 @@ internal abstract class MediaPagedNetworkSource(
         params: LoadParams<IGraphPayload>,
         callback: LoadCallback<IGraphPayload, Media>
     ) {
+        supportPagingHelper.onPageNext()
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.AFTER
+                Request.Default("media_paged_network_after", Request.Type.AFTER)
             ) {
-                supportPagingHelper.onPageNext()
-                val result = getMedia(it, IRequestHelper.RequestType.AFTER)
+                val result = getMedia(params.key, it)
                 callback.onResult(result.orEmpty(), params.key)
             }
         }
@@ -122,13 +122,14 @@ internal abstract class MediaPagedNetworkSource(
         params: LoadParams<IGraphPayload>,
         callback: LoadCallback<IGraphPayload, Media>
     ) {
+        if (!supportPagingHelper.isFirstPage())
+            supportPagingHelper.onPagePrevious()
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.BEFORE
+                Request.Default("media_paged_network_before", Request.Type.BEFORE)
             ) {
                 if (!supportPagingHelper.isFirstPage()) {
-                    supportPagingHelper.onPagePrevious()
-                    val result = getMedia(it, IRequestHelper.RequestType.BEFORE)
+                    val result = getMedia(params.key, it)
                     callback.onResult(result.orEmpty(), params.key)
                 }
             }

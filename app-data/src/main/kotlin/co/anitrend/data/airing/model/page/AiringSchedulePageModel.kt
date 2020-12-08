@@ -24,11 +24,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class AiringSchedulePageModel(
-    @SerialName("Page") val page: Page
+    @SerialName("Page") val page: Page = Page()
 ) {
     @Serializable
     data class Page(
-        @SerialName("pageInfo") val pageInfo: PageInfo,
-        @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended>
+        @SerialName("pageInfo") val pageInfo: PageInfo? = null,
+        @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended> = emptyList()
     )
 }

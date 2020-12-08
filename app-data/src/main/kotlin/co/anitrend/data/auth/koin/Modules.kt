@@ -21,12 +21,15 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.auth.repository.AuthRepositoryImpl
 import co.anitrend.data.auth.source.AuthSourceImpl
 import co.anitrend.data.auth.source.contract.AuthSource
-import co.anitrend.data.auth.usecase.AuthUseCaseContract
 import co.anitrend.data.auth.usecase.AuthUseCaseImpl
+import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
+import co.anitrend.data.user.converter.UserMediaOptionModelConverter
+import co.anitrend.data.user.converter.UserModelConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -38,9 +41,11 @@ private val sourceModule = module {
             controller = graphQLController(
                 mapper = get<AuthMapper>()
             ),
+            userSettings = get(),
             settings = get(),
+            converter = get(),
             userLocalSource = db().userDao(),
-            dispatchers = get()
+            dispatcher = get()
         )
     }
 }
@@ -48,13 +53,17 @@ private val sourceModule = module {
 private val mapperModule = module {
     factory {
         AuthMapper(
-            userLocalSource = db().userDao()
+            settings = get(),
+            userLocalSource = db().userDao(),
+            converter = UserModelConverter(),
+            generalOptionConverter = UserGeneralOptionModelConverter(),
+            mediaOptionConverter = UserMediaOptionModelConverter(),
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<AuthUseCaseContract> {
+    factory<AuthUserInteractor> {
         AuthUseCaseImpl(
             repository = get()
         )

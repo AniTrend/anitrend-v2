@@ -24,6 +24,7 @@ import co.anitrend.data.arch.extension.toFuzzyDateInt
 import co.anitrend.data.arch.extension.toFuzzyDateModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -44,6 +45,80 @@ internal class MediaConverter(
 ) : SupportConverter<MediaModel, Media>() {
     private companion object : ISupportTransformer<MediaModel, Media> {
         override fun transform(source: MediaModel) = when (source) {
+            is MediaModel.Media -> Media.Core(
+                sourceId = MediaSourceId.empty().copy(
+                    mal = source.idMal,
+                    anilist = source.id
+                ),
+                countryCode = source.countryOfOrigin,
+                description = source.description,
+                favouritesCount = source.id,
+                genres = source.genres.map {
+                    Genre(it)
+                },
+                twitterTag = null,
+                isRecommendationBlocked = false,
+                isLicensed = source.isLicensed,
+                isLocked = source.isLocked,
+                siteUrl = source.siteUrl,
+                source = source.source,
+                synonyms = source.synonyms,
+                tags = source.tags.map {
+                    Tag(
+                        id = it.id,
+                        name = it.name,
+                        description = it.description,
+                        category = it.category,
+                        rank = it.rank ?: 0,
+                        isGeneralSpoiler = it.isGeneralSpoiler ?: false,
+                        isMediaSpoiler = it.isMediaSpoiler ?: false,
+                        isAdult = it.isAdult ?: false,
+                    )
+                },
+                format = source.format,
+                season = source.season,
+                status = source.status,
+                meanScore = source.meanScore ?: 0,
+                averageScore = source.averageScore ?: 0,
+                startDate = source.startDate.asFuzzyDate(),
+                endDate = source.endDate.asFuzzyDate(),
+                title = MediaTitle(
+                    romaji = source.title?.romaji,
+                    english = source.title?.english,
+                    native = source.title?.native,
+                    userPreferred = source.title?.userPreferred
+                ),
+                image = MediaImage(
+                    color = source.coverImage?.color,
+                    extraLarge = source.coverImage?.extraLarge,
+                    large = source.coverImage?.large,
+                    medium = source.coverImage?.medium,
+                    banner = source.bannerImage,
+                ),
+                category = when (source.type) {
+                    MediaType.ANIME -> Media.Category.Anime(
+                        source.episodes ?: 0,
+                        source.duration ?: 0,
+                        source.nextAiringEpisode?.let {
+                            AiringSchedule(
+                                airingAt = it.airingAt,
+                                episode = it.episode,
+                                mediaId = it.mediaId,
+                                timeUntilAiring = it.timeUntilAiring,
+                                id = it.id
+                            )
+                        }
+                    )
+                    else -> Media.Category.Manga(
+                        source.chapters ?: 0,
+                        source.volumes ?: 0
+                    )
+                },
+                isAdult = source.isAdult,
+                isFavourite = source.isFavourite,
+                id = source.id,
+                mediaList = null
+            )
             is MediaModel.Core -> Media.Core(
                 sourceId = MediaSourceId.empty().copy(
                     mal = source.idMal,
@@ -77,7 +152,6 @@ internal class MediaConverter(
                 format = source.format,
                 season = source.season,
                 status = source.status,
-                scoreFormat = ScoreFormat.POINT_10_DECIMAL,// TODO: use user object to retrieve score format
                 meanScore = source.meanScore ?: 0,
                 averageScore = source.averageScore ?: 0,
                 startDate = source.startDate.asFuzzyDate(),
@@ -178,7 +252,6 @@ internal class MediaConverter(
                 format = source.format,
                 season = source.season,
                 status = source.status,
-                scoreFormat = ScoreFormat.POINT_10_DECIMAL,// TODO: use user object to retrieve score format
                 meanScore = source.meanScore ?: 0,
                 averageScore = source.averageScore ?: 0,
                 startDate = source.startDate.asFuzzyDate(),
@@ -402,7 +475,6 @@ internal class MediaEntityConverter(
                 format = source.format,
                 season = source.season,
                 status = source.status,
-                scoreFormat = ScoreFormat.POINT_10_DECIMAL,// TODO: use user object to retrieve score format
                 meanScore = source.meanScore ?: 0,
                 averageScore = source.averageScore ?: 0,
                 startDate = source.startDate.toFuzzyDateModel().asFuzzyDate(),

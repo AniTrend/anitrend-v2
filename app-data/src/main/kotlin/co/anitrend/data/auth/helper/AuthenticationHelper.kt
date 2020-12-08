@@ -39,9 +39,9 @@ internal class AuthenticationHelper(
      */
     fun onInvalidToken() {
         with (settings) {
-            localSource.clearByUserId(authenticatedUserId)
-            authenticatedUserId = INVALID_USER_ID
-            isAuthenticated = false
+            localSource.clearByUserId(authenticatedUserId.value)
+            authenticatedUserId.value = INVALID_USER_ID
+            isAuthenticated.value = false
         }
     }
 
@@ -50,11 +50,11 @@ internal class AuthenticationHelper(
      * on demand
      */
     val isAuthenticated: Boolean
-        get() = settings.isAuthenticated
+        get() = settings.isAuthenticated.value
 
     operator fun invoke(requestBuilder: Request.Builder) {
         val entity = localSource.byUserId(
-            settings.authenticatedUserId
+            settings.authenticatedUserId.value
         )
         if (entity != null)
             requestBuilder.addHeader(AUTHORIZATION, entity.accessToken)

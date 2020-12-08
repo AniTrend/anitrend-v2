@@ -18,14 +18,14 @@
 package co.anitrend.data.genre.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.genre.MediaGenreInteractor
 import co.anitrend.data.genre.repository.MediaGenreRepository
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.genre.interactor.MediaGenreUseCase
 
 internal class MediaGenreUseCaseImpl(
     repository: MediaGenreRepository
-) : MediaGenreUseCaseContract(repository) {
+) : MediaGenreInteractor(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop
@@ -35,5 +35,3 @@ internal class MediaGenreUseCaseImpl(
         repository.onCleared()
     }
 }
-
-typealias MediaGenreUseCaseContract = MediaGenreUseCase<DataState<List<Genre>>>

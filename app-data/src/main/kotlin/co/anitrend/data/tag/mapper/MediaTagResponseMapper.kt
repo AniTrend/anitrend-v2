@@ -25,12 +25,12 @@ import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.entity.TagEntity
-import co.anitrend.data.tag.model.remote.MediaTagCollection
+import co.anitrend.data.tag.model.remote.TagContainerModel
 
 internal class MediaTagResponseMapper(
     private val localSource: MediaTagLocalSource,
     private val converter: TagModelConverter = TagModelConverter()
-) : DefaultMapper<MediaTagCollection, List<TagEntity>>() {
+) : DefaultMapper<TagContainerModel, List<TagEntity>>() {
 
     override suspend fun persistChanges(data: List<TagEntity>): OutCome<Nothing?> {
         return runCatching {
@@ -58,7 +58,7 @@ internal class MediaTagResponseMapper(
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: MediaTagCollection
+        source: TagContainerModel
     ) = converter.convertFrom(
         source.mediaTagCollection
     )

@@ -33,7 +33,7 @@ import kotlinx.serialization.Serializable
 internal data class MediaListCollectionModel(
     @SerialName("lists") val lists: List<MediaListGroup>,
     @SerialName("hasNextChunk") val hasNextChunk: Boolean,
-    @SerialName("user") val user: UserModel?
+    @SerialName("user") val user: UserModel.Core?
 ) {
 
     /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)

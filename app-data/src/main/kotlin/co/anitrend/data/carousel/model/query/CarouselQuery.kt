@@ -36,6 +36,7 @@ package co.anitrend.data.carousel.model.query
 
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import kotlinx.android.parcel.Parcelize
 
@@ -48,6 +49,7 @@ data class CarouselQuery(
     val isAdult: Boolean? = false,
     val currentTime: Long,
     val scoreFormat: ScoreFormat? = null,
+    val type: MediaType? = null,
     val pageSize: Int
 ) : IGraphPayload {
 
@@ -62,6 +64,7 @@ data class CarouselQuery(
         "isAdult" to isAdult,
         "currentTime" to currentTime,
         "scoreFormat" to scoreFormat,
-        "perPage" to pageSize
+        "perPage" to pageSize,
+        "type" to type
     )
 }

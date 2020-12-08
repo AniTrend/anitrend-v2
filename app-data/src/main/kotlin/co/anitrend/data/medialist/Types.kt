@@ -15,10 +15,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.source.contract
+package co.anitrend.data.medialist
 
-import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.model.remote.GenreCollection
-
-internal typealias MediaGenreController = GraphQLController<GenreCollection, List<GenreEntity>>

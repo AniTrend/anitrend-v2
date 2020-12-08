@@ -18,14 +18,12 @@
 package co.anitrend.data.carousel.usecase
 
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.carousel.repository.CarouselRepositoryImpl
-import co.anitrend.domain.carousel.entity.MediaCarousel
-import co.anitrend.domain.carousel.interactor.MediaCarouselUseCase
+import co.anitrend.data.carousel.CarouselInteractor
+import co.anitrend.data.carousel.CarouselRepository
 
 internal class CarouselUseCaseImpl(
-    repository: CarouselRepositoryImpl
-) : CarouselUseCaseContract(repository) {
+    repository: CarouselRepository
+) : CarouselInteractor(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop
@@ -35,5 +33,3 @@ internal class CarouselUseCaseImpl(
         repository.onCleared()
     }
 }
-
-typealias CarouselUseCaseContract = MediaCarouselUseCase<DataState<List<MediaCarousel>?>>

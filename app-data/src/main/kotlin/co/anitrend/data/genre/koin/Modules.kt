@@ -21,11 +21,14 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.genre.MediaGenreInteractor
+import co.anitrend.data.genre.cache.GenreCache
+import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
 import co.anitrend.data.genre.repository.MediaGenreRepository
 import co.anitrend.data.genre.source.MediaGenreSourceImpl
 import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.data.genre.usecase.MediaGenreUseCaseContract
 import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
 import org.koin.dsl.module
 
@@ -37,9 +40,25 @@ private val sourceModule = module {
             controller = graphQLController(
                 mapper = get<MediaGenreResponseMapper>()
             ),
+            cachePolicy = get<GenreCache>(),
             clearDataHelper = get(),
-            dispatchers = get()
+            converter = get(),
+            dispatcher = get()
         )
+    }
+}
+
+private val cacheModule = module {
+    factory {
+        GenreCache(
+            localSource = db().cacheDao()
+        )
+    }
+}
+
+private val converterModule = module {
+    factory {
+        GenreEntityConverter()
     }
 }
 
@@ -52,7 +71,7 @@ private val mapperModule = module {
 }
 
 private val useCaseModule = module {
-    factory<MediaGenreUseCaseContract> {
+    factory<MediaGenreInteractor> {
         MediaGenreUseCaseImpl(
             repository = get()
         )
@@ -68,6 +87,8 @@ private val repositoryModule = module {
 }
 
 internal val mediaGenreModules = listOf(
+    converterModule,
+    cacheModule,
     sourceModule,
     mapperModule,
     useCaseModule,

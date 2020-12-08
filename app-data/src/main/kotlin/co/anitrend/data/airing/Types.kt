@@ -15,12 +15,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.carousel.source.contract
+package co.anitrend.data.airing
 
-import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.carousel.model.CarouselAnimeModel
-import co.anitrend.data.carousel.model.CarouselMangaModel
-import co.anitrend.data.media.entity.MediaEntity
-
-internal typealias AnimeController = GraphQLController<CarouselAnimeModel, List<MediaEntity>>
-internal typealias MangaController = GraphQLController<CarouselMangaModel, List<MediaEntity>>

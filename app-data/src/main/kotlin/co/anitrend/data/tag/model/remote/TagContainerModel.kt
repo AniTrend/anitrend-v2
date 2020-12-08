@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2019  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.source.paged.combined.contract
+package co.anitrend.data.tag.model.remote
 
-import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.model.page.MediaPageModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-internal typealias MediaPagedCombinedController = GraphQLController<MediaPageModel, List<MediaEntity>>
+@Serializable
+internal data class TagContainerModel(
+    @SerialName("MediaTagCollection") val mediaTagCollection: List<TagModel.Core>
+)

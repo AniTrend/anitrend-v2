@@ -17,8 +17,8 @@
 
 package co.anitrend.data.media.repository
 
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -39,13 +39,15 @@ internal class MediaRepositoryImpl(
 
     override fun getMediaPagedByNetwork(
         query: IGraphPayload
-    ) = sourceFactory.create() create
-            LivePagedListBuilder(
-                sourceFactory,
-                PAGING_CONFIGURATION
-            ).build()
+    ): DataState<PagedList<Media>> {
+        sourceFactory.initialKey = query
+        val source = sourceFactory.create()
 
-
+        return source create FlowPagedListBuilder(
+            sourceFactory,
+            PAGING_CONFIGURATION
+        ).buildFlow()
+    }
 
     /**
      * Deals with cancellation of any pending or on going operations that the repository
