@@ -62,7 +62,7 @@ object Libraries {
         }
 
         object Browser {
-            private const val version = "1.3.0-beta01"
+            private const val version = "1.3.0"
             const val browser = "androidx.browser:browser:$version"
         }
 
