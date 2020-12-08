@@ -25,6 +25,7 @@ import co.anitrend.data.account.koin.accountModules
 import co.anitrend.data.airing.koin.airingModules
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.api.converter.AniTrendConverterFactory
+import co.anitrend.data.api.converter.request.AniRequestConverter
 import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
@@ -40,10 +41,12 @@ import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.moe.koin.sourceModules
 import co.anitrend.data.tag.koin.mediaTagModules
+import co.anitrend.data.user.koin.userModules
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.github.wax911.library.annotation.processor.GraphProcessor
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.annotation.processor.plugin.AssetManagerDiscoveryPlugin
@@ -57,7 +60,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import org.simpleframework.xml.convert.AnnotationStrategy
+import org.simpleframework.xml.core.Persister
 import retrofit2.Retrofit
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
@@ -110,8 +116,13 @@ private val retrofitModule = module {
     factory {
         AniTrendConverterFactory(
             processor = get(),
-            json = get(),
-            gson = get()
+            gson = get(),
+            jsonFactory = get<Json>().asConverterFactory(
+                AniRequestConverter.MIME_TYPE
+            ),
+            xmlFactory = SimpleXmlConverterFactory.createNonStrict(
+                Persister(AnnotationStrategy())
+            )
         )
     }
 }
@@ -175,4 +186,4 @@ val dataModules = listOf(
     interceptorModules
 ) + airingModules + mediaTagModules + mediaGenreModules +
         sourceModules + mediaModules + carouselModules +
-        authModules + accountModules
+        authModules + accountModules + userModules
