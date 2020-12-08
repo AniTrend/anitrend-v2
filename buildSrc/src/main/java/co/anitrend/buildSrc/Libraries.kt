@@ -396,7 +396,7 @@ object Libraries {
     }
 
     object Dropbox {
-        private const val version = "4.0.0-beta01"
+        private const val version = "4.0.0"
         const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
