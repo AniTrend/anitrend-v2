@@ -23,24 +23,31 @@ import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.media.usecase.MediaUseCaseContract
+import co.anitrend.data.media.MediaUseInteractor
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.data.media.model.query.MediaQuery
+import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 
 data class DiscoverState(
-    private val useCase: MediaUseCaseContract
+    private val useCase: MediaUseInteractor
 ) : ISupportViewModelState<PagedList<Media>> {
+
+    var context by Delegates.notNull<CoroutineContext>()
 
     private val useCaseResult = MutableLiveData<DataState<PagedList<Media>>>()
 
-    override val model =
-        Transformations.switchMap(useCaseResult) { it.model }
+    override val model = Transformations.switchMap(useCaseResult) {
+        it.model.asLiveData(context)
+    }
 
-    override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData() }
+    override val networkState = Transformations.switchMap(useCaseResult) {
+        it.networkState.asLiveData(context)
+    }
 
-    override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
+    override val refreshState = Transformations.switchMap(useCaseResult) {
+        it.refreshState.asLiveData(context)
+    }
 
     operator fun invoke(parameter: MediaQuery, onNetwork: Boolean = true) {
         val result = if (onNetwork)

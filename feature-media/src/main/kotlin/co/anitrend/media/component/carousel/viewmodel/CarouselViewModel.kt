@@ -18,12 +18,16 @@
 package co.anitrend.media.component.carousel.viewmodel
 
 import androidx.lifecycle.ViewModel
-import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
+import androidx.lifecycle.viewModelScope
 import co.anitrend.media.component.carousel.viewmodel.state.CarouselState
 
 class CarouselViewModel(
     val state: CarouselState
 ) : ViewModel() {
+
+    init {
+        state.context = viewModelScope.coroutineContext
+    }
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.

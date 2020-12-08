@@ -35,7 +35,6 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlin.contracts.contract
 
 internal class MediaAiringScheduleWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -71,16 +70,16 @@ internal class MediaAiringScheduleWidget @JvmOverloads constructor(
      */
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (isInEditMode) {
-            val builder = SpannableStringBuilder().color(context.getCompatColor(R.color.orange_A400)) {
-                append(
-                    context.getString(
-                        R.string.label_episode_airing_in_time,
-                        10,
-                        "2 days from now"
+            val builder = SpannableStringBuilder()
+                .color(context.getCompatColor(R.color.orange_A400)) {
+                    append(
+                        context.getString(
+                            R.string.label_episode_airing_in_time,
+                            10,
+                            "2 days from now"
+                        )
                     )
-                )
-            }
-
+                }
             text = builder
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

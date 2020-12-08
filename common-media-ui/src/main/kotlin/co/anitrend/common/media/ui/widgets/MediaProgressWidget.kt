@@ -19,44 +19,23 @@ package co.anitrend.common.media.ui.widgets
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaProgressWidgetBinding
 import co.anitrend.core.android.views.FrameLayoutWithBinding
+import co.anitrend.data.arch.AniTrendExperimentalFeature
 
+@OptIn(AniTrendExperimentalFeature::class)
 internal class MediaProgressWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), CustomView {
+) : FrameLayoutWithBinding<MediaProgressWidgetBinding>(
+    context, attrs, defStyleAttr
+), CustomView {
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    /**
-     * Callable in view constructors to perform view inflation and attribute initialization
-     *
-     * @param context view context
-     * @param attrs view attributes if applicable
-     * @param styleAttr style attribute if applicable
-     */
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        context.getLayoutInflater().inflate(R.layout.media_progress_widget, this, true)
-    }
-
-    /**
-     * Should be called on a view's detach from window to unbind or release object references
-     * and cancel all running coroutine jobs if the current view
-     *
-     * Consider calling this in [android.view.View.onDetachedFromWindow]
-     */
-    override fun onViewRecycled() {
-        super.onViewRecycled()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        onViewRecycled()
-    }
+    override fun createBinding() =
+        MediaProgressWidgetBinding.inflate(context.getLayoutInflater(), this, true)
 }

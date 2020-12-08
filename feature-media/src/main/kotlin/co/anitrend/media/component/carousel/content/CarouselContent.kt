@@ -22,13 +22,13 @@ import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.extension.util.attribute.SeasonType
+import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.domain.carousel.entity.MediaCarousel
-import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.media.R
 import co.anitrend.media.component.carousel.viewmodel.CarouselViewModel
@@ -36,7 +36,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.threeten.bp.Instant
 
 class CarouselContent(
-    private val dateHelper: SupportDateHelper,
+    private val dateHelper: ISupportDateHelper,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: ISupportAdapter<MediaCarousel>,
     override val defaultSpanSize: Int = R.integer.single_list_size
@@ -64,6 +64,7 @@ class CarouselContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
+        dateHelper as SupportDateHelper
         val currentYear = dateHelper.getCurrentYear()
         val currentSeason = when (dateHelper.currentSeason) {
             SeasonType.WINTER -> MediaSeason.WINTER
@@ -87,7 +88,7 @@ class CarouselContent(
                 SeasonType.FALL -> MediaSeason.WINTER
             },
             currentTime = Instant.now().epochSecond,
-            pageSize = resources.getInteger(R.integer.grid_list_x3).plus(9)
+            pageSize = resources.getInteger(R.integer.grid_list_x3).times(4)
         )
         viewModel.state(mediaCarouselQuery)
     }

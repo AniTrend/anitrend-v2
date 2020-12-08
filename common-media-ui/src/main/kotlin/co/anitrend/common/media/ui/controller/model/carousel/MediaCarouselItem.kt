@@ -137,8 +137,8 @@ internal class MediaCarouselItem(
                 MediaQuery(
                     type = carousel.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    season = carousel.mediaItems.first().season,
-                    seasonYear = carousel.mediaItems.first().startDate.year,
+                    season = carousel.mediaItems.firstOrNull()?.season,
+                    seasonYear = carousel.mediaItems.firstOrNull()?.startDate?.year,
                 )
             }
             MediaCarousel.CarouselType.RECENTLY_ADDED -> {
@@ -160,8 +160,8 @@ internal class MediaCarouselItem(
                 MediaQuery(
                     type = carousel.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    season = carousel.mediaItems.first().season,
-                    seasonYear = carousel.mediaItems.first().startDate.year,
+                    season = carousel.mediaItems.firstOrNull()?.season,
+                    seasonYear = carousel.mediaItems.firstOrNull()?.startDate?.year,
                 )
             }
             MediaCarousel.CarouselType.POPULAR_MANHWA -> {
@@ -170,7 +170,7 @@ internal class MediaCarouselItem(
                 MediaQuery(
                     type = carousel.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    countryOfOrigin = carousel.mediaItems.first().countryCode
+                    countryOfOrigin = carousel.mediaItems.firstOrNull()?.countryCode
                 )
             }
         }

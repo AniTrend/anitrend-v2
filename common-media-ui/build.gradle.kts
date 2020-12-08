@@ -22,5 +22,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Libraries.AniTrend.Task.media))
+
 }

@@ -23,23 +23,27 @@ import androidx.lifecycle.asLiveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.carousel.model.query.CarouselQuery
-import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
+import co.anitrend.data.carousel.CarouselInteractor
 import co.anitrend.domain.carousel.entity.MediaCarousel
+import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 
 data class CarouselState(
-    private val useCase: CarouselUseCaseContract
+    private val useCase: CarouselInteractor
 ) : ISupportViewModelState<List<MediaCarousel>?> {
+
+    var context by Delegates.notNull<CoroutineContext>()
 
     private val useCaseResult = MutableLiveData<DataState<List<MediaCarousel>?>>()
 
     override val model =
-        Transformations.switchMap(useCaseResult) { it.model }
+        Transformations.switchMap(useCaseResult) { it.model.asLiveData(context) }
 
     override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData() }
+        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }
 
     override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
+        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData(context) }
 
     operator fun invoke(parameter: CarouselQuery) {
         val result = useCase.getMediaCarousel(parameter)

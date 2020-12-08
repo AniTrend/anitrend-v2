@@ -19,59 +19,67 @@ package co.anitrend.common.media.ui.widgets
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
 import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
+import co.anitrend.common.media.ui.databinding.MediaRatingWidgetBinding
 import co.anitrend.core.android.format
+import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.views.FrameLayoutWithBinding
+import co.anitrend.data.arch.AniTrendExperimentalFeature
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.extension.isValid
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
-import kotlinx.android.synthetic.main.media_rating_widget.view.*
 
+@OptIn(AniTrendExperimentalFeature::class)
 internal class MediaRatingWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), CustomView {
+) : FrameLayoutWithBinding<MediaRatingWidgetBinding>(
+    context, attrs, defStyleAttr
+), CustomView {
 
     init { onInit(context, attrs, defStyleAttr) }
 
     private fun setFavouriteStatus(isFavourite: Boolean) {
         if (isFavourite)
-            mediaFavouriteIndicator?.visible()
+            binding?.mediaFavouriteIndicator?.visible()
         else
-            mediaFavouriteIndicator?.gone()
+            binding?.mediaFavouriteIndicator?.gone()
     }
 
     private fun IMedia.setMediaRatingDynamically() {
+        val settings = koinOf<IUserSettings>()
+        val scoreFormat: ScoreFormat = settings.scoreFormat.value
         val mediaScoreDefault = (meanScore.toFloat() * 5 / 100f).toString()
         when (scoreFormat) {
             ScoreFormat.POINT_100 -> {
                 if (mediaList.isValid())
-                   mediaAverageScore?.text = mediaList.score.toInt().toString()
+                   binding?.mediaAverageScore?.text = mediaList!!.score.toInt().toString()
                 else
-                   mediaAverageScore?.text = mediaScoreDefault
+                   binding?.mediaAverageScore?.text = mediaScoreDefault
             }
             ScoreFormat.POINT_10 -> {
                 if (mediaList.isValid())
-                   mediaAverageScore?.text = mediaList.score.toInt().toString()
+                   binding?.mediaAverageScore?.text = mediaList!!.score.toInt().toString()
                 else
-                   mediaAverageScore?.text = (meanScore / 10f).toString()
+                   binding?.mediaAverageScore?.text = (meanScore / 10f).toString()
             }
             ScoreFormat.POINT_5 -> {
                 if (mediaList.isValid())
-                   mediaAverageScore?.text = mediaList.score.toInt().toString()
+                   binding?.mediaAverageScore?.text = mediaList!!.score.toInt().toString()
                 else
-                   mediaAverageScore?.text = mediaScoreDefault
+                   binding?.mediaAverageScore?.text = mediaScoreDefault
             }
             ScoreFormat.POINT_10_DECIMAL -> {
                 if (mediaList.isValid())
-                   mediaAverageScore?.text = mediaList.score.format(1)
+                   binding?.mediaAverageScore?.text = mediaList!!.score.format(1)
                 else {
                     val scoreFormatted = (meanScore / 10f)
-                   mediaAverageScore?.text = scoreFormatted.format(1)
+                   binding?.mediaAverageScore?.text = scoreFormatted.format(1)
                 }
             }
             ScoreFormat.POINT_3 -> {
@@ -80,15 +88,15 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                 val faceHappy = context.getCompatDrawable(R.drawable.ic_face_happy)
                 val faceSad = context.getCompatDrawable(R.drawable.ic_face_sad)
                 if (mediaList.isValid())
-                   mediaAverageScore?.setCompoundDrawablesWithIntrinsicBounds(
-                        when (mediaList.score) {
+                   binding?.mediaAverageScore?.setCompoundDrawablesWithIntrinsicBounds(
+                        when (mediaList!!.score) {
                         1f -> faceSad
                         2f -> faceNeutral
                         3f -> faceHappy
                         else -> faceDefault
                     }, null, null, null)
                 else {
-                   mediaAverageScore?.setCompoundDrawablesWithIntrinsicBounds(
+                   binding?.mediaAverageScore?.setCompoundDrawablesWithIntrinsicBounds(
                         when(averageScore) {
                             in 1..33 -> faceSad
                             in 34..66 -> faceNeutral
@@ -97,7 +105,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                         }, null, null, null)
                 }
             }
-            else -> mediaAverageScore?.text = averageScore.toString()
+            else -> binding?.mediaAverageScore?.text = averageScore.toString()
         }
     }
 
@@ -107,36 +115,36 @@ internal class MediaRatingWidget @JvmOverloads constructor(
 
     private fun setListStatus(media: IMedia, isMiniMode: Boolean) {
         if (!media.mediaList.isValid()) {
-           mediaListNotesIndicator?.gone()
-           mediaListStatusIndicator?.gone()
+           binding?.mediaListNotesIndicator?.gone()
+           binding?.mediaListStatusIndicator?.gone()
             return
         }
 
         if (!isMiniMode) {
-            if (!media.mediaList.privacy.notes.isNullOrBlank())
-               mediaListNotesIndicator?.visible()
+            if (!media.mediaList!!.privacy.notes.isNullOrBlank())
+               binding?.mediaListNotesIndicator?.visible()
             else
-               mediaListNotesIndicator?.gone()
-        } else mediaListNotesIndicator?.gone()
+               binding?.mediaListNotesIndicator?.gone()
+        } else binding?.mediaListNotesIndicator?.gone()
 
-       mediaListStatusIndicator?.visible()
-        when (media.mediaList.status) {
-            MediaListStatus.COMPLETED ->mediaListStatusIndicator?.setImageDrawable(
+       binding?.mediaListStatusIndicator?.visible()
+        when (media.mediaList!!.status) {
+            MediaListStatus.COMPLETED -> binding?.mediaListStatusIndicator?.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_completed)
             )
-            MediaListStatus.CURRENT ->mediaListStatusIndicator?.setImageDrawable(
+            MediaListStatus.CURRENT -> binding?.mediaListStatusIndicator?.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_current)
             )
-            MediaListStatus.DROPPED ->mediaListStatusIndicator?.setImageDrawable(
+            MediaListStatus.DROPPED -> binding?.mediaListStatusIndicator?.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_dropped)
             )
-            MediaListStatus.PAUSED ->mediaListStatusIndicator?.setImageDrawable(
+            MediaListStatus.PAUSED -> binding?.mediaListStatusIndicator?.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_paused)
             )
-            MediaListStatus.PLANNING ->mediaListStatusIndicator?.setImageDrawable(
+            MediaListStatus.PLANNING -> binding?.mediaListStatusIndicator?.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_planning)
             )
-            MediaListStatus.REPEATING ->mediaListStatusIndicator?.setImageDrawable(
+            MediaListStatus.REPEATING -> binding?.mediaListStatusIndicator?.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_repeat)
             )
             null -> {}
@@ -153,7 +161,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         setRating(media)
     }
 
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        context.getLayoutInflater().inflate(R.layout.media_rating_widget, this, true)
-    }
+    override fun createBinding() = MediaRatingWidgetBinding.inflate(
+        context.getLayoutInflater(), this, true
+    )
 }

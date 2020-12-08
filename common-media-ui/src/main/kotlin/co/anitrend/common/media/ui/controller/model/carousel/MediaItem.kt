@@ -38,7 +38,7 @@ import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaItem(
-    val entity: Media
+    private val entity: Media
 ) : RecyclerItemBinding<MediaItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null

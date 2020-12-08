@@ -31,7 +31,6 @@ import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil
 import co.anitrend.common.media.ui.controller.model.carousel.MediaItem
 import co.anitrend.common.media.ui.controller.model.carousel.MediaItem.Companion.createMediaItemViewHolder
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.contract.IMedia
 
 class MediaItemAdapter(
     override val resources: Resources,
