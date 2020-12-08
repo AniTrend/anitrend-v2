@@ -21,22 +21,22 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.SupportDispatcher
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.isLowRamDevice
 import co.anitrend.arch.extension.ext.systemServiceOf
-import co.anitrend.arch.extension.util.contract.ISupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.android.controller.AndroidPowerController
-import co.anitrend.core.android.controller.contract.PowerController
+import co.anitrend.core.android.controller.contract.IPowerController
 import co.anitrend.core.android.shortcut.ShortcutFacade
 import co.anitrend.core.android.shortcut.contract.IShortcutFacade
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.core.helper.StorageHelper
 import co.anitrend.core.settings.Settings
-import co.anitrend.core.settings.common.cache.ICacheSettings
 import co.anitrend.core.util.config.ConfigurationUtil
 import co.anitrend.core.util.config.contract.IConfigurationUtil
 import co.anitrend.core.util.locale.LocaleHelper
@@ -94,8 +94,8 @@ private val coreModule = module {
         )
     }
 
-    single {
-        SupportDispatchers()
+    single<ISupportDispatcher> {
+        SupportDispatcher()
     }
 
     factory<IShortcutFacade> {
@@ -104,11 +104,11 @@ private val coreModule = module {
         )
     }
 
-    factory {
+    factory<ISupportDateHelper> {
         SupportDateHelper()
-    } bind ISupportDateHelper::class
+    }
 
-    factory {
+    factory<IPowerController> {
         val context = androidContext()
         AndroidPowerController(
             context = context,
@@ -116,7 +116,7 @@ private val coreModule = module {
             connectivityManager = context.systemServiceOf<ConnectivityManager>(),
             connectivitySettings = get()
         )
-    } bind PowerController::class
+    }
 
     factory {
         val localeHelper = get<ILocaleHelper>()
@@ -149,9 +149,7 @@ private val configurationModule = module {
         val memoryLimit = if (isLowRamDevice) 0.15 else 0.35
 
         val client = get<OkHttpClient.Builder> {
-            parametersOf(
-                HttpLoggingInterceptor.Level.HEADERS
-            )
+            parametersOf(HttpLoggingInterceptor.Level.BASIC)
         }.cache(
             Cache(
                 StorageHelper.getImageCache(
@@ -159,33 +157,33 @@ private val configurationModule = module {
                 ),
                 StorageHelper.getStorageUsageLimit(
                     context = androidContext(),
-                    settings = object : ICacheSettings {
-                        override var usageRatio = 0.15f
-                    }
+                    settings = get()
                 )
             )
         ).build()
 
-        val dispatchers = get<SupportDispatchers>()
         val loader = ImageLoader.Builder(context)
             .availableMemoryPercentage(memoryLimit)
             .bitmapPoolPercentage(memoryLimit)
-            .dispatcher(dispatchers.io)
-            .okHttpClient {
-                client
-            }.componentRegistry {
+            .dispatcher(get<ISupportDispatcher>().io)
+            .okHttpClient { client }
+            .componentRegistry {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     add(ImageDecoderDecoder())
                 else
                     add(GifDecoder())
-                add(RequestImageFetcher(client, get()))
-                add(SvgDecoder(context))
-                add(VideoFrameFileFetcher(context))
-                add(VideoFrameUriFetcher(context))
+                add(RequestImageFetcher(client = client, mapper = get()))
+                add(SvgDecoder(context = context))
+                add(VideoFrameFileFetcher(context = context))
+                add(VideoFrameUriFetcher(context = context))
             }
 
         if (!isLowRamDevice)
-            loader.crossfade(360)
+            loader.crossfade(
+                context.resources.getInteger(
+                    R.integer.motion_duration_medium
+                )
+            )
         else
             loader.allowRgb565(true)
 
