@@ -566,7 +566,7 @@ object Libraries {
         }
 
         object WorkFlow {
-            private const val version = "0.28.0"
+            private const val version = "1.0.0-alpha08"
             const val coreJvm = "com.squareup.workflow:workflow-core-jvm:$version"
             const val coreAndroid = "com.squareup.workflow:workflow-ui-core-android:$version"
             const val modalAndroid = "com.squareup.workflow:workflow-ui-modal-android:$version"
