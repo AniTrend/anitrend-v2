@@ -20,7 +20,6 @@ package co.anitrend.navigation.drawer.koin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.settings.Settings
 import co.anitrend.navigation.NavigationDrawerRouter
-import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
@@ -57,9 +56,9 @@ private val viewModelModule = module {
 				settings = settings,
 				useCase = get()
 			),
-			navigationState = NavigationState(),
-			authenticatedKey = androidContext().getString(R.string.settings_is_authenticated),
-			settings = settings
+			navigationState = NavigationState(
+				settings = settings
+			)
 		)
 	}
 }

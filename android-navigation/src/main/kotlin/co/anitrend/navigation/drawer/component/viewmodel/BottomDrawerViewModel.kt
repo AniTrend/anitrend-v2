@@ -19,48 +19,17 @@ package co.anitrend.navigation.drawer.component.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.anitrend.core.settings.Settings
 import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
 import co.anitrend.navigation.drawer.component.viewmodel.state.NavigationState
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 internal class BottomDrawerViewModel(
     val navigationState: NavigationState,
-    val accountState: AccountState,
-    authenticatedKey: String,
-    settings: Settings
+    val accountState: AccountState
 ) : ViewModel() {
 
     init {
-        navigationState(settings.isAuthenticated)
-        viewModelScope.launch {
-            observeAuthenticationPreference(settings, authenticatedKey)
-        }
-    }
-
-    private suspend fun observeAuthenticationPreference(
-        settings: Settings,
-        authenticatedKey: String
-    ) {
-        settings.preferenceChangeFlow
-            .filter {
-                it.key == authenticatedKey
-            }.onEach {
-                accountState()
-                navigationState(
-                    settings.isAuthenticated
-                )
-            }.catch { cause: Throwable ->
-                Timber.tag(moduleTag).e(
-                    cause,
-                    "settings.preferenceChangeFlow -> Threw an uncaught exception"
-                )
-            }.collect()
+        accountState.context = viewModelScope.coroutineContext
+        navigationState.context = viewModelScope.coroutineContext
     }
 
     /**
@@ -74,9 +43,5 @@ internal class BottomDrawerViewModel(
         super.onCleared()
         navigationState.onCleared()
         accountState.onCleared()
-    }
-
-    companion object {
-        private val moduleTag = BottomDrawerViewModel::class.java.simpleName
     }
 }

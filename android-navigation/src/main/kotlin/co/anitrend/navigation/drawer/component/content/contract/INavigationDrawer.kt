@@ -21,7 +21,6 @@ import androidx.annotation.IdRes
 import co.anitrend.navigation.drawer.action.OnSlideAction
 import co.anitrend.navigation.drawer.action.OnStateChangedAction
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.Flow
 
 interface INavigationDrawer {

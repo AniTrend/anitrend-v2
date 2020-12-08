@@ -20,37 +20,57 @@ package co.anitrend.navigation.drawer.component.viewmodel.state
 import androidx.annotation.IdRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.arch.extension.coroutine.extension.Main
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.replaceWith
-import co.anitrend.arch.extension.preference.model.PreferenceItem
-import co.anitrend.core.settings.Settings
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 
-internal class NavigationState : ISupportViewModelState<List<Navigation>> {
-    private val moduleTag = javaClass.simpleName
+internal class NavigationState(
+    settings: IAuthenticationSettings
+) : ISupportViewModelState<List<Navigation>>, ISupportCoroutine by Main() {
 
-    private val state: MutableList<Navigation> = mutableListOf()
+    var context by Delegates.notNull<CoroutineContext>()
 
-    private val _navigationItems = MutableLiveData<List<Navigation>>()
+    private val moduleTag: String = javaClass.simpleName
 
-    override val model: LiveData<List<Navigation>?> = _navigationItems
+    private val navigationItems by lazy(UNSAFE) {
+        val initialState = createNavigationItems(settings.isAuthenticated.value)
+        MutableStateFlow(initialState)
+    }
+
+    override val model: LiveData<List<Navigation>?> by lazy(UNSAFE) {
+        navigationItems.asLiveData(context)
+    }
 
     override val networkState: LiveData<NetworkState> = liveData {
         emit(NetworkState.Loading)
     }
 
-    override val refreshState: LiveData<NetworkState>? = liveData {
+    override val refreshState: LiveData<NetworkState> = liveData {
         emit(NetworkState.Loading)
+    }
+
+    init {
+        launch {
+            settings.isAuthenticated.flow.onEach { authenticated ->
+                invoke(authenticated)
+            }.catch { cause ->
+                Timber.tag(moduleTag).w(cause)
+            }.collect()
+        }
     }
 
     private fun createNavigationItems(authenticated: Boolean): List<Navigation> {
@@ -158,21 +178,15 @@ internal class NavigationState : ISupportViewModelState<List<Navigation>> {
     }
 
     operator fun invoke(authenticated: Boolean) {
-        val checked = state
+        val snapshot = navigationItems.value.toMutableList()
+        val checked = snapshot
             .filterIsInstance<Navigation.Menu>()
             .firstOrNull(Navigation.Menu::isChecked)
 
-        _navigationItems.value = emptyList()
+        snapshot.replaceWith(createNavigationItems(authenticated))
 
-        state.replaceWith(
-            createNavigationItems(
-                authenticated
-            )
-        )
-
-        if (checked != null)
-            if (!setNavigationMenuItemChecked(checked.id))
-                _navigationItems.value = state
+        if (checked != null && !setNavigationMenuItemChecked(checked.id))
+            navigationItems.value = snapshot
     }
 
     /**
@@ -182,7 +196,8 @@ internal class NavigationState : ISupportViewModelState<List<Navigation>> {
      */
     fun setNavigationMenuItemChecked(@IdRes id: Int): Boolean {
         var updated = false
-        state.filterIsInstance<Navigation.Menu>()
+        val snapshot = navigationItems.value
+        snapshot.filterIsInstance<Navigation.Menu>()
             .onEach {
                 val shouldCheck = it.id == id
                 if (it.isChecked != shouldCheck)
@@ -190,7 +205,7 @@ internal class NavigationState : ISupportViewModelState<List<Navigation>> {
                 it.isChecked = shouldCheck
             }
         if (updated)
-            _navigationItems.value = state
+            navigationItems.value = snapshot
         return updated
     }
 
@@ -202,14 +217,14 @@ internal class NavigationState : ISupportViewModelState<List<Navigation>> {
      * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
      */
     override fun onCleared() {
-
+        cancel()
     }
 
     /**
      * Triggers use case to perform refresh operation
      */
     override suspend fun refresh() {
-
+        throw UnsupportedOperationException("$moduleTag does not support refresh operation")
     }
 
     /**

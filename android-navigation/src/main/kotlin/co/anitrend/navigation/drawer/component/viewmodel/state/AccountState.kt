@@ -23,29 +23,36 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.core.settings.Settings
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.data.account.action.AccountAction
-import co.anitrend.data.account.usecase.AccountUseCaseContract
+import co.anitrend.data.account.AccountInteractor
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.account.Account
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 
 internal class AccountState(
-    private val settings: IAuthenticationSettings,
-    private val useCase: AccountUseCaseContract
-) : ISupportViewModelState<List<Account>> {
+    settings: IAuthenticationSettings,
+    private val useCase: AccountInteractor
+) : ISupportViewModelState<List<Account>>, ISupportCoroutine by Main() {
+
+    var context by Delegates.notNull<CoroutineContext>()
+
+    private val moduleTag: String = javaClass.simpleName
 
     private val useCaseResult = MutableLiveData<DataState<List<User>?>>()
 
-    override val model =
-        Transformations.switchMap(useCaseResult) { dataState ->
-            dataState.model.map { users ->
+    override val model = Transformations.switchMap(useCaseResult) { dataState ->
+            dataState.model.asLiveData(context).map { users ->
                 if (users.isNullOrEmpty())
                     listOf(
                         Account.Group(
@@ -67,7 +74,7 @@ internal class AccountState(
                     )
                 else {
                     val activeUser = users.firstOrNull { user ->
-                        settings.authenticatedUserId == user.id
+                        settings.authenticatedUserId.value == user.id
                     }
 
                     val accounts = mutableListOf<Account>(
@@ -121,11 +128,23 @@ internal class AccountState(
             }
         }
 
-    override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData() }
+    override val networkState = Transformations.switchMap(useCaseResult) {
+        it.networkState.asLiveData()
+    }
 
-    override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
+    override val refreshState = Transformations.switchMap(useCaseResult) {
+        it.refreshState.asLiveData()
+    }
+
+    init {
+        launch {
+            settings.isAuthenticated.flow.onEach {
+                invoke()
+            }.catch { cause ->
+                Timber.tag(moduleTag).w(cause)
+            }.collect()
+        }
+    }
 
     operator fun invoke() {
         val result = useCase.getAuthorizedAccounts()
@@ -149,6 +168,7 @@ internal class AccountState(
      */
     override fun onCleared() {
         useCase.onCleared()
+        cancel()
     }
 
     /**
