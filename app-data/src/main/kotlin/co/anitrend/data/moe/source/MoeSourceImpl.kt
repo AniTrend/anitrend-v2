@@ -18,8 +18,8 @@
 package co.anitrend.data.moe.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.helper.data.ClearDataHelper
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.moe.converters.SourceEntityConverter
 import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.datasource.remote.MoeRemoteSource
@@ -36,14 +36,14 @@ internal class MoeSourceImpl(
     private val remoteSource: MoeRemoteSource,
     private val localSource: MoeLocalSource,
     private val controller: MoeController,
-    private val clearDataHelper: ClearDataHelper,
+    private val clearDataHelper: IClearDataHelper,
     converter: SourceEntityConverter = SourceEntityConverter(),
-    dispatchers: SupportDispatchers
-) : MoeSource(dispatchers) {
+    dispatcher: ISupportDispatcher
+) : MoeSource(dispatcher) {
 
     override val observable =
         localSource.withAniListIdX(query.id)
-            .flowOn(dispatchers.io)
+            .flowOn(dispatcher.io)
             .filterNotNull()
             .map { converter.convertFrom(it) }
             .flowOn(coroutineContext)

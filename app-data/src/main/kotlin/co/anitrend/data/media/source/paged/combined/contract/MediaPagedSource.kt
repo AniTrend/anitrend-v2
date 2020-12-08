@@ -17,30 +17,32 @@
 
 package co.anitrend.data.media.source.paged.combined.contract
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.media.entity.Media
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaPagedSource(
-    dispatchers: SupportDispatchers
-) : SupportPagingDataSource<Media>(dispatchers) {
+    dispatcher: ISupportDispatcher
+) : SupportPagingDataSource<Media>(dispatcher) {
 
     protected lateinit var query: MediaQuery
 
-    protected abstract val observable: LiveData<PagedList<Media>>
+    protected abstract fun observable(): Flow<PagedList<Media>>
 
     protected abstract suspend fun getMedia(requestCallback: RequestCallback)
 
-    operator fun invoke(mediaQuery: IGraphPayload): LiveData<PagedList<Media>> {
+    operator fun invoke(mediaQuery: IGraphPayload): Flow<PagedList<Media>> {
         query = mediaQuery as MediaQuery
-        return observable
+        return observable()
     }
 
     /**
@@ -52,13 +54,11 @@ internal abstract class MediaPagedSource(
      * @param itemAtEnd The first item of PagedList
      */
     override fun onItemAtEndLoaded(itemAtEnd: Media) {
+        supportPagingHelper.onPageNext()
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.AFTER
-            ) {
-                supportPagingHelper.onPageNext()
-                getMedia(it)
-            }
+                Request.Default("media_paged_after", Request.Type.AFTER)
+            ) { getMedia(it) }
         }
     }
 
@@ -71,14 +71,14 @@ internal abstract class MediaPagedSource(
      * @param itemAtFront The first item of PagedList
      */
     override fun onItemAtFrontLoaded(itemAtFront: Media) {
+        if (!supportPagingHelper.isFirstPage())
+            supportPagingHelper.onPagePrevious()
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.BEFORE
+                Request.Default("media_paged_before", Request.Type.BEFORE)
             ) {
-                if (!supportPagingHelper.isFirstPage()) {
-                    supportPagingHelper.onPagePrevious()
+                if (!supportPagingHelper.isFirstPage())
                     getMedia(it)
-                }
             }
         }
     }
@@ -89,7 +89,7 @@ internal abstract class MediaPagedSource(
     override fun onZeroItemsLoaded() {
         launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
+                Request.Default("media_paged_initial", Request.Type.INITIAL)
             ) { getMedia(it) }
         }
     }

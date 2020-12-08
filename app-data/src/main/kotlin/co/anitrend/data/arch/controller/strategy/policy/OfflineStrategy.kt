@@ -51,13 +51,7 @@ internal class OfflineStrategy<D> private constructor(
             Timber.tag(moduleTag).e(exception)
             when (exception) {
                 is RequestError -> callback.recordFailure(exception)
-                else -> callback.recordFailure(
-                    RequestError(
-                        networkMessage.unrecoverableErrorTittle,
-                        exception.message,
-                        exception.cause
-                    )
-                )
+                else -> callback.recordFailure(exception.generateForError())
             }
         }
 

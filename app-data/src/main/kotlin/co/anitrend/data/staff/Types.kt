@@ -15,10 +15,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.source.paged.network.contract
+package co.anitrend.data.staff
 
-import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.media.model.page.MediaPageModel
-import co.anitrend.domain.media.entity.Media
-
-internal typealias MediaPagedNetworkController = GraphQLController<MediaPageModel, List<Media>>

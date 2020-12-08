@@ -19,9 +19,9 @@ package co.anitrend.data.arch.network.graphql
 
 import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.network.contract.NetworkClient
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
@@ -33,19 +33,19 @@ import timber.log.Timber
  * Using gson until kotlinx.serializer supports generics
  */
 internal class GraphNetworkClient<R>(
-    private val gson: Gson,
+    private val json: Json,
     override val dispatcher: CoroutineDispatcher
 ) : NetworkClient<GraphQLResponse<R>>() {
 
-    private fun getGraphQLError(body: String): GraphQLResponse<R> {
-        val tokenType = object : TypeToken<GraphQLResponse<R>>(){}.type
-        return gson.fromJson(body, tokenType)
+    private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
+        val body = requireNotNull(errorBodyString)
+        return json.decodeFromString(body)
     }
 
     private fun Response<GraphQLResponse<R>>.responseErrors(): GraphQLResponse<R> {
         runCatching {
             val errorBodyString = errorBody()?.string()
-            getGraphQLError(requireNotNull(errorBodyString))
+            getGraphQLError(errorBodyString)
         }.onSuccess { error ->
             return error
         }.onFailure { exception ->

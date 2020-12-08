@@ -21,6 +21,7 @@ import co.anitrend.data.arch.CountryCode
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.remote.StaffModel
 import co.anitrend.data.studio.model.remote.StudioModel
+import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import kotlinx.serialization.SerialName
@@ -125,7 +126,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
 
     @Serializable
     data class Tag(
-        @SerialName("tag") val tag: MediaModel.Tag?,
+        @SerialName("tag") val tag: TagModel?,
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,

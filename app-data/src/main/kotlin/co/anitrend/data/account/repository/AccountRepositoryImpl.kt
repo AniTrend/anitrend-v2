@@ -17,7 +17,6 @@
 
 package co.anitrend.data.account.repository
 
-import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -31,7 +30,7 @@ internal class AccountRepositoryImpl(
 ) : SupportRepository(source), AccountRepository<DataState<List<User>?>>{
 
     override fun getAccountUsers() =
-        source create source().asLiveData()
+        source create source()
 
     override fun signOut(query: IGraphPayload) {
         source.signOut(query)

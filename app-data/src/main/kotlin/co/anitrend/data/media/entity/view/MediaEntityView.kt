@@ -21,6 +21,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.tag.entity.TagEntity
 
 internal sealed class MediaEntityView {
     abstract val media: MediaEntity

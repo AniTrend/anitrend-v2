@@ -18,7 +18,7 @@
 package co.anitrend.data.auth.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.auth.action.AuthAction
@@ -26,12 +26,14 @@ import co.anitrend.data.auth.datasource.local.AuthLocalSource
 import co.anitrend.data.auth.datasource.remote.AuthRemoteSource
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.auth.source.contract.AuthController
+import co.anitrend.data.auth.AuthController
 import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -44,11 +46,12 @@ internal class AuthSourceImpl(
     private val localSource: AuthLocalSource,
     private val clearDataHelper: IClearDataHelper,
     private val controller: AuthController,
+    private val userSettings: IUserSettings,
     private val settings: IAuthenticationSettings,
-    private val converter: UserEntityConverter = UserEntityConverter(),
+    private val converter: UserEntityConverter,
     userLocalSource: UserLocalSource,
-    dispatchers: SupportDispatchers
-) : AuthSource(dispatchers) {
+    dispatcher: ISupportDispatcher
+) : AuthSource(dispatcher) {
 
     private val userIdFlow = MutableStateFlow<Long?>(null)
 
@@ -70,7 +73,7 @@ internal class AuthSourceImpl(
     }
 
     private suspend fun persistChanges(query: AuthAction.Login, user: UserEntity) {
-        withContext(dispatchers.io) {
+        withContext(dispatcher.io) {
             localSource.upsert(AuthEntity(
                 id = 0,
                 userId = user.id,
@@ -79,17 +82,20 @@ internal class AuthSourceImpl(
                 accessToken = query.accessToken
             ))
 
-            settings.authenticatedUserId = user.id
-            settings.isAuthenticated = true
+            settings.authenticatedUserId.value = user.id
+            settings.isAuthenticated.value = true
             userIdFlow.value = user.id
         }
     }
 
     override fun signOut(query: IGraphPayload) {
         val params = query as AccountAction.SignOut
-        launch (dispatchers.io) {
-            settings.isAuthenticated = false
-            settings.authenticatedUserId = IAuthenticationSettings.INVALID_USER_ID
+        launch (dispatcher.io) {
+            userSettings.scoreFormat.value = IUserSettings.DEFAULT_SCORE_FORMAT
+            userSettings.titleLanguage.value = IUserSettings.DEFAULT_TITLE_LANGUAGE
+
+            settings.isAuthenticated.value = false
+            settings.authenticatedUserId.value = IAuthenticationSettings.INVALID_USER_ID
             localSource.clearByUserId(params.userId)
             userIdFlow.value = IAuthenticationSettings.INVALID_USER_ID
         }

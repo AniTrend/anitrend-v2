@@ -17,10 +17,17 @@
 
 package co.anitrend.data.user.koin
 
+import co.anitrend.data.user.converter.UserEntityConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
 
+}
+
+private val converterModule = module {
+    factory {
+        UserEntityConverter()
+    }
 }
 
 private val mapperModule = module {
@@ -36,8 +43,9 @@ private val repositoryModule = module {
 }
 
 internal val userModules = listOf(
-    sourceModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
+    converterModule
+    //sourceModule,
+    //mapperModule,
+    //useCaseModule,
+    //repositoryModule
 )

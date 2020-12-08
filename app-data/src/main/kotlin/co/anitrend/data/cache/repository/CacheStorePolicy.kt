@@ -25,10 +25,10 @@ import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
 
-internal abstract class CacheStorePolicy(
-    private val request: CacheRequest,
-    private val localSource: CacheLocalSource
-) : ICacheStorePolicy {
+internal abstract class CacheStorePolicy : ICacheStorePolicy {
+
+    protected abstract val localSource: CacheLocalSource
+    protected abstract val request: CacheRequest
 
     private suspend fun getRequestInstant(
         entityId: Long

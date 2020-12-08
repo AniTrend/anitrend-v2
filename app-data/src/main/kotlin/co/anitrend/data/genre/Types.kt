@@ -15,10 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.tag.source.contract
+package co.anitrend.data.genre
 
+import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.tag.entity.TagEntity
-import co.anitrend.data.tag.model.remote.MediaTagCollection
+import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.model.remote.GenreCollection
+import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.genre.interactor.MediaGenreUseCase
 
-internal typealias MediaTagController = GraphQLController<MediaTagCollection, List<TagEntity>>
+internal typealias MediaGenreController = GraphQLController<GenreCollection, List<GenreEntity>>
+
+typealias MediaGenreInteractor = MediaGenreUseCase<DataState<List<Genre>>>

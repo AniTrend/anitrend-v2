@@ -17,7 +17,8 @@
 
 package co.anitrend.data.arch.database.settings
 
-interface IRefreshBehaviourSettings {
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
-    var clearDataOnSwipeRefresh: Boolean
+interface IRefreshBehaviourSettings {
+    val clearDataOnSwipeRefresh: AbstractSetting<Boolean>
 }

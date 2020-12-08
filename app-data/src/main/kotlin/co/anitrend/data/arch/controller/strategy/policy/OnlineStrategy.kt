@@ -50,21 +50,14 @@ internal class OnlineStrategy<D> private constructor(
                     networkMessage.connectivityErrorTittle,
                     networkMessage.connectivityErrorMessage
                 )
-
         }.onSuccess { result ->
             callback.recordSuccess()
             return result
         }.onFailure { exception ->
-            Timber.tag(moduleTag).e(exception)
+            Timber.tag(moduleTag).w(exception)
             when (exception) {
                 is RequestError -> callback.recordFailure(exception)
-                else -> callback.recordFailure(
-                    RequestError(
-                        networkMessage.unrecoverableErrorTittle,
-                        exception.message,
-                        exception.cause
-                    )
-                )
+                else -> callback.recordFailure(exception.generateForError())
             }
         }
 

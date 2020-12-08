@@ -24,11 +24,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class MediaPageModel(
-    @SerialName("Page") val page: Page
+    @SerialName("Page") val page: Page = Page()
 ) {
     @Serializable
     data class Page(
-        @SerialName("pageInfo") val pageInfo: PageInfo,
-        @SerialName("media") val media: List<MediaModel.Core>
+        @SerialName("pageInfo") val pageInfo: PageInfo? = null,
+        @SerialName("media") val media: List<MediaModel.Core> = emptyList()
     )
 }

@@ -18,13 +18,17 @@
 package co.anitrend.data.genre.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.data.arch.helper.data.ClearDataHelper
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
-import co.anitrend.data.genre.source.contract.MediaGenreController
+import co.anitrend.data.genre.MediaGenreController
 import co.anitrend.data.genre.source.contract.MediaGenreSource
+import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.graph.IGraphPayload
+import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.flowOn
@@ -34,23 +38,28 @@ internal class MediaGenreSourceImpl(
     private val remoteSource: MediaGenreRemoteSource,
     private val localSource: MediaGenreLocalSource,
     private val controller: MediaGenreController,
-    private val clearDataHelper: ClearDataHelper,
-    converter: GenreEntityConverter = GenreEntityConverter(),
-    dispatchers: SupportDispatchers
-) : MediaGenreSource(dispatchers) {
+    private val clearDataHelper: IClearDataHelper,
+    private val converter: GenreEntityConverter,
+    cachePolicy: ICacheStorePolicy,
+    dispatcher: ISupportDispatcher
+) : MediaGenreSource(cachePolicy, dispatcher) {
 
-    override val observable =
+    override fun observable() =
         localSource.findAllFlow()
-            .flowOn(dispatchers.io) // fetch from db on io thread
+            .flowOn(dispatcher.io)
             .map { converter.convertFrom(it) }
-            .flowOn(coroutineContext) // map on computational thread
+            .flowOn(dispatcher.computation)
 
-    override suspend fun getGenres(callback: RequestCallback) {
+    override suspend fun getGenres(callback: RequestCallback): Boolean {
         val deferred = async {
-            remoteSource.getMediaGenres()
+            remoteSource.getMediaGenres(
+                QueryContainerBuilder()
+            )
         }
 
-        controller(deferred, callback)
+        val result = controller(deferred, callback)
+
+        return !result.isNullOrEmpty()
     }
 
     /**

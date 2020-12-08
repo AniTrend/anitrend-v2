@@ -23,8 +23,10 @@ import co.anitrend.data.cache.repository.CacheStorePolicy
 import org.threeten.bp.Instant
 
 internal class CarouselCache(
-    localSource: CacheLocalSource
-) : CacheStorePolicy(CacheRequest.CAROUSEL, localSource) {
+    override val localSource: CacheLocalSource,
+    override val request: CacheRequest = CacheRequest.CAROUSEL
+) : CacheStorePolicy() {
+
     /**
      * Check if a resource with a given [entityId] is permitted to refresh
      */
@@ -32,4 +34,11 @@ internal class CarouselCache(
         entityId: Long,
         expiresAfter: Instant
     ) = isRequestBefore(entityId, expiresAfter)
+
+    companion object {
+        const val ANIME_META_ID = 10L
+        const val MANGA_META_ID = 11L
+        const val ANIME_ID = 12L
+        const val MANGA_ID = 13L
+    }
 }

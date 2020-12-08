@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.helper.paging
 
-import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import timber.log.Timber
 
@@ -45,12 +45,12 @@ internal object PagingConfigHelper {
      * @param action what need to be run to return the number of available records
      */
     suspend inline operator fun invoke(
-        requestType: IRequestHelper.RequestType,
+        requestType: Request.Type,
         pagingHelper: SupportPagingHelper,
         crossinline action: suspend () -> Int
     ) {
         when (requestType) {
-            IRequestHelper.RequestType.BEFORE -> {
+            Request.Type.BEFORE -> {
                 Timber.tag(moduleTag).v(
                     "Triggered request: $requestType on paging helper configuration"
                 )
@@ -62,7 +62,7 @@ internal object PagingConfigHelper {
                     }
                 }
             }
-            IRequestHelper.RequestType.AFTER -> {
+            Request.Type.AFTER -> {
                 Timber.tag(moduleTag).v(
                     "Triggered request: $requestType on paging helper configuration"
                 )

@@ -17,7 +17,6 @@
 
 package co.anitrend.data.tag.repository
 
-import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -33,5 +32,5 @@ internal class MediaTagRepository(
      * @return media genres
      */
     override fun getMediaTags() =
-        source create source().asLiveData()
+        source create source()
 }

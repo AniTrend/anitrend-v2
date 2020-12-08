@@ -57,12 +57,12 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
     @Test
     fun getMediaById() = runBlocking(dispatchers.io) {
-        val id: Long = 112301
+        val id: Long = 16498
         val title = MediaEntity.Title(
-            english = "The Misfit of Demon King Academy: History’s Strongest Demon King Reincarnates and Goes to School with His Descendants",
-            native = "魔王学院の不適合者 ～史上最強の魔王の始祖、転生して子孫たちの学校へ通う～",
-            romaji = "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou",
-            userPreferred = "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou"
+            english = "Attack on Titan",
+            native = "進撃の巨人",
+            romaji = "Shingeki no Kyojin",
+            userPreferred = "Shingeki no Kyojin"
         )
 
         val entity = store.mediaDao().mediaById(id)
@@ -75,12 +75,12 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
     @Test
     fun getMediaWithAiringById() = runBlocking(dispatchers.io) {
-        val id: Long = 21
+        val id: Long = 5114
         val title = MediaEntity.Title(
-            english = "One Piece",
-            native = "ワンピース",
-            romaji = "One Piece",
-            userPreferred = "One Piece"
+            english = "Fullmetal Alchemist: Brotherhood",
+            native = "鋼の錬金術師 FULLMETAL ALCHEMIST",
+            romaji = "Hagane no Renkinjutsushi: Fullmetal Alchemist",
+            userPreferred = "Hagane no Renkinjutsushi: Fullmetal Alchemist"
         )
 
         val entity = store.mediaDao().mediaByIdWithAiring(id)

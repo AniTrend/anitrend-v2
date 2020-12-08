@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "ed8ff6c2edb233d3538645ac99b12961",
+    "identityHash": "971e86a26d1b904f803e874046bff35b",
     "entities": [
       {
         "tableName": "auth",
@@ -59,7 +59,7 @@
       },
       {
         "tableName": "tag",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `description` TEXT, `category` TEXT, `rank` INTEGER, `is_general_spoiler` INTEGER NOT NULL, `is_media_spoiler` INTEGER NOT NULL, `is_adult` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `description` TEXT, `category` TEXT, `is_general_spoiler` INTEGER NOT NULL, `is_adult` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -80,20 +80,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "rank",
-            "columnName": "rank",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "isGeneralSpoiler",
             "columnName": "is_general_spoiler",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isMediaSpoiler",
-            "columnName": "is_media_spoiler",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -880,7 +868,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed8ff6c2edb233d3538645ac99b12961')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '971e86a26d1b904f803e874046bff35b')"
     ]
   }
 }

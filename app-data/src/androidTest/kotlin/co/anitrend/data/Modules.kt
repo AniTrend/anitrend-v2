@@ -18,21 +18,26 @@
 package co.anitrend.data
 
 import androidx.test.platform.app.InstrumentationRegistry
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.SupportDispatcher
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import kotlinx.serialization.json.Json
+import okhttp3.mockwebserver.MockWebServer
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
 private val data = module {
+    single<ISupportDispatcher> {
+        SupportDispatcher()
+    }
     single {
-        SupportDispatchers()
+        MockWebServer()
     }
     single {
         Json {

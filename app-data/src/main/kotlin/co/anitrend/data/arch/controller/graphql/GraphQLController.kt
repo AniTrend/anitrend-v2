@@ -25,7 +25,6 @@ import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.network.contract.NetworkClient
-import co.anitrend.data.arch.network.graphql.GraphNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
@@ -58,11 +57,14 @@ internal class GraphQLController<S, out D>(
 
         val response = client.fetch(resource)
 
-        val error = response.errors?.also { errors ->
-            errors.forEach { Timber.tag(moduleTag).w(it.toString()) }
+        val error = response.errors?.onEach {
+            Timber.tag(moduleTag).w(it.toString())
         }?.firstOrNull()
 
-        // Only throw if data is null while we have an error
+        /**
+         * Only throw if data is null while we have an error, [strategy] will catch
+         * the exception and emit a network state for the user to see
+         */
         if (error != null && response.data == null)
             throw RequestError(
                 topic = "Error with request",
@@ -78,6 +80,7 @@ internal class GraphQLController<S, out D>(
             mapped
         }
     }
+
 
     companion object {
         private val moduleTag = GraphQLController::class.java.simpleName

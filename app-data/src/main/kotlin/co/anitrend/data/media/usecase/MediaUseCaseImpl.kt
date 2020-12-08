@@ -17,16 +17,13 @@
 
 package co.anitrend.data.media.usecase
 
-import androidx.paging.PagedList
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.media.MediaUseInteractor
 import co.anitrend.data.media.repository.MediaRepositoryImpl
-import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.interactor.MediaUseCase
 
 internal class MediaUseCaseImpl(
     repository: MediaRepositoryImpl
-) : MediaUseCaseContract(repository) {
+) : MediaUseInteractor(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop
@@ -36,5 +33,3 @@ internal class MediaUseCaseImpl(
         repository.onCleared()
     }
 }
-
-typealias MediaUseCaseContract = MediaUseCase<DataState<PagedList<Media>>>

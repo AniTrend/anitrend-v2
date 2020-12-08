@@ -23,6 +23,7 @@ import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.contract.IMediaModel
 import co.anitrend.data.medialist.model.remote.MediaListModel
 import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.media.enums.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -38,7 +39,7 @@ internal sealed class MediaModel : IMediaModel {
 
     abstract val title: Title?
     abstract val coverImage: CoverImage?
-    abstract val tags: List<Tag>?
+    abstract val tags: List<TagModel.Extended>?
     abstract val genres: List<String>?
 
     abstract val isLocked: Boolean
@@ -72,7 +73,7 @@ internal sealed class MediaModel : IMediaModel {
     ) : Identity
 
     /**
-     * Genre as a single element
+     * Genre.graphql as a single element
      */
     @Serializable
     internal data class Genre(
@@ -91,29 +92,6 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("season") val season: MediaSeason? = null,
         @SerialName("type") val type: MediaRankType,
         @SerialName("year") val year: Int? = null,
-        @SerialName("id") override val id: Long
-    ) : Identity
-
-    /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
-     * A tag that describes a theme or element of the media
-     *
-     * @param name The name of the tag
-     * @param description A general description of the tag
-     * @param category The categories of tags this tag belongs to
-     * @param rank The relevance ranking of the tag out of the 100 for this media
-     * @param isGeneralSpoiler If the tag could be a spoiler for any media
-     * @param isMediaSpoiler If the tag is a spoiler for this media
-     * @param isAdult If the tag is only for adult 18+ media
-     */
-    @Serializable
-    internal data class Tag(
-        @SerialName("name") val name: String,
-        @SerialName("description") val description: String? = null,
-        @SerialName("category") val category: String? = null,
-        @SerialName("rank") val rank: Int? = null,
-        @SerialName("isGeneralSpoiler") val isGeneralSpoiler: Boolean? = null,
-        @SerialName("isMediaSpoiler") val isMediaSpoiler: Boolean? = null,
-        @SerialName("isAdult") val isAdult: Boolean? = null,
         @SerialName("id") override val id: Long
     ) : Identity
 
@@ -139,13 +117,13 @@ internal sealed class MediaModel : IMediaModel {
     )
 
     @Serializable
-    internal data class Core(
+    internal data class Media(
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
         @SerialName("title") override val title: Title?,
         @SerialName("coverImage") override val coverImage: CoverImage?,
-        @SerialName("tags") override val tags: List<Tag> = emptyList(),
+        @SerialName("tags") override val tags: List<TagModel.Extended> = emptyList(),
         @SerialName("genres") override val genres: List<String> = emptyList(),
         @SerialName("idMal") override val idMal: Long?,
         @SerialName("bannerImage") override val bannerImage: String?,
@@ -174,12 +152,52 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
-        @SerialName("mediaListEntry") override val mediaListEntry: MediaListModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaModel()
+
+    @Serializable
+    internal data class Core(
+        @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core?,
+        @SerialName("isLocked") override val isLocked: Boolean = false,
+        @SerialName("isLicensed") override val isLicensed: Boolean = false,
+        @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
+        @SerialName("title") override val title: Title?,
+        @SerialName("coverImage") override val coverImage: CoverImage?,
+        @SerialName("tags") override val tags: List<TagModel.Extended> = emptyList(),
+        @SerialName("genres") override val genres: List<String> = emptyList(),
+        @SerialName("idMal") override val idMal: Long?,
+        @SerialName("bannerImage") override val bannerImage: String?,
+        @SerialName("type") override val type: MediaType,
+        @SerialName("format") override val format: MediaFormat?,
+        @SerialName("season") override val season: MediaSeason?,
+        @SerialName("status") override val status: MediaStatus?,
+        @SerialName("source") override val source: MediaSource?,
+        @SerialName("meanScore") override val meanScore: Int?,
+        @SerialName("description") override val description: String?,
+        @SerialName("averageScore") override val averageScore: Int?,
+        @SerialName("countryOfOrigin") override val countryOfOrigin: CountryCode?,
+        @SerialName("trending") override val trending: Int?,
+        @SerialName("popularity") override val popularity: Int?,
+        @SerialName("synonyms") override val synonyms: List<String> = emptyList(),
+        @SerialName("favourites") override val favourites: Int,
+        @SerialName("hashtag") override val hashTag: String?,
+        @SerialName("siteUrl") override val siteUrl: String,
+        @SerialName("startDate") override val startDate: FuzzyDateModel?,
+        @SerialName("endDate") override val endDate: FuzzyDateModel?,
+        @SerialName("episodes") override val episodes: Int?,
+        @SerialName("duration") override val duration: Int?,
+        @SerialName("chapters") override val chapters: Int?,
+        @SerialName("volumes") override val volumes: Int?,
+        @SerialName("isAdult") override val isAdult: Boolean?,
+        @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long
     ) : MediaModel()
 
     @Serializable
     internal data class Extended(
+        @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core?,
         @SerialName("trailer") val trailer: Trailer? = null,
         @SerialName("rankings") val rankings: List<Rank> = emptyList(),
         @SerialName("externalLinks") val externalLinks: List<ExternalLink> = emptyList(),
@@ -188,7 +206,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
         @SerialName("title") override val title: Title?,
         @SerialName("coverImage") override val coverImage: CoverImage?,
-        @SerialName("tags") override val tags: List<Tag> = emptyList(),
+        @SerialName("tags") override val tags: List<TagModel.Extended> = emptyList(),
         @SerialName("genres") override val genres: List<String> = emptyList(),
         @SerialName("idMal") override val idMal: Long?,
         @SerialName("bannerImage") override val bannerImage: String?,
@@ -217,7 +235,6 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
-        @SerialName("mediaListEntry") override val mediaListEntry: MediaListModel.Core?,
         @SerialName("id") override val id: Long
     ) : MediaModel()
 }

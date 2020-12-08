@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.tag.model.remote
+package co.anitrend.data.tag
 
-import co.anitrend.data.media.model.MediaModel
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.tag.model.remote.TagContainerModel
+import co.anitrend.domain.tag.entity.Tag
+import co.anitrend.domain.tag.interactor.MediaTagUseCase
 
-@Serializable
-internal data class MediaTagCollection(
-    @SerialName("MediaTagCollection") val mediaTagCollection: List<MediaModel.Tag>
-)
+internal typealias MediaTagController = GraphQLController<TagContainerModel, List<TagEntity>>
+
+typealias MediaTagInteractor = MediaTagUseCase<DataState<List<Tag>>>

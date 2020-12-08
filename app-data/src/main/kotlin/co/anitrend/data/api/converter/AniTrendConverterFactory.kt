@@ -15,34 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("DEPRECATION")
-
 package co.anitrend.data.api.converter
 
 import co.anitrend.data.api.converter.request.AniRequestConverter
-import co.anitrend.data.api.converter.response.AniGraphResponseConverter
 import co.anitrend.data.arch.GRAPHQL
 import co.anitrend.data.arch.JSON
 import co.anitrend.data.arch.XML
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.GraphConverter
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.simpleframework.xml.convert.AnnotationStrategy
-import org.simpleframework.xml.core.Persister
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 internal class AniTrendConverterFactory(
     processor: AbstractGraphProcessor,
     gson: Gson,
-    private val json: Json,
+    private val jsonFactory: Converter.Factory,
+    private val xmlFactory: Converter.Factory,
 ) : GraphConverter(processor, gson) {
 
     /**
@@ -61,12 +54,22 @@ internal class AniTrendConverterFactory(
         parameterAnnotations: Array<out Annotation>,
         methodAnnotations: Array<out Annotation>,
         retrofit: Retrofit
-    ): Converter<*, RequestBody>? =
-        AniRequestConverter(
-            methodAnnotations = methodAnnotations,
-            processor = graphProcessor,
-            gson = gson
-        )
+    ): Converter<*, RequestBody>? {
+        for (annotation in methodAnnotations) {
+            when (annotation) {
+                is XML -> {
+                    return xmlFactory.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
+                }
+                is GRAPHQL -> {
+                    return AniRequestConverter(methodAnnotations, graphProcessor, gson)
+                }
+                is JSON -> {
+                    return jsonFactory.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
+                }
+            }
+        }
+        return GsonConverterFactory.create(gson).requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
+    }
 
     /**
      * Response body converter delegates logic processing to a child class that handles
@@ -77,7 +80,7 @@ internal class AniTrendConverterFactory(
      * @param type The generic type declared on the Call method
      *
      * @see Retrofit
-     * @see AniGraphResponseConverter
+     * @see GraphConverter.responseBodyConverter
      */
     override fun responseBodyConverter(
         type: Type,
@@ -87,21 +90,13 @@ internal class AniTrendConverterFactory(
         for (annotation in annotations) {
             when (annotation) {
                 is XML -> {
-                    return SimpleXmlConverterFactory.createNonStrict(
-                        Persister(AnnotationStrategy())
-                    ).responseBodyConverter(type, annotations, retrofit)
+                    return xmlFactory.responseBodyConverter(type, annotations, retrofit)
                 }
-                is GRAPHQL,
-                is JSON -> {
-                    return json.asConverterFactory(CONTENT_TYPE)
-                        .responseBodyConverter(type, annotations, retrofit)
+                is JSON, is GRAPHQL -> {
+                    return jsonFactory.responseBodyConverter(type, annotations, retrofit)
                 }
             }
         }
-        return AniGraphResponseConverter<Any>(type, gson)
-    }
-
-    companion object {
-        private val CONTENT_TYPE = "application/json".toMediaType()
+        return GsonConverterFactory.create(gson).responseBodyConverter(type, annotations, retrofit)
     }
 }

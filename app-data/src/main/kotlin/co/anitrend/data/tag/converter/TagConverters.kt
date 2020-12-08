@@ -21,74 +21,39 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.tag.entity.Tag
 
 internal class TagEntityConverter(
-    override val fromType: (TagEntity) -> Tag = { from().transform(it) },
-    override val toType: (Tag) -> TagEntity = { to().transform(it) }
+    override val fromType: (TagEntity) -> Tag = { transform(it) },
+    override val toType: (Tag) -> TagEntity = { throw NotImplementedError() }
 ) : SupportConverter<TagEntity, Tag>() {
-    companion object {
-        fun from() =
-            object : ISupportTransformer<TagEntity, Tag> {
-                override fun transform(source: TagEntity) = Tag(
-                    id = source.id,
-                    name = source.name,
-                    description = source.description,
-                    category = source.category,
-                    rank = source.rank ?: 0,
-                    isGeneralSpoiler = source.isGeneralSpoiler,
-                    isMediaSpoiler = source.isMediaSpoiler,
-                    isAdult = source.isAdult
-                )
-            }
-
-        fun to() =
-            object : ISupportTransformer<Tag, TagEntity> {
-                override fun transform(source: Tag)= TagEntity(
-                    id = source.id,
-                    name = source.name,
-                    description = source.description,
-                    category = source.category,
-                    rank = source.rank,
-                    isGeneralSpoiler = source.isGeneralSpoiler,
-                    isMediaSpoiler = source.isMediaSpoiler,
-                    isAdult = source.isAdult
-                )
-            }
+    private companion object : ISupportTransformer<TagEntity, Tag> {
+        override fun transform(source: TagEntity) = Tag(
+            id = source.id,
+            name = source.name,
+            description = source.description,
+            rank = 0,
+            category = source.category,
+            isGeneralSpoiler = source.isGeneralSpoiler,
+            isMediaSpoiler = false,
+            isAdult = source.isAdult
+        )
     }
 }
 
 internal class TagModelConverter(
-    override val fromType: (MediaModel.Tag) -> TagEntity = { from().transform(it) },
-    override val toType: (TagEntity) -> MediaModel.Tag = { to().transform(it) }
-) : SupportConverter<MediaModel.Tag, TagEntity>() {
-    companion object {
-        fun from() =
-            object : ISupportTransformer<MediaModel.Tag, TagEntity> {
-                override fun transform(source: MediaModel.Tag) = TagEntity(
-                    id = source.id,
-                    name = source.name,
-                    description = source.description,
-                    category = source.category,
-                    rank = source.rank,
-                    isGeneralSpoiler = source.isGeneralSpoiler ?: false,
-                    isMediaSpoiler = source.isMediaSpoiler ?: false,
-                    isAdult = source.isAdult ?: false
-                )
-            }
-
-        fun to() =
-            object : ISupportTransformer<TagEntity, MediaModel.Tag> {
-                override fun transform(source: TagEntity) = MediaModel.Tag(
-                    id = source.id,
-                    name = source.name,
-                    description = source.description,
-                    category = source.category,
-                    rank = source.rank,
-                    isGeneralSpoiler = source.isGeneralSpoiler,
-                    isMediaSpoiler = source.isMediaSpoiler,
-                    isAdult = source.isAdult
-                )
-            }
+    override val fromType: (TagModel) -> TagEntity = { transform(it) },
+    override val toType: (TagEntity) -> TagModel = { throw NotImplementedError() }
+) : SupportConverter<TagModel, TagEntity>() {
+    private companion object : ISupportTransformer<TagModel, TagEntity> {
+        override fun transform(source: TagModel) = TagEntity(
+            id = source.id,
+            name = source.name,
+            description = source.description,
+            category = source.category,
+            isGeneralSpoiler = source.isGeneralSpoiler ?: false,
+            isAdult = source.isAdult ?: false
+        )
     }
 }

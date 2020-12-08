@@ -29,21 +29,27 @@ import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
-import co.anitrend.data.user.model.remote.UserModel
-import co.anitrend.data.user.model.remote.container.UserModelContainer
 import co.anitrend.data.user.model.remote.container.UserViewerModelContainer
+import co.anitrend.data.user.settings.IUserSettings
 
 internal class AuthMapper(
+    private val settings: IUserSettings,
     private val userLocalSource: UserLocalSource,
-    private val converter: UserModelConverter = UserModelConverter(),
-    private val generalOptionConverter: UserGeneralOptionModelConverter = UserGeneralOptionModelConverter(),
-    private val mediaOptionConverter: UserMediaOptionModelConverter = UserMediaOptionModelConverter(),
+    private val converter: UserModelConverter,
+    private val generalOptionConverter: UserGeneralOptionModelConverter,
+    private val mediaOptionConverter: UserMediaOptionModelConverter,
 ) : DefaultMapper<UserViewerModelContainer, UserEntity>() {
 
     private var generalOption: UserGeneralOptionEntity? = null
     private var mediaOption: UserMediaOptionEntity? = null
 
-    private fun cleanUp() {
+    private fun persistUserSettings() {
+        generalOption?.also {
+            settings.titleLanguage.value = it.titleLanguage
+        }
+        mediaOption?.also {
+            settings.scoreFormat.value = it.scoreFormat
+        }
         generalOption = null
         mediaOption = null
     }
@@ -56,7 +62,7 @@ internal class AuthMapper(
     override suspend fun persistChanges(data: UserEntity): OutCome<Nothing?> {
         return runCatching {
             userLocalSource.upsertWithOptions(data, generalOption, mediaOption)
-            cleanUp()
+            persistUserSettings()
             OutCome.Pass(null)
         }.getOrElse { OutCome.Fail(listOf(it)) }
     }

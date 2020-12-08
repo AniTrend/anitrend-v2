@@ -28,7 +28,7 @@ private fun SupportSQLiteDatabase.usingTransaction(tag: String, query: String) {
     }.onSuccess {
         setTransactionSuccessful()
     }.onFailure {
-        Timber.tag(tag).w(it)
+        Timber.tag(tag).e(it)
     }
     endTransaction()
 }

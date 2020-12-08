@@ -21,14 +21,15 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.graphQLController
 import co.anitrend.data.arch.extension.db
+import co.anitrend.data.carousel.CarouselInteractor
+import co.anitrend.data.carousel.CarouselRepository
 import co.anitrend.data.carousel.cache.CarouselCache
-import co.anitrend.data.carousel.mapper.CarouselAnimeMapper
-import co.anitrend.data.carousel.mapper.CarouselMangaMapper
+import co.anitrend.data.carousel.mapper.CarouselMapper
 import co.anitrend.data.carousel.repository.CarouselRepositoryImpl
 import co.anitrend.data.carousel.source.CarouselSourceImpl
 import co.anitrend.data.carousel.source.contract.CarouselSource
-import co.anitrend.data.carousel.usecase.CarouselUseCaseContract
 import co.anitrend.data.carousel.usecase.CarouselUseCaseImpl
+import co.anitrend.data.media.converter.MediaEntityConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -36,37 +37,36 @@ private val sourceModule = module {
         CarouselSourceImpl(
             remoteSource = api(EndpointType.GRAPH_QL),
             localSource = db().carouselDao(),
-            cachePolicy = CarouselCache(
-                db().cacheDao()
+            controller = graphQLController(
+                mapper = get<CarouselMapper>()
             ),
-            animeController = graphQLController(
-                mapper = get<CarouselAnimeMapper>()
-            ),
-            mangaController = graphQLController(
-                mapper = get<CarouselMangaMapper>()
-            ),
+            cachePolicy = get<CarouselCache>(),
             clearDataHelper = get(),
-            dispatchers = get()
+            converter = get(),
+            dispatcher = get()
+        )
+    }
+}
+
+private val cacheModule = module {
+    factory {
+        CarouselCache(
+            localSource = db().cacheDao()
         )
     }
 }
 
 private val mapperModule = module {
     factory {
-        CarouselAnimeMapper(
+        CarouselMapper(
             combinedMapper = get(),
             airingMapper = get()
-        )
-    }
-    factory {
-        CarouselMangaMapper(
-            combinedMapper = get()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<CarouselUseCaseContract> {
+    factory<CarouselInteractor> {
         CarouselUseCaseImpl(
             repository = get()
         )
@@ -74,7 +74,7 @@ private val useCaseModule = module {
 }
 
 private val repositoryModule = module {
-    factory {
+    factory<CarouselRepository> {
         CarouselRepositoryImpl(
             source = get()
         )
@@ -83,6 +83,7 @@ private val repositoryModule = module {
 
 internal val carouselModules = listOf(
     sourceModule,
+    cacheModule,
     mapperModule,
     useCaseModule,
     repositoryModule

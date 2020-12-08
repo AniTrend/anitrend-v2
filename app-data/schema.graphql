@@ -240,6 +240,7 @@ type Character {
     isFavourite: Boolean!
     "Media that includes the character"
     media(
+        onList: Boolean,
         "The page"
         page: Int,
         "The amount of entries per page, max 25"
@@ -1114,7 +1115,10 @@ type Media {
     startDate: FuzzyDate
     stats: MediaStats
     "The current releasing status of the media"
-    status: MediaStatus
+    status(
+        "Provide 2 to use new version 2 of sources enum"
+        version: Int
+    ): MediaStatus
     "Data and links to legal streaming episodes on external sites"
     streamingEpisodes: [MediaStreamingEpisode]
     "The companies who produced the media"
@@ -3127,6 +3131,15 @@ type SiteTrendEdge {
 
 "Voice actors or production staff"
 type Staff {
+    "Media the actor voiced characters in. (Same data as characters with media as node instead of characters)"
+    characterMedia(
+        onList: Boolean,
+        "The page"
+        page: Int,
+        "The amount of entries per page, max 25"
+        perPage: Int,
+        sort: [MediaSort]
+    ): MediaConnection
     "Characters voiced by the actor"
     characters(
         "The page"
@@ -3160,6 +3173,7 @@ type Staff {
     staff: Staff
     "Media where the staff member has a production role"
     staffMedia(
+        onList: Boolean,
         "The page"
         page: Int,
         "The amount of entries per page, max 25"
@@ -3264,6 +3278,7 @@ type Studio {
     media(
         "If the studio was the primary animation studio of the media"
         isMain: Boolean,
+        onList: Boolean,
         "The page"
         page: Int,
         "The amount of entries per page, max 25"
@@ -4058,6 +4073,8 @@ enum MediaStatus {
     CANCELLED
     "Has completed and is no longer being released"
     FINISHED
+    "Version 2 only. Is currently paused from releasing and will resume at a later date"
+    HIATUS
     "To be released at a later date"
     NOT_YET_RELEASED
     "Currently releasing"

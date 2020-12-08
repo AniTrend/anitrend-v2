@@ -17,19 +17,19 @@
 
 package co.anitrend.data.carousel.repository
 
-import androidx.lifecycle.asLiveData
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
+import co.anitrend.data.carousel.CarouselRepository
 import co.anitrend.data.carousel.source.contract.CarouselSource
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.repository.MediaCarouselRepository
+import co.anitrend.domain.common.graph.IGraphPayload
 
 
 internal class CarouselRepositoryImpl(
     private val source: CarouselSource
-) : SupportRepository(source), MediaCarouselRepository<DataState<List<MediaCarousel>?>> {
+) : SupportRepository(source), CarouselRepository {
     override fun getMediaCarousel(query: IGraphPayload) =
-        source create source(query).asLiveData()
+        source create source(query)
 }

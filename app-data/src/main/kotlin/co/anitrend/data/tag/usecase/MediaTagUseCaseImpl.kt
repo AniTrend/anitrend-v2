@@ -19,13 +19,14 @@ package co.anitrend.data.tag.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.tag.MediaTagInteractor
 import co.anitrend.data.tag.repository.MediaTagRepository
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.interactor.MediaTagUseCase
 
 internal class MediaTagUseCaseImpl(
     repository: MediaTagRepository
-) : MediaTagUseCaseContract(repository) {
+) : MediaTagInteractor(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop
@@ -35,5 +36,3 @@ internal class MediaTagUseCaseImpl(
         repository.onCleared()
     }
 }
-
-typealias MediaTagUseCaseContract = MediaTagUseCase<DataState<List<Tag>>>

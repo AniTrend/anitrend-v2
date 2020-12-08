@@ -15,12 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.viewmodel
+package co.anitrend.data.carousel
 
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModel
-import co.anitrend.model.ScreenState
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.carousel.model.CarouselModel
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.carousel.interactor.MediaCarouselUseCase
+import co.anitrend.domain.carousel.repository.MediaCarouselRepository
 
-class MainScreenViewModel(screen: FragmentActivity) : ViewModel() {
-    internal val state = ScreenState(screen)
-}
+internal typealias CarouselController = GraphQLController<CarouselModel, List<MediaEntity>>
+
+internal typealias CarouselRepository = MediaCarouselRepository<DataState<List<MediaCarousel>?>>
+
+typealias CarouselInteractor = MediaCarouselUseCase<DataState<List<MediaCarousel>?>>

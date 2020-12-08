@@ -20,17 +20,16 @@ package co.anitrend.data.carousel.mapper
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.carousel.model.CarouselAnimeModel
-import co.anitrend.data.carousel.model.CarouselMangaModel
+import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 
-internal class CarouselAnimeMapper(
+internal class CarouselMapper(
     private val combinedMapper: MediaPagedCombinedMapper,
     private val airingMapper: AiringSchedulePagedMapper,
     private val converter: MediaModelConverter = MediaModelConverter()
-) : DefaultMapper<CarouselAnimeModel, List<MediaEntity>>() {
+) : DefaultMapper<CarouselModel, List<MediaEntity>>() {
 
     /**
      * Inserts the given object into the implemented room database,
@@ -60,44 +59,20 @@ internal class CarouselAnimeMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(
-        source: CarouselAnimeModel
-    ) = (
-            source.airingSoon?.airingSchedules?.mapNotNull { it.media }.orEmpty() +
-            source.allTimePopular?.media.orEmpty() +
-            source.trendingRightNow?.media.orEmpty() +
+    override suspend fun onResponseMapFrom(source: CarouselModel) = when (source) {
+        is CarouselModel.Anime -> (
+            source.airingSoon?.airingSchedules
+                    ?.mapNotNull { it.media }.orEmpty() +
             source.anticipatedNexSeason?.media.orEmpty() +
-            source.popularThisSeason?.media.orEmpty() +
-            source.recentlyAdded?.media.orEmpty()
-    ).map { converter.convertFrom(it) }
-}
-
-internal class CarouselMangaMapper(
-    private val combinedMapper: MediaPagedCombinedMapper,
-    private val converter: MediaModelConverter = MediaModelConverter()
-) : DefaultMapper<CarouselMangaModel, List<MediaEntity>>() {
-
-    /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
-        combinedMapper.onResponseDatabaseInsert(mappedData)
-    }
-
-    /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects,
-     *
-     * @param source the incoming data source type
-     * @return mapped object that will be consumed by [onResponseDatabaseInsert]
-     */
-    override suspend fun onResponseMapFrom(
-        source: CarouselMangaModel
-    ) = (
+            source.popularThisSeason?.media.orEmpty()
+        ).map { converter.convertFrom(it) }
+        is CarouselModel.Manga -> (
+            source.popularManhwa?.media.orEmpty()
+        ).map { converter.convertFrom(it) }
+        is CarouselModel.Core -> (
             source.allTimePopular?.media.orEmpty() +
-            source.popularManhwa?.media.orEmpty() +
             source.recentlyAdded?.media.orEmpty() +
             source.trendingRightNow?.media.orEmpty()
-    ).map { converter.convertFrom(it) }
+        ).map { converter.convertFrom(it) }
+    }
 }

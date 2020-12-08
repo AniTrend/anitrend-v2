@@ -18,28 +18,37 @@
 package co.anitrend.data.genre.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.empty
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.domain.genre.entity.Genre
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaGenreSource(
-    supportDispatchers: SupportDispatchers
-) : SupportCoreDataSource(supportDispatchers) {
+    private val cachePolicy: ICacheStorePolicy,
+    dispatcher: ISupportDispatcher
+) : SupportCoreDataSource(dispatcher) {
 
-    protected abstract val observable: Flow<List<Genre>>
+    protected abstract fun observable(): Flow<List<Genre>>
 
-    protected abstract suspend fun getGenres(callback: RequestCallback)
+    protected abstract suspend fun getGenres(callback: RequestCallback): Boolean
 
     internal operator fun invoke(): Flow<List<Genre>> {
-        launch(coroutineContext, CoroutineStart.LAZY) {
+        launch {
             requestHelper.runIfNotRunning(
-                IRequestHelper.RequestType.INITIAL
-            ) { getGenres(it) }
+                Request.Default(String.empty(), Request.Type.INITIAL)
+            ) {
+                if (cachePolicy.shouldRefresh(GenreCache.ID)) {
+                    val success = getGenres(it)
+                    if (success)
+                        cachePolicy.updateLastRequest(GenreCache.ID)
+                }
+            }
         }
-        return observable
+        return observable()
     }
 }

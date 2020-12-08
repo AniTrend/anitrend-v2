@@ -15,26 +15,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.api.converter.response
+package co.anitrend.data.review
 
-import com.google.gson.Gson
-import okhttp3.ResponseBody
-import retrofit2.Converter
-import java.lang.reflect.Type
-
-/**
- * GraphQL response body converter to unwrap nested object results,
- * resulting in a smaller generic tree for requests
- */
-internal class AniGraphResponseConverter<T>(
-    private val type: Type?,
-    private val gson: Gson
-) : Converter<ResponseBody, T> {
-
-    override fun convert(value: ResponseBody): T? {
-        val response: T?
-        val responseString = value.string()
-        response = gson.fromJson<T>(responseString, type)
-        return response
-    }
-}
