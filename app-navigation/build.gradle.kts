@@ -27,4 +27,6 @@ dependencies {
     implementation(Libraries.Koin.extension)
     implementation(Libraries.Koin.AndroidX.fragment)
     testImplementation(Libraries.Koin.test)
+
+    implementation(Libraries.AndroidX.Work.runtimeKtx)
 }

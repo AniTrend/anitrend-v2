@@ -28,5 +28,4 @@ internal class NavigationTargetsTest {
     fun setUp() {
 
     }
-
 }

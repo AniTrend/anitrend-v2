@@ -18,6 +18,7 @@
 package co.anitrend.navigation
 
 import androidx.fragment.app.Fragment
+import androidx.work.ListenableWorker
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
 import org.koin.core.component.inject
@@ -63,6 +64,7 @@ object AboutRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider
 }
+
 
 object AuthRouter : NavigationRouter() {
     override val provider by inject<Provider>()
@@ -124,4 +126,44 @@ object UpdaterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+}
+
+object GenreTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun worker(): Class<out ListenableWorker>
+
+        companion object {
+            fun GenreTaskRouter.forWorker() = provider.worker()
+        }
+    }
+}
+
+object TagTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun worker(): Class<out ListenableWorker>
+
+        companion object {
+            fun TagTaskRouter.forWorker() = provider.worker()
+        }
+    }
+}
+
+object UserTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun followWorker(): Class<out ListenableWorker>
+        fun messageWorker(): Class<out ListenableWorker>
+        fun statisticsWorker(): Class<out ListenableWorker>
+
+        companion object {
+            fun UserTaskRouter.forFollowWorker() = provider.followWorker()
+            fun UserTaskRouter.forMessageWorker() = provider.messageWorker()
+            fun UserTaskRouter.forStatisticsWorker() = provider.statisticsWorker()
+        }
+    }
 }
