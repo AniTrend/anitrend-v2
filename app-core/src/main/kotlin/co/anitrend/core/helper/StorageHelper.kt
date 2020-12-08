@@ -39,7 +39,6 @@ object StorageHelper {
     private fun cacheDirectory(context: Context) =
         context.externalCacheDir ?: context.cacheDir
 
-
     fun getLogsCache(context: Context): File {
         val cache = cacheDirectory(context)
         val logs = File(cache, logsName)
@@ -87,7 +86,7 @@ object StorageHelper {
 
     fun getStorageUsageLimit(context: Context, settings: ICacheSettings): Long {
         val freeSpace = getFreeSpace(context)
-        val ratio = settings.usageRatio
+        val ratio = settings.cacheUsageRatio.value
         val limit = (freeSpace * ratio).toLong()
         Timber.tag(moduleTag).v(
             "Storage usage limit -> ratio: $ratio | limit: ${limit.toHumanReadableByteValue()}"
