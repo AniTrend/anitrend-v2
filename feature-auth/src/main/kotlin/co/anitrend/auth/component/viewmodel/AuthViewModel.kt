@@ -20,14 +20,20 @@ package co.anitrend.auth.component.viewmodel
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.model.Authentication
 import co.anitrend.data.auth.helper.*
-import co.anitrend.data.auth.usecase.AuthUseCaseContract
 import timber.log.Timber
 
-class AuthViewModel(val state: AuthState) : ViewModel() {
+class AuthViewModel(
+    val state: AuthState
+) : ViewModel() {
+
+    init {
+        state.context = viewModelScope.coroutineContext
+    }
 
     fun onIntentData(context: Context, data: Uri?) {
         if (data == null)

@@ -27,19 +27,12 @@ sealed class Authentication {
         val expiresIn: Long
     ): Authentication()
 
-    class Authenticated(
-        val user: User
-    ): Authentication()
-
     class Error(
         val title: String,
         val message: String
     ): Authentication()
 
-    class Pending(
-        authenticationType: AuthenticationType
-    ): Authentication()
-
-
-    object Idle: Authentication()
+    object Pending : Authentication()
+    
+    object Idle : Authentication()
 }

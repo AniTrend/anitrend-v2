@@ -46,8 +46,8 @@ class AuthPresenter(
 ) : CorePresenter(context, settings) {
 
     fun useAnonymousAccount(activity: FragmentActivity) {
-        settings.isAuthenticated = false
-        settings.authenticatedUserId = IAuthenticationSettings.INVALID_USER_ID
+        settings.isAuthenticated.value = false
+        settings.authenticatedUserId.value = IAuthenticationSettings.INVALID_USER_ID
         activity.finish()
     }
 
@@ -61,7 +61,7 @@ class AuthPresenter(
         customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN))
 
-        viewModelState.authenticationFlow.value = Authentication.Pending(AuthenticationType.TOKEN)
+        viewModelState.authenticationFlow.value = Authentication.Pending
     }
 
     fun onStateChange(authentication: Authentication, state: AuthState, stateLayout: SupportStateLayout) {

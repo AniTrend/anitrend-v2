@@ -25,13 +25,17 @@ import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.auth.model.Authentication
 import co.anitrend.data.auth.action.AuthAction
-import co.anitrend.data.auth.usecase.AuthUseCaseContract
+import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 
 class AuthState(
-    private val useCase: AuthUseCaseContract
+    private val useCase: AuthUserInteractor
 ) : ISupportViewModelState<User> {
+
+    var context by Delegates.notNull<CoroutineContext>()
 
     val authenticationFlow =
         MutableStateFlow<Authentication>(Authentication.Idle)
@@ -39,13 +43,13 @@ class AuthState(
     private val useCaseResult = MutableLiveData<DataState<User?>>()
 
     override val model: LiveData<User?> =
-        Transformations.switchMap(useCaseResult) { it.model }
+        Transformations.switchMap(useCaseResult) { it.model.asLiveData(context) }
 
     override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData() }
+        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }
 
     override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData() }
+        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData(context) }
 
     operator fun invoke(authenticating: Authentication.Authenticating) {
         val result = useCase.getAuthenticatedUser(
