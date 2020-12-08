@@ -39,18 +39,10 @@ object Libraries {
 
     const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
 
-    /**
-     * Using Jitpack until AndroidX migration is out.
-     * See https://github.com/openid/AppAuth-Android/pull/508
-     *
-     * https://jitpack.io/#openid/AppAuth-Android
-     */
-    const val appAuth = "com.github.openid:AppAuth-Android:master-SNAPSHOT"
-
     object Android {
 
         object Tools {
-            private const val version = "4.1.0"
+            private const val version = "4.1.1"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -58,7 +50,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-beta01"
+            private const val version = "1.2.0-beta02"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
@@ -70,7 +62,7 @@ object Libraries {
         }
 
         object Browser {
-            private const val version = "1.3.0-beta01"
+            private const val version = "1.3.0"
             const val browser = "androidx.browser:browser:$version"
         }
 
@@ -111,7 +103,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.5.0-alpha04"
+            private const val version = "1.5.0-alpha05"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -123,7 +115,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.0.3"
+            private const val version = "2.1.0-alpha1"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -140,7 +132,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.0-beta01"
+            private const val version = "1.3.0-beta02"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -235,9 +227,13 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-alpha06"
+            private const val version = "1.2.0-beta01"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
-            const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
+
+            object Selection {
+                private const val version = "1.1.0-rc03"
+                const val selection = "androidx.recyclerview:recyclerview-selection:$version"
+            }
         }
 
         object Room {
@@ -283,7 +279,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.5.0-beta01"
+            private const val version = "2.5.0-beta02"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
@@ -293,7 +289,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "978c0eaa33"
+            private const val version = "a73b564e05"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -343,28 +339,12 @@ object Libraries {
             private const val version = "0.1.0-alpha01"
             const val plugin = "com.github.anitrend:support-sync-plugin:${version}"
         }
-
-        object Task {
-            const val character = ":$taskCharacter"
-            const val forum = ":$taskForum"
-            const val media = ":$taskMedia"
-            const val recommendation = ":$taskRecommendation"
-            const val review = ":$taskReview"
-            const val staff = ":$taskStaff"
-            const val user = ":$taskUser"
-            const val episode = ":$taskEpisode"
-            const val news = ":$taskNews"
-            const val feed = ":$taskFeed"
-            const val studio = ":$taskStudio"
-            const val genre = ":$taskGenre"
-            const val tag = ":$taskTag"
-        }
     }
 
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.4.4"
+            private const val version = "3.5.0"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
@@ -394,20 +374,20 @@ object Libraries {
         }
 
         object Turbine {
-            private const val version = "0.2.1"
+            private const val version = "0.3.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
 
     object Chuncker {
-        private const val version = "3.3.0"
+        private const val version = "3.4.0"
 
         const val debug = "com.github.ChuckerTeam.Chucker:library:$version"
         const val release = "com.github.ChuckerTeam.Chucker:library-no-op:$version"
     }
 
     object Coil {
-        private const val version = "1.0.0"
+        private const val version = "1.1.0"
         const val coil = "io.coil-kt:coil:$version"
         const val base = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
@@ -416,14 +396,14 @@ object Libraries {
     }
 
     object Dropbox {
-        private const val version = "4.0.0-beta01"
+        private const val version = "4.0.0"
         const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
     object Google {
 
         object Exo {
-            private const val version = "r2.12.1"
+            private const val version = "2.12.2"
             const val workManager = "com.google.android.exoplayer:extension-workmanager:$version"
             const val okHttp = "com.google.android.exoplayer:extension-okhttp:$version"
             const val core = "com.google.android.exoplayer:extension-core:$version"
@@ -443,11 +423,11 @@ object Libraries {
             }
 
             object Crashlytics {
-                private const val version = "17.2.2"
+                private const val version = "17.3.0"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.3.0"
+                    private const val version = "2.4.1"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -459,7 +439,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.3.0-alpha03"
+            private const val version = "1.3.0-alpha04"
             const val material = "com.google.android.material:material:$version"
         }
 
@@ -477,12 +457,12 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "0.10.1"
+            private const val version = "1.4.20"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 
         object Kotlin {
-            private const val version = "1.4.10"
+            private const val version = "1.4.21"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -501,7 +481,7 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.4.0"
+                private const val version = "1.4.2"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -515,7 +495,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.2.0-rc-3"
+        private const val version = "2.2.1"
         const val core = "org.koin:koin-core:$version"
         const val extension = "org.koin:koin-core-ext:$version"
         const val test = "org.koin:koin-test:$version"
@@ -586,7 +566,7 @@ object Libraries {
         }
 
         object WorkFlow {
-            private const val version = "0.28.0"
+            private const val version = "1.0.0-alpha08"
             const val coreJvm = "com.squareup.workflow:workflow-core-jvm:$version"
             const val coreAndroid = "com.squareup.workflow:workflow-ui-core-android:$version"
             const val modalAndroid = "com.squareup.workflow:workflow-ui-modal-android:$version"
