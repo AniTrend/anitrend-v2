@@ -18,12 +18,13 @@
 package co.anitrend.data.core
 
 import android.content.ContentResolver
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
-import com.google.gson.Gson
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -31,8 +32,6 @@ import org.koin.core.KoinApplication
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import java.io.InputStreamReader
-import kotlin.reflect.jvm.javaType
-import kotlin.reflect.typeOf
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -45,10 +44,10 @@ internal open class CoreTestSuite : KoinTest {
     private val koin: KoinApplication by lazy { initializeKoin() }
 
     protected val json by inject<Json>()
+    protected val server = MockWebServer()
     protected val store by inject<IAniTrendStore>()
-    protected val dispatchers by inject<SupportDispatchers>()
+    protected val dispatchers by inject<ISupportDispatcher>()
     protected val contentResolver by inject<ContentResolver>()
-
 
     @Before
     fun startUp() {
@@ -70,11 +69,7 @@ internal open class CoreTestSuite : KoinTest {
         val resource = source.getResourceAsStream("templates/${this}")
         assertNotNull(resource)
         val result: T? = InputStreamReader(resource).use {
-            //val typeToken = object : TypeToken<T>(){}.type
-            Gson().fromJson<T>(
-                it.readText(),
-                typeOf<T>().javaType
-            )
+            json.decodeFromString(it.readText())
         }
         assertNotNull(result)
         return result
