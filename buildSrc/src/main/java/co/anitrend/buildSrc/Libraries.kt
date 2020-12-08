@@ -339,28 +339,12 @@ object Libraries {
             private const val version = "0.1.0-alpha01"
             const val plugin = "com.github.anitrend:support-sync-plugin:${version}"
         }
-
-        object Task {
-            const val character = ":$taskCharacter"
-            const val forum = ":$taskForum"
-            const val media = ":$taskMedia"
-            const val recommendation = ":$taskRecommendation"
-            const val review = ":$taskReview"
-            const val staff = ":$taskStaff"
-            const val user = ":$taskUser"
-            const val episode = ":$taskEpisode"
-            const val news = ":$taskNews"
-            const val feed = ":$taskFeed"
-            const val studio = ":$taskStudio"
-            const val genre = ":$taskGenre"
-            const val tag = ":$taskTag"
-        }
     }
 
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.4.4"
+            private const val version = "3.5.0"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
