@@ -39,14 +39,6 @@ object Libraries {
 
     const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
 
-    /**
-     * Using Jitpack until AndroidX migration is out.
-     * See https://github.com/openid/AppAuth-Android/pull/508
-     *
-     * https://jitpack.io/#openid/AppAuth-Android
-     */
-    const val appAuth = "com.github.openid:AppAuth-Android:master-SNAPSHOT"
-
     object Android {
 
         object Tools {
