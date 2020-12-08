@@ -17,10 +17,10 @@
 
 package co.anitrend.component.viewmodel
 
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import co.anitrend.model.ScreenState
 
-class MainScreenViewModel(screen: FragmentActivity) : ViewModel() {
-    internal val state = ScreenState(screen)
+class MainScreenViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+    internal val state = ScreenState(savedStateHandle)
 }

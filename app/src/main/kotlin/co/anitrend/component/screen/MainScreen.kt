@@ -23,33 +23,32 @@ import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
-import androidx.savedstate.SavedStateRegistry
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
-import co.anitrend.core.component.screen.AnitrendScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.core.ui.inject
-import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
-import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
+import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.extensions.orEmpty
+import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.inject
+import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.databinding.MainScreenBinding
 import co.anitrend.navigation.*
+import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
 import co.anitrend.navigation.MediaRouter.Provider.Companion.forDiscover
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.extensions.forFragment
+import co.anitrend.navigation.extensions.startActivity
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 class MainScreen : AnitrendScreen<MainScreenBinding>() {
@@ -66,21 +65,21 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             drawerFragmentItem.tag()
         ) as? BottomDrawerContent
 
-    private val viewModel by viewModel<MainScreenViewModel> {
-        parametersOf(this)
-    }
+    private val viewModel by viewModel<MainScreenViewModel>(
+        state = { intent.extras.orEmpty() }
+    )
 
     private val presenter by inject<MainPresenter>()
 
-    private val showHideFabStateAction by lazy {
+    private val showHideFabStateAction by lazy(UNSAFE) {
         ShowHideFabStateAction(
             requireBinding().floatingShortcutButton
         )
     }
 
-    private val changeSettingsMenuStateAction by lazy {
+    private val changeSettingsMenuStateAction by lazy(UNSAFE) {
         ChangeSettingsMenuStateAction { showSettings ->
-            // Toggle between the current destination's BAB menu and the menu which should
+            // Toggle between the current destination's FAB menu and the menu which should
             // be displayed when the BottomNavigationDrawer is open.
             binding?.bottomAppBar?.replaceMenu(
                 if (showSettings) R.menu.drawer_menu
@@ -114,7 +113,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         requireBinding().mainCoordinator.setOnClickListener {
             navigationDrawer?.dismiss()
         }
-        onNavigate(viewModel.state.selectedItem)
+        navigateToUsing(viewModel.state.selectedItem)
     }
 
     private fun onUpdateUserInterface() {
@@ -142,16 +141,6 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             )
         }
         onUpdateUserInterface()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.state.onSaveInstanceState(outState)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        viewModel.state.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -192,6 +181,38 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     }
 
     /**
+     * This method is called after [onStart] when the activity is
+     * being re-initialized from a previously saved state, given here in
+     * [savedInstanceState].  Most implementations will simply use [onCreate]
+     * to restore their state, but it is sometimes convenient to do it here
+     * after all of the initialization has been done or to allow subclasses to
+     * decide whether to use your default implementation.  The default
+     * implementation of this method performs a restore of any view state that
+     * had previously been frozen by [onSaveInstanceState].
+     *
+     * This method is called between [onStart] and
+     * [onPostCreate]. This method is called only when recreating
+     * an activity; the method isn't invoked if [onStart] is called for
+     * any other reason.
+     *
+     * @param savedInstanceState the data most recently supplied in [onSaveInstanceState].
+     *
+     * @see onCreate
+     * @see onPostCreate
+     * @see onResume
+     * @see onSaveInstanceState
+     */
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        viewModel.state.onRestoreInstanceState(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        viewModel.state.onSaveInstanceState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    /**
      * Dispatch onPause() to fragments.
      */
     override fun onPause() {
@@ -209,6 +230,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         super.onResume()
         navigationDrawer?.addOnStateChangedAction(showHideFabStateAction)
         navigationDrawer?.addOnStateChangedAction(changeSettingsMenuStateAction)
+        navigationDrawer?.setCheckedItem(viewModel.state.selectedItem)
     }
 
     override fun onDestroy() {
@@ -217,25 +239,18 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         super.onDestroy()
     }
 
-    private fun applyNavigationDecorations(menu: Navigation.Menu) {
-        viewModel.state.selectedItem = menu.id
-        requireBinding().bottomAppBar.setTitle(
-            viewModel.state.selectedTitle
-        )
-        navigationDrawer?.dismiss()
-    }
-
     private fun onNavigationItemSelected(menu: Navigation.Menu) {
         if (viewModel.state.selectedItem != menu.id) {
+            navigateToUsing(menu.id)
             if (menu.isCheckable) {
-                onNavigate(menu.id)
-                applyNavigationDecorations(menu)
-            } else
-                onNavigate(menu.id)
+                supportActionBar?.setTitle(viewModel.state.selectedTitle)
+                viewModel.state.selectedItem = menu.id
+                navigationDrawer?.dismiss()
+            }
         }
     }
 
-    private fun onNavigate(@IdRes menuId: Int) {
+    private fun navigateToUsing(@IdRes menuId: Int) {
         val fragmentItem = when (menuId) {
             R.id.navigation_home -> {
                 viewModel.state.selectedTitle = R.string.navigation_home
@@ -285,6 +300,8 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             else -> null
         }
 
-        launch { attachSelectedNavigationItem(fragmentItem) }
+        lifecycleScope.launch {
+            attachSelectedNavigationItem(fragmentItem)
+        }
     }
 }

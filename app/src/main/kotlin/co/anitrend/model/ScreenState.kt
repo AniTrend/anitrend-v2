@@ -20,27 +20,30 @@ package co.anitrend.model
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.SavedStateHandle
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.android.state.IScreenState
 
-internal class ScreenState(screen: FragmentActivity) : IScreenState {
-    private val uiRedirection by screen.extra(ARG_KEY_REDIRECT, R.id.navigation_home)
+internal class ScreenState(
+    private val savedStateHandle: SavedStateHandle
+) : IScreenState {
 
-    @IdRes var selectedItem: Int = uiRedirection ?: R.id.navigation_home
+    private val uiRedirection by savedStateHandle.extra(ARG_KEY_REDIRECT, R.id.navigation_home)
+
+    @IdRes var selectedItem: Int = uiRedirection
     @StringRes var selectedTitle: Int = R.string.navigation_home
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(ARG_KEY_SELECTED_ITEM, selectedItem)
-        outState.putInt(ARG_KEY_SELECTED_TITLE, selectedTitle)
+        savedStateHandle.set(ARG_KEY_SELECTED_ITEM, selectedItem)
+        savedStateHandle.set(ARG_KEY_SELECTED_TITLE, selectedTitle)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        if (savedInstanceState.containsKey(ARG_KEY_SELECTED_ITEM))
-            selectedItem = savedInstanceState.getInt(ARG_KEY_SELECTED_ITEM)
-        if (savedInstanceState.containsKey(ARG_KEY_SELECTED_TITLE))
-            selectedTitle = savedInstanceState.getInt(ARG_KEY_SELECTED_TITLE)
+        if (savedStateHandle.contains(ARG_KEY_SELECTED_ITEM))
+            selectedItem = savedStateHandle.get<Int>(ARG_KEY_SELECTED_ITEM)!!
+        if (savedStateHandle.contains(ARG_KEY_SELECTED_TITLE))
+            selectedTitle = savedStateHandle.get<Int>(ARG_KEY_SELECTED_TITLE)!!
     }
 
     companion object {
