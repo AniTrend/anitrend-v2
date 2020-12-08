@@ -279,7 +279,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.5.0-beta01"
+            private const val version = "2.5.0-beta02"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
