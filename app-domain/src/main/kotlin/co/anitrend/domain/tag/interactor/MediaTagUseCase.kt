@@ -28,5 +28,5 @@ abstract class MediaTagUseCase<R: UiState<*>>(
     /**
      * @return media tags user interface state
      */
-    fun invoke() = repository.getMediaTags()
+    fun getMediaTags() = repository.getMediaTags()
 }
