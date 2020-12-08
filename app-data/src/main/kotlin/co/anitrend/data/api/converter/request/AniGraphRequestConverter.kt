@@ -24,7 +24,7 @@ import com.google.gson.Gson
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.request.GraphRequestConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -42,7 +42,8 @@ internal class AniRequestConverter(
      */
     @AniTrendExperimentalFeature
     override fun convert(containerBuilder: QueryContainerBuilder): RequestBody {
-        val query = graphProcessor.getQuery(methodAnnotations)?.minify(BuildConfig.DEBUG)
+        // we need structured line numbers if we're in the debug env otherwise we can minify queries
+        val query = graphProcessor.getQuery(methodAnnotations)?.minify(!BuildConfig.DEBUG)
         val queryContainer = containerBuilder.setQuery(query).build()
 
         val queryJson = gson.toJson(queryContainer)
@@ -50,6 +51,6 @@ internal class AniRequestConverter(
     }
 
     companion object {
-        internal val MIME_TYPE = "application/json".toMediaTypeOrNull()
+        internal val MIME_TYPE = "application/json".toMediaType()
     }
 }
