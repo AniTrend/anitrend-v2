@@ -20,14 +20,13 @@ package co.anitrend.core.settings
 import android.content.Context
 import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
-import co.anitrend.arch.extension.settings.BooleanSetting
-import co.anitrend.arch.extension.settings.EnumSetting
-import co.anitrend.arch.extension.settings.IntSetting
-import co.anitrend.arch.extension.settings.LongSetting
+import co.anitrend.arch.extension.settings.*
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.R
 import co.anitrend.core.android.settings.connectivity.IConnectivitySettings
 import co.anitrend.core.android.settings.power.IPowerSettings
 import co.anitrend.core.settings.common.IConfigurationSettings
+import co.anitrend.core.settings.common.cache.ICacheSettings
 import co.anitrend.core.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.settings.common.customize.common.PreferredViewMode
 import co.anitrend.core.settings.common.locale.ILocaleSettings
@@ -39,98 +38,121 @@ import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.user.enums.UserTitleLanguage
 
 class Settings(context: Context) : SupportPreference(context),
     IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
     ISortOrderSettings, IRefreshBehaviourSettings, ICustomizationSettings,
-    IPowerSettings, IConnectivitySettings {
+    IPowerSettings, IConnectivitySettings, IUserSettings, ICacheSettings {
 
     override val locale = EnumSetting(
-        R.string.settings_configuration_locale,
-        AniTrendLocale.AUTOMATIC,
-        context.resources,
-        this
+        key = R.string.settings_configuration_locale,
+        default = AniTrendLocale.AUTOMATIC,
+        resources = context.resources,
+        preference = this
     )
 
     override val theme = EnumSetting(
-        R.string.settings_configuration_theme,
-        AniTrendTheme.SYSTEM,
-        context.resources,
-        this
+        key = R.string.settings_configuration_theme,
+        default = AniTrendTheme.SYSTEM,
+        resources = context.resources,
+        preference = this
     )
 
     override val isAnalyticsEnabled = BooleanSetting(
-        R.string.settings_privacy_usage_analytics,
-        false,
-        context.resources,
-        this
+        key = R.string.settings_privacy_usage_analytics,
+        default = false,
+        resources = context.resources,
+        preference = this
     )
 
     override val isCrashlyticsEnabled = BooleanSetting(
-        R.string.settings_privacy_crash_analytics,
-        true,
-        context.resources,
-        this
+        key = R.string.settings_privacy_crash_analytics,
+        default = true,
+        resources = context.resources,
+        preference = this
     )
 
     override val authenticatedUserId = LongSetting(
-        R.string.settings_authentication_id,
-        INVALID_USER_ID,
-        context.resources,
-        this
+        key = R.string.settings_authentication_id,
+        default = INVALID_USER_ID,
+        resources = context.resources,
+        preference = this
     )
 
     override val isAuthenticated = BooleanSetting(
-        R.string.settings_is_authenticated,
-        false,
-        context.resources,
-        this
+        key = R.string.settings_is_authenticated,
+        default = false,
+        resources = context.resources,
+        preference = this
     )
 
     override val isSortOrderDescending = BooleanSetting(
-        R.string.settings_is_sort_order_desc,
-        true,
-        context.resources,
-        this
+        key = R.string.settings_is_sort_order_desc,
+        default = true,
+        resources = context.resources,
+        preference = this
     )
 
     override val isNewInstallation = BooleanSetting(
-        R.string.settings_is_new_installation,
-        true,
-        context.resources,
-        this
+        key = R.string.settings_is_new_installation,
+        default = true,
+        resources = context.resources,
+        preference = this
     )
 
     override val versionCode = IntSetting(
-        R.string.settings_version_code,
-        1,
-        context.resources,
-        this
+        key = R.string.settings_version_code,
+        default = 1,
+        resources = context.resources,
+        preference = this
     )
 
     override val clearDataOnSwipeRefresh = BooleanSetting(
-        R.string.settings_clear_on_swipe_refresh,
-        true,
-        context.resources,
-        this
+        key = R.string.settings_clear_on_swipe_refresh,
+        default = true,
+        resources = context.resources,
+        preference = this
     )
 
     override val preferredViewMode = EnumSetting(
-        R.string.settings_view_mode_preferred,
-        PreferredViewMode.GRID_LIST,
-        context.resources,
-        this
+        key = R.string.settings_view_mode_preferred,
+        default = PreferredViewMode.GRID_LIST,
+        resources = context.resources,
+        preference = this
     )
 
     override val isDataSaverOn = BooleanSetting(
-        R.string.settings_data_saver,
-        false,
-        context.resources,
-        this
+        key = R.string.settings_data_saver,
+        default = false,
+        resources = context.resources,
+        preference = this
+    )
+
+    override val titleLanguage = EnumSetting(
+        key = R.string.settings_user_title_language,
+        default = UserTitleLanguage.ROMAJI,
+        resources = context.resources,
+        preference = this
+    )
+
+    override val scoreFormat = EnumSetting(
+        key = R.string.settings_user_score_format,
+        default = ScoreFormat.POINT_10_DECIMAL,
+        resources = context.resources,
+        preference = this
+    )
+
+    override val cacheUsageRatio = FloatSetting(
+        key = R.string.settings_cache_usage_ratio,
+        default = ICacheSettings.MINIMUM_CACHE_LIMIT,
+        resources = context.resources,
+        preference = this
     )
 
     companion object {
-
         /**
          * Binding types for [Settings]
          */
@@ -139,7 +161,9 @@ class Settings(context: Context) : SupportPreference(context),
             ILocaleSettings::class, IThemeSettings::class,
             IAuthenticationSettings::class, IPrivacySettings::class,
             ISortOrderSettings::class, IRefreshBehaviourSettings::class,
-            ICustomizationSettings::class, IPowerSettings::class, IConnectivitySettings::class
+            ICustomizationSettings::class, IPowerSettings::class,
+            IConnectivitySettings::class, IUserSettings::class,
+            ICacheSettings::class
         )
     }
 }
