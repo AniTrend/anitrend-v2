@@ -23,9 +23,8 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
-import co.anitrend.core.android.controller.contract.PowerController
-import co.anitrend.core.android.controller.contract.SaveData
-import co.anitrend.core.android.controller.contract.SaveDataReason
+import co.anitrend.core.android.controller.contract.IPowerController
+import co.anitrend.core.android.controller.contract.PowerSaverState
 import co.anitrend.core.android.flowOfBroadcast
 import co.anitrend.core.android.settings.connectivity.IConnectivitySettings
 import kotlinx.coroutines.flow.Flow
@@ -33,48 +32,55 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
 
+/**
+ * Android platform power management controller
+ */
 class AndroidPowerController(
     private val context: Context,
     private val powerManager: PowerManager?,
     private val connectivityManager: ConnectivityManager?,
     private val connectivitySettings: IConnectivitySettings
-) : PowerController {
+) : IPowerController {
 
-    override fun shouldSaveDataFlow(ignorePreference: Boolean): Flow<SaveData> {
+    override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> {
         return when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
                 merge(
-                    context.flowOfBroadcast(IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)),
-                    context.flowOfBroadcast(IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED))
+                    context.flowOfBroadcast(
+                        IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
+                    ),
+                    context.flowOfBroadcast(
+                        IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED)
+                    )
                 ).map {
-                    shouldSaveData()
+                    powerSaverState()
                 }.onStart {
-                    emit(shouldSaveData())
+                    emit(powerSaverState())
                 }
             }
             else -> {
                 context.flowOfBroadcast(
                     IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
                 ).map {
-                    shouldSaveData()
+                    powerSaverState()
                 }.onStart {
-                    emit(shouldSaveData())
+                    emit(powerSaverState())
                 }
             }
         }
     }
 
-    override fun shouldSaveData(): SaveData = when {
-        connectivitySettings.isDataSaverOn -> {
-            SaveData.Enabled(SaveDataReason.PREFERENCE)
+    override fun powerSaverState(): PowerSaverState = when {
+        connectivitySettings.isDataSaverOn.value -> {
+            PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
         }
         powerManager?.isPowerSaveMode == true -> {
-            SaveData.Enabled(SaveDataReason.SYSTEM_POWER_SAVER)
+            PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_POWER_SAVER)
         }
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isBackgroundDataRestricted() -> {
-            SaveData.Enabled(SaveDataReason.SYSTEM_DATA_SAVER)
+            PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
         }
-        else -> SaveData.Disabled
+        else -> PowerSaverState.Disabled
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

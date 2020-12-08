@@ -22,20 +22,23 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Power management controller
  */
-interface PowerController {
-    fun shouldSaveDataFlow(
+interface IPowerController {
+    fun powerSaverStateFlow(
         ignorePreference: Boolean
-    ): Flow<SaveData>
-    fun shouldSaveData(): SaveData
+    ): Flow<PowerSaverState>
+
+    fun powerSaverState(): PowerSaverState
 }
 
-sealed class SaveData {
-    object Disabled : SaveData()
+sealed class PowerSaverState {
+    object Disabled : PowerSaverState()
     data class Enabled(
-        val reason: SaveDataReason
-    ) : SaveData()
-}
+        val reason: Reason
+    ) : PowerSaverState()
 
-enum class SaveDataReason {
-    PREFERENCE, SYSTEM_DATA_SAVER, SYSTEM_POWER_SAVER
+    enum class Reason {
+        PREFERENCE,
+        SYSTEM_DATA_SAVER,
+        SYSTEM_POWER_SAVER
+    }
 }
