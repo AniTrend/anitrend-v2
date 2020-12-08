@@ -40,10 +40,9 @@ class InjectorInitializer : AbstractInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val logLevel = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
         startKoin {
             androidContext(context)
-            logger(KoinLogger(logLevel))
+            logger(KoinLogger())
             workManagerFactory()
             fragmentFactory()
             modules(coreModules)
@@ -61,11 +60,11 @@ class InjectorInitializer : AbstractInitializer<Unit>() {
             listOf(TimberInitializer::class.java)
 
     internal class KoinLogger(
-        logLevel: Level
+        logLevel: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
     ) : Logger(logLevel) {
         override fun log(level: Level, msg: MESSAGE) {
             when (level) {
-                Level.DEBUG -> Timber.tag(KOIN_TAG).v(msg)
+                Level.DEBUG -> Timber.tag(KOIN_TAG).d(msg)
                 Level.INFO -> Timber.tag(KOIN_TAG).i(msg)
                 Level.ERROR -> Timber.tag(KOIN_TAG).e(msg)
                 Level.NONE -> { /* logging disabled */ }
