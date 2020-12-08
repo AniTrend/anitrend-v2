@@ -18,7 +18,11 @@
 package co.anitrend.data.arch.controller.strategy.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.data.arch.network.model.NetworkMessage
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 /**
  * Contract for controller strategy
@@ -27,6 +31,32 @@ internal abstract class ControllerStrategy<D> {
 
     protected val moduleTag: String = javaClass.simpleName
     protected abstract val networkMessage: NetworkMessage
+
+    /**
+     * Creates human readable exceptions from a given exception
+     */
+    protected fun Throwable.generateForError() = when (this) {
+        is SocketTimeoutException -> {
+            RequestError(
+                networkMessage.connectivityErrorTittle,
+                networkMessage.connectivityErrorMessage,
+                cause
+            )
+        }
+        is HttpException -> {
+            // TODO: inspect a range of error codes and provide the user with an appropriate message
+            RequestError(
+                networkMessage.unrecoverableErrorTittle,
+                message,
+                cause
+            )
+        }
+        else -> RequestError(
+            networkMessage.unrecoverableErrorTittle,
+            message,
+            cause
+        )
+    }
 
     /**
      * Execute a task under an implementation strategy
