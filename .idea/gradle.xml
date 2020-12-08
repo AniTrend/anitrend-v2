@@ -53,12 +53,14 @@
             <option value="$PROJECT_DIR$/task-episode" />
             <option value="$PROJECT_DIR$/task-feed" />
             <option value="$PROJECT_DIR$/task-forum" />
+            <option value="$PROJECT_DIR$/task-genre" />
             <option value="$PROJECT_DIR$/task-media" />
             <option value="$PROJECT_DIR$/task-news" />
             <option value="$PROJECT_DIR$/task-recommendation" />
             <option value="$PROJECT_DIR$/task-review" />
             <option value="$PROJECT_DIR$/task-staff" />
             <option value="$PROJECT_DIR$/task-studio" />
+            <option value="$PROJECT_DIR$/task-tag" />
             <option value="$PROJECT_DIR$/task-user" />
           </set>
         </option>
