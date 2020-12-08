@@ -24,14 +24,17 @@ import org.koin.core.module.Module
 import timber.log.Timber
 
 /**
- * Module loader helper for dynamic features
+ * Module loader helper for dynamic features which is lifecycle aware
+ *
+ * @param modules A list of modules which need to be loaded
+ * @param unloadOnDestroy If the registered module need to be unloaded on lifecycle destroy
  */
 class DynamicFeatureModuleHelper(
     private val modules: List<Module>,
     private val unloadOnDestroy: Boolean = false
 ) : SupportLifecycle {
 
-    override val moduleTag = DynamicFeatureModuleHelper::class.java.simpleName
+    override val moduleTag: String = javaClass.simpleName
 
     /**
      * Triggered when the lifecycleOwner reaches it's onCreate state
@@ -62,7 +65,14 @@ class DynamicFeatureModuleHelper(
     }
 
     companion object {
+        /**
+         * load Koin modules in global Koin context
+         */
         fun DynamicFeatureModuleHelper.loadModules() = loadKoinModules(modules)
+
+        /**
+         * unload Koin modules from global Koin context
+         */
         fun DynamicFeatureModuleHelper.unloadModules() = unloadKoinModules(modules)
     }
 }
