@@ -104,7 +104,7 @@ internal object GraphUtil {
      */
     fun <E : Enum<E>> Enum<E>.applySortOrderUsing(settings: ISortOrderSettings): String {
         val sortType = name
-        if (settings.isSortOrderDescending) {
+        if (settings.isSortOrderDescending.value) {
             return if (SORT_ORDER_EXCEPTIONS.contains(sortType))
                 sortType
             else
