@@ -380,7 +380,7 @@ object Libraries {
     }
 
     object Chuncker {
-        private const val version = "3.3.0"
+        private const val version = "3.4.0"
 
         const val debug = "com.github.ChuckerTeam.Chucker:library:$version"
         const val release = "com.github.ChuckerTeam.Chucker:library-no-op:$version"
