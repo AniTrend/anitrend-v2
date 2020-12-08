@@ -17,8 +17,11 @@
 
 package co.anitrend.core.settings.common.cache
 
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
+
 interface ICacheSettings {
-    var usageRatio: Float
+
+    val cacheUsageRatio: AbstractSetting<Float>
 
     companion object {
         const val MINIMUM_CACHE_LIMIT = 0.10f
