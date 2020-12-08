@@ -27,6 +27,8 @@ enum class MediaStatus(override val alias: CharSequence) : IAliasable {
     CANCELLED("Cancelled"),
     /** Has completed and is no longer being released */
     FINISHED("Finished"),
+    /** Version 2 only. Is currently paused from releasing and will resume at a later date */
+    HIATUS("Hiatus"),
     /** To be released at a later date */
     NOT_YET_RELEASED("Not yet released"),
     /** Currently releasing */
