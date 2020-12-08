@@ -64,6 +64,11 @@ private fun Project.applyAppModuleDependencies() {
         dependencies.runtime(project(":$module"))
     }
 
+    taskModules.forEach { module ->
+        println("Adding runtimeOnly dependency :$module -> ${project.path}")
+        dependencies.runtime(project(":$module"))
+    }
+
     baseModules.forEach { module ->
         if (module != app) {
             println("Adding base module dependency :$module -> ${project.path}")
@@ -234,6 +239,7 @@ private fun Project.applyTaskModuleDependencies() {
     dependencies.implementation(project(":$core"))
     dependencies.implementation(project(":$data"))
     dependencies.implementation(project(":$domain"))
+    dependencies.implementation(project(":$navigation"))
 }
 
 private fun Project.applyComposeDependencies() {

@@ -81,8 +81,37 @@ internal val androidModules = listOf(
 )
 
 internal val featureModules = listOf(
-    character, staff, studio, media, notification, mediaList, review, forum,
-    recommendation, settings, search, profile, account, about, news
+    character,
+    staff,
+    studio,
+    media,
+    notification,
+    mediaList,
+    review,
+    forum,
+    recommendation,
+    settings,
+    search,
+    profile,
+    account,
+    about,
+    news
+)
+
+internal val taskModules = listOf(
+    taskCharacter,
+    taskForum,
+    taskMedia,
+    taskRecommendation,
+    taskReview,
+    taskStaff,
+    taskUser,
+    taskEpisode,
+    taskNews,
+    taskFeed,
+    taskStudio,
+    taskGenre,
+    taskTag
 )
 
 private const val coreAndroidModulePattern = "android-"

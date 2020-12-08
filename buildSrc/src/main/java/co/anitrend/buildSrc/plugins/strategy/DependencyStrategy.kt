@@ -39,7 +39,7 @@ internal class DependencyStrategy(
         test(Libraries.junit)
         test(Libraries.mockk)
 
-        /** Work around for crashing tests when startup.initializer is not found in *.test packages */
+        /** Work around for crashing tests when startup. initializer is not found in *.test packages */
         androidTest(Libraries.AndroidX.StartUp.startUpRuntime)
     }
 
