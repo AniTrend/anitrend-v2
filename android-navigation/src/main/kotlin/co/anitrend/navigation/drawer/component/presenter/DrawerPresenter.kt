@@ -19,6 +19,7 @@ package co.anitrend.navigation.drawer.component.presenter
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -104,7 +105,7 @@ internal class DrawerPresenter(
             // to meet the top edge of the screen.
             view.setTag(
                 R.id.tag_system_window_inset_top,
-                windowInsets.systemWindowInsetTop
+                windowInsets.getInsets(WindowInsets.Type.systemBars())
             )
             windowInsets
         }
