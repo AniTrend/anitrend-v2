@@ -134,14 +134,13 @@ internal class DrawerPresenter(
     }
 
     fun applyProfilePicture(imageView: AppCompatImageView, model: Account?) {
-        val parentContext = imageView.context
         when (model) {
             is Account.Authenticated -> imageView.using(
                 CoverRequestImage(model.coverImage),
                 listOf(CircleCropTransformation())
             )
             is Account.Anonymous -> imageView.using(
-                parentContext.getCompatDrawable(model.imageRes)
+                imageView.context.getCompatDrawable(model.imageRes)
             )
             else -> {}
         }
