@@ -144,21 +144,29 @@ private val networkModule = module {
 
 private val interceptorModules = module {
     factory { (exclusionHeaders: Set<String>) ->
-        ChuckerInterceptor(
-            context = androidContext(),
+        ChuckerInterceptor.Builder(
+            context = androidContext()
             // The previously created Collector
-            collector = ChuckerCollector(
-                context = androidContext(),
-                // Toggles visibility of the push notification
-                showNotification = true,
-                // Allows to customize the retention period of collected data
-                retentionPeriod = RetentionManager.Period.ONE_HOUR
-            ),
-            // The max body content length in bytes, after this responses will be truncated.
-            maxContentLength = 250000L,
-            // List of headers to replace with ** in the Chucker UI
-            headersToRedact = exclusionHeaders
         )
+            .collector(
+                collector = ChuckerCollector(
+                    context = androidContext(),
+                    // Toggles visibility of the push notification
+                    showNotification = true,
+                    // Allows to customize the retention period of collected data
+                    retentionPeriod = RetentionManager.Period.ONE_HOUR
+                )
+                // The max body content length in bytes, after this responses will be truncated.
+            )
+            .maxContentLength(
+                length = 250000L
+                // List of headers to replace with ** in the Chucker UI
+            )
+            .redactHeaders(
+                headerNames = exclusionHeaders
+            )
+            .alwaysReadResponseBody(false)
+            .build()
     }
     factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
         OkHttpClient.Builder()

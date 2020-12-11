@@ -29,6 +29,7 @@ import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
 import co.anitrend.data.media.source.paged.network.factory.MediaPagedNetworkSourceFactory
 import co.anitrend.data.media.MediaUseInteractor
 import co.anitrend.data.media.converter.MediaEntityConverter
+import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.usecase.MediaUseCaseImpl
 import org.koin.dsl.module
 
@@ -63,13 +64,17 @@ private val converterModule = module {
     factory {
         MediaEntityConverter()
     }
+    factory {
+        MediaModelConverter()
+    }
 }
 
 private val mapperModule = module {
     factory {
         MediaPagedCombinedMapper(
             localSource = db().mediaDao(),
-            scheduleMapper = get()
+            scheduleMapper = get(),
+            converter = get()
         )
     }
     factory {

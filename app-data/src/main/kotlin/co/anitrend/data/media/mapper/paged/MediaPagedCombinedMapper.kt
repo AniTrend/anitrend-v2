@@ -31,7 +31,7 @@ import co.anitrend.data.media.model.page.MediaPageModel
 internal class MediaPagedCombinedMapper(
     private val localSource: MediaLocalSource,
     private val scheduleMapper: AiringScheduleMapper,
-    private val converter: MediaModelConverter = MediaModelConverter()
+    private val converter: MediaModelConverter
 ) : DefaultMapper<MediaPageModel, List<MediaEntity>>() {
 
     private suspend fun saveAiringSchedule(source: MediaPageModel): List<MediaEntity> {
