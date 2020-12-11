@@ -186,6 +186,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         val compilerArgumentOptions = mutableListOf(
             "-Xopt-in=org.koin.core.component.KoinExperimentalAPI",
             "-Xopt-in=org.koin.core.component.KoinApiExtension",
+            "-Xopt-in=org.koin.core.KoinExperimentalAPI",
             "-Xuse-experimental=kotlin.Experimental",
             "-Xopt-in=kotlin.ExperimentalStdlibApi",
             "-Xopt-in=kotlin.Experimental"
