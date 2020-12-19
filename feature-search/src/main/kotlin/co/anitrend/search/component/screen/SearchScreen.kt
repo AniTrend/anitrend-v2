@@ -71,6 +71,6 @@ class SearchScreen : AnitrendScreen<SearchScreenBinding>() {
 
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(fragment = SearchContent::class.java)
-            .commit(requireBinding().searchContent, this) {}
+            .commit(requireBinding().searchContent, this)
     }
 }

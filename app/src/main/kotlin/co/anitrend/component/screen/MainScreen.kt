@@ -103,7 +103,10 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      * Replaces the current content with that in the selected fragment
      */
     private fun attachSelectedNavigationItem(fragmentItem: FragmentItem?) {
-        currentFragmentTag = fragmentItem?.commit(R.id.contentFrame, this) {}
+        currentFragmentTag = fragmentItem?.commit(
+            requireBinding().contentMain.contentFrame,
+            this
+        )
     }
 
     private fun setUpNavigationDrawer() {

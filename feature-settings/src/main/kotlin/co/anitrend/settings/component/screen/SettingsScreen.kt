@@ -53,6 +53,6 @@ class SettingsScreen : AnitrendScreen<SettingsActivityBinding>() {
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(
             fragment = SettingsContent::class.java
-        ).commit(R.id.contentFrame, this) {}
+        ).commit(R.id.contentFrame, this)
     }
 }

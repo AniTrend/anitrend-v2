@@ -57,6 +57,6 @@ class AuthScreen : AnitrendScreen<AuthScreenBinding>() {
 
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(fragment = AuthRouter.forFragment())
-            .commit(requireBinding().splashFrame, this) {}
+            .commit(requireBinding().splashFrame, this)
     }
 }

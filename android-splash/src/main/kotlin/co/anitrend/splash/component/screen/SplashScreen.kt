@@ -48,6 +48,6 @@ class SplashScreen : AnitrendScreen<ActivitySplashBinding>() {
 
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(fragment = SplashContent::class.java)
-                .commit(requireBinding().authFrame, this) {}
+                .commit(requireBinding().authFrame, this)
     }
 }

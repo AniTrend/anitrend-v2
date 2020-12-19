@@ -21,6 +21,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
 import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.core.R
 import co.anitrend.core.component.scope.KoinScope
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.arch.AniTrendExperimentalFeature
@@ -61,7 +62,6 @@ inline fun <reified T : Any> KoinScopeComponent.inject(
 @Suppress("FunctionName")
 fun ScopeComponent(source: Any?) = KoinScope(source)
 
-
 /**
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
  * a new instance is created.
@@ -73,7 +73,14 @@ fun ScopeComponent(source: Any?) = KoinScope(source)
 inline fun FragmentItem.commit(
     @IdRes contentFrame: Int,
     fragmentActivity: FragmentActivity,
-    action: FragmentTransaction.() -> Unit
+    action: FragmentTransaction.() -> Unit = {
+        setCustomAnimations(
+            R.anim.enter_from_bottom,
+            R.anim.exit_to_bottom,
+            R.anim.popup_enter,
+            R.anim.popup_exit
+        )
+    }
 ) : String? {
     if (fragment == null) return null
     val fragmentManager = fragmentActivity.supportFragmentManager
@@ -101,7 +108,14 @@ inline fun FragmentItem.commit(
 inline fun FragmentItem.commit(
     contentFrame: View,
     fragmentActivity: FragmentActivity,
-    action: FragmentTransaction.() -> Unit
+    action: FragmentTransaction.() -> Unit = {
+        setCustomAnimations(
+            R.anim.enter_from_bottom,
+            R.anim.exit_to_bottom,
+            R.anim.popup_enter,
+            R.anim.popup_exit
+        )
+    }
 ) = commit(contentFrame.id, fragmentActivity, action)
 
 inline fun <reified T : Fragment> FragmentActivity.fragment() = lazy {
