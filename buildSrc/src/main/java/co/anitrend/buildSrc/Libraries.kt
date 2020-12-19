@@ -514,7 +514,7 @@ object Libraries {
     }
 
     object Markwon {
-        private const val version = "4.5.1"
+        private const val version = "4.6.0"
         const val core = "io.noties.markwon:core:$version"
         const val html = "io.noties.markwon:html:$version"
         const val image = "io.noties.markwon:image:$version"
