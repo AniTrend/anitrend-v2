@@ -23,6 +23,7 @@ import co.anitrend.buildSrc.common.hasCoroutineSupport
 import co.anitrend.buildSrc.common.isAppModule
 import co.anitrend.buildSrc.common.isDataModule
 import co.anitrend.buildSrc.common.isBaseModule
+import co.anitrend.buildSrc.common.isDomainModule
 import co.anitrend.buildSrc.common.hasComposeSupport
 import co.anitrend.buildSrc.plugins.extensions.baseAppExtension
 import co.anitrend.buildSrc.plugins.extensions.baseExtension
@@ -184,9 +185,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     tasks.withType(KotlinCompile::class.java) {
         val compilerArgumentOptions = mutableListOf(
-            "-Xopt-in=org.koin.core.component.KoinExperimentalAPI",
-            "-Xopt-in=org.koin.core.component.KoinApiExtension",
-            "-Xopt-in=org.koin.core.KoinExperimentalAPI",
             "-Xuse-experimental=kotlin.Experimental",
             "-Xopt-in=kotlin.ExperimentalStdlibApi",
             "-Xopt-in=kotlin.Experimental"
@@ -200,7 +198,14 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             if (isDataModule())
                 compilerArgumentOptions.add("-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi")
         }
-
+        
+        if (!isDomainModule())
+			compilerArgumentOptions.apply {
+				add("-Xopt-in=org.koin.core.component.KoinExperimentalAPI")
+				add("-Xopt-in=org.koin.core.component.KoinApiExtension")
+				add("-Xopt-in=org.koin.core.KoinExperimentalAPI")
+			}
+		
         kotlinOptions {
             allWarningsAsErrors = false
             // Filter out modules that won't be using coroutines
