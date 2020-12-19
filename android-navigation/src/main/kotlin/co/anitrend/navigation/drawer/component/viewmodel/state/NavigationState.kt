@@ -18,10 +18,7 @@
 package co.anitrend.navigation.drawer.component.viewmodel.state
 
 import androidx.annotation.IdRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
@@ -217,7 +214,7 @@ internal class NavigationState(
      * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
      */
     override fun onCleared() {
-        cancel()
+        cancelAllChildren()
     }
 
     /**

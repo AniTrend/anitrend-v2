@@ -168,7 +168,7 @@ internal class AccountState(
      */
     override fun onCleared() {
         useCase.onCleared()
-        cancel()
+        cancelAllChildren()
     }
 
     /**
