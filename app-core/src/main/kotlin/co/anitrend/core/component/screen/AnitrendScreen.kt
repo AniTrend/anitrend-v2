@@ -89,6 +89,9 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
 
     override fun onDestroy() {
         super.onDestroy()
+        savedStateRegistry.unregisterSavedStateProvider(
+            savedStateProviderKey
+        )
         binding = null
     }
 }
