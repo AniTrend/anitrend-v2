@@ -17,8 +17,6 @@
 
 package co.anitrend.core.component.content
 
-import android.os.Bundle
-import android.view.View
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
