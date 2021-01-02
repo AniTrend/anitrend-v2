@@ -23,6 +23,7 @@ enum class CacheRequest(val alias: String) {
     CHARACTER("character"),
     GENRE("genre"),
     MEDIA("media"),
+    MEDIA_LIST("media_list"),
     SOURCE("source"),
     TAG("tag"),
     USER("user")
