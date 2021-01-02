@@ -1,4 +1,7 @@
 fragment MediaListCore on MediaList {
+    category: media {
+        type
+    }
     advancedScores
     customLists(asArray: true)
     completedAt {
@@ -15,7 +18,7 @@ fragment MediaListCore on MediaList {
     repeat
     score(format: $scoreFormat)
     startedAt {
-        ...FuzzyDate
+        ... FuzzyDate
     }
     status
     updatedAt
