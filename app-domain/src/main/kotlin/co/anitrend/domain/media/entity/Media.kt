@@ -158,7 +158,7 @@ sealed class Media : IMedia {
                 isAdult = null,
                 isFavourite = false,
                 id = INVALID_ID,
-                mediaList = MediaList.empty()
+                mediaList = null
             )
         }
     }
@@ -226,7 +226,7 @@ sealed class Media : IMedia {
                 isAdult = null,
                 isFavourite = false,
                 id = INVALID_ID,
-                mediaList = MediaList.empty()
+                mediaList = null
             )
         }
     }
