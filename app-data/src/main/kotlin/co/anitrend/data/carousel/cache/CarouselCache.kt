@@ -35,10 +35,10 @@ internal class CarouselCache(
         expiresAfter: Instant
     ) = isRequestBefore(entityId, expiresAfter)
 
-    companion object {
-        const val ANIME_META_ID = 10L
-        const val MANGA_META_ID = 11L
-        const val ANIME_ID = 12L
-        const val MANGA_ID = 13L
+    enum class Identifier(val id: Long, val key: String) {
+        ANIME_META(10L, "carousel_anime_meta"),
+        MANGA_META(11L, "carousel_manga_meta"),
+        ANIME(12L, "carousel_anime"),
+        MANGA(13L, "carousel_manga")
     }
 }

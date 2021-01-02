@@ -217,10 +217,10 @@ internal class CarouselSourceImpl(
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
-            cachePolicy.invalidateLastRequest(CarouselCache.ANIME_META_ID)
-            cachePolicy.invalidateLastRequest(CarouselCache.MANGA_META_ID)
-            cachePolicy.invalidateLastRequest(CarouselCache.ANIME_ID)
-            cachePolicy.invalidateLastRequest(CarouselCache.MANGA_ID)
+            cachePolicy.invalidateLastRequest(CarouselCache.Identifier.ANIME_META.id)
+            cachePolicy.invalidateLastRequest(CarouselCache.Identifier.MANGA_META.id)
+            cachePolicy.invalidateLastRequest(CarouselCache.Identifier.ANIME.id)
+            cachePolicy.invalidateLastRequest(CarouselCache.Identifier.MANGA.id)
             localSource.clear()
         }
     }
