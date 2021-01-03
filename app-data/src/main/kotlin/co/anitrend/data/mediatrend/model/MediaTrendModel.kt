@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.mediatrend.model.remote
+package co.anitrend.data.mediatrend.model
 
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.mediatrend.model.contract.IMediaTrendModel

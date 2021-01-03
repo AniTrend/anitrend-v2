@@ -43,12 +43,12 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @property userId The id of the user owner of the list entry
  */
 internal interface IMediaListModel : Identity {
-    val advancedScores: Map<String, String>?
-    val customLists: Map<String, String>?
+    val advancedScores: Map<String, Float>?
+    val customLists: Collection<ICustomList>?
     val completedAt: IFuzzyDateModel?
-    val createdAt: Long?
+    val createdAt: Long
     val hiddenFromStatusLists: Boolean?
-    val mediaId: Int
+    val mediaId: Long
     val notes: String?
     val priority: Int?
     val private: Boolean?
@@ -59,5 +59,10 @@ internal interface IMediaListModel : Identity {
     val startedAt: IFuzzyDateModel?
     val status: MediaListStatus?
     val updatedAt: Long?
-    val userId: Int
+    val userId: Long
+
+    interface ICustomList {
+        val name: String
+        val enabled: Boolean
+    }
 }

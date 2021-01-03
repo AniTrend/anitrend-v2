@@ -15,9 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.medialist.entity.base
+package co.anitrend.data.medialist.model.page
 
-interface IMediaListExtended : IMediaListCore {
-    val advancedScores: Map<String, Int>
-    val customLists: Collection<CharSequence>
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.medialist.model.MediaListModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal data class MediaListPageModel(
+    @SerialName("Page") val page: Page = Page()
+) {
+    @Serializable
+    data class Page(
+        @SerialName("pageInfo") val pageInfo: PageInfo? = null,
+        @SerialName("media") val media: List<MediaListModel.Extended> = emptyList()
+    )
 }
