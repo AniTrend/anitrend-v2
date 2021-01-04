@@ -18,6 +18,7 @@
 package co.anitrend.data.carousel.cache
 
 import co.anitrend.data.cache.datasource.CacheLocalSource
+import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.data.cache.repository.CacheStorePolicy
 import org.threeten.bp.Instant
@@ -35,7 +36,10 @@ internal class CarouselCache(
         expiresAfter: Instant
     ) = isRequestBefore(entityId, expiresAfter)
 
-    enum class Identifier(val id: Long, val key: String) {
+    enum class Identifier(
+        override val id: Long,
+        override val key: String
+    ) : CacheIdentity {
         ANIME_META(10L, "carousel_anime_meta"),
         MANGA_META(11L, "carousel_manga_meta"),
         ANIME(12L, "carousel_anime"),
