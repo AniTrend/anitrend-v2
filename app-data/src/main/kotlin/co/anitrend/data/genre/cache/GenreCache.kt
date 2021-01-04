@@ -18,6 +18,7 @@
 package co.anitrend.data.genre.cache
 
 import co.anitrend.data.cache.datasource.CacheLocalSource
+import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.data.cache.repository.CacheStorePolicy
 import org.threeten.bp.Instant
@@ -38,7 +39,10 @@ internal class GenreCache(
         expiresAfter: Instant
     ) = isRequestBefore(entityId, expiresAfter)
 
-    companion object {
-        const val ID = 8L
+    enum class Identity(
+        override val id: Long,
+        override val key: String
+    ) : CacheIdentity {
+        GENRE(8L, "genre_collection")
     }
 }

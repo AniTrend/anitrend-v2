@@ -25,6 +25,7 @@ import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.MediaGenreLocalSource
 import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.MediaGenreController
+import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.data.genre.source.contract.MediaGenreSource
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.common.graph.IGraphPayload
@@ -67,6 +68,7 @@ internal class MediaGenreSourceImpl(
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
+            cachePolicy.invalidateLastRequest(GenreCache.Identity.GENRE.id)
             localSource.clear()
         }
     }

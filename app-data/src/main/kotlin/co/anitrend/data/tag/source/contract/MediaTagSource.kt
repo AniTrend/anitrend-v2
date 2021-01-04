@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaTagSource(
-    private val cachePolicy: ICacheStorePolicy,
+    protected val cachePolicy: ICacheStorePolicy,
     dispatcher: ISupportDispatcher
 ) : SupportCoreDataSource(dispatcher) {
 
@@ -42,12 +42,12 @@ internal abstract class MediaTagSource(
     internal operator fun invoke(): Flow<List<Tag>> {
         launch {
             requestHelper.runIfNotRunning(
-                Request.Default(String.empty(), Request.Type.INITIAL)
+                Request.Default(TagCache.Identity.TAG.key, Request.Type.INITIAL)
             ) {
-                if (cachePolicy.shouldRefresh(TagCache.ID)) {
+                if (cachePolicy.shouldRefresh(TagCache.Identity.TAG.id)) {
                     val success = getTags(it)
                     if (success)
-                        cachePolicy.updateLastRequest(TagCache.ID)
+                        cachePolicy.updateLastRequest(TagCache.Identity.TAG.id)
                 }
             }
         }

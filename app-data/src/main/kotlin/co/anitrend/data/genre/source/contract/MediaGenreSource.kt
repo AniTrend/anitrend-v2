@@ -21,7 +21,6 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.domain.genre.entity.Genre
@@ -29,7 +28,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 internal abstract class MediaGenreSource(
-    private val cachePolicy: ICacheStorePolicy,
+    protected val cachePolicy: ICacheStorePolicy,
     dispatcher: ISupportDispatcher
 ) : SupportCoreDataSource(dispatcher) {
 
@@ -40,12 +39,12 @@ internal abstract class MediaGenreSource(
     internal operator fun invoke(): Flow<List<Genre>> {
         launch {
             requestHelper.runIfNotRunning(
-                Request.Default(String.empty(), Request.Type.INITIAL)
+                Request.Default(GenreCache.Identity.GENRE.key, Request.Type.INITIAL)
             ) {
-                if (cachePolicy.shouldRefresh(GenreCache.ID)) {
+                if (cachePolicy.shouldRefresh(GenreCache.Identity.GENRE.id)) {
                     val success = getGenres(it)
                     if (success)
-                        cachePolicy.updateLastRequest(GenreCache.ID)
+                        cachePolicy.updateLastRequest(GenreCache.Identity.GENRE.id)
                 }
             }
         }

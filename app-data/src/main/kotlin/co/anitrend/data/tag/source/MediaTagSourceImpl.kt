@@ -22,6 +22,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.tag.MediaTagController
+import co.anitrend.data.tag.cache.TagCache
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.datasource.local.MediaTagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
@@ -65,6 +66,7 @@ internal class MediaTagSourceImpl(
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
+            cachePolicy.invalidateLastRequest(TagCache.Identity.TAG.id)
             localSource.clear()
         }
     }
