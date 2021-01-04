@@ -17,19 +17,53 @@
 
 package co.anitrend.data.carousel.mapper
 
+import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
+import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
+import co.anitrend.data.media.model.MediaModel
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 internal class CarouselMapper(
     private val combinedMapper: MediaPagedCombinedMapper,
     private val airingMapper: AiringSchedulePagedMapper,
-    private val converter: MediaModelConverter = MediaModelConverter()
+    private val airingConverter: AiringModelConverter,
+    private val converter: MediaModelConverter,
+    private val context: CoroutineContext
 ) : DefaultMapper<CarouselModel, List<MediaEntity>>() {
+
+    private suspend fun List<MediaModel>.flatMapAndExtract(): List<MediaEntity> {
+        val airingSchedules = airingConverter.convertFrom(
+            mapNotNull { it.nextAiringEpisode as? AiringScheduleModel }
+        )
+        withContext(context) {
+            airingMapper.onResponseDatabaseInsert(airingSchedules)
+        }
+        return converter.convertFrom(this)
+    }
+
+    /**
+     * Handles the persistence of [data] into a local source
+     *
+     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     */
+    override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
+        return runCatching {
+            combinedMapper.onResponseDatabaseInsert(data)
+            OutCome.Pass(null)
+        }.getOrElse { OutCome.Fail(listOf(it)) }
+    }
+
 
     /**
      * Inserts the given object into the implemented room database,
@@ -37,20 +71,10 @@ internal class CarouselMapper(
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
-        combinedMapper.onResponseDatabaseInsert(mappedData)
-        airingMapper.onResponseDatabaseInsert(
-            mappedData.mapNotNull { entity ->
-                entity.nextAiring?.let {
-                    AiringScheduleEntity(
-                        airingAt = it.airingAt,
-                        episode = it.episode,
-                        mediaId = entity.id,
-                        timeUntilAiring = it.timeUntilAiring,
-                        id = it.airingId
-                    )
-                }
-            }
-        )
+        mappedData evaluate
+                ::checkValidity then
+                ::persistChanges otherwise
+                ::handleException
     }
 
     /**
@@ -65,14 +89,14 @@ internal class CarouselMapper(
                     ?.mapNotNull { it.media }.orEmpty() +
             source.anticipatedNexSeason?.media.orEmpty() +
             source.popularThisSeason?.media.orEmpty()
-        ).map { converter.convertFrom(it) }
+        )
         is CarouselModel.Manga -> (
             source.popularManhwa?.media.orEmpty()
-        ).map { converter.convertFrom(it) }
+        )
         is CarouselModel.Core -> (
             source.allTimePopular?.media.orEmpty() +
             source.recentlyAdded?.media.orEmpty() +
             source.trendingRightNow?.media.orEmpty()
-        ).map { converter.convertFrom(it) }
-    }
+        )
+    }.flatMapAndExtract()
 }

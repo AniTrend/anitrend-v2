@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -30,8 +30,8 @@ import co.anitrend.data.carousel.datasource.local.CarouselLocalStore
 import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.carousel.source.contract.CarouselSource
-import co.anitrend.data.media.converter.MediaEntityConverter
-import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.converter.MediaEntityViewConverter
+import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
@@ -45,12 +45,12 @@ internal class CarouselSourceImpl(
     private val localSource: CarouselLocalStore,
     private val clearDataHelper: IClearDataHelper,
     private val controller: CarouselController,
-    private val converter: MediaEntityConverter,
+    private val converter: MediaEntityViewConverter,
     cachePolicy: ICacheStorePolicy,
     dispatcher: ISupportDispatcher
 ) : CarouselSource(cachePolicy, dispatcher) {
 
-    private fun Flow<List<MediaEntity>?>.toMediaCarousel(
+    private fun Flow<List<MediaEntityView>?>.toMediaCarousel(
         mediaType: MediaType,
         carouselType: MediaCarousel.CarouselType
     ) = mapNotNull { entities->

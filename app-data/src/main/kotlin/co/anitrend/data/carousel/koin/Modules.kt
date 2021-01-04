@@ -17,6 +17,7 @@
 
 package co.anitrend.data.carousel.koin
 
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.graphQLController
@@ -29,7 +30,6 @@ import co.anitrend.data.carousel.repository.CarouselRepositoryImpl
 import co.anitrend.data.carousel.source.CarouselSourceImpl
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.carousel.usecase.CarouselUseCaseImpl
-import co.anitrend.data.media.converter.MediaEntityConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -60,7 +60,10 @@ private val mapperModule = module {
     factory {
         CarouselMapper(
             combinedMapper = get(),
-            airingMapper = get()
+            airingMapper = get(),
+            converter = get(),
+            airingConverter = get(),
+            context = get<ISupportDispatcher>().io
         )
     }
 }

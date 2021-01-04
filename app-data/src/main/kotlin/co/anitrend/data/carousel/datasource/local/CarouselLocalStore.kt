@@ -19,10 +19,12 @@ package co.anitrend.data.carousel.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.arch.CountryCode
 import co.anitrend.data.arch.FuzzyDateLike
 import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow
@@ -41,30 +43,19 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
     abstract override suspend fun clear()
 
     @Query("""
-        select * from media
-        where media_type = :mediaType
-        and airing_airing_at > :currentTime
-        order by airing_time_until_airing desc
+        select m.* from media m
+        join airing_schedule a on a.id = m.next_airing_id
+        where m.media_type = :mediaType
+        and a.airing_at > :currentTime
+        order by a.time_until_airing asc
         limit :pageSize
     """)
-    abstract suspend fun airingSoon(
-        mediaType: MediaType = MediaType.ANIME,
-        pageSize: Int,
-        currentTime: Long
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType
-        and airing_airing_at > :currentTime
-        order by airing_time_until_airing asc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun airingSoonFlow(
         mediaType: MediaType = MediaType.ANIME,
         pageSize: Int,
         currentTime: Long
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media
@@ -72,21 +63,11 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    abstract suspend fun allTimePopular(
-        mediaType: MediaType,
-        pageSize: Int
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType
-        order by popularity desc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun allTimePopularFlow(
         mediaType: MediaType,
         pageSize: Int
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media
@@ -94,21 +75,11 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by trending desc
         limit :pageSize
     """)
-    abstract suspend fun trendingNow(
-        mediaType: MediaType,
-        pageSize: Int
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType
-        order by trending desc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun trendingNowFlow(
         mediaType: MediaType,
         pageSize: Int
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media
@@ -118,27 +89,13 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    abstract suspend fun popularThisSeason(
-        mediaType: MediaType = MediaType.ANIME,
-        pageSize: Int,
-        season: MediaSeason,
-        seasonYear: FuzzyDateLike
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType 
-        and season = :season 
-        and start_date like :seasonYear
-        order by popularity desc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun popularThisSeasonFlow(
         mediaType: MediaType = MediaType.ANIME,
         pageSize: Int,
         season: MediaSeason,
         seasonYear: FuzzyDateLike
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.WithMediaList>>
 
     @Query("""
         select * from media
@@ -146,21 +103,11 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by id desc
         limit :pageSize
     """)
-    abstract suspend fun recentlyAdded(
-        mediaType: MediaType,
-        pageSize: Int
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType
-        order by id desc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun recentlyAddedFlow(
         mediaType: MediaType,
         pageSize: Int
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media
@@ -170,27 +117,13 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    abstract suspend fun anticipatedNextSeason(
-        mediaType: MediaType = MediaType.ANIME,
-        pageSize: Int,
-        season: MediaSeason,
-        seasonYear: FuzzyDateLike
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType
-        and season = :season
-        and start_date like :seasonYear
-        order by popularity desc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun anticipatedNextSeasonFlow(
         mediaType: MediaType = MediaType.ANIME,
         pageSize: Int,
         season: MediaSeason,
         seasonYear: FuzzyDateLike
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media
@@ -199,22 +132,10 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    abstract suspend fun popularManhwa(
-        mediaType: MediaType = MediaType.MANGA,
-        countryCode: CountryCode = "KR",
-        pageSize: Int
-    ): List<MediaEntity>
-
-    @Query("""
-        select * from media
-        where media_type = :mediaType
-        and country_of_origin = :countryCode
-        order by popularity desc
-        limit :pageSize
-    """)
+    @Transaction
     abstract fun popularManhwaFlow(
         mediaType: MediaType = MediaType.MANGA,
         countryCode: CountryCode = "KR",
         pageSize: Int
-    ): Flow<List<MediaEntity>>
+    ): Flow<List<MediaEntityView.Core>>
 }

@@ -51,7 +51,7 @@ internal abstract class CarouselSource(
 
         launch {
             requestHelper.runIfNotRunning(
-                Request.Default("carousel_anime_core", Request.Type.INITIAL)
+                Request.Default(CarouselCache.Identifier.ANIME_META.key, Request.Type.INITIAL)
             ) {
                 if (cachePolicy.shouldRefresh(CarouselCache.Identifier.ANIME_META.id)) {
                     val success = getMediaCarousel(it, MediaType.ANIME)
@@ -63,7 +63,7 @@ internal abstract class CarouselSource(
 
         launch {
             requestHelper.runIfNotRunning(
-                Request.Default("carousel_manga_core", Request.Type.INITIAL)
+                Request.Default(CarouselCache.Identifier.MANGA_META.key, Request.Type.INITIAL)
             ) {
                 if (cachePolicy.shouldRefresh(CarouselCache.Identifier.MANGA_META.id)) {
                     val success = getMediaCarousel(it, MediaType.MANGA)
@@ -75,7 +75,7 @@ internal abstract class CarouselSource(
 
         launch {
             requestHelper.runIfNotRunning(
-                Request.Default("carousel_anime", Request.Type.BEFORE)
+                Request.Default(CarouselCache.Identifier.ANIME.key, Request.Type.BEFORE)
             ) {
                 if (cachePolicy.shouldRefresh(CarouselCache.Identifier.ANIME.id)) {
                     val success = getMediaCarouselAnime(it)
@@ -87,7 +87,7 @@ internal abstract class CarouselSource(
 
        launch {
            requestHelper.runIfNotRunning(
-               Request.Default("carousel_manga", Request.Type.AFTER)
+               Request.Default(CarouselCache.Identifier.MANGA.key, Request.Type.AFTER)
            ) {
                if (cachePolicy.shouldRefresh(CarouselCache.Identifier.MANGA.id)) {
                    val success = getMediaCarouselManga(it)
