@@ -20,6 +20,7 @@ package co.anitrend.data.media.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import co.anitrend.data.arch.CountryCode
 import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.data.shared.common.Identity
@@ -35,7 +36,7 @@ internal data class MediaEntity(
     @Embedded(prefix = "cover_") val coverImage: CoverImage,
     @Embedded(prefix = "title_") val title: Title,
     @Embedded(prefix = "trailer_") val trailer: Trailer? = null,
-    @Embedded(prefix = "airing_") val nextAiring: Airing? = null,
+    @ColumnInfo(name = "next_airing_id") val nextAiringId: Long? = null,
     @ColumnInfo(name = "tags") val tags: List<Tag> = emptyList(),
     @ColumnInfo(name = "genres") val genres: List<Genre> = emptyList(),
     @ColumnInfo(name = "links") val links: List<Link> = emptyList(),
@@ -90,13 +91,6 @@ internal data class MediaEntity(
         @ColumnInfo(name = "thumbnail") val thumbnail: String? = null
     )
 
-    internal data class Airing(
-        @ColumnInfo(name ="airing_at") val airingAt: Long,
-        @ColumnInfo(name ="episode") val episode: Int,
-        @ColumnInfo(name ="airing_id") val airingId: Long,
-        @ColumnInfo(name ="time_until_airing") val timeUntilAiring: Long,
-    )
-
     @Serializable
     internal data class Tag(
         @SerialName("name") @ColumnInfo(name = "name") val name: String,
@@ -137,7 +131,7 @@ internal data class MediaEntity(
     internal data class Core(
         @Embedded(prefix = "cover_") val coverImage: CoverImage,
         @Embedded(prefix = "title_") val title: Title,
-        @Embedded(prefix = "airing_") val nextAiring: Airing? = null,
+        @ColumnInfo(name = "next_airing_id") val nextAiringId: Long? = null,
         @ColumnInfo(name = "tags") val tags: List<Tag> = emptyList(),
         @ColumnInfo(name = "genres") val genres: List<Genre> = emptyList(),
         @ColumnInfo(name = "average_score") val averageScore: Int? = null,
@@ -172,7 +166,7 @@ internal data class MediaEntity(
     internal data class Extended(
         @Embedded(prefix = "cover_") val coverImage: CoverImage,
         @Embedded(prefix = "title_") val title: Title,
-        @Embedded(prefix = "airing_") val nextAiring: Airing? = null,
+        @ColumnInfo(name = "next_airing_id") val nextAiringId: Long? = null,
         @ColumnInfo(name = "tags") val tags: List<Tag> = emptyList(),
         @ColumnInfo(name = "genres") val genres: List<Genre> = emptyList(),
         @ColumnInfo(name = "links") val links: List<Link> = emptyList(),

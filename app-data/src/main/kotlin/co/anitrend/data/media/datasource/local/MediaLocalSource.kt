@@ -49,38 +49,26 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
         select * from media
         where id = :id
     """)
-    abstract suspend fun mediaById(id: Long): MediaEntity?
-
-    @Query("""
-        select * from media
-        where id = :id
-    """)
-    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntity?>
+    @Transaction
+    abstract suspend fun mediaById(id: Long): MediaEntityView.WithMediaList?
 
     @Query("""
         select * from media
         where id = :id
     """)
     @Transaction
-    abstract suspend fun mediaByIdWithAiring(
-        id: Long
-    ): MediaEntityView.WithAiring?
+    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.WithMediaList?>
 
     @Query("""
         select * from media
-        where id = :id
     """)
     @Transaction
-    abstract fun mediaByIdWithAiringFlow(id: Long): Flow<MediaEntityView.WithAiring?>
-
-    @Query("""
-        select * from media
-    """)
-    abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntity>
+    abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
 
     @Query("""
         select * from media
         order by popularity desc
     """)
-    abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntity>
+    @Transaction
+    abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
 }

@@ -43,7 +43,6 @@ import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
-import org.koin.core.context.GlobalContext
 
 internal class MediaConverter(
     override val fromType: (MediaModel) -> Media = { transform(it) },
@@ -68,7 +67,12 @@ internal class MediaConverter(
         private fun convertMediaListEntry(model: MediaListModel.Core?): MediaList {
             return model?.let {
                 MediaList.Core(
-                    advancedScores = it.advancedScores.orEmpty(),
+                    advancedScores = it.advancedScores?.map { entry ->
+                        MediaList.AdvancedScore(
+                            name = entry.key,
+                            score = entry.value
+                        )
+                    }.orEmpty(),
                     customLists = it.customLists?.map { custom ->
                         MediaList.CustomList(
                             name = custom.name,
@@ -382,14 +386,7 @@ internal class MediaModelConverter(
                 }
                 else -> null
             },
-            nextAiring = source.nextAiringEpisode?.let {
-                MediaEntity.Airing(
-                    airingAt = it.airingAt,
-                    episode = it.episode,
-                    airingId = it.id,
-                    timeUntilAiring = it.timeUntilAiring,
-                )
-            },
+            nextAiringId = source.nextAiringEpisode?.id,
             genres = source.genres?.map {
                 MediaEntity.Genre(it)
             }.orEmpty(),
@@ -461,7 +458,7 @@ internal class MediaModelConverter(
     }
 }
 
-internal class MediaEntityConverter(
+internal class MediaEntityViewConverter(
     override val fromType: (MediaEntityView) -> Media = { transform(it) },
     override val toType: (Media) -> MediaEntityView = { throw NotImplementedError() }
 ) : SupportConverter<MediaEntityView, Media>() {
@@ -499,105 +496,6 @@ internal class MediaEntityConverter(
                         isMediaSpoiler = it.isMediaSpoiler ?: false,
                         isAdult = it.isAdult ?: false,
                         id = it.id
-                    )
-                },
-                format = source.media.format,
-                season = source.media.season,
-                status = source.media.status,
-                meanScore = source.media.meanScore ?: 0,
-                averageScore = source.media.averageScore ?: 0,
-                startDate = source.media.startDate.toFuzzyDateModel().asFuzzyDate(),
-                endDate = source.media.endDate.toFuzzyDateModel().asFuzzyDate(),
-                title = MediaTitle(
-                    romaji = source.media.title.romaji,
-                    english = source.media.title.english,
-                    native = source.media.title.native,
-                    userPreferred = source.media.title.userPreferred
-                ),
-                image = MediaImage(
-                    color = source.media.coverImage.color,
-                    extraLarge = source.media.coverImage.extraLarge,
-                    large = source.media.coverImage.large,
-                    medium = source.media.coverImage.medium,
-                    banner = source.media.coverImage.banner,
-                ),
-                category = when (source.media.type) {
-                    MediaType.ANIME -> Media.Category.Anime(
-                        source.media.episodes ?: 0,
-                        source.media.duration ?: 0,
-                        source.media.nextAiring?.let {
-                            AiringSchedule(
-                                airingAt = it.airingAt,
-                                episode = it.episode,
-                                mediaId = source.media.id,
-                                timeUntilAiring = it.timeUntilAiring,
-                                id = it.airingId
-                            )
-                        }
-                    )
-                    MediaType.MANGA -> Media.Category.Manga(
-                        source.media.chapters ?: 0,
-                        source.media.volumes ?: 0
-                    )
-                },
-                isAdult = source.media.isAdult,
-                isFavourite = source.media.isFavourite,
-                id = source.media.id,
-                mediaList = null
-            )
-            is MediaEntityView.WithAiring -> Media.Extended(
-                sourceId = MediaSourceId.empty().copy(
-                    anilist = source.media.id
-                ),
-                countryCode = source.media.countryOfOrigin,
-                description = source.media.description,
-                externalLinks = source.media.links.map {
-                    MediaExternalLink(
-                        site = it.site,
-                        url = it.url,
-                        id = it.id
-                    )
-                },
-                favouritesCount = source.media.id,
-                genres = source.media.genres.map {
-                    Genre(it.name)
-                },
-                twitterTag = source.media.hashTag,
-                isLicensed = source.media.isLicensed,
-                isLocked = source.media.isLocked,
-                isRecommendationBlocked = false,
-                rankings = source.media.ranks.map {
-                    MediaRank(
-                        allTime = it.allTime,
-                        context = it.context,
-                        format = it.format,
-                        rank = it.rank,
-                        season = it.season,
-                        type = it.type,
-                        year = it.year,
-                        id = it.id
-                    )
-                },
-                siteUrl = source.media.siteUrl,
-                source = source.media.source,
-                synonyms = source.media.synonyms,
-                tags = source.media.tags.map {
-                    Tag(
-                        name = it.name,
-                        description = it.description,
-                        category = it.category,
-                        rank = it.rank ?: 0,
-                        isGeneralSpoiler = it.isGeneralSpoiler ?: false,
-                        isMediaSpoiler = it.isMediaSpoiler ?: false,
-                        isAdult = it.isAdult ?: false,
-                        id = it.id
-                    )
-                },
-                trailer = source.media.trailer?.let {
-                    MediaTrailer(
-                        id = it.id,
-                        site = it.site,
-                        thumbnail = it.thumbnail
                     )
                 },
                 format = source.media.format,

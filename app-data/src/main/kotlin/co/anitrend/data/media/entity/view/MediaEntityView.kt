@@ -21,26 +21,31 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.medialist.entity.MediaListEntity
 
 internal sealed class MediaEntityView {
     abstract val media: MediaEntity
     abstract val nextAiring: AiringScheduleEntity?
 
-    internal data class WithAiring(
+    internal data class Core(
         @Embedded override val media: MediaEntity,
         @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id"
+            parentColumn = "next_airing_id",
+            entityColumn = "id"
         )
         override val nextAiring: AiringScheduleEntity?
     ) : MediaEntityView()
 
     internal data class WithMediaList(
-        @Embedded override val media: MediaEntity,
         @Relation(
             parentColumn = "id",
             entityColumn = "media_id"
+        )
+        val mediaList: MediaListEntity?,
+        @Embedded override val media: MediaEntity,
+        @Relation(
+            parentColumn = "next_airing_id",
+            entityColumn = "id"
         )
         override val nextAiring: AiringScheduleEntity?
     ) : MediaEntityView()
