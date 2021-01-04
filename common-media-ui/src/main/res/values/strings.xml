@@ -32,9 +32,9 @@
     <!-- Carousel see all button -->
     <string name="label_carousel_see_all">See All</string>
 
-    <!-- Catalog Anime titles and descriptions -->
+
     <string name="label_carousel_airing_anime">Airing Soon</string>
-    <string name="label_carousel_airing_anime_description">Showing that are airing soon.</string>
+    <string name="label_carousel_airing_anime_description">Shows that will be airing soon.</string>
 
     <string name="label_carousel_popular_anime">All Time Popular • Anime</string>
     <string name="label_carousel_popular_anime_description">Most popular anime of all time.</string>
@@ -51,7 +51,7 @@
     <string name="label_carousel_anticipated_anime">Anticipated Next Season • Anime</string>
     <string name="label_carousel_anticipated_anime_description">Shows to look forward to next season</string>
 
-    <!-- Catalog Manga titles and descriptions -->
+
     <string name="label_carousel_popular_manga">All Time Popular • Manga</string>
     <string name="label_carousel_popular_manga_description">Most popular manga of all time.</string>
 

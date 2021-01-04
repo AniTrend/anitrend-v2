@@ -16,11 +16,11 @@
   -->
 
 <resources>
-    <string name="title_activity_settings_screen">Settings</string>
+    <string name="title_activity_settings_screen">@string/action_settings</string>
 
     <!-- Preference Categories Titles -->
     <string name="preference_group_title_application_behavior">Application Behavior</string>
-    <string name="preference_category_title_user_interface">User Interface Experience</string>
+    <string name="preference_category_title_user_interface">User Experience</string>
     <string name="preference_category_title_updates_and_storage">Updates &amp; Storage</string>
     <string name="preference_category_title_notifications_and_sync_settings">Notifications &amp; Sync</string>
 
@@ -59,7 +59,7 @@
     <string name="preference_title_refresh_behavior_config">Clear database on refresh</string>
 
     <!-- Preference Entries Summary -->
-    <string name="preference_summary_privacy_analytics_config">Allows usage statics to be sent to the developer</string>
+    <string name="preference_summary_privacy_analytics_config">Allows usage statistics to be sent to the developer</string>
     <string name="preference_summary_privacy_crash_analytics_config">Allows crashes to be reported automatically as they happen</string>
     <string name="preference_summary_refresh_behavior_config">Typically the database is cleared when you pull to refresh</string>
 

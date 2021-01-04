@@ -19,7 +19,8 @@
     <string name="auth_label_authorize">Authorize</string>
 
     <string name="auth_label_segment_first" translatable="false">Ani</string>
-    <string name="auth_label_segment_second">Trend</string>
+    <string name="auth_label_segment_second" translatable="false">Trend</string>
+
     <string name="label_allow_authorization">Please login using your anilist account</string>
 
     <string name="auth_label_alternative_account">Or use anonymous account, please note that some features my not be available in this mode.</string>

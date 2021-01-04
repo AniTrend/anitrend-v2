@@ -17,6 +17,6 @@
   -->
 
 <resources>
-    <string name="search_place_holder_text">Search</string>
-    <string name="title_activity_search_screen">Search</string>
+    <string name="search_place_holder_text">@string/action_search</string>
+    <string name="title_activity_search_screen">@string/action_search</string>
 </resources>
