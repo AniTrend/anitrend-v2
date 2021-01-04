@@ -67,7 +67,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entity = store.mediaDao().mediaById(id)
         // for some reason tests clear the native field
-        assertEquals(title, entity?.title)
+        assertEquals(title, entity?.media?.title)
 
         val total = store.mediaDao().count()
         assertEquals(50, total)
@@ -83,7 +83,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
             userPreferred = "Hagane no Renkinjutsushi: Fullmetal Alchemist"
         )
 
-        val entity = store.mediaDao().mediaByIdWithAiring(id)
+        val entity = store.mediaDao().mediaById(id)
         // for some reason tests clear the native field
         assertEquals(title, entity?.media?.title)
 
