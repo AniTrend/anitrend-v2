@@ -18,16 +18,18 @@
 package co.anitrend.data.airing.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.airing.model.contract.IAiringScheduleModel
 import co.anitrend.domain.airing.entity.AiringSchedule
 
 internal class AiringConverter(
-    override val fromType: (AiringScheduleModel) -> AiringSchedule = { from(it) },
-    override val toType: (AiringSchedule) -> AiringScheduleModel = { throw NotImplementedError() }
-) : SupportConverter<AiringScheduleModel, AiringSchedule>() {
-    companion object {
-        private fun from(source: AiringScheduleModel) = AiringSchedule(
+    override val fromType: (IAiringScheduleModel) -> AiringSchedule = ::transform,
+    override val toType: (AiringSchedule) -> IAiringScheduleModel = { throw NotImplementedError() }
+) : SupportConverter<IAiringScheduleModel, AiringSchedule>() {
+    private companion object : ISupportTransformer<IAiringScheduleModel, AiringSchedule> {
+        override fun transform(source: IAiringScheduleModel) = AiringSchedule(
             airingAt = source.airingAt,
             episode = source.episode,
             mediaId = source.mediaId,
@@ -38,41 +40,35 @@ internal class AiringConverter(
 }
 
 internal class AiringModelConverter(
-    override val fromType: (AiringScheduleModel) -> AiringScheduleEntity = { from(it) },
+    override val fromType: (AiringScheduleModel) -> AiringScheduleEntity = ::transform,
     override val toType: (AiringScheduleEntity) -> AiringScheduleModel = { throw NotImplementedError() }
 ) : SupportConverter<AiringScheduleModel, AiringScheduleEntity>() {
-    companion object {
-        private fun from(source: AiringScheduleModel) = AiringScheduleEntity(
-            airingAt = source.airingAt,
-            episode = source.episode,
-            mediaId = source.mediaId,
-            timeUntilAiring = source.timeUntilAiring,
-            id = source.id
-        )
-    }
-}
-
-internal class AiringExtendedModelConverter(
-    override val fromType: (AiringScheduleModel.Extended) -> AiringScheduleEntity = { from(it) },
-    override val toType: (AiringScheduleEntity) -> AiringScheduleModel.Extended = { throw NotImplementedError() }
-) : SupportConverter<AiringScheduleModel.Extended, AiringScheduleEntity>() {
-    companion object {
-        private fun from(source: AiringScheduleModel.Extended) = AiringScheduleEntity(
-            airingAt = source.airingAt,
-            episode = source.episode,
-            mediaId = source.mediaId,
-            timeUntilAiring = source.timeUntilAiring,
-            id = source.id
-        )
+    private companion object : ISupportTransformer<AiringScheduleModel, AiringScheduleEntity> {
+        override fun transform(source: AiringScheduleModel) = when (source) {
+            is AiringScheduleModel.Core -> AiringScheduleEntity(
+                airingAt = source.airingAt,
+                episode = source.episode,
+                mediaId = source.mediaId,
+                timeUntilAiring = source.timeUntilAiring,
+                id = source.id
+            )
+            is AiringScheduleModel.Extended -> AiringScheduleEntity(
+                airingAt = source.airingAt,
+                episode = source.episode,
+                mediaId = source.mediaId,
+                timeUntilAiring = source.timeUntilAiring,
+                id = source.id
+            )
+        }
     }
 }
 
 internal class AiringEntityConverter(
-    override val fromType: (AiringScheduleEntity) -> AiringSchedule = { from(it) },
+    override val fromType: (AiringScheduleEntity) -> AiringSchedule = ::transform,
     override val toType: (AiringSchedule) -> AiringScheduleEntity = { throw NotImplementedError() }
 ) : SupportConverter<AiringScheduleEntity, AiringSchedule>() {
-    companion object {
-        private fun from(source: AiringScheduleEntity) = AiringSchedule(
+    private companion object : ISupportTransformer<AiringScheduleEntity, AiringSchedule> {
+        override fun transform(source: AiringScheduleEntity) = AiringSchedule(
             airingAt = source.airingAt,
             episode = source.episode,
             mediaId = source.mediaId,

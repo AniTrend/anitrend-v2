@@ -17,14 +17,13 @@
 
 package co.anitrend.data.airing.koin
 
+import co.anitrend.data.airing.converters.AiringConverter
+import co.anitrend.data.airing.converters.AiringEntityConverter
+import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
 import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
 import co.anitrend.data.arch.extension.db
 import org.koin.dsl.module
-
-private val sourceModule = module {
-
-}
 
 private val mapperModule = module {
     factory {
@@ -34,22 +33,24 @@ private val mapperModule = module {
     }
     factory {
         AiringSchedulePagedMapper(
-            localSource = db().airingScheduleDao()
+            localSource = db().airingScheduleDao(),
+            converter = get()
         )
     }
 }
 
-private val useCaseModule = module {
-
-}
-
-private val repositoryModule = module {
-
+private val converterModule = module {
+    factory {
+        AiringConverter()
+    }
+    factory {
+        AiringModelConverter()
+    }
+    factory {
+        AiringEntityConverter()
+    }
 }
 
 internal val airingModules = listOf(
-    /*sourceModule,*/
-    mapperModule,
-    /*useCaseModule,
-    repositoryModule*/
+    mapperModule, converterModule
 )
