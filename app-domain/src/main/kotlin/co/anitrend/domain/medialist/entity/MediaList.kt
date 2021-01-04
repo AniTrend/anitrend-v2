@@ -32,8 +32,13 @@ sealed class MediaList : IMediaList {
         override val enabled: Boolean
     ) : IMediaList.ICustomList
 
+    data class AdvancedScore(
+        override val name: String,
+        override val score: Float
+    ) : IMediaList.IAdvancedScore
+
     data class Core(
-        override val advancedScores: Map<String, Float>,
+        override val advancedScores: List<AdvancedScore>,
         override val customLists: Collection<CustomList>,
         override val userId: Long,
         override val priority: Int?,
@@ -49,7 +54,7 @@ sealed class MediaList : IMediaList {
     ) : MediaList() {
         companion object {
             fun empty() = Core(
-                advancedScores = emptyMap(),
+                advancedScores = emptyList(),
                 customLists = emptyList(),
                 userId = 0,
                 priority = 0,

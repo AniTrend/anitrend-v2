@@ -32,22 +32,22 @@ import kotlinx.serialization.Serializable
 )
 internal data class MediaListEntity(
     @ColumnInfo(name = "media_type") val mediaType: MediaType,
-    @ColumnInfo(name = "advanced_scores") val advancedScores: Map<String, Float> = emptyMap(),
-    @ColumnInfo(name = "custom_lists") val customLists: List<CustomList> = emptyList(),
-    @ColumnInfo(name = "completed_at") val completedAt: FuzzyDateInt? = null,
-    @ColumnInfo(name = "created_at") val createdAt: Long? = null,
-    @ColumnInfo(name = "hidden_from_status") val hiddenFromStatus: Boolean = false,
+    @ColumnInfo(name = "advanced_scores") val advancedScores: List<AdvancedScore>,
+    @ColumnInfo(name = "custom_lists") val customLists: List<CustomList>,
+    @ColumnInfo(name = "completed_at") val completedAt: FuzzyDateInt?,
+    @ColumnInfo(name = "created_at") val createdAt: Long?,
+    @ColumnInfo(name = "hidden_from_status") val hiddenFromStatus: Boolean,
     @ColumnInfo(name = "media_id") val mediaId: Long,
-    @ColumnInfo(name = "notes") val notes: String? = null,
-    @ColumnInfo(name = "priority") val priority: Int? = null,
-    @ColumnInfo(name = "private") val private: Boolean = false,
-    @ColumnInfo(name = "progress") val progress: Int = 0,
-    @ColumnInfo(name = "progress_volumes") val progressVolumes: Int = 0,
-    @ColumnInfo(name = "repeat_count") val repeatCount: Int = 0,
-    @ColumnInfo(name = "score") val score: Float = 0f,
-    @ColumnInfo(name = "started_at") val startedAt: FuzzyDateInt? = null,
-    @ColumnInfo(name = "status") val status: MediaListStatus = MediaListStatus.PLANNING,
-    @ColumnInfo(name = "updated_at") val updatedAt: Long? = null,
+    @ColumnInfo(name = "notes") val notes: String?,
+    @ColumnInfo(name = "priority") val priority: Int?,
+    @ColumnInfo(name = "hidden") val hidden: Boolean,
+    @ColumnInfo(name = "progress") val progress: Int,
+    @ColumnInfo(name = "progress_volumes") val progressVolumes: Int,
+    @ColumnInfo(name = "repeat_count") val repeatCount: Int,
+    @ColumnInfo(name = "score") val score: Float,
+    @ColumnInfo(name = "started_at") val startedAt: FuzzyDateInt?,
+    @ColumnInfo(name = "status") val status: MediaListStatus,
+    @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "id") override val id: Long
 ) : Identity {
@@ -56,5 +56,11 @@ internal data class MediaListEntity(
     internal data class CustomList(
         @SerialName("name") val name: String,
         @SerialName("enabled") val enabled: Boolean
+    )
+
+    @Serializable
+    internal data class AdvancedScore(
+        @SerialName("name") val name: String,
+        @SerialName("score") val score: Float
     )
 }

@@ -19,6 +19,9 @@ package co.anitrend.data.medialist.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
+import co.anitrend.data.arch.extension.asFuzzyDate
+import co.anitrend.data.arch.extension.toFuzzyDateInt
+import co.anitrend.data.arch.extension.toFuzzyDateModel
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.model.MediaListModel
 import co.anitrend.domain.media.enums.MediaType
@@ -34,26 +37,28 @@ internal class MediaListCoreModelConverter(
     private companion object : ISupportTransformer<MediaListModel.Core, MediaListEntity> {
         override fun transform(source: MediaListModel.Core) = MediaListEntity(
             mediaType = source.category.type,
-            advancedScores = source.advancedScores.orEmpty(),
+            advancedScores = source.advancedScores?.map {
+                MediaListEntity.AdvancedScore(it.key, it.value)
+            }.orEmpty(),
             customLists = source.customLists?.map {
                 MediaListEntity.CustomList(
                     name = it.name,
                     enabled = it.enabled
                 )
             }.orEmpty(),
-            completedAt = source.completedAt,
+            completedAt = source.completedAt?.toFuzzyDateInt(),
             createdAt = source.createdAt,
             hiddenFromStatus = source.hiddenFromStatusLists ?: false,
             mediaId = source.mediaId,
             notes = source.notes,
             priority = source.priority,
-            private = source.private ?: false,
+            hidden = source.private ?: false,
             progress = source.progress ?: 0,
             progressVolumes = source.progressVolumes ?: 0,
             repeatCount = source.repeat ?: 0,
             score = source.score ?: 0f,
-            startedAt = source.startedAt,
-            status = source.status,
+            startedAt = source.startedAt?.toFuzzyDateInt(),
+            status = source.status ?: MediaListStatus.PLANNING,
             updatedAt = source.updatedAt,
             userId = source.userId,
             id = source.id
@@ -85,7 +90,9 @@ internal class MediaListEntityConverter(
          * Transforms the the [source] to the target type
          */
         override fun transform(source: MediaListEntity) = MediaList.Core(
-            advancedScores = source.advancedScores,
+            advancedScores = source.advancedScores.map {
+                MediaList.AdvancedScore(it.name, it.score)
+            },
             customLists = source.customLists.map {
                 MediaList.CustomList(
                     name = it.name,
@@ -95,14 +102,14 @@ internal class MediaListEntityConverter(
             userId = source.userId,
             priority = source.priority,
             createdOn = source.createdAt,
-            startedOn = source.startedAt.asFuzzyDate().orEmpty(),
-            finishedOn = source.completedAt.asFuzzyDate().orEmpty(),
+            startedOn = source.startedAt?.toFuzzyDateModel().asFuzzyDate(),
+            finishedOn = source.completedAt?.toFuzzyDateModel().asFuzzyDate(),
             mediaId = source.mediaId,
             score = source.score,
-            status = source.status ?: MediaListStatus.PLANNING,
+            status = source.status,
             progress = createMediaListProgress(source),
             privacy = MediaListPrivacy(
-                isPrivate = source.private,
+                isPrivate = source.hidden,
                 isHidden = source.hiddenFromStatus,
                 notes = source.notes,
             ),

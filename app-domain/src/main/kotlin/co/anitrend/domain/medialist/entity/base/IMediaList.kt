@@ -36,11 +36,16 @@ interface IMediaList : IEntity {
     val startedOn: FuzzyDate
     val finishedOn: FuzzyDate
 
-    val advancedScores: Map<String, Float>
+    val advancedScores: List<IAdvancedScore>
     val customLists: Collection<ICustomList>
 
     interface ICustomList {
         val name: CharSequence
         val enabled: Boolean
+    }
+
+    interface IAdvancedScore {
+        val name: CharSequence
+        val score: Float
     }
 }
