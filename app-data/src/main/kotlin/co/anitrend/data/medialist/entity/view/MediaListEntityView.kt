@@ -15,38 +15,38 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.entity.view
+package co.anitrend.data.medialist.entity.view
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
+import co.anitrend.data.user.entity.UserEntity
 
-internal sealed class MediaEntityView {
-    abstract val media: MediaEntity
-    abstract val nextAiring: AiringScheduleEntity?
+internal sealed class MediaListEntityView {
+    abstract val user: UserEntity
+    abstract val mediaList: MediaListEntity
 
     internal data class Core(
-        @Embedded override val media: MediaEntity,
         @Relation(
-            parentColumn = "next_airing_id",
+            parentColumn = "user_id",
             entityColumn = "id"
         )
-        override val nextAiring: AiringScheduleEntity?
-    ) : MediaEntityView()
+        override val user: UserEntity,
+        @Embedded override val mediaList: MediaListEntity
+    ) : MediaListEntityView()
 
-    internal data class WithMediaList(
+    internal data class WithMedia(
         @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id"
-        )
-        val mediaList: MediaListEntity?,
-        @Embedded override val media: MediaEntity,
-        @Relation(
-            parentColumn = "next_airing_id",
+            parentColumn = "media_id",
             entityColumn = "id"
         )
-        override val nextAiring: AiringScheduleEntity?
-    ) : MediaEntityView()
+        val media: MediaEntity,
+        @Relation(
+            parentColumn = "user_id",
+            entityColumn = "id"
+        )
+        override val user: UserEntity,
+        @Embedded override val mediaList: MediaListEntity
+    ) : MediaListEntityView()
 }

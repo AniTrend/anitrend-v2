@@ -15,18 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.mediatrend.model.remote.connection
+package co.anitrend.data.mediatrend.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
-import co.anitrend.data.mediatrend.model.remote.MediaTrendModel
-import co.anitrend.data.mediatrend.model.remote.edge.MediaTrendEdge
+import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.mediatrend.model.MediaTrendModel
 
-/** [MediaTrendConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendconnection.doc.html)
- * Media trend connection
+/** [MediaTrendEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendedge.doc.html)
+ * Media trend connection edge
+ *
+ * **N.B.** The schema doesn't use the [id] field for MediaTrendEdge
  */
-internal data class MediaTrendConnection(
-    override val edges: List<MediaTrendEdge>?,
-    override val nodes: List<MediaTrendModel.Core>?,
-    override val pageInfo: PageInfo?
-) : IEntityConnection<MediaTrendEdge, MediaTrendModel>
+internal data class MediaTrendEdge(
+    override val id: Long,
+    override val node: MediaTrendModel.Core?
+) : IEntityEdge<MediaTrendModel>

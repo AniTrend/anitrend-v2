@@ -15,13 +15,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.medialist.entity.base
+package co.anitrend.data.mediatrend.converter
 
-import co.anitrend.domain.common.entity.shared.FuzzyDate
-
-interface IMediaListCore : IMediaList {
-    val priority: Float
-    val createdOn: Long
-    val startedOn: FuzzyDate
-    val finishedOn: FuzzyDate
-}

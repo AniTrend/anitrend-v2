@@ -32,6 +32,7 @@ import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.cache.entity.CacheEntity
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.moe.entity.MoeEntity
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.user.entity.UserEntity
@@ -43,7 +44,8 @@ import org.jetbrains.annotations.TestOnly
     entities = [
         AuthEntity::class, TagEntity::class, GenreEntity::class, MoeEntity::class,
         MediaEntity::class, AiringScheduleEntity::class, CacheEntity::class,
-        UserEntity::class, UserGeneralOptionEntity::class, UserMediaOptionEntity::class
+        UserEntity::class, UserGeneralOptionEntity::class, UserMediaOptionEntity::class,
+        MediaListEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION
 )
@@ -56,7 +58,7 @@ import org.jetbrains.annotations.TestOnly
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 9
+        const val DATABASE_SCHEMA_VERSION = 1
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(

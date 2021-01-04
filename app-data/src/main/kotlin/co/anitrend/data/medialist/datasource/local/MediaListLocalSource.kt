@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.media.datasource.local
+package co.anitrend.data.medialist.datasource.local
 
 import androidx.paging.DataSource
 import androidx.room.Dao
@@ -24,16 +24,18 @@ import androidx.room.Transaction
 import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
+import co.anitrend.data.medialist.entity.MediaListEntity
+import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
+internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
 
     /**
      * Count the number of entities
      */
     @Query("""
-            select count(id) from media
+            select count(id) from media_list
         """)
     abstract override suspend fun count(): Int
 
@@ -41,34 +43,34 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
      * Removes all records from table
      */
     @Query("""
-        delete from media
+        delete from media_list
         """)
     abstract override suspend fun clear()
 
+
     @Query("""
-        select * from media
+        select * from media_list
+        where id = :id
+    """)
+    abstract fun byIdFlow(id: Long): Flow<MediaListEntity?>
+
+    @Query("""
+        select * from media_list
+        where media_id = :mediaId
+    """)
+    abstract fun byMediaIdFlow(mediaId: Long): Flow<MediaListEntity?>
+
+
+    @Query("""
+        select * from media_list
         where id = :id
     """)
     @Transaction
-    abstract suspend fun mediaById(id: Long): MediaEntityView.WithMediaList?
+    abstract fun byIdCoreFlow(id: Long): Flow<MediaListEntity?>
 
     @Query("""
-        select * from media
-        where id = :id
+        select * from media_list 
     """)
     @Transaction
-    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.WithMediaList?>
-
-    @Query("""
-        select * from media
-    """)
-    @Transaction
-    abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
-
-    @Query("""
-        select * from media
-        order by popularity desc
-    """)
-    @Transaction
-    abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
+    abstract fun entryFactory(): DataSource.Factory<Int, MediaListEntity>
 }

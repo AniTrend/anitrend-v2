@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1ab5537b013189df0ce7f8a29b541159",
+    "identityHash": "2e42307c1347527e78eb9b76f393ca4f",
     "entities": [
       {
-        "tableName": "JsonWebToken",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER NOT NULL, `accessToken` TEXT NOT NULL)",
+        "tableName": "auth",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `expires_on` INTEGER NOT NULL, `token_type` TEXT NOT NULL, `access_token` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -16,13 +16,25 @@
           },
           {
             "fieldPath": "userId",
-            "columnName": "userId",
+            "columnName": "user_id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
+            "fieldPath": "expiresOn",
+            "columnName": "expires_on",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tokenType",
+            "columnName": "token_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "accessToken",
-            "columnName": "accessToken",
+            "columnName": "access_token",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -35,27 +47,20 @@
         },
         "indices": [
           {
-            "name": "index_JsonWebToken_userId_accessToken",
+            "name": "index_auth_access_token",
             "unique": true,
             "columnNames": [
-              "userId",
-              "accessToken"
+              "access_token"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_JsonWebToken_userId_accessToken` ON `${TABLE_NAME}` (`userId`, `accessToken`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_auth_access_token` ON `${TABLE_NAME}` (`access_token`)"
           }
         ],
         "foreignKeys": []
       },
       {
-        "tableName": "TagEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `description` TEXT, `category` TEXT, `rank` INTEGER, `isGeneralSpoiler` INTEGER NOT NULL, `isMediaSpoiler` INTEGER NOT NULL, `isAdult` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "tag",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `description` TEXT, `category` TEXT, `is_general_spoiler` INTEGER NOT NULL, `is_adult` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "name",
             "columnName": "name",
@@ -75,26 +80,20 @@
             "notNull": false
           },
           {
-            "fieldPath": "rank",
-            "columnName": "rank",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "isGeneralSpoiler",
-            "columnName": "isGeneralSpoiler",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isMediaSpoiler",
-            "columnName": "isMediaSpoiler",
+            "columnName": "is_general_spoiler",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "isAdult",
-            "columnName": "isAdult",
+            "columnName": "is_adult",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -105,11 +104,20 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_tag_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tag_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
-        "tableName": "GenreEntity",
+        "tableName": "genre",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `genre` TEXT NOT NULL)",
         "fields": [
           {
@@ -131,11 +139,20 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_genre_genre",
+            "unique": true,
+            "columnNames": [
+              "genre"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_genre` ON `${TABLE_NAME}` (`genre`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
-        "tableName": "source_entity",
+        "tableName": "moe",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`anilist` INTEGER NOT NULL, `anidb` INTEGER, `kitsu` INTEGER, `mal` INTEGER, PRIMARY KEY(`anilist`))",
         "fields": [
           {
@@ -171,12 +188,803 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "media",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_native` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "nextAiringId",
+            "columnName": "next_airing_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tags",
+            "columnName": "tags",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genres",
+            "columnName": "genres",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "links",
+            "columnName": "links",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ranks",
+            "columnName": "ranks",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "averageScore",
+            "columnName": "average_score",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chapters",
+            "columnName": "chapters",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "countryOfOrigin",
+            "columnName": "country_of_origin",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "end_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "episodes",
+            "columnName": "episodes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "favourites",
+            "columnName": "favourites",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "media_format",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hashTag",
+            "columnName": "hash_tag",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isAdult",
+            "columnName": "is_adult",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isFavourite",
+            "columnName": "is_favourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isLicensed",
+            "columnName": "is_licensed",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isLocked",
+            "columnName": "is_locked",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "meanScore",
+            "columnName": "mean_score",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "popularity",
+            "columnName": "popularity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "season",
+            "columnName": "season",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "siteUrl",
+            "columnName": "site_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "start_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "synonyms",
+            "columnName": "synonyms",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trending",
+            "columnName": "trending",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "media_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "volumes",
+            "columnName": "volumes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverImage.color",
+            "columnName": "cover_color",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.extraLarge",
+            "columnName": "cover_extra_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.large",
+            "columnName": "cover_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.medium",
+            "columnName": "cover_medium",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.banner",
+            "columnName": "cover_banner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.romaji",
+            "columnName": "title_romaji",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.english",
+            "columnName": "title_english",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.native",
+            "columnName": "title_native",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.userPreferred",
+            "columnName": "title_user_preferred",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trailer.id",
+            "columnName": "trailer_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trailer.site",
+            "columnName": "trailer_site",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trailer.thumbnail",
+            "columnName": "trailer_thumbnail",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "airing_schedule",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`airing_at` INTEGER NOT NULL, `episode` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `time_until_airing` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "airingAt",
+            "columnName": "airing_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episode",
+            "columnName": "episode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeUntilAiring",
+            "columnName": "time_until_airing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "cache_log",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `request` TEXT NOT NULL, `cache_item_id` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "request",
+            "columnName": "request",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cacheItemId",
+            "columnName": "cache_item_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_cache_log_cache_item_id",
+            "unique": true,
+            "columnNames": [
+              "cache_item_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_cache_log_cache_item_id` ON `${TABLE_NAME}` (`cache_item_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "user",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unread_notifications` INTEGER, `updated_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "unreadNotification",
+            "columnName": "unread_notifications",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.name",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.bio",
+            "columnName": "user_bio",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "about.siteUrl",
+            "columnName": "user_site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.donatorTier",
+            "columnName": "user_donator_tier",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "about.donatorBadge",
+            "columnName": "user_donator_badge",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status.isFollowing",
+            "columnName": "user_is_following",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status.isFollower",
+            "columnName": "user_is_follower",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status.isBlocked",
+            "columnName": "user_is_blocked",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.large",
+            "columnName": "cover_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.medium",
+            "columnName": "cover_medium",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.banner",
+            "columnName": "cover_banner",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "user_general_option",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `airing_notifications` INTEGER NOT NULL, `display_adult_content` INTEGER NOT NULL, `notification_option` TEXT NOT NULL, `title_language` TEXT NOT NULL, `profile_color` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "airingNotifications",
+            "columnName": "airing_notifications",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayAdultContent",
+            "columnName": "display_adult_content",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notificationOption",
+            "columnName": "notification_option",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titleLanguage",
+            "columnName": "title_language",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "profileColor",
+            "columnName": "profile_color",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_general_option_user_id",
+            "unique": true,
+            "columnNames": [
+              "user_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_general_option_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "user_media_option",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `score_format` TEXT NOT NULL, `list_row_order` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anime_custom_lists` TEXT NOT NULL, `anime_section_order` TEXT NOT NULL, `anime_advanced_scoring` TEXT NOT NULL, `anime_advanced_scoring_enabled` INTEGER NOT NULL, `anime_split_completed_section_by_format` INTEGER NOT NULL, `manga_custom_lists` TEXT NOT NULL, `manga_section_order` TEXT NOT NULL, `manga_advanced_scoring` TEXT NOT NULL, `manga_advanced_scoring_enabled` INTEGER NOT NULL, `manga_split_completed_section_by_format` INTEGER NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scoreFormat",
+            "columnName": "score_format",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rowOrder",
+            "columnName": "list_row_order",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anime.customLists",
+            "columnName": "anime_custom_lists",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anime.sectionOrder",
+            "columnName": "anime_section_order",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anime.advancedScoring",
+            "columnName": "anime_advanced_scoring",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anime.advancedScoringEnabled",
+            "columnName": "anime_advanced_scoring_enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "anime.splitCompletedSectionByFormat",
+            "columnName": "anime_split_completed_section_by_format",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manga.customLists",
+            "columnName": "manga_custom_lists",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manga.sectionOrder",
+            "columnName": "manga_section_order",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manga.advancedScoring",
+            "columnName": "manga_advanced_scoring",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manga.advancedScoringEnabled",
+            "columnName": "manga_advanced_scoring_enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manga.splitCompletedSectionByFormat",
+            "columnName": "manga_split_completed_section_by_format",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_media_option_user_id",
+            "unique": true,
+            "columnNames": [
+              "user_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_media_option_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "media_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `advanced_scores` TEXT NOT NULL, `custom_lists` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "mediaType",
+            "columnName": "media_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "advancedScores",
+            "columnName": "advanced_scores",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customLists",
+            "columnName": "custom_lists",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedAt",
+            "columnName": "completed_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hiddenFromStatus",
+            "columnName": "hidden_from_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hidden",
+            "columnName": "hidden",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "progress",
+            "columnName": "progress",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "progressVolumes",
+            "columnName": "progress_volumes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repeatCount",
+            "columnName": "repeat_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "score",
+            "columnName": "score",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "started_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1ab5537b013189df0ce7f8a29b541159')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2e42307c1347527e78eb9b76f393ca4f')"
     ]
   }
 }

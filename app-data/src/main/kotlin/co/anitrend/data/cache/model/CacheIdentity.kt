@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,17 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.mediatrend.model.remote.edge
+package co.anitrend.data.cache.model
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
-import co.anitrend.data.mediatrend.model.remote.MediaTrendModel
-
-/** [MediaTrendEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendedge.doc.html)
- * Media trend connection edge
- *
- * **N.B.** The schema doesn't use the [id] field for MediaTrendEdge
- */
-internal data class MediaTrendEdge(
-    override val id: Long,
-    override val node: MediaTrendModel.Core?
-) : IEntityEdge<MediaTrendModel>
+internal interface CacheIdentity {
+    val id: Long
+    val key: String
+}

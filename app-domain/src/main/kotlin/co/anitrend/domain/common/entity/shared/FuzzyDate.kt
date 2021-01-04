@@ -47,5 +47,7 @@ data class FuzzyDate(
             UNKNOWN,
             UNKNOWN
         )
+
+        fun FuzzyDate?.orEmpty() = this ?: empty()
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.medialist.model.mutation
+package co.anitrend.data.medialist.datasource.local
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import kotlinx.android.parcel.Parcelize
-
-/** [DeleteMediaListEntry mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
- *
- * Delete a media list entry
- *
- * @param id The id of the media list entry to delete
- */
-@Parcelize
-data class DeleteMediaListEntryMutation(
-    val id: Long
-) : IGraphPayload {
-
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() = mapOf(
-        "id" to id
-    )
+internal interface IMediaListStore {
+    fun mediaListDao(): MediaListLocalSource
 }

@@ -1,4 +1,4 @@
-query MediaList(
+query MediaListPaged(
     $compareWithAuthList: Boolean,
     $completedAt: FuzzyDateInt,
     $completedAt_greater: FuzzyDateInt,
@@ -55,7 +55,7 @@ query MediaList(
             sort: $sort,
             compareWithAuthList: $compareWithAuthList
         ) {
-            ... MediaListCore
+            ... MediaListExtended
         }
     }
 }

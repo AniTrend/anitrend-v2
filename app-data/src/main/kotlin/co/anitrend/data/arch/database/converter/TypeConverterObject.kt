@@ -21,10 +21,13 @@ import androidx.room.TypeConverter
 import co.anitrend.data.arch.database.extensions.fromCommaSeparatedValues
 import co.anitrend.data.arch.database.extensions.toCommaSeparatedValues
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import org.koin.core.context.GlobalContext
 import org.threeten.bp.Instant
 
@@ -108,6 +111,26 @@ internal class TypeConverterObject {
         val serializer = ListSerializer(
             UserGeneralOptionEntity.NotificationOption.serializer()
         )
+        return json.decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromCustomList(value: List<MediaListEntity.CustomList>): String {
+        val serializer = ListSerializer(MediaListEntity.CustomList.serializer())
+        return json.encodeToString(serializer, value)
+    }
+
+    @TypeConverter fun toCustomList(value: String): List<MediaListEntity.CustomList> {
+        val serializer = ListSerializer(MediaListEntity.CustomList.serializer())
+        return json.decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromAdvancedScoreList(value: List<MediaListEntity.AdvancedScore>): String {
+        val serializer = ListSerializer(MediaListEntity.AdvancedScore.serializer())
+        return json.encodeToString(serializer, value)
+    }
+
+    @TypeConverter fun toAdvancedScoreList(value: String): List<MediaListEntity.AdvancedScore> {
+        val serializer = ListSerializer(MediaListEntity.AdvancedScore.serializer())
         return json.decodeFromString(serializer, value)
     }
 

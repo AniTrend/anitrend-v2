@@ -18,6 +18,7 @@
 package co.anitrend.domain.medialist.entity.base
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
@@ -29,4 +30,22 @@ interface IMediaList : IEntity {
     val status: MediaListStatus?
     val progress: MediaListProgress
     val privacy: MediaListPrivacy
+
+    val priority: Int?
+    val createdOn: Long?
+    val startedOn: FuzzyDate
+    val finishedOn: FuzzyDate
+
+    val advancedScores: List<IAdvancedScore>
+    val customLists: Collection<ICustomList>
+
+    interface ICustomList {
+        val name: CharSequence
+        val enabled: Boolean
+    }
+
+    interface IAdvancedScore {
+        val name: CharSequence
+        val score: Float
+    }
 }

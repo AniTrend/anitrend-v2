@@ -24,10 +24,9 @@ import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.cache.datasource.CacheLocalSource
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.media.MediaPagedCombinedController
-import co.anitrend.data.media.converter.MediaEntityConverter
+import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
@@ -44,7 +43,7 @@ internal class MediaPagedSourceImpl(
     private val clearDataHelper: IClearDataHelper,
     private val controller: MediaPagedCombinedController,
     private val sortOrderSettings: ISortOrderSettings,
-    private val converter: MediaEntityConverter,
+    private val converter: MediaEntityViewConverter,
     dispatcher: ISupportDispatcher
 ) : MediaPagedSource(dispatcher) {
 

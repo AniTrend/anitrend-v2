@@ -23,8 +23,11 @@ import co.anitrend.data.arch.extension.asFuzzyDate
 import co.anitrend.data.arch.extension.toFuzzyDateInt
 import co.anitrend.data.arch.extension.toFuzzyDateModel
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.data.medialist.converter.MediaListEntityConverter
+import co.anitrend.data.medialist.entity.MediaListEntity
+import co.anitrend.data.medialist.model.MediaListModel
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -36,7 +39,9 @@ import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
+import co.anitrend.domain.medialist.entity.contract.MediaListProgress
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
 
 internal class MediaConverter(
@@ -44,6 +49,63 @@ internal class MediaConverter(
     override val toType: (Media) -> MediaModel = { throw NotImplementedError() }
 ) : SupportConverter<MediaModel, Media>() {
     private companion object : ISupportTransformer<MediaModel, Media> {
+
+        private fun createMediaListProgress(source: MediaListModel.Core): MediaListProgress {
+            return when (source.category.type) {
+                MediaType.ANIME -> MediaListProgress.Anime(
+                    episodeProgress = source.progress ?: 0,
+                    repeatedCount = source.repeat ?: 0
+                )
+                MediaType.MANGA -> MediaListProgress.Manga(
+                    chapterProgress = source.progress ?: 0,
+                    volumeProgress = source.progressVolumes ?: 0,
+                    repeatedCount = source.repeat ?: 0
+                )
+            }
+        }
+
+        private fun convertMediaListEntry(model: MediaListModel.Core?): MediaList {
+            return model?.let {
+                MediaList.Core(
+                    advancedScores = it.advancedScores?.map { entry ->
+                        MediaList.AdvancedScore(
+                            name = entry.key,
+                            score = entry.value
+                        )
+                    }.orEmpty(),
+                    customLists = it.customLists?.map { custom ->
+                        MediaList.CustomList(
+                            name = custom.name,
+                            enabled = custom.enabled
+                        )
+                    }.orEmpty(),
+                    userId = it.userId,
+                    priority = it.priority,
+                    createdOn = it.createdAt,
+                    startedOn = it.startedAt.asFuzzyDate(),
+                    finishedOn = it.completedAt.asFuzzyDate(),
+                    mediaId = it.mediaId,
+                    score = it.score ?: 0f,
+                    status = it.status ?: MediaListStatus.PLANNING,
+                    progress = createMediaListProgress(it),
+                    privacy = MediaListPrivacy(
+                        isPrivate = it.private ?: false,
+                        isHidden = it.hiddenFromStatusLists ?: false,
+                        notes = it.notes
+                    ),
+                    id = it.id,
+                )
+            } ?: MediaList.Core.empty()
+        }
+
+        private fun MediaModel.createMediaList(): MediaList {
+            return when (this) {
+                is MediaModel.Media -> MediaList.Core.empty()
+                is MediaModel.Core -> convertMediaListEntry(mediaListEntry)
+                is MediaModel.Extended -> convertMediaListEntry(mediaListEntry)
+            }
+        }
+
         override fun transform(source: MediaModel) = when (source) {
             is MediaModel.Media -> Media.Core(
                 sourceId = MediaSourceId.empty().copy(
@@ -191,9 +253,7 @@ internal class MediaConverter(
                 isAdult = source.isAdult,
                 isFavourite = source.isFavourite,
                 id = source.id,
-                mediaList = source.mediaListEntry?.let {
-                    MediaList.empty()
-                } ?: MediaList.empty() // TODO: build media list object
+                mediaList = source.createMediaList()
             )
             is MediaModel.Extended -> Media.Extended(
                 sourceId = MediaSourceId.empty().copy(
@@ -291,9 +351,7 @@ internal class MediaConverter(
                 isAdult = source.isAdult,
                 isFavourite = source.isFavourite,
                 id = source.id,
-                mediaList = source.mediaListEntry?.let {
-                    MediaList.empty()
-                } ?: MediaList.empty() // TODO: build media list object
+                mediaList = source.createMediaList()
             )
         }
     }
@@ -328,14 +386,7 @@ internal class MediaModelConverter(
                 }
                 else -> null
             },
-            nextAiring = source.nextAiringEpisode?.let {
-                MediaEntity.Airing(
-                    airingAt = it.airingAt,
-                    episode = it.episode,
-                    airingId = it.id,
-                    timeUntilAiring = it.timeUntilAiring,
-                )
-            },
+            nextAiringId = source.nextAiringEpisode?.id,
             genres = source.genres?.map {
                 MediaEntity.Genre(it)
             }.orEmpty(),
@@ -407,53 +458,35 @@ internal class MediaModelConverter(
     }
 }
 
-internal class MediaEntityConverter(
-    override val fromType: (MediaEntity) -> Media = { transform(it) },
-    override val toType: (Media) -> MediaEntity = { throw NotImplementedError() }
-) : SupportConverter<MediaEntity, Media>() {
-    private companion object : ISupportTransformer<MediaEntity, Media> {
-        override fun transform(source: MediaEntity): Media {
-            /**
-             * TODO: Create view objects for database that will make use of the following ->
-             * https://developer.android.com/reference/androidx/room/RewriteQueriesToDropUnusedColumns
-             */
-            return Media.Extended(
+internal class MediaEntityViewConverter(
+    override val fromType: (MediaEntityView) -> Media = { transform(it) },
+    override val toType: (Media) -> MediaEntityView = { throw NotImplementedError() }
+) : SupportConverter<MediaEntityView, Media>() {
+    private companion object : ISupportTransformer<MediaEntityView, Media> {
+
+        private fun MediaListEntity.createMediaList(): MediaList {
+            return MediaListEntityConverter().convertFrom(this)
+        }
+
+        override fun transform(source: MediaEntityView) = when (source) {
+            is MediaEntityView.Core -> Media.Core(
                 sourceId = MediaSourceId.empty().copy(
-                    anilist = source.id
+                    anilist = source.media.id
                 ),
-                countryCode = source.countryOfOrigin,
-                description = source.description,
-                externalLinks = source.links.map {
-                    MediaExternalLink(
-                        site = it.site,
-                        url = it.url,
-                        id = it.id
-                    )
-                },
-                favouritesCount = source.id,
-                genres = source.genres.map {
+                countryCode = source.media.countryOfOrigin,
+                description = source.media.description,
+                favouritesCount = source.media.id,
+                genres = source.media.genres.map {
                     Genre(it.name)
                 },
-                twitterTag = source.hashTag,
-                isLicensed = source.isLicensed,
-                isLocked = source.isLocked,
+                twitterTag = source.media.hashTag,
+                isLicensed = source.media.isLicensed,
+                isLocked = source.media.isLocked,
                 isRecommendationBlocked = false,
-                rankings = source.ranks.map {
-                    MediaRank(
-                        allTime = it.allTime,
-                        context = it.context,
-                        format = it.format,
-                        rank = it.rank,
-                        season = it.season,
-                        type = it.type,
-                        year = it.year,
-                        id = it.id
-                    )
-                },
-                siteUrl = source.siteUrl,
-                source = source.source,
-                synonyms = source.synonyms,
-                tags = source.tags.map {
+                siteUrl = source.media.siteUrl,
+                source = source.media.source,
+                synonyms = source.media.synonyms,
+                tags = source.media.tags.map {
                     Tag(
                         name = it.name,
                         description = it.description,
@@ -465,56 +498,148 @@ internal class MediaEntityConverter(
                         id = it.id
                     )
                 },
-                trailer = source.trailer?.let {
+                format = source.media.format,
+                season = source.media.season,
+                status = source.media.status,
+                meanScore = source.media.meanScore ?: 0,
+                averageScore = source.media.averageScore ?: 0,
+                startDate = source.media.startDate.toFuzzyDateModel().asFuzzyDate(),
+                endDate = source.media.endDate.toFuzzyDateModel().asFuzzyDate(),
+                title = MediaTitle(
+                    romaji = source.media.title.romaji,
+                    english = source.media.title.english,
+                    native = source.media.title.native,
+                    userPreferred = source.media.title.userPreferred
+                ),
+                image = MediaImage(
+                    color = source.media.coverImage.color,
+                    extraLarge = source.media.coverImage.extraLarge,
+                    large = source.media.coverImage.large,
+                    medium = source.media.coverImage.medium,
+                    banner = source.media.coverImage.banner,
+                ),
+                category = when (source.media.type) {
+                    MediaType.ANIME -> Media.Category.Anime(
+                        source.media.episodes ?: 0,
+                        source.media.duration ?: 0,
+                        source.nextAiring?.let {
+                            AiringSchedule(
+                                airingAt = it.airingAt,
+                                episode = it.episode,
+                                mediaId = source.media.id,
+                                timeUntilAiring = it.timeUntilAiring,
+                                id = it.id
+                            )
+                        }
+                    )
+                    MediaType.MANGA -> Media.Category.Manga(
+                        source.media.chapters ?: 0,
+                        source.media.volumes ?: 0
+                    )
+                },
+                isAdult = source.media.isAdult,
+                isFavourite = source.media.isFavourite,
+                id = source.media.id,
+                mediaList = null
+            )
+            is MediaEntityView.WithMediaList -> Media.Extended(
+                sourceId = MediaSourceId.empty().copy(
+                    anilist = source.media.id
+                ),
+                countryCode = source.media.countryOfOrigin,
+                description = source.media.description,
+                externalLinks = source.media.links.map {
+                    MediaExternalLink(
+                        site = it.site,
+                        url = it.url,
+                        id = it.id
+                    )
+                },
+                favouritesCount = source.media.id,
+                genres = source.media.genres.map {
+                    Genre(it.name)
+                },
+                twitterTag = source.media.hashTag,
+                isLicensed = source.media.isLicensed,
+                isLocked = source.media.isLocked,
+                isRecommendationBlocked = false,
+                rankings = source.media.ranks.map {
+                    MediaRank(
+                        allTime = it.allTime,
+                        context = it.context,
+                        format = it.format,
+                        rank = it.rank,
+                        season = it.season,
+                        type = it.type,
+                        year = it.year,
+                        id = it.id
+                    )
+                },
+                siteUrl = source.media.siteUrl,
+                source = source.media.source,
+                synonyms = source.media.synonyms,
+                tags = source.media.tags.map {
+                    Tag(
+                        name = it.name,
+                        description = it.description,
+                        category = it.category,
+                        rank = it.rank ?: 0,
+                        isGeneralSpoiler = it.isGeneralSpoiler ?: false,
+                        isMediaSpoiler = it.isMediaSpoiler ?: false,
+                        isAdult = it.isAdult ?: false,
+                        id = it.id
+                    )
+                },
+                trailer = source.media.trailer?.let {
                     MediaTrailer(
                         id = it.id,
                         site = it.site,
                         thumbnail = it.thumbnail
                     )
                 },
-                format = source.format,
-                season = source.season,
-                status = source.status,
-                meanScore = source.meanScore ?: 0,
-                averageScore = source.averageScore ?: 0,
-                startDate = source.startDate.toFuzzyDateModel().asFuzzyDate(),
-                endDate = source.endDate.toFuzzyDateModel().asFuzzyDate(),
+                format = source.media.format,
+                season = source.media.season,
+                status = source.media.status,
+                meanScore = source.media.meanScore ?: 0,
+                averageScore = source.media.averageScore ?: 0,
+                startDate = source.media.startDate.toFuzzyDateModel().asFuzzyDate(),
+                endDate = source.media.endDate.toFuzzyDateModel().asFuzzyDate(),
                 title = MediaTitle(
-                    romaji = source.title.romaji,
-                    english = source.title.english,
-                    native = source.title.native,
-                    userPreferred = source.title.userPreferred
+                    romaji = source.media.title.romaji,
+                    english = source.media.title.english,
+                    native = source.media.title.native,
+                    userPreferred = source.media.title.userPreferred
                 ),
                 image = MediaImage(
-                    color = source.coverImage.color,
-                    extraLarge = source.coverImage.extraLarge,
-                    large = source.coverImage.large,
-                    medium = source.coverImage.medium,
-                    banner = source.coverImage.banner,
+                    color = source.media.coverImage.color,
+                    extraLarge = source.media.coverImage.extraLarge,
+                    large = source.media.coverImage.large,
+                    medium = source.media.coverImage.medium,
+                    banner = source.media.coverImage.banner,
                 ),
-                category = when (source.type) {
+                category = when (source.media.type) {
                     MediaType.ANIME -> Media.Category.Anime(
-                        source.episodes ?: 0,
-                        source.duration ?: 0,
+                        source.media.episodes ?: 0,
+                        source.media.duration ?: 0,
                         source.nextAiring?.let {
                             AiringSchedule(
                                 airingAt = it.airingAt,
                                 episode = it.episode,
-                                mediaId = source.id,
+                                mediaId = source.media.id,
                                 timeUntilAiring = it.timeUntilAiring,
-                                id = it.airingId
+                                id = it.id
                             )
                         }
                     )
                     MediaType.MANGA -> Media.Category.Manga(
-                        source.chapters ?: 0,
-                        source.volumes ?: 0
+                        source.media.chapters ?: 0,
+                        source.media.volumes ?: 0
                     )
                 },
-                isAdult = source.isAdult,
-                isFavourite = source.isFavourite,
-                id = source.id,
-                mediaList = MediaList.empty() // TODO: build media list object
+                isAdult = source.media.isAdult,
+                isFavourite = source.media.isFavourite,
+                id = source.media.id,
+                mediaList = source.mediaList?.createMediaList()
             )
         }
     }

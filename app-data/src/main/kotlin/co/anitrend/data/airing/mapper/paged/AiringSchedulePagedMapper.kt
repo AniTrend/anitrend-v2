@@ -17,7 +17,7 @@
 
 package co.anitrend.data.airing.mapper.paged
 
-import co.anitrend.data.airing.converters.AiringExtendedModelConverter
+import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.page.AiringSchedulePageModel
@@ -29,7 +29,7 @@ import co.anitrend.data.arch.railway.extension.then
 
 internal class AiringSchedulePagedMapper(
     private val localSource: AiringLocalSource,
-    private val converter: AiringExtendedModelConverter = AiringExtendedModelConverter()
+    private val converter: AiringModelConverter
 ) : DefaultMapper<AiringSchedulePageModel, List<AiringScheduleEntity>>() {
 
     /**

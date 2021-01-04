@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2019  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.cache.model
+package co.anitrend.data.mediatrend.model.connection
 
-enum class CacheRequest(val alias: String) {
-    CAROUSEL("carousel"),
-    AIRING("airing"),
-    CHARACTER("character"),
-    GENRE("genre"),
-    MEDIA("media"),
-    MEDIA_LIST("media_list"),
-    SOURCE("source"),
-    TAG("tag"),
-    USER("user")
-}
+import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.mediatrend.model.MediaTrendModel
+import co.anitrend.data.mediatrend.model.edge.MediaTrendEdge
+
+/** [MediaTrendConnection](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendconnection.doc.html)
+ * Media trend connection
+ */
+internal data class MediaTrendConnection(
+    override val edges: List<MediaTrendEdge>?,
+    override val nodes: List<MediaTrendModel.Core>?,
+    override val pageInfo: PageInfo?
+) : IEntityConnection<MediaTrendEdge, MediaTrendModel>

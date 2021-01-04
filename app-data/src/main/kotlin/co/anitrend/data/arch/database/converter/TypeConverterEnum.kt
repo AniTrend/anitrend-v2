@@ -22,6 +22,7 @@ import co.anitrend.data.arch.database.extensions.fromEnum
 import co.anitrend.data.arch.database.extensions.toEnum
 import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
@@ -52,4 +53,7 @@ internal class TypeConverterEnum {
 
     @TypeConverter fun fromUserTitleLanguage(value: UserTitleLanguage?) = value?.fromEnum()
     @TypeConverter fun toUserTitleLanguage(value: String?) = value?.toEnum<UserTitleLanguage>()
+
+    @TypeConverter fun fromMediaListStatus(value: MediaListStatus?) = value?.fromEnum()
+    @TypeConverter fun toMediaListStatus(value: String?) = value?.toEnum<MediaListStatus>()
 }
