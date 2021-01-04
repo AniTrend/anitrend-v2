@@ -114,16 +114,6 @@ internal class TypeConverterObject {
         return json.decodeFromString(serializer, value)
     }
 
-    @TypeConverter fun fromScoreKeyMap(value: Map<String, Float>): String {
-        val serializer = MapSerializer(serializer<String>(), serializer<Float>())
-        return json.encodeToString(serializer, value)
-    }
-
-    @TypeConverter fun toScoreKeyMap(value: String): Map<String, Float> {
-        val serializer = MapSerializer(serializer<String>(), serializer<Float>())
-        return json.decodeFromString(serializer, value)
-    }
-
     @TypeConverter fun fromCustomList(value: List<MediaListEntity.CustomList>): String {
         val serializer = ListSerializer(MediaListEntity.CustomList.serializer())
         return json.encodeToString(serializer, value)
@@ -131,6 +121,16 @@ internal class TypeConverterObject {
 
     @TypeConverter fun toCustomList(value: String): List<MediaListEntity.CustomList> {
         val serializer = ListSerializer(MediaListEntity.CustomList.serializer())
+        return json.decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromAdvancedScoreList(value: List<MediaListEntity.AdvancedScore>): String {
+        val serializer = ListSerializer(MediaListEntity.AdvancedScore.serializer())
+        return json.encodeToString(serializer, value)
+    }
+
+    @TypeConverter fun toAdvancedScoreList(value: String): List<MediaListEntity.AdvancedScore> {
+        val serializer = ListSerializer(MediaListEntity.AdvancedScore.serializer())
         return json.decodeFromString(serializer, value)
     }
 
