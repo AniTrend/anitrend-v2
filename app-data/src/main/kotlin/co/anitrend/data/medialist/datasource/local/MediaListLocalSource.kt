@@ -47,30 +47,41 @@ internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
         """)
     abstract override suspend fun clear()
 
+    @Query("""
+        delete from media_list
+        where user_id = :userId
+        """)
+    abstract suspend fun clearByUserId(userId: Long)
+
 
     @Query("""
-        select * from media_list
-        where id = :id
+        select ml.* from media_list ml
+        join user u on u.id = ml.user_id
+        where ml.id = :id and u.id = :userId
     """)
-    abstract fun byIdFlow(id: Long): Flow<MediaListEntity?>
+    abstract fun byIdFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
 
     @Query("""
-        select * from media_list
-        where media_id = :mediaId
+        select ml.* from media_list ml
+        join user u on u.id = ml.user_id
+        where ml.media_id = :mediaId and u.id = :userId
     """)
-    abstract fun byMediaIdFlow(mediaId: Long): Flow<MediaListEntity?>
+    abstract fun byMediaIdFlow(mediaId: Long, userId: Long): Flow<MediaListEntityView.WithMedia?>
 
 
     @Query("""
-        select * from media_list
-        where id = :id
+        select ml.* from media_list ml
+        join user u on u.id = ml.user_id
+        where ml.id = :id and u.id = :userId
     """)
     @Transaction
-    abstract fun byIdCoreFlow(id: Long): Flow<MediaListEntity?>
+    abstract fun byIdCoreFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
 
     @Query("""
-        select * from media_list 
+        select ml.* from media_list ml
+        join user u on u.id = ml.user_id
+        where u.id = :userId
     """)
     @Transaction
-    abstract fun entryFactory(): DataSource.Factory<Int, MediaListEntity>
+    abstract fun entryFactory(userId: Long): DataSource.Factory<Int, MediaListEntityView.WithMedia>
 }

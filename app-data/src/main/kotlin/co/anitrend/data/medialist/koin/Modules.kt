@@ -17,27 +17,88 @@
 
 package co.anitrend.data.medialist.koin
 
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.arch.extension.api
+import co.anitrend.data.arch.extension.db
+import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.medialist.MediaListInteractor
+import co.anitrend.data.medialist.converter.MediaListEntityConverter
+import co.anitrend.data.medialist.converter.MediaListModelConverter
+import co.anitrend.data.medialist.mapper.MediaListCollectionMapper
+import co.anitrend.data.medialist.mapper.MediaListPagedMapper
+import co.anitrend.data.medialist.repository.MediaListRepositoryImpl
+import co.anitrend.data.medialist.source.paged.MediaListPagedSourceImpl
+import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
+import co.anitrend.data.medialist.usecase.MediaListUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule = module {
-
+    factory<MediaListPagedSource> {
+        MediaListPagedSourceImpl(
+            remoteSource = api(EndpointType.GRAPH_QL),
+            localSource = db().mediaListDao(),
+            clearDataHelper = get(),
+            controller = graphQLController(
+                mapper = get<MediaListPagedMapper>()
+            ),
+            sortOrderSettings = get(),
+            converter = get(),
+            dispatcher = get()
+        )
+    }
 }
 
 private val mapperModule = module {
+    factory {
+        MediaListPagedMapper(
+            localSource = db().mediaListDao(),
+            converter = get(),
+            mediaLocalSource = db().mediaDao(),
+            mediaConverter = get(),
+            context = get<ISupportDispatcher>().io
+        )
+    }
+    factory {
+        MediaListCollectionMapper(
+            localSource = db().mediaListDao(),
+            converter = get(),
+            userLocalSource = db().userDao(),
+            userConverter = get(),
+            context = get<ISupportDispatcher>().io
+        )
+    }
+}
 
+private val converterModule = module {
+    factory {
+        MediaListModelConverter()
+    }
+    factory {
+        MediaListEntityConverter()
+    }
 }
 
 private val useCaseModule = module {
-
+    factory<MediaListInteractor> {
+        MediaListUseCaseImpl(
+            repository = get()
+        )
+    }
 }
 
 private val repositoryModule = module {
-
+    factory {
+        MediaListRepositoryImpl(
+            source = get()
+        )
+    }
 }
 
 internal val mediaListModules = listOf(
     sourceModule,
     mapperModule,
+    converterModule,
     useCaseModule,
     repositoryModule
 )

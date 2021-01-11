@@ -22,56 +22,89 @@ import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.arch.extension.asFuzzyDate
 import co.anitrend.data.arch.extension.toFuzzyDateInt
 import co.anitrend.data.arch.extension.toFuzzyDateModel
+import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.medialist.entity.MediaListEntity
+import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.medialist.model.MediaListModel
+import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
+import co.anitrend.domain.medialist.entity.MediaListCollection
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
-internal class MediaListCoreModelConverter(
-    override val fromType: (MediaListModel.Core) -> MediaListEntity = { transform(it) },
-    override val toType: (MediaListEntity) -> MediaListModel.Core = { throw NotImplementedError() }
-) : SupportConverter<MediaListModel.Core, MediaListEntity>() {
-    private companion object : ISupportTransformer<MediaListModel.Core, MediaListEntity> {
-        override fun transform(source: MediaListModel.Core) = MediaListEntity(
-            mediaType = source.category.type,
-            advancedScores = source.advancedScores?.map {
-                MediaListEntity.AdvancedScore(it.key, it.value)
-            }.orEmpty(),
-            customLists = source.customLists?.map {
-                MediaListEntity.CustomList(
-                    name = it.name,
-                    enabled = it.enabled
-                )
-            }.orEmpty(),
-            completedAt = source.completedAt?.toFuzzyDateInt(),
-            createdAt = source.createdAt,
-            hiddenFromStatus = source.hiddenFromStatusLists ?: false,
-            mediaId = source.mediaId,
-            notes = source.notes,
-            priority = source.priority,
-            hidden = source.private ?: false,
-            progress = source.progress ?: 0,
-            progressVolumes = source.progressVolumes ?: 0,
-            repeatCount = source.repeat ?: 0,
-            score = source.score ?: 0f,
-            startedAt = source.startedAt?.toFuzzyDateInt(),
-            status = source.status ?: MediaListStatus.PLANNING,
-            updatedAt = source.updatedAt,
-            userId = source.userId,
-            id = source.id
-        )
+internal class MediaListModelConverter(
+    override val fromType: (MediaListModel) -> MediaListEntity = ::transform,
+    override val toType: (MediaListEntity) -> MediaListModel = { throw NotImplementedError() }
+) : SupportConverter<MediaListModel, MediaListEntity>() {
+    private companion object : ISupportTransformer<MediaListModel, MediaListEntity> {
+        override fun transform(source: MediaListModel) = when (source) {
+            is MediaListModel.Extended -> MediaListEntity(
+                mediaType = source.media.type,
+                advancedScores = source.advancedScores?.map {
+                    MediaListEntity.AdvancedScore(it.key, it.value)
+                }.orEmpty(),
+                customLists = source.customLists?.map {
+                    MediaListEntity.CustomList(
+                        name = it.name,
+                        enabled = it.enabled
+                    )
+                }.orEmpty(),
+                completedAt = source.completedAt?.toFuzzyDateInt(),
+                createdAt = source.createdAt,
+                hiddenFromStatus = source.hiddenFromStatusLists ?: false,
+                mediaId = source.mediaId,
+                notes = source.notes,
+                priority = source.priority,
+                hidden = source.private ?: false,
+                progress = source.progress ?: 0,
+                progressVolumes = source.progressVolumes ?: 0,
+                repeatCount = source.repeat ?: 0,
+                score = source.score ?: 0f,
+                startedAt = source.startedAt?.toFuzzyDateInt(),
+                status = source.status ?: MediaListStatus.PLANNING,
+                updatedAt = source.updatedAt,
+                userId = source.userId,
+                id = source.id
+            )
+            is MediaListModel.Core -> MediaListEntity(
+                mediaType = source.category.type,
+                advancedScores = source.advancedScores?.map {
+                    MediaListEntity.AdvancedScore(it.key, it.value)
+                }.orEmpty(),
+                customLists = source.customLists?.map {
+                    MediaListEntity.CustomList(
+                        name = it.name,
+                        enabled = it.enabled
+                    )
+                }.orEmpty(),
+                completedAt = source.completedAt?.toFuzzyDateInt(),
+                createdAt = source.createdAt,
+                hiddenFromStatus = source.hiddenFromStatusLists ?: false,
+                mediaId = source.mediaId,
+                notes = source.notes,
+                priority = source.priority,
+                hidden = source.private ?: false,
+                progress = source.progress ?: 0,
+                progressVolumes = source.progressVolumes ?: 0,
+                repeatCount = source.repeat ?: 0,
+                score = source.score ?: 0f,
+                startedAt = source.startedAt?.toFuzzyDateInt(),
+                status = source.status ?: MediaListStatus.PLANNING,
+                updatedAt = source.updatedAt,
+                userId = source.userId,
+                id = source.id
+            )
+        }
     }
 }
 
 internal class MediaListEntityConverter(
-    override val fromType: (MediaListEntity) -> MediaList.Core = { transform(it) },
-    override val toType: (MediaList.Core) -> MediaListEntity = { throw NotImplementedError() }
-) : SupportConverter<MediaListEntity, MediaList.Core>() {
-    private companion object : ISupportTransformer<MediaListEntity, MediaList.Core> {
-
+    override val fromType: (MediaListEntity) -> MediaList = ::transform,
+    override val toType: (MediaList) -> MediaListEntity = { throw NotImplementedError() }
+) : SupportConverter<MediaListEntity, MediaList>() {
+    private companion object : ISupportTransformer<MediaListEntity, MediaList> {
         private fun createMediaListProgress(source: MediaListEntity): MediaListProgress {
             return when (source.mediaType) {
                 MediaType.ANIME -> MediaListProgress.Anime(
@@ -114,6 +147,61 @@ internal class MediaListEntityConverter(
                 notes = source.notes,
             ),
             id = source.id
+        )
+    }
+}
+
+internal class MediaListEntityViewConverter(
+    override val fromType: (MediaListEntityView) -> MediaList = ::transform,
+    override val toType: (MediaList) -> MediaListEntityView = { throw NotImplementedError() }
+) : SupportConverter<MediaListEntityView, MediaList>() {
+    private companion object : ISupportTransformer<MediaListEntityView, MediaList> {
+        private fun createMediaListProgress(source: MediaListEntityView): MediaListProgress {
+            val mediaType = when (source) {
+                is MediaListEntityView.Core -> source.mediaList.mediaType
+                is MediaListEntityView.WithMedia -> source.media.type
+            }
+            return when (mediaType) {
+                MediaType.ANIME -> MediaListProgress.Anime(
+                    episodeProgress = source.mediaList.progress,
+                    repeatedCount = source.mediaList.repeatCount
+                )
+                MediaType.MANGA -> MediaListProgress.Manga(
+                    chapterProgress = source.mediaList.progress,
+                    volumeProgress = source.mediaList.progressVolumes,
+                    repeatedCount = source.mediaList.repeatCount
+                )
+            }
+        }
+
+        /**
+         * Transforms the the [source] to the target type
+         */
+        override fun transform(source: MediaListEntityView) = MediaList.Core(
+            advancedScores = source.mediaList.advancedScores.map {
+                MediaList.AdvancedScore(it.name, it.score)
+            },
+            customLists = source.mediaList.customLists.map {
+                MediaList.CustomList(
+                    name = it.name,
+                    enabled = it.enabled
+                )
+            },
+            userId = source.mediaList.userId,
+            priority = source.mediaList.priority,
+            createdOn = source.mediaList.createdAt,
+            startedOn = source.mediaList.startedAt?.toFuzzyDateModel().asFuzzyDate(),
+            finishedOn = source.mediaList.completedAt?.toFuzzyDateModel().asFuzzyDate(),
+            mediaId = source.mediaList.mediaId,
+            score = source.mediaList.score,
+            status = source.mediaList.status,
+            progress = createMediaListProgress(source),
+            privacy = MediaListPrivacy(
+                isPrivate = source.mediaList.hidden,
+                isHidden = source.mediaList.hiddenFromStatus,
+                notes = source.mediaList.notes,
+            ),
+            id = source.mediaList.id
         )
     }
 }
