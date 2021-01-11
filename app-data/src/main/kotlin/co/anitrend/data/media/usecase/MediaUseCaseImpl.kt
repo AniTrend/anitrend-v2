@@ -18,12 +18,12 @@
 package co.anitrend.data.media.usecase
 
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.data.media.MediaUseInteractor
+import co.anitrend.data.media.MediaInteractor
 import co.anitrend.data.media.repository.MediaRepositoryImpl
 
 internal class MediaUseCaseImpl(
     repository: MediaRepositoryImpl
-) : MediaUseInteractor(repository) {
+) : MediaInteractor(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop

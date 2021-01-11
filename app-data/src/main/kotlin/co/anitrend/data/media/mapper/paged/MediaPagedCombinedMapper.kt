@@ -17,6 +17,8 @@
 
 package co.anitrend.data.media.mapper.paged
 
+import co.anitrend.data.airing.converters.AiringModelConverter
+import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
@@ -26,22 +28,25 @@ import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.media.model.page.MediaPageModel
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 internal class MediaPagedCombinedMapper(
     private val localSource: MediaLocalSource,
-    private val scheduleMapper: AiringScheduleMapper,
-    private val converter: MediaModelConverter
+    private val converter: MediaModelConverter,
+    private val airingConverter: AiringModelConverter,
+    private val airingLocalSource: AiringLocalSource,
+    private val context: CoroutineContext
 ) : DefaultMapper<MediaPageModel, List<MediaEntity>>() {
 
-    private suspend fun saveAiringSchedule(source: MediaPageModel): List<MediaEntity> {
-        val media = source.page.media
-        scheduleMapper.onResponseMapFrom(
-            media.mapNotNull {
-                it.nextAiringEpisode
-            }
-        )
-        return converter.convertFrom(source.page.media)
+    private suspend fun saveAiringSchedule(source: MediaPageModel) {
+        val airing = source.page.media.mapNotNull(MediaModel.Core::nextAiringEpisode)
+        val airingEntity = airingConverter.convertFrom(airing)
+        withContext(context) {
+            airingLocalSource.upsert(airingEntity)
+        }
     }
 
     /**
@@ -74,7 +79,8 @@ internal class MediaPagedCombinedMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(
-        source: MediaPageModel
-    ) = saveAiringSchedule(source)
+    override suspend fun onResponseMapFrom(source: MediaPageModel): List<MediaEntity> {
+        saveAiringSchedule(source)
+        return converter.convertFrom(source.page.media)
+    }
 }

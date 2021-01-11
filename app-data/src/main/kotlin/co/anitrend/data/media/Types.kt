@@ -29,4 +29,4 @@ import co.anitrend.domain.media.interactor.MediaUseCase
 internal typealias MediaPagedCombinedController = GraphQLController<MediaPageModel, List<MediaEntity>>
 internal typealias MediaPagedNetworkController = GraphQLController<MediaPageModel, List<Media>>
 
-typealias MediaUseInteractor = MediaUseCase<DataState<PagedList<Media>>>
+typealias MediaInteractor = MediaUseCase<DataState<PagedList<Media>>>

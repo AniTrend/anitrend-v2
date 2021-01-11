@@ -20,10 +20,12 @@ package co.anitrend.data
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.extension.db
+import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
 import kotlinx.serialization.json.Json
 import okhttp3.mockwebserver.MockWebServer
@@ -65,18 +67,31 @@ private val provider = module {
 private val mapper = module {
     single {
         AiringScheduleMapper(
-            localSource = db().airingScheduleDao()
+            localSource = db().airingScheduleDao(),
+            converter = get()
         )
     }
     single {
         MediaPagedCombinedMapper(
             localSource = db().mediaDao(),
-            scheduleMapper = get()
+            converter = get(),
+            airingConverter = get(),
+            airingLocalSource = db().airingScheduleDao(),
+            context = get<ISupportDispatcher>().io
         )
     }
 }
 
-internal val testModules = listOf(data, store, provider, mapper)
+private val converter = module {
+    factory {
+        MediaModelConverter()
+    }
+    factory {
+        AiringModelConverter()
+    }
+}
+
+internal val testModules = listOf(data, store, provider, mapper, converter)
 
 internal fun initializeKoin() = startKoin {
     androidContext(

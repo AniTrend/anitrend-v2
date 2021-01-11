@@ -45,7 +45,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
 
 internal class MediaConverter(
-    override val fromType: (MediaModel) -> Media = { transform(it) },
+    override val fromType: (MediaModel) -> Media = ::transform,
     override val toType: (Media) -> MediaModel = { throw NotImplementedError() }
 ) : SupportConverter<MediaModel, Media>() {
     private companion object : ISupportTransformer<MediaModel, Media> {
@@ -358,7 +358,7 @@ internal class MediaConverter(
 }
 
 internal class MediaModelConverter(
-    override val fromType: (MediaModel) -> MediaEntity = { transform(it) },
+    override val fromType: (MediaModel) -> MediaEntity = ::transform,
     override val toType: (MediaEntity) -> MediaModel = { throw NotImplementedError() }
 ) : SupportConverter<MediaModel, MediaEntity>() {
     private companion object : ISupportTransformer<MediaModel, MediaEntity> {

@@ -28,7 +28,8 @@ import org.koin.dsl.module
 private val mapperModule = module {
     factory {
         AiringScheduleMapper(
-            localSource = db().airingScheduleDao()
+            localSource = db().airingScheduleDao(),
+            converter = get()
         )
     }
     factory {

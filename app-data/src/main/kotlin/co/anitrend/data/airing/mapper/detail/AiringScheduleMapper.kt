@@ -29,7 +29,7 @@ import co.anitrend.data.arch.railway.extension.then
 
 internal class AiringScheduleMapper(
     private val localSource: AiringLocalSource,
-    private val converter: AiringModelConverter = AiringModelConverter()
+    private val converter: AiringModelConverter
 ) : DefaultMapper<AiringScheduleModel, AiringScheduleEntity>() {
 
     /**
@@ -65,20 +65,4 @@ internal class AiringScheduleMapper(
     override suspend fun onResponseMapFrom(
         source: AiringScheduleModel
     ) = converter.convertFrom(source)
-
-    /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects,
-     *
-     * @param source the incoming data source type
-     */
-    suspend fun onResponseMapFrom(source: List<AiringScheduleModel>) {
-        val schedules = source.map {
-            onResponseMapFrom(it)
-        }
-        runCatching {
-            localSource.upsert(schedules)
-        }.onFailure {
-            handleException(listOf(it))
-        }
-    }
 }

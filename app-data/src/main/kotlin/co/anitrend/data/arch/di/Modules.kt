@@ -39,6 +39,7 @@ import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.media.koin.mediaModules
+import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.moe.koin.sourceModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import co.anitrend.data.user.koin.userModules
@@ -194,4 +195,5 @@ val dataModules = listOf(
     interceptorModules
 ) + airingModules + mediaTagModules + mediaGenreModules +
         sourceModules + mediaModules + carouselModules +
-        authModules + accountModules + userModules
+        authModules + accountModules + userModules +
+        mediaListModules

@@ -55,10 +55,16 @@ private val mapperModule = module {
         AuthMapper(
             settings = get(),
             userLocalSource = db().userDao(),
-            converter = UserModelConverter(),
+            converter = get(),
             generalOptionConverter = UserGeneralOptionModelConverter(),
             mediaOptionConverter = UserMediaOptionModelConverter(),
         )
+    }
+}
+
+private val converterModule = module {
+    factory {
+        UserModelConverter()
     }
 }
 
@@ -81,6 +87,7 @@ private val repositoryModule = module {
 internal val authModules = listOf(
     sourceModule,
     mapperModule,
+    converterModule,
     useCaseModule,
     repositoryModule
 )

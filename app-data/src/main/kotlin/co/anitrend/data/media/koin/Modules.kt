@@ -17,6 +17,7 @@
 
 package co.anitrend.data.media.koin
 
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.*
 import co.anitrend.data.arch.extension.api
@@ -27,7 +28,7 @@ import co.anitrend.data.media.repository.MediaRepositoryImpl
 import co.anitrend.data.media.source.paged.combined.MediaPagedSourceImpl
 import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
 import co.anitrend.data.media.source.paged.network.factory.MediaPagedNetworkSourceFactory
-import co.anitrend.data.media.MediaUseInteractor
+import co.anitrend.data.media.MediaInteractor
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.usecase.MediaUseCaseImpl
@@ -73,8 +74,10 @@ private val mapperModule = module {
     factory {
         MediaPagedCombinedMapper(
             localSource = db().mediaDao(),
-            scheduleMapper = get(),
-            converter = get()
+            converter = get(),
+            airingConverter = get(),
+            airingLocalSource = db().airingScheduleDao(),
+            context = get<ISupportDispatcher>().io
         )
     }
     factory {
@@ -83,7 +86,7 @@ private val mapperModule = module {
 }
 
 private val useCaseModule = module {
-    factory<MediaUseInteractor> {
+    factory<MediaInteractor> {
         MediaUseCaseImpl(
             repository = get()
         )
