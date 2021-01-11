@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,20 +15,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.medialist
+package co.anitrend.data.medialist.repository
 
 import androidx.paging.PagedList
+import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.medialist.model.collection.MediaListCollectionModel
-import co.anitrend.data.medialist.model.page.MediaListPageModel
+import co.anitrend.arch.data.state.DataState.Companion.create
+import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
+import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.interactor.MediaListUseCase
+import co.anitrend.domain.medialist.repository.MediaListRepository
 
+internal class MediaListRepositoryImpl(
+    private val source: MediaListPagedSource
+) : SupportRepository(source), MediaListRepository<DataState<PagedList<MediaList>>> {
 
-
-internal typealias MediaListPagedController = GraphQLController<MediaListPageModel, List<MediaListEntity>>
-internal typealias MediaListCollectionController = GraphQLController<MediaListCollectionModel, List<MediaListEntity>>
-
-internal typealias MediaListInteractor = MediaListUseCase<DataState<PagedList<MediaList>>>
+    override fun getMediaListPaged(
+        query: IGraphPayload
+    ) = source create source.invoke(query)
+}

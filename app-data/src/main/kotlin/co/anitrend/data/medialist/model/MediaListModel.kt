@@ -20,7 +20,6 @@ package co.anitrend.data.medialist.model
 import co.anitrend.data.arch.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.medialist.model.contract.IMediaListModel
-import co.anitrend.data.user.model.remote.UserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import kotlinx.serialization.SerialName
@@ -88,38 +87,4 @@ internal sealed class MediaListModel : IMediaListModel {
         @SerialName("userId") override val userId: Long,
         @SerialName("id") override val id: Long
     ) : MediaListModel()
-
-
-    /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
-     * List of anime or manga
-     *
-     * @param lists Grouped media list entries
-     * @param hasNextChunk If there is another chunk
-     * @param user The owner of the list
-     */
-    @Serializable
-    internal data class Collection(
-        @SerialName("lists") val lists: List<Group>,
-        @SerialName("hasNextChunk") val hasNextChunk: Boolean,
-        @SerialName("user") val user: UserModel.Core?
-    ) {
-
-        /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
-         * List group of anime or manga entries
-         *
-         * @param entries Media list entries
-         * @param name name of the current group
-         * @param isCustomList If the current group is a custom list
-         * @param isSplitCompletedList If this grouping is split by types of of media, e.g movies, tv, specials, etc
-         * @param status status of current group, one of [MediaListStatus]
-         */
-        @Serializable
-        internal data class Group(
-            @SerialName("entries") val entries: List<Extended>?,
-            @SerialName("isCustomList") val isCustomList: Boolean,
-            @SerialName("isSplitCompletedList") val isSplitCompletedList: Boolean,
-            @SerialName("name") val name: String,
-            @SerialName("status") val status: MediaListStatus
-        )
-    }
 }

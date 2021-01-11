@@ -21,6 +21,7 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.GRAPHQL
 import co.anitrend.data.medialist.model.MediaListModel
+import co.anitrend.data.medialist.model.collection.MediaListCollectionModel
 import co.anitrend.data.medialist.model.page.MediaListPageModel
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
@@ -42,5 +43,5 @@ internal interface MediaListRemoteSource {
     @GraphQuery("MediaListCollection")
     suspend fun getMediaListCollection(
         @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphQLResponse<MediaListModel.Collection>>
+    ): Response<GraphQLResponse<MediaListCollectionModel>>
 }
