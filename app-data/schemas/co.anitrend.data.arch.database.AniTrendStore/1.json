@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2e42307c1347527e78eb9b76f393ca4f",
+    "identityHash": "c40beee3f1b1b18cadeaf8e81a6d44f3",
     "entities": [
       {
         "tableName": "auth",
@@ -191,7 +191,7 @@
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_native` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "nextAiringId",
@@ -424,12 +424,6 @@
           {
             "fieldPath": "title.english",
             "columnName": "title_english",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "title.native",
-            "columnName": "title_native",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -984,7 +978,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2e42307c1347527e78eb9b76f393ca4f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c40beee3f1b1b18cadeaf8e81a6d44f3')"
     ]
   }
 }
