@@ -23,14 +23,14 @@ import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.media.MediaUseInteractor
+import co.anitrend.data.media.MediaInteractor
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.data.media.model.query.MediaQuery
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 data class DiscoverState(
-    private val useCase: MediaUseInteractor
+    private val useCase: MediaInteractor
 ) : ISupportViewModelState<PagedList<Media>> {
 
     var context by Delegates.notNull<CoroutineContext>()
