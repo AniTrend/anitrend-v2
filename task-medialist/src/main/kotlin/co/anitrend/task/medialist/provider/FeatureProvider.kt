@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.medialist.entity
+package co.anitrend.task.medialist.provider
 
-import co.anitrend.domain.user.entity.User
+import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.task.medialist.component.MediaListCollectionWorker
+import co.anitrend.task.medialist.component.MediaListMutationWorker
+import co.anitrend.task.medialist.component.MediaListSyncWorker
 
-data class MediaListCollection(
-    val listEntries: Collection<MediaList>,
-    val owner: User
-)
+internal class FeatureProvider : MediaListTaskRouter.Provider {
+    override fun mediaListCollectionWorker() = MediaListCollectionWorker::class.java
+
+    override fun mediaListMutationWorker() = MediaListMutationWorker::class.java
+
+    override fun mediaListSyncWorker() = MediaListSyncWorker::class.java
+}
