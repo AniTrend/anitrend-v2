@@ -50,7 +50,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-beta02"
+            private const val version = "1.2.0-rc01"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
@@ -103,7 +103,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.5.0-alpha05"
+            private const val version = "1.5.0-beta01"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -132,14 +132,14 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.0-beta02"
+            private const val version = "1.3.0-rc01"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-beta01"
+            private const val version = "2.3.0-rc01"
             // TODO: Upgrade to 2.3.0-* when it is available for extensions
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
@@ -279,7 +279,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.5.0-beta02"
+            private const val version = "2.5.0-rc01"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
@@ -289,7 +289,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "a73b564e05"
+            private const val version = "a4856a6b6a"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -344,7 +344,7 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.5.0"
+            private const val version = "3.6.0"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
@@ -387,7 +387,7 @@ object Libraries {
     }
 
     object Coil {
-        private const val version = "1.1.0"
+        private const val version = "1.1.1"
         const val coil = "io.coil-kt:coil:$version"
         const val base = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
@@ -417,7 +417,7 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "18.0.0"
+                private const val version = "18.0.1"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
@@ -439,7 +439,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.3.0-alpha04"
+            private const val version = "1.3.0-rc01"
             const val material = "com.google.android.material:material:$version"
         }
 
@@ -547,7 +547,7 @@ object Libraries {
     object Square {
 
         object LeakCanary {
-            private const val version = "2.5"
+            private const val version = "2.6"
             const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
         }
 

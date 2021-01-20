@@ -22,7 +22,7 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 25
+    private const val candidate = 27
 
     private const val channel = "alpha"
 
@@ -45,7 +45,7 @@ object Versions {
      */
     const val versionName = "$major.$minor.$patch-$channel$candidate"
 
-    const val mockk = "1.10.2"
+    const val mockk = "1.10.5"
     const val junit = "4.13.1"
 
     const val timber = "4.7.1"
@@ -56,7 +56,7 @@ object Versions {
 
     const val liquidSwipe = "1.3"
 
-    const val prettyTime = "4.0.6.Final"
+    const val prettyTime = "5.0.0.Final"
     const val scalingImageView = "3.10.0"
     const val serializationConverter = "0.8.0"
 }

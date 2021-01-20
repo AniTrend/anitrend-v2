@@ -40,6 +40,7 @@ include(
     ":task-character",
     ":task-forum",
     ":task-media",
+    ":task-medialist",
     ":task-recommendation",
     ":task-review",
     ":task-staff",
