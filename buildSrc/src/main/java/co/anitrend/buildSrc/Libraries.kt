@@ -547,7 +547,7 @@ object Libraries {
     object Square {
 
         object LeakCanary {
-            private const val version = "2.5"
+            private const val version = "2.6"
             const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
         }
 
