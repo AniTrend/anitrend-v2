@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.IdRes
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.R
@@ -213,6 +214,18 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     override fun onSaveInstanceState(outState: Bundle) {
         viewModel.state.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState)
+    }
+
+    /**
+     * Called when the activity has detected the user's press of the back
+     * key. The [getOnBackPressedDispatcher] will be given a
+     * chance to handle the back button before the default behavior of
+     * [android.app.Activity.onBackPressed] is invoked.
+     *
+     * @see getOnBackPressedDispatcher
+     */
+    override fun onBackPressed() {
+        ActivityCompat.finishAfterTransition(this)
     }
 
     /**
