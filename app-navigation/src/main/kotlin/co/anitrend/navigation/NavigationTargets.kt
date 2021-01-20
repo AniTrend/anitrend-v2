@@ -156,14 +156,32 @@ object UserTaskRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
-        fun followWorker(): Class<out ListenableWorker>
-        fun messageWorker(): Class<out ListenableWorker>
-        fun statisticsWorker(): Class<out ListenableWorker>
+        fun accountSyncWorker(): Class<out ListenableWorker>
+        fun followToggleWorker(): Class<out ListenableWorker>
+        fun sendMessageWorker(): Class<out ListenableWorker>
+        fun statisticSyncWorker(): Class<out ListenableWorker>
 
         companion object {
-            fun UserTaskRouter.forFollowWorker() = provider.followWorker()
-            fun UserTaskRouter.forMessageWorker() = provider.messageWorker()
-            fun UserTaskRouter.forStatisticsWorker() = provider.statisticsWorker()
+            fun UserTaskRouter.forAccountSyncWorker() = provider.accountSyncWorker()
+            fun UserTaskRouter.forFollowToggleWorker() = provider.followToggleWorker()
+            fun UserTaskRouter.forSendMessageWorker() = provider.sendMessageWorker()
+            fun UserTaskRouter.forStatisticSyncWorker() = provider.statisticSyncWorker()
+        }
+    }
+}
+
+object MediaListTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun mediaListCollectionWorker(): Class<out ListenableWorker>
+        fun mediaListMutationWorker(): Class<out ListenableWorker>
+        fun mediaListSyncWorker(): Class<out ListenableWorker>
+
+        companion object {
+            fun MediaListTaskRouter.forMediaListCollectionWorker() = provider.mediaListCollectionWorker()
+            fun MediaListTaskRouter.forMediaListMutationWorker() = provider.mediaListMutationWorker()
+            fun MediaListTaskRouter.forMediaListSyncWorker() = provider.mediaListSyncWorker()
         }
     }
 }

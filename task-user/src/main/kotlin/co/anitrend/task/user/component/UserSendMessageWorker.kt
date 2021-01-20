@@ -21,7 +21,7 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 
-class UserFollowWorker(
+class UserSendMessageWorker(
     context: Context,
     parameters: WorkerParameters,
 ) : SupportCoroutineWorker(context, parameters) {

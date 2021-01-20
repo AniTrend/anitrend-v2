@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,12 +18,19 @@
 package co.anitrend.task.user.component
 
 import android.content.Context
+import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
+import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.data.account.AccountInteractor
+import co.anitrend.data.auth.AuthUserInteractor
+import co.anitrend.data.user.UserInteractor
+import kotlinx.coroutines.flow.first
 
-class UserStatisticsWorker(
+class UserAccountSyncWorker(
     context: Context,
     parameters: WorkerParameters,
+    private val userInteractor: UserInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -38,6 +45,14 @@ class UserStatisticsWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        TODO("Not yet implemented")
+        val dataState = userInteractor.getUserProfile()
+
+        val networkState = dataState.networkState.first { state ->
+            state is NetworkState.Success || state is NetworkState.Error
+        }
+
+        return if (networkState is NetworkState.Success)
+            Result.success()
+        else Result.failure()
     }
 }
