@@ -23,9 +23,9 @@ import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.core.initializer.InjectorInitializer
 
 /**
- * Contract for feature initializer with coroutine support for deferred initialization
+ * Contract for feature initializer that runs after [InjectorInitializer]
  */
-abstract class AbstractFeatureInitializer<T> : Initializer<T>, ISupportCoroutine by Main() {
+abstract class AbstractFeatureInitializer<T> : Initializer<T> {
 
     /**
      * @return A list of dependencies that this [Initializer] depends on. This is
