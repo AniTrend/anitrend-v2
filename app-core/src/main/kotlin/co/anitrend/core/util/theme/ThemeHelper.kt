@@ -77,6 +77,7 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
 
     private fun FragmentActivity.applyWindowStyle() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @Suppress("DEPRECATION") //Until I figure out a way to apply decorations using window controller
             val systemUiOptions = window.decorView.systemUiVisibility
             when (AppCompatDelegate.getDefaultNightMode()) {
                 AppCompatDelegate.MODE_NIGHT_NO -> applyDayModeDecorations(systemUiOptions)
