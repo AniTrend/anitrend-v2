@@ -63,6 +63,7 @@ internal const val commonStudioUi = "common-studio-ui"
 internal const val taskCharacter = "task-character"
 internal const val taskForum = "task-forum"
 internal const val taskMedia = "task-media"
+internal const val taskMediaList = "task-medialist"
 internal const val taskRecommendation = "task-recommendation"
 internal const val taskReview = "task-review"
 internal const val taskStaff = "task-staff"
@@ -102,6 +103,7 @@ internal val taskModules = listOf(
     taskCharacter,
     taskForum,
     taskMedia,
+    taskMediaList,
     taskRecommendation,
     taskReview,
     taskStaff,
