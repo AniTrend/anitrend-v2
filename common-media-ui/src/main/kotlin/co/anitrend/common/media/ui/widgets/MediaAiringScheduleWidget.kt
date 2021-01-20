@@ -22,6 +22,7 @@ import android.os.Build
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.core.text.color
+import androidx.core.widget.TextViewCompat
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
@@ -82,10 +83,7 @@ internal class MediaAiringScheduleWidget @JvmOverloads constructor(
                 }
             text = builder
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            setTextAppearance(R.style.TextAppearance_MaterialComponents_Caption)
-        else
-            setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Caption)
+        TextViewCompat.setTextAppearance(this, R.style.TextAppearance_MaterialComponents_Caption)
     }
 
     /**
