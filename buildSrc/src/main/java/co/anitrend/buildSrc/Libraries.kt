@@ -439,7 +439,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.3.0-alpha04"
+            private const val version = "1.3.0-rc01"
             const val material = "com.google.android.material:material:$version"
         }
 
