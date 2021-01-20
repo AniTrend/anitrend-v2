@@ -24,6 +24,7 @@ import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.domain.user.entity.User
 
 sealed class MediaList : IMediaList {
 
@@ -54,6 +55,42 @@ sealed class MediaList : IMediaList {
     ) : MediaList() {
         companion object {
             fun empty() = Core(
+                advancedScores = emptyList(),
+                customLists = emptyList(),
+                userId = 0,
+                priority = 0,
+                createdOn = 0,
+                startedOn = FuzzyDate.empty(),
+                finishedOn = FuzzyDate.empty(),
+                mediaId = 0,
+                score = 0f,
+                status = MediaListStatus.PLANNING,
+                progress = MediaListProgress.Anime.empty(),
+                privacy = MediaListPrivacy.empty(),
+                id = INVALID_ID,
+            )
+        }
+    }
+
+    data class Extended(
+        val owner: User,
+        override val advancedScores: List<AdvancedScore>,
+        override val customLists: Collection<CustomList>,
+        override val userId: Long,
+        override val priority: Int?,
+        override val createdOn: Long?,
+        override val startedOn: FuzzyDate,
+        override val finishedOn: FuzzyDate,
+        override val mediaId: Long,
+        override val score: Float,
+        override val status: MediaListStatus,
+        override val progress: MediaListProgress,
+        override val privacy: MediaListPrivacy,
+        override val id: Long
+    ) : MediaList() {
+        companion object {
+            fun empty() = Extended(
+                owner = User.empty(),
                 advancedScores = emptyList(),
                 customLists = emptyList(),
                 userId = 0,

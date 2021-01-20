@@ -20,6 +20,21 @@ package co.anitrend.domain.medialist.repository
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.common.graph.IGraphPayload
 
-interface MediaListRepository<State: UiState<*>> {
-    fun getMediaListPaged(query: IGraphPayload): State
+interface MediaListRepository {
+
+    interface Paged<State: UiState<*>> : MediaListRepository {
+        fun getMediaListPaged(query: IGraphPayload): State
+    }
+
+    interface Collection<State: UiState<*>> : MediaListRepository {
+        fun getMediaListCollection(query: IGraphPayload): State
+    }
+
+    interface Save<State: UiState<*>> : MediaListRepository {
+        fun saveMediaList(mutation: IGraphPayload): State
+    }
+
+    interface Delete<State: UiState<*>> : MediaListRepository {
+        fun deleteMediaList(mutation: IGraphPayload): State
+    }
 }

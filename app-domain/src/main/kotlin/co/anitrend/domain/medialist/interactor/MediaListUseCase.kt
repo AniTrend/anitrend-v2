@@ -22,9 +22,33 @@ import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.medialist.repository.MediaListRepository
 
-abstract class MediaListUseCase<State: UiState<*>>(
-    protected val repository: MediaListRepository<State>
-) : IUseCase {
-    fun getMediaListPaged(query: IGraphPayload): State =
-        repository.getMediaListPaged(query)
+sealed class MediaListUseCase : IUseCase {
+
+    abstract class GetPaged<State: UiState<*>, Query: IGraphPayload>(
+        protected val repository: MediaListRepository.Paged<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(query: Query): State =
+            repository.getMediaListPaged(query)
+    }
+
+    abstract class GetCollection<State: UiState<*>, Query: IGraphPayload>(
+        protected val repository: MediaListRepository.Collection<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(query: Query): State =
+            repository.getMediaListCollection(query)
+    }
+
+    abstract class Save<State: UiState<*>, Mutation: IGraphPayload>(
+        protected val repository: MediaListRepository.Save<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(mutation: Mutation): State =
+            repository.saveMediaList(mutation)
+    }
+
+    abstract class Delete<State: UiState<*>, Mutation: IGraphPayload>(
+        protected val repository: MediaListRepository.Delete<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(mutation: Mutation): State =
+            repository.deleteMediaList(mutation)
+    }
 }
