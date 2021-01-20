@@ -19,17 +19,10 @@ package co.anitrend.splash.component.presenter
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.settings.Settings
-import co.anitrend.navigation.GenreTaskRouter
-import co.anitrend.navigation.GenreTaskRouter.Provider.Companion.forWorker
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.OnBoardingRouter
-import co.anitrend.navigation.TagTaskRouter
-import co.anitrend.navigation.TagTaskRouter.Provider.Companion.forWorker
 import co.anitrend.navigation.extensions.startActivity
 import kotlinx.coroutines.delay
 
@@ -37,34 +30,6 @@ class SplashPresenter(
     context: Context,
     settings: Settings
 ) : CorePresenter(context, settings) {
-
-    fun startTagsWorker(activity: FragmentActivity) {
-        val worker = TagTaskRouter.forWorker()
-
-        val workRequest = OneTimeWorkRequest.Builder(worker)
-            .build()
-
-        WorkManager.getInstance(activity)
-            .enqueueUniqueWork(
-                worker.simpleName,
-                ExistingWorkPolicy.REPLACE,
-                workRequest
-            )
-    }
-
-    fun startGenreWorker(activity: FragmentActivity) {
-        val worker = GenreTaskRouter.forWorker()
-
-        val workRequest = OneTimeWorkRequest.Builder(worker)
-            .build()
-
-        WorkManager.getInstance(activity)
-            .enqueueUniqueWork(
-                worker.simpleName,
-                ExistingWorkPolicy.REPLACE,
-                workRequest
-            )
-    }
 
     suspend fun firstRunCheck(activity: FragmentActivity) {
         delay(750)

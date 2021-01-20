@@ -23,6 +23,7 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadMod
 import co.anitrend.task.genre.koin.moduleHelper
 
 class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+
     /**
      * Initializes and a component given the application [Context]
      *

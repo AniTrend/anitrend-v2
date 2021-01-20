@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.first
 class TagWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: MediaTagInteractor,
+    private val interactor: MediaTagInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**

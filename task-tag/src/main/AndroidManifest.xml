@@ -28,6 +28,9 @@
             <meta-data
                 android:name="co.anitrend.task.tag.initializer.FeatureInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="co.anitrend.task.tag.initializer.WorkSchedulerInitializer"
+                android:value="androidx.startup" />
         </provider>
     </application>
 </manifest>
