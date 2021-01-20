@@ -18,6 +18,7 @@
 package co.anitrend.domain.user.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.extension.INVALID_ID
 import co.anitrend.domain.user.entity.attribute.option.UserMediaListOption
 import co.anitrend.domain.user.entity.attribute.option.UserProfileOption
 import co.anitrend.domain.user.entity.attribute.statistic.UserMediaStatisticType
@@ -32,6 +33,15 @@ sealed class User : IEntity {
     abstract val name: CharSequence
     abstract val avatar: UserImage
     abstract val status: UserStatus
+
+    companion object {
+        fun empty() = Core(
+            name = "",
+            avatar = UserImage.empty(),
+            status = UserStatus.empty(),
+            id = INVALID_ID,
+        )
+    }
 
     data class Core(
         override val name: CharSequence,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,23 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.user.entity.contract
+package co.anitrend.domain.user.interactor
 
-import co.anitrend.domain.common.entity.contract.ICoverImage
+import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.user.repository.UserPagedRepository
 
-/**
- * A user's avatars
- */
-data class UserImage(
-    override val large: CharSequence?,
-    override val medium: CharSequence?,
-    val banner: CharSequence?
-) : ICoverImage {
-    companion object {
-        fun empty() = UserImage(
-            large = null,
-            medium = null,
-            banner = null
-        )
-    }
+abstract class UserPagedUseCase<State: UiState<*>>(
+    protected val repository: UserPagedRepository<State>
+) : IUseCase {
+    fun searchForUsers(query: IGraphPayload) =
+        repository.searchForUsers(query)
 }

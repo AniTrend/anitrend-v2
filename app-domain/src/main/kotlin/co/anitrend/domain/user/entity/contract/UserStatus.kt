@@ -36,4 +36,16 @@ data class UserStatus(
     val isFollower: Boolean?,
     val isBlocked: Boolean?,
     val pageUrl: CharSequence?
-)
+) {
+    companion object {
+        fun empty() = UserStatus(
+            about = null,
+            donationBadge = null,
+            donationTier = null,
+            isFollowing = null,
+            isFollower = null,
+            isBlocked = null,
+            pageUrl = null
+        )
+    }
+}

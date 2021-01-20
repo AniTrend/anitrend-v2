@@ -25,4 +25,6 @@ interface UserRepository<State: UiState<*>> {
     fun getUserProfile(): State
 
     fun getUserProfile(query: IGraphPayload): State
+
+    fun toggleFollowUser(mutation: IGraphPayload): State
 }
