@@ -18,17 +18,19 @@
 package co.anitrend.data.medialist.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.medialist.MediaListInteractor
 import co.anitrend.data.medialist.repository.MediaListRepositoryImpl
+import co.anitrend.data.medialist.GetMediaListPagedInteractor
 
-internal class MediaListUseCaseImpl(
-    repository: MediaListRepositoryImpl
-) : MediaListInteractor(repository) {
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as ISupportRepository
-        repository.onCleared()
+internal sealed class MediaListUseCaseImpl {
+    internal class Paged(
+        repository: MediaListRepositoryImpl.Paged
+    ) : GetMediaListPagedInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
     }
 }

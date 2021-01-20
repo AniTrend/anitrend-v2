@@ -22,14 +22,11 @@ import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.arch.extension.asFuzzyDate
 import co.anitrend.data.arch.extension.toFuzzyDateInt
 import co.anitrend.data.arch.extension.toFuzzyDateModel
-import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.entity.MediaListCollection
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus

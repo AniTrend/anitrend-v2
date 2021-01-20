@@ -17,20 +17,20 @@
 
 package co.anitrend.data.medialist.repository
 
-import androidx.paging.PagedList
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.data.medialist.MediaListPagedRepo
 import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
 import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.repository.MediaListRepository
 
-internal class MediaListRepositoryImpl(
-    private val source: MediaListPagedSource
-) : SupportRepository(source), MediaListRepository<DataState<PagedList<MediaList>>> {
+internal sealed class MediaListRepositoryImpl(source: ISupportCoroutine) : SupportRepository(source) {
 
-    override fun getMediaListPaged(
-        query: IGraphPayload
-    ) = source create source.invoke(query)
+    class Paged(
+        private val source: MediaListPagedSource
+    ) : MediaListRepositoryImpl(source), MediaListPagedRepo {
+        override fun getMediaListPaged(
+            query: IGraphPayload
+        ) = source create source(query)
+    }
 }

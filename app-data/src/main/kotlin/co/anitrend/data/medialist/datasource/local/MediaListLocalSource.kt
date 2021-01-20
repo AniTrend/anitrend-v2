@@ -53,7 +53,7 @@ internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
         """)
     abstract suspend fun clearByUserId(userId: Long)
 
-
+    @Transaction
     @Query("""
         select ml.* from media_list ml
         join user u on u.id = ml.user_id
@@ -61,6 +61,7 @@ internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
     """)
     abstract fun byIdFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
 
+    @Transaction
     @Query("""
         select ml.* from media_list ml
         join user u on u.id = ml.user_id

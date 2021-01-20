@@ -17,3 +17,8 @@
 
 package co.anitrend.data.user
 
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.interactor.UserUseCase
+
+typealias UserInteractor = UserUseCase<DataState<User?>>

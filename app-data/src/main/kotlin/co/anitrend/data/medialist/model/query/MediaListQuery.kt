@@ -79,7 +79,7 @@ sealed class MediaListQuery : IGraphPayload {
         val completedAt_lesser: FuzzyDateInt? = null,
         val completedAt_like: FuzzyDateLike? = null,
         val sort: List<MediaListSort>?,
-        val compareWithAuthList: Boolean
+        val compareWithAuthList: Boolean? = null
     ) : IGraphPayload {
 
         /**
@@ -161,7 +161,7 @@ sealed class MediaListQuery : IGraphPayload {
         var status_not: MediaListStatus? = null,
         var status_not_in: List<MediaListStatus>? = null,
         var type: MediaType,
-        var userId: Long,
+        var userId: Long? = null,
         var userName: String? = null
     ) : IGraphPayload {
 

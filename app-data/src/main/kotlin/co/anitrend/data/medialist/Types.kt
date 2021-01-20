@@ -20,15 +20,23 @@ package co.anitrend.data.medialist
 import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.model.collection.MediaListCollectionModel
 import co.anitrend.data.medialist.model.page.MediaListPageModel
+import co.anitrend.data.medialist.model.query.MediaListQuery
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.interactor.MediaListUseCase
-
+import co.anitrend.domain.medialist.repository.MediaListRepository
 
 
 internal typealias MediaListPagedController = GraphQLController<MediaListPageModel, List<MediaListEntity>>
 internal typealias MediaListCollectionController = GraphQLController<MediaListCollectionModel, List<MediaListEntity>>
 
-internal typealias MediaListInteractor = MediaListUseCase<DataState<PagedList<MediaList>>>
+internal typealias MediaListCollectionRepo = MediaListRepository.Collection<DataState<PagedList<MediaList>>>
+internal typealias MediaListPagedRepo = MediaListRepository.Paged<DataState<PagedList<MediaList>>>
+internal typealias MediaListDeleteRepo = MediaListRepository.Delete<DataState<MediaList>>
+internal typealias MediaListSaveRepo = MediaListRepository.Save<DataState<MediaList>>
+
+typealias GetMediaListPagedInteractor = MediaListUseCase.GetPaged<DataState<PagedList<MediaList>>, MediaListQuery.Paged>
+typealias GetMediaListCollectionInteractor = MediaListUseCase.GetCollection<DataState<PagedList<MediaList>>, MediaListQuery.Collection>

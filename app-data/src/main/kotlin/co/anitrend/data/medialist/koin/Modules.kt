@@ -22,7 +22,7 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
-import co.anitrend.data.medialist.MediaListInteractor
+import co.anitrend.data.medialist.GetMediaListPagedInteractor
 import co.anitrend.data.medialist.converter.MediaListEntityConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.mapper.MediaListCollectionMapper
@@ -30,7 +30,7 @@ import co.anitrend.data.medialist.mapper.MediaListPagedMapper
 import co.anitrend.data.medialist.repository.MediaListRepositoryImpl
 import co.anitrend.data.medialist.source.paged.MediaListPagedSourceImpl
 import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
-import co.anitrend.data.medialist.usecase.MediaListUseCaseImpl
+import co.anitrend.data.medialist.usecase.MediaListUseCaseImpl.Paged
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -80,16 +80,14 @@ private val converterModule = module {
 }
 
 private val useCaseModule = module {
-    factory<MediaListInteractor> {
-        MediaListUseCaseImpl(
-            repository = get()
-        )
+    factory<GetMediaListPagedInteractor> {
+        Paged(repository = get())
     }
 }
 
 private val repositoryModule = module {
     factory {
-        MediaListRepositoryImpl(
+        MediaListRepositoryImpl.Paged(
             source = get()
         )
     }
