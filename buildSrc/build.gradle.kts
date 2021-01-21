@@ -38,7 +38,7 @@ kotlinDslPluginOptions {
 }
 
 val kotlinVersion = "1.4.21"
-val buildToolsVersion = "4.1.1"
+val buildToolsVersion = "4.1.2"
 val manesVersion = "0.33.0"
 
 dependencies {
