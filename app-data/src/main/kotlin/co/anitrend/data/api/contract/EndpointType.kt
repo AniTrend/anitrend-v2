@@ -24,7 +24,8 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 internal enum class EndpointType(val url: HttpUrl) {
     OAUTH("https://${BuildConfig.apiAuthUrl}".toHttpUrl()),
     GRAPH_QL(BuildConfig.apiUrl.toHttpUrl()),
-    RELATION_MOE(BuildConfig.relationUrl.toHttpUrl());
+    RELATION_MOE(BuildConfig.relationUrl.toHttpUrl()),
+    NEWS_RSS(BuildConfig.rssUrl.toHttpUrl());
 
     companion object {
         const val BASE_ENDPOINT_PATH = "/"

@@ -47,10 +47,11 @@ internal class AniRequestConverter(
         val queryContainer = containerBuilder.setQuery(query).build()
 
         val queryJson = gson.toJson(queryContainer)
-        return queryJson.toRequestBody(MIME_TYPE)
+        return queryJson.toRequestBody(JSON_MIME_TYPE)
     }
 
     companion object {
-        internal val MIME_TYPE = "application/json".toMediaType()
+        internal val JSON_MIME_TYPE = "application/json".toMediaType()
+        internal val XML_MIME_TYPE = "application/xml".toMediaType()
     }
 }

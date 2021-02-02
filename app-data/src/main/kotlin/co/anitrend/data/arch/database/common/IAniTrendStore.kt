@@ -25,12 +25,13 @@ import co.anitrend.data.genre.datasource.local.IMediaGenreStore
 import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.medialist.datasource.local.IMediaListStore
 import co.anitrend.data.moe.datasource.local.IMoeStore
+import co.anitrend.data.news.datasource.local.INewsStore
 import co.anitrend.data.tag.datasource.local.IMediaTagStore
 import co.anitrend.data.user.datasource.local.IUserStore
 
 internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStore,
     IMoeStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore, IUserStore,
-    IMediaListStore {
+    IMediaListStore, INewsStore {
 
     companion object {
 
@@ -39,7 +40,7 @@ internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStor
             IMediaStore::class, IMediaTagStore::class, IMediaGenreStore::class,
             IMoeStore::class, IAuthStore::class, IAiringStore::class,
             ICarouselStore::class, ICacheStore::class, IUserStore::class,
-            IMediaListStore::class
+            IMediaListStore::class, INewsStore::class
         )
     }
 }

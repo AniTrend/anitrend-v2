@@ -82,7 +82,7 @@ internal object RetrofitProvider {
                         }
                     )
             }
-            EndpointType.OAUTH -> {
+            EndpointType.OAUTH, EndpointType.NEWS_RSS  -> {
                 Timber.tag(moduleTag).d("""
                     Adding request interceptors for request: ${type.name}
                     """.trimIndent()

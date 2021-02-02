@@ -34,6 +34,7 @@ import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.moe.entity.MoeEntity
+import co.anitrend.data.news.entity.NewsEntity
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
@@ -45,7 +46,7 @@ import org.jetbrains.annotations.TestOnly
         AuthEntity::class, TagEntity::class, GenreEntity::class, MoeEntity::class,
         MediaEntity::class, AiringScheduleEntity::class, CacheEntity::class,
         UserEntity::class, UserGeneralOptionEntity::class, UserMediaOptionEntity::class,
-        MediaListEntity::class
+        MediaListEntity::class, NewsEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION
 )

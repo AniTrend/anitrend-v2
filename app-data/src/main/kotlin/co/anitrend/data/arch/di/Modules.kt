@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("DEPRECATION")
+
 package co.anitrend.data.arch.di
 
 import android.net.ConnectivityManager
@@ -41,6 +43,7 @@ import co.anitrend.data.genre.koin.mediaGenreModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.moe.koin.sourceModules
+import co.anitrend.data.news.koin.newsModules
 import co.anitrend.data.tag.koin.mediaTagModules
 import co.anitrend.data.user.koin.userModules
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -119,7 +122,7 @@ private val retrofitModule = module {
             processor = get(),
             gson = get(),
             jsonFactory = get<Json>().asConverterFactory(
-                AniRequestConverter.MIME_TYPE
+                AniRequestConverter.JSON_MIME_TYPE
             ),
             xmlFactory = SimpleXmlConverterFactory.createNonStrict(
                 Persister(AnnotationStrategy())
@@ -196,4 +199,4 @@ val dataModules = listOf(
 ) + airingModules + mediaTagModules + mediaGenreModules +
         sourceModules + mediaModules + carouselModules +
         authModules + accountModules + userModules +
-        mediaListModules
+        mediaListModules + newsModules
