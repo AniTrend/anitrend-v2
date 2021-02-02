@@ -59,4 +59,7 @@ object Versions {
     const val prettyTime = "5.0.0.Final"
     const val scalingImageView = "3.10.0"
     const val serializationConverter = "0.8.0"
+
+    const val betterLinkMovement = "2.2.0"
+    const val jsoup = "1.13.1"
 }

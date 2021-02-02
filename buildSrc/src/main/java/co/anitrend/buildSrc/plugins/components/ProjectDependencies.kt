@@ -133,10 +133,11 @@ private fun Project.applyBaseModuleDependencies() {
             dependencies.implementation(Libraries.AndroidX.Room.ktx)
             dependencies.kapt(Libraries.AndroidX.Room.compiler)
 
+            dependencies.implementation(Libraries.Square.OkHttp.logging)
             dependencies.implementation(Libraries.Square.Retrofit.retrofit)
             dependencies.implementation(Libraries.Square.Retrofit.gsonConverter)
             dependencies.implementation(Libraries.Square.Retrofit.xmlConverter)
-            dependencies.implementation(Libraries.Square.OkHttp.logging)
+            dependencies.implementation(Libraries.Devrieze.XmlUtil.Android.serialization)
 
             dependencies.implementation(Libraries.AniTrend.Retrofit.graphQL)
             dependencies.implementation(Libraries.threeTenBp)

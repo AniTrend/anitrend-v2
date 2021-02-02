@@ -33,6 +33,9 @@ object Libraries {
     const val junit = "junit:junit:${Versions.junit}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
 
+    const val betterLinkMovement = "me.saket:better-link-movement-method:${Versions.betterLinkMovement}"
+    const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
+
     const val scalingImageView = "com.davemorrissey.labs:subsampling-scale-image-view-androidx:${Versions.scalingImageView}"
 
     const val prettyTime = "org.ocpsoft.prettytime:prettytime:${Versions.prettyTime}"
@@ -395,6 +398,17 @@ object Libraries {
         const val video = "io.coil-kt:coil-video:$version"
     }
 
+    object Devrieze {
+        object XmlUtil {
+            private const val version = "0.80.1"
+
+            object Android {
+                const val core = "net.devrieze:xmlutil-android:$version"
+                const val serialization = "net.devrieze:xmlutil-serialization-android:$version"
+            }
+        }
+    }
+
     object Dropbox {
         private const val version = "4.0.0"
         const val store = "com.dropbox.mobile.store:store4:$version"
@@ -555,6 +569,7 @@ object Libraries {
             private const val version = "2.9.0"
             const val retrofit = "com.squareup.retrofit2:retrofit:$version"
             const val gsonConverter =  "com.squareup.retrofit2:converter-gson:$version"
+            @Deprecated("Use XmlUtil instead", ReplaceWith("Libraries.Devrieze.XmlUtil.Android.serialization"))
             const val xmlConverter =  "com.squareup.retrofit2:converter-simplexml:$version"
         }
 
