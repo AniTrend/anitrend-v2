@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,19 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.news.entity
+package co.anitrend.domain.news.repository
 
-import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.arch.domain.state.UiState
 
-data class News(
-    override val id: Long,
-    val guid: String,
-    val link: String,
-    val title: String,
-    val image: String?,
-    val author: String,
-    val subTitle: String,
-    val description: String?,
-    val content: String,
-    val publishedOn: Long?
-) : IEntity
+interface NewsRepository<State: UiState<*>, Param: Any> {
+    fun getPagedNews(query: Param): State
+}
