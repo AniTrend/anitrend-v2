@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,12 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.common.news.ui.controller.helpers
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import androidx.recyclerview.widget.DiffUtil
+import co.anitrend.domain.news.entity.News
 
-dependencies {
-    implementation(Libraries.Blitz.blitz)
+internal object NewsDiffUtil : DiffUtil.ItemCallback<News>() {
+    override fun areItemsTheSame(
+        oldItem: News,
+        newItem: News
+    ) = oldItem.id == newItem.id
+
+    override fun areContentsTheSame(
+        oldItem: News,
+        newItem: News
+    ) = oldItem.hashCode() == newItem.hashCode()
 }
