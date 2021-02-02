@@ -57,3 +57,13 @@ fun FragmentActivity?.createDialog(
         .lifecycleOwner(this)
         .cancelOnTouchOutside(false)
 }
+
+/**
+ * Prints failures to the logger
+ */
+fun <T> Result<T>.stackTrace(tag: String): T? {
+    onFailure { throwable ->
+        Timber.tag(tag).v(throwable)
+    }
+    return getOrNull()
+}
