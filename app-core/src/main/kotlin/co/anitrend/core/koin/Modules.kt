@@ -20,13 +20,17 @@ package co.anitrend.core.koin
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.isLowRamDevice
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
+import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.android.controller.AndroidPowerController
@@ -121,6 +125,27 @@ private val coreModule = module {
     factory {
         val localeHelper = get<ILocaleHelper>()
         PrettyTime(localeHelper.locale)
+    }
+
+    factory {
+        val context = androidContext()
+        CustomTabsIntent.Builder()
+            .setStartAnimations(context, R.anim.enter_from_bottom, R.anim.exit_to_bottom)
+            .setExitAnimations(context, android.R.anim.fade_in, android.R.anim.fade_out)
+            .setColorSchemeParams(
+                if (context.isEnvironmentNightMode()) CustomTabsIntent.COLOR_SCHEME_DARK
+                else CustomTabsIntent.COLOR_SCHEME_LIGHT,
+                CustomTabColorSchemeParams.Builder()
+                    .setToolbarColor(
+                        context.getColorFromAttr(R.attr.colorPrimary)
+                    )
+                    .setNavigationBarColor(
+                        context.getColorFromAttr(R.attr.colorPrimary)
+                    )
+                    .setSecondaryToolbarColor(
+                        context.getColorFromAttr(R.attr.colorSecondary)
+                    ).build()
+            )
     }
 }
 

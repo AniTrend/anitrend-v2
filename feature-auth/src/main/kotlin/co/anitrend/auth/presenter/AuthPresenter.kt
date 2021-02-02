@@ -38,6 +38,7 @@ import co.anitrend.data.auth.helper.AUTHENTICATION_URI
 import co.anitrend.data.auth.helper.AuthenticationType
 import co.anitrend.data.auth.helper.authenticationUri
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import timber.log.Timber
 
 class AuthPresenter(
     context: Context,
@@ -53,13 +54,23 @@ class AuthPresenter(
 
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
-        customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        customTabs.launchUrl(activity, Uri.parse(context.getString(R.string.app_faq_page_link)))
+        runCatching {
+            customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            customTabs.launchUrl(activity, Uri.parse(context.getString(R.string.app_faq_page_link)))
+        }.onFailure {
+            Timber.tag(moduleTag).w(it, "Unable to open custom tabs")
+            startViewIntent(Uri.parse(context.getString(R.string.app_faq_page_link)))
+        }
     }
 
     fun authorizeWithAniList(activity: FragmentActivity, viewModelState: AuthState) {
-        customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN))
+        runCatching {
+            customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN))
+        }.onFailure {
+            Timber.tag(moduleTag).w(it, "Unable to open custom tabs")
+            startViewIntent(authenticationUri(AuthenticationType.TOKEN))
+        }
 
         viewModelState.authenticationFlow.value = Authentication.Pending
     }
