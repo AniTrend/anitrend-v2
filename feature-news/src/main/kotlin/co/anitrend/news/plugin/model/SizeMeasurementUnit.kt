@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,23 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.news.plugin.model
 
-plugins {
-    id("co.anitrend.plugin")
-}
-
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.news))
-
-    implementation(Libraries.AndroidX.Browser.browser)
-
-    implementation(Libraries.betterLinkMovement)
-    implementation(Libraries.jsoup)
-
-    /** Markwon */
-    implementation(Libraries.Markwon.core)
-    implementation(Libraries.Markwon.html)
-    implementation(Libraries.Markwon.linkify)
-    implementation(Libraries.Markwon.coil)
+internal enum class SizeMeasurementUnit(val attr: String) {
+    PIXEL("px"),
+    DPI("dp")
 }

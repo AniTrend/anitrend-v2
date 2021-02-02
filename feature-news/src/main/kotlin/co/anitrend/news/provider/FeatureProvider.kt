@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,23 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.news.provider
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.content.Context
+import android.content.Intent
+import co.anitrend.navigation.NewsRouter
+import co.anitrend.news.component.content.NewsContent
+import co.anitrend.news.component.screen.NewsScreen
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.news))
+class FeatureProvider : NewsRouter.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, NewsScreen::class.java)
 
-    implementation(Libraries.AndroidX.Browser.browser)
-
-    implementation(Libraries.betterLinkMovement)
-    implementation(Libraries.jsoup)
-
-    /** Markwon */
-    implementation(Libraries.Markwon.core)
-    implementation(Libraries.Markwon.html)
-    implementation(Libraries.Markwon.linkify)
-    implementation(Libraries.Markwon.coil)
+    override fun fragment() = NewsContent::class.java
 }
