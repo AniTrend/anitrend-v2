@@ -15,8 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }

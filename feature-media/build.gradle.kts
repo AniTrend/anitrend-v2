@@ -23,4 +23,6 @@ plugins {
 
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.media))
+
+    implementation(Libraries.AndroidX.Browser.browser)
 }

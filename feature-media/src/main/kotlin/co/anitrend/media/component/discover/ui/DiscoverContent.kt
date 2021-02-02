@@ -27,6 +27,7 @@ import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.media.R
 import co.anitrend.media.component.discover.viewmodel.DiscoverViewModel
+import co.anitrend.navigation.MediaRouter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DiscoverContent(
@@ -38,7 +39,7 @@ class DiscoverContent(
     private val viewModel by viewModel<DiscoverViewModel>()
 
     private val mediaQuery by argument(
-        MediaQuery.TAG,
+        MediaRouter.Param.KEY,
         MediaQuery(
             type = MediaType.ANIME,
             sort = listOf(MediaSort.POPULARITY)

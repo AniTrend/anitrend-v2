@@ -21,8 +21,7 @@
     package="co.anitrend.about">
 
     <application>
-        <activity android:name=".component.screen.AboutScreen"
-            android:label="@string/title_activity_about_screen" />
+        <activity android:name=".component.screen.AboutScreen" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
