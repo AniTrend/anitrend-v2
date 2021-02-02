@@ -46,6 +46,7 @@ internal const val profile = "feature-profile"
 internal const val account = "feature-account"
 internal const val about = "feature-about"
 internal const val news = "feature-news"
+internal const val imageViewer = "feature-image-viewer"
 
 internal const val commonCharacterUi = "common-character-ui"
 internal const val commonForumUi = "common-forum-ui"
@@ -96,7 +97,8 @@ internal val featureModules = listOf(
     profile,
     account,
     about,
-    news
+    news,
+	imageViewer
 )
 
 internal val taskModules = listOf(

@@ -25,6 +25,7 @@ include(
     ":feature-account",
     ":feature-about",
     ":feature-news",
+	":feature-image-viewer",
     ":common-character-ui",
     ":common-forum-ui",
     ":common-media-ui",
