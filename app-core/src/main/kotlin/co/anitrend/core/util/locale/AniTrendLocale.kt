@@ -45,5 +45,10 @@ enum class AniTrendLocale(val language: String, val country: String? = null) {
     FRENCH_FRANCE(
         language = Locale.FRANCE.language,
         country = Locale.FRANCE.country
-    )
+    );
+
+    companion object {
+        fun AniTrendLocale.asLocaleString() = "$language$country"
+        fun Locale.asLocaleString() = "$language$country"
+    }
 }
