@@ -20,5 +20,14 @@ package co.anitrend.domain.news.entity
 import co.anitrend.domain.common.entity.contract.IEntity
 
 data class News(
-    override val id: Long
+    override val id: Long,
+    val guid: String,
+    val link: String,
+    val title: String,
+    val image: String?,
+    val author: String,
+    val subTitle: String,
+    val description: String?,
+    val content: String,
+    val publishedOn: Long?
 ) : IEntity

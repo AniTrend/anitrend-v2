@@ -15,10 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import co.anitrend.buildSrc.Libraries
+
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
+    implementation(project(Libraries.AniTrend.CommonUi.news))
 
+    implementation(Libraries.AndroidX.Browser.browser)
+
+    implementation(Libraries.betterLinkMovement)
+    implementation(Libraries.jsoup)
+
+    /** Markwon */
+    implementation(Libraries.Markwon.core)
+    implementation(Libraries.Markwon.html)
+    implementation(Libraries.Markwon.linkify)
+    implementation(Libraries.Markwon.coil)
 }

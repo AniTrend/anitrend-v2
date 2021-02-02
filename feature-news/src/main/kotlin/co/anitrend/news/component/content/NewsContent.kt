@@ -20,13 +20,24 @@ package co.anitrend.news.component.content
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.content.list.AniTrendListContent
+import co.anitrend.core.presenter.CorePresenter
+import co.anitrend.core.util.locale.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.data.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
+import co.anitrend.news.R
+import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
+import co.anitrend.news.presenter.NewsPresenter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsContent(
-    override val defaultSpanSize: Int,
+    private val presenter: NewsPresenter,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<News>
+    override val supportViewAdapter: ISupportAdapter<News>,
+    override val defaultSpanSize: Int = R.integer.single_list_size,
 ) : AniTrendListContent<News>() {
+
+    private val viewModel by viewModel<NewsContentViewModel>()
+
     /**
      * Stub to trigger the loading of data, by default this is only called
      * when [supportViewAdapter] has no data in its underlying source.
@@ -36,7 +47,9 @@ class NewsContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-
+        viewModelState().invoke(
+            NewsQuery(locale = presenter.getCurrentLocaleString())
+        )
     }
 
     /**
@@ -44,6 +57,13 @@ class NewsContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
+        viewModelState().model.observe(viewLifecycleOwner) {
+            onPostModelChange(it)
+        }
     }
+
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
 }
