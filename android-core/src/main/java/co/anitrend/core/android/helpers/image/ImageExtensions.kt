@@ -17,6 +17,7 @@
 
 package co.anitrend.core.android.helpers.image
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -30,6 +31,7 @@ import co.anitrend.domain.common.HexColor
 import coil.Coil
 import coil.request.Disposable
 import coil.request.ImageRequest
+import coil.target.Target
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
 import coil.transition.CrossfadeTransition
@@ -97,14 +99,14 @@ fun AppCompatImageView.using(
 /**
  * Draws an image onto the image view
  *
- * @param imageDrawable Drawable resource to load
+ * @param resource resource to load
  * @param transformations Optional image transformations, providing this with an empty list will
  * bypass the default [RoundedCornersTransformation] on bottom corners.
  *
  * @return A [Disposable] contract
  */
-fun AppCompatImageView.using(
-    imageDrawable: Drawable?,
+fun <T: Any> AppCompatImageView.using(
+    resource: T?,
     transformations: List<Transformation> = emptyList()
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
@@ -118,7 +120,39 @@ fun AppCompatImageView.using(
                 resources.getInteger(R.integer.motion_duration_large)
             )
         )
-        .data(imageDrawable)
+        .data(resource)
+        .target(this)
+        .build()
+
+    return Coil.imageLoader(context).enqueue(request)
+}
+
+/**
+ * Draws an image onto the image view
+ *
+ * @param resource resource to load
+ * @param transformations Optional image transformations, providing this with an empty list will
+ * bypass the default [RoundedCornersTransformation] on bottom corners.
+ *
+ * @return A [Disposable] contract
+ */
+fun <T: Any> Target.using(
+    resource: T?,
+    context: Context,
+    transformations: List<Transformation> = emptyList()
+): Disposable {
+    val requestBuilder = ImageRequest.Builder(context)
+
+    if (transformations.isNotEmpty())
+        requestBuilder.transformations(transformations)
+
+    val request = requestBuilder
+        .transition(
+            CrossfadeTransition(
+                context.resources.getInteger(R.integer.motion_duration_large)
+            )
+        )
+        .data(resource)
         .target(this)
         .build()
 
