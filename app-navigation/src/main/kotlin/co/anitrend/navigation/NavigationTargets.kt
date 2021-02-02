@@ -17,10 +17,13 @@
 
 package co.anitrend.navigation
 
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.work.ListenableWorker
+import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
+import kotlinx.android.parcel.Parcelize
 import org.koin.core.component.inject
 
 object MainRouter : NavigationRouter() {
@@ -84,6 +87,14 @@ object MediaRouter : NavigationRouter() {
             fun MediaRouter.forCarousel() = provider.carousel()
         }
     }
+
+    data class Param(
+        val mediaQuery: IGraphPayload
+    ) {
+        companion object {
+            const val KEY = "MediaRouter#Param"
+        }
+    }
 }
 
 object CharacterRouter : NavigationRouter() {
@@ -122,10 +133,56 @@ object NotificationRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 }
 
+object NewsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val link: String,
+        val title: String,
+        val subTitle: String,
+        val description: String?,
+        val content: String
+    ) : Parcelable {
+        companion object {
+            const val KEY = "NewsRouter#Param"
+        }
+    }
+}
+
+object EpisodesRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
+object SuggestionRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+}
+
 object UpdaterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+}
+
+object ImageViewerRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val imageSrc: String
+    ) : Parcelable {
+        companion object {
+            const val KEY = "ImageViewerRouter#Param"
+        }
+    }
 }
 
 object GenreTaskRouter : NavigationRouter() {
@@ -182,6 +239,18 @@ object MediaListTaskRouter : NavigationRouter() {
             fun MediaListTaskRouter.forMediaListCollectionWorker() = provider.mediaListCollectionWorker()
             fun MediaListTaskRouter.forMediaListMutationWorker() = provider.mediaListMutationWorker()
             fun MediaListTaskRouter.forMediaListSyncWorker() = provider.mediaListSyncWorker()
+        }
+    }
+}
+
+object NewsTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun worker(): Class<out ListenableWorker>
+
+        companion object {
+            fun NewsTaskRouter.forWorker() = provider.worker()
         }
     }
 }
