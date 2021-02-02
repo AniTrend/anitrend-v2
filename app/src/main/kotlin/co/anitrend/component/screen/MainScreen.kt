@@ -281,25 +281,36 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 )
             }
             R.id.navigation_social -> {
+                viewModel.state.selectedTitle = R.string.navigation_social
                 null
             }
             R.id.navigation_reviews -> {
+                viewModel.state.selectedTitle = R.string.navigation_review
                 null
             }
             R.id.navigation_suggestions -> {
-                null
+                viewModel.state.selectedTitle = R.string.navigation_suggestions
+                FragmentItem(
+                    fragment = SuggestionRouter.forFragment()
+                )
             }
             R.id.navigation_news -> {
                 viewModel.state.selectedTitle = R.string.navigation_news
-                null
+                FragmentItem(
+                    fragment = NewsRouter.forFragment()
+                )
             }
             R.id.navigation_forum -> {
-                viewModel.state.selectedTitle = R.string.navigation_news
-                null
+                viewModel.state.selectedTitle = R.string.navigation_forums
+                FragmentItem(
+                    fragment = ForumRouter.forFragment()
+                )
             }
             R.id.navigation_episodes -> {
                 viewModel.state.selectedTitle = R.string.navigation_episodes
-                null
+                FragmentItem(
+                    fragment = EpisodesRouter.forFragment()
+                )
             }
             R.id.navigation_donate -> {
                 presenter.redirectToPatreon()
