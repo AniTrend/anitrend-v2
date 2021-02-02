@@ -30,6 +30,7 @@ import kotlinx.serialization.Serializable
  * @param notificationOptions Notification options
  * @param profileColor Profile highlight color (blue, purple, pink, orange, red, green, grey)
  * @param titleLanguage The language the user wants to see media titles in
+ * @param timeZone The user's timezone offset (Auth user only)
  */
 @Serializable
 internal data class UserOptionsModel(
@@ -37,7 +38,8 @@ internal data class UserOptionsModel(
     @SerialName("displayAdultContent") val displayAdultContent: Boolean?,
     @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>?,
     @SerialName("profileColor") val profileColor: String?,
-    @SerialName("titleLanguage") val titleLanguage: UserTitleLanguage?
+    @SerialName("titleLanguage") val titleLanguage: UserTitleLanguage?,
+    @SerialName("timeZone") val timeZone: String?
 ) {
 
     /**

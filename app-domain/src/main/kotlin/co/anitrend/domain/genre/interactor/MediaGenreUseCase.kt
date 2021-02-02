@@ -19,10 +19,10 @@ package co.anitrend.domain.genre.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.genre.repository.IMediaGenreRepository
+import co.anitrend.domain.genre.repository.MediaGenreRepository
 
 abstract class MediaGenreUseCase<State: UiState<*>>(
-    protected val repository: IMediaGenreRepository<State>
+    protected val repository: MediaGenreRepository<State>
 ) : IUseCase {
 
     /**

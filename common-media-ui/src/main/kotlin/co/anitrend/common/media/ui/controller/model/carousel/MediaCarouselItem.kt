@@ -55,7 +55,7 @@ internal class MediaCarouselItem(
     private val viewPool: RecyclerView.RecycledViewPool
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 
-    private fun setUpCarouselItems(view: View, mediaItems: List<Media>) {
+    private fun setUpCarouselItems(view: View) {
         val mediaItemAdapter = MediaItemAdapter(
             view.resources,
             stateConfiguration = StateLayoutConfig()
@@ -63,7 +63,7 @@ internal class MediaCarouselItem(
 
         val layoutManager = LinearLayoutManager(
             view.context,
-            if (mediaItems.isEmpty())
+            if (entity.mediaItems.isEmpty())
                 RecyclerView.VERTICAL
             else RecyclerView.HORIZONTAL,
             false
@@ -88,14 +88,14 @@ internal class MediaCarouselItem(
             supportAdapter = mediaItemAdapter,
             recyclerLayoutManager = layoutManager
         )
-        if (mediaItems.isEmpty())
+        if (entity.mediaItems.isEmpty())
             mediaItemAdapter.networkState = NetworkState.Loading
         else
-            mediaItemAdapter.submitList(mediaItems)
+            mediaItemAdapter.submitList(entity.mediaItems)
     }
 
-    private fun setUpHeadings(view: View, carousel: MediaCarousel) {
-        val query: IGraphPayload = when (carousel.carouselType) {
+    private fun setUpHeadings() {
+        val query: IGraphPayload = when (entity.carouselType) {
             MediaCarousel.CarouselType.AIRING_SOON -> {
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_airing_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
@@ -105,7 +105,7 @@ internal class MediaCarouselItem(
                 )
             }
             MediaCarousel.CarouselType.ALL_TIME_POPULAR -> {
-                if (carousel.mediaType == MediaType.ANIME) {
+                if (entity.mediaType == MediaType.ANIME) {
                     binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_anime)
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_anime_description)
                 } else {
@@ -113,12 +113,12 @@ internal class MediaCarouselItem(
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manga_description)
                 }
                 MediaQuery(
-                    type = carousel.mediaType,
+                    type = entity.mediaType,
                     sort = listOf(MediaSort.POPULARITY)
                 )
             }
             MediaCarousel.CarouselType.TRENDING_RIGHT_NOW -> {
-                if (carousel.mediaType == MediaType.ANIME) {
+                if (entity.mediaType == MediaType.ANIME) {
                     binding?.mediaCarouselTitle?.setText(R.string.label_carousel_trending_anime)
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_trending_anime_description)
                 } else {
@@ -127,7 +127,7 @@ internal class MediaCarouselItem(
 
                 }
                 MediaQuery(
-                    type = carousel.mediaType,
+                    type = entity.mediaType,
                     sort = listOf(MediaSort.TRENDING)
                 )
             }
@@ -135,14 +135,14 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_season_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_season_anime_description)
                 MediaQuery(
-                    type = carousel.mediaType,
+                    type = entity.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    season = carousel.mediaItems.firstOrNull()?.season,
-                    seasonYear = carousel.mediaItems.firstOrNull()?.startDate?.year,
+                    season = entity.mediaItems.firstOrNull()?.season,
+                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
                 )
             }
             MediaCarousel.CarouselType.RECENTLY_ADDED -> {
-                if (carousel.mediaType == MediaType.ANIME) {
+                if (entity.mediaType == MediaType.ANIME) {
                     binding?.mediaCarouselTitle?.setText(R.string.label_carousel_recently_added_anime)
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_anime_description)
                 } else {
@@ -150,7 +150,7 @@ internal class MediaCarouselItem(
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_manga_description)
                 }
                 MediaQuery(
-                    type = carousel.mediaType,
+                    type = entity.mediaType,
                     sort = listOf(MediaSort.ID)
                 )
             }
@@ -158,19 +158,19 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_anticipated_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_anticipated_anime_description)
                 MediaQuery(
-                    type = carousel.mediaType,
+                    type = entity.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    season = carousel.mediaItems.firstOrNull()?.season,
-                    seasonYear = carousel.mediaItems.firstOrNull()?.startDate?.year,
+                    season = entity.mediaItems.firstOrNull()?.season,
+                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
                 )
             }
             MediaCarousel.CarouselType.POPULAR_MANHWA -> {
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manhwa)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manhwa_description)
                 MediaQuery(
-                    type = carousel.mediaType,
+                    type = entity.mediaType,
                     sort = listOf(MediaSort.POPULARITY),
-                    countryOfOrigin = carousel.mediaItems.firstOrNull()?.countryCode
+                    countryOfOrigin = entity.mediaItems.firstOrNull()?.countryCode
                 )
             }
         }
@@ -178,10 +178,16 @@ internal class MediaCarouselItem(
             // TODO: Opens media discover/search screen and provides media query as parameter for the appropriate action
             when (query) {
                 is MediaQuery -> {
-                    MediaRouter.startActivity(view.context, NavPayload(MediaQuery.TAG, query))
+                    MediaRouter.startActivity(
+                        context = it.context,
+                        navPayload = NavPayload(
+                            MediaRouter.Param.KEY,
+                            query
+                        )
+                    )
                 }
                 is AiringScheduleQuery -> {
-                    Toast.makeText(view.context, "Opens airing schedule screen", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(it.context, "Opens airing schedule screen", Toast.LENGTH_SHORT).show()
                 }
             }
             // Media.startActivity(view.context, NavPayload(MediaQuery.TAG, query))
@@ -206,8 +212,8 @@ internal class MediaCarouselItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = MediaCarouselItemBinding.bind(view)
-        setUpHeadings(view, entity)
-        setUpCarouselItems(view, entity.mediaItems)
+        setUpHeadings()
+        setUpCarouselItems(view)
     }
 
     /**

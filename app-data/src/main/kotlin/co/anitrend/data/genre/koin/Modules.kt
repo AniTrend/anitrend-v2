@@ -21,12 +21,12 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.genre.MediaGenreInteractor
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.data.genre.converters.GenreEntityConverter
+import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
-import co.anitrend.data.genre.repository.MediaGenreRepository
+import co.anitrend.data.genre.repository.MediaGenreRepositoryImpl
 import co.anitrend.data.genre.source.MediaGenreSourceImpl
 import co.anitrend.data.genre.source.contract.MediaGenreSource
 import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
@@ -60,12 +60,16 @@ private val converterModule = module {
     factory {
         GenreEntityConverter()
     }
+    factory {
+        GenreModelConverter()
+    }
 }
 
 private val mapperModule = module {
     factory {
         MediaGenreResponseMapper(
-            localSource = db().mediaGenreDao()
+            localSource = db().mediaGenreDao(),
+            converter = get()
         )
     }
 }
@@ -80,7 +84,7 @@ private val useCaseModule = module {
 
 private val repositoryModule = module {
     factory {
-        MediaGenreRepository(
+        MediaGenreRepositoryImpl(
             source = get()
         )
     }

@@ -45,15 +45,11 @@ internal val MIGRATION_1_2 = object : Migration(1, 2) {
      * @param database The database instance
      */
     override fun migrate(database: SupportSQLiteDatabase) {
-        val tableName = "source_entity"
+        val tableName = "*_entity"
         val createQuery = """
-            CREATE TABLE IF NOT EXISTS `$tableName` (
-                    `anilist` INTEGER NOT NULL, 
-                    `anidb` INTEGER, 
-                    `kitsu` INTEGER, 
-                    `mal` INTEGER,
-                    PRIMARY KEY(`anilist`)
-                )
+            CREATE TABLE IF NOT EXISTS `${tableName}` (
+                
+            )
         """.trimIndent()
         database.usingTransaction("MIGRATION_1_2", createQuery)
     }

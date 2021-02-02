@@ -29,7 +29,7 @@ import co.anitrend.data.genre.model.remote.GenreCollection
 
 internal class MediaGenreResponseMapper(
     private val localSource: MediaGenreLocalSource,
-    private val converter: GenreModelConverter = GenreModelConverter()
+    private val converter: GenreModelConverter
 ) : DefaultMapper<GenreCollection, List<GenreEntity>>() {
 
     override suspend fun persistChanges(data: List<GenreEntity>): OutCome<Nothing?> {

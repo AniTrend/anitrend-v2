@@ -15,14 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.genre.repository
+package co.anitrend.data.genre.repository
 
-import co.anitrend.arch.domain.state.UiState
+import co.anitrend.arch.data.repository.SupportRepository
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.arch.data.state.DataState.Companion.create
+import co.anitrend.data.genre.source.contract.MediaGenreSource
+import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.genre.repository.MediaGenreRepository
 
-interface IMediaGenreRepository<State: UiState<*>> {
+internal class MediaGenreRepositoryImpl(
+    private val source: MediaGenreSource
+) : SupportRepository(source),
+    MediaGenreRepository<DataState<List<Genre>>> {
 
     /**
      * @return media genres
      */
-    fun getMediaGenres(): State
+    override fun getMediaGenres() =
+        source create source()
 }

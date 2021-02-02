@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,5 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.usecase
+package co.anitrend.data.episode
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.genre.MediaGenreInteractor
-import co.anitrend.data.genre.repository.MediaGenreRepositoryImpl
-
-internal class MediaGenreUseCaseImpl(
-    repository: MediaGenreRepositoryImpl
-) : MediaGenreInteractor(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as ISupportRepository
-        repository.onCleared()
-    }
-}

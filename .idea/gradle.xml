@@ -38,6 +38,7 @@
             <option value="$PROJECT_DIR$/feature-auth" />
             <option value="$PROJECT_DIR$/feature-character" />
             <option value="$PROJECT_DIR$/feature-forum" />
+            <option value="$PROJECT_DIR$/feature-image-viewer" />
             <option value="$PROJECT_DIR$/feature-media" />
             <option value="$PROJECT_DIR$/feature-medialist" />
             <option value="$PROJECT_DIR$/feature-news" />

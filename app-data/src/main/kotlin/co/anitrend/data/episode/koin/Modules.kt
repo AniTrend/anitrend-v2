@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.usecase
+package co.anitrend.data.episode.koin
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.genre.MediaGenreInteractor
-import co.anitrend.data.genre.repository.MediaGenreRepositoryImpl
+import org.koin.dsl.module
 
-internal class MediaGenreUseCaseImpl(
-    repository: MediaGenreRepositoryImpl
-) : MediaGenreInteractor(repository) {
+private val sourceModule = module {
 
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as ISupportRepository
-        repository.onCleared()
-    }
 }
+
+private val mapperModule = module {
+
+}
+
+private val useCaseModule = module {
+
+}
+
+private val repositoryModule = module {
+
+}
+
+internal val staffModules = listOf(
+    sourceModule,
+    mapperModule,
+    useCaseModule,
+    repositoryModule
+)

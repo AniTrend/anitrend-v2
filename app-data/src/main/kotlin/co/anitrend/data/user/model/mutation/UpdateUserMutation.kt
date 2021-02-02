@@ -29,8 +29,9 @@ import kotlinx.android.parcel.Parcelize
  * @param about User's about/bio text
  * @param titleLanguage User's title language
  * @param displayAdultContent If the user should see media marked as adult-only
- * @param airingNotifications If the user should get notifications when a show they are watching aires
+ * @param airingNotifications If the user should get notifications when a show they are watching airs
  * @param scoreFormat The user's list scoring system
+ * @param timeZone Timezone offset format: -?HH:MM
  * @param rowOrder The user's default list order
  * @param profileColor Profile highlight color
  * @param notificationOptions Notification Options
@@ -44,6 +45,7 @@ data class UpdateUserMutation(
     val displayAdultContent: Boolean = false,
     val airingNotifications: Boolean = true,
     val scoreFormat: ScoreFormat,
+    val timeZone: String?,
     val rowOrder: String,
     val profileColor: String,
     val notificationOptions: List<NotificationOptionInput>,
@@ -60,6 +62,7 @@ data class UpdateUserMutation(
         "displayAdultContent" to displayAdultContent,
         "airingNotifications" to airingNotifications,
         "scoreFormat" to scoreFormat,
+        "timeZone" to timeZone,
         "rowOrder" to rowOrder,
         "profileColor" to profileColor,
         "notificationOptions" to notificationOptions,

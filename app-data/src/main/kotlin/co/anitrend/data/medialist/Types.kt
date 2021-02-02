@@ -33,10 +33,10 @@ import co.anitrend.domain.medialist.repository.MediaListRepository
 internal typealias MediaListPagedController = GraphQLController<MediaListPageModel, List<MediaListEntity>>
 internal typealias MediaListCollectionController = GraphQLController<MediaListCollectionModel, List<MediaListEntity>>
 
-internal typealias MediaListCollectionRepo = MediaListRepository.Collection<DataState<PagedList<MediaList>>>
-internal typealias MediaListPagedRepo = MediaListRepository.Paged<DataState<PagedList<MediaList>>>
-internal typealias MediaListDeleteRepo = MediaListRepository.Delete<DataState<MediaList>>
-internal typealias MediaListSaveRepo = MediaListRepository.Save<DataState<MediaList>>
+internal typealias MediaListCollectionRepository = MediaListRepository.Collection<DataState<PagedList<MediaList>>>
+internal typealias MediaListPagedRepository = MediaListRepository.Paged<DataState<PagedList<MediaList>>>
+internal typealias MediaListDeleteRepository = MediaListRepository.Delete<DataState<MediaList>>
+internal typealias MediaListSaveRepository = MediaListRepository.Save<DataState<MediaList>>
 
 typealias GetMediaListPagedInteractor = MediaListUseCase.GetPaged<DataState<PagedList<MediaList>>, MediaListQuery.Paged>
 typealias GetMediaListCollectionInteractor = MediaListUseCase.GetCollection<DataState<PagedList<MediaList>>, MediaListQuery.Collection>

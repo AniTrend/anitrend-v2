@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.component.viewmodel
+package co.anitrend.data.arch.extension
 
-import androidx.lifecycle.ViewModel
+import org.koin.core.context.GlobalContext
 
-class NewsViewModel : ViewModel() {
-
-}
+/**
+ * Helper to resolve koin dependencies
+ */
+inline fun <reified T> koinOf(): T =
+    GlobalContext.get().get()

@@ -25,33 +25,33 @@ import co.anitrend.domain.media.entity.contract.IMedia
 
 
 internal object MediaDiffUtil : DiffUtil.ItemCallback<Media>() {
-        override fun areItemsTheSame(
-            oldItem: Media,
-            newItem: Media
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: Media,
-            newItem: Media
-        ): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
-        }
+    override fun areItemsTheSame(
+        oldItem: Media,
+        newItem: Media
+    ): Boolean {
+        return oldItem.id == newItem.id
     }
+
+    override fun areContentsTheSame(
+        oldItem: Media,
+        newItem: Media
+    ): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
+    }
+}
 
 internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
-        override fun areItemsTheSame(
-            oldItem: MediaCarousel,
-            newItem: MediaCarousel
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: MediaCarousel,
-            newItem: MediaCarousel
-        ): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
-        }
+    override fun areItemsTheSame(
+        oldItem: MediaCarousel,
+        newItem: MediaCarousel
+    ): Boolean {
+        return oldItem.id == newItem.id
     }
+
+    override fun areContentsTheSame(
+        oldItem: MediaCarousel,
+        newItem: MediaCarousel
+    ): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
+    }
+}

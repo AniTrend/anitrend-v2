@@ -238,8 +238,4 @@ data class MediaQuery(
         this.query()
         return this
     }
-
-    companion object {
-        val TAG = MediaQuery::class.java.simpleName
-    }
 }

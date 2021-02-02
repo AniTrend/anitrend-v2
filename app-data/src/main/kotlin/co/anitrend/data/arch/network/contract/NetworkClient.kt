@@ -82,7 +82,14 @@ internal abstract class NetworkClient<T> {
                 Timber.tag(moduleTag).d("Request threw an exception -> $exception")
 
                 // The response failed, so lets see if we should retry again
-                if (attempt == (maxAttempts - 1) || !shouldRetry(exception)) {
+                if (!shouldRetry(exception)) {
+                    Timber.tag(moduleTag).w(
+                        exception, "Specific request is not allowed to retry on this exception"
+                    )
+                    throw exception
+                }
+
+                if (attempt == (maxAttempts - 1)) {
                     Timber.tag(moduleTag).w(
                         exception, "Cannot retry on exception or maximum retries reached"
                     )

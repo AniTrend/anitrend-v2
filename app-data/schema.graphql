@@ -856,7 +856,7 @@ type InternalPage {
         mediaType: MediaType,
         "The order the results will be returned in"
         sort: [ReviewSort],
-        "Filter by media id"
+        "Filter by user id"
         userId: Int
     ): [Review]
     revisionHistory(
@@ -1301,8 +1301,7 @@ type MediaListOptions {
     sharedTheme: Json @deprecated(reason : "No longer used")
     "If the shared theme should be used instead of the individual list themes"
     sharedThemeEnabled: Boolean @deprecated(reason : "No longer used")
-    "(Site only) If the user should be using legacy css-supporting list versions"
-    useLegacyLists: Boolean
+    useLegacyLists: Boolean @deprecated(reason : "No longer used")
 }
 
 "A user's list options for anime or manga lists"
@@ -1836,6 +1835,8 @@ type Mutation {
         rowOrder: String,
         "The user's list scoring system"
         scoreFormat: ScoreFormat,
+        "Timezone offset format: -?HH:MM"
+        timezone: String,
         "User's title language"
         titleLanguage: UserTitleLanguage
     ): User
@@ -2262,7 +2263,7 @@ type Page {
         mediaType: MediaType,
         "The order the results will be returned in"
         sort: [ReviewSort],
-        "Filter by media id"
+        "Filter by user id"
         userId: Int
     ): [Review]
     staff(
@@ -2841,7 +2842,7 @@ type Query {
         mediaType: MediaType,
         "The order the results will be returned in"
         sort: [ReviewSort],
-        "Filter by media id"
+        "Filter by user id"
         userId: Int
     ): Review
     "Site statistics query"
@@ -3686,6 +3687,8 @@ type UserOptions {
     notificationOptions: [NotificationOption]
     "Profile highlight color (blue, purple, pink, orange, red, green, gray)"
     profileColor: String
+    "The user's timezone offset (Auth user only)"
+    timezone: String
     "The language the user wants to see media titles in"
     titleLanguage: UserTitleLanguage
 }
