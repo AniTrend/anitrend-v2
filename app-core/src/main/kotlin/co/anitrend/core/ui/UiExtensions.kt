@@ -125,7 +125,7 @@ inline fun <reified T : Fragment> FragmentActivity.fragment() = lazy {
 inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
     tag: String, noinline factory: () -> T
 ): Lazy<T> {
-    return lazy(LazyThreadSafetyMode.NONE) {
+    return lazy(UNSAFE) {
         supportFragmentManager.findFragmentByTag(tag) as? T ?: factory()
     }
 }
