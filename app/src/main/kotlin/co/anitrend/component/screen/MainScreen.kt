@@ -20,6 +20,7 @@ package co.anitrend.component.screen
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.commit
@@ -231,7 +232,16 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      * @see getOnBackPressedDispatcher
      */
     override fun onBackPressed() {
-        ActivityCompat.finishAfterTransition(this)
+        if (navigationDrawer?.isShowing() == true) {
+            navigationDrawer?.dismiss()
+            return
+        }
+        if (viewModel.state.shouldExit)
+            ActivityCompat.finishAfterTransition(this)
+        else {
+            Toast.makeText(this, R.string.message_confirm_exit_app, Toast.LENGTH_LONG).show()
+            viewModel.state.shouldExit = true
+        }
     }
 
     /**

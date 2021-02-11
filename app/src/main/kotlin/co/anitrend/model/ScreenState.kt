@@ -31,12 +31,15 @@ internal class ScreenState(
 
     private val uiRedirection by savedStateHandle.extra(ARG_KEY_REDIRECT, R.id.navigation_home)
 
+    var shouldExit: Boolean = false
+
     @IdRes var selectedItem: Int = uiRedirection
     @StringRes var selectedTitle: Int = R.string.navigation_home
 
     override fun onSaveInstanceState(outState: Bundle) {
         savedStateHandle.set(ARG_KEY_SELECTED_ITEM, selectedItem)
         savedStateHandle.set(ARG_KEY_SELECTED_TITLE, selectedTitle)
+        savedStateHandle.set(ARG_KEY_SHOULD_EXIT, shouldExit)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -44,10 +47,13 @@ internal class ScreenState(
             selectedItem = savedStateHandle.get<Int>(ARG_KEY_SELECTED_ITEM)!!
         if (savedStateHandle.contains(ARG_KEY_SELECTED_TITLE))
             selectedTitle = savedStateHandle.get<Int>(ARG_KEY_SELECTED_TITLE)!!
+        if (savedStateHandle.contains(ARG_KEY_SHOULD_EXIT))
+            shouldExit = savedStateHandle.get<Boolean>(ARG_KEY_SHOULD_EXIT)!!
     }
 
     companion object {
         internal const val ARG_KEY_REDIRECT = "ARG_KEY_REDIRECT"
+        internal const val ARG_KEY_SHOULD_EXIT = "ARG_KEY_SHOULD_EXIT"
 
         internal const val ARG_KEY_SELECTED_ITEM = "ARG_KEY_NAVIGATION_STATE"
         internal const val ARG_KEY_SELECTED_TITLE = "ARG_KEY_NAVIGATION_STATE"
