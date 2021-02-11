@@ -300,7 +300,12 @@ class BottomDrawerContent(
         }
     }
 
-    override fun toggle() {
+    override fun isShowing(): Boolean {
+        return behavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED ||
+                behavior.state == BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    override fun toggleDrawer() {
         if (sandwichState == SandwichState.OPEN)
             toggleSandwich()
         else when (behavior.state) {
