@@ -126,6 +126,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             setShowMotionSpecResource(R.animator.floating_action_show)
             setHideMotionSpecResource(R.animator.floating_action_hide)
         }
+        inflateNavigationBottomDrawer()
     }
 
     private fun inflateNavigationBottomDrawer() {
@@ -146,10 +147,10 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed { setUpNavigationDrawer() }
-        lifecycleScope.launchWhenResumed { observeNavigationDrawer() }
         lifecycleScope.launchWhenResumed {
             navigationDrawer?.setCheckedItem(viewModel.state.selectedItem)
+            setUpNavigationDrawer()
+            observeNavigationDrawer()
         }
         onUpdateUserInterface()
     }
@@ -260,7 +261,6 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      */
     override fun onResume() {
         super.onResume()
-        inflateNavigationBottomDrawer()
         navigationDrawer?.addOnStateChangedAction(showHideFabStateAction)
         navigationDrawer?.addOnStateChangedAction(changeSettingsMenuStateAction)
     }
