@@ -59,7 +59,7 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
                 setupKoinFragmentFactory(scope)
             }.onFailure {
                 setupKoinFragmentFactory()
-                Timber.tag(moduleTag).w(it, "Defaulting to scope-less based fragment factory")
+                Timber.tag(moduleTag).d(it, "Defaulting to scope-less based fragment factory")
             }
         }
     }
