@@ -112,7 +112,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
 
     private fun setUpNavigationDrawer() {
         requireBinding().bottomAppBar.setNavigationOnClickListener {
-            navigationDrawer?.toggle()
+            navigationDrawer?.toggleDrawer()
         }
         requireBinding().mainCoordinator.setOnClickListener {
             navigationDrawer?.dismiss()
@@ -127,6 +127,16 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         }
     }
 
+    private fun inflateNavigationBottomDrawer() {
+        supportFragmentManager.commit {
+            replace<BottomDrawerContent>(
+                R.id.bottomNavigation,
+                drawerFragmentItem.parameter,
+                drawerFragmentItem.tag()
+            )
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainScreenBinding.inflate(layoutInflater)
@@ -137,12 +147,8 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenResumed { setUpNavigationDrawer() }
         lifecycleScope.launchWhenResumed { observeNavigationDrawer() }
-        supportFragmentManager.commit {
-            replace<BottomDrawerContent>(
-                R.id.bottomNavigation,
-                drawerFragmentItem.parameter,
-                drawerFragmentItem.tag()
-            )
+        lifecycleScope.launchWhenResumed {
+            navigationDrawer?.setCheckedItem(viewModel.state.selectedItem)
         }
         onUpdateUserInterface()
     }
@@ -244,9 +250,9 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      */
     override fun onResume() {
         super.onResume()
+        inflateNavigationBottomDrawer()
         navigationDrawer?.addOnStateChangedAction(showHideFabStateAction)
         navigationDrawer?.addOnStateChangedAction(changeSettingsMenuStateAction)
-        navigationDrawer?.setCheckedItem(viewModel.state.selectedItem)
     }
 
     override fun onDestroy() {

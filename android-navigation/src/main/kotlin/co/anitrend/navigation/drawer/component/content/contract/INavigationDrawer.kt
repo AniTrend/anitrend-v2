@@ -27,7 +27,8 @@ interface INavigationDrawer {
 
     val navigationFlow: Flow<Navigation.Menu>
 
-    fun toggle()
+    fun isShowing(): Boolean
+    fun toggleDrawer()
     fun show()
     fun dismiss()
 
