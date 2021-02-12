@@ -21,6 +21,8 @@ import android.Manifest
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
@@ -40,6 +42,15 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
     private val param: ImageViewerRouter.Param? by extra(ImageViewerRouter.Param.KEY)
 
     private val viewModel by viewModel<ImageViewerViewModel>()
+
+    private val permissionResult = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isAllowed: Boolean ->
+        if (isAllowed)
+            viewModel.downloadImage(param?.imageSrc)
+        else
+            Toast.makeText(this, R.string.warning_permission_for_storage_not_granted, Toast.LENGTH_LONG).show()
+    }
 
     private var disposable: Disposable? = null
 
@@ -76,8 +87,8 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
         requireBinding().subSamplingDownloadAction.setOnClickListener {
             val transparency = requireBinding().subSamplingDownloadAction.alpha
             val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            if (transparency == VISIBLE && requestPermissionIfMissing(permission))
-                viewModel.downloadImage(param?.imageSrc)
+            if (transparency == VISIBLE)
+                permissionResult.launch(permission)
         }
     }
 

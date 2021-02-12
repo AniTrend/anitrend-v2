@@ -17,4 +17,5 @@
 
 <resources>
     <string name="action_title_download">Download</string>
+    <string name="warning_permission_for_storage_not_granted">Permission has not been granted for storage access</string>
 </resources>
