@@ -40,13 +40,7 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation.Companion.toNav
 class NavigationAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override val mapper: (Navigation) -> IRecyclerItem = {
-        when (it) {
-            is Navigation.Menu -> MenuNavigationItem(it)
-            is Navigation.Group -> GroupNavigationItem(it)
-            is Navigation.Divider -> DividerNavigationItem(it)
-        }
-    },
+    override val mapper: (Navigation) -> IRecyclerItem = ::invoke,
     override val customSupportAnimator: AbstractAnimator? = null,
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Navigation>(NavigationDiffUtil) {
@@ -96,5 +90,13 @@ class NavigationAdapter(
      */
     override fun getStableIdFor(item: Navigation?): Long {
         return item?.hashCode()?.toLong() ?: RecyclerView.NO_ID
+    }
+
+    private companion object : (Navigation) -> IRecyclerItem  {
+        override fun invoke(navigation: Navigation) = when (navigation) {
+            is Navigation.Menu -> MenuNavigationItem(navigation)
+            is Navigation.Group -> GroupNavigationItem(navigation)
+            is Navigation.Divider -> DividerNavigationItem(navigation)
+        }
     }
 }

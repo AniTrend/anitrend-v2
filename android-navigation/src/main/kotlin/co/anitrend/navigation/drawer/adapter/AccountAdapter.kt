@@ -42,14 +42,7 @@ import co.anitrend.navigation.drawer.model.account.Account.Companion.toAccountTy
 class AccountAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override val mapper: (Account) -> IRecyclerItem = {
-        when (it) {
-            is Account.Authenticated -> AuthenticatedAccountItem(it)
-            is Account.Anonymous -> AnonymousAccountItem(it)
-            is Account.Authorize -> AuthorizeAccountItem(it)
-            is Account.Group -> GroupAccountItem(it)
-        }
-    },
+    override val mapper: (Account) -> IRecyclerItem = ::invoke,
     override val customSupportAnimator: AbstractAnimator? = null,
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Account>(AccountDiffUtil) {
@@ -100,5 +93,14 @@ class AccountAdapter(
         Account.AUTHENTICATED -> layoutInflater.createAuthenticatedAccountViewHolder(parent)
         Account.GROUP -> layoutInflater.createAccountGroupViewHolder(parent)
         else -> layoutInflater.createAuthorizeAccountViewHolder(parent)
+    }
+
+    private companion object : (Account) -> IRecyclerItem {
+        override fun invoke(account: Account): IRecyclerItem = when (account) {
+            is Account.Authenticated -> AuthenticatedAccountItem(account)
+            is Account.Anonymous -> AnonymousAccountItem(account)
+            is Account.Authorize -> AuthorizeAccountItem(account)
+            is Account.Group -> GroupAccountItem(account)
+        }
     }
 }
