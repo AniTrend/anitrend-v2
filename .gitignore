@@ -243,3 +243,5 @@ secrets.properties
 app/google-services.json
 
 .directory
+
+jacoco.exec
