@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.buildSrc.plugins.extensions
+package co.anitrend.buildSrc.extensions
 
 import groovy.lang.Closure
 import org.gradle.api.artifacts.dsl.DependencyHandler
