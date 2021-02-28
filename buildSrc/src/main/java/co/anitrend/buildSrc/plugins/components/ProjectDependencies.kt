@@ -18,15 +18,12 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.Libraries
-import co.anitrend.buildSrc.common.*
-import co.anitrend.buildSrc.plugins.extensions.androidTest
-import co.anitrend.buildSrc.plugins.extensions.implementation
-import co.anitrend.buildSrc.plugins.extensions.kapt
-import co.anitrend.buildSrc.plugins.extensions.runtime
+import co.anitrend.buildSrc.module.Modules
+import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
 import org.gradle.api.Project
 
-private fun Project.applyFeatureModuleDependencies() {
+private fun Project.applyFeatureModuleGroupDependencies() {
     println("Applying shared dependencies for feature module -> $path")
 
     dependencies.implementation(Libraries.AniTrend.Arch.ui)
@@ -51,34 +48,34 @@ private fun Project.applyFeatureModuleDependencies() {
 
     dependencies.implementation(Libraries.threeTenBp)
 
-    dependencies.implementation(project(":$core"))
-    dependencies.implementation(project(":$data"))
-    dependencies.implementation(project(":$domain"))
-    dependencies.implementation(project(":$navigation"))
-    dependencies.implementation(project(":$androidCore"))
+    dependencies.implementation(project(Modules.Android.Core.path()))
+    dependencies.implementation(project(Modules.App.Navigation.path()))
+    dependencies.implementation(project(Modules.App.Core.path()))
+    dependencies.implementation(project(Modules.App.Domain.path()))
+    dependencies.implementation(project(Modules.App.Data.path()))
 }
 
 private fun Project.applyAppModuleDependencies() {
-    featureModules.forEach { module ->
-        println("Adding runtimeOnly dependency :$module -> ${project.path}")
-        dependencies.runtime(project(":$module"))
+    Modules.Feature.values().forEach { module ->
+        println("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
+        dependencies.runtime(project(module.path()))
     }
 
-    taskModules.forEach { module ->
-        println("Adding runtimeOnly dependency :$module -> ${project.path}")
-        dependencies.runtime(project(":$module"))
+    Modules.Task.values().forEach { module ->
+        println("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
+        dependencies.runtime(project(module.path()))
     }
 
-    baseModules.forEach { module ->
-        if (module != app) {
-            println("Adding base module dependency :$module -> ${project.path}")
-            dependencies.implementation(project(":$module"))
+    Modules.App.values().forEach { module ->
+        if (module != Modules.App.Main) {
+            println("Adding base module dependency ${module.path()} -> ${project.path}")
+            dependencies.implementation(project(module.path()))
         }
     }
 
-    androidModules.forEach { module ->
-        println("Adding android core module dependency :$module -> ${project.path}")
-        dependencies.implementation(project(":$module"))
+    Modules.Android.values().forEach { module ->
+        println("Adding android core module dependency ${module.path()} -> ${project.path}")
+        dependencies.implementation(project(module.path()))
     }
 
     dependencies.implementation(Libraries.Google.Material.material)
@@ -93,14 +90,14 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.implementation(Libraries.Coil.coil)
 }
 
-private fun Project.applyBaseModuleDependencies() {
+private fun Project.applyAppModuleGroupDependencies() {
     println("Applying base module dependencies for module -> $path")
     when (name) {
-        core -> {
-            dependencies.implementation(project(":$androidCore"))
-            dependencies.implementation(project(":$navigation"))
-            dependencies.implementation(project(":$domain"))
-            dependencies.implementation(project(":$data"))
+        Modules.App.Core.id -> {
+            dependencies.implementation(project(Modules.Android.Core.path()))
+            dependencies.implementation(project(Modules.App.Navigation.path()))
+            dependencies.implementation(project(Modules.App.Domain.path()))
+            dependencies.implementation(project(Modules.App.Data.path()))
 
             dependencies.implementation(Libraries.Google.Material.material)
 
@@ -123,8 +120,8 @@ private fun Project.applyBaseModuleDependencies() {
             dependencies.implementation(Libraries.Glide.glide)
             dependencies.kapt(Libraries.Glide.compiler)
         }
-        data -> {
-            dependencies.implementation(project(":$domain"))
+        Modules.App.Data.id -> {
+            dependencies.implementation(project(Modules.App.Domain.path()))
 
             dependencies.implementation(Libraries.AndroidX.Paging.common)
             dependencies.implementation(Libraries.AndroidX.Paging.runtime)
@@ -142,10 +139,10 @@ private fun Project.applyBaseModuleDependencies() {
             dependencies.implementation(Libraries.AniTrend.Retrofit.graphQL)
             dependencies.implementation(Libraries.threeTenBp)
         }
-        domain -> {
+        Modules.App.Domain.id -> {
             dependencies.implementation(Libraries.AniTrend.Arch.domain)
         }
-        navigation -> {
+        Modules.App.Navigation.id -> {
             dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
             dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
             dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
@@ -154,7 +151,7 @@ private fun Project.applyBaseModuleDependencies() {
     }
 }
 
-private fun Project.applyAndroidCoreModuleDependencies() {
+private fun Project.applyAndroidModuleGroupDependencies() {
     println("Applying core feature dependencies for feature module -> $path")
 
     dependencies.implementation(Libraries.AniTrend.Arch.ui)
@@ -178,16 +175,16 @@ private fun Project.applyAndroidCoreModuleDependencies() {
     dependencies.implementation(Libraries.Coil.coil)
     dependencies.implementation(Libraries.threeTenBp)
 
-    dependencies.implementation(project(":$data"))
-    dependencies.implementation(project(":$domain"))
-    dependencies.implementation(project(":$navigation"))
+    dependencies.implementation(project(Modules.App.Navigation.path()))
+    dependencies.implementation(project(Modules.App.Domain.path()))
+    dependencies.implementation(project(Modules.App.Data.path()))
     if (!isAndroidCoreModule()) {
-        dependencies.implementation(project(":$core"))
-        dependencies.implementation(project(":$androidCore"))
+        dependencies.implementation(project(Modules.Android.Core.path()))
+        dependencies.implementation(project(Modules.App.Core.path()))
     }
 }
 
-private fun Project.applyCommonModuleDependencies() {
+private fun Project.applyCommonModuleGroupDependencies() {
     println("Applying common feature dependencies for module -> $path")
 
     dependencies.implementation(Libraries.AniTrend.Arch.ui)
@@ -214,14 +211,14 @@ private fun Project.applyCommonModuleDependencies() {
 
     dependencies.implementation(Libraries.threeTenBp)
 
-    dependencies.implementation(project(":$androidCore"))
-    dependencies.implementation(project(":$core"))
-    dependencies.implementation(project(":$data"))
-    dependencies.implementation(project(":$domain"))
-    dependencies.implementation(project(":$navigation"))
+    dependencies.implementation(project(Modules.Android.Core.path()))
+    dependencies.implementation(project(Modules.App.Navigation.path()))
+    dependencies.implementation(project(Modules.App.Domain.path()))
+    dependencies.implementation(project(Modules.App.Data.path()))
+    dependencies.implementation(project(Modules.App.Core.path()))
 }
 
-private fun Project.applyTaskModuleDependencies() {
+private fun Project.applyTaskModuleGroupDependencies() {
     println("Applying task feature dependencies for module -> $path")
 
     dependencies.implementation(Libraries.AniTrend.Arch.ext)
@@ -237,10 +234,11 @@ private fun Project.applyTaskModuleDependencies() {
 
     dependencies.implementation(Libraries.threeTenBp)
 
-    dependencies.implementation(project(":$core"))
-    dependencies.implementation(project(":$data"))
-    dependencies.implementation(project(":$domain"))
-    dependencies.implementation(project(":$navigation"))
+    dependencies.implementation(project(Modules.Android.Core.path()))
+    dependencies.implementation(project(Modules.App.Navigation.path()))
+    dependencies.implementation(project(Modules.App.Domain.path()))
+    dependencies.implementation(project(Modules.App.Data.path()))
+    dependencies.implementation(project(Modules.App.Core.path()))
 }
 
 private fun Project.applyComposeDependencies() {
@@ -257,18 +255,17 @@ private fun Project.applyComposeDependencies() {
 }
 
 internal fun Project.configureDependencies() {
-    val dependencyStrategy = DependencyStrategy(project.name)
     dependencies.implementation(
         fileTree("libs") {
             include("*.jar")
         }
     )
-    dependencyStrategy.applyDependenciesOn(dependencies)
+    DependencyStrategy(project).applyDependenciesOn(dependencies)
     if (isAppModule()) applyAppModuleDependencies()
-    if (isBaseModule()) applyBaseModuleDependencies()
-    if (isCoreAndroidModule()) applyAndroidCoreModuleDependencies()
-    if (isFeatureModule()) applyFeatureModuleDependencies()
-    if (isCommonFeatureModule()) applyCommonModuleDependencies()
-    if (isTaskFeatureModule()) applyTaskModuleDependencies()
+    if (matchesAppModule()) applyAppModuleGroupDependencies()
+    if (matchesAndroidModule()) applyAndroidModuleGroupDependencies()
+    if (matchesFeatureModule()) applyFeatureModuleGroupDependencies()
+    if (matchesCommonModule()) applyCommonModuleGroupDependencies()
+    if (matchesTaskModule()) applyTaskModuleGroupDependencies()
     /*if (hasComposeSupport()) applyComposeDependencies()*/
 }

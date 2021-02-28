@@ -17,25 +17,34 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.common.app
-import co.anitrend.buildSrc.common.data
-import co.anitrend.buildSrc.common.core
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginContainer
+import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.hasKaptSupport
+import co.anitrend.buildSrc.extensions.hasKotlinAndroidExtensionSupport
 
-private fun addAndroidPlugin(name: String, pluginContainer: PluginContainer) {
-    if (name == app) pluginContainer.apply("com.android.application")
+private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer) {
+    if (project.isAppModule()) pluginContainer.apply("com.android.application")
     else pluginContainer.apply("com.android.library")
 }
 
-private fun addAnnotationProcessor(name: String, pluginContainer: PluginContainer) {
-    if (name == data || name == app || name == core)
+private fun addKotlinAndroidPlugin(pluginContainer: PluginContainer) {
+    pluginContainer.apply("kotlin-android")
+}
+
+private fun addAnnotationProcessor(project: Project, pluginContainer: PluginContainer) {
+    if (project.hasKaptSupport())
         pluginContainer.apply("kotlin-kapt")
 }
 
+private fun addKotlinAndroidExtensions(project: Project, pluginContainer: PluginContainer) {
+    if (project.hasKotlinAndroidExtensionSupport())
+        pluginContainer.apply("kotlin-android-extensions")
+}
+
 internal fun Project.configurePlugins() {
-    addAndroidPlugin(project.name, plugins)
-    plugins.apply("kotlin-android")
-    plugins.apply("kotlin-android-extensions")
-    addAnnotationProcessor(project.name, plugins)
+    addAndroidPlugin(project, plugins)
+    addKotlinAndroidPlugin(plugins)
+    addKotlinAndroidExtensions(project, plugins)
+    addAnnotationProcessor(project, plugins)
 }
