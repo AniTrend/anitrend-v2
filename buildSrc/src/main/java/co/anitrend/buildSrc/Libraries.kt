@@ -18,7 +18,7 @@
 package co.anitrend.buildSrc
 
 import co.anitrend.buildSrc.common.Versions
-import co.anitrend.buildSrc.common.*
+import co.anitrend.buildSrc.module.Modules
 
 object Libraries {
 
@@ -292,7 +292,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "a4856a6b6a"
+            private const val version = "b6284ee0fd"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -308,18 +308,20 @@ object Libraries {
         }
 
         object CommonUi {
-            const val character = ":$commonCharacterUi"
-            const val forum = ":$commonForumUi"
-            const val media = ":$commonMediaUi"
-            const val recommendation = ":$commonRecommendationUi"
-            const val review = ":$commonReviewUi"
-            const val staff = ":$commonStaffUi"
-            const val user = ":$commonUserUi"
-            const val episode = ":$commonEpisodeUi"
-            const val news = ":$commonNewsUi"
-            const val editor = ":$commonEditorUi"
-            const val feed = ":$commonFeedUi"
-            const val studio = ":$commonStudioUi"
+            val character = Modules.Common.Character.path()
+            val forum = Modules.Common.Forum.path()
+            val media = Modules.Common.Media.path()
+            val recommendation = Modules.Common.Recommendation.path()
+            val review = Modules.Common.Review.path()
+            val staff = Modules.Common.Staff.path()
+            val user = Modules.Common.User.path()
+            val episode = Modules.Common.Episode.path()
+            val news = Modules.Common.News.path()
+            val editor = Modules.Common.Editor.path()
+            val feed = Modules.Common.Feed.path()
+            val studio = Modules.Common.Studio.path()
+            val genre = Modules.Common.Genre.path()
+            val tag = Modules.Common.Tag.path()
         }
 
         object Markdown {

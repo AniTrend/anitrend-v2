@@ -18,16 +18,15 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.common.Versions
-import co.anitrend.buildSrc.Libraries.AndroidX
-import co.anitrend.buildSrc.common.hasCoroutineSupport
-import co.anitrend.buildSrc.common.isAppModule
-import co.anitrend.buildSrc.common.isDataModule
-import co.anitrend.buildSrc.common.isBaseModule
-import co.anitrend.buildSrc.common.isDomainModule
-import co.anitrend.buildSrc.common.hasComposeSupport
-import co.anitrend.buildSrc.plugins.extensions.baseAppExtension
-import co.anitrend.buildSrc.plugins.extensions.baseExtension
-import co.anitrend.buildSrc.plugins.extensions.libraryExtension
+import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.isDataModule
+import co.anitrend.buildSrc.extensions.isDomainModule
+import co.anitrend.buildSrc.extensions.hasCoroutineSupport
+import co.anitrend.buildSrc.extensions.matchesAppModule
+import co.anitrend.buildSrc.extensions.matchesTaskModule
+import co.anitrend.buildSrc.extensions.baseAppExtension
+import co.anitrend.buildSrc.extensions.baseExtension
+import co.anitrend.buildSrc.extensions.libraryExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
@@ -87,7 +86,9 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
     else
         consumerProguardFiles.add(File("consumer-rules.pro"))
 
-    if (!project.isBaseModule()) {
+    if (!project.matchesAppModule() && !project.matchesTaskModule()) {
+        // checking app module again since the group for app modules is
+        // `app-` while the main app is just `app`
         if (!project.isAppModule()) {
             println("Applying view binding feature for module -> ${project.path}")
             project.libraryExtension().buildFeatures {
@@ -119,7 +120,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             isShrinkResources = false
             isTestCoverageEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+                ),
                 "proguard-rules.pro"
             )
         }
@@ -130,7 +133,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             isShrinkResources = false
             isTestCoverageEnabled = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
+                getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+                ),
                 "proguard-rules.pro"
             )
         }
@@ -193,7 +198,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         if (hasCoroutineSupport()) {
             compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
             compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.FlowPreview")
-            if (!isBaseModule())
+            if (!matchesAppModule())
                 compilerArgumentOptions.add("-Xopt-in=coil.annotation.ExperimentalCoilApi")
             if (isDataModule())
                 compilerArgumentOptions.add("-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi")
