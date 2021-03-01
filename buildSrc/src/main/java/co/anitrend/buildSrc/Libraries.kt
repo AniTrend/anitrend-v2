@@ -401,7 +401,7 @@ object Libraries {
 
     object Devrieze {
         object XmlUtil {
-            private const val version = "0.80.1"
+            private const val version = "0.81.1"
 
             object Android {
                 const val core = "net.devrieze:xmlutil-android:$version"
