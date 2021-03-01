@@ -53,7 +53,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-rc01"
+            private const val version = "1.3.0-alpha03"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
@@ -70,7 +70,7 @@ object Libraries {
         }
 
         object Collection {
-            private const val version = "1.1.0"
+            private const val version = "1.2.0-alpha01"
             const val collection = "androidx.collection:collection:$version"
             const val collectionKtx = "androidx.collection:collection-ktx:$version"
         }
@@ -106,7 +106,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.5.0-beta01"
+            private const val version = "1.5.0-beta02"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -118,7 +118,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.1.0-alpha1"
+            private const val version = "2.1.0-alpha2"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
@@ -135,16 +135,15 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.0-rc01"
+            private const val version = "1.3.0"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-rc01"
-            // TODO: Upgrade to 2.3.0-* when it is available for extensions
-            const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+            private const val version = "2.3.0"
+            const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
@@ -230,7 +229,7 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-beta01"
+            private const val version = "1.2.0-beta02"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
 
             object Selection {
@@ -282,7 +281,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.5.0-rc01"
+            private const val version = "2.7.0-alpha01"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
@@ -349,7 +348,7 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.6.0"
+            private const val version = "3.6.1"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
@@ -379,7 +378,7 @@ object Libraries {
         }
 
         object Turbine {
-            private const val version = "0.3.0"
+            private const val version = "0.4.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
@@ -402,7 +401,7 @@ object Libraries {
 
     object Devrieze {
         object XmlUtil {
-            private const val version = "0.80.1"
+            private const val version = "0.81.1"
 
             object Android {
                 const val core = "net.devrieze:xmlutil-android:$version"
@@ -433,17 +432,17 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "18.0.1"
+                private const val version = "18.0.2"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "17.3.0"
+                private const val version = "17.3.1"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.4.1"
+                    private const val version = "2.5.0"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -455,18 +454,18 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.3.0-rc01"
+            private const val version = "1.4.0-alpha01"
             const val material = "com.google.android.material:material:$version"
         }
 
         object Services {
-            private const val version = "4.3.4"
+            private const val version = "4.3.5"
             const val googleServices = "com.google.gms:google-services:$version"
         }
     }
 
     object Glide {
-        private const val version = "4.11.0"
+        private const val version = "4.12.0"
         const val glide = "com.github.bumptech.glide:glide:$version"
         const val compiler = "com.github.bumptech.glide:compiler:$version"
     }
@@ -478,7 +477,7 @@ object Libraries {
         }
 
         object Kotlin {
-            private const val version = "1.4.21"
+            private const val version = "1.4.31"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -504,7 +503,7 @@ object Libraries {
             }
 
             object Serialization {
-                private const val version = "1.0.1"
+                private const val version = "1.1.0"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
@@ -530,7 +529,7 @@ object Libraries {
     }
 
     object Markwon {
-        private const val version = "4.6.0"
+        private const val version = "4.6.2"
         const val core = "io.noties.markwon:core:$version"
         const val html = "io.noties.markwon:html:$version"
         const val image = "io.noties.markwon:image:$version"
