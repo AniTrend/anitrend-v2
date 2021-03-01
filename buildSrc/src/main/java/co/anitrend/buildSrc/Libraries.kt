@@ -53,7 +53,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.2.0-rc01"
+            private const val version = "1.3.0-alpha03"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
         }
