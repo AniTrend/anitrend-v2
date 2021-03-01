@@ -118,7 +118,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.1.0-alpha1"
+            private const val version = "2.1.0-alpha2"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
         }
