@@ -21,7 +21,6 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.data.arch.network.model.NetworkMessage
 import retrofit2.HttpException
-import java.io.IOException
 import java.net.SocketTimeoutException
 
 /**

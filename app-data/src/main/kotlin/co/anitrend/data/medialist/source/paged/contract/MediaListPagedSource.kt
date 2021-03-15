@@ -23,14 +23,12 @@ import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.medialist.model.query.MediaListQuery
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.medialist.entity.MediaList
+import co.anitrend.domain.medialist.model.MediaListParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-internal abstract class MediaListPagedSource(
-    dispatcher: ISupportDispatcher
-) : SupportPagingDataSource<MediaList>(dispatcher) {
+internal abstract class MediaListPagedSource : SupportPagingDataSource<MediaList>() {
 
     protected lateinit var query: MediaListQuery.Paged
 
@@ -38,8 +36,8 @@ internal abstract class MediaListPagedSource(
 
     protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
 
-    operator fun invoke(mediaListQuery: IGraphPayload): Flow<PagedList<MediaList>> {
-        query = mediaListQuery as MediaListQuery.Paged
+    operator fun invoke(param: MediaListParam.Paged): Flow<PagedList<MediaList>> {
+        query = MediaListQuery.Paged(param)
         return observable()
     }
 
@@ -49,7 +47,7 @@ internal abstract class MediaListPagedSource(
     override fun onZeroItemsLoaded() {
         launch {
             requestHelper.runIfNotRunning(
-                Request.Default("media_list_paged_initial", Request.Type.INITIAL)
+                Request.Default("media_list_paged", Request.Type.INITIAL)
             ) { getMediaList(it) }
         }
     }

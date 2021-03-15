@@ -17,7 +17,19 @@
 
 package co.anitrend.data.cache.model
 
+import co.anitrend.data.cache.helper.instantInPast
+import org.threeten.bp.Instant
+
+/**
+ * Identifier for caching resources
+ *
+ * @property id Unique identifier for the resource, typically could be a model id a network request
+ * @property key Unique key for the identifier, this can be considered as a grouping key for the [id]
+ * @property expiresAfter Time duration which the cached item should be valid for. Default is 3 hours
+ */
 internal interface CacheIdentity {
     val id: Long
     val key: String
+    val expiresAfter: Instant
+        get() = instantInPast(hours = 3)
 }

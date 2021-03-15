@@ -44,7 +44,7 @@ internal sealed class CharacterModel : ICharacterModel {
 
     @Serializable
     internal data class Extended(
-        @SerialName("media") val media: MediaConnection?,
+        @SerialName("media") val media: MediaConnection.Character?,
         @SerialName("description") override val description: String?,
         @SerialName("favourites") override val favourites: Int?,
         @SerialName("image") override val image: SharedImage?,

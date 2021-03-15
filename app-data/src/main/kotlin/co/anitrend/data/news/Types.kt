@@ -22,12 +22,11 @@ import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.arch.controller.core.DefaultController
 import co.anitrend.data.news.entity.NewsEntity
 import co.anitrend.data.news.model.page.NewsPageModel
-import co.anitrend.data.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.interactor.NewsUseCase
-import co.anitrend.domain.news.repository.NewsRepository
+import co.anitrend.domain.news.repository.INewsRepository
 
 internal typealias NewPagedController = DefaultController<NewsPageModel, List<NewsEntity>>
-internal typealias NewsPagedRepository = NewsRepository<DataState<PagedList<News>>, NewsQuery>
+internal typealias NewsPagedRepository = INewsRepository<DataState<PagedList<News>>>
 
-typealias NewsInteractor = NewsUseCase<DataState<PagedList<News>>, NewsQuery>
+typealias NewsInteractor = NewsUseCase<DataState<PagedList<News>>>

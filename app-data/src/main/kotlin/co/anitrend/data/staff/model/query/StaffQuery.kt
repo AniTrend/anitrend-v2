@@ -17,38 +17,23 @@
 
 package co.anitrend.data.staff.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
 import co.anitrend.domain.staff.enums.StaffSort
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.domain.staff.model.StaffParam
 
-/** [Staff query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param id Filter by the staff id
- * @param search Filter by search query
- * @param id_not Filter by the staff id
- * @param id_in Filter by the staff id
- * @param id_not_in Filter by the staff id
- * @param sort The order the results will be returned in
- */
-@Parcelize
-data class StaffQuery(
-    val id: Long,
-    val search: String,
-    val id_not: Long,
-    val id_in: List<Long>?,
-    val id_not_in: List<Long>?,
-    val sort: List<StaffSort>?
+internal data class StaffQuery(
+    val param: StaffParam.Find
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "id" to id,
-        "search" to search,
-        "id_not" to id_not,
-        "id_in" to id_in,
-        "id_not_in" to id_not_in,
-        "sort" to sort
+        "id" to param.id,
+        "search" to param.search,
+        "id_not" to param.id_not,
+        "id_in" to param.id_in,
+        "id_not_in" to param.id_not_in,
+        "sort" to param.sort
     )
 }

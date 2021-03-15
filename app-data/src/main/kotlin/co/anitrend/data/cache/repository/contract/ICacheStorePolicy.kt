@@ -17,58 +17,64 @@
 
 package co.anitrend.data.cache.repository.contract
 
-import co.anitrend.data.cache.helper.instantInPast
+import co.anitrend.data.cache.model.CacheIdentity
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
 
 internal interface ICacheStorePolicy {
 
     /**
-     * Checks if the given [entityId] has been requested before a certain time [instant]
+     * Checks if the given [identity] has been requested before a certain time [instant]
      *
-     * @param entityId Unique identifier for the cache item
+     * @param identity Unique identifier for the cache item
      * @param instant Specific point in time
      */
-    suspend fun isRequestBefore(entityId: Long, instant: Instant): Boolean
-
-    /**
-     * Checks if the given [entityId] has expired using a [threshold]
-     *
-     * @param entityId Unique identifier for the cache item
-     * @param threshold Threshold expirey bias
-     *
-     * @see isRequestBefore
-     */
-    suspend fun isRequestExpired(entityId: Long, threshold: TemporalAmount): Boolean
-
-    /**
-     * Checks if the given [entityId] has been requested before, regardless of when
-     *
-     * @param entityId Unique identifier for the cache item
-     */
-    suspend fun hasBeenRequested(entityId: Long): Boolean
-
-    /**
-     * Check if a resource with a given [entityId] is permitted to refresh
-     *
-     * @param entityId Unique identifier for the cache item
-     * @param expiresAfter defaults to 2 hours
-     */
-    suspend fun shouldRefresh(
-        entityId: Long,
-        expiresAfter: Instant = instantInPast(hours = 2)
+    suspend fun isRequestBefore(
+        identity: CacheIdentity,
+        instant: Instant
     ): Boolean
 
     /**
-     * Updates the last request [timestamp] for the given [entityId]
+     * Checks if the given [identity] has expired using a [threshold]
+     *
+     * @param identity Unique identifier for the cache item
+     * @param threshold Threshold expiry bias
+     *
+     * @see isRequestBefore
+     */
+    suspend fun isRequestExpired(
+        identity: CacheIdentity,
+        threshold: TemporalAmount
+    ): Boolean
+
+    /**
+     * Checks if the given [identity] has been requested before, regardless of when
+     *
+     * @param identity Unique identifier for the cache item
+     */
+    suspend fun hasBeenRequested(identity: CacheIdentity): Boolean
+
+    /**
+     * Check if a resource with a given [identity] is permitted to refresh
+     *
+     * @param identity Unique identifier for the cache item
+     * @param expiresAfter Expiry time fro the cached [identity]
+     */
+    suspend fun shouldRefresh(
+        identity: CacheIdentity,
+        expiresAfter: Instant
+    ): Boolean
+
+    /**
+     * Updates the last request [timestamp] for the given [identity]
      */
     suspend fun updateLastRequest(
-        entityId: Long,
-        timestamp: Instant = Instant.now()
+        identity: CacheIdentity,
+        timestamp: Instant
     )
 
     /**
-     * Invalidates cache records for the given [entityId]
+     * Invalidates cache records for the given [identity]
      */
-    suspend fun invalidateLastRequest(entityId: Long)
+    suspend fun invalidateLastRequest(identity: CacheIdentity)
 }

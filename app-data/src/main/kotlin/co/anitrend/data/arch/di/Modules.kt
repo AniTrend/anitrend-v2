@@ -20,6 +20,7 @@
 package co.anitrend.data.arch.di
 
 import android.net.ConnectivityManager
+import androidx.startup.AppInitializer
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.BuildConfig
@@ -28,7 +29,6 @@ import co.anitrend.data.airing.koin.airingModules
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.api.converter.AniTrendConverterFactory
 import co.anitrend.data.api.converter.request.AniRequestConverter
-import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.arch.database.AniTrendStore
 import co.anitrend.data.arch.database.common.IAniTrendStore
 import co.anitrend.data.arch.extension.db
@@ -36,15 +36,22 @@ import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.arch.logger.GraphLogger
 import co.anitrend.data.arch.logger.OkHttpLogger
+import co.anitrend.data.arch.storage.StorageController
+import co.anitrend.data.arch.storage.contract.IStorageController
 import co.anitrend.data.auth.helper.AuthenticationHelper
 import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
-import co.anitrend.data.genre.koin.mediaGenreModules
+import co.anitrend.data.episode.koin.episodeModules
+import co.anitrend.data.genre.koin.genreModules
+import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.moe.koin.sourceModules
 import co.anitrend.data.news.koin.newsModules
-import co.anitrend.data.tag.koin.mediaTagModules
+import co.anitrend.data.rank.koin.rankModules
+import co.anitrend.data.tag.koin.tagModules
+import co.anitrend.data.tmdb.koin.tmdbModules
+import co.anitrend.data.trakt.koin.traktModules
 import co.anitrend.data.user.koin.userModules
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -55,6 +62,8 @@ import io.github.wax911.library.annotation.processor.GraphProcessor
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.annotation.processor.plugin.AssetManagerDiscoveryPlugin
 import io.github.wax911.library.logger.contract.ILogger
+import io.wax911.emojify.initializer.EmojiInitializer
+import io.wax911.emojify.manager.IEmojiManager
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -76,6 +85,9 @@ private val coreModule = module {
             applicationContext = androidContext()
         )
     } binds IAniTrendStore.BINDINGS
+    single<IStorageController> {
+        StorageController()
+    }
     factory {
         AuthenticationHelper(
             settings = get(),
@@ -88,11 +100,15 @@ private val coreModule = module {
             settings = get()
         )
     }
+    factory<IEmojiManager> {
+        AppInitializer.getInstance(androidContext())
+            .initializeComponent(EmojiInitializer::class.java)
+    }
 }
 
 private val retrofitModule = module {
     factory<AbstractGraphProcessor> {
-        val level = if (BuildConfig.DEBUG) ILogger.Level.DEBUG else ILogger.Level.ERROR
+        val level = if (BuildConfig.DEBUG) ILogger.Level.VERBOSE else ILogger.Level.ERROR
         GraphProcessor(
             discoveryPlugin = AssetManagerDiscoveryPlugin(
                 assetManager = androidContext().assets
@@ -158,7 +174,7 @@ private val interceptorModules = module {
                     // Toggles visibility of the push notification
                     showNotification = true,
                     // Allows to customize the retention period of collected data
-                    retentionPeriod = RetentionManager.Period.ONE_HOUR
+                    retentionPeriod = RetentionManager.Period.ONE_DAY
                 )
                 // The max body content length in bytes, after this responses will be truncated.
             )
@@ -174,12 +190,6 @@ private val interceptorModules = module {
     }
     factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
         OkHttpClient.Builder()
-            .cache(
-                Cache(
-                    androidContext().cacheDir,
-                    CacheHelper.MAX_CACHE_SIZE
-                )
-            )
             .addInterceptor(
                 HttpLoggingInterceptor(
                     logger = OkHttpLogger()
@@ -196,7 +206,8 @@ val dataModules = listOf(
     retrofitModule,
     networkModule,
     interceptorModules
-) + airingModules + mediaTagModules + mediaGenreModules +
+) + airingModules + tagModules + genreModules +
         sourceModules + mediaModules + carouselModules +
         authModules + accountModules + userModules +
-        mediaListModules + newsModules
+        mediaListModules + newsModules + episodeModules +
+        linkModules + rankModules + traktModules + tmdbModules

@@ -1,0 +1,8 @@
+query GetUserProfile(
+    $id: Int,
+    $name: String
+) {
+    User(id: $id, name: $name) {
+        ... UserExtended
+    }
+}

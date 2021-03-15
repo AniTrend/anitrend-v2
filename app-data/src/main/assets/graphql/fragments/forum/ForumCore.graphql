@@ -1,0 +1,27 @@
+fragment ForumCore on Thread {
+    body
+    categories {
+        id
+        name
+    }
+    createdAt
+    id
+    isLiked
+    isLocked
+    isSticky
+    isSubscribed
+    likeCount
+    repliedAt
+    replyCommentId
+    replyCount
+    replyUser {
+        ... UserCore
+    }
+    siteUrl
+    title
+    updatedAt
+    user {
+        ... UserCore
+    }
+    viewCount
+}

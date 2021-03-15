@@ -22,10 +22,10 @@ import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.media.model.edge.MediaEdge
-import co.anitrend.data.staff.model.remote.StaffModel
-import co.anitrend.data.staff.model.remote.edge.StaffEdge
-import co.anitrend.data.studio.model.remote.StudioModel
-import co.anitrend.data.studio.model.remote.edge.StudioEdge
+import co.anitrend.data.staff.model.StaffModel
+import co.anitrend.data.staff.model.edge.StaffEdge
+import co.anitrend.data.studio.model.StudioModel
+import co.anitrend.data.studio.model.edge.StudioEdge
 
 
 /** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)

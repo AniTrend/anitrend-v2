@@ -21,13 +21,13 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.defaultController
-import co.anitrend.data.news.NewsPagedRepository
 import co.anitrend.data.news.NewsInteractor
+import co.anitrend.data.news.NewsPagedRepository
 import co.anitrend.data.news.cache.NewsCache
 import co.anitrend.data.news.converter.NewsEntityConverter
 import co.anitrend.data.news.converter.NewsModelConverter
 import co.anitrend.data.news.mapper.NewsResponseMapper
-import co.anitrend.data.news.repository.NewsRepositoryImpl
+import co.anitrend.data.news.repository.NewsRepository
 import co.anitrend.data.news.source.NewsSourceImpl
 import co.anitrend.data.news.source.contract.NewsSource
 import co.anitrend.data.news.usecase.NewsUseCaseImpl
@@ -85,7 +85,7 @@ private val useCaseModule = module {
 
 private val repositoryModule = module {
     factory<NewsPagedRepository> {
-        NewsRepositoryImpl(
+        NewsRepository(
             source = get()
         )
     }

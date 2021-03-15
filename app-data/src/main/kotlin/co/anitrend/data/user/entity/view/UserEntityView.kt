@@ -26,6 +26,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 internal sealed class UserEntityView {
     abstract val user: UserEntity
+    abstract val generalOption: UserGeneralOptionEntity
+    abstract val mediaListOption: UserMediaOptionEntity
 
     internal data class WithOptions(
         @Embedded override val user: UserEntity,
@@ -33,12 +35,12 @@ internal sealed class UserEntityView {
             parentColumn = "id",
             entityColumn = "user_id"
         )
-        val generalOption: UserGeneralOptionEntity,
+        override val generalOption: UserGeneralOptionEntity,
         @Relation(
             parentColumn = "id",
             entityColumn = "user_id"
         )
-        val mediaListOption: UserMediaOptionEntity
+        override val mediaListOption: UserMediaOptionEntity
     ) : UserEntityView()
 
     internal data class WithStatistic(
@@ -47,6 +49,16 @@ internal sealed class UserEntityView {
             parentColumn = "id",
             entityColumn = "user_id"
         )
-        val statistic: UserWithStatisticEntity
+        val statistic: UserWithStatisticEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val generalOption: UserGeneralOptionEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val mediaListOption: UserMediaOptionEntity,
     ) : UserEntityView()
 }

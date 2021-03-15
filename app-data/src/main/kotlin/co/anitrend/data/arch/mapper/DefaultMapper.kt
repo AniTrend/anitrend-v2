@@ -19,6 +19,9 @@ package co.anitrend.data.arch.mapper
 
 import co.anitrend.arch.data.mapper.SupportResponseMapper
 import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
 import timber.log.Timber
 
 /**
@@ -60,5 +63,17 @@ internal abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
         exceptions.forEach {
             Timber.tag(moduleTag).w(it, "Unhandled exception thrown")
         }
+    }
+
+    /**
+     * Inserts the given object into the implemented room database,
+     *
+     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
+     */
+    override suspend fun onResponseDatabaseInsert(mappedData: D) {
+        mappedData evaluate
+                ::checkValidity then
+                ::persistChanges otherwise
+                ::handleException
     }
 }

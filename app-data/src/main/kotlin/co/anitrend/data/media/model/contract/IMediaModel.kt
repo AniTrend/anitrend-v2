@@ -20,7 +20,6 @@ package co.anitrend.data.media.model.contract
 import co.anitrend.data.airing.model.contract.IAiringScheduleModel
 import co.anitrend.data.arch.CountryCode
 import co.anitrend.data.arch.common.model.date.contract.IFuzzyDateModel
-import co.anitrend.data.medialist.model.contract.IMediaListModel
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.media.enums.*
 

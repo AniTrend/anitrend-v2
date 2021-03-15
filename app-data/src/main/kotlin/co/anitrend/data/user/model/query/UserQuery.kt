@@ -17,32 +17,67 @@
 
 package co.anitrend.data.user.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.user.enums.UserSort
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.domain.user.model.UserParam
 
-/** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param id Filter by the user id
- * @param name Filter by the name of the user
- * @param search Filter by search query
- * @param sort The order the results will be returned in
- */
-@Parcelize
-data class UserQuery(
-    val id: Long? = null,
-    val name: String? = null,
-    val search: String? = null,
-    val sort: List<UserSort>? = null
-) : IGraphPayload {
+internal sealed class UserQuery : IGraphPayload {
 
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() = mapOf(
-        "id" to id,
-        "name" to name,
-        "search" to search,
-        "sort" to sort
-    )
+    data class FindId(
+        val param: UserParam.FindId
+    ) : UserQuery() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "name" to param.name
+        )
+    }
+
+    data class Profile(
+        val param: UserParam.Profile
+    ) : UserQuery() {
+
+        fun isUserIdValid() =
+            param.id != IAuthenticationSettings.INVALID_USER_ID
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id
+        )
+    }
+
+    data class Statistic(
+        val param: UserParam.Statistic
+    ) : UserQuery() {
+
+        fun isUserIdValid() =
+            param.id != IAuthenticationSettings.INVALID_USER_ID
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id,
+            "statisticsSort" to param.statisticsSort
+        )
+    }
+    
+    data class Search(
+        val param: UserParam.Search
+    ) : UserQuery() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "search" to param.search,
+            "sort" to param.sort
+        )
+    }
+
+
 }

@@ -22,6 +22,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import co.anitrend.data.shared.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "genre",
@@ -32,6 +33,7 @@ import co.anitrend.data.shared.common.Identity
         )
     ]
 )
+@EntitySchema
 internal data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") override val id: Long = 0,

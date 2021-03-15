@@ -30,25 +30,47 @@ import co.anitrend.data.arch.database.converter.TypeConverterObject
 import co.anitrend.data.arch.database.migration.migrations
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.cache.entity.CacheEntity
+import co.anitrend.data.character.entity.CharacterEntity
+import co.anitrend.data.character.entity.fts.CharacterFtsEntity
+import co.anitrend.data.episode.entity.EpisodeEntity
+import co.anitrend.data.episode.entity.fts.EpisodeFtsEntity
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
+import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.fts.MediaFtsEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.moe.entity.MoeEntity
 import co.anitrend.data.news.entity.NewsEntity
+import co.anitrend.data.news.entity.fts.NewsFtsEntity
+import co.anitrend.data.rank.entity.RankEntity
+import co.anitrend.data.staff.entity.StaffEntity
+import co.anitrend.data.staff.entity.fts.StaffFtsEntity
+import co.anitrend.data.studio.entity.StudioEntity
+import co.anitrend.data.studio.entity.fts.StudioFtsEntity
 import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.fts.UserFtsEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
+import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import org.jetbrains.annotations.TestOnly
 
 @Database(
     entities = [
-        AuthEntity::class, TagEntity::class, GenreEntity::class, MoeEntity::class,
-        MediaEntity::class, AiringScheduleEntity::class, CacheEntity::class,
-        UserEntity::class, UserGeneralOptionEntity::class, UserMediaOptionEntity::class,
-        MediaListEntity::class, NewsEntity::class
+        CacheEntity::class, MoeEntity::class,
+        AuthEntity::class, TagEntity::class , TagConnectionEntity::class,
+        GenreEntity::class, GenreConnectionEntity::class,
+        MediaEntity::class, MediaFtsEntity::class, AiringScheduleEntity::class,
+        UserEntity::class, UserFtsEntity::class, UserGeneralOptionEntity::class,
+        UserMediaOptionEntity::class, UserWithStatisticEntity::class, MediaListEntity::class,
+        NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
+        CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
+        StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class
     ],
-    version = AniTrendStore.DATABASE_SCHEMA_VERSION
+    version = AniTrendStore.DATABASE_SCHEMA_VERSION,
+    views = [TagEntity.Extended::class]
 )
 @TypeConverters(
     value = [

@@ -19,7 +19,7 @@ package co.anitrend.data.recommendation.model.contract
 
 import co.anitrend.data.media.model.contract.IMediaModel
 import co.anitrend.data.shared.common.Identity
-import co.anitrend.data.user.model.remote.contract.IUserModel
+import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 
 /**

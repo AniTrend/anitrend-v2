@@ -32,9 +32,9 @@ internal class CarouselCache(
      * Check if a resource with a given [entityId] is permitted to refresh
      */
     override suspend fun shouldRefresh(
-        entityId: Long,
+        identity: CacheIdentity,
         expiresAfter: Instant
-    ) = isRequestBefore(entityId, expiresAfter)
+    ): Boolean = isRequestBefore(identity, expiresAfter)
 
     enum class Identifier(
         override val id: Long,

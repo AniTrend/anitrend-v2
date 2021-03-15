@@ -28,8 +28,26 @@ import kotlinx.serialization.Serializable
  * Character Connection
  */
 @Serializable
-internal data class CharacterConnection(
-    @SerialName("edges") override val edges: List<CharacterEdge>?,
-    @SerialName("nodes") override val nodes: List<CharacterModel.Core>?,
-    @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<CharacterEdge, CharacterModel>
+internal sealed class CharacterConnection : IEntityConnection<CharacterEdge, CharacterModel> {
+
+    @Serializable
+    data class Favourite(
+        @SerialName("edges") override val edges: List<CharacterEdge.Favourite>?,
+        @SerialName("nodes") override val nodes: List<CharacterModel.Core>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : CharacterConnection()
+
+    @Serializable
+    data class Media(
+        @SerialName("edges") override val edges: List<CharacterEdge.Media>?,
+        @SerialName("nodes") override val nodes: List<CharacterModel.Core>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : CharacterConnection()
+
+    @Serializable
+    data class Staff(
+        @SerialName("edges") override val edges: List<CharacterEdge.Staff>?,
+        @SerialName("nodes") override val nodes: List<CharacterModel.Core>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : CharacterConnection()
+}

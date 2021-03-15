@@ -21,7 +21,9 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.defaultController
-import co.anitrend.data.arch.extension.online
+import co.anitrend.data.moe.cache.MoeCache
+import co.anitrend.data.moe.converters.SourceEntityConverter
+import co.anitrend.data.moe.converters.SourceModelConverter
 import co.anitrend.data.moe.mapper.MoeResponseMapper
 import co.anitrend.data.moe.source.MoeSourceImpl
 import co.anitrend.data.moe.source.contract.MoeSource
@@ -36,7 +38,26 @@ private val sourceModule = module {
                 mapper = get<MoeResponseMapper>()
             ),
             clearDataHelper = get(),
+            converter = get(),
+            cachePolicy = get<MoeCache>(),
             dispatcher = get()
+        )
+    }
+}
+
+private val converterModule = module {
+    factory {
+        SourceEntityConverter()
+    }
+    factory {
+        SourceModelConverter()
+    }
+}
+
+private val cacheModule = module {
+    factory {
+        MoeCache(
+            localSource = db().cacheDao()
         )
     }
 }
@@ -44,7 +65,8 @@ private val sourceModule = module {
 private val mapperModule = module {
     factory {
         MoeResponseMapper(
-            localSource = db().sourceDao()
+            localSource = db().sourceDao(),
+            converter = get(),
         )
     }
 }
@@ -52,5 +74,7 @@ private val mapperModule = module {
 
 internal val sourceModules = listOf(
     sourceModule,
+    converterModule,
+    cacheModule,
     mapperModule
 )

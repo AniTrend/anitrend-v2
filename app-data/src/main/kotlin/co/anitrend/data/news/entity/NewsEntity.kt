@@ -17,22 +17,22 @@
 
 package co.anitrend.data.news.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 
 @Entity(
-    tableName = "news_entity",
+    tableName = "news",
     primaryKeys = ["id"]
 )
 internal data class NewsEntity(
-    val id: String,
-    val title: String,
-    val image: String?,
-    val author: String,
-    val subTitle: String,
-    val originalLink: String,
-    val description: String?,
-    val content: String,
-    val publishedOn: Long?
+    @ColumnInfo(name = "id") val id: String,
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "image") val image: String?,
+    @ColumnInfo(name = "author") val author: String,
+    @ColumnInfo(name = "sub_title") val subTitle: String,
+    @ColumnInfo(name = "original_link") val originalLink: String,
+    @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(name = "content") val content: String,
+    @ColumnInfo(name = "published_on") val publishedOn: Long?
 )

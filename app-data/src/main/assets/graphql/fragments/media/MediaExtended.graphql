@@ -1,10 +1,5 @@
 fragment MediaExtended on Media {
     ... MediaCore
-    trailer {
-        id
-        site
-        thumbnail
-    }
     rankings {
         id
         allTime

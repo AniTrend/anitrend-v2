@@ -38,7 +38,7 @@ internal fun <S, D> Scope.graphQLController(
     strategy = strategy,
     dispatcher = dispatcher.io,
     client = GraphNetworkClient(
-        json = get(),
+        gson = get(),
         dispatcher = dispatcher.io
     )
 )

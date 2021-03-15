@@ -20,6 +20,7 @@ package co.anitrend.data.cache.repository
 import co.anitrend.data.cache.datasource.CacheLocalSource
 import co.anitrend.data.cache.entity.CacheEntity
 import co.anitrend.data.cache.helper.inPast
+import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import org.threeten.bp.Instant
@@ -35,47 +36,46 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
     ) = localSource.getCacheLog(request, entityId)?.timestamp
 
     /**
-     * Checks if the given [entityId] has been requested before a certain time [instant]
+     * Checks if the given [identity] has been requested before a certain time [instant]
      */
     override suspend fun isRequestBefore(
-        entityId: Long,
+        identity: CacheIdentity,
         instant: Instant
-    ) = getRequestInstant(entityId)?.isBefore(instant) ?: true
+    ) = getRequestInstant(identity.id)?.isBefore(instant) ?: true
 
     /**
-     * Checks if the given [entityId] has expired using a [threshold]
+     * Checks if the given [identity] has expired using a [threshold]
      *
      * @see isRequestBefore
      */
     override suspend fun isRequestExpired(
-        entityId: Long,
+        identity: CacheIdentity,
         threshold: TemporalAmount
-    ) = isRequestBefore(entityId, threshold.inPast())
+    ): Boolean = isRequestBefore(identity, threshold.inPast())
 
     /**
-     * Checks if the given [entityId] has been requested before, regardless of when
+     * Checks if the given [identity] has been requested before, regardless of when
      */
     override suspend fun hasBeenRequested(
-        entityId: Long
-    ) = localSource.countMatching(request, entityId) > 0
+        identity: CacheIdentity
+    ) = localSource.countMatching(request, identity.id) > 0
 
     /**
-     * Updates the last request [timestamp] for the given [entityId]
+     * Updates the last request [timestamp] for the given [identity]
      */
-    override suspend fun updateLastRequest(entityId: Long, timestamp: Instant) {
+    override suspend fun updateLastRequest(identity: CacheIdentity, timestamp: Instant) {
         localSource.upsert(
             CacheEntity(
                 request = request,
-                cacheItemId = entityId,
+                cacheItemId = identity.id,
                 timestamp = timestamp
             )
         )
     }
 
     /**
-     * Invalidates cache records for the given [entityId]
+     * Invalidates cache records for the given [identity]
      */
-    override suspend fun invalidateLastRequest(entityId: Long) =
-        updateLastRequest(entityId, Instant.EPOCH)
-
+    override suspend fun invalidateLastRequest(identity: CacheIdentity) =
+        updateLastRequest(identity, Instant.EPOCH)
 }

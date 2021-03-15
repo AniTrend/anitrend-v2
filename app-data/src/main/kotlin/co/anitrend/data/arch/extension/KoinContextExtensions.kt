@@ -22,5 +22,5 @@ import org.koin.core.context.GlobalContext
 /**
  * Helper to resolve koin dependencies
  */
-inline fun <reified T> koinOf(): T =
+internal inline fun <reified T> koinOf(): T =
     GlobalContext.get().get()

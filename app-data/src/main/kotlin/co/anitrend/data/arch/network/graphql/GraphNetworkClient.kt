@@ -17,11 +17,12 @@
 
 package co.anitrend.data.arch.network.graphql
 
+import co.anitrend.data.api.model.GraphQLError
 import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.network.contract.NetworkClient
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
@@ -33,13 +34,13 @@ import timber.log.Timber
  * Using gson until kotlinx.serializer supports generics
  */
 internal class GraphNetworkClient<R>(
-    private val json: Json,
+    private val gson: Gson,
     override val dispatcher: CoroutineDispatcher
 ) : NetworkClient<GraphQLResponse<R>>() {
 
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
-        return json.decodeFromString(body)
+        return gson.fromJson(body, object : TypeToken<GraphQLResponse<Any>>(){}.type)
     }
 
     private fun Response<GraphQLResponse<R>>.responseErrors(): GraphQLResponse<R> {
@@ -50,6 +51,13 @@ internal class GraphNetworkClient<R>(
             return error
         }.onFailure { exception ->
             Timber.tag(moduleTag).w(exception)
+            return GraphQLResponse(
+                errors = listOf(
+                    GraphQLError(
+                        message = exception.message.orEmpty()
+                    )
+                )
+            )
         }
 
         throw HttpException(this)

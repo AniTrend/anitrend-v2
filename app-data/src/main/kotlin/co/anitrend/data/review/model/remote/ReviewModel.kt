@@ -19,7 +19,7 @@ package co.anitrend.data.review.model.remote
 
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.review.model.contract.IReviewModel
-import co.anitrend.data.user.model.remote.UserModel
+import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
 import kotlinx.serialization.SerialName

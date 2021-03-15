@@ -17,40 +17,16 @@
 
 package co.anitrend.data.carousel.mapper
 
-import co.anitrend.data.airing.converters.AiringModelConverter
-import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
-import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.arch.railway.extension.otherwise
-import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.carousel.model.CarouselModel
-import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
-import co.anitrend.data.media.model.MediaModel
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
+import co.anitrend.data.media.mapper.MediaMapper
+import co.anitrend.data.media.model.container.MediaModelContainer
 
 internal class CarouselMapper(
-    private val combinedMapper: MediaPagedCombinedMapper,
-    private val airingMapper: AiringSchedulePagedMapper,
-    private val airingConverter: AiringModelConverter,
-    private val converter: MediaModelConverter,
-    private val context: CoroutineContext
+    private val mapper: MediaMapper.Paged
 ) : DefaultMapper<CarouselModel, List<MediaEntity>>() {
-
-    private suspend fun List<MediaModel>.flatMapAndExtract(): List<MediaEntity> {
-        val airingSchedules = airingConverter.convertFrom(
-            mapNotNull { it.nextAiringEpisode as? AiringScheduleModel }
-        )
-        withContext(context) {
-            airingMapper.onResponseDatabaseInsert(airingSchedules)
-        }
-        return converter.convertFrom(this)
-    }
 
     /**
      * Handles the persistence of [data] into a local source
@@ -59,22 +35,9 @@ internal class CarouselMapper(
      */
     override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
         return runCatching {
-            combinedMapper.onResponseDatabaseInsert(data)
+            mapper.onResponseDatabaseInsert(data)
             OutCome.Pass(null)
         }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
-
-
-    /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
-        mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
     }
 
     /**
@@ -83,20 +46,30 @@ internal class CarouselMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: CarouselModel) = when (source) {
-        is CarouselModel.Anime -> (
-            source.airingSoon?.airingSchedules
-                    ?.mapNotNull { it.media }.orEmpty() +
-            source.anticipatedNexSeason?.media.orEmpty() +
-            source.popularThisSeason?.media.orEmpty()
+    override suspend fun onResponseMapFrom(source: CarouselModel): List<MediaEntity> {
+        val models = when (source) {
+            is CarouselModel.Anime -> (
+                    source.airingSoon?.airingSchedules
+                        ?.mapNotNull { it.media }.orEmpty() +
+                            source.anticipatedNexSeason?.media.orEmpty() +
+                            source.popularThisSeason?.media.orEmpty()
+                    )
+            is CarouselModel.Manga -> (
+                    source.popularManhwa?.media.orEmpty()
+                    )
+            is CarouselModel.Core -> (
+                    source.allTimePopular?.media.orEmpty() +
+                            source.recentlyAdded?.media.orEmpty() +
+                            source.trendingRightNow?.media.orEmpty()
+                    )
+        }
+
+        return mapper.onResponseMapFrom(
+            MediaModelContainer.Paged(
+                MediaModelContainer.Paged.Page(
+                    media = models
+                )
+            )
         )
-        is CarouselModel.Manga -> (
-            source.popularManhwa?.media.orEmpty()
-        )
-        is CarouselModel.Core -> (
-            source.allTimePopular?.media.orEmpty() +
-            source.recentlyAdded?.media.orEmpty() +
-            source.trendingRightNow?.media.orEmpty()
-        )
-    }.flatMapAndExtract()
+    }
 }

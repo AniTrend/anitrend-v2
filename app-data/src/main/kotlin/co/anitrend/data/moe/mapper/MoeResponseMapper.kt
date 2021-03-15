@@ -19,9 +19,6 @@ package co.anitrend.data.moe.mapper
 
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.arch.railway.extension.otherwise
-import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.moe.converters.SourceModelConverter
 import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.entity.MoeEntity
@@ -29,7 +26,7 @@ import co.anitrend.data.moe.model.remote.MoeModel
 
 internal class MoeResponseMapper(
     private val localSource: MoeLocalSource,
-    private val converter: SourceModelConverter = SourceModelConverter()
+    private val converter: SourceModelConverter
 ) : DefaultMapper<MoeModel, MoeEntity>() {
 
     /**
@@ -42,18 +39,6 @@ internal class MoeResponseMapper(
             localSource.upsert(data)
             OutCome.Pass(null)
         }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
-
-    /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: MoeEntity) {
-        mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
     }
 
     /**

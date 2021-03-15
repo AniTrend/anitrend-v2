@@ -17,28 +17,18 @@
 
 package co.anitrend.data.notification.model.input
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.notification.enums.NotificationType
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.domain.user.model.UserParam
 
-/** [NotificationOptionInput](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationoptioninput.doc.html)
- *
- * Notification option input
- *
- * @param enabled Whether this type of notification is enabled
- * @param type The type of notification
- */
-@Parcelize
-data class NotificationOptionInput(
-    val enabled: Boolean,
-    val type: NotificationType
+internal data class NotificationOptionInput(
+    val param: UserParam.Update.NotificationOption
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "enabled" to enabled,
-        "type" to type
+        "enabled" to param.enabled,
+        "type" to param.type
     )
 }

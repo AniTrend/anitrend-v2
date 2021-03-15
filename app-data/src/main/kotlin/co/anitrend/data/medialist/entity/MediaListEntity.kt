@@ -23,6 +23,7 @@ import co.anitrend.data.arch.FuzzyDateInt
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.support.query.builder.annotation.EntitySchema
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,6 +31,7 @@ import kotlinx.serialization.Serializable
     tableName = "media_list",
     primaryKeys = ["id"]
 )
+@EntitySchema
 internal data class MediaListEntity(
     @ColumnInfo(name = "media_type") val mediaType: MediaType,
     @ColumnInfo(name = "advanced_scores") val advancedScores: List<AdvancedScore>,

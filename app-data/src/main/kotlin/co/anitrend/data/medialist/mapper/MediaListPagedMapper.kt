@@ -24,13 +24,11 @@ import co.anitrend.data.arch.railway.extension.otherwise
 import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.data.medialist.model.page.MediaListPageModel
-import co.anitrend.domain.medialist.entity.MediaList
+import co.anitrend.data.medialist.model.container.MediaListContainerModel
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
@@ -40,9 +38,9 @@ internal class MediaListPagedMapper(
     private val mediaLocalSource: MediaLocalSource,
     private val mediaConverter: MediaModelConverter,
     private val context: CoroutineContext
-) : DefaultMapper<MediaListPageModel, List<MediaListEntity>>() {
+) : DefaultMapper<MediaListContainerModel.Paged, List<MediaListEntity>>() {
 
-    private suspend fun saveMedia(source: MediaListPageModel) {
+    private suspend fun saveMedia(source: MediaListContainerModel.Paged) {
         val media = source.page.mediaList.map(MediaListModel.Extended::media)
         val mediaEntity = mediaConverter.convertFrom(media)
         withContext(context) {
@@ -63,24 +61,12 @@ internal class MediaListPagedMapper(
     }
 
     /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaListEntity>) {
-        mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
-    }
-
-    /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      *
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: MediaListPageModel): List<MediaListEntity> {
+    override suspend fun onResponseMapFrom(source: MediaListContainerModel.Paged): List<MediaListEntity> {
         saveMedia(source)
         return converter.convertFrom(source.page.mediaList)
     }

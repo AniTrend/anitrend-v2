@@ -22,26 +22,30 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.cache.extensions.invoke
+import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.news.cache.NewsCache
 import co.anitrend.data.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
+import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-internal abstract class NewsSource(
-    protected val cachePolicy: ICacheStorePolicy,
-    dispatcher: ISupportDispatcher
-) : SupportPagingDataSource<News>(dispatcher) {
+internal abstract class NewsSource : SupportPagingDataSource<News>() {
 
     protected lateinit var query: NewsQuery
+
+    protected val cacheIdentity: CacheIdentity = NewsCache.Identity.NEWS
+
+    protected abstract val cachePolicy: ICacheStorePolicy
 
     protected abstract fun observable(): Flow<PagedList<News>>
 
     protected abstract suspend fun getNews(requestCallback: RequestCallback): Boolean
 
-    operator fun invoke(newsQuery: NewsQuery): Flow<PagedList<News>> {
-        query = newsQuery
+    operator fun invoke(param: NewsParam): Flow<PagedList<News>> {
+        query = NewsQuery(param)
         return observable()
     }
 
@@ -55,20 +59,13 @@ internal abstract class NewsSource(
      */
     override fun onItemAtFrontLoaded(itemAtFront: News) {
         if (supportPagingHelper.isFirstPage()) {
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        NewsCache.Identity.NEWS.key,
-                        Request.Type.BEFORE
-                    )
-                ) {
-                    if (cachePolicy.shouldRefresh(NewsCache.Identity.NEWS.id)) {
-                        val success = getNews(it)
-                        if (success)
-                            cachePolicy.updateLastRequest(NewsCache.Identity.NEWS.id)
-                    }
-                }
-            }
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                requestType = Request.Type.BEFORE,
+                block = ::getNews
+            )
         }
     }
 
@@ -76,13 +73,11 @@ internal abstract class NewsSource(
      * Called when zero items are returned from an initial load of the PagedList's data source.
      */
     override fun onZeroItemsLoaded() {
-        launch {
-            requestHelper.runIfNotRunning(
-                Request.Default(
-                    NewsCache.Identity.NEWS.key,
-                    Request.Type.INITIAL
-                ), ::getNews
-            )
-        }
+        cachePolicy(
+            scope = scope,
+            requestHelper = requestHelper,
+            cacheIdentity = cacheIdentity,
+            block = ::getNews
+        )
     }
 }

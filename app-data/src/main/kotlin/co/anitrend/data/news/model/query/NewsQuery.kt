@@ -17,8 +17,8 @@
 
 package co.anitrend.data.news.model.query
 
-import co.anitrend.data.rss.RssLocale
+import co.anitrend.domain.news.model.NewsParam
 
-data class NewsQuery(
-    val locale: RssLocale
+internal data class NewsQuery(
+    val param: NewsParam
 )

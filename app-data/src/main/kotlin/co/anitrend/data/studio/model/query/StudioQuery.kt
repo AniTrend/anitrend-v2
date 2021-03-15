@@ -17,38 +17,24 @@
 
 package co.anitrend.data.studio.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
 import co.anitrend.domain.studio.enums.StudioSort
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.domain.studio.model.StudioParam
 
-/** [Studio query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param id Filter by the studio id
- * @param search Filter by search query
- * @param id_not Filter by the studio id
- * @param id_in Filter by the studio id
- * @param id_not_in Filter by the studio id
- * @param sort The order the results will be returned in
- */
-@Parcelize
-data class StudioQuery(
-    val id: Long? = null,
-    val search: String? = null,
-    val id_not: Long? = null,
-    val id_in: List<Long>? = null,
-    val id_not_in: List<Long>? = null,
-    val sort: List<StudioSort>? = null
+
+internal data class StudioQuery(
+    val param: StudioParam.Find
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "id" to id,
-        "search" to search,
-        "id_not" to id_not,
-        "id_in" to id_in,
-        "id_not_in" to id_not_in,
-        "sort" to sort
+        "id" to param.id,
+        "search" to param.search,
+        "id_not" to param.id_not,
+        "id_in" to param.id_in,
+        "id_not_in" to param.id_not_in,
+        "sort" to param.sort
     )
 }

@@ -20,46 +20,29 @@ package co.anitrend.data.genre.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.mapper.withEmoji
 import co.anitrend.domain.genre.entity.Genre
 
 internal class GenreEntityConverter(
-    override val fromType: (GenreEntity) -> Genre = { from().transform(it) },
-    override val toType: (Genre) -> GenreEntity = { to().transform(it) }
+    override val fromType: (GenreEntity) -> Genre = ::transform,
+    override val toType: (Genre) -> GenreEntity = { throw NotImplementedError() }
 ) : SupportConverter<GenreEntity, Genre>() {
-
-    companion object {
-        private fun from() =
-            object : ISupportTransformer<GenreEntity, Genre> {
-                override fun transform(source: GenreEntity) = Genre(
-                    name = source.genre
-                )
-            }
-
-        private fun to() =
-            object : ISupportTransformer<Genre, GenreEntity> {
-                override fun transform(source: Genre) = GenreEntity(
-                    genre = source.name
-                )
-            }
+    private companion object : ISupportTransformer<GenreEntity, Genre> {
+        override fun transform(source: GenreEntity) = Genre.Core(
+            name = source.genre,
+            decorated = withEmoji(
+                source.genre
+            ),
+            id = source.id
+        )
     }
 }
 
 internal class GenreModelConverter(
-    override val fromType: (String) -> GenreEntity = { from().transform(it) },
-    override val toType: (GenreEntity) -> String = { to().transform(it) }
+    override val fromType: (String) -> GenreEntity = ::transform,
+    override val toType: (GenreEntity) -> String = { throw NotImplementedError() }
 ) : SupportConverter<String, GenreEntity>() {
-
-    companion object {
-        private fun from() =
-            object : ISupportTransformer<String, GenreEntity> {
-                override fun transform(source: String): GenreEntity = GenreEntity(
-                    genre = source
-                )
-            }
-
-        private fun to() =
-            object : ISupportTransformer<GenreEntity, String> {
-                override fun transform(source: GenreEntity): String = source.genre
-            }
+    private companion object : ISupportTransformer<String, GenreEntity> {
+        override fun transform(source: String) = GenreEntity(genre = source)
     }
 }

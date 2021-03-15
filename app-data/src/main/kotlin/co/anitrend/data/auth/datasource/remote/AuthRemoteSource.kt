@@ -22,9 +22,7 @@ import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.GRAPHQL
 import co.anitrend.data.arch.JSON
 import co.anitrend.data.auth.model.JsonWebToken
-import co.anitrend.data.user.model.remote.UserModel
-import co.anitrend.data.user.model.remote.container.UserModelContainer
-import co.anitrend.data.user.model.remote.container.UserViewerModelContainer
+import co.anitrend.data.user.model.container.UserModelContainer
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
@@ -47,9 +45,9 @@ internal interface AuthRemoteSource {
 
     @GRAPHQL
     @POST(EndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("UserViewer")
+    @GraphQuery("GetUserViewer")
     suspend fun getAuthenticatedUser(
         @Header("Authorization") authToken: String,
         @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphQLResponse<UserViewerModelContainer>>
+    ): Response<GraphQLResponse<UserModelContainer.Viewer>>
 }

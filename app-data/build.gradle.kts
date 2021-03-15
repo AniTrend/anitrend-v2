@@ -1,5 +1,3 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -17,22 +15,52 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import co.anitrend.buildSrc.Libraries
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
 }
 
+tasks.withType(KotlinCompile::class.java) {
+    kotlinOptions {
+        freeCompilerArgs = listOf(
+            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-Xopt-in=kotlin.RequiresOptIn"
+        )
+    }
+}
+
 dependencies {
     implementation(Libraries.JetBrains.KotlinX.Serialization.json)
+    implementation(Libraries.AndroidX.StartUp.startUpRuntime)
 
     implementation(Libraries.AniTrend.Sync.plugin)
     implementation(Libraries.CashApp.Copper.copper)
+
     implementation(Libraries.Dropbox.store)
+
+    implementation(Libraries.tmdb) {
+        exclude(group = "org.threeten", module = "threetenbp")
+    }
+    implementation(Libraries.trakt) {
+        exclude(group = "org.threeten", module = "threetenbp")
+    }
 
     implementation(Libraries.retrofitSerializer)
 
+    implementation(Libraries.AniTrend.Emojify.emojify)
+
+    implementation(Libraries.AniTrend.QueryBuilder.annotation)
+    implementation(Libraries.AniTrend.QueryBuilder.core)
+    kapt(Libraries.AniTrend.QueryBuilder.processor)
+
+    compileOnly(Libraries.Square.KotlinPoet.kotlinPoet)
+
     debugImplementation(Libraries.Chuncker.debug)
     releaseImplementation(Libraries.Chuncker.release)
+
 
     androidTestImplementation(Libraries.AndroidX.Room.test)
     androidTestImplementation(Libraries.Square.OkHttp.mockServer)

@@ -18,9 +18,11 @@
 package co.anitrend.data.tag.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.DatabaseView
 import androidx.room.Entity
 import androidx.room.Index
 import co.anitrend.data.shared.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "tag",
@@ -32,6 +34,7 @@ import co.anitrend.data.shared.common.Identity
         )
     ]
 )
+@EntitySchema
 internal data class TagEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String?,
@@ -39,4 +42,25 @@ internal data class TagEntity(
     @ColumnInfo(name = "is_general_spoiler") val isGeneralSpoiler: Boolean,
     @ColumnInfo(name = "is_adult") val isAdult: Boolean,
     @ColumnInfo(name = "id") override val id: Long
-) : Identity
+) : Identity {
+
+    @DatabaseView(
+        value = """
+            select t.*, c.is_media_spoiler, c.rank, c.media_id from tag t
+            inner join tag_connection c 
+            on t.id = c.tag_id
+        """,
+        viewName = "view_tag_extended"
+    )
+    data class Extended(
+        @ColumnInfo(name = "name") val name: String,
+        @ColumnInfo(name = "description") val description: String?,
+        @ColumnInfo(name = "category") val category: String?,
+        @ColumnInfo(name = "rank") val rank: Int,
+        @ColumnInfo(name = "is_media_spoiler") val isMediaSpoiler: Boolean,
+        @ColumnInfo(name = "is_general_spoiler") val isGeneralSpoiler: Boolean,
+        @ColumnInfo(name = "is_adult") val isAdult: Boolean,
+        @ColumnInfo(name = "media_id") val mediaId: Long,
+        @ColumnInfo(name = "id") override val id: Long
+    ) : Identity
+}

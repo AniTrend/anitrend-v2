@@ -1,0 +1,12 @@
+fragment FeedReply on ActivityReply {
+    activityId
+    createdAt
+    id
+    isLiked
+    likeCount
+    text
+    user {
+        ... UserCore
+    }
+    userId
+}

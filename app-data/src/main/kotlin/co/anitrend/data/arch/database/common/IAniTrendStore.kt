@@ -21,26 +21,35 @@ import co.anitrend.data.airing.datasource.local.IAiringStore
 import co.anitrend.data.auth.datasource.local.IAuthStore
 import co.anitrend.data.cache.datasource.ICacheStore
 import co.anitrend.data.carousel.datasource.local.ICarouselStore
-import co.anitrend.data.genre.datasource.local.IMediaGenreStore
+import co.anitrend.data.character.datasource.local.ICharacterStore
+import co.anitrend.data.episode.datasource.local.IEpisodeStore
+import co.anitrend.data.genre.datasource.local.IGenreStore
+import co.anitrend.data.link.datasource.ILinkStore
 import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.medialist.datasource.local.IMediaListStore
 import co.anitrend.data.moe.datasource.local.IMoeStore
 import co.anitrend.data.news.datasource.local.INewsStore
-import co.anitrend.data.tag.datasource.local.IMediaTagStore
+import co.anitrend.data.rank.datasource.IRankStore
+import co.anitrend.data.staff.datasource.local.IStaffStore
+import co.anitrend.data.studio.datasource.local.IStudioStore
+import co.anitrend.data.tag.datasource.local.ITagStore
 import co.anitrend.data.user.datasource.local.IUserStore
 
-internal interface IAniTrendStore : IMediaStore, IMediaGenreStore, IMediaTagStore,
+internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
     IMoeStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore, IUserStore,
-    IMediaListStore, INewsStore {
+    IMediaListStore, INewsStore, IEpisodeStore, ICharacterStore, IStaffStore, IStudioStore,
+    ILinkStore, IRankStore {
 
     companion object {
 
         /** Binding types for [IAniTrendStore] */
-        internal val BINDINGS = arrayOf(
-            IMediaStore::class, IMediaTagStore::class, IMediaGenreStore::class,
+        val BINDINGS = arrayOf(
+            IMediaStore::class, ITagStore::class, IGenreStore::class,
             IMoeStore::class, IAuthStore::class, IAiringStore::class,
             ICarouselStore::class, ICacheStore::class, IUserStore::class,
-            IMediaListStore::class, INewsStore::class
+            IMediaListStore::class, INewsStore::class, IEpisodeStore::class,
+            ICharacterStore::class, IStaffStore::class, IStudioStore::class,
+            ILinkStore::class, IRankStore::class
         )
     }
 }

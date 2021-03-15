@@ -32,10 +32,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 
 internal class AniTrendConverterFactory(
-    processor: AbstractGraphProcessor,
-    gson: Gson,
     private val jsonFactory: Converter.Factory,
     private val xmlFactory: Converter.Factory,
+    processor: AbstractGraphProcessor,
+    gson: Gson
 ) : GraphConverter(processor, gson) {
 
     /**

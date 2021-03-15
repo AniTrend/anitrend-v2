@@ -21,81 +21,70 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.cache.extensions.invoke
+import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.cache.CarouselCache
 import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.domain.carousel.entity.MediaCarousel
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.carousel.model.CarouselParam
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-internal abstract class CarouselSource(
-    protected val cachePolicy: ICacheStorePolicy,
-    dispatcher: ISupportDispatcher
-) : SupportCoreDataSource(dispatcher) {
+internal abstract class CarouselSource : SupportCoreDataSource() {
 
     protected lateinit var query: CarouselQuery
         private set
 
-    protected abstract fun observable(): Flow<List<MediaCarousel>?>
+    protected abstract val cachePolicy: ICacheStorePolicy
 
-    protected abstract suspend fun getMediaCarousel(requestCallback: RequestCallback, mediaType: MediaType): Boolean
+    protected val animeCacheIdentity: CacheIdentity = CarouselCache.Identifier.ANIME
+    protected val animeMetaCacheIdentity: CacheIdentity = CarouselCache.Identifier.ANIME_META
+    protected val mangaCacheIdentity: CacheIdentity = CarouselCache.Identifier.MANGA
+    protected val mangaMetaCacheIdentity: CacheIdentity = CarouselCache.Identifier.MANGA_META
+
+    protected abstract fun observable(): Flow<List<MediaCarousel>>
+
+    protected abstract suspend fun getMediaCarouselAnimeMeta(requestCallback: RequestCallback): Boolean
+
+    protected abstract suspend fun getMediaCarouselMangaMeta(requestCallback: RequestCallback): Boolean
 
     protected abstract suspend fun getMediaCarouselAnime(requestCallback: RequestCallback): Boolean
 
     protected abstract suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean
 
-    operator fun invoke(carouselQuery: IGraphPayload): Flow<List<MediaCarousel>?> {
-        query = carouselQuery as CarouselQuery
+    operator fun invoke(param: CarouselParam.Find): Flow<List<MediaCarousel>> {
+        query = CarouselQuery(param)
 
-        launch {
-            requestHelper.runIfNotRunning(
-                Request.Default(CarouselCache.Identifier.ANIME_META.key, Request.Type.INITIAL)
-            ) {
-                if (cachePolicy.shouldRefresh(CarouselCache.Identifier.ANIME_META.id)) {
-                    val success = getMediaCarousel(it, MediaType.ANIME)
-                    if (success)
-                        cachePolicy.updateLastRequest(CarouselCache.Identifier.ANIME_META.id)
-                }
-            }
-        }
+        cachePolicy(
+            scope = scope,
+            requestHelper = requestHelper,
+            cacheIdentity = mangaCacheIdentity,
+            block = ::getMediaCarouselManga
+        )
 
-        launch {
-            requestHelper.runIfNotRunning(
-                Request.Default(CarouselCache.Identifier.MANGA_META.key, Request.Type.INITIAL)
-            ) {
-                if (cachePolicy.shouldRefresh(CarouselCache.Identifier.MANGA_META.id)) {
-                    val success = getMediaCarousel(it, MediaType.MANGA)
-                    if (success)
-                        cachePolicy.updateLastRequest(CarouselCache.Identifier.MANGA_META.id)
-                }
-            }
-        }
+        cachePolicy(
+            scope = scope,
+            requestHelper = requestHelper,
+            cacheIdentity = animeCacheIdentity,
+            block = ::getMediaCarouselAnime
+        )
 
-        launch {
-            requestHelper.runIfNotRunning(
-                Request.Default(CarouselCache.Identifier.ANIME.key, Request.Type.BEFORE)
-            ) {
-                if (cachePolicy.shouldRefresh(CarouselCache.Identifier.ANIME.id)) {
-                    val success = getMediaCarouselAnime(it)
-                    if (success)
-                        cachePolicy.updateLastRequest(CarouselCache.Identifier.ANIME.id)
-                }
-            }
-        }
+        cachePolicy(
+            scope = scope,
+            requestHelper = requestHelper,
+            cacheIdentity = mangaMetaCacheIdentity,
+            block = ::getMediaCarouselMangaMeta
+        )
 
-       launch {
-           requestHelper.runIfNotRunning(
-               Request.Default(CarouselCache.Identifier.MANGA.key, Request.Type.AFTER)
-           ) {
-               if (cachePolicy.shouldRefresh(CarouselCache.Identifier.MANGA.id)) {
-                   val success = getMediaCarouselManga(it)
-                   if (success)
-                       cachePolicy.updateLastRequest(CarouselCache.Identifier.MANGA.id)
-               }
-           }
-       }
+        cachePolicy(
+            scope = scope,
+            requestHelper = requestHelper,
+            cacheIdentity = animeMetaCacheIdentity,
+            block = ::getMediaCarouselAnimeMeta
+        )
 
         return observable()
     }

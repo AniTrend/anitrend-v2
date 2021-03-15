@@ -17,11 +17,9 @@
 
 package co.anitrend.data.arch.common.model.date.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
 
-@Parcelize
-data class FuzzyDateQuery(
+internal data class FuzzyDateQuery(
     val year: Int,
     val month: Int,
     val day: Int

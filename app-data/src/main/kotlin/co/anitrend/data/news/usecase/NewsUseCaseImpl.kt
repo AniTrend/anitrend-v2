@@ -18,8 +18,8 @@
 package co.anitrend.data.news.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.news.NewsPagedRepository
 import co.anitrend.data.news.NewsInteractor
+import co.anitrend.data.news.NewsPagedRepository
 
 internal class NewsUseCaseImpl(
     repository: NewsPagedRepository

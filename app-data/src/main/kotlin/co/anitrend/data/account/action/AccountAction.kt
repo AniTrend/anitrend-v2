@@ -17,15 +17,32 @@
 
 package co.anitrend.data.account.action
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.domain.account.model.AccountParam
 
-sealed class AccountAction : IGraphPayload {
+internal sealed class AccountAction : IGraphPayload {
 
     override fun toMap(): Map<String, Any?> = emptyMap()
 
-    @Parcelize
+    data class SignIn(
+        val param: AccountParam.SignIn,
+    ) : AccountAction() {
+
+        val expiresAtTime = (System.currentTimeMillis() / 1000) + param.expiresIn
+
+        val accessTokenBearer = "Bearer ${param.accessToken}"
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "accessToken" to param.accessToken,
+            "tokenType" to param.tokenType,
+            "expiresIn" to param.expiresIn
+        )
+    }
+
     data class SignOut(
-        val userId: Long
+        val param: AccountParam.SignOut
     ) : AccountAction()
 }

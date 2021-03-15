@@ -19,5 +19,4 @@ package co.anitrend.data.airing.datasource.remote
 
 internal interface AiringRemoteSource {
 
-
 }

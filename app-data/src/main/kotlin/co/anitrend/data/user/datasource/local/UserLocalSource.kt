@@ -23,6 +23,7 @@ import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
+import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.entity.view.UserEntityView
 import kotlinx.coroutines.flow.Flow
 
@@ -45,12 +46,17 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         """)
     abstract override suspend fun clear()
 
-
     @Query("""
         delete from user
         where id = :id
         """)
     abstract suspend fun clearById(id: Long)
+
+    @Query("""
+        delete from user
+        where user_name match :userName
+        """)
+    abstract suspend fun clearByMatch(userName: String)
 
     @Query("""
         select * from user
@@ -81,6 +87,15 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
 
     @Query("""
         select * from user
+        where id = :id
+    """)
+    @Transaction
+    abstract fun userByIdWithStatisticFlow(
+        id: Long
+    ): Flow<UserEntityView.WithStatistic?>
+
+    @Query("""
+        select * from user
         where user_is_following = :following
     """)
     abstract fun userFollowing(
@@ -95,13 +110,31 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         follower: Boolean = true
     ): DataSource.Factory<Int, UserEntity>
 
+    @Query("""
+        select * from user
+    """)
+    abstract fun entryFactory(
+    ): DataSource.Factory<Int, UserEntity>
+
+    @Query("""
+        select * from user
+        where user_name match :searchTerm
+    """)
+    abstract fun entrySearchFactory(
+        searchTerm: String
+    ): DataSource.Factory<Int, UserEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun upsert(attribute: UserGeneralOptionEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun upsert(attribute: UserMediaOptionEntity)
 
-    suspend fun upsertWithOptions(
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsert(attribute: UserWithStatisticEntity)
+
+    @Transaction
+    open suspend fun upsertWithOptions(
         userEntity: UserEntity,
         userGeneralOptionEntity: UserGeneralOptionEntity?,
         userMediaOptionEntity: UserMediaOptionEntity?
@@ -111,5 +144,14 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
             upsert(userGeneralOptionEntity)
         if (userMediaOptionEntity != null)
             upsert(userMediaOptionEntity)
+    }
+
+    @Transaction
+    open suspend fun upsertWithStatistic(
+        userEntity: UserEntity,
+        userWithStatisticEntity: UserWithStatisticEntity
+    ) {
+        upsert(userEntity)
+        upsert(userWithStatisticEntity)
     }
 }

@@ -22,16 +22,13 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.arch.helper.data.ClearDataHelper
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.news.NewPagedController
-import co.anitrend.data.news.cache.NewsCache
 import co.anitrend.data.news.converter.NewsEntityConverter
 import co.anitrend.data.news.datasource.local.NewsLocalSource
 import co.anitrend.data.news.datasource.remote.NewsRemoteSource
 import co.anitrend.data.news.source.contract.NewsSource
-import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.news.entity.News
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -43,14 +40,14 @@ internal class NewsSourceImpl(
     private val clearDataHelper: IClearDataHelper,
     private val controller: NewPagedController,
     private val converter: NewsEntityConverter,
-    cachePolicy: ICacheStorePolicy,
-    dispatcher: ISupportDispatcher
-) : NewsSource(cachePolicy, dispatcher) {
+    override val cachePolicy: ICacheStorePolicy,
+    override val dispatcher: ISupportDispatcher
+) : NewsSource() {
 
     override fun observable(): Flow<PagedList<News>> {
         val dataSourceFactory = localSource
-            .factoryDesc()
-            .map { converter.convertFrom(it) }
+            .entryFactory()
+            .map(converter::convertFrom)
 
         return FlowPagedListBuilder(
             dataSourceFactory,
@@ -62,7 +59,7 @@ internal class NewsSourceImpl(
 
     override suspend fun getNews(requestCallback: RequestCallback): Boolean {
         val deferred = async {
-            remoteSource.getNews(query.locale)
+            remoteSource.getNews(query.param.locale)
         }
 
         val result = controller(deferred, requestCallback)
@@ -77,9 +74,7 @@ internal class NewsSourceImpl(
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
-            cachePolicy.invalidateLastRequest(
-                NewsCache.Identity.NEWS.id
-            )
+            cachePolicy.invalidateLastRequest(cacheIdentity)
             localSource.clear()
         }
     }

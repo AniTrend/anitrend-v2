@@ -42,13 +42,13 @@ internal class MediaListPagedSourceImpl(
     private val controller: MediaListPagedController,
     private val sortOrderSettings: ISortOrderSettings,
     private val converter: MediaListEntityViewConverter,
-    dispatcher: ISupportDispatcher
-) : MediaListPagedSource(dispatcher) {
+    override val dispatcher: ISupportDispatcher
+) : MediaListPagedSource() {
 
     override fun observable(): Flow<PagedList<MediaList>> {
         val dataSourceFactory = localSource
-            .entryFactory(query.userId!!)
-            .map { converter.convertFrom(it) }
+            .entryFactory(query.param.userId!!)
+            .map(converter::convertFrom)
 
         return FlowPagedListBuilder(
             dataSourceFactory,
@@ -74,7 +74,7 @@ internal class MediaListPagedSourceImpl(
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
-            localSource.clearByUserId(query.userId!!)
+            localSource.clearByUserId(query.param.userId!!)
         }
     }
 }

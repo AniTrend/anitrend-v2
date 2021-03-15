@@ -22,8 +22,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import co.anitrend.data.arch.database.dao.ILocalSource
-import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import kotlinx.coroutines.flow.Flow

@@ -21,29 +21,31 @@ import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
-import co.anitrend.data.genre.MediaGenreInteractor
+import co.anitrend.data.genre.GenreInteractor
+import co.anitrend.data.genre.GenreListRepository
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.converters.GenreModelConverter
-import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
-import co.anitrend.data.genre.repository.MediaGenreRepositoryImpl
-import co.anitrend.data.genre.source.MediaGenreSourceImpl
-import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
+import co.anitrend.data.genre.mapper.GenreMapper
+import co.anitrend.data.genre.repository.GenreRepository
+import co.anitrend.data.genre.source.GenreSourceImpl
+import co.anitrend.data.genre.source.contract.GenreSource
+import co.anitrend.data.genre.usecase.GenreUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory<MediaGenreSource> {
-        MediaGenreSourceImpl(
-            localSource = db().mediaGenreDao(),
+    factory<GenreSource> {
+        GenreSourceImpl(
+            localSource = db().genreDao(),
             remoteSource = api(EndpointType.GRAPH_QL),
             controller = graphQLController(
-                mapper = get<MediaGenreResponseMapper>()
+                mapper = get<GenreMapper>()
             ),
             cachePolicy = get<GenreCache>(),
             clearDataHelper = get(),
             converter = get(),
-            dispatcher = get()
+            dispatcher = get(),
+            settings = get()
         )
     }
 }
@@ -67,30 +69,30 @@ private val converterModule = module {
 
 private val mapperModule = module {
     factory {
-        MediaGenreResponseMapper(
-            localSource = db().mediaGenreDao(),
+        GenreMapper(
+            localSource = db().genreDao(),
             converter = get()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<MediaGenreInteractor> {
-        MediaGenreUseCaseImpl(
+    factory<GenreInteractor> {
+        GenreUseCaseImpl(
             repository = get()
         )
     }
 }
 
 private val repositoryModule = module {
-    factory {
-        MediaGenreRepositoryImpl(
+    factory<GenreListRepository> {
+        GenreRepository(
             source = get()
         )
     }
 }
 
-internal val mediaGenreModules = listOf(
+internal val genreModules = listOf(
     converterModule,
     cacheModule,
     sourceModule,

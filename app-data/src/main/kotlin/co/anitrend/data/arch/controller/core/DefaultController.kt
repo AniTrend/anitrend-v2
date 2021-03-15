@@ -22,7 +22,6 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.network.contract.NetworkClient
-import co.anitrend.data.arch.network.default.DefaultNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext

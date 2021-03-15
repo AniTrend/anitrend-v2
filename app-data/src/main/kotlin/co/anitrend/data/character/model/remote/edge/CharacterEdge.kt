@@ -20,25 +20,49 @@ package co.anitrend.data.character.model.remote.edge
 import co.anitrend.data.arch.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.staff.model.remote.StaffModel
+import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
- * Character connection edge
- *
- * @param favouriteOrder The order the character should be displayed from the users favourites
- * @param media The media the character is in
- * @param role The characters role in the media
- * @param voiceActors The voice actors of the character
- */
 @Serializable
-internal data class CharacterEdge(
-    @SerialName("favouriteOrder") val favouriteOrder: Int?,
-    @SerialName("media") val media: List<MediaModel.Core>?,
-    @SerialName("role") val role: CharacterRole?,
-    @SerialName("voiceActors") val voiceActors: List<StaffModel.Core>?,
-    @SerialName("node") override val node: CharacterModel.Core?,
-    @SerialName("id") override val id: Long,
-) : IEntityEdge<CharacterModel>
+internal sealed class CharacterEdge : IEntityEdge<CharacterModel> {
+
+    /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
+     * Character connection edge
+     *
+     * @param favouriteOrder The order the character should be displayed from the users favourites
+     */
+    @Serializable
+    data class Favourite(
+        @SerialName("favouriteOrder") val favouriteOrder: Int?,
+        @SerialName("node") override val node: CharacterModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : CharacterEdge()
+
+    /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
+     * Character connection edge
+     *
+     * @param role The characters role in the media
+     * @param media The media the character is in
+     */
+    @Serializable
+    data class Media(
+        @SerialName("role") val role: CharacterRole?,
+        @SerialName("media") val media: List<MediaModel.Core>?,
+        @SerialName("node") override val node: CharacterModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : CharacterEdge()
+
+    /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
+     * Character connection edge
+     *
+     * @param voiceActors The voice actors of the character
+     */
+    @Serializable
+    data class Staff(
+        @SerialName("voiceActors") val voiceActors: List<StaffModel.Core>?,
+        @SerialName("node") override val node: CharacterModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : CharacterEdge()
+}

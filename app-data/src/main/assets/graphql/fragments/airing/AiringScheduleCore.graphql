@@ -1,0 +1,7 @@
+fragment AiringScheduleCore on AiringSchedule {
+    airingAt
+    episode
+    id
+    mediaId
+    timeUntilAiring
+}

@@ -20,10 +20,12 @@ package co.anitrend.data.genre
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.model.remote.GenreCollection
+import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.domain.genre.entity.Genre
-import co.anitrend.domain.genre.interactor.MediaGenreUseCase
+import co.anitrend.domain.genre.interactor.GenreUseCase
+import co.anitrend.domain.genre.repository.IGenreRepository
 
 internal typealias MediaGenreController = GraphQLController<GenreCollection, List<GenreEntity>>
+internal typealias GenreListRepository = IGenreRepository<DataState<List<Genre>>>
 
-typealias MediaGenreInteractor = MediaGenreUseCase<DataState<List<Genre>>>
+typealias GenreInteractor = GenreUseCase<DataState<List<Genre>>>

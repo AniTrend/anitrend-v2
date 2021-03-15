@@ -31,7 +31,7 @@ internal interface MediaTagRemoteSource {
 
     @GRAPHQL
     @POST(EndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("MediaTagCollection")
+    @GraphQuery("GetMediaTags")
     suspend fun getMediaTags(
         @Body queryContainer: QueryContainerBuilder
     ): Response<GraphQLResponse<TagContainerModel>>

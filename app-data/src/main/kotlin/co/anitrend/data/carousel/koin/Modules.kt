@@ -20,16 +20,16 @@ package co.anitrend.data.carousel.koin
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.graphQLController
 import co.anitrend.data.arch.extension.db
-import co.anitrend.data.carousel.CarouselInteractor
-import co.anitrend.data.carousel.CarouselRepository
+import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.carousel.GetCarouselInteractor
+import co.anitrend.data.carousel.MediaCarouselListRepository
 import co.anitrend.data.carousel.cache.CarouselCache
 import co.anitrend.data.carousel.mapper.CarouselMapper
-import co.anitrend.data.carousel.repository.CarouselRepositoryImpl
+import co.anitrend.data.carousel.repository.MediaCarouselRepository
 import co.anitrend.data.carousel.source.CarouselSourceImpl
 import co.anitrend.data.carousel.source.contract.CarouselSource
-import co.anitrend.data.carousel.usecase.CarouselUseCaseImpl
+import co.anitrend.data.carousel.usecase.MediaCarouselUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -59,26 +59,22 @@ private val cacheModule = module {
 private val mapperModule = module {
     factory {
         CarouselMapper(
-            combinedMapper = get(),
-            airingMapper = get(),
-            converter = get(),
-            airingConverter = get(),
-            context = get<ISupportDispatcher>().io
+            mapper = get()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<CarouselInteractor> {
-        CarouselUseCaseImpl(
+    factory<GetCarouselInteractor> {
+        MediaCarouselUseCaseImpl(
             repository = get()
         )
     }
 }
 
 private val repositoryModule = module {
-    factory<CarouselRepository> {
-        CarouselRepositoryImpl(
+    factory<MediaCarouselListRepository> {
+        MediaCarouselRepository(
             source = get()
         )
     }

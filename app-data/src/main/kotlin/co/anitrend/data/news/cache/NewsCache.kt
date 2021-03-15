@@ -29,15 +29,15 @@ internal class NewsCache(
 ) : CacheStorePolicy() {
 
     /**
-     * Check if a resource with a given [entityId] is permitted to refresh
+     * Check if a resource with a given [identity] is permitted to refresh
      *
-     * @param entityId Unique identifier for the cache item
-     * @param expiresAfter defaults to 2 hours
+     * @param identity Unique identifier for the cache item
+     * @param expiresAfter Expiry time fro the cached [identity]
      */
     override suspend fun shouldRefresh(
-        entityId: Long,
+        identity: CacheIdentity,
         expiresAfter: Instant
-    ) = isRequestBefore(entityId, expiresAfter)
+    ): Boolean = isRequestBefore(identity, expiresAfter)
 
     enum class Identity(
         override val id: Long,

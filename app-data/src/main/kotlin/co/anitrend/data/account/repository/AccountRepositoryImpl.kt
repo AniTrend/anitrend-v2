@@ -20,9 +20,10 @@ package co.anitrend.data.account.repository
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
 import co.anitrend.data.auth.source.contract.AuthSource
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.account.repository.AccountRepository
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.user.entity.User
 
 internal class AccountRepositoryImpl(
@@ -32,7 +33,7 @@ internal class AccountRepositoryImpl(
     override fun getAccountUsers() =
         source create source()
 
-    override fun signOut(query: IGraphPayload) {
-        source.signOut(query)
+    override fun signOut(param: AccountParam.SignOut) {
+        source.signOut(param)
     }
 }

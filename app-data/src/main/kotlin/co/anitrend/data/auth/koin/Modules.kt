@@ -27,9 +27,6 @@ import co.anitrend.data.auth.repository.AuthRepositoryImpl
 import co.anitrend.data.auth.source.AuthSourceImpl
 import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.data.auth.usecase.AuthUseCaseImpl
-import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
-import co.anitrend.data.user.converter.UserMediaOptionModelConverter
-import co.anitrend.data.user.converter.UserModelConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -56,15 +53,9 @@ private val mapperModule = module {
             settings = get(),
             userLocalSource = db().userDao(),
             converter = get(),
-            generalOptionConverter = UserGeneralOptionModelConverter(),
-            mediaOptionConverter = UserMediaOptionModelConverter(),
+            generalOptionConverter = get(),
+            mediaOptionConverter = get(),
         )
-    }
-}
-
-private val converterModule = module {
-    factory {
-        UserModelConverter()
     }
 }
 
@@ -87,7 +78,6 @@ private val repositoryModule = module {
 internal val authModules = listOf(
     sourceModule,
     mapperModule,
-    converterModule,
     useCaseModule,
     repositoryModule
 )

@@ -17,95 +17,40 @@
 
 package co.anitrend.data.mediatrend.model.query
 
-import co.anitrend.data.arch.FuzzyDateInt
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.enums.MediaTrendSort
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.domain.mediatrend.model.MediaTrendParam
 
-/** [MediaTrend query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
- *
- * @param mediaId Filter by the media id
- * @param date Filter by date
- * @param trending Filter by trending amount
- * @param averageScore Filter by score
- * @param popularity Filter by popularity
- * @param episode Filter by episode number
- * @param releasing Filter to stats recorded while the media was releasing
- * @param mediaId_not Filter by the media id
- * @param mediaId_in Filter by the media id
- * @param mediaId_not_in Filter by the media id
- * @param date_greater Filter by date
- * @param date_lesser Filter by date
- * @param trending_greater Filter by trending amount
- * @param trending_lesser Filter by trending amount
- * @param trending_not Filter by trending amount
- * @param averageScore_greater Filter by score
- * @param averageScore_lesser Filter by score
- * @param averageScore_not Filter by score
- * @param popularity_greater Filter by popularity
- * @param popularity_lesser Filter by popularity
- * @param popularity_not Filter by popularity
- * @param episode_greater Filter by episode number
- * @param episode_lesser Filter by episode number
- * @param episode_not Filter by episode number
- * @param sort The order the results will be returned in
- */
-@Parcelize
-data class MediaTrendQuery(
-    val mediaId: Int? = null,
-    val date: FuzzyDateInt? = null,
-    val trending: Int? = null,
-    val averageScore: Int? = null,
-    val popularity: Int? = null,
-    val episode: Int? = null,
-    val releasing: Boolean? = null,
-    val mediaId_not: Int? = null,
-    val mediaId_in: List<Int>? = null,
-    val mediaId_not_in: List<Int>? = null,
-    val date_greater: FuzzyDateInt? = null,
-    val date_lesser: FuzzyDateInt? = null,
-    val trending_greater: Int? = null,
-    val trending_lesser: Int? = null,
-    val trending_not: Int? = null,
-    val averageScore_greater: Int? = null,
-    val averageScore_lesser: Int? = null,
-    val averageScore_not: Int? = null,
-    val popularity_greater: Int? = null,
-    val popularity_lesser: Int? = null,
-    val popularity_not: Int? = null,
-    val episode_greater: Int? = null,
-    val episode_lesser: Int? = null,
-    val episode_not: Int? = null,
-    val sort: List<MediaTrendSort>? = null
+internal data class MediaTrendQuery(
+    val param: MediaTrendParam.Find
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "mediaId" to mediaId,
-        "date" to date,
-        "trending" to trending,
-        "averageScore" to averageScore,
-        "popularity" to popularity,
-        "episode" to episode,
-        "releasing" to releasing,
-        "mediaId_not" to mediaId_not,
-        "mediaId_in" to mediaId_in,
-        "mediaId_not_in" to mediaId_not_in,
-        "date_greater" to date_greater,
-        "date_lesser" to date_lesser,
-        "trending_greater" to trending_greater,
-        "trending_lesser" to trending_lesser,
-        "trending_not" to trending_not,
-        "averageScore_greater" to averageScore_greater,
-        "averageScore_lesser" to averageScore_lesser,
-        "averageScore_not" to averageScore_not,
-        "popularity_greater" to popularity_greater,
-        "popularity_lesser" to popularity_lesser,
-        "popularity_not" to popularity_not,
-        "episode_greater" to episode_greater,
-        "episode_lesser" to episode_lesser,
-        "episode_not" to episode_not
+        "mediaId" to param.mediaId,
+        "date" to param.date,
+        "trending" to param.trending,
+        "averageScore" to param.averageScore,
+        "popularity" to param.popularity,
+        "episode" to param.episode,
+        "releasing" to param.releasing,
+        "mediaId_not" to param.mediaId_not,
+        "mediaId_in" to param.mediaId_in,
+        "mediaId_not_in" to param.mediaId_not_in,
+        "date_greater" to param.date_greater,
+        "date_lesser" to param.date_lesser,
+        "trending_greater" to param.trending_greater,
+        "trending_lesser" to param.trending_lesser,
+        "trending_not" to param.trending_not,
+        "averageScore_greater" to param.averageScore_greater,
+        "averageScore_lesser" to param.averageScore_lesser,
+        "averageScore_not" to param.averageScore_not,
+        "popularity_greater" to param.popularity_greater,
+        "popularity_lesser" to param.popularity_lesser,
+        "popularity_not" to param.popularity_not,
+        "episode_greater" to param.episode_greater,
+        "episode_lesser" to param.episode_lesser,
+        "episode_not" to param.episode_not
     )
 }

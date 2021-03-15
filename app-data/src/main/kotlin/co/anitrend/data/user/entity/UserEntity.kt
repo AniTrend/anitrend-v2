@@ -35,7 +35,7 @@ internal data class UserEntity(
     @ColumnInfo(name = "id") override val id: Long
 ) : Identity {
 
-    internal data class About(
+    data class About(
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "bio") val bio: String?,
         @ColumnInfo(name = "site_url") val siteUrl: String,
@@ -43,13 +43,13 @@ internal data class UserEntity(
         @ColumnInfo(name = "donator_badge") val donatorBadge: String?,
     )
 
-    internal data class Status(
+    data class Status(
         @ColumnInfo(name = "is_following") val isFollowing: Boolean? = null,
         @ColumnInfo(name = "is_follower") val isFollower: Boolean? = null,
         @ColumnInfo(name = "is_blocked") val isBlocked: Boolean = false,
     )
 
-    internal data class CoverImage(
+    data class CoverImage(
         @ColumnInfo(name = "large") val large: String? = null,
         @ColumnInfo(name = "medium") val medium: String? = null,
         @ColumnInfo(name = "banner") val banner: String? = null

@@ -29,7 +29,7 @@ import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
-import co.anitrend.data.user.model.remote.container.UserViewerModelContainer
+import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.settings.IUserSettings
 
 internal class AuthMapper(
@@ -38,7 +38,7 @@ internal class AuthMapper(
     private val converter: UserModelConverter,
     private val generalOptionConverter: UserGeneralOptionModelConverter,
     private val mediaOptionConverter: UserMediaOptionModelConverter,
-) : DefaultMapper<UserViewerModelContainer, UserEntity>() {
+) : DefaultMapper<UserModelContainer.Viewer, UserEntity>() {
 
     private var generalOption: UserGeneralOptionEntity? = null
     private var mediaOption: UserMediaOptionEntity? = null
@@ -86,7 +86,7 @@ internal class AuthMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: UserViewerModelContainer
+        source: UserModelContainer.Viewer
     ): UserEntity {
         generalOption = generalOptionConverter.convertFrom(source.user)
         mediaOption = mediaOptionConverter.convertFrom(source.user)

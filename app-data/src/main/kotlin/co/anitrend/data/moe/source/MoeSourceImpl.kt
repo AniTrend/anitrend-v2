@@ -20,6 +20,7 @@ package co.anitrend.data.moe.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.moe.converters.SourceEntityConverter
 import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.datasource.remote.MoeRemoteSource
@@ -37,24 +38,27 @@ internal class MoeSourceImpl(
     private val localSource: MoeLocalSource,
     private val controller: MoeController,
     private val clearDataHelper: IClearDataHelper,
-    converter: SourceEntityConverter = SourceEntityConverter(),
-    dispatcher: ISupportDispatcher
-) : MoeSource(dispatcher) {
+    private val converter: SourceEntityConverter,
+    override val cachePolicy: ICacheStorePolicy,
+    override val dispatcher: ISupportDispatcher
+) : MoeSource() {
 
     override val observable =
         localSource.withAniListIdX(query.id)
             .flowOn(dispatcher.io)
             .filterNotNull()
-            .map { converter.convertFrom(it) }
+            .map(converter::convertFrom)
             .flowOn(coroutineContext)
 
 
-    override suspend fun getSourceRelation(query: MoeSourceQuery, callback: RequestCallback) {
+    override suspend fun getSourceRelation(callback: RequestCallback): Boolean {
         val deferred = async {
             remoteSource.getFromSource(query)
         }
 
-        controller(deferred, callback)
+        val result = controller(deferred, callback)
+
+        return result != null
     }
 
     /**
@@ -64,6 +68,7 @@ internal class MoeSourceImpl(
      */
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
+            cachePolicy.invalidateLastRequest(cacheIdentity)
             localSource.clear(query.id)
         }
     }

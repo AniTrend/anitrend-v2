@@ -1,0 +1,19 @@
+fragment CharacterCore on Character {
+    description
+    favourites
+    id
+    image {
+        large
+        medium
+    }
+    isFavourite
+    name {
+        alternative
+        first
+        full
+        last
+        native
+    }
+    siteUrl
+    updatedAt
+}

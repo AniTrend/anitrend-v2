@@ -34,37 +34,26 @@
 
 package co.anitrend.data.carousel.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.enums.ScoreFormat
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.domain.carousel.model.CarouselParam
 
-@Parcelize
-data class CarouselQuery(
-    val season: MediaSeason,
-    val seasonYear: Int,
-    val nextSeason: MediaSeason,
-    val nextSeasonYear: Int,
-    val isAdult: Boolean? = false,
-    val currentTime: Long,
-    val scoreFormat: ScoreFormat? = null,
-    val type: MediaType? = null,
-    val pageSize: Int
+
+internal data class CarouselQuery(
+    val param: CarouselParam.Find
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "season" to season,
-        "seasonYear" to seasonYear,
-        "nextSeason" to nextSeason,
-        "nextSeasonYear" to nextSeasonYear,
-        "isAdult" to isAdult,
-        "currentTime" to currentTime,
-        "scoreFormat" to scoreFormat,
-        "perPage" to pageSize,
-        "type" to type
+        "season" to param.season,
+        "seasonYear" to param.seasonYear,
+        "nextSeason" to param.nextSeason,
+        "nextSeasonYear" to param.nextSeasonYear,
+        "isAdult" to param.isAdult,
+        "currentTime" to param.currentTime,
+        "scoreFormat" to param.scoreFormat,
+        "perPage" to param.pageSize,
+        "type" to param.type
     )
 }

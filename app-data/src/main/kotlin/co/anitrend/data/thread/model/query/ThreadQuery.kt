@@ -17,47 +17,43 @@
 
 package co.anitrend.data.thread.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
 import co.anitrend.domain.thread.enums.ThreadSort
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.domain.thread.model.ThreadParam
 
-/** [Thread query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param id Filter by the thread id
- * @param userId Filter by the user id of the thread's creator
- * @param replyUserId Filter by the user id of the last user to comment on the thread
- * @param subscribed Filter by if the currently authenticated user's subscribed threads
- * @param categoryId Filter by thread category id
- * @param mediaCategoryId Filter by thread media id category
- * @param search Filter by search query
- * @param id_in Filter by the thread id
- * @param sort The order the results will be returned in
- */
-@Parcelize
-data class ThreadQuery(
-    val id: Long? = null,
-    val userId: Long? = null,
-    val replyUserId: Long? = null,
-    val subscribed: Boolean? = null,
-    val categoryId: Long? = null,
-    val mediaCategoryId: Long? = null,
-    val search: String? = null,
-    val id_in: List<Long>? = null,
-    val sort: List<ThreadSort>? = null
-) : IGraphPayload {
+internal sealed class ThreadQuery : IGraphPayload {
 
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() = mapOf(
-        "id" to id,
-        "userId" to userId,
-        "replyUserId" to replyUserId,
-        "subscribed" to subscribed,
-        "categoryId" to categoryId,
-        "mediaCategoryId" to mediaCategoryId,
-        "search" to search,
-        "id_in" to id_in,
-        "sort" to sort
-    )
+    data class Find(
+        val param: ThreadParam.Find
+    ) : ThreadQuery() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id,
+            "userId" to param.userId,
+            "replyUserId" to param.replyUserId,
+            "subscribed" to param.subscribed,
+            "categoryId" to param.categoryId,
+            "mediaCategoryId" to param.mediaCategoryId,
+            "search" to param.search,
+            "id_in" to param.id_in,
+            "sort" to param.sort
+        )
+    }
+
+    data class FindComment(
+        val param: ThreadParam.FindComment
+    ) : ThreadQuery() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id,
+            "threadId" to param.threadId,
+            "userId" to param.userId
+        )
+    }
 }

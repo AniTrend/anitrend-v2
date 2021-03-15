@@ -17,6 +17,7 @@
 
 package co.anitrend.data.review.model.mutation;
 
+import co.anitrend.domain.review.model.ReviewParam
 import org.junit.Assert.*;
 import org.junit.Test
 
@@ -24,7 +25,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is greater than the minimum requirement and less than the maximum`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "This is a sample body which should not pass",
             score = 50,
@@ -40,7 +41,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is equal to the minimum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -55,7 +56,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is one character less than the minimum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -71,7 +72,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is one character more than the minimum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -87,7 +88,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is equal to the maximum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -103,7 +104,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is one character more than the maximum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -119,7 +120,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is one character less than the maximum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -135,7 +136,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a summary that is greater than the maximum requirement`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet",
             score = 50,
@@ -157,7 +158,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a body that is greater than the minimum requirement and less than the maximum`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = """
                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin condimentum nisi eu tempor.
@@ -201,7 +202,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a body that is equal to the minimum requirement and less than the maximum`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, met",
             score = 50,
@@ -217,7 +218,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a body that is one character less than the minimum requirement and less than the maximum`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, me",
             score = 50,
@@ -233,7 +234,7 @@ class SaveReviewMutationTest {
 
     @Test
     fun `given a body that is one character more than the minimum requirement and less than the maximum`() {
-        val input = SaveReviewMutation(
+        val input = ReviewParam.Save(
             mediaId = 0,
             body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, mets",
             score = 50,

@@ -17,14 +17,16 @@
 
 package co.anitrend.data.user.entity.statistic
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.model.statistics.UserStatisticModel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity(
     tableName = "user_statistic",
+    indices = [Index(value = ["user_id"])],
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,
@@ -36,7 +38,13 @@ import co.anitrend.data.user.entity.UserEntity
     ]
 )
 internal data class UserWithStatisticEntity(
-    @ColumnInfo(name = "user_id") override val id: Long
+    @Embedded(prefix = "statistic_") val statistic: Statistic,
+    @ColumnInfo(name = "user_id") val userId: Long,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
 ) : Identity {
-    // This is going to be fun..
+    @Serializable
+    data class Statistic(
+        @SerialName("anime") @ColumnInfo(name = "anime") val anime: UserStatisticModel.Anime?,
+        @SerialName("manga") @ColumnInfo(name = "manga") val manga: UserStatisticModel.Manga?
+    )
 }

@@ -4,6 +4,11 @@ fragment MediaCore on Media {
     title {
         ... MediaTitle
     }
+    trailer {
+        id
+        site
+        thumbnail
+    }
     bannerImage
     coverImage {
         ... MediaImage

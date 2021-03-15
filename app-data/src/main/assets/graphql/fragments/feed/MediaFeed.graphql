@@ -1,0 +1,19 @@
+fragment MediaFeed on ListActivity {
+    createdAt
+    id
+    isLiked
+    isLocked
+    isSubscribed
+    likeCount
+    media {
+        ... MediaCoreWithoutAiring
+    }
+    progress
+    replyCount
+    siteUrl
+    status
+    type
+    user {
+        ... UserCore
+    }
+}

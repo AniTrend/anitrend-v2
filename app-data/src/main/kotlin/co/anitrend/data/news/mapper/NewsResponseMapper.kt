@@ -45,18 +45,6 @@ internal class NewsResponseMapper(
     }
 
     /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<NewsEntity>) {
-        mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
-    }
-
-    /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      *
      * @param source the incoming data source type

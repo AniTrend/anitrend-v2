@@ -20,12 +20,15 @@ package co.anitrend.data.api.provider
 import androidx.collection.LruCache
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.contract.EndpointType
+import co.anitrend.data.api.helper.cache.CacheHelper
 import co.anitrend.data.api.interceptor.GraphAuthenticator
 import co.anitrend.data.api.interceptor.GraphClientInterceptor
 import co.anitrend.data.auth.helper.AuthenticationHelper
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 import retrofit2.Retrofit
@@ -40,13 +43,18 @@ internal object RetrofitProvider {
     private val cache = LruCache<EndpointType, Retrofit>(3)
 
     private fun provideOkHttpClient(type: EndpointType, scope: Scope) : OkHttpClient {
+        val isDebugEnv = BuildConfig.DEBUG
         val builder = scope.get<OkHttpClient.Builder> {
             parametersOf(
-                if (BuildConfig.DEBUG)
+                if (isDebugEnv)
                     HttpLoggingInterceptor.Level.HEADERS
                 else HttpLoggingInterceptor.Level.NONE
             )
-        }
+        }.dispatcher(
+            Dispatcher().apply {
+                maxRequests = if (isDebugEnv) 1 else 2
+            }
+        )
 
         when (type) {
             EndpointType.GRAPH_QL -> {
@@ -68,7 +76,7 @@ internal object RetrofitProvider {
                         }
                     )
             }
-            EndpointType.RELATION_MOE -> {
+            EndpointType.OAUTH -> {
                 Timber.tag(moduleTag).d("""
                     Adding request interceptors for request: ${type.name}
                     """.trimIndent()
@@ -82,7 +90,8 @@ internal object RetrofitProvider {
                         }
                     )
             }
-            EndpointType.OAUTH, EndpointType.NEWS_RSS  -> {
+            EndpointType.RELATION_MOE, EndpointType.THE_XEM,
+            EndpointType.NEWS_RSS, EndpointType.MEDIA_RSS -> {
                 Timber.tag(moduleTag).d("""
                     Adding request interceptors for request: ${type.name}
                     """.trimIndent()
@@ -95,6 +104,13 @@ internal object RetrofitProvider {
                             )
                         }
                     )
+
+                builder.cache(
+                    CacheHelper.createCache(
+                        scope.androidContext(),
+                        type.name
+                    )
+                )
             }
         }
 
@@ -103,7 +119,8 @@ internal object RetrofitProvider {
 
     private fun create(endpointType: EndpointType, scope: Scope) = scope.get<Retrofit.Builder>()
         .client(provideOkHttpClient(endpointType, scope))
-        .baseUrl(endpointType.url).build()
+        .baseUrl(endpointType.url)
+        .build()
 
     /**
      * Provides retrofit instances for the given [type] while avoiding creating an instance every time

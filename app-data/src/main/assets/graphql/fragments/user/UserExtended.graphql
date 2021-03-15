@@ -9,6 +9,7 @@ fragment UserExtended on User {
         }
         profileColor
         titleLanguage
+        timezone
     }
     unreadNotificationCount
     mediaListOptions {

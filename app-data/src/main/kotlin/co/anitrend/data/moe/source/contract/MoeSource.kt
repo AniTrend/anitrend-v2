@@ -18,35 +18,39 @@
 package co.anitrend.data.moe.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.empty
+import co.anitrend.data.cache.extensions.invoke
+import co.anitrend.data.cache.model.CacheIdentity
+import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.moe.cache.MoeCache
 import co.anitrend.data.moe.model.local.MoeSourceQuery
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-internal abstract class MoeSource(
-    dispatcher: ISupportDispatcher
-) : SupportCoreDataSource(dispatcher) {
+internal abstract class MoeSource : SupportCoreDataSource() {
+
     internal lateinit var query: MoeSourceQuery
+
+    protected lateinit var cacheIdentity: CacheIdentity
+
+    protected abstract val cachePolicy: ICacheStorePolicy
 
     internal abstract val observable: Flow<IMediaSourceId>
 
     internal abstract suspend fun getSourceRelation(
-        query: MoeSourceQuery,
         callback: RequestCallback
-    )
+    ): Boolean
 
     operator fun invoke(sourceQuery: MoeSourceQuery): Flow<IMediaSourceId> {
         query = sourceQuery
-        launch(coroutineContext, CoroutineStart.LAZY) {
-            requestHelper.runIfNotRunning(
-                Request.Default(String.empty(), Request.Type.INITIAL)
-            ) { getSourceRelation(sourceQuery, it) }
+        cacheIdentity = MoeCache.Identity(sourceQuery)
+        cachePolicy(scope, requestHelper, cacheIdentity) {
+            getSourceRelation(it)
         }
         return observable
     }

@@ -24,6 +24,14 @@ interface IAuthenticationSettings {
     val authenticatedUserId: AbstractSetting<Long>
     val isAuthenticated: AbstractSetting<Boolean>
 
+    /**
+     * Invalidates authentication settings state
+     */
+    fun invalidateAuthenticationSettings() {
+        authenticatedUserId.value = INVALID_USER_ID
+        isAuthenticated.value = false
+    }
+
     companion object {
         const val INVALID_USER_ID: Long = -1
     }

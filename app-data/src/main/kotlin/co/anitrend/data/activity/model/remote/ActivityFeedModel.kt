@@ -19,7 +19,7 @@ package co.anitrend.data.activity.model.remote
 
 import co.anitrend.data.activity.model.contract.IActivityFeedModel
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.user.model.remote.UserModel
+import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.activity.enums.ActivityType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -42,7 +42,7 @@ internal sealed class ActivityFeedModel : IActivityFeedModel {
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
         @SerialName("progress") val progress: String?,
-        @SerialName("user") val user: UserModel?,
+        @SerialName("user") val user: UserModel.Core?,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("isLiked") override val isLiked: Boolean?,
         @SerialName("likeCount") override val likeCount: Int,
@@ -62,11 +62,11 @@ internal sealed class ActivityFeedModel : IActivityFeedModel {
      */
     @Serializable
     internal data class Message(
-        @SerialName("recipient") val recipient : UserModel?,
+        @SerialName("recipient") val recipient : UserModel.Core?,
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
         @SerialName("message") val message: String?,
-        @SerialName("messenger") val messenger: UserModel?,
+        @SerialName("messenger") val messenger: UserModel.Core?,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("isLiked") override val isLiked: Boolean?,
         @SerialName("likeCount") override val likeCount: Int,
@@ -85,7 +85,7 @@ internal sealed class ActivityFeedModel : IActivityFeedModel {
     internal data class Reply(
         @SerialName("activityId") val activityId: Long?,
         @SerialName("text") val text: String?,
-        @SerialName("user") val user: UserModel?,
+        @SerialName("user") val user: UserModel.Core?,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("isLiked") override val isLiked: Boolean?,
         @SerialName("likeCount") override val likeCount: Int,
@@ -106,7 +106,7 @@ internal sealed class ActivityFeedModel : IActivityFeedModel {
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
         @SerialName("text") val text: String?,
-        @SerialName("user") val user: UserModel?,
+        @SerialName("user") val user: UserModel.Core?,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("isLiked") override val isLiked: Boolean?,
         @SerialName("likeCount") override val likeCount: Int,

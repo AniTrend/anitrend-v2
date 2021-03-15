@@ -21,8 +21,8 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.news.entity.NewsEntity
-import co.anitrend.data.rss.extensions.rcf822ToUnixTime
 import co.anitrend.data.news.model.NewsModelItem
+import co.anitrend.data.rss.extensions.rcf822ToUnixTime
 import co.anitrend.domain.news.entity.News
 import okhttp3.HttpUrl.Companion.toHttpUrl
 

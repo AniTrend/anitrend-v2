@@ -22,6 +22,8 @@ import co.anitrend.data.api.provider.RetrofitProvider
 import co.anitrend.data.arch.controller.strategy.policy.OfflineStrategy
 import co.anitrend.data.arch.controller.strategy.policy.OnlineStrategy
 import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.tmdb.api.TmdbApi
+import co.anitrend.data.trakt.api.TraktApi
 import org.koin.core.scope.Scope
 
 
@@ -30,6 +32,9 @@ import org.koin.core.scope.Scope
  */
 internal inline fun <reified T> Scope.api(type: EndpointType): T =
     RetrofitProvider.provide(type, this).create(T::class.java)
+
+internal fun Scope.trakt() = get<TraktApi>()
+internal fun Scope.tmdb() = get<TmdbApi>()
 
 /**
  * Facade for supplying database contract

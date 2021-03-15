@@ -20,10 +20,17 @@ package co.anitrend.data.media.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.sqlite.db.SupportSQLiteQuery
+import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.arch.database.wrapper.SourceEntityWrapper
+import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
+import co.anitrend.data.medialist.entity.MediaListEntity
+import co.anitrend.data.rank.entity.RankEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -46,18 +53,17 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
     abstract override suspend fun clear()
 
     @Query("""
-        select * from media
+        delete from media
         where id = :id
-    """)
-    @Transaction
-    abstract suspend fun mediaById(id: Long): MediaEntityView.WithMediaList?
+        """)
+    abstract suspend fun clearById(id: Long)
 
     @Query("""
         select * from media
         where id = :id
     """)
     @Transaction
-    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.WithMediaList?>
+    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.WithMediaListExtended?>
 
     @Query("""
         select * from media
@@ -71,4 +77,19 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
     """)
     @Transaction
     abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
+
+    @Transaction
+    @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
+    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.WithMediaList>
+
+    @Transaction
+    open suspend fun upsertWithAttributes(
+        entity: MediaEntity,
+        linkWrapper: SourceEntityWrapper<LinkEntity>?,
+        rankWrapper: SourceEntityWrapper<RankEntity>?
+    ) {
+        upsert(entity)
+        linkWrapper?.upsert()
+        rankWrapper?.upsert()
+    }
 }

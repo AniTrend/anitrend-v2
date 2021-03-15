@@ -25,11 +25,10 @@ import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.data.medialist.model.collection.MediaListCollectionModel
+import co.anitrend.data.medialist.model.container.MediaListContainerModel
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
-import co.anitrend.data.user.model.remote.UserModel
+import co.anitrend.data.user.model.UserModel
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
@@ -39,7 +38,7 @@ internal class MediaListCollectionMapper(
     private val userConverter: UserModelConverter,
     private val userLocalSource: UserLocalSource,
     private val context: CoroutineContext
-) : DefaultMapper<MediaListCollectionModel, List<MediaListEntity>>() {
+) : DefaultMapper<MediaListContainerModel.Collection, List<MediaListEntity>>() {
 
     private suspend fun saveUser(userModel: UserModel) {
         val entity = userConverter.convertFrom(userModel)
@@ -78,7 +77,7 @@ internal class MediaListCollectionMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: MediaListCollectionModel): List<MediaListEntity> {
+    override suspend fun onResponseMapFrom(source: MediaListContainerModel.Collection): List<MediaListEntity> {
         source.user?.also { user ->
             saveUser(user)
         }

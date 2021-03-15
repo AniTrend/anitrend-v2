@@ -17,26 +17,19 @@
 
 package co.anitrend.data.notification.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.data.arch.common.model.graph.IGraphPayload
 import co.anitrend.domain.notification.enums.NotificationType
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.domain.notification.model.NotificationParam
 
-/** [Notification query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param type Filter by the type of notifications
- * @param resetNotificationCount Reset the unread notification count to 0 on load
- */
-@Parcelize
-data class NotificationQuery(
-    val type: NotificationType? = null,
-    val resetNotificationCount: Boolean = false
+internal data class NotificationQuery(
+    val param: NotificationParam.Find
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "type" to type,
-        "resetNotificationCount" to resetNotificationCount
+        "type" to param.type,
+        "resetNotificationCount" to param.resetNotificationCount
     )
 }

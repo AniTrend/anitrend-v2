@@ -22,9 +22,11 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 internal enum class EndpointType(val url: HttpUrl) {
-    OAUTH("https://${BuildConfig.apiAuthUrl}".toHttpUrl()),
-    GRAPH_QL(BuildConfig.apiUrl.toHttpUrl()),
-    RELATION_MOE(BuildConfig.relationUrl.toHttpUrl()),
+    OAUTH("https://${BuildConfig.aniListAuth}".toHttpUrl()),
+    GRAPH_QL(BuildConfig.aniListApi.toHttpUrl()),
+    RELATION_MOE(BuildConfig.relationYunaMoe.toHttpUrl()),
+    THE_XEM(BuildConfig.theXemDe.toHttpUrl()),
+    MEDIA_RSS(BuildConfig.rssUrl.toHttpUrl()),
     NEWS_RSS(BuildConfig.rssUrl.toHttpUrl());
 
     companion object {

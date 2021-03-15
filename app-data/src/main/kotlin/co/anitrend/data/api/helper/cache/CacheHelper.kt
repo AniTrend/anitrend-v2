@@ -17,16 +17,28 @@
 
 package co.anitrend.data.api.helper.cache
 
+import android.content.Context
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.data.api.helper.cache.model.TimeSpecification
+import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Request
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.scope.Scope
 import timber.log.Timber
+import java.io.File
 
 internal object CacheHelper {
-    internal const val MAX_CACHE_SIZE = (1024 * 1024 * 25).toLong()
+    const val MAX_CACHE_SIZE = (1024 * 1024 * 25).toLong()
 
     private val moduleTag = javaClass.simpleName
+
+    fun createCache(context: Context, name: String, maxSize: Long = MAX_CACHE_SIZE): Cache {
+        val destination = context.externalCacheDir ?: context.cacheDir
+        val cacheLocation = File(destination, name)
+        if (!cacheLocation.exists()) cacheLocation.mkdirs()
+        return Cache(cacheLocation, maxSize)
+    }
 
     /**
      * If we have internet connectivity, get the cache that was stored to the equivalent [cacheAge].
@@ -44,7 +56,7 @@ internal object CacheHelper {
      * @param staleAge duration offline cache is valid for
      * @param request request to build on
      */
-    internal fun addCacheControl(
+    fun addCacheControl(
         connectivity: SupportConnectivity,
         cacheAge: TimeSpecification,
         staleAge: TimeSpecification,

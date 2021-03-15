@@ -1,0 +1,19 @@
+fragment MessageFeed on MessageActivity {
+    createdAt
+    id
+    isLiked
+    isLocked
+    isPrivate
+    isSubscribed
+    likeCount
+    message
+    messenger {
+        ... UserCore
+    }
+    recipient {
+        ... UserCore
+    }
+    replyCount
+    siteUrl
+    type
+}

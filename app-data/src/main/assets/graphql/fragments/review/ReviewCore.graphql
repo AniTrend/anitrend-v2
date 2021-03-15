@@ -1,0 +1,17 @@
+fragment ReviewCore on Review {
+    body
+    createdAt
+    id
+    mediaType
+    private
+    rating
+    ratingAmount
+    score
+    siteUrl
+    summary
+    updatedAt
+    user {
+        ... UserCore
+    }
+    userRating
+}

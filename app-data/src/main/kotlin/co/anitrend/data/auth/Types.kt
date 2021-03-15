@@ -20,10 +20,10 @@ package co.anitrend.data.auth
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.arch.controller.graphql.GraphQLController
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.model.remote.container.UserViewerModelContainer
+import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.domain.auth.interactor.AuthUseCase
 import co.anitrend.domain.user.entity.User
 
-internal typealias AuthController = GraphQLController<UserViewerModelContainer, UserEntity>
+internal typealias AuthController = GraphQLController<UserModelContainer.Viewer, UserEntity>
 
 typealias AuthUserInteractor = AuthUseCase<DataState<User?>>

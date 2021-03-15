@@ -20,23 +20,19 @@ package co.anitrend.data.medialist
 import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.arch.controller.graphql.GraphQLController
-import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.medialist.model.collection.MediaListCollectionModel
-import co.anitrend.data.medialist.model.page.MediaListPageModel
-import co.anitrend.data.medialist.model.query.MediaListQuery
+import co.anitrend.data.medialist.model.container.MediaListContainerModel
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.interactor.MediaListUseCase
-import co.anitrend.domain.medialist.repository.MediaListRepository
+import co.anitrend.domain.medialist.repository.IMediaListRepository
 
+internal typealias MediaListPagedController = GraphQLController<MediaListContainerModel.Paged, List<MediaListEntity>>
+internal typealias MediaListCollectionController = GraphQLController<MediaListContainerModel.Collection, List<MediaListEntity>>
 
-internal typealias MediaListPagedController = GraphQLController<MediaListPageModel, List<MediaListEntity>>
-internal typealias MediaListCollectionController = GraphQLController<MediaListCollectionModel, List<MediaListEntity>>
+internal typealias MediaListCollectionRepository = IMediaListRepository.Collection<DataState<PagedList<MediaList>>>
+internal typealias MediaListPagedRepository = IMediaListRepository.Paged<DataState<PagedList<MediaList>>>
+internal typealias MediaListDeleteRepository = IMediaListRepository.Delete<DataState<MediaList>>
+internal typealias MediaListSaveRepository = IMediaListRepository.Save<DataState<MediaList>>
 
-internal typealias MediaListCollectionRepository = MediaListRepository.Collection<DataState<PagedList<MediaList>>>
-internal typealias MediaListPagedRepository = MediaListRepository.Paged<DataState<PagedList<MediaList>>>
-internal typealias MediaListDeleteRepository = MediaListRepository.Delete<DataState<MediaList>>
-internal typealias MediaListSaveRepository = MediaListRepository.Save<DataState<MediaList>>
-
-typealias GetMediaListPagedInteractor = MediaListUseCase.GetPaged<DataState<PagedList<MediaList>>, MediaListQuery.Paged>
-typealias GetMediaListCollectionInteractor = MediaListUseCase.GetCollection<DataState<PagedList<MediaList>>, MediaListQuery.Collection>
+typealias GetPagedMediaListInteractor = MediaListUseCase.GetPaged<DataState<PagedList<MediaList>>>
+typealias GetCollectionMediaListInteractor = MediaListUseCase.GetCollection<DataState<PagedList<MediaList>>>

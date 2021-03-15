@@ -19,7 +19,6 @@ package co.anitrend.data.news.datasource.remote
 
 import android.net.Uri
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import androidx.test.platform.app.InstrumentationRegistry
 import app.cash.copper.flow.mapToList
 import app.cash.copper.flow.observeQuery
 import app.cash.turbine.test
@@ -31,13 +30,12 @@ import org.junit.runner.RunWith
 import kotlin.time.ExperimentalTime
 import kotlin.time.seconds
 
-@ExperimentalTime
 @RunWith(AndroidJUnit4ClassRunner::class)
 internal class NewsRemoteSourceTest : CoreTestSuite() {
 
     @Test
     @ExperimentalTime
-    fun testNewsContentProvider() {
+    fun testNewsContentProvider() = runBlocking(dispatchers.io) {
         val query = Uri.Builder()
             .scheme("content")
             .authority("co.anitrend.crunchy")
@@ -64,12 +62,11 @@ internal class NewsRemoteSourceTest : CoreTestSuite() {
                 )
                 """.trimIndent()
             }
-        runBlocking {
-            newsFlow.test(timeout = 15.seconds) {
-                val news = expectItem()
-                Assert.assertTrue(news.isNotEmpty())
-                Assert.assertEquals(15, news.size)
-            }
+
+        newsFlow.test(timeout = 15.seconds) {
+            val news = expectItem()
+            Assert.assertTrue(news.isNotEmpty())
+            Assert.assertEquals(15, news.size)
         }
     }
 }

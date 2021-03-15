@@ -2,8 +2,93 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "38797a7f7c13e664b22190f0f23062b7",
+    "identityHash": "f4a3a75a971c1b3dd57410321dcfb273",
     "entities": [
+      {
+        "tableName": "cache_log",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `request` TEXT NOT NULL, `cache_item_id` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "request",
+            "columnName": "request",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cacheItemId",
+            "columnName": "cache_item_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_cache_log_cache_item_id",
+            "unique": true,
+            "columnNames": [
+              "cache_item_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_cache_log_cache_item_id` ON `${TABLE_NAME}` (`cache_item_id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "moe",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`anilist` INTEGER NOT NULL, `anidb` INTEGER, `kitsu` INTEGER, `mal` INTEGER, PRIMARY KEY(`anilist`))",
+        "fields": [
+          {
+            "fieldPath": "anilist",
+            "columnName": "anilist",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aniDb",
+            "columnName": "anidb",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "kitsu",
+            "columnName": "kitsu",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mal",
+            "columnName": "mal",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "anilist"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
       {
         "tableName": "auth",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `user_id` INTEGER NOT NULL, `expires_on` INTEGER NOT NULL, `token_type` TEXT NOT NULL, `access_token` TEXT NOT NULL)",
@@ -117,6 +202,90 @@
         "foreignKeys": []
       },
       {
+        "tableName": "tag_connection",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rank` INTEGER NOT NULL, `is_media_spoiler` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `tag_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`tag_id`) REFERENCES `tag`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isMediaSpoiler",
+            "columnName": "is_media_spoiler",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tagId",
+            "columnName": "tag_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_tag_connection_tag_id",
+            "unique": false,
+            "columnNames": [
+              "tag_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_tag_id` ON `${TABLE_NAME}` (`tag_id`)"
+          },
+          {
+            "name": "index_tag_connection_media_id",
+            "unique": false,
+            "columnNames": [
+              "media_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "tag",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "tag_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
         "tableName": "genre",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `genre` TEXT NOT NULL)",
         "fields": [
@@ -152,76 +321,67 @@
         "foreignKeys": []
       },
       {
-        "tableName": "moe",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`anilist` INTEGER NOT NULL, `anidb` INTEGER, `kitsu` INTEGER, `mal` INTEGER, PRIMARY KEY(`anilist`))",
+        "tableName": "genre_connection",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "anilist",
-            "columnName": "anilist",
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "aniDb",
-            "columnName": "anidb",
-            "affinity": "INTEGER",
-            "notNull": false
+            "fieldPath": "genre",
+            "columnName": "genre",
+            "affinity": "TEXT",
+            "notNull": true
           },
           {
-            "fieldPath": "kitsu",
-            "columnName": "kitsu",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "mal",
-            "columnName": "mal",
-            "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "anilist"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
-        "indices": [],
-        "foreignKeys": []
+        "indices": [
+          {
+            "name": "index_genre_connection_media_id",
+            "unique": false,
+            "columnNames": [
+              "media_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `tags` TEXT NOT NULL, `genres` TEXT NOT NULL, `links` TEXT NOT NULL, `ranks` TEXT NOT NULL, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "nextAiringId",
             "columnName": "next_airing_id",
             "affinity": "INTEGER",
             "notNull": false
-          },
-          {
-            "fieldPath": "tags",
-            "columnName": "tags",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "genres",
-            "columnName": "genres",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "links",
-            "columnName": "links",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "ranks",
-            "columnName": "ranks",
-            "affinity": "TEXT",
-            "notNull": true
           },
           {
             "fieldPath": "averageScore",
@@ -428,6 +588,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "title.original",
+            "columnName": "title_original",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "title.userPreferred",
             "columnName": "title_user_preferred",
             "affinity": "TEXT",
@@ -456,6 +622,53 @@
           "columnNames": [
             "id"
           ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "media",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_media_fts_BEFORE_UPDATE BEFORE UPDATE ON `media` BEGIN DELETE FROM `media_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_media_fts_BEFORE_DELETE BEFORE DELETE ON `media` BEGIN DELETE FROM `media_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_media_fts_AFTER_UPDATE AFTER UPDATE ON `media` BEGIN INSERT INTO `media_fts`(`docid`, `title_romaji`, `title_english`, `title_original`) VALUES (NEW.`rowid`, NEW.`title_romaji`, NEW.`title_english`, NEW.`title_original`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_media_fts_AFTER_INSERT AFTER INSERT ON `media` BEGIN INSERT INTO `media_fts`(`docid`, `title_romaji`, `title_english`, `title_original`) VALUES (NEW.`rowid`, NEW.`title_romaji`, NEW.`title_english`, NEW.`title_original`); END"
+        ],
+        "tableName": "media_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`title_romaji` TEXT NOT NULL, `title_english` TEXT NOT NULL, `title_original` TEXT NOT NULL, content=`media`)",
+        "fields": [
+          {
+            "fieldPath": "romaji",
+            "columnName": "title_romaji",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "english",
+            "columnName": "title_english",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "original",
+            "columnName": "title_original",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
           "autoGenerate": false
         },
         "indices": [],
@@ -503,53 +716,6 @@
           "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "cache_log",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `request` TEXT NOT NULL, `cache_item_id` INTEGER NOT NULL, `timestamp` INTEGER NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "request",
-            "columnName": "request",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "cacheItemId",
-            "columnName": "cache_item_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "timestamp",
-            "columnName": "timestamp",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [
-          {
-            "name": "index_cache_log_cache_item_id",
-            "unique": true,
-            "columnNames": [
-              "cache_item_id"
-            ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_cache_log_cache_item_id` ON `${TABLE_NAME}` (`cache_item_id`)"
-          }
-        ],
         "foreignKeys": []
       },
       {
@@ -645,6 +811,41 @@
           "columnNames": [
             "id"
           ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "user",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_BEFORE_UPDATE BEFORE UPDATE ON `user` BEGIN DELETE FROM `user_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_BEFORE_DELETE BEFORE DELETE ON `user` BEGIN DELETE FROM `user_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_AFTER_UPDATE AFTER UPDATE ON `user` BEGIN INSERT INTO `user_fts`(`docid`, `user_name`) VALUES (NEW.`rowid`, NEW.`user_name`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_user_fts_AFTER_INSERT AFTER INSERT ON `user` BEGIN INSERT INTO `user_fts`(`docid`, `user_name`) VALUES (NEW.`rowid`, NEW.`user_name`); END"
+        ],
+        "tableName": "user_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`user_name` TEXT NOT NULL, content=`user`)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
           "autoGenerate": false
         },
         "indices": [],
@@ -847,6 +1048,65 @@
         ]
       },
       {
+        "tableName": "user_statistic",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `statistic_anime` TEXT, `statistic_manga` TEXT, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.anime",
+            "columnName": "statistic_anime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "statistic.manga",
+            "columnName": "statistic_manga",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_statistic_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_statistic_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
         "tableName": "media_list",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `advanced_scores` TEXT NOT NULL, `custom_lists` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
@@ -975,8 +1235,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "news_entity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `image` TEXT, `author` TEXT NOT NULL, `subTitle` TEXT NOT NULL, `originalLink` TEXT NOT NULL, `description` TEXT, `content` TEXT NOT NULL, `publishedOn` INTEGER, PRIMARY KEY(`id`))",
+        "tableName": "news",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `image` TEXT, `author` TEXT NOT NULL, `sub_title` TEXT NOT NULL, `original_link` TEXT NOT NULL, `description` TEXT, `content` TEXT NOT NULL, `published_on` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1004,13 +1264,13 @@
           },
           {
             "fieldPath": "subTitle",
-            "columnName": "subTitle",
+            "columnName": "sub_title",
             "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "originalLink",
-            "columnName": "originalLink",
+            "columnName": "original_link",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -1028,7 +1288,7 @@
           },
           {
             "fieldPath": "publishedOn",
-            "columnName": "publishedOn",
+            "columnName": "published_on",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -1041,12 +1301,774 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "news",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_news_fts_BEFORE_UPDATE BEFORE UPDATE ON `news` BEGIN DELETE FROM `news_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_news_fts_BEFORE_DELETE BEFORE DELETE ON `news` BEGIN DELETE FROM `news_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_news_fts_AFTER_UPDATE AFTER UPDATE ON `news` BEGIN INSERT INTO `news_fts`(`docid`, `title`, `sub_title`, `description`) VALUES (NEW.`rowid`, NEW.`title`, NEW.`sub_title`, NEW.`description`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_news_fts_AFTER_INSERT AFTER INSERT ON `news` BEGIN INSERT INTO `news_fts`(`docid`, `title`, `sub_title`, `description`) VALUES (NEW.`rowid`, NEW.`title`, NEW.`sub_title`, NEW.`description`); END"
+        ],
+        "tableName": "news_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`title` TEXT NOT NULL, `sub_title` TEXT NOT NULL, `description` TEXT, content=`news`)",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subTitle",
+            "columnName": "sub_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "episode",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `guid` TEXT NOT NULL, `media_id` INTEGER NOT NULL, `description` TEXT, `sub_titles` TEXT NOT NULL, `id` INTEGER NOT NULL, `series_title` TEXT NOT NULL, `series_publisher` TEXT, `series_season` TEXT, `series_keywords` TEXT NOT NULL, `series_rating` TEXT, `thumbnail_large` TEXT, `thumbnail_medium` TEXT, `available_free_time` INTEGER NOT NULL, `available_premium_time` INTEGER NOT NULL, `info_episode_duration` TEXT NOT NULL, `info_episode_title` TEXT, `info_episode_number` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "guid",
+            "columnName": "guid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subtitles",
+            "columnName": "sub_titles",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "series.seriesTitle",
+            "columnName": "series_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "series.seriesPublisher",
+            "columnName": "series_publisher",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "series.seriesSeason",
+            "columnName": "series_season",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "series.keywords",
+            "columnName": "series_keywords",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "series.rating",
+            "columnName": "series_rating",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.large",
+            "columnName": "thumbnail_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "coverImage.medium",
+            "columnName": "thumbnail_medium",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "availability.freeTime",
+            "columnName": "available_free_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "availability.premiumTime",
+            "columnName": "available_premium_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.episodeDuration",
+            "columnName": "info_episode_duration",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "about.episodeTitle",
+            "columnName": "info_episode_title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "about.episodeNumber",
+            "columnName": "info_episode_number",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "episode",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_episode_fts_BEFORE_UPDATE BEFORE UPDATE ON `episode` BEGIN DELETE FROM `episode_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_episode_fts_BEFORE_DELETE BEFORE DELETE ON `episode` BEGIN DELETE FROM `episode_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_episode_fts_AFTER_UPDATE AFTER UPDATE ON `episode` BEGIN INSERT INTO `episode_fts`(`docid`, `title`, `description`, `series_title`) VALUES (NEW.`rowid`, NEW.`title`, NEW.`description`, NEW.`series_title`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_episode_fts_AFTER_INSERT AFTER INSERT ON `episode` BEGIN INSERT INTO `episode_fts`(`docid`, `title`, `description`, `series_title`) VALUES (NEW.`rowid`, NEW.`title`, NEW.`description`, NEW.`series_title`); END"
+        ],
+        "tableName": "episode_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`title` TEXT NOT NULL, `description` TEXT, `series_title` TEXT NOT NULL, content=`episode`)",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "seriesTitle",
+            "columnName": "series_title",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "character",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "favourites",
+            "columnName": "favourites",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavourite",
+            "columnName": "isFavourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "siteUrl",
+            "columnName": "site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image.large",
+            "columnName": "image_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "image.medium",
+            "columnName": "image_medium",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.alternatives",
+            "columnName": "name_alternative",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.first",
+            "columnName": "name_first",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.full",
+            "columnName": "name_full",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.last",
+            "columnName": "name_last",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.original",
+            "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "character",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_character_fts_BEFORE_UPDATE BEFORE UPDATE ON `character` BEGIN DELETE FROM `character_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_character_fts_BEFORE_DELETE BEFORE DELETE ON `character` BEGIN DELETE FROM `character_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_character_fts_AFTER_UPDATE AFTER UPDATE ON `character` BEGIN INSERT INTO `character_fts`(`docid`, `name_alternative`, `name_first`, `name_full`, `name_last`, `name_original`) VALUES (NEW.`rowid`, NEW.`name_alternative`, NEW.`name_first`, NEW.`name_full`, NEW.`name_last`, NEW.`name_original`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_character_fts_AFTER_INSERT AFTER INSERT ON `character` BEGIN INSERT INTO `character_fts`(`docid`, `name_alternative`, `name_first`, `name_full`, `name_last`, `name_original`) VALUES (NEW.`rowid`, NEW.`name_alternative`, NEW.`name_first`, NEW.`name_full`, NEW.`name_last`, NEW.`name_original`); END"
+        ],
+        "tableName": "character_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, content=`character`)",
+        "fields": [
+          {
+            "fieldPath": "alternatives",
+            "columnName": "name_alternative",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "first",
+            "columnName": "name_first",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "full",
+            "columnName": "name_full",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last",
+            "columnName": "name_last",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "original",
+            "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "studio",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`favourites` INTEGER NOT NULL, `is_animation_studio` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `name` TEXT NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "favourites",
+            "columnName": "favourites",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAnimationStudio",
+            "columnName": "is_animation_studio",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavourite",
+            "columnName": "is_favourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "siteUrl",
+            "columnName": "site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "studio",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_studio_fts_BEFORE_UPDATE BEFORE UPDATE ON `studio` BEGIN DELETE FROM `studio_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_studio_fts_BEFORE_DELETE BEFORE DELETE ON `studio` BEGIN DELETE FROM `studio_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_studio_fts_AFTER_UPDATE AFTER UPDATE ON `studio` BEGIN INSERT INTO `studio_fts`(`docid`, `name`) VALUES (NEW.`rowid`, NEW.`name`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_studio_fts_AFTER_INSERT AFTER INSERT ON `studio` BEGIN INSERT INTO `studio_fts`(`docid`, `name`) VALUES (NEW.`rowid`, NEW.`name`); END"
+        ],
+        "tableName": "studio_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name` TEXT NOT NULL, content=`studio`)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "staff",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "favourites",
+            "columnName": "favourites",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavourite",
+            "columnName": "is_favourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "siteUrl",
+            "columnName": "site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image.large",
+            "columnName": "image_large",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "image.medium",
+            "columnName": "image_medium",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.alternatives",
+            "columnName": "name_alternative",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.first",
+            "columnName": "name_first",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.full",
+            "columnName": "name_full",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.last",
+            "columnName": "name_last",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.original",
+            "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "staff",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_staff_fts_BEFORE_UPDATE BEFORE UPDATE ON `staff` BEGIN DELETE FROM `staff_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_staff_fts_BEFORE_DELETE BEFORE DELETE ON `staff` BEGIN DELETE FROM `staff_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_staff_fts_AFTER_UPDATE AFTER UPDATE ON `staff` BEGIN INSERT INTO `staff_fts`(`docid`, `name_alternative`, `name_first`, `name_full`, `name_last`, `name_original`) VALUES (NEW.`rowid`, NEW.`name_alternative`, NEW.`name_first`, NEW.`name_full`, NEW.`name_last`, NEW.`name_original`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_staff_fts_AFTER_INSERT AFTER INSERT ON `staff` BEGIN INSERT INTO `staff_fts`(`docid`, `name_alternative`, `name_first`, `name_full`, `name_last`, `name_original`) VALUES (NEW.`rowid`, NEW.`name_alternative`, NEW.`name_first`, NEW.`name_full`, NEW.`name_last`, NEW.`name_original`); END"
+        ],
+        "tableName": "staff_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, content=`staff`)",
+        "fields": [
+          {
+            "fieldPath": "alternatives",
+            "columnName": "name_alternative",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "first",
+            "columnName": "name_first",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "full",
+            "columnName": "name_full",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "last",
+            "columnName": "name_last",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "original",
+            "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "link",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `site` TEXT NOT NULL, `url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "site",
+            "columnName": "site",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_link_media_id",
+            "unique": false,
+            "columnNames": [
+              "media_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_link_media_id` ON `${TABLE_NAME}` (`media_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "rank",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `all_time` INTEGER, `context` TEXT NOT NULL, `format` TEXT NOT NULL, `rank` INTEGER NOT NULL, `season` TEXT, `type` TEXT NOT NULL, `year` INTEGER, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "allTime",
+            "columnName": "all_time",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "context",
+            "columnName": "context",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "format",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "season",
+            "columnName": "season",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_rank_media_id",
+            "unique": false,
+            "columnNames": [
+              "media_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_rank_media_id` ON `${TABLE_NAME}` (`media_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
-    "views": [],
+    "views": [
+      {
+        "viewName": "view_tag_extended",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select t.*, c.is_media_spoiler, c.rank, c.media_id from tag t\n            inner join tag_connection c \n            on t.id = c.tag_id"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '38797a7f7c13e664b22190f0f23062b7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f4a3a75a971c1b3dd57410321dcfb273')"
     ]
   }
 }

@@ -19,7 +19,6 @@ package co.anitrend.data.tag.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.tag.entity.Tag
@@ -29,21 +28,19 @@ internal class TagEntityConverter(
     override val toType: (Tag) -> TagEntity = { throw NotImplementedError() }
 ) : SupportConverter<TagEntity, Tag>() {
     private companion object : ISupportTransformer<TagEntity, Tag> {
-        override fun transform(source: TagEntity) = Tag(
+        override fun transform(source: TagEntity) = Tag.Core(
             id = source.id,
             name = source.name,
             description = source.description,
-            rank = 0,
             category = source.category,
             isGeneralSpoiler = source.isGeneralSpoiler,
-            isMediaSpoiler = false,
             isAdult = source.isAdult
         )
     }
 }
 
 internal class TagModelConverter(
-    override val fromType: (TagModel) -> TagEntity = { transform(it) },
+    override val fromType: (TagModel) -> TagEntity = ::transform,
     override val toType: (TagEntity) -> TagModel = { throw NotImplementedError() }
 ) : SupportConverter<TagModel, TagEntity>() {
     private companion object : ISupportTransformer<TagModel, TagEntity> {

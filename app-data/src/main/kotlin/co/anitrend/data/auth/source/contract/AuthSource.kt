@@ -18,28 +18,25 @@
 package co.anitrend.data.auth.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.empty
-import co.anitrend.data.auth.action.AuthAction
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.data.account.action.AccountAction
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-internal abstract class AuthSource(
-    dispatcher: ISupportDispatcher
-) : SupportCoreDataSource(dispatcher) {
+internal abstract class AuthSource : SupportCoreDataSource() {
 
     protected abstract val observable: Flow<User?>
     protected abstract val observables: Flow<List<User>?>
 
-    abstract fun signOut(query: IGraphPayload)
+    abstract fun signOut(param: AccountParam.SignOut)
 
     protected abstract suspend fun getAuthorizedUser(
-        query: AuthAction.Login,
+        param: AccountAction.SignIn,
         callback: RequestCallback
     )
 
@@ -47,11 +44,11 @@ internal abstract class AuthSource(
         return observables
     }
 
-    internal operator fun invoke(query: IGraphPayload): Flow<User?> {
+    internal operator fun invoke(param: AccountParam.SignIn): Flow<User?> {
         launch {
             requestHelper.runIfNotRunning(
                 Request.Default(String.empty(), Request.Type.INITIAL)
-            ) { getAuthorizedUser(query as AuthAction.Login, it) }
+            ) { getAuthorizedUser(AccountAction.SignIn(param), it) }
         }
         return observable
     }

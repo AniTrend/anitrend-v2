@@ -22,25 +22,34 @@ import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.arch.database.dao.ILocalSource
 import co.anitrend.data.news.entity.NewsEntity
-import co.anitrend.data.rss.RssLocale
 
 @Dao
 internal abstract class NewsLocalSource : ILocalSource<NewsEntity> {
     @Query("""
         select count(id)
-        from news_entity
+        from news
     """)
     abstract override suspend fun count(): Int
 
     @Query("""
-        delete from news_entity
+        delete from news
     """)
     abstract override suspend fun clear()
 
     @Query("""
         select * 
-        from news_entity 
-        order by publishedOn desc
+        from news 
+        order by published_on desc
         """)
-    abstract fun factoryDesc(): DataSource.Factory<Int, NewsEntity>
+    abstract fun entryFactory(): DataSource.Factory<Int, NewsEntity>
+
+    @Query("""
+        select * 
+        from news 
+        where title match :searchTerm or description match :searchTerm or sub_title match :searchTerm
+        order by published_on desc
+        """)
+    abstract fun entrySearchFactory(
+        searchTerm: String
+    ): DataSource.Factory<Int, NewsEntity>
 }

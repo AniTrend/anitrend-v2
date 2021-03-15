@@ -19,7 +19,6 @@ package co.anitrend.data.auth.helper
 
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import okhttp3.Request
 import timber.log.Timber
 
@@ -40,8 +39,7 @@ internal class AuthenticationHelper(
     fun onInvalidToken() {
         with (settings) {
             localSource.clearByUserId(authenticatedUserId.value)
-            authenticatedUserId.value = INVALID_USER_ID
-            isAuthenticated.value = false
+            invalidateAuthenticationSettings()
         }
     }
 

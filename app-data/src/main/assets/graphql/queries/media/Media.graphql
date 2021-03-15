@@ -1,5 +1,0 @@
-query Media {
-    Media {
-        ... MediaCore
-    }
-}

@@ -27,5 +27,9 @@ enum class CacheRequest(val alias: String) {
     SOURCE("source"),
     TAG("tag"),
     USER("user"),
-    NEWS("news")
+    STATISTIC("statistic"),
+    NEWS("news"),
+    EPISODE("episode"),
+    MOE("moe"),
+    XEM("the_xem"),
 }
