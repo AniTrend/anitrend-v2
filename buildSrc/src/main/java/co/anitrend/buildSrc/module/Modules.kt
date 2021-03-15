@@ -68,11 +68,14 @@ internal object Modules {
 
     enum class Feature(override val id: String) : Module {
         Auth("feature-auth"),
+        Airing("feature-airing"),
         Character("feature-character"),
         Episode("feature-episode"),
         Staff("feature-staff"),
         Studio("feature-studio"),
         Media("feature-media"),
+        MediaCarousel("feature-media-carousel"),
+        MediaDiscover("feature-media-discover"),
         Notification("feature-notification"),
         MediaList("feature-medialist"),
         Review("feature-review"),

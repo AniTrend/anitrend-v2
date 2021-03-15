@@ -56,12 +56,12 @@ fun Project.hasCoroutineSupport() = name != Modules.App.Navigation.id || name !=
 /**
  * Module that support [Libraries.AndroidX.Compose] dependencies
  */
-fun Project.hasComposeSupport() = matchesFeatureModule() || matchesCommonModule()
+fun Project.hasComposeSupport() = isAppModule() || matchesFeatureModule() || matchesAndroidModule() || matchesCommonModule()
 /**
  * Module that support [Libraries.Koin.AndroidX] dependencies
  */
 fun Project.hasKoinAndroidSupport() = 
-    name != Modules.App.Data.id || name != Modules.App.Core.id || name != Modules.Android.Core.id
+    name != Modules.App.Data.id || name != Modules.App.Core.id
 /**
  * Module that support the kotlin annotation processor plugin
  */

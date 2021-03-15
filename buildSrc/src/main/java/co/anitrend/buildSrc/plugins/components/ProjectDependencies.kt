@@ -243,15 +243,29 @@ private fun Project.applyTaskModuleGroupDependencies() {
 
 private fun Project.applyComposeDependencies() {
     println("Applying compose dependencies for feature module -> $path")
-
     dependencies.implementation(Libraries.AndroidX.Compose.Foundation.foundation)
+    dependencies.implementation(Libraries.AndroidX.Compose.Foundation.layout)
     dependencies.implementation(Libraries.AndroidX.Compose.Material.material)
     dependencies.implementation(Libraries.AndroidX.Compose.Material.Icons.core)
     dependencies.implementation(Libraries.AndroidX.Compose.Material.Icons.extended)
+    dependencies.implementation(Libraries.AndroidX.Compose.Runtime.runtime)
     dependencies.implementation(Libraries.AndroidX.Compose.Runtime.liveData)
     dependencies.implementation(Libraries.AndroidX.Compose.Ui.tooling)
     dependencies.implementation(Libraries.AndroidX.Compose.Ui.ui)
-    dependencies.androidTest(Libraries.AndroidX.Compose.Test.test)
+    dependencies.implementation(Libraries.AndroidX.Compose.Ui.viewBinding)
+    dependencies.androidTest(Libraries.AndroidX.Compose.Ui.test)
+
+    dependencies.implementation(Libraries.AndroidX.Activity.Compose.activityCompose)
+    dependencies.implementation(Libraries.AndroidX.Lifecycle.Compose.viewModelCompose)
+    dependencies.implementation(Libraries.AndroidX.ConstraintLayout.Compose.constraintLayoutCompose)
+    // Until I migrate to paging v3.0
+    //dependencies.implementation(Libraries.AndroidX.Paging.Compose.pagingCompose)
+
+    dependencies.implementation(Libraries.Google.Material.Compose.themeAdapter)
+    dependencies.implementation(Libraries.Koin.AndroidX.compose)
+
+    dependencies.implementation(Libraries.ChrisBanes.Accompanist.insets)
+    dependencies.implementation(Libraries.ChrisBanes.Accompanist.coil)
 }
 
 internal fun Project.configureDependencies() {
@@ -267,5 +281,5 @@ internal fun Project.configureDependencies() {
     if (matchesFeatureModule()) applyFeatureModuleGroupDependencies()
     if (matchesCommonModule()) applyCommonModuleGroupDependencies()
     if (matchesTaskModule()) applyTaskModuleGroupDependencies()
-    /*if (hasComposeSupport()) applyComposeDependencies()*/
+    if (hasComposeSupport()) applyComposeDependencies()
 }

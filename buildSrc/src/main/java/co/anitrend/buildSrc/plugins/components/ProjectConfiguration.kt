@@ -17,13 +17,18 @@
 
 package co.anitrend.buildSrc.plugins.components
 
+import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.extensions.isAppModule
 import co.anitrend.buildSrc.extensions.isDataModule
-import co.anitrend.buildSrc.extensions.isDomainModule
+import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.hasComposeSupport
+import co.anitrend.buildSrc.extensions.isNavigationModule
 import co.anitrend.buildSrc.extensions.hasCoroutineSupport
 import co.anitrend.buildSrc.extensions.matchesAppModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
+import co.anitrend.buildSrc.extensions.matchesCommonModule
+import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.baseAppExtension
 import co.anitrend.buildSrc.extensions.baseExtension
 import co.anitrend.buildSrc.extensions.libraryExtension
@@ -31,6 +36,7 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
@@ -77,7 +83,7 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
         applicationId = "co.anitrend"
         project.baseAppExtension().buildFeatures {
             viewBinding = true
-            //compose = true
+            compose = true
         }
         // TODO: Configure build flavours
         // this might be deprecated in favour of app bundles
@@ -93,8 +99,8 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             println("Applying view binding feature for module -> ${project.path}")
             project.libraryExtension().buildFeatures {
                 viewBinding = true
-                /*if (project.hasComposeSupport())
-                    compose = true*/
+                if (project.hasComposeSupport())
+                    compose = true
             }
         }
 
@@ -142,19 +148,19 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     packagingOptions {
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
+        excludes.add("META-INF/NOTICE.txt")
+        excludes.add("META-INF/LICENSE")
+        excludes.add("META-INF/LICENSE.txt")
         // Exclude potential duplicate kotlin_module files
-        exclude("META-INF/*kotlin_module")
+        excludes.add("META-INF/*kotlin_module")
         // Exclude consumer proguard files
-        exclude("META-INF/proguard/*")
+        excludes.add("META-INF/proguard/*")
         // Exclude AndroidX version files
-        exclude("META-INF/*.version")
+        excludes.add("META-INF/*.version")
         // Exclude the Firebase/Fabric/other random properties files
-        exclude("META-INF/*.properties")
-        exclude("/*.properties")
-        exclude("fabric/*.properties")
+        excludes.add("META-INF/*.properties")
+        excludes.add("/*.properties")
+        excludes.add("fabric/*.properties")
     }
 
     sourceSets {
@@ -183,8 +189,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     tasks.withType(KotlinJvmCompile::class.java) {
         kotlinOptions {
             jvmTarget = "1.8"
-            /*if (project.hasComposeSupport())
-                useIR = true*/
+            // https://blog.jetbrains.com/kotlin/2021/02/the-jvm-backend-is-in-beta-let-s-make-it-stable-together/
+            useIR
         }
     }
 
@@ -198,13 +204,14 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         if (hasCoroutineSupport()) {
             compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
             compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.FlowPreview")
-            if (!matchesAppModule())
-                compilerArgumentOptions.add("-Xopt-in=coil.annotation.ExperimentalCoilApi")
-            if (isDataModule())
-                compilerArgumentOptions.add("-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi")
+        }
+
+        if (hasComposeSupport()) {
+            compilerArgumentOptions.add("-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi")
+            compilerArgumentOptions.add("-Xopt-in=androidx.compose.material.ExperimentalMaterialApi")
         }
         
-        if (!isDomainModule())
+        if (isAppModule() || isCoreModule() || isNavigationModule())
 			compilerArgumentOptions.apply {
 				add("-Xopt-in=org.koin.core.component.KoinExperimentalAPI")
 				add("-Xopt-in=org.koin.core.component.KoinApiExtension")
@@ -218,9 +225,10 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
     }
 
-    /*if (project.hasComposeSupport()) {
+    if (project.hasComposeSupport()) {
         composeOptions {
-            kotlinCompilerExtensionVersion = AndroidX.Compose.version
+            kotlinCompilerExtensionVersion = Libraries.AndroidX.Compose.version
+            kotlinCompilerVersion = Libraries.JetBrains.Kotlin.version
         }
-    }*/
+    }
 }

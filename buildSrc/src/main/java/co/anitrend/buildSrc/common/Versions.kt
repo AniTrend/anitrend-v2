@@ -22,7 +22,7 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 30
+    private const val candidate = 31
 
     private const val channel = "alpha"
 
@@ -62,4 +62,9 @@ object Versions {
 
     const val betterLinkMovement = "2.2.0"
     const val jsoup = "1.13.1"
+
+    const val tmdb = "2.3.1"
+    const val trakt = "6.9.0"
+
+    const val elements = "0.5.0"
 }

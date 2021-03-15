@@ -33,6 +33,10 @@ object Libraries {
     const val junit = "junit:junit:${Versions.junit}"
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
 
+    const val elements = "com.otaliastudios:elements:${Versions.elements}"
+    const val tmdb = "com.uwetrottmann.tmdb2:tmdb-java:${Versions.tmdb}"
+    const val trakt = "com.uwetrottmann.trakt5:trakt-java:${Versions.trakt}"
+
     const val betterLinkMovement = "me.saket:better-link-movement-method:${Versions.betterLinkMovement}"
     const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
 
@@ -42,10 +46,16 @@ object Libraries {
 
     const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
 
+    object Repositories {
+        const val jitPack = "https://www.jitpack.io"
+        const val dependencyUpdates = "https://dl.bintray.com/pdvrieze/maven"
+        const val accompanistSnapshot = "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+
     object Android {
 
         object Tools {
-            private const val version = "4.1.2"
+            private const val version = "7.0.0-alpha09"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -56,6 +66,10 @@ object Libraries {
             private const val version = "1.3.0-alpha03"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
+
+            object Compose {
+                const val activityCompose = "androidx.activity:activity-compose:$version"
+            }
         }
 
         object AppCompat {
@@ -76,14 +90,16 @@ object Libraries {
         }
 
         object Compose {
-            internal const val version = "1.0.0-alpha02"
+            internal const val version = "1.0.0-beta01"
 
             object Foundation {
                 const val foundation = "androidx.compose.foundation:foundation:$version"
+                const val layout = "androidx.compose.foundation:foundation-layout:$version"
             }
 
             object Material {
                 const val material = "androidx.compose.material:material:$version"
+                const val ripple = "androidx.compose.material:material-ripple:$version"
 
                 object Icons {
                     const val core = "androidx.compose.material:material-icons-core:$version"
@@ -92,16 +108,15 @@ object Libraries {
             }
 
             object Runtime {
+                const val runtime = "androidx.compose.runtime:runtime:$version"
                 const val liveData = "androidx.compose.runtime:runtime-livedata:$version"
-            }
-
-            object Test {
-                const val test = "androidx.ui:ui-test:$version"
             }
 
             object Ui {
                 const val ui = "androidx.compose.ui:ui:$version"
-                const val tooling = "androidx.ui:ui-tooling:$version"
+                const val tooling = "androidx.compose.ui:ui-tooling:$version"
+                const val test = "androidx.compose.ui:ui-test:$version"
+                const val viewBinding = "androidx.compose.ui:ui-viewbinding:$version"
             }
         }
 
@@ -121,6 +136,11 @@ object Libraries {
             private const val version = "2.1.0-alpha2"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
+
+            object Compose {
+                private const val version = "1.0.0-alpha03"
+                const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$version"
+            }
         }
 
         object DataStore {
@@ -148,6 +168,11 @@ object Libraries {
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:$version"
+
+            object Compose {
+                private const val version = "1.0.0-alpha02"
+                const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
+            }
         }
 
         @Deprecated("Use Media2 instead")
@@ -214,6 +239,11 @@ object Libraries {
             const val common = "androidx.paging:paging-common-ktx:$version"
             const val runtime = "androidx.paging:paging-runtime:$version"
             const val runtimeKtx = "androidx.paging:paging-runtime-ktx:$version"
+
+            object Compose {
+                private const val version = "1.0.0-alpha08"
+                const val pagingCompose = "androidx.paging:paging-compose:$version"
+            }
         }
 
         object Palette {
@@ -239,7 +269,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.2.6"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
@@ -291,7 +321,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "b6284ee0fd"
+            private const val version = "1.3.0-beta38"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -302,7 +332,7 @@ object Libraries {
         }
 
         object Emojify {
-            private const val version = "1.6.0-alpha01"
+            private const val version = "develop-SNAPSHOT"//"1.6.0-alpha01"
             const val emojify = "com.github.anitrend:android-emojify:$version"
         }
 
@@ -334,14 +364,20 @@ object Libraries {
         }
 
         object Retrofit {
-            private const val version = "0.11.0-alpha02"
-            //private const val version = "develop-SNAPSHOT" // testing development snapshot
+            private const val version = "0.11.0-beta01"
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
 
         object Sync {
             private const val version = "0.1.0-alpha01"
             const val plugin = "com.github.anitrend:support-sync-plugin:${version}"
+        }
+
+        object QueryBuilder {
+            private const val version = "0.1.3-alpha01"
+            const val core = "com.github.anitrend.support-query-builder:core:$version"
+            const val annotation = "com.github.anitrend.support-query-builder:annotations:$version"
+            const val processor = "com.github.anitrend.support-query-builder:processor:$version"
         }
     }
 
@@ -397,6 +433,14 @@ object Libraries {
         const val gif = "io.coil-kt:coil-gif:$version"
         const val svg = "io.coil-kt:coil-svg:$version"
         const val video = "io.coil-kt:coil-video:$version"
+    }
+
+    object ChrisBanes {
+        object Accompanist {
+            private const val version = "0.6.1"
+            const val insets = "dev.chrisbanes.accompanist:accompanist-insets:$version"
+            const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+        }
     }
 
     object Devrieze {
@@ -456,6 +500,11 @@ object Libraries {
         object Material {
             private const val version = "1.4.0-alpha01"
             const val material = "com.google.android.material:material:$version"
+
+            object Compose {
+                private const val version = "1.0.0-beta01"
+                const val themeAdapter = "com.google.android.material:compose-theme-adapter:$version"
+            }
         }
 
         object Services {
@@ -477,7 +526,7 @@ object Libraries {
         }
 
         object Kotlin {
-            private const val version = "1.4.31"
+            internal const val version = "1.4.30"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -548,15 +597,24 @@ object Libraries {
         }
     }
 
-    object MaterialDialogs {
-        private const val version = "3.3.0"
-        const val core = "com.afollestad.material-dialogs:core:$version"
-        const val input = "com.afollestad.material-dialogs:input:$version"
-        const val files = "com.afollestad.material-dialogs:files:$version"
-        const val colour = "com.afollestad.material-dialogs:colour:$version"
-        const val dateTime = "com.afollestad.material-dialogs:dateTime:$version"
-        const val lifecycle = "com.afollestad.material-dialogs:lifecycle:$version"
-        const val bottomsheets = "com.afollestad.material-dialogs:bottomsheets:$version"
+    object Sheets {
+        private const val version = "2.1.3"
+
+        const val calendar = "com.maxkeppeler.sheets:calendar:$version"
+        const val core = "com.maxkeppeler.sheets:core:$version"
+        const val info = "com.maxkeppeler.sheets:info:$version"
+        const val input = "com.maxkeppeler.sheets:input:$version"
+        const val lottie = "com.maxkeppeler.sheets:lottie:$version"
+        const val options = "com.maxkeppeler.sheets:options:$version"
+        const val simple = "com.maxkeppeler.sheets:simple:$version"
+        const val timeClock = "com.maxkeppeler.sheets:time-clock:$version"
+        const val time = "com.maxkeppeler.sheets:time:$version"
+    }
+
+    object SmartTab {
+        private const val version = "2.0.0@aar"
+        const val layout = "com.ogaclejapan.smarttablayout:library:$version"
+        const val utilities = "com.ogaclejapan.smarttablayout:utils-v4:$version"
     }
 
     object Square {
@@ -581,20 +639,9 @@ object Libraries {
             const val mockServer = "com.squareup.okhttp3:mockwebserver:$version"
         }
 
-        object WorkFlow {
-            private const val version = "1.0.0-alpha08"
-            const val coreJvm = "com.squareup.workflow:workflow-core-jvm:$version"
-            const val coreAndroid = "com.squareup.workflow:workflow-ui-core-android:$version"
-            const val modalAndroid = "com.squareup.workflow:workflow-ui-modal-android:$version"
-            const val backStackAndroid = "com.squareup.workflow:workflow-ui-backstack-android:$version"
-            const val testJvm = "com.squareup.workflow:workflow-testing-jvm:$version"
-        }
-    }
-
-    object Tinder {
-        object StateMachine {
-            private const val version = "0.2.0"
-            const val stateMachine = "com.tinder.statemachine:statemachine:${version}"
+        object KotlinPoet {
+            private const val version = "1.7.2"
+            const val kotlinPoet = "com.squareup:kotlinpoet:$version"
         }
     }
 }
