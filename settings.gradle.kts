@@ -11,6 +11,7 @@ include(
     ":android-navigation",
     ":android-core",
     ":feature-character",
+	":feature-episode",
     ":feature-staff",
     ":feature-studio",
     ":feature-media",
@@ -26,6 +27,10 @@ include(
     ":feature-about",
     ":feature-news",
 	":feature-image-viewer",
+	":feature-updater",
+	":feature-airing",
+	":feature-media-discover",
+	":feature-media-carousel",
     ":common-character-ui",
     ":common-forum-ui",
     ":common-media-ui",
@@ -38,6 +43,8 @@ include(
     ":common-episode-ui",
     ":common-feed-ui",
     ":common-studio-ui",
+    ":common-genre-ui",
+    ":common-tag-ui",
     ":task-character",
     ":task-forum",
     ":task-media",
@@ -51,5 +58,6 @@ include(
     ":task-feed",
     ":task-studio",
     ":task-genre",
-    ":task-tag"
+    ":task-tag",
+    ":task-updater"
 )
