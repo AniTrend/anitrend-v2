@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.task.user.component
+package co.anitrend.task.medialist.component
 
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
+import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.medialist.GetCollectionMediaListInteractor
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.model.MediaListParam
+import kotlinx.coroutines.flow.*
 
-class UserSendMessageWorker(
+class MediaListMangaSyncWorker(
     context: Context,
     parameters: WorkerParameters,
+    private val interactor: GetCollectionMediaListInteractor,
+    private val settings: IAuthenticationSettings
 ) : SupportCoroutineWorker(context, parameters) {
+
+    private val userId by lazy {
+        settings.authenticatedUserId.value
+    }
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -38,6 +50,20 @@ class UserSendMessageWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        TODO("Not yet implemented")
+        val param = MediaListParam.Collection(
+            type = MediaType.MANGA,
+            sort = emptyList(),
+            userId = userId
+        )
+        val dataState = interactor(param)
+
+        val networkState = dataState.networkState.first { state ->
+            state is NetworkState.Success || state is NetworkState.Error
+        }
+
+        return when (networkState) {
+            is NetworkState.Success -> Result.success()
+            else -> Result.failure()
+        }
     }
 }

@@ -18,19 +18,16 @@
 package co.anitrend.task.user.component
 
 import android.content.Context
-import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.data.account.AccountInteractor
-import co.anitrend.data.auth.AuthUserInteractor
-import co.anitrend.data.user.UserInteractor
+import co.anitrend.data.user.GetAuthenticatedInteractor
 import kotlinx.coroutines.flow.first
 
 class UserAccountSyncWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val userInteractor: UserInteractor
+    private val getAuthenticated: GetAuthenticatedInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -45,7 +42,7 @@ class UserAccountSyncWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val dataState = userInteractor.getUserProfile()
+        val dataState = getAuthenticated()
 
         val networkState = dataState.networkState.first { state ->
             state is NetworkState.Success || state is NetworkState.Error

@@ -18,8 +18,11 @@
 package co.anitrend.task.tag.provider
 
 import co.anitrend.navigation.TagTaskRouter
+import co.anitrend.navigation.work.WorkSchedulerController
 import co.anitrend.task.tag.component.TagWorker
+import co.anitrend.task.tag.scheduler.TagScheduler
 
 internal class FeatureProvider : TagTaskRouter.Provider {
     override fun worker() = TagWorker::class.java
+    override fun scheduler() = TagScheduler(worker())
 }

@@ -15,13 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.task.news.provider
+package co.anitrend.task.episode.provider
 
-import co.anitrend.navigation.NewsTaskRouter
-import co.anitrend.task.news.component.NewsWorker
-import co.anitrend.task.news.scheduler.NewsScheduler
+import co.anitrend.navigation.EpisodeTaskRouter
+import co.anitrend.task.episode.component.EpisodeWorker
+import co.anitrend.task.episode.scheduler.EpisodeScheduler
 
-class FeatureProvider : NewsTaskRouter.Provider {
-    override fun worker() = NewsWorker::class.java
-    override fun scheduler() = NewsScheduler(worker())
+class FeatureProvider : EpisodeTaskRouter.Provider {
+    override fun worker() = EpisodeWorker::class.java
+    override fun scheduler() = EpisodeScheduler(worker())
 }

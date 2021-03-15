@@ -18,24 +18,24 @@
 package co.anitrend.task.medialist.component
 
 import android.content.Context
-import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.medialist.GetMediaListCollectionInteractor
-import co.anitrend.data.medialist.model.query.MediaListQuery
+import co.anitrend.data.medialist.GetCollectionMediaListInteractor
 import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.model.MediaListParam
 import kotlinx.coroutines.flow.*
 
-class MediaListSyncWorker(
+class MediaListAnimeSyncWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: GetMediaListCollectionInteractor,
+    private val interactor: GetCollectionMediaListInteractor,
     private val settings: IAuthenticationSettings
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val userId by lazy {
+    private val userId by lazy(UNSAFE) {
         settings.authenticatedUserId.value
     }
 
@@ -50,25 +50,21 @@ class MediaListSyncWorker(
      * @return The [androidx.work.ListenableWorker.Result] of the result of the background work; note that
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
-    override suspend fun doWork(): ListenableWorker.Result {
-        val animeQuery = MediaListQuery.Collection(type = MediaType.ANIME, sort = emptyList(), userId = userId)
-        val animeDataState = interactor(animeQuery)
+    override suspend fun doWork(): Result {
+        val param = MediaListParam.Collection(
+            type = MediaType.ANIME,
+            sort = emptyList(),
+            userId = userId
+        )
+        val dataState = interactor(param)
 
-
-        val animeNetworkState = animeDataState.networkState.first { state ->
+        val networkState = dataState.networkState.first { state ->
             state is NetworkState.Success || state is NetworkState.Error
         }
 
-        val mangaQuery = MediaListQuery.Collection(type = MediaType.MANGA, sort = emptyList(), userId = userId)
-        val mangaDataState = interactor(mangaQuery)
-
-
-        val mangaNetworkState = mangaDataState.networkState.first { state ->
-            state is NetworkState.Success || state is NetworkState.Error
+        return when (networkState) {
+            is NetworkState.Success -> Result.success()
+            else -> Result.failure()
         }
-
-        return if (animeNetworkState is NetworkState.Success && mangaNetworkState is NetworkState.Success)
-            Result.success()
-        else Result.failure()
     }
 }

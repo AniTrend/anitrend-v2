@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,19 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.task.tag.component
+package co.anitrend.task.episode.component
 
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.data.tag.TagInteractor
+import co.anitrend.core.android.settings.common.locale.ILocaleSettings
+import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.data.episode.EpisodePagedInteractor
+import co.anitrend.domain.episode.model.EpisodeParam
 import kotlinx.coroutines.flow.first
 
-class TagWorker(
+class EpisodeWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: TagInteractor
+    private val settings: ILocaleSettings,
+    private val interactor: EpisodePagedInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -42,7 +46,9 @@ class TagWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val dataState = interactor.getMediaTags()
+        val locale = settings.locale.value.asLocaleString()
+        val param = EpisodeParam.Paged(locale)
+        val dataState = interactor(param)
 
         val networkState = dataState.networkState.first { state ->
             state is NetworkState.Success || state is NetworkState.Error

@@ -19,33 +19,17 @@ package co.anitrend.task.news.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
-import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.initializer.contract.AbstractTaskInitializer
 import co.anitrend.navigation.NewsTaskRouter
-import co.anitrend.navigation.NewsTaskRouter.Provider.Companion.forWorker
-import java.util.concurrent.TimeUnit
 
-class WorkSchedulerInitializer : AbstractFeatureInitializer<Unit>() {
+class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
     /**
      * Initializes and a component given the application [Context]
      *
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val worker = NewsTaskRouter.forWorker()
-
-        val workRequest = PeriodicWorkRequest.Builder(
-            worker, 4, TimeUnit.HOURS
-        ).build()
-
-        WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(
-                worker.simpleName,
-                ExistingPeriodicWorkPolicy.KEEP,
-                workRequest
-            )
+        NewsTaskRouter.forScheduler().schedule(context)
     }
 
     /**

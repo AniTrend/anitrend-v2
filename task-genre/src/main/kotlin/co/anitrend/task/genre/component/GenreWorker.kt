@@ -21,13 +21,13 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.data.genre.MediaGenreInteractor
+import co.anitrend.data.genre.GenreInteractor
 import kotlinx.coroutines.flow.first
 
 class GenreWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: MediaGenreInteractor
+    private val interactor: GenreInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**

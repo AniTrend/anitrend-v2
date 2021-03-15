@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.user.repository
+package co.anitrend.task.episode.initializer
 
-import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.common.graph.IGraphPayload
+import android.content.Context
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.task.episode.koin.moduleHelper
 
-interface UserRepository<State: UiState<*>> {
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
 
-    fun getUserProfile(): State
-
-    fun getUserProfile(query: IGraphPayload): State
-
-    fun toggleFollowUser(mutation: IGraphPayload): State
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
+    }
 }

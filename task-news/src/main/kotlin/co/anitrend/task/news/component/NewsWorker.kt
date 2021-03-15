@@ -21,18 +21,19 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.core.settings.common.locale.ILocaleSettings
-import co.anitrend.core.util.locale.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.core.android.settings.common.locale.ILocaleSettings
+import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.data.news.NewsInteractor
-import co.anitrend.data.news.model.query.NewsQuery
+import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.first
 
 class NewsWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: NewsInteractor,
-    private val settings: ILocaleSettings
+    private val settings: ILocaleSettings,
+    private val interactor: NewsInteractor
 ) : SupportCoroutineWorker(context, parameters) {
+
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
@@ -45,8 +46,8 @@ class NewsWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val locale = settings.locale.value.asLocaleString()
-        val dataState = interactor.getPagedNews(NewsQuery(locale))
+        val param = NewsParam(settings.locale.value.asLocaleString())
+        val dataState = interactor(param)
 
         val networkState = dataState.networkState.first { state ->
             state is NetworkState.Success || state is NetworkState.Error

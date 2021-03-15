@@ -15,19 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.task.news.koin
+package co.anitrend.task.episode.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.NewsTaskRouter
-import co.anitrend.task.news.component.NewsWorker
-import co.anitrend.task.news.provider.FeatureProvider
+import co.anitrend.navigation.EpisodeTaskRouter
+import co.anitrend.task.episode.component.EpisodeWorker
+import co.anitrend.task.episode.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 private val workManagerModule = module {
     worker { params ->
-        NewsWorker(
+        EpisodeWorker(
             context = androidContext(),
             parameters = params.get(),
             interactor = get(),
@@ -37,7 +37,7 @@ private val workManagerModule = module {
 }
 
 private val featureModule = module {
-    factory<NewsTaskRouter.Provider> {
+    factory<EpisodeTaskRouter.Provider> {
         FeatureProvider()
     }
 }

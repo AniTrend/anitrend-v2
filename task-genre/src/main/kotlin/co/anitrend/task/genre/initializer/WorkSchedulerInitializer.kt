@@ -19,33 +19,17 @@ package co.anitrend.task.genre.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
-import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.initializer.contract.AbstractTaskInitializer
 import co.anitrend.navigation.GenreTaskRouter
-import co.anitrend.navigation.GenreTaskRouter.Provider.Companion.forWorker
-import java.util.concurrent.TimeUnit
 
-class WorkSchedulerInitializer : AbstractFeatureInitializer<Unit>() {
+class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
     /**
      * Initializes and a component given the application [Context]
      *
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val worker = GenreTaskRouter.forWorker()
-
-        val workRequest = PeriodicWorkRequest.Builder(
-            worker, 30, TimeUnit.MINUTES
-        ).build()
-
-        WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(
-                worker.simpleName,
-                ExistingPeriodicWorkPolicy.REPLACE,
-                workRequest
-            )
+        GenreTaskRouter.forScheduler().schedule(context)
     }
 
     /**

@@ -15,25 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.task.user.initializer
+package co.anitrend.task.episode.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import androidx.work.*
 import co.anitrend.core.initializer.contract.AbstractTaskInitializer
-import co.anitrend.navigation.UserTaskRouter
-import java.util.concurrent.TimeUnit
+import co.anitrend.navigation.EpisodeTaskRouter
 
 class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
-
     /**
      * Initializes and a component given the application [Context]
      *
      * @param context The application context.
      */
     override fun create(context: Context) {
-        UserTaskRouter.forAccountSyncScheduler().schedule(context)
-        UserTaskRouter.forStatisticSyncScheduler().schedule(context)
+        EpisodeTaskRouter.forScheduler().schedule(context)
     }
 
     /**

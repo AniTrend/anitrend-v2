@@ -21,7 +21,7 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.task.medialist.component.MediaListCollectionWorker
 import co.anitrend.task.medialist.component.MediaListMutationWorker
-import co.anitrend.task.medialist.component.MediaListSyncWorker
+import co.anitrend.task.medialist.component.MediaListAnimeSyncWorker
 import co.anitrend.task.medialist.provider.FeatureProvider
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
@@ -41,7 +41,7 @@ private val workManagerModule = module {
         )
     }
     worker {
-        MediaListSyncWorker(
+        MediaListAnimeSyncWorker(
             context = get(),
             parameters = get(),
             interactor = get(),
