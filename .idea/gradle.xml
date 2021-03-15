@@ -5,7 +5,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="delegatedBuild" value="false" />
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
@@ -26,20 +26,26 @@
             <option value="$PROJECT_DIR$/common-episode-ui" />
             <option value="$PROJECT_DIR$/common-feed-ui" />
             <option value="$PROJECT_DIR$/common-forum-ui" />
+            <option value="$PROJECT_DIR$/common-genre-ui" />
             <option value="$PROJECT_DIR$/common-media-ui" />
             <option value="$PROJECT_DIR$/common-news-ui" />
             <option value="$PROJECT_DIR$/common-recommendation-ui" />
             <option value="$PROJECT_DIR$/common-review-ui" />
             <option value="$PROJECT_DIR$/common-staff-ui" />
             <option value="$PROJECT_DIR$/common-studio-ui" />
+            <option value="$PROJECT_DIR$/common-tag-ui" />
             <option value="$PROJECT_DIR$/common-user-ui" />
             <option value="$PROJECT_DIR$/feature-about" />
             <option value="$PROJECT_DIR$/feature-account" />
+            <option value="$PROJECT_DIR$/feature-airing" />
             <option value="$PROJECT_DIR$/feature-auth" />
             <option value="$PROJECT_DIR$/feature-character" />
+            <option value="$PROJECT_DIR$/feature-episode" />
             <option value="$PROJECT_DIR$/feature-forum" />
             <option value="$PROJECT_DIR$/feature-image-viewer" />
             <option value="$PROJECT_DIR$/feature-media" />
+            <option value="$PROJECT_DIR$/feature-media-carousel" />
+            <option value="$PROJECT_DIR$/feature-media-discover" />
             <option value="$PROJECT_DIR$/feature-medialist" />
             <option value="$PROJECT_DIR$/feature-news" />
             <option value="$PROJECT_DIR$/feature-notification" />
@@ -50,6 +56,7 @@
             <option value="$PROJECT_DIR$/feature-settings" />
             <option value="$PROJECT_DIR$/feature-staff" />
             <option value="$PROJECT_DIR$/feature-studio" />
+            <option value="$PROJECT_DIR$/feature-updater" />
             <option value="$PROJECT_DIR$/task-character" />
             <option value="$PROJECT_DIR$/task-episode" />
             <option value="$PROJECT_DIR$/task-feed" />
@@ -63,11 +70,11 @@
             <option value="$PROJECT_DIR$/task-staff" />
             <option value="$PROJECT_DIR$/task-studio" />
             <option value="$PROJECT_DIR$/task-tag" />
+            <option value="$PROJECT_DIR$/task-updater" />
             <option value="$PROJECT_DIR$/task-user" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
-        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>
