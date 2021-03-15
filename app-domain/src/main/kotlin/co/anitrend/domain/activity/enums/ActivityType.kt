@@ -26,11 +26,11 @@ enum class ActivityType(override val alias: CharSequence) : IAliasable {
     /** A text activity */
     TEXT("Text"),
     /** A anime list update activity */
-    ANIME_LIST("Anime list"),
+    ANIME_LIST("Anime List"),
     /** A manga list update activity */
-    MANGA_LIST("Manga list"),
+    MANGA_LIST("Manga List"),
     /** A text message activity sent to another user */
     MESSAGE("Message"),
     /** Anime & Manga list update, only used in query arguments */
-    MEDIA_LIST("Media list")
+    MEDIA_LIST("Media List")
 }

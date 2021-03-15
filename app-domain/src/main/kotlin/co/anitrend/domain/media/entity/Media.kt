@@ -39,6 +39,7 @@ import co.anitrend.domain.tag.entity.Tag
 
 sealed class Media : IMedia {
 
+    abstract val trailer: IMediaTrailer?
     abstract val sourceId: IMediaSourceId
     abstract val countryCode: CharSequence?
     abstract val description: CharSequence?
@@ -128,7 +129,8 @@ sealed class Media : IMedia {
         override val siteUrl: CharSequence?,
         override val source: MediaSource?,
         override val synonyms: Collection<CharSequence>,
-        override val tags: Collection<Tag>
+        override val tags: Collection<Tag>,
+        override val trailer: IMediaTrailer?
     ) : Media() {
         companion object {
             fun empty() = Core(
@@ -158,7 +160,8 @@ sealed class Media : IMedia {
                 isAdult = null,
                 isFavourite = false,
                 id = INVALID_ID,
-                mediaList = null
+                mediaList = null,
+                trailer = null
             )
         }
     }
@@ -166,7 +169,7 @@ sealed class Media : IMedia {
     data class Extended(
         val externalLinks: Collection<IMediaExternalLink>,
         val rankings: Collection<IMediaRank>,
-        val trailer: IMediaTrailer?,
+        override val trailer: IMediaTrailer?,
         override val title: IMediaTitle,
         override val image: IMediaCover,
         override val category: Category,

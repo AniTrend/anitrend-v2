@@ -44,7 +44,7 @@ package co.anitrend.domain.common.entity.contract
  * @property native The full name in the native language
  */
 interface IEntityName {
-    val alternative: List<String>?
+    val alternative: List<String>
     val first: String?
     val full: String?
     val last: String?

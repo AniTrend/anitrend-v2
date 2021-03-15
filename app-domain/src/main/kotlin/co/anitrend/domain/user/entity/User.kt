@@ -52,7 +52,7 @@ sealed class User : IEntity {
 
     data class Extended(
         val unreadNotifications: Int,
-        val listOptions: UserMediaListOption,
+        val listOption: UserMediaListOption,
         val profileOption: UserProfileOption,
         override val name: CharSequence,
         override val avatar: UserImage,

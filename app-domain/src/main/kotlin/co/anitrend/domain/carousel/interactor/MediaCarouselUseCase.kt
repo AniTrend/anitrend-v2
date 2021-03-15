@@ -19,12 +19,12 @@ package co.anitrend.domain.carousel.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.carousel.repository.MediaCarouselRepository
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.carousel.model.CarouselParam
+import co.anitrend.domain.carousel.repository.IMediaCarouselRepository
 
 abstract class MediaCarouselUseCase<State: UiState<*>>(
-    protected val repository: MediaCarouselRepository<State>
+    protected val repository: IMediaCarouselRepository<State>
 ) : IUseCase {
-    fun getMediaCarousel(query: IGraphPayload) =
-        repository.getMediaCarousel(query)
+    operator fun invoke(param: CarouselParam.Find) =
+        repository.getMediaCarousel(param)
 }

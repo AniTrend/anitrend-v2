@@ -20,17 +20,17 @@ package co.anitrend.domain.auth.interactor
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.auth.repository.AuthRepository
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.account.model.AccountParam
 
 abstract class AuthUseCase<State: UiState<*>>(
     protected val repository: AuthRepository<State>
 ) : IUseCase {
 
     /**
-     * @param query Auth query
+     * @param param Auth query
      *
      * @return Authenticated user or null
      */
-    fun getAuthenticatedUser(query: IGraphPayload) =
-        repository.getAuthenticatedUser(query)
+    fun getAuthenticatedUser(param: AccountParam.SignIn) =
+        repository.getAuthenticatedUser(param)
 }

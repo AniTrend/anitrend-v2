@@ -19,11 +19,12 @@ package co.anitrend.domain.news.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.news.repository.NewsRepository
+import co.anitrend.domain.news.model.NewsParam
+import co.anitrend.domain.news.repository.INewsRepository
 
-abstract class NewsUseCase<State: UiState<*>, Param: Any>(
-    protected val repository: NewsRepository<State,  Param>
+abstract class NewsUseCase<State: UiState<*>>(
+    protected val repository: INewsRepository<State>
 ) : IUseCase {
-    fun getPagedNews(query: Param) =
-        repository.getPagedNews(query)
+    operator fun invoke(param: NewsParam) =
+        repository.getPagedNews(param)
 }

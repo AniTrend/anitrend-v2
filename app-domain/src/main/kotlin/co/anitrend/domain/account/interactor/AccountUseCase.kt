@@ -19,8 +19,8 @@ package co.anitrend.domain.account.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.account.repository.AccountRepository
-import co.anitrend.domain.common.graph.IGraphPayload
 
 abstract class AccountUseCase<State: UiState<*>>(
     protected val repository: AccountRepository<State>
@@ -32,6 +32,6 @@ abstract class AccountUseCase<State: UiState<*>>(
     fun getAuthorizedAccounts() =
         repository.getAccountUsers()
 
-    fun signOut(query: IGraphPayload) =
-        repository.signOut(query)
+    fun signOut(param: AccountParam.SignOut) =
+        repository.signOut(param)
 }

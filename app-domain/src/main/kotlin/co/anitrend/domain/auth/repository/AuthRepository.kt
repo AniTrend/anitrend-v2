@@ -18,8 +18,8 @@
 package co.anitrend.domain.auth.repository
 
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.account.model.AccountParam
 
 interface AuthRepository<State: UiState<*>> {
-    fun getAuthenticatedUser(query: IGraphPayload): State
+    fun getAuthenticatedUser(param: AccountParam.SignIn): State
 }

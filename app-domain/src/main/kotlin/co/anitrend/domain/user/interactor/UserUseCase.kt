@@ -19,21 +19,44 @@ package co.anitrend.domain.user.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.user.repository.UserRepository
+import co.anitrend.domain.user.model.UserParam
+import co.anitrend.domain.user.repository.IUserRepository
 
-abstract class UserUseCase<State: UiState<*>>(
-    protected val repository: UserRepository<State>
-) : IUseCase {
+sealed class UserUseCase : IUseCase {
 
-    /**
-     * Get the user for the currently authenticated sessions
-     */
-    fun getUserProfile() = repository.getUserProfile()
+    abstract class GetAuthenticated<State: UiState<*>>(
+        protected val repository: IUserRepository.Authenticated<State>
+    ) : UserUseCase() {
+        operator fun invoke() = repository.getProfile()
+    }
 
-    /**
-     * Get a user defined in the [query]
-     */
-    fun getUserProfile(query: IGraphPayload) =
-        repository.getUserProfile(query)
+    abstract class GetPaged<State: UiState<*>>(
+        protected val repository: IUserRepository.Search<State>
+    ) : UserUseCase() {
+        operator fun invoke(param: UserParam.Search) = repository.getPaged(param)
+    }
+
+    abstract class GetProfile<State: UiState<*>>(
+        protected val repository: IUserRepository.Profile<State>
+    ) : UserUseCase() {
+        operator fun invoke(param: UserParam.Profile) = repository.getProfile(param)
+    }
+
+    abstract class ToggleFollow<State: UiState<*>>(
+        protected val repository: IUserRepository.ToggleFollow<State>
+    ) : UserUseCase() {
+        operator fun invoke(param: UserParam.ToggleFollow) = repository.toggleFollow(param)
+    }
+
+    abstract class Update<State: UiState<*>>(
+        protected val repository: IUserRepository.Update<State>
+    ) : UserUseCase() {
+        operator fun invoke(param: UserParam.Update) = repository.updateProfile(param)
+    }
+
+    abstract class Statistic<State: UiState<*>>(
+        protected val repository: IUserRepository.Statistic<State>
+    ) : UserUseCase() {
+        operator fun invoke(param: UserParam.Statistic) = repository.getProfileStatistic(param)
+    }
 }

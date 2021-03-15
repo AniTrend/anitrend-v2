@@ -17,15 +17,35 @@
 
 package co.anitrend.domain.tag.entity
 
+import co.anitrend.domain.common.HexColor
 import co.anitrend.domain.common.entity.contract.IEntity
 
-data class Tag(
-    val name: String,
-    val description: String? = null,
-    val category: String? = null,
-    val rank: Int,
-    val isGeneralSpoiler: Boolean,
-    val isMediaSpoiler: Boolean,
-    val isAdult: Boolean,
-    override val id: Long,
-) : IEntity
+sealed class Tag : IEntity {
+
+    abstract val name: String
+    abstract val description: String?
+    abstract val category: String?
+    abstract val isGeneralSpoiler: Boolean
+    abstract val isAdult: Boolean
+
+    data class Core(
+        override val name: String,
+        override val description: String?,
+        override val category: String?,
+        override val isGeneralSpoiler: Boolean,
+        override val isAdult: Boolean,
+        override val id: Long,
+    ) : Tag()
+
+    data class Extended(
+        val rank: Int,
+        val isMediaSpoiler: Boolean,
+        val background: HexColor?,
+        override val name: String,
+        override val description: String?,
+        override val category: String?,
+        override val isGeneralSpoiler: Boolean,
+        override val isAdult: Boolean,
+        override val id: Long,
+    ) : Tag()
+}
