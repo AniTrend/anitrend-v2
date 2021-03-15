@@ -20,7 +20,6 @@ package co.anitrend.navigation.drawer.adapter
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
@@ -46,17 +45,6 @@ class AccountAdapter(
     override val customSupportAnimator: AbstractAnimator? = null,
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Account>(AccountDiffUtil) {
-
-    /**
-     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
-     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
-     *
-     * The identifiable id of each item should unique, and if non exists
-     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
-     */
-    override fun getStableIdFor(item: Account?): Long {
-        return item?.id ?: RecyclerView.NO_ID
-    }
 
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.

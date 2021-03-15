@@ -1,8 +1,6 @@
 package co.anitrend.navigation.drawer.action
 
-import android.view.View
 import androidx.annotation.FloatRange
-import co.anitrend.core.android.animations.normalize
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 
 /**
@@ -24,20 +22,4 @@ internal interface OnSandwichSlideAction {
             toInclusive = true
         ) slideOffset: Float
     )
-}
-
-/**
- * Rotate the given [view] counter-clockwise by 180 degrees.
- */
-internal class HalfCounterClockwiseRotateSlideAction(
-    private val view: View
-) : OnSandwichSlideAction {
-    override fun onSlide(slideOffset: Float) {
-        view.rotation = slideOffset.normalize(
-            0F,
-            1F,
-            180F,
-            0F
-        )
-    }
 }

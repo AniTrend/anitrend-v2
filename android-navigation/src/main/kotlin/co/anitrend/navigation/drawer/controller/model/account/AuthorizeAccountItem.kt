@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.R
@@ -62,7 +61,7 @@ class AuthorizeAccountItem(
             view.context.getCompatDrawable(R.drawable.ic_account_add_24dp, R.color.primaryTextColor)
         )
         requireBinding().accountContainer.setOnClickListener {
-            stateFlow.value = DefaultClickableItem(
+            stateFlow.value = ClickableItem.Data(
                 data = entity,
                 view = it
             )

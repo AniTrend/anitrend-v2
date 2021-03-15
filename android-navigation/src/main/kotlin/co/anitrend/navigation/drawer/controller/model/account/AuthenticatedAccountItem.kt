@@ -24,9 +24,9 @@ import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.helpers.image.model.CoverRequestImage
+import co.anitrend.core.android.helpers.image.model.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.databinding.AccountAuthenticatedItemBinding
@@ -59,16 +59,15 @@ class AuthenticatedAccountItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = AccountAuthenticatedItemBinding.bind(view)
-        val imageRequest = CoverRequestImage(entity.coverImage)
         disposable = requireBinding().accountProfileImage.using(
-            imageRequest,
+            entity.coverImage.toRequestImage(),
             listOf(CircleCropTransformation())
         )
         requireBinding().accountUserName.text = entity.userName
         if (entity.isActiveUser) {
             requireBinding().accountSignOut.visible()
             requireBinding().accountSignOut.setOnClickListener {
-                stateFlow.value = DefaultClickableItem(
+                stateFlow.value = ClickableItem.Data(
                     data =  entity,
                     view =  it
                 )
@@ -78,7 +77,7 @@ class AuthenticatedAccountItem(
             requireBinding().accountSignOut.gone()
 
         requireBinding().accountContainer.setOnClickListener {
-            stateFlow.value = DefaultClickableItem(
+            stateFlow.value = ClickableItem.Data(
                 data =  entity,
                 view =  it
             )

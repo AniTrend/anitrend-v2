@@ -7,29 +7,10 @@ import androidx.core.view.marginTop
 import androidx.core.view.updatePadding
 import co.anitrend.navigation.drawer.R
 import co.anitrend.core.android.animations.normalize
+import co.anitrend.core.android.components.sheet.action.OnSlideAction
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 
-/**
- * An action to be performed when a bottom sheet's slide offset is changed.
- */
-interface OnSlideAction {
-    /**
-     * Called when the bottom sheet's [slideOffset] is changed. [slideOffset] will always be a
-     * value between -1.0 and 1.0. -1.0 is equal to [BottomSheetBehavior.STATE_HIDDEN], 0.0
-     * is equal to [BottomSheetBehavior.STATE_HALF_EXPANDED] and 1.0 is equal to
-     * [BottomSheetBehavior.STATE_EXPANDED].
-     */
-    fun onSlide(
-        sheet: View,
-        @FloatRange(
-            from = -1.0,
-            fromInclusive = true,
-            to = 1.0,
-            toInclusive = true
-        ) slideOffset: Float
-    )
-}
 
 /**
  * A slide action which rotates a view counterclockwise by 180 degrees between the hidden state
@@ -49,6 +30,21 @@ internal class HalfClockwiseRotateSlideAction(
     }
 }
 
+/**
+ * Rotate the given [view] counter-clockwise by 180 degrees.
+ */
+internal class HalfCounterClockwiseRotateSlideAction(
+    private val view: View
+) : OnSandwichSlideAction {
+    override fun onSlide(slideOffset: Float) {
+        view.rotation = slideOffset.normalize(
+            0F,
+            1F,
+            180F,
+            0F
+        )
+    }
+}
 /**
  * A slide action which acts on the nav drawer between the half expanded state and
  * expanded state by:

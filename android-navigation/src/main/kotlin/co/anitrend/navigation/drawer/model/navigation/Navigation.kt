@@ -46,7 +46,10 @@ sealed class Navigation {
          */
         override fun equals(other: Any?): Boolean {
             return when (other) {
-                is Menu -> id == id && titleRes == titleRes && isChecked == isCheckable
+                is Menu -> other.id == id &&
+                        other.titleRes == titleRes &&
+                        other.isChecked == isChecked &&
+                        other.isCheckable == isCheckable
                 else -> super.equals(other)
             }
         }
@@ -79,7 +82,7 @@ sealed class Navigation {
          */
         override fun equals(other: Any?): Boolean {
             return when (other) {
-                is Divider -> id == id
+                is Divider -> other.id == id
                 else -> super.equals(other)
             }
         }
@@ -109,7 +112,7 @@ sealed class Navigation {
          */
         override fun equals(other: Any?): Boolean {
             return when (other) {
-                is Group -> groupId == groupId && titleRes == titleRes
+                is Group -> other.groupId == groupId && other.titleRes == titleRes
                 else -> super.equals(other)
             }
         }

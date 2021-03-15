@@ -18,14 +18,16 @@
 package co.anitrend.core.android.helpers.image
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import androidx.annotation.ColorInt
+import android.graphics.drawable.Drawable
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
+import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.android.R
+import co.anitrend.core.android.helpers.color.asDrawable
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.domain.common.HexColor
+import co.anitrend.core.android.helpers.image.model.toRequestImage
+import co.anitrend.domain.common.entity.contract.ICoverImage
 import coil.Coil
 import coil.request.Disposable
 import coil.request.ImageRequest
@@ -33,21 +35,6 @@ import coil.target.Target
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
 import coil.transition.CrossfadeTransition
-
-/**
- * Convert a hex color and return the corresponding color-int
- */
-@ColorInt
-fun HexColor.toColorInt(): Int {
-    // TODO: increase colour contrast if the shade is below material color shade of 500
-    //  e.g shows like Dr. Stone have poor contrast especially in light themes
-    return Color.parseColor(toString())
-}
-
-/**
- * Creates a new ColorDrawable with the specified color.
- */
-fun HexColor.toDrawable() = ColorDrawable(toColorInt())
 
 /**
  * Draws an image onto the image view
@@ -67,7 +54,7 @@ fun AppCompatImageView.using(
     if (requestImage is MediaRequestImage) {
         val color = requestImage.image?.color
         if (color != null)
-            requestBuilder.placeholder(color.toDrawable())
+            requestBuilder.placeholder(color.asDrawable(context))
     }
 
     if (transformations.isNotEmpty())
@@ -98,14 +85,14 @@ fun AppCompatImageView.using(
 /**
  * Draws an image onto the image view
  *
- * @param resource resource to load
+ * @param resource resource to load of type [Drawable]
  * @param transformations Optional image transformations, providing this with an empty list will
  * bypass the default [RoundedCornersTransformation] on bottom corners.
  *
  * @return A [Disposable] contract
  */
-fun <T: Any> AppCompatImageView.using(
-    resource: T?,
+fun AppCompatImageView.using(
+    resource: Drawable?,
     transformations: List<Transformation> = emptyList()
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
@@ -129,13 +116,61 @@ fun <T: Any> AppCompatImageView.using(
 /**
  * Draws an image onto the image view
  *
- * @param resource resource to load
+ * @param resource resource of type [DrawableRes]
  * @param transformations Optional image transformations, providing this with an empty list will
  * bypass the default [RoundedCornersTransformation] on bottom corners.
  *
  * @return A [Disposable] contract
  */
-fun <T: Any> Target.using(
+fun AppCompatImageView.using(
+    @DrawableRes resource: Int,
+    transformations: List<Transformation> = emptyList()
+): Disposable {
+    val drawable = context.getCompatDrawable(resource)
+    return using(resource = drawable, transformations)
+}
+
+/**
+ * Draws an image onto the image view
+ *
+ * @param resource resource to load of any sub type of [ICoverImage]
+ * @param transformations Optional image transformations, providing this with an empty list will
+ * bypass the default [RoundedCornersTransformation] on bottom corners.
+ *
+ * @return A [Disposable] contract
+ */
+fun <T: ICoverImage> AppCompatImageView.using(
+    resource: T?,
+    transformations: List<Transformation> = emptyList()
+): Disposable {
+    val requestBuilder = ImageRequest.Builder(context)
+
+    if (transformations.isNotEmpty())
+        requestBuilder.transformations(transformations)
+
+    val request = requestBuilder
+        .transition(
+            CrossfadeTransition(
+                resources.getInteger(R.integer.motion_duration_large)
+            )
+        )
+        .data(resource?.toRequestImage())
+        .target(this)
+        .build()
+
+    return Coil.imageLoader(context).enqueue(request)
+}
+
+/**
+ * Draws an image onto the image view
+ *
+ * @param resource resource to load of any sub type of [ICoverImage]
+ * @param transformations Optional image transformations, providing this with an empty list will
+ * bypass the default [RoundedCornersTransformation] on bottom corners.
+ *
+ * @return A [Disposable] contract
+ */
+fun <T: ICoverImage> Target.using(
     resource: T?,
     context: Context,
     transformations: List<Transformation> = emptyList()
@@ -151,7 +186,7 @@ fun <T: Any> Target.using(
                 context.resources.getInteger(R.integer.motion_duration_large)
             )
         )
-        .data(resource)
+        .data(resource?.toRequestImage())
         .target(this)
         .build()
 

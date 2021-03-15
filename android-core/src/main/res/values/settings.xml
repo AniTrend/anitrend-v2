@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2019  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <!-- settings keys -->
+    <string name="settings_authentication_id" translatable="false">_authenticationId</string>
+    <string name="settings_is_authenticated" translatable="false">_isAuthenticated</string>
+
+    <string name="settings_authentication_session_id" translatable="false">_sessionId</string>
+    <string name="settings_authentication_premium_access" translatable="false">_premiumAccess</string>
+
+    <string name="settings_configuration_theme" translatable="false">_theme</string>
+    <string name="settings_configuration_locale" translatable="false">_locale</string>
+
+    <string name="settings_privacy_crash_analytics" translatable="false">_crashAnalytics</string>
+    <string name="settings_privacy_usage_analytics" translatable="false">_usageAnalytics</string>
+
+    <string name="settings_is_sort_order_desc" translatable="false">_isSortOrderDescending</string>
+    <string name="settings_is_new_installation" translatable="false">_isNewInstallation</string>
+    <string name="settings_version_code" translatable="false">_versionCode</string>
+    <string name="settings_clear_on_swipe_refresh" translatable="false">_clearOnRefresh</string>
+    <string name="settings_view_mode_preferred" translatable="false">_viewMode</string>
+    <string name="settings_data_saver" translatable="false">_dataSaver</string>
+    <string name="settings_power_saver" translatable="false">_powerSaver</string>
+
+    <string name="settings_user_title_language" translatable="false">_titleLanguage</string>
+    <string name="settings_user_score_format" translatable="false">_scoreFormat</string>
+
+    <string name="settings_cache_usage_ratio" translatable="false">_cacheUsageRatio</string>
+</resources>

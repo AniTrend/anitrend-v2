@@ -28,18 +28,18 @@ import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
-import co.anitrend.arch.recycler.common.DefaultClickableItem
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.core.android.animations.lerp
+import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
+import co.anitrend.core.android.components.sheet.action.OnSlideAction
+import co.anitrend.core.android.components.sheet.action.OnStateChangedAction
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.OnSandwichSlideAction
-import co.anitrend.navigation.drawer.action.OnSlideAction
-import co.anitrend.navigation.drawer.action.OnStateChangedAction
 import co.anitrend.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.navigation.drawer.adapter.NavigationAdapter
-import co.anitrend.navigation.drawer.callback.BottomNavigationDrawerCallback
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
@@ -47,10 +47,11 @@ import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.drawer.model.state.SandwichState
-import co.anitrend.navigation.extensions.start
+import co.anitrend.navigation.extensions.startActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.math.abs
@@ -69,7 +70,7 @@ class BottomDrawerContent(
         BottomSheetBehavior.from(requireBinding().sheetBackgroundContainer)
     }
 
-    private val bottomSheetCallback = BottomNavigationDrawerCallback()
+    private val bottomSheetCallback = SheetBehaviourCallback()
 
     private val sandwichSlideActions = mutableListOf<OnSandwichSlideAction>()
 
@@ -207,7 +208,7 @@ class BottomDrawerContent(
         )
         lifecycleScope.launchWhenResumed {
             navigationAdapter.clickableStateFlow.filterNotNull()
-                .filterIsInstance<DefaultClickableItem<Navigation.Menu>>()
+                .filterIsInstance<ClickableItem.Data<Navigation.Menu>>()
                 .onEach { clickable ->
                     val model = clickable.data
                     if (model != null)
@@ -223,17 +224,16 @@ class BottomDrawerContent(
         }
         lifecycleScope.launchWhenResumed {
             accountAdapter.clickableStateFlow.filterNotNull()
-                .filterIsInstance<DefaultClickableItem<Account>>()
+                .filterIsInstance<ClickableItem.Data<Account>>()
                 .onEach { clickable ->
                     when (clickable.data) {
                         is Account.Authenticated -> presenter.onAuthenticatedItemClicked(clickable, viewModel)
-                        is Account.Authorize -> AuthRouter.start(clickable.view.context)
+                        is Account.Authorize -> AuthRouter.startActivity(clickable.view.context)
                         else -> { }
                     }
                 }.catch { cause: Throwable ->
                     Timber.tag(moduleTag).e(
-                        cause,
-                        "accountAdapter.clickStateFlow threw an uncaught exception"
+                        cause, "accountAdapter.clickStateFlow threw an uncaught exception"
                     )
                 }
                 .collect()
@@ -244,21 +244,17 @@ class BottomDrawerContent(
     }
 
     override fun setUpViewModelObserver() {
-        viewModel.accountState.model.observe(
-            viewLifecycleOwner
-        ) {
+        viewModel.accountState.model.observe(viewLifecycleOwner) {
             accountAdapter.submitList(it)
             presenter.applyProfilePicture(
                 requireBinding().profileImageView,
                 it?.single(Account::isActiveUser)
             )
         }
-        viewModel.navigationState.model.observe(
-            viewLifecycleOwner
-        ) {
+        viewModel.navigationState.model.observe(viewLifecycleOwner) {
             navigationAdapter.submitList(it)
         }
-        viewModel.navigationState.setNavigationMenuItemChecked(R.id.navigation_home)
+        setCheckedItem(R.id.navigation_home)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -344,5 +340,9 @@ class BottomDrawerContent(
 
     override fun setCheckedItem(
         @IdRes selectedItem: Int
-    ) { viewModel.navigationState.setNavigationMenuItemChecked(selectedItem) }
+    ) {
+        lifecycleScope.launch {
+            viewModel.navigationState.setNavigationMenuItemChecked(selectedItem)
+        }
+    }
 }

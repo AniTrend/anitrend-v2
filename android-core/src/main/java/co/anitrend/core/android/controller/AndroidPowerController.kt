@@ -26,7 +26,8 @@ import androidx.annotation.RequiresApi
 import co.anitrend.core.android.controller.contract.IPowerController
 import co.anitrend.core.android.controller.contract.PowerSaverState
 import co.anitrend.core.android.flowOfBroadcast
-import co.anitrend.core.android.settings.connectivity.IConnectivitySettings
+import co.anitrend.data.arch.settings.connectivity.IConnectivitySettings
+import co.anitrend.data.arch.settings.power.IPowerSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -35,11 +36,12 @@ import kotlinx.coroutines.flow.onStart
 /**
  * Android platform power management controller
  */
-class AndroidPowerController(
+internal class AndroidPowerController(
     private val context: Context,
     private val powerManager: PowerManager?,
     private val connectivityManager: ConnectivityManager?,
-    private val connectivitySettings: IConnectivitySettings
+    private val connectivitySettings: IConnectivitySettings,
+    private val powerSettings: IPowerSettings,
 ) : IPowerController {
 
     override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> {

@@ -52,7 +52,8 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="@integer/single_list_size" />
+            app:spanCount="@integer/single_list_size"
+            tools:listitem="@layout/account_authenticated_item"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profileImageView"

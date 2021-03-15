@@ -24,11 +24,11 @@ private const val ANGLE_LEFT = 180
  *      cutout should be drawn.
  */
 internal class SemiCircleEdgeCutoutTreatment(
-        private var cutoutMargin: Float = 0F,
-        private var cutoutRoundedCornerRadius: Float = 0F,
-        private var cutoutVerticalOffset: Float = 0F,
-        private var cutoutDiameter: Float = 0F,
-        private var cutoutHorizontalOffset: Float = 0F
+    private var cutoutMargin: Float = 0F,
+    private var cutoutRoundedCornerRadius: Float = 0F,
+    private var cutoutVerticalOffset: Float = 0F,
+    private var cutoutDiameter: Float = 0F,
+    private var cutoutHorizontalOffset: Float = 0F
 ) : EdgeTreatment() {
 
     private var cradleDiameter = 0F

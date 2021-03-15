@@ -16,9 +16,20 @@
  */
 
 import co.anitrend.buildSrc.Libraries
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     id("co.anitrend.plugin")
+}
+
+tasks.withType(KotlinCompile::class.java) {
+    kotlinOptions {
+        freeCompilerArgs = listOf(
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-Xopt-in=coil.annotation.ExperimentalCoilApi",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )
+    }
 }
 
 dependencies {

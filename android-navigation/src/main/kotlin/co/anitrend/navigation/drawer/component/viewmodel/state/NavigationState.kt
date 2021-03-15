@@ -24,11 +24,9 @@ import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.extension.ext.replaceWith
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -62,8 +60,8 @@ internal class NavigationState(
 
     init {
         launch {
-            settings.isAuthenticated.flow.onEach { authenticated ->
-                invoke(authenticated)
+            settings.isAuthenticated.flow.onEach { state ->
+                onAuthenticationStateChanged(state)
             }.catch { cause ->
                 Timber.tag(moduleTag).w(cause)
             }.collect()
@@ -148,7 +146,7 @@ internal class NavigationState(
             Navigation.Menu(
                 id = R.id.navigation_donate,
                 icon = R.drawable.ic_patreon_24dp,
-                titleRes = R.string.navigation_donate,
+                titleRes = R.string.navigation_support,
                 isCheckable = false
             ),
             Navigation.Menu(
@@ -174,16 +172,15 @@ internal class NavigationState(
         return navigationItems
     }
 
-    operator fun invoke(authenticated: Boolean) {
-        val snapshot = navigationItems.value.toMutableList()
-        val checked = snapshot
-            .filterIsInstance<Navigation.Menu>()
-            .firstOrNull(Navigation.Menu::isChecked)
-
-        snapshot.replaceWith(createNavigationItems(authenticated))
+    private suspend fun onAuthenticationStateChanged(isAuthenticated: Boolean) {
+        val snapshot = mutableListOf<Navigation>()
+        snapshot.addAll(navigationItems.value)
+        val checked = snapshot.firstOrNull { nav ->
+            nav is Navigation.Menu && nav.isChecked
+        }
 
         if (checked != null && !setNavigationMenuItemChecked(checked.id))
-            navigationItems.value = snapshot
+            navigationItems.emit(createNavigationItems(isAuthenticated))
     }
 
     /**
@@ -191,9 +188,10 @@ internal class NavigationState(
      *
      * @return true if the currently selected item has changed.
      */
-    fun setNavigationMenuItemChecked(@IdRes id: Int): Boolean {
+    suspend fun setNavigationMenuItemChecked(@IdRes id: Int): Boolean {
         var updated = false
-        val snapshot = navigationItems.value
+        val snapshot = mutableListOf<Navigation>()
+        snapshot.addAll(navigationItems.value)
         snapshot.filterIsInstance<Navigation.Menu>()
             .onEach {
                 val shouldCheck = it.id == id
@@ -202,7 +200,7 @@ internal class NavigationState(
                 it.isChecked = shouldCheck
             }
         if (updated)
-            navigationItems.value = snapshot
+            navigationItems.emit(snapshot)
         return updated
     }
 

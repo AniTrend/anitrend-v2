@@ -18,8 +18,8 @@
 package co.anitrend.navigation.drawer.component.content.contract
 
 import androidx.annotation.IdRes
-import co.anitrend.navigation.drawer.action.OnSlideAction
-import co.anitrend.navigation.drawer.action.OnStateChangedAction
+import co.anitrend.core.android.components.sheet.action.OnSlideAction
+import co.anitrend.core.android.components.sheet.action.OnStateChangedAction
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.Flow
 

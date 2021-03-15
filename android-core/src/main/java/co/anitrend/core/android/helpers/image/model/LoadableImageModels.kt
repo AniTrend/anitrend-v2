@@ -36,3 +36,15 @@ class MediaRequestImage(
 class CoverRequestImage(
     coverImage: ICoverImage?
 ) : RequestImage<ICoverImage>(coverImage)
+
+fun String?.toCoverImage(): ICoverImage {
+    val resource = this
+    return object : ICoverImage {
+        override val large: CharSequence? = resource
+        override val medium: CharSequence? = resource
+    }
+}
+
+fun ICoverImage.toRequestImage(): CoverRequestImage {
+    return CoverRequestImage(this)
+}

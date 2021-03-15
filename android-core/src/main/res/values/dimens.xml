@@ -17,7 +17,10 @@
   -->
 
 <resources>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="bottom_sheet_margin">0dp</dimen>
     <dimen name="design_bottom_app_bar_height">56dp</dimen>
     <dimen name="design_bottom_app_status_bar_height">24dp</dimen>
-    <dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
+	<dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
+	<dimen name="nav_item_selector_margin">100dp</dimen>
 </resources>

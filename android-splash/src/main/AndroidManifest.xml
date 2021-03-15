@@ -20,7 +20,8 @@
     package="co.anitrend.splash">
 
     <application>
-        <activity android:name="co.anitrend.splash.component.screen.SplashScreen">
+        <activity android:name="co.anitrend.splash.component.screen.SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

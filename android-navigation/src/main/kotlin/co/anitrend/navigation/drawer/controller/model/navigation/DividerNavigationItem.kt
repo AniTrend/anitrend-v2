@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class DividerNavigationItem(
     entity: Navigation.Divider
-) : RecyclerItemBinding<NavigationDividerItemBinding>(entity.id.toLong()) {
+) : RecyclerItemBinding<NavigationDividerItemBinding>(entity.hashCode().toLong()) {
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,

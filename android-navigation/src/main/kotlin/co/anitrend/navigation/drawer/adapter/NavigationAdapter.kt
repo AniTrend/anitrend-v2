@@ -20,7 +20,6 @@ package co.anitrend.navigation.drawer.adapter
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
@@ -43,7 +42,18 @@ class NavigationAdapter(
     override val mapper: (Navigation) -> IRecyclerItem = ::invoke,
     override val customSupportAnimator: AbstractAnimator? = null,
     override val supportAction: ISupportSelectionMode<Long>? = null
-) : SupportListAdapter<Navigation>(NavigationDiffUtil) {
+) : SupportListAdapter<Navigation>(NavigationDiffUtil, true) {
+
+    /**
+     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
+     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
+     *
+     * The identifiable id of each item should unique, and if non exists
+     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
+     */
+    override fun getStableIdFor(item: Navigation?): Long {
+        return item?.hashCode()?.toLong() ?: super.getStableIdFor(item)
+    }
 
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.
@@ -79,17 +89,6 @@ class NavigationAdapter(
         Navigation.MENU -> layoutInflater.createNavMenuViewHolder(parent)
         Navigation.GROUP -> layoutInflater.createNavGroupViewHolder(parent)
         else -> layoutInflater.createNavDividerViewHolder(parent)
-    }
-
-    /**
-     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
-     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
-     *
-     * The identifiable id of each item should unique, and if non exists
-     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
-     */
-    override fun getStableIdFor(item: Navigation?): Long {
-        return item?.hashCode()?.toLong() ?: RecyclerView.NO_ID
     }
 
     private companion object : (Navigation) -> IRecyclerItem  {

@@ -26,21 +26,21 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.recycler.common.DefaultClickableItem
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
-import co.anitrend.core.android.helpers.image.model.CoverRequestImage
+import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
+import co.anitrend.core.android.helpers.image.model.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.*
-import co.anitrend.navigation.drawer.callback.BottomNavigationDrawerCallback
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.shape.SemiCircleEdgeCutoutTreatment
-import co.anitrend.navigation.extensions.start
+import co.anitrend.navigation.extensions.startActivity
 import coil.transform.CircleCropTransformation
 import com.google.android.material.shape.MaterialShapeDrawable
 
@@ -113,7 +113,7 @@ internal class DrawerPresenter(
 
     fun applyStateAndSlideActions(
         binding: BottomNavigationDrawerBinding,
-        callback: BottomNavigationDrawerCallback,
+        callback: SheetBehaviourCallback,
         foregroundShapeDrawable: MaterialShapeDrawable
     ) {
         // Scrim view transforms
@@ -136,7 +136,7 @@ internal class DrawerPresenter(
     fun applyProfilePicture(imageView: AppCompatImageView, model: Account?) {
         when (model) {
             is Account.Authenticated -> imageView.using(
-                CoverRequestImage(model.coverImage),
+                model.coverImage.toRequestImage(),
                 listOf(CircleCropTransformation())
             )
             is Account.Anonymous -> imageView.using(
@@ -147,13 +147,13 @@ internal class DrawerPresenter(
     }
 
     fun onAuthenticatedItemClicked(
-        clickable: DefaultClickableItem<Account>,
+        clickable: ClickableItem.Data<Account>,
         viewModel: BottomDrawerViewModel
     ) {
         when (clickable.view.id) {
             R.id.accountContainer -> {
                 if (clickable.data!!.isActiveUser)
-                    ProfileRouter.start(clickable.view.context)
+                    ProfileRouter.startActivity(clickable.view.context)
                 else { /* TODO: Switch account to the selected one */ }
             }
             R.id.accountSignOut -> {

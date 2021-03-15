@@ -22,14 +22,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.TypedValue
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.res.use
+import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
+import co.anitrend.navigation.model.common.IParam
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -64,20 +65,15 @@ fun Context.themeInterpolator(@AttrRes attr: Int): Interpolator {
 }
 
 /**
- * Pretty time reference as a singleton
- */
-val prettyTime by lazy {
-    koinOf<PrettyTime>()
-}
-
-/**
  * Creates a callback flow a [BroadcastReceiver] using the given [IntentFilter]
  *
  * @param intentFilter The intent to subscribe to
  *
  * @return [Flow] of [Intent]
  */
-fun Context.flowOfBroadcast(intentFilter: IntentFilter): Flow<Intent> = callbackFlow {
+fun Context.flowOfBroadcast(
+    intentFilter: IntentFilter
+): Flow<Intent> = callbackFlow {
     val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             offer(intent)
@@ -110,7 +106,8 @@ fun Float.format(digits: Int) = "%.${digits}f".format(this)
  *
  * @return 2 hours from now, 3 hours ago .e.t.c
  */
-fun AiringSchedule.getPrettyTime(): String {
+fun AiringSchedule.asPrettyTime(): String {
+    val prettyTime = koinOf<PrettyTime>()
     return prettyTime.format(
         Date(airingAt * 1000)
     )
@@ -121,12 +118,19 @@ fun AiringSchedule.getPrettyTime(): String {
  *
  * @return 2 hours from now, 3 hours ago .e.t.c
  */
-fun Instant.getPrettyTime(): String {
+fun Instant.asPrettyTime(): String {
+    val prettyTime = koinOf<PrettyTime>()
     return prettyTime.format(Date(toEpochMilli()))
 }
 
-fun View.setMarginTop(marginTop: Int) {
-    val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-    menuLayoutParams.setMargins(0, marginTop, 0, 0)
-    this.layoutParams = menuLayoutParams
+/**
+ * Displays an error message for missing parameters otherwise runs [block]
+ */
+inline fun SupportStateLayout.assureParamNotMissing(param: IParam?, block: () -> Unit) {
+    if (param == null)
+        networkMutableStateFlow.value = NetworkState.Error(
+            heading = context.getString(R.string.app_controller_heading_missing_param),
+            message = context.getString(R.string.app_controller_message_missing_param),
+        )
+    else block()
 }
