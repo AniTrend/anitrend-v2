@@ -24,21 +24,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
-import co.anitrend.arch.recycler.common.ClickType
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaItem(
-    private val entity: Media
+    private val entity: Media,
+    private val settings: IUserSettings
 ) : RecyclerItemBinding<MediaItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
@@ -64,22 +67,22 @@ internal class MediaItem(
         disposable = requireBinding().mediaImage.using(
             MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
         )
-        requireBinding().mediaRatingWidget.setupUsingMedia(entity, true)
+        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings, true)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
         requireBinding().mediaTitle.text = SpannableString(entity.title.userPreferred)
         requireBinding().mediaCardContainer.setOnClickListener {
-            Toast.makeText(view.context, "Opens media screen", Toast.LENGTH_SHORT).show()
+            MediaRouter.startActivity(
+                context = it.context,
+                navPayload = MediaRouter.Param(
+                    id = entity.id,
+                    type = entity.category.type
+                ).asNavPayload()
+            )
         }
         requireBinding().mediaCardContainer.setOnLongClickListener {
-            stateFlow.value =
-                DefaultClickableItem(
-                    clickType = ClickType.LONG,
-                    data = entity,
-                    view = view
-                )
-            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT).show()
+            Toast.makeText(view.context, "Opens media list bottom dialog, if the user is authenticated", Toast.LENGTH_SHORT).show()
             true
         }
     }

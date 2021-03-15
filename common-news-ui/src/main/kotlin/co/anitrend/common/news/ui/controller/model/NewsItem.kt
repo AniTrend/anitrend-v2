@@ -23,17 +23,16 @@ import android.view.ViewGroup
 import androidx.core.text.parseAsHtml
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.news.databinding.NewsItemBinding
 import co.anitrend.core.android.R
+import co.anitrend.core.android.helpers.image.model.toCoverImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.news.entity.News
 import co.anitrend.navigation.NewsRouter
-import co.anitrend.navigation.extensions.forActivity
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
-import co.anitrend.navigation.model.NavPayload
 import coil.request.Disposable
 import coil.transform.RoundedCornersTransformation
 import com.perfomer.blitz.cancelTimeAgoUpdates
@@ -65,7 +64,7 @@ internal class NewsItem(
     ) {
         binding = NewsItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(R.dimen.sm_margin).toFloat()
-        disposable = requireBinding().newsImage.using(entity.image, listOf(
+        disposable = requireBinding().newsImage.using(entity.image.toCoverImage(), listOf(
             RoundedCornersTransformation(
                 topLeft = radius,
                 topRight = radius,
@@ -84,16 +83,14 @@ internal class NewsItem(
         requireBinding().container.setOnClickListener {
             NewsRouter.startActivity(
                 context = it.context,
-                navPayload = NavPayload(
-                    key = NewsRouter.Param.KEY,
-                    parcel = NewsRouter.Param(
-                        link = entity.link,
-                        title = entity.title,
-                        subTitle = entity.subTitle,
-                        description = entity.description,
-                        content = entity.content
-                    )
-                )
+                navPayload = NewsRouter.Param(
+                    link = entity.link,
+                    title = entity.title,
+                    subTitle = entity.subTitle,
+                    description = entity.description,
+                    content = entity.content
+                ).asNavPayload()
+
             )
         }
     }

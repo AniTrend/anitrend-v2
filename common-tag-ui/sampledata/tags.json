@@ -1,0 +1,2370 @@
+[
+    {
+      "category": "Technical",
+      "description": "A manga in the 'yonkoma' format, which consists of four equal-sized panels arranged in a vertical strip.",
+      "id": 206,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "4-koma"
+    },
+    {
+      "category": "Technical",
+      "description": "Contains animation that is primarily done in black and white",
+      "id": 710,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Achromatic"
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Chapters or episodes do not occur in chronological order.",
+      "id": 156,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Achronological Order"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around actors or the acting industry.",
+      "id": 548,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Acting"
+    },
+    {
+      "category": "Technical",
+      "description": "Produced in order to promote the products of a certain company.",
+      "id": 505,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Advertisement"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Partly or completely set in the afterlife.",
+      "id": 147,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Afterlife"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Prominently features romantic relations between people with a significant age difference.",
+      "id": 138,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Age Gap"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who was returned to a younger state.",
+      "id": 488,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Age Regression"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features agender characters.",
+      "id": 334,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Agender"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a character making an exaggerated orgasm face.",
+      "id": 279,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Ahegao"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of airsoft.",
+      "id": 167,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Airsoft"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features extraterrestrial lifeforms.",
+      "id": 191,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Aliens"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Features multiple alternate universes in the same series.",
+      "id": 146,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Alternate Universe"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of American football.",
+      "id": 314,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "American Football"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character(s) with memory loss.",
+      "id": 240,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Amnesia"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features amputation or amputees.",
+      "id": 652,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Amputation"
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Prominently features elements that are out of place in the historical period the work takes place in, particularly modern elements in a historical setting.",
+      "id": 490,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Anachronism"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features sexual penetration of the anal cavity.",
+      "id": 185,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Anal Sex"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features animal characters in a leading role.",
+      "id": 433,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Animals"
+    },
+    {
+      "category": "Technical",
+      "description": "A collection of separate works collated into a single release.",
+      "id": 471,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Anthology"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Features a protagonist who lacks conventional heroic attributes and may be considered a borderline villain.",
+      "id": 104,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Anti-Hero"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Centers around the sport of archery, or prominently features the use of archery in combat.",
+      "id": 251,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Archery"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features the sexual depiction or stimulation of a character's armpits.",
+      "id": 629,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Armpits"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Intelligent non-organic machines that work and react similarly to humans.",
+      "id": 517,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Artificial Intelligence"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features a character who isn't romantically or sexually attracted to people of any sex or gender.",
+      "id": 622,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Asexual"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Footjob; features stimulation of genitalia by feet.",
+      "id": 315,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Ashikoki"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features breath play. ",
+      "id": 651,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Asphyxiation"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centers around characters who murder people as a profession.",
+      "id": 322,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Assassins"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Relating or centered around the study of celestial objects and phenomena, space, or the universe.",
+      "id": 623,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Astronomy"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around sporting events that involve competitive running, jumping, throwing, or walking.",
+      "id": 264,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Athletics"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Prominently features events with augmented reality as the main setting.",
+      "id": 364,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Augmented Reality"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Real stories and anecdotes written by the author about their own life.",
+      "id": 519,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Autobiographical"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Regarding the flying or operation of aircraft.",
+      "id": 355,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Aviation"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of badminton.",
+      "id": 235,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Badminton"
+    },
+    {
+      "category": "Theme-Arts-Music",
+      "description": "Main cast is a group of musicians.",
+      "id": 110,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Band"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in a bar.",
+      "id": 161,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Bar"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of baseball.",
+      "id": 149,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Baseball"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of basketball.",
+      "id": 192,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Basketball"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Centers around a fierce group competition, often violent and with only one winner.",
+      "id": 101,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Battle Royale"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Based on true stories of real persons living or dead, written by another.",
+      "id": 239,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Biographical"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Features a character who is romantically or sexually attracted to people of more than one sex or gender.",
+      "id": 294,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Bisexual"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a character blackmailing another into performing sexual acts.",
+      "id": 309,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Blackmail"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Features characters who undergo horrific transformations or disfigurement, often to their own detriment.",
+      "id": 639,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Body Horror"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Centers around individuals swapping bodies with one another.",
+      "id": 154,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Body Swapping"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features BDSM, with or without the use of accessories.",
+      "id": 246,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Bondage"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features the stimulation of male genitalia by breasts.",
+      "id": 126,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Boobjob"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of boxing.",
+      "id": 169,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Boxing"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Prominently features romance between two males, not inherently sexual.",
+      "id": 75,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Boys' Love"
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Prominently features the use of force for intimidation, often in a school setting.",
+      "id": 171,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Bullying"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a butler.",
+      "id": 812,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Butler"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around the art of calligraphy.",
+      "id": 204,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Calligraphy"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features the act of consuming another member of the same species as food.",
+      "id": 870,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cannibalism"
+    },
+    {
+      "category": "Theme-Game-Card & Board Game",
+      "description": "Centers around individuals competing in card games.",
+      "id": 178,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Card Battle"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Centers around the use of automotive vehicles.",
+      "id": 10,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cars"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character with a human upper body and the lower body of a horse.",
+      "id": 632,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Centaur"
+    },
+    {
+      "category": "Technical",
+      "description": "Prominently features scenes created with computer-generated imagery.",
+      "id": 90,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "CGI"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the activity of cheerleading. ",
+      "id": 646,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cheerleading"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Features \"super deformed\" character designs with smaller, rounder proportions and a cute look.",
+      "id": 324,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Chibi"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features a beast made by combining animals, usually with humans",
+      "id": 774,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Chimera"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character with \"Middle School 2nd Year Syndrome\", who either acts like a know-it-all adult or falsely believes they have special powers.",
+      "id": 267,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Chuunibyou"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Prominently features a circus.",
+      "id": 476,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Circus"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Discusses or adapts a work of classic world literature.",
+      "id": 227,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Classic Literature"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in a college or university.",
+      "id": 404,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "College"
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Centers around a character's transition from childhood to adulthood.",
+      "id": 102,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Coming of Age"
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Contains one or more factions controlling or attempting to control the world from the shadows.",
+      "id": 456,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Conspiracy"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "A type of horror that emphasizes human insignificance in the grand scope of cosmic reality; fearing the unknown and being powerless to fight it.",
+      "id": 636,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cosmic Horror"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features dressing up as a different character or profession.",
+      "id": 328,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cosplay"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around unlawful activities punishable by the state or other authority.",
+      "id": 648,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Crime"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character dressing up as the opposite sex.",
+      "id": 186,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Crossdressing"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the placement of two or more otherwise discrete fictional characters, settings, or universes into the context of a single story.",
+      "id": 158,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Crossover"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Features a social group with unorthodox religious, spiritual, or philosophical beliefs and practices.",
+      "id": 586,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cult"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Features characters using training, often martial arts-related, and other special methods to cultivate life force and gain strength or immortality.",
+      "id": 326,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cultivation"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features oral sex performed on female genitalia.",
+      "id": 135,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Cunnilingus"
+    },
+    {
+      "category": "Theme-Slice of Life",
+      "description": "Centers around, well, cute girls doing cute things.",
+      "id": 92,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cute Girls Doing Cute Things"
+    },
+    {
+      "category": "Theme-Sci-Fi",
+      "description": "Set in a future of advanced technological and scientific achievements that have resulted in social disorder.",
+      "id": 108,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cyberpunk"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of cycling.",
+      "id": 151,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cycling"
+    },
+    {
+      "category": "Theme-Arts-Music",
+      "description": "Centers around the art of dance.",
+      "id": 209,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dancing"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Features characters participating in a game, where failure results in death.",
+      "id": 615,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Death Game"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a female character who has never had sexual relations (until now).",
+      "id": 129,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Defloration"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features characters with a notorious image and attitude, sometimes referred to as \"yankees\".",
+      "id": 395,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Delinquents"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features malevolent otherworldly creatures.",
+      "id": 15,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Demons"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Works that feature familiar characters acting in unfamiliar, yet seemingly orchestrated ways. Common iconography would include telephone poles and wires, building roof tops, suicides, disorientation, and paranoia. ",
+      "id": 654,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Denpa"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features a character who investigates and solves crimes.",
+      "id": 694,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Detective"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features Dinosaurs, prehistoric reptiles that went extinct millions of years ago.",
+      "id": 704,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dinosaurs"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "A case where one or more people share the same body.",
+      "id": 536,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dissociative Identities"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features mythical reptiles which generally have wings and can breathe fire.",
+      "id": 224,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dragons"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around the art of drawing, including manga and doujinshi.",
+      "id": 118,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Drawing"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features the usage of drugs such as opioids, stimulants, hallucinogens etc.",
+      "id": 489,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Drugs"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a Dullahan, a creature from Irish Folklore with a head that can be detached from its main body.",
+      "id": 658,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dullahan"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Prominently features a dungeon environment. ",
+      "id": 604,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dungeon"
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Partly or completely set in a society characterized by poverty, squalor or oppression",
+      "id": 217,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dystopian"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the field of economics.",
+      "id": 248,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Economics"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Primary aim is to educate the audience.",
+      "id": 140,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Educational"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is an elf.",
+      "id": 598,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Elf"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Features a large cast of characters with (almost) equal screen time and importance to the plot.",
+      "id": 105,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ensemble Cast"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Concern with the state of the natural world and how humans interact with it.",
+      "id": 342,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Environmental"
+    },
+    {
+      "category": "Technical",
+      "description": "Features story arcs that are loosely tied or lack an overarching plot.",
+      "id": 193,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Episodic"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Japanese literary and artistic movement originating in the 1930's. Works have a focus on grotesque eroticism, sexual corruption, and decadence.",
+      "id": 482,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ero Guro"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Prominently features characters infiltrating an organization in order to steal sensitive information.",
+      "id": 310,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Espionage"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features the act of exposing oneself in public for sexual pleasure.",
+      "id": 901,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Exhibitionism"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features sexual ejaculation onto an individual's face.",
+      "id": 130,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Facial"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "This work tells a fairy tale, centers around fairy tales, or is based on a classic fairy tale.",
+      "id": 400,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Fairy Tale"
+    },
+    {
+      "category": "Theme-Slice of Life",
+      "description": "Centers around the activities of a family unit.",
+      "id": 87,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Family Life"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around the fashion industry.",
+      "id": 410,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Fashion"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features the sexual depiction or stimulation of a character's feet.",
+      "id": 631,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Feet"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Blowjob; features oral sex performed on male genitalia.",
+      "id": 134,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Fellatio"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main character is female.",
+      "id": 98,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Female Protagonist"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centered around the life and activities of rescuers specialised in firefighting. ",
+      "id": 613,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Firefighters"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of fishing.",
+      "id": 212,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Fishing"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around exercise with the aim of improving physical health.",
+      "id": 170,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Fitness"
+    },
+    {
+      "category": "Technical",
+      "description": "Created using Flash animation techniques.",
+      "id": 242,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Flash"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a female character with smaller-than-average breasts.",
+      "id": 136,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Flat Chest"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around cooking or food appraisal.",
+      "id": 142,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Food"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of football (known in the USA as \"soccer\").",
+      "id": 148,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Football"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in a country outside of Japan.",
+      "id": 198,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Foreign"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Prominently features a character evading capture by an individual or organization.",
+      "id": 226,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Fugitive"
+    },
+    {
+      "category": "Technical",
+      "description": "Almost entirely created with computer-generated imagery.",
+      "id": 89,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Full CGI"
+    },
+    {
+      "category": "Technical",
+      "description": "Manga fully colored or drawn in color.",
+      "id": 207,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Full Color"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features female characters with male genitalia.",
+      "id": 188,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Futanari"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the act of gambling.",
+      "id": 91,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gambling"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centers around gang organizations.",
+      "id": 106,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gangs"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features a character who dresses and behaves in a way characteristic of another gender, or has been transformed into a person of another gender.",
+      "id": 77,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gender Bending"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a ghost.",
+      "id": 220,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ghost"
+    },
+    {
+      "category": "Theme-Game-Card & Board Game",
+      "description": "Centered around the game of Go.",
+      "id": 443,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Go"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "A goblin is a monstrous creature from European folklore. They are almost always small and grotesque, mischievous or outright malicious, and greedy. Sometimes with magical abilities.",
+      "id": 480,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Goblin"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character of divine or religious nature.",
+      "id": 253,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gods"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of golf.",
+      "id": 532,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Golf"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features graphic bloodshed and violence.",
+      "id": 94,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gore"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features more than two participants engaged in sex simultaneously.",
+      "id": 830,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Group Sex"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Prominently features the use of guns in combat.",
+      "id": 157,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Guns"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a female character who has a distinct American-emulated fashion style, such as tanned skin, bleached hair, and excessive makeup. Also known as gal.",
+      "id": 356,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gyaru"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features the stimulation of genitalia by another's hands.",
+      "id": 317,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Handjob"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Main cast features one male character plus several female characters who are romantically interested in him.",
+      "id": 23,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Harem"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features character or costume transformations which often grant special abilities.",
+      "id": 99,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Henshin"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who withdraws from social life, often seeking extreme isolation.",
+      "id": 282,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Hikikomori"
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Partly or completely set during a real period of world history.",
+      "id": 25,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Historical"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features characters in a master-slave relationship where one is the \"owner\" and the other is a \"pet.\"",
+      "id": 181,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Human Pet"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of ice skating.",
+      "id": 228,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ice Skating"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Centers around the life and activities of an idol.",
+      "id": 115,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Idol"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features sexual relations between characters who are related by blood.",
+      "id": 128,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Incest"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Oral rape; features a character thrusting their genitalia or a phallic object into the mouth of another character.",
+      "id": 359,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Irrumatio"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Features characters being transported into an alternate world setting and having to adapt to their new surroundings.",
+      "id": 244,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Isekai"
+    },
+    {
+      "category": "Theme-Slice of Life",
+      "description": "Primary aim is to heal the audience through serene depictions of characters' daily lives.",
+      "id": 81,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Iyashikei"
+    },
+    {
+      "category": "Demographic",
+      "description": "Target demographic is adult females.",
+      "id": 27,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Josei"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features giant monsters.",
+      "id": 276,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Kaiju"
+    },
+    {
+      "category": "Theme-Game-Card & Board Game",
+      "description": "Centers around the game of karuta.",
+      "id": 182,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Karuta"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features humanoid characters with animal ears.",
+      "id": 254,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Kemonomimi"
+    },
+    {
+      "category": "Demographic",
+      "description": "Target demographic is young children.",
+      "id": 28,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Kids"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who generally retains a cold, blunt and cynical exterior, but once one gets to know them, they have a very warm and loving interior.",
+      "id": 779,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Kuudere"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "A team game played with a ball and lacrosse sticks.",
+      "id": 437,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Lacrosse"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features breast milk play and production.",
+      "id": 650,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Lactation"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "A barrier to communication between people who are unable to speak a common language.",
+      "id": 516,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Language Barrier"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a character with larger-than-average breasts.",
+      "id": 137,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Large Breasts"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features characters or themes associated with the LGBTQ+ community, such as sexuality or gender identity.",
+      "id": 483,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "LGBTQ+ Themes"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Featuring a civilization with few ruins or records that exist in present day knowledge.",
+      "id": 466,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Lost Civilization"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Centered around romantic feelings between more than two people. Includes all love polygons.",
+      "id": 139,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Love Triangle"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centered around Italian organised crime syndicates.",
+      "id": 107,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Mafia"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features magical elements or the use of magic.",
+      "id": 29,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Magic"
+    },
+    {
+      "category": "Theme-Game-Card & Board Game",
+      "description": "Centered around the game of mahjong.",
+      "id": 117,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Mahjong"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a maid.",
+      "id": 249,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Maids"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main character is male.",
+      "id": 82,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Male Protagonist"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Centers around the use of traditional hand-to-hand combat.",
+      "id": 30,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Martial Arts"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features erotic stimulation of one's own genitalia or other erogenous regions.",
+      "id": 131,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Masturbation"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centered around the activities of people working in the field of medicine.",
+      "id": 659,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Medicine"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features a character(s) who has had their memories altered.",
+      "id": 365,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Memory Manipulation"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "A mythological creature with the body of a human and the tail of a fish",
+      "id": 558,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Mermaid"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Features fourth wall-breaking references to itself or genre tropes.",
+      "id": 144,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Meta"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features sexual intercourse with older women.",
+      "id": 187,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "MILF"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centered around the life and activities of military personnel.",
+      "id": 34,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Military"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a female character who is part-monster.",
+      "id": 259,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Monster Girl"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Prominently features mopeds.",
+      "id": 176,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Mopeds"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Prominently features the use of motorcycles.",
+      "id": 173,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Motorcycles"
+    },
+    {
+      "category": "Theme-Arts-Music",
+      "description": "Features a performance that combines songs, spoken dialogue, acting, and dance.",
+      "id": 265,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Musical"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features mythological elements, especially those from religious or cultural tradition.",
+      "id": 208,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Mythology"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Creampie; features sexual ejaculation inside of a character.",
+      "id": 125,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Nakadashi"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Humanoid characters with cat-like features such as cat ears and a tail.",
+      "id": 113,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Nekomimi"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "NTR; features a character with a partner shown being intimate with someone else.",
+      "id": 124,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Netorare"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features characters in a romantic relationship who agree to be sexually intimate with others.",
+      "id": 280,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Netorase"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a character shown being intimate with the partner of another character. The opposite of netorare.",
+      "id": 316,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Netori"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features Japanese warriors traditionally trained in espionage, sabotage and assasination.",
+      "id": 255,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ninja"
+    },
+    {
+      "category": "Technical",
+      "description": "This work contains no dialogue.",
+      "id": 341,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "No Dialogue"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Stylized as a cynical crime drama with low-key visuals.",
+      "id": 327,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Noir"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features a character wearing no clothing or exposing intimate body parts.",
+      "id": 100,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Nudity"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a nun.",
+      "id": 614,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Nun"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Prominently features a female office worker or OL.",
+      "id": 653,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Office Lady"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a courtesan character of the Japanese Edo Period.",
+      "id": 593,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Oiran"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Features a wealthy, high-class, oftentimes stuck up and demanding female character.",
+      "id": 780,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ojou-sama"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Alternative universe that prominently features dynamics modeled after wolves in which there are alphas, betas, and omegas and heat cycles as well as impregnation, regardless of gender.",
+      "id": 533,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Omegaverse"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the culture of a fanatical fan-base.",
+      "id": 97,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Otaku Culture"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Centers around hiking, camping or other outdoor activities.",
+      "id": 262,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Outdoor"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features a disease prevalent over a whole country or the world.",
+      "id": 874,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Pandemic"
+    },
+    {
+      "category": "Theme-Comedy",
+      "description": "Features deliberate exaggeration of popular tropes or a particular genre to comedic effect.",
+      "id": 39,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Parody"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Relating or devoted to the study of the fundamental nature of knowledge, reality, and existence.",
+      "id": 391,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Philosophy"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around the use of cameras to capture photos.",
+      "id": 195,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Photography"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features sea-faring adventurers branded as criminals by the law.",
+      "id": 201,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Pirates"
+    },
+    {
+      "category": "Theme-Game-Card & Board Game",
+      "description": "Centers around the game of poker or its variations.",
+      "id": 183,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Poker"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centers around the life and activities of law enforcement officers.",
+      "id": 40,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Police"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around politics, politicians, or government activities.",
+      "id": 103,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Politics"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Partly or completely set in a world or civilization after a global disaster.",
+      "id": 93,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Post-Apocalyptic"
+    },
+    {
+      "category": "Technical",
+      "description": "Point of View; features scenes shown from the perspective of the series protagonist.",
+      "id": 215,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "POV"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features pregnant female characters in a sexual context.",
+      "id": 397,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Pregnant"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main cast is mostly composed of characters above a high school age.",
+      "id": 109,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Primarily Adult Cast"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main cast is mostly composed of characters below a high school age.",
+      "id": 446,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Primarily Child Cast"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main cast is mostly composed of female characters.",
+      "id": 86,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Primarily Female Cast"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main cast is mostly composed of male characters.",
+      "id": 88,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Primarily Male Cast"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features characters who are paid for sexual favors.",
+      "id": 190,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Prostitution"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features sexual acts performed in public settings.",
+      "id": 127,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Public Sex"
+    },
+    {
+      "category": "Technical",
+      "description": "Animation style involving the manipulation of puppets to act out scenes.",
+      "id": 325,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Puppetry"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Rakugo is the traditional Japanese performance art of comic storytelling.",
+      "id": 481,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Rakugo"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features non-consensual sexual penetration.",
+      "id": 155,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Rape"
+    },
+    {
+      "category": "Theme-Sci-Fi-Mecha",
+      "description": "Prominently features mechanical designs loosely influenced by real-world robotics.",
+      "id": 160,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Real Robot"
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Prominently features the recovery of a character who became incapable of social life or work.",
+      "id": 311,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Rehabilitation"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Features a character being born again after death, typically as another person or in another world.",
+      "id": 243,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Reincarnation"
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Prominently features a character who aims to exact punishment in a resentful or vindictive manner.",
+      "id": 252,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Revenge"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Main cast features one female character plus several male characters who are romantically interested in her.",
+      "id": 123,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Reverse Harem"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features oral sex performed on the anus.",
+      "id": 845,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Rimjob"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features humanoid machines.",
+      "id": 175,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Robots"
+    },
+    {
+      "category": "Technical",
+      "description": "Animation technique that animators use to trace over motion picture footage, frame by frame, to produce realistic action.",
+      "id": 683,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Rotoscoping"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of rugby.",
+      "id": 221,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Rugby"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in the countryside.",
+      "id": 250,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Rural"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Prominently features characters deriving pleasure, especially sexual gratification, from inflicting pain, suffering, or humiliation on others.",
+      "id": 723,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Sadism"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features warriors of medieval Japanese nobility bound by a code of honor.",
+      "id": 291,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Samurai"
+    },
+    {
+      "category": "Theme-Comedy",
+      "description": "Prominently features the use of comedy or ridicule to expose and criticise social phenomena.",
+      "id": 80,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Satire"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Lots of feces.",
+      "id": 387,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Scat"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in a primary or secondary educational institution.",
+      "id": 46,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "School"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in a school club scene.",
+      "id": 84,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "School Club"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Prominently features characters diving with the aid of special breathing equipment.",
+      "id": 811,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Scuba Diving"
+    },
+    {
+      "category": "Demographic",
+      "description": "Target demographic is adult males.",
+      "id": 50,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Seinen"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features objects that are designed to stimulate sexual pleasure.",
+      "id": 133,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Sex Toys"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Features character(s) who changes one's appearance or form.",
+      "id": 772,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Shapeshifting"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Prominently features the use of sea-based transportation vessels.",
+      "id": 305,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Ships"
+    },
+    {
+      "category": "Theme-Game-Card & Board Game",
+      "description": "Centers around the game of shogi.",
+      "id": 121,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Shogi"
+    },
+    {
+      "category": "Demographic",
+      "description": "Target demographic is teenage and young adult females.",
+      "id": 53,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Shoujo"
+    },
+    {
+      "category": "Demographic",
+      "description": "Target demographic is teenage and young adult males.",
+      "id": 56,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Shounen"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a shrine maiden.",
+      "id": 468,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Shrine Maiden"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around or prominently features skateboarding as a sport.",
+      "id": 809,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Skateboarding"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features skeleton(s) as a character.",
+      "id": 499,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Skeleton"
+    },
+    {
+      "category": "Theme-Comedy",
+      "description": "Prominently features comedy based on deliberately clumsy actions or embarrassing events.",
+      "id": 83,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Slapstick"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features slaves, slavery, or slave trade.",
+      "id": 247,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Slavery"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around characters developing or programming a piece of technology, software, gaming, etc.",
+      "id": 386,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Software Development"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Partly or completely set in outer space.",
+      "id": 63,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Space"
+    },
+    {
+      "category": "Theme-Sci-Fi",
+      "description": "Centers around space warfare, advanced technology, chivalric romance and adventure.",
+      "id": 162,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Space Opera"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features technology and designs inspired by 19th-century industrial steam-powered machinery.",
+      "id": 95,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Steampunk"
+    },
+    {
+      "category": "Technical",
+      "description": "Animation style characterized by physical objects being moved incrementally between frames to create the illusion of movement.",
+      "id": 323,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Stop Motion"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a succubus, a creature in medieval folklore that typically uses their sexual prowess to trap and seduce people to feed off them.",
+      "id": 665,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Succubus"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Pussyjob; features the stimulation of male genitalia by the thighs and labia majora of a female character.",
+      "id": 360,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Sumata"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features characters with special abilities that allow them to do what would normally be physically or logically impossible.",
+      "id": 66,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Super Power"
+    },
+    {
+      "category": "Theme-Sci-Fi-Mecha",
+      "description": "Prominently features large robots often piloted by hot-blooded protagonists.",
+      "id": 159,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Super Robot"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features super-powered humans who aim to serve the greater good.",
+      "id": 172,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Superhero"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around surfing as a sport.",
+      "id": 678,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Surfing"
+    },
+    {
+      "category": "Theme-Comedy",
+      "description": "Prominently features comedic moments that defy casual reasoning, resulting in illogical events.",
+      "id": 281,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Surreal Comedy"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the struggle to live in spite of extreme obstacles.",
+      "id": 143,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Survival"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Lots of sweat. ",
+      "id": 630,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Sweat"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of swimming.",
+      "id": 150,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Swimming"
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Prominently features the use of swords in combat.",
+      "id": 43,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Swordplay"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of table tennis (also known as \"ping pong\").",
+      "id": 120,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Table Tennis"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Prominently features the use of tanks or other armoured vehicles.",
+      "id": 174,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Tanks"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features characters with tanned skin.",
+      "id": 335,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Tanned Skin"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Protagonist is an educator, usually in a school setting.",
+      "id": 165,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Teacher"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Sexually explicit love-story between individuals of the opposite sex, specifically targeting females of teens and young adult age.",
+      "id": 649,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Teens' Love"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of tennis.",
+      "id": 194,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Tennis"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features the long appendages most commonly associated with octopuses or squid, often sexually penetrating a character.",
+      "id": 189,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Tentacles"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the activities of a terrorist or terrorist organization.",
+      "id": 285,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Terrorism"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features sexual acts between three people.",
+      "id": 132,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Threesome"
+    },
+    {
+      "category": "Theme-Sci-Fi",
+      "description": "Prominently features time-traveling or other time-warping phenomena.",
+      "id": 96,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Time Manipulation"
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Features a gap in time used to advance the story.",
+      "id": 153,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Time Skip"
+    },
+    {
+      "category": "Theme-Sci-Fi",
+      "description": "Prominently features the elements, which resemble Japanese special effects live-action shows",
+      "id": 513,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Tokusatsu"
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Centers around tragic events and unhappy endings.",
+      "id": 85,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Tragedy"
+    },
+    {
+      "category": "Theme-Other-Vehicle",
+      "description": "Prominently features trains.",
+      "id": 122,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Trains"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centered around Chinese organised crime syndicates.",
+      "id": 214,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Triads"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who acts cold and hostile in order to mask warmer emotions.",
+      "id": 164,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Tsundere"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features two siblings that were born at one birth.",
+      "id": 494,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Twins"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Partly or completely set in a city.",
+      "id": 595,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Urban"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Set in a world similar to the real world, but with the existence of magic or other supernatural elements.",
+      "id": 321,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Urban Fantasy"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features one character urinating on another. Also know as a \"golden shower.\"",
+      "id": 180,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Urination"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a vampire.",
+      "id": 74,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Vampire"
+    },
+    {
+      "category": "Theme-Game",
+      "description": "Centers around characters playing video games.",
+      "id": 308,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Video Games"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features Scandinavian seafaring pirates and warriors.",
+      "id": 618,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Vikings"
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Centers around or prominently features a villainous noble lady.",
+      "id": 857,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Villainess"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a male character who has never had sexual relations (until now).",
+      "id": 380,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Virginity"
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Partly or completely set in the world inside a video game.",
+      "id": 112,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Virtual World"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of volleyball.",
+      "id": 116,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Volleyball"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a character being swallowed or swallowing another creature whole.",
+      "id": 624,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Vore"
+    },
+    {
+      "category": "Sexual Content",
+      "description": "Features a character who enjoys seeing the sex acts or sex organs of others.",
+      "id": 318,
+      "isAdult": true,
+      "isGeneralSpoiler": false,
+      "name": "Voyeur"
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Partly or completely set during wartime.",
+      "id": 111,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "War"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a werewolf.",
+      "id": 534,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Werewolf"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is a witch.",
+      "id": 179,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Witch"
+    },
+    {
+      "category": "Setting-Scene",
+      "description": "Centers around the activities of a certain occupation.",
+      "id": 145,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Work"
+    },
+    {
+      "category": "Theme-Game-Sport",
+      "description": "Centers around the sport of wrestling.",
+      "id": 231,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Wrestling"
+    },
+    {
+      "category": "Theme-Arts",
+      "description": "Centers around the profession of writing books or novels.",
+      "id": 394,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Writing"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Chinese fiction concerning the adventures of martial artists in Ancient China.",
+      "id": 303,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Wuxia"
+    },
+    {
+      "category": "Theme-Other-Organisations",
+      "description": "Centered around Japanese organised crime syndicates.",
+      "id": 199,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Yakuza"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who is obsessively in love with another, to the point of acting deranged or violent.",
+      "id": 163,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Yandere"
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Prominently features supernatural creatures from Japanese folklore.",
+      "id": 233,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Youkai"
+    },
+    {
+      "category": "Theme-Romance",
+      "description": "Prominently features romance between two females, not inherently sexual. Also known as Girls' Love.",
+      "id": 76,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Yuri"
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features reanimated corpses which often prey on live humans and turn them into zombies.",
+      "id": 152,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Zombie"
+    }
+]

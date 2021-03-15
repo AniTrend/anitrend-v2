@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <co.anitrend.common.media.ui.widgets.MediaStatusWidget
+            <co.anitrend.common.media.ui.widget.status.MediaStatusWidget
                 android:id="@+id/mediaStatusWidget"
                 android:layout_gravity="center_vertical"
                 android:layout_width="@dimen/lg_margin"
@@ -60,13 +60,13 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <co.anitrend.common.media.ui.widgets.MediaSubTitleWidget
+        <co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
             android:id="@+id/mediaSubTitleWidget"
             android:padding="@dimen/md_margin"
             style="@style/AppTheme.SingleLineText"
             android:textAppearance="?attr/textAppearanceCaption" />
 
-        <co.anitrend.common.media.ui.widgets.MediaAiringScheduleWidget
+        <co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
             android:id="@+id/mediaScheduleTitleWidget"
             android:padding="@dimen/md_margin"
             style="@style/AppTheme.SingleLineText"
@@ -74,7 +74,7 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <co.anitrend.common.media.ui.widgets.MediaRatingWidget
+    <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
         android:id="@+id/mediaRatingWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

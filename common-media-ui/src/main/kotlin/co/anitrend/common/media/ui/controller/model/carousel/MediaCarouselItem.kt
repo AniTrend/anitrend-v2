@@ -21,7 +21,6 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,27 +35,27 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.adapter.MediaItemAdapter
 import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.data.airing.model.query.AiringScheduleQuery
-import co.anitrend.data.media.model.query.MediaQuery
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.airing.enums.AiringSort
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.carousel.entity.MediaCarousel
-import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.AiringRouter
+import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
-import co.anitrend.navigation.model.NavPayload
+import co.anitrend.navigation.model.common.IParam
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaCarouselItem(
     private val entity: MediaCarousel,
+    private val settings: IUserSettings,
     private val viewPool: RecyclerView.RecycledViewPool
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 
     private fun setUpCarouselItems(view: View) {
         val mediaItemAdapter = MediaItemAdapter(
+            settings,
             view.resources,
             stateConfiguration = StateLayoutConfig()
         )
@@ -95,14 +94,14 @@ internal class MediaCarouselItem(
     }
 
     private fun setUpHeadings() {
-        val query: IGraphPayload = when (entity.carouselType) {
+        val query: IParam = when (entity.carouselType) {
             MediaCarousel.CarouselType.AIRING_SOON -> {
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_airing_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
-                AiringScheduleQuery(
-                    notYetAired = false,
+                AiringRouter.Param() builder {
+                    notYetAired = false
                     sort = listOf(AiringSort.TIME)
-                )
+                }
             }
             MediaCarousel.CarouselType.ALL_TIME_POPULAR -> {
                 if (entity.mediaType == MediaType.ANIME) {
@@ -112,10 +111,10 @@ internal class MediaCarouselItem(
                     binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manga)
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manga_description)
                 }
-                MediaQuery(
-                    type = entity.mediaType,
+                MediaDiscoverRouter.Param() builder {
+                    type = entity.mediaType
                     sort = listOf(MediaSort.POPULARITY)
-                )
+                }
             }
             MediaCarousel.CarouselType.TRENDING_RIGHT_NOW -> {
                 if (entity.mediaType == MediaType.ANIME) {
@@ -126,20 +125,20 @@ internal class MediaCarouselItem(
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_trending_manga_description)
 
                 }
-                MediaQuery(
-                    type = entity.mediaType,
+                MediaDiscoverRouter.Param() builder {
+                    type = entity.mediaType
                     sort = listOf(MediaSort.TRENDING)
-                )
+                }
             }
             MediaCarousel.CarouselType.POPULAR_THIS_SEASON -> {
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_season_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_season_anime_description)
-                MediaQuery(
-                    type = entity.mediaType,
-                    sort = listOf(MediaSort.POPULARITY),
-                    season = entity.mediaItems.firstOrNull()?.season,
-                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
-                )
+                MediaDiscoverRouter.Param() builder {
+                    type = entity.mediaType
+                    sort = listOf(MediaSort.POPULARITY)
+                    season = entity.mediaItems.firstOrNull()?.season
+                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year
+                }
             }
             MediaCarousel.CarouselType.RECENTLY_ADDED -> {
                 if (entity.mediaType == MediaType.ANIME) {
@@ -149,48 +148,46 @@ internal class MediaCarouselItem(
                     binding?.mediaCarouselTitle?.setText(R.string.label_carousel_recently_added_manga)
                     binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_manga_description)
                 }
-                MediaQuery(
-                    type = entity.mediaType,
+                MediaDiscoverRouter.Param() builder {
+                    type = entity.mediaType
                     sort = listOf(MediaSort.ID)
-                )
+                }
             }
             MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON -> {
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_anticipated_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_anticipated_anime_description)
-                MediaQuery(
-                    type = entity.mediaType,
-                    sort = listOf(MediaSort.POPULARITY),
-                    season = entity.mediaItems.firstOrNull()?.season,
-                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
-                )
+                MediaDiscoverRouter.Param() builder {
+                    type = entity.mediaType
+                    sort = listOf(MediaSort.POPULARITY)
+                    season = entity.mediaItems.firstOrNull()?.season
+                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year
+                }
             }
             MediaCarousel.CarouselType.POPULAR_MANHWA -> {
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manhwa)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manhwa_description)
-                MediaQuery(
-                    type = entity.mediaType,
-                    sort = listOf(MediaSort.POPULARITY),
+                MediaDiscoverRouter.Param() builder {
+                    type = entity.mediaType
+                    sort = listOf(MediaSort.POPULARITY)
                     countryOfOrigin = entity.mediaItems.firstOrNull()?.countryCode
-                )
+                }
             }
         }
         requireBinding().mediaCarouselAction.setOnClickListener {
-            // TODO: Opens media discover/search screen and provides media query as parameter for the appropriate action
             when (query) {
-                is MediaQuery -> {
-                    MediaRouter.startActivity(
+                is MediaDiscoverRouter.Param -> {
+                    MediaDiscoverRouter.startActivity(
                         context = it.context,
-                        navPayload = NavPayload(
-                            MediaRouter.Param.KEY,
-                            query
-                        )
+                        navPayload = query.asNavPayload()
                     )
                 }
-                is AiringScheduleQuery -> {
-                    Toast.makeText(it.context, "Opens airing schedule screen", Toast.LENGTH_SHORT).show()
+                is AiringRouter.Param -> {
+                    AiringRouter.startActivity(
+                        context = it.context,
+                        navPayload = query.asNavPayload()
+                    )
                 }
             }
-            // Media.startActivity(view.context, NavPayload(MediaQuery.TAG, query))
         }
     }
 

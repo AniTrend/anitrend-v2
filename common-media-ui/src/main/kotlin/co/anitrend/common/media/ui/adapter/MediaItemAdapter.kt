@@ -20,7 +20,6 @@ package co.anitrend.common.media.ui.adapter
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
@@ -30,31 +29,17 @@ import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil
 import co.anitrend.common.media.ui.controller.model.carousel.MediaItem
 import co.anitrend.common.media.ui.controller.model.carousel.MediaItem.Companion.createMediaItemViewHolder
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 
 class MediaItemAdapter(
+    settings: IUserSettings,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (Media) -> IRecyclerItem = { MediaItem(it) }
+    override val mapper: (Media) -> IRecyclerItem = { MediaItem(it, settings) },
+    override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Media>(MediaDiffUtil) {
-
-    /**
-     * Assigned if the current adapter needs to support action mode
-     * TODO: Might add a selection mode later to allow multi-select for batch operations
-     */
-    override var supportAction: ISupportSelectionMode<Long>? = null
-
-    /**
-     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
-     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
-     *
-     * The identifiable id of each item should unique, and if non exists
-     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
-     */
-    override fun getStableIdFor(item: Media?): Long {
-        return item?.id ?: RecyclerView.NO_ID
-    }
 
     /**
      * Should provide the required view holder, this function is a substitute for

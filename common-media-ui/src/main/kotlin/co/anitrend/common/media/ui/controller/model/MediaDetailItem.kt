@@ -25,12 +25,14 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.databinding.MediaDetailItemBinding
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaDetailItem(
-    val media: Media
+    private val media: Media,
+    private val settings: IUserSettings
 ) : RecyclerItemBinding<MediaDetailItemBinding>(media.id) {
 
     private var disposable: Disposable? = null
