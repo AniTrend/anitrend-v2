@@ -321,7 +321,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-beta38"
+            private const val version = "484ee51323"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
