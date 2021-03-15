@@ -17,14 +17,14 @@
 
 package co.anitrend.media.provider
 
-import androidx.fragment.app.Fragment
-import co.anitrend.media.component.carousel.content.CarouselContent
-import co.anitrend.media.component.discover.ui.DiscoverContent
+import android.content.Context
+import android.content.Intent
+import co.anitrend.media.component.content.MediaContent
+import co.anitrend.media.component.screen.MediaScreen
 import co.anitrend.navigation.MediaRouter
 
 class FeatureProvider : MediaRouter.Provider {
-    override fun discover() = DiscoverContent::class.java
-    override fun carousel() = CarouselContent::class.java
-
-    override fun fragment(): Class<out Fragment>? = TODO("Replace with media detail fragment")
+    override fun activity(context: Context?) =
+        Intent(context, MediaScreen::class.java)
+    override fun fragment() = MediaContent::class.java
 }

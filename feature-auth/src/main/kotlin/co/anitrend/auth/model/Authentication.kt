@@ -17,9 +17,6 @@
 
 package co.anitrend.auth.model
 
-import co.anitrend.data.auth.helper.AuthenticationType
-import co.anitrend.domain.user.entity.User
-
 sealed class Authentication {
     class Authenticating(
         val accessToken: String,
@@ -35,4 +32,6 @@ sealed class Authentication {
     object Pending : Authentication()
     
     object Idle : Authentication()
+
+    object Success : Authentication()
 }

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <co.anitrend.arch.ui.view.image.SupportImageView
+            android:id="@+id/episodeThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            app:aspectRatio="0.55"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@sample/poster" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/episode_inner_widget_top_margin"
+            android:layout_margin="@dimen/lg_margin"
+            android:background="@drawable/bubble_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/episodeDuration"
+                android:textColor="@color/white_1000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="@sample/episode.json/duration"/>
+
+            <Space
+                android:layout_width="@dimen/md_margin"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_timelapse"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <FrameLayout
+            android:layout_gravity="center"
+            android:layout_height="@dimen/avatar_size_xl"
+            android:layout_width="@dimen/avatar_size_xl"
+            android:background="@drawable/bubble_background"
+            app:layout_constraintBottom_toBottomOf="@+id/episodeThumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_play_circle" />
+        </FrameLayout>
+
+        <co.anitrend.common.episode.ui.widget.summary.EpisodeSummaryWidget
+            android:id="@+id/episodeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/xl_margin"
+            android:paddingEnd="@dimen/xl_margin"
+            android:layout_marginTop="@dimen/xl_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodeThumbnail" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/episodePublisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/xl_margin"
+            android:layout_marginTop="@dimen/lg_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/white_1000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodeTitle"
+            app:chipBackgroundColor="?colorAccent"
+            tools:text="@sample/episode.json/publisher"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/episodeDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/xl_margin"
+            android:paddingEnd="@dimen/xl_margin"
+            android:layout_marginTop="@dimen/xl_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodePublisher"
+            tools:text="@sample/episode.json/description" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/episodeDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xl_margin"
+            android:layout_marginEnd="@dimen/xl_margin"
+            android:text="@string/label_download"
+            android:textColor="@color/white_1000"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/episodeDescription"
+            app:backgroundTint="?colorAccent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

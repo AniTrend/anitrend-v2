@@ -42,7 +42,7 @@ class AuthContent(
 
     private val viewModel by sharedViewModel<AuthViewModel>()
 
-    private val restNetworkStateOnBackPress =
+    private val resetNetworkStateOnBackPress =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val stateFlow = binding?.stateLayout?.networkMutableStateFlow
@@ -61,7 +61,7 @@ class AuthContent(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, restNetworkStateOnBackPress
+            this, resetNetworkStateOnBackPress
         )
         lifecycleScope.launchWhenResumed {
             requireBinding().stateLayout.interactionStateFlow.filterNotNull()
@@ -99,7 +99,6 @@ class AuthContent(
             requireBinding().stateLayout.networkMutableStateFlow.value = it
         }
         viewModelState().model.observe(viewLifecycleOwner) {
-            // TODO: Show a custom toast to inform the user that they have been logged in
             if (it != null)
                 activity?.finish()
         }

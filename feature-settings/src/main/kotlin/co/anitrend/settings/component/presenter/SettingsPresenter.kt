@@ -18,7 +18,7 @@
 package co.anitrend.settings.component.presenter
 
 import android.content.Context
-import co.anitrend.core.settings.Settings
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 
 class SettingsPresenter(

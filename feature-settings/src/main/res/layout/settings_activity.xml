@@ -23,7 +23,11 @@
     android:layout_height="match_parent"
     tools:context=".component.screen.SettingsScreen">
 
-    <include layout="@layout/content_main" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/contentFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"

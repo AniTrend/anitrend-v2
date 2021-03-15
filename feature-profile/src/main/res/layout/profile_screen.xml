@@ -16,8 +16,40 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainCoordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".component.screen.ProfileScreen">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/profileContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:hapticFeedbackEnabled="true"
+        android:backgroundTint="@color/primaryColor"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:fabAlignmentMode="center"
+        app:hideOnScroll="true"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingShortcutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchorGravity="center"
+        app:tint="@color/white_1000"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_search"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

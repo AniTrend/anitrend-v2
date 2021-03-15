@@ -25,7 +25,6 @@ import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AuthRouter
-import co.anitrend.navigation.extensions.forFragment
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber

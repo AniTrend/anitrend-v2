@@ -62,9 +62,11 @@ private val presenterModule = module {
     scope<AuthContent> {
         scoped {
             AuthPresenter(
-                customTabs = get<CustomTabsIntent.Builder>().build(),
                 context = androidContext(),
-                settings = get()
+                settings = get(),
+                clientId = getProperty("aniListClientId"),
+                customTabs = get<CustomTabsIntent.Builder>().build(),
+                shortcutManager = get()
             )
         }
     }

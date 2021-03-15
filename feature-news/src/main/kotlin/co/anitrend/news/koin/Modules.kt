@@ -49,7 +49,7 @@ import org.koin.dsl.module
 import timber.log.Timber
 
 private val coreModule = module {
-    single(named("News")) {
+    single(named(NewsRouter.Dependency.Markwon)) {
         val context = androidContext()
 
         val radius = context.resources.getDimensionPixelSize(

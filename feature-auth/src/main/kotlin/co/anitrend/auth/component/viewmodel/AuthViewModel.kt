@@ -63,6 +63,8 @@ class AuthViewModel(
                     ?: context.getString(R.string.auth_error_default_message)
             )
             Timber.tag(moduleTag).w(it)
+        }.onSuccess {
+            state.authenticationFlow.value = Authentication.Success
         }
     }
 

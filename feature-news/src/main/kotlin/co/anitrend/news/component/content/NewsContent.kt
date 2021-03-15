@@ -19,11 +19,10 @@ package co.anitrend.news.component.content
 
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.util.locale.AniTrendLocale.Companion.asLocaleString
-import co.anitrend.data.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
+import co.anitrend.domain.news.model.NewsParam
 import co.anitrend.news.R
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
 import co.anitrend.news.presenter.NewsPresenter
@@ -47,8 +46,9 @@ class NewsContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
+        val locale = presenter.settings.locale.value.asLocaleString()
         viewModelState().invoke(
-            NewsQuery(locale = presenter.getCurrentLocaleString())
+            NewsParam(locale)
         )
     }
 

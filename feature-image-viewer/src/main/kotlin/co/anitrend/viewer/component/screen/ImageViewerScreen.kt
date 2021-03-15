@@ -24,10 +24,15 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
+import co.anitrend.arch.core.model.IStateLayoutConfig
+import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.helpers.image.model.toCoverImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.ui.inject
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.viewer.R
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
@@ -42,6 +47,10 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
     private val param: ImageViewerRouter.Param? by extra(ImageViewerRouter.Param.KEY)
 
     private val viewModel by viewModel<ImageViewerViewModel>()
+
+    private val stateLayoutConfig = StateLayoutConfig(
+        loadingMessage = R.string.label_text_loading
+    )
 
     private val permissionResult = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -66,7 +75,6 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
         super.onCreate(savedInstanceState)
         binding = ImageViewerScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
-        setUpImagePreview()
     }
 
     /**
@@ -76,35 +84,53 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
         val duration = resources.getInteger(R.integer.motion_duration_large)
         requireBinding().subSamplingImageView.setOnClickListener {
-            val transparency = requireBinding().subSamplingDownloadAction.alpha
-            requireBinding().subSamplingDownloadAction.animate()
+            val transparency = requireBinding().downloadAction.alpha
+            requireBinding().downloadAction.animate()
                 .alpha(if (transparency == VISIBLE) HIDDEN else VISIBLE)
                 .setDuration(duration.toLong())
                 .apply { interpolator = DecelerateInterpolator() }
         }
-        requireBinding().subSamplingDownloadAction.setOnClickListener {
-            val transparency = requireBinding().subSamplingDownloadAction.alpha
+        requireBinding().downloadAction.setOnClickListener {
+            val transparency = requireBinding().downloadAction.alpha
             val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
             if (transparency == VISIBLE)
                 permissionResult.launch(permission)
         }
+        setUpImagePreview()
     }
 
     private fun setUpImagePreview() {
         disposable = object : Target {
+            /**
+             * Called when the request starts.
+             */
+            override fun onStart(placeholder: Drawable?) {
+                binding?.stateLayout?.networkMutableStateFlow?.value = NetworkState.Loading
+            }
+
+            /**
+             * Called if an error occurs while executing the request.
+             */
+            override fun onError(error: Drawable?) {
+                binding?.stateLayout?.networkMutableStateFlow?.value = NetworkState.Error()
+            }
+
             /**
              * Called if the request completes successfully.
              */
             override fun onSuccess(result: Drawable) {
                 val source = ImageSource.bitmap(result.toBitmap())
                 binding?.subSamplingImageView?.setImage(source)
+                binding?.stateLayout?.networkMutableStateFlow?.value = NetworkState.Success
             }
-        }.using(param?.imageSrc, this)
+        }.using(param?.imageSrc.toCoverImage(), this)
     }
 
     override fun onDestroy() {
+        binding?.subSamplingImageView?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
         super.onDestroy()

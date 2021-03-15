@@ -20,35 +20,31 @@ package co.anitrend.auth.presenter
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
-import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.ext.getColorFromAttr
-import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.model.Authentication
+import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.auth.helper.AUTHENTICATION_URI
+import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.data.auth.helper.AuthenticationType
 import co.anitrend.data.auth.helper.authenticationUri
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import timber.log.Timber
 
 class AuthPresenter(
     context: Context,
     settings: Settings,
+    private val clientId: String,
     private val customTabs: CustomTabsIntent,
+    private val shortcutManager: IShortcutController
 ) : CorePresenter(context, settings) {
 
     fun useAnonymousAccount(activity: FragmentActivity) {
-        settings.isAuthenticated.value = false
-        settings.authenticatedUserId.value = IAuthenticationSettings.INVALID_USER_ID
+        settings.invalidateAuthenticationSettings()
         activity.finish()
     }
 
@@ -66,10 +62,10 @@ class AuthPresenter(
     fun authorizeWithAniList(activity: FragmentActivity, viewModelState: AuthState) {
         runCatching {
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN))
+            customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN, clientId))
         }.onFailure {
             Timber.tag(moduleTag).w(it, "Unable to open custom tabs")
-            startViewIntent(authenticationUri(AuthenticationType.TOKEN))
+            startViewIntent(authenticationUri(AuthenticationType.TOKEN, clientId))
         }
 
         viewModelState.authenticationFlow.value = Authentication.Pending
@@ -86,6 +82,14 @@ class AuthPresenter(
                     heading = authentication.title,
                     message = authentication.message
                 )
+            is Authentication.Success -> {
+                shortcutManager.createShortcuts(
+                    Shortcut.AnimeList(),
+                    Shortcut.MangaList(),
+                    Shortcut.Notification(),
+                    Shortcut.Profile()
+                )
+            }
             else -> { /** ignored */ }
         }
     }

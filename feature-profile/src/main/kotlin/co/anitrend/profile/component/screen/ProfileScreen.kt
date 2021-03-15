@@ -18,10 +18,15 @@
 package co.anitrend.profile.component.screen
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.profile.component.content.ProfileContent
 import co.anitrend.profile.databinding.ProfileScreenBinding
 
 class ProfileScreen : AnitrendScreen<ProfileScreenBinding>() {
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -29,12 +34,18 @@ class ProfileScreen : AnitrendScreen<ProfileScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        onUpdateUserInterface()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ProfileScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
+        setSupportActionBar(requireBinding().bottomAppBar)
+    }
+
+    private fun onUpdateUserInterface() {
+        currentFragmentTag = FragmentItem(fragment = ProfileContent::class.java)
+            .commit(requireBinding().profileContent, this)
     }
 }

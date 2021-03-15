@@ -46,7 +46,7 @@ internal class FrameTagHandler private constructor() : SimpleTagHandler() {
             tag = tag
         )
 
-        return imageSpanConfiguration.onFrame()?.toArray()
+        return imageSpanConfiguration.onFrame().toArray()
     }
 
     override fun supportedTags() = listOf(

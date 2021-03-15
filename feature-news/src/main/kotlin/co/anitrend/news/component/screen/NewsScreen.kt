@@ -17,14 +17,11 @@
 
 package co.anitrend.news.component.screen
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.util.Linkify
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.net.toUri
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.android.koinOf
 import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
@@ -44,7 +41,7 @@ class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
 
     private val viewModel by inject<NewsScreenViewModel>()
 
-    private val markwon by inject<Markwon>(named("News"))
+    private val markwon by inject<Markwon>(named(NewsRouter.Dependency.Markwon))
 
     private val param: NewsRouter.Param? by extra(NewsRouter.Param.KEY)
 

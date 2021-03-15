@@ -42,7 +42,8 @@
                 android:value="androidx.startup" />
         </provider>
 
-        <activity android:name=".component.screen.AuthScreen">
+        <activity android:name=".component.screen.AuthScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -50,8 +51,13 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/auth_deep_link_host"
-                    android:path="@string/auth_deep_link_path"/>
+                    android:host="@string/app_deep_link_host_auth"
+                    android:path="@string/auth_deep_link_path_anilist"/>
+
+                <data
+                    android:scheme="@string/app_deep_link_scheme"
+                    android:host="@string/app_deep_link_host_auth"
+                    android:path="@string/auth_deep_link_path_trakt"/>
             </intent-filter>
         </activity>
     </application>

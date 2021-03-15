@@ -24,8 +24,8 @@ import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.news.NewsInteractor
-import co.anitrend.data.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
+import co.anitrend.domain.news.model.NewsParam
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
@@ -49,8 +49,8 @@ class NewsContentState(
         it.refreshState.asLiveData(context)
     }
 
-    operator fun invoke(parameter: NewsQuery) {
-        val result = useCase.getPagedNews(parameter)
+    operator fun invoke(param: NewsParam) {
+        val result = useCase(param)
         useCaseResult.postValue(result)
     }
 

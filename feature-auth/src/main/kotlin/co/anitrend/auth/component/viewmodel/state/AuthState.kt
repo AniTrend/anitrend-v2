@@ -24,8 +24,8 @@ import androidx.lifecycle.asLiveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.auth.model.Authentication
-import co.anitrend.data.auth.action.AuthAction
 import co.anitrend.data.auth.AuthUserInteractor
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.CoroutineContext
@@ -53,7 +53,7 @@ class AuthState(
 
     operator fun invoke(authenticating: Authentication.Authenticating) {
         val result = useCase.getAuthenticatedUser(
-            AuthAction.Login(
+            AccountParam.SignIn(
                 accessToken = authenticating.accessToken,
                 tokenType = authenticating.tokenType,
                 expiresIn = authenticating.expiresIn
