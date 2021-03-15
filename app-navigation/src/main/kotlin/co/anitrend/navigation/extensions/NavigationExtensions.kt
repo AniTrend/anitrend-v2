@@ -21,7 +21,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.collection.LruCache
+import androidx.core.os.bundleOf
 import co.anitrend.navigation.model.NavPayload
+import co.anitrend.navigation.model.common.IParam
 import co.anitrend.navigation.router.NavigationRouter
 import timber.log.Timber
 
@@ -70,14 +72,22 @@ internal fun String.loadIntentOrNull(packageName: String): Intent? =
     }.getOrNull()
 
 /**
- * Build fragment class from the navigation component
- */
-fun NavigationRouter.forFragment() = provider.fragment()
-
-/**
  * Builds an activity intent from the navigation component
  */
-fun NavigationRouter.forActivity(context: Context) = provider.activity(context)
+fun NavigationRouter.forActivity(
+    context: Context,
+    navPayload: NavPayload? = null,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+): Intent? {
+    val intent = provider.activity(context)
+    intent?.flags = flags
+    intent?.action = action
+    navPayload?.also {
+        intent?.putExtra(it.key, it.param)
+    }
+    return intent
+}
 
 /**
  * Builds an activity intent and starts it
@@ -90,37 +100,30 @@ fun NavigationRouter.startActivity(
     options: Bundle? = null
 ) {
     runCatching {
-        val intent = provider.activity(context)
-        intent?.flags = flags
-        intent?.action = action
-        navPayload?.also {
-            intent?.putExtra(it.key, it.parcel)
-        }
-        context?.startActivity(intent, options)
+        val intent = forActivity(
+            requireNotNull(context),
+            navPayload,
+            flags,
+            action
+        )
+        context.startActivity(intent, options)
     }.onFailure {
         Timber.tag(moduleTag).e(it)
     }
 }
 
 /**
- * Builds an activity intent and starts it
+ * Constructs bundles from [IParam] sub types
+ *
+ * @return [Bundle]
  */
-fun NavigationRouter.start(
-    context: Context?,
-    bundle: Bundle? = null,
-    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
-    action: String = Intent.ACTION_VIEW,
-    options: Bundle? = null
-) {
-    runCatching {
-        val intent = provider.activity(context)
-        intent?.flags = flags
-        intent?.action = action
-        bundle?.also {
-            intent?.putExtras(it)
-        }
-        context?.startActivity(intent, options)
-    }.onFailure {
-        Timber.tag(moduleTag).e(it)
-    }
-}
+fun IParam.asBundle() =
+    bundleOf(idKey to this)
+
+
+/**
+ * Constructs nav payload from [IParam] sub types
+ *
+ * @return [NavPayload]
+ */
+fun IParam.asNavPayload() = NavPayload(idKey, this)

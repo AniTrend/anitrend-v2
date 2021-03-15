@@ -20,23 +20,23 @@ package co.anitrend.core.initializer
 import android.content.Context
 import android.util.Log
 import co.anitrend.core.BuildConfig
-import co.anitrend.core.helper.StorageHelper
-import co.anitrend.core.initializer.contract.AbstractInitializer
+import co.anitrend.core.initializer.contract.AbstractCoreInitializer
+import co.anitrend.data.arch.storage.StorageController
 import fr.bipi.tressence.file.FileLoggerTree
 import timber.log.Timber
 import java.io.IOException
 
-class TimberInitializer : AbstractInitializer<Unit>() {
+class TimberInitializer : AbstractCoreInitializer<Unit>() {
 
     @Throws(IOException::class)
     private fun createFileLoggingTree(context: Context): Timber.Tree {
-        val loggingFile = StorageHelper.getLogsCache(context)
+        val loggingFile = StorageController().getLogsCache(context)
         return FileLoggerTree.Builder()
             .withFileName("${context.packageName}.log")
             .withDirName(loggingFile.absolutePath)
-            .withSizeLimit(logSizeLimit)
-            .withFileLimit(1)
-            .withMinPriority(logLevel)
+            .withSizeLimit(FILE_SIZE_LIMIT)
+            .withFileLimit(FILE_CREATION_LIMIT)
+            .withMinPriority(MIN_LOG_LEVEL)
             .appendToFile(true)
             .build()
     }
@@ -47,14 +47,14 @@ class TimberInitializer : AbstractInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val fileLoggerTree = createFileLoggingTree(context)
-        Timber.plant(fileLoggerTree)
+        Timber.plant(createFileLoggingTree(context))
         if (BuildConfig.DEBUG)
             Timber.plant(Timber.DebugTree())
     }
 
     companion object {
-        val logLevel = if (BuildConfig.DEBUG) Log.VERBOSE else Log.WARN
-        const val logSizeLimit = 850 * 1024
+        val MIN_LOG_LEVEL = if (BuildConfig.DEBUG) Log.VERBOSE else Log.WARN
+        const val FILE_SIZE_LIMIT = 2 * 1024 * 1024
+        const val FILE_CREATION_LIMIT = 1
     }
 }

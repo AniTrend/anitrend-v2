@@ -17,13 +17,12 @@
 
 package co.anitrend.core.extensions
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.AniTrendApplication
 import co.anitrend.data.arch.AniTrendExperimentalFeature
-import com.afollestad.materialdialogs.DialogBehavior
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import timber.log.Timber
 
 
@@ -38,24 +37,12 @@ fun Bundle?.orEmpty(): Bundle = this ?: Bundle.EMPTY
 
 @AniTrendExperimentalFeature
 fun FragmentActivity.recreateModules() {
-    val coreApplication = applicationContext as AniTrendApplication
     runCatching {
-        coreApplication.restartDependencyInjection()
+        val app = applicationContext as AniTrendApplication
+        app.restartDependencyInjection()
     }.onFailure {
         Timber.tag(moduleTag).e(it)
     }
-}
-
-/**
- * Creates a default dialog with a lifecycle already attached to it and will not dismiss
- * when the user touches outside the view
- */
-fun FragmentActivity?.createDialog(
-    dialogBehavior: DialogBehavior = MaterialDialog.DEFAULT_BEHAVIOR
-) = this?.run {
-    MaterialDialog(this, dialogBehavior)
-        .lifecycleOwner(this)
-        .cancelOnTouchOutside(false)
 }
 
 /**
@@ -67,3 +54,22 @@ fun <T> Result<T>.stackTrace(tag: String): T? {
     }
     return getOrNull()
 }
+
+/**
+ * Runs [block] if the receiver's context is of type [FragmentActivity]
+ */
+inline fun Context.runIfActivityContext(
+    block: FragmentActivity.() -> Unit
+) {
+    if (this is FragmentActivity)
+        block(this)
+    else
+        Timber.w("View context is not type of Fragment activity")
+}
+
+/**
+ * Runs [block] if the receiver's context is of type [FragmentActivity]
+ */
+inline fun <T : View> T.runIfActivityContext(
+    block: FragmentActivity.() -> Unit
+) = context.runIfActivityContext(block)

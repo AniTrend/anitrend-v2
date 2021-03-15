@@ -21,7 +21,7 @@ import android.app.Application
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.crash.ExceptionCrashHandler
 import co.anitrend.core.crash.runtime.UncaughtExceptionHandler
-import co.anitrend.core.util.theme.contract.IThemeHelper
+import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import org.koin.android.ext.android.get
@@ -58,13 +58,6 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
         get<IThemeHelper>().applyDynamicNightModeFromTheme()
     }
 
-    /**
-     * Checks if the application needs to perform any migrations
-     */
-    protected open fun checkApplicationMigration() {
-        //Settings(this).sharedPreferences.edit(commit = true) { clear() }
-    }
-
     private fun createUncaughtExceptionHandler() {
         val defaultHandler =
             Thread.getDefaultUncaughtExceptionHandler()
@@ -78,7 +71,6 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
         createUncaughtExceptionHandler()
-        checkApplicationMigration()
         plantAnalyticsTree()
         applyNightMode()
     }

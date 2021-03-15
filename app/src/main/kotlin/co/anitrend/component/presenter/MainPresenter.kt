@@ -22,13 +22,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.transition.TransitionManager
 import android.view.View
-import android.view.ViewGroup
 import co.anitrend.R
-import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.extension.ext.visible
 import co.anitrend.core.android.components.action.FloatingActionMenu
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.platform.MaterialArcMotion

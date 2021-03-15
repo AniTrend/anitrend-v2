@@ -27,7 +27,7 @@ import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.inject
-import co.anitrend.core.util.config.contract.IConfigurationUtil
+import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityScope
 import org.koin.core.scope.KoinScopeComponent
@@ -42,7 +42,7 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
     protected val savedStateProviderKey by lazy { "${moduleTag}State" }
     protected val savedStateProvider = SavedStateRegistry.SavedStateProvider { intent.extras.orEmpty() }
 
-    protected val configurationUtil by inject<IConfigurationUtil>()
+    protected val configurationUtil by inject<IConfigurationHelper>()
 
     override val scope by lazy(UNSAFE) { activityScope() }
 

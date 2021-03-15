@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,28 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.activity.model.query
+package co.anitrend.core.initializer.contract
 
-import android.os.Parcelable
-import co.anitrend.domain.common.graph.IGraphPayload
-import kotlinx.android.parcel.Parcelize
+import androidx.startup.Initializer
+import co.anitrend.core.initializer.MigrationInitializer
 
-/** [ActivityReply query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param id Filter by the reply id
- * @param activityId Filter by the parent id
+/**
+ * Contract for task initializer that runs after [MigrationInitializer]
  */
-@Parcelize
-data class ActivityReplyQuery(
-    val id: Long? = null,
-    val activityId: Long? = null
-) : IGraphPayload, Parcelable {
+abstract class AbstractTaskInitializer<T> : Initializer<T> {
 
     /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     * @return A list of dependencies that this [Initializer] depends on. This is
+     * used to determine initialization order of [Initializer]s.
+     *
+     * By default a feature initializer should only start after koin has been initialized
      */
-    override fun toMap() = mapOf(
-        "id" to id,
-        "activityId" to activityId
-    )
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        return listOf(MigrationInitializer::class.java)
+    }
 }

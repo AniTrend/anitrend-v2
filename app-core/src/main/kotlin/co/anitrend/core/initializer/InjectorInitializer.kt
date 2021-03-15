@@ -20,11 +20,12 @@ package co.anitrend.core.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import co.anitrend.core.BuildConfig
-import co.anitrend.core.initializer.contract.AbstractInitializer
+import co.anitrend.core.initializer.contract.AbstractCoreInitializer
 import co.anitrend.core.koin.coreModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.Koin
 import org.koin.core.context.startKoin
 import org.koin.core.logger.KOIN_TAG
 import org.koin.core.logger.Level
@@ -32,7 +33,7 @@ import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import timber.log.Timber
 
-class InjectorInitializer : AbstractInitializer<Unit>() {
+class InjectorInitializer : AbstractCoreInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -45,6 +46,7 @@ class InjectorInitializer : AbstractInitializer<Unit>() {
             logger(KoinLogger())
             workManagerFactory()
             fragmentFactory()
+            fileProperties(PROPERTIES)
             modules(coreModules)
         }
     }
@@ -64,11 +66,15 @@ class InjectorInitializer : AbstractInitializer<Unit>() {
     ) : Logger(logLevel) {
         override fun log(level: Level, msg: MESSAGE) {
             when (level) {
-                Level.DEBUG -> Timber.tag(KOIN_TAG).d(msg)
+                Level.DEBUG -> Timber.tag(KOIN_TAG).v(msg)
                 Level.INFO -> Timber.tag(KOIN_TAG).i(msg)
                 Level.ERROR -> Timber.tag(KOIN_TAG).e(msg)
                 Level.NONE -> { /* logging disabled */ }
             }
         }
+    }
+
+    private companion object {
+        const val PROPERTIES = "koin.properties"
     }
 }

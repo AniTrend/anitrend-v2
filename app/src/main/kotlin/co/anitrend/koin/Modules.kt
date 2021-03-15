@@ -17,24 +17,15 @@
 
 package co.anitrend.koin
 
-import androidx.startup.AppInitializer
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.screen.MainScreen
 import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MainRouter
 import co.anitrend.provider.FeatureProvider
-import io.wax911.emojify.initializer.EmojiInitializer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-
-private val coreModule = module {
-    factory {
-        AppInitializer.getInstance(androidContext())
-            .initializeComponent(EmojiInitializer::class.java)
-    }
-}
 
 private val presenterModule = module {
     scope<MainScreen> {
@@ -62,5 +53,5 @@ private val featureModule = module {
 }
 
 internal val appModules = DynamicFeatureModuleHelper(
-    listOf(coreModule, presenterModule, viewModelModule, featureModule)
+    listOf(presenterModule, viewModelModule, featureModule)
 )

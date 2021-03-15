@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,14 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.model
+package co.anitrend.navigation.model.common
 
-import co.anitrend.navigation.model.common.IParam
+import android.os.Parcelable
 
 /**
- * Payload model
+ * Parameter contract
+ *
+ * @property idKey Identifier for this param
  */
-data class NavPayload(
-    val key: String,
-    val param: IParam
-)
+interface IParam : Parcelable {
+    val idKey: String
+
+    interface IKey {
+        @Suppress("PropertyName")
+        val KEY: String
+    }
+}

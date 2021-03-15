@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,14 +15,30 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.model
+package co.anitrend.navigation.work
 
-import co.anitrend.navigation.model.common.IParam
+import android.content.Context
+import androidx.work.ListenableWorker
 
-/**
- * Payload model
- */
-data class NavPayload(
-    val key: String,
-    val param: IParam
-)
+abstract class WorkSchedulerController {
+
+    abstract val worker: Class<out ListenableWorker>
+
+    /**
+     * Schedule a unit of work
+     */
+    abstract fun schedule(context: Context)
+
+    /**
+     * Cancel a unit of work
+     */
+    abstract fun cancel(context: Context)
+
+    /**
+     * Reschedules a worker
+     */
+    fun reschedule(context: Context) {
+        cancel(context)
+        schedule(context)
+    }
+}

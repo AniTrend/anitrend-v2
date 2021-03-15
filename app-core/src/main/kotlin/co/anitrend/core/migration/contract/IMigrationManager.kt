@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.review.model.mutation
+package co.anitrend.core.migration.contract
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import kotlinx.android.parcel.Parcelize
+import android.content.Context
 
-/** [DeleteReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
- *
- * Delete a review
- *
- * @param id The id of the review to delete
- */
-@Parcelize
-data class DeleteReviewMutation(
-    val id: Long
-) : IGraphPayload {
+interface IMigrationManager {
 
     /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     * Instructs migration manager to start possible migrations
+     *
+     * @throws Throwable If a migration fails
      */
-    override fun toMap() = mapOf(
-        "id" to id
-    )
+    @Throws(Throwable::class)
+    fun applyMigrations(context: Context)
 }

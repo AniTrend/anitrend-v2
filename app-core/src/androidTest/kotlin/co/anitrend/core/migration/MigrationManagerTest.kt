@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,14 +15,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.model
+package co.anitrend.core.migration
 
-import co.anitrend.navigation.model.common.IParam
+import org.junit.Test
 
-/**
- * Payload model
- */
-data class NavPayload(
-    val key: String,
-    val param: IParam
-)
+import org.junit.Assert.*
+
+class MigrationManagerTest {
+
+    @Test
+    fun shouldRunMigrations() {
+    }
+
+    @Test
+    fun updateVersion() {
+    }
+
+    @Test
+    fun possibleMigrations() {
+    }
+
+    @Test
+    fun applyMigrations() {
+    }
+}

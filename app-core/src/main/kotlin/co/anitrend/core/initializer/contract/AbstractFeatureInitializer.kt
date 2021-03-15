@@ -21,9 +21,10 @@ import androidx.startup.Initializer
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.core.initializer.InjectorInitializer
+import co.anitrend.core.initializer.MigrationInitializer
 
 /**
- * Contract for feature initializer that runs after [InjectorInitializer]
+ * Contract for feature initializer that runs after [MigrationInitializer]
  */
 abstract class AbstractFeatureInitializer<T> : Initializer<T> {
 
@@ -34,6 +35,6 @@ abstract class AbstractFeatureInitializer<T> : Initializer<T> {
      * By default a feature initializer should only start after koin has been initialized
      */
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(InjectorInitializer::class.java)
+        return listOf(MigrationInitializer::class.java)
     }
 }

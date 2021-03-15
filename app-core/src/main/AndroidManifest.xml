@@ -24,9 +24,11 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
+            <meta-data  android:name="co.anitrend.core.initializer.TimberInitializer"
+                android:value="androidx.startup" />
             <meta-data  android:name="co.anitrend.core.initializer.InjectorInitializer"
                 android:value="androidx.startup" />
-            <meta-data  android:name="co.anitrend.core.initializer.TimberInitializer"
+            <meta-data  android:name="co.anitrend.core.initializer.MigrationInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

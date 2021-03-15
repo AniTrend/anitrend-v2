@@ -23,7 +23,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.core.settings.Settings
+import co.anitrend.core.android.settings.Settings
 import timber.log.Timber
 
 abstract class CorePresenter(

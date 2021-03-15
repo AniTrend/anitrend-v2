@@ -25,6 +25,7 @@ import co.anitrend.core.R
 import co.anitrend.core.component.scope.KoinScope
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.arch.AniTrendExperimentalFeature
+import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.scope.KoinScopeComponent
@@ -56,13 +57,6 @@ inline fun <reified T : Any> KoinScopeComponent.inject(
 ) = lazy(UNSAFE) { get<T>(qualifier, parameters) }
 
 /**
- * Provides scope for a given [source]
- */
-@AniTrendExperimentalFeature
-@Suppress("FunctionName")
-fun ScopeComponent(source: Any?) = KoinScope(source)
-
-/**
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
  * a new instance is created.
  *
@@ -70,7 +64,7 @@ fun ScopeComponent(source: Any?) = KoinScope(source)
  *
  * @see androidx.fragment.app.commit
  */
-inline fun FragmentItem.commit(
+inline fun FragmentItem<*>.commit(
     @IdRes contentFrame: Int,
     fragmentActivity: FragmentActivity,
     action: FragmentTransaction.() -> Unit = {
@@ -82,7 +76,6 @@ inline fun FragmentItem.commit(
         )
     }
 ) : String? {
-    if (fragment == null) return null
     val fragmentManager = fragmentActivity.supportFragmentManager
 
     val fragmentTag = tag()
@@ -105,7 +98,7 @@ inline fun FragmentItem.commit(
  *
  * @see androidx.fragment.app.commit
  */
-inline fun FragmentItem.commit(
+inline fun <T: Fragment> FragmentItem<T>.commit(
     contentFrame: View,
     fragmentActivity: FragmentActivity,
     action: FragmentTransaction.() -> Unit = {
@@ -118,14 +111,46 @@ inline fun FragmentItem.commit(
     }
 ) = commit(contentFrame.id, fragmentActivity, action)
 
-inline fun <reified T : Fragment> FragmentActivity.fragment() = lazy {
-    supportFragmentManager.fragmentFactory.instantiate(classLoader, T::class.java.name) as T
+/**
+ * Uses fragment factory to instantiate a fragment class definition
+ *
+ * @param classDefinition [Class] with an out variance of type [Fragment]
+ */
+inline fun <reified T : Fragment> FragmentActivity.createFragment(
+    classDefinition: Class<out T>,
+    factory: FragmentFactory
+): T {
+    val qualifier = classDefinition.name
+    return factory.instantiate(classLoader, qualifier) as T
 }
 
+/**
+ * Retrieves or creates a new fragment using the given [tag]
+ *
+ * @param activity Calling activity
+ * @param tag Tag to identity the fragment
+ */
+inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
+    activity: FragmentActivity,
+    factory: FragmentFactory = KoinFragmentFactory()
+): T {
+    val fragment = activity.supportFragmentManager.findFragmentByTag(tag()) as? T ?:
+    activity.createFragment(fragment, factory)
+    fragment.arguments = parameter
+    return fragment
+}
+
+/**
+ * Retrieves or creates a new fragment using the given [tag]
+ *
+ * @param classDefinition A [Class] with an out variance of type [Fragment]
+ * @param tag Tag to identity the fragment
+ * @param lazyMode [LazyThreadSafetyMode] to use
+ */
 inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
-    tag: String, noinline factory: () -> T
-): Lazy<T> {
-    return lazy(UNSAFE) {
-        supportFragmentManager.findFragmentByTag(tag) as? T ?: factory()
-    }
+    fragmentItem: FragmentItem<T>,
+    factory: FragmentFactory = KoinFragmentFactory(),
+    lazyMode: LazyThreadSafetyMode = UNSAFE
+) = lazy(lazyMode) {
+    fragmentItem.fragmentByTagOrNew(this, factory)
 }

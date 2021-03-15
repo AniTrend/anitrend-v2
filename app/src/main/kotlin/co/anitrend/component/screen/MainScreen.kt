@@ -23,6 +23,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.R
@@ -34,16 +35,16 @@ import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.inject
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.databinding.MainScreenBinding
+import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.navigation.*
-import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
-import co.anitrend.navigation.MediaRouter.Provider.Companion.forDiscover
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import co.anitrend.navigation.extensions.forFragment
+import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.startActivity
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -62,10 +63,10 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         )
     }
 
-    private val navigationDrawer: INavigationDrawer?
-        get() = supportFragmentManager.findFragmentByTag(
-            drawerFragmentItem.tag()
-        ) as? BottomDrawerContent
+    private val navigationDrawer: INavigationDrawer
+        get() = drawerFragmentItem.fragmentByTagOrNew(
+            this
+        ) as BottomDrawerContent
 
     private val viewModel by viewModel<MainScreenViewModel>(
         state = { intent.extras.orEmpty() }
@@ -80,43 +81,45 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     }
 
     private val changeSettingsMenuStateAction by lazy(UNSAFE) {
-        ChangeSettingsMenuStateAction { showSettings ->
+        ChangeSettingsMenuStateAction { showDrawerMenu ->
+            // TODO: take a snap shot of the current menu so we can put it back after drawer is dismissed
+            val menu = binding?.bottomAppBar?.menu
             // Toggle between the current destination's FAB menu and the menu which should
             // be displayed when the BottomNavigationDrawer is open.
             binding?.bottomAppBar?.replaceMenu(
-                if (showSettings) R.menu.drawer_menu
+                if (showDrawerMenu) R.menu.drawer_menu
                 else R.menu.main_menu
             )
         }
     }
 
     private suspend fun observeNavigationDrawer() {
-        navigationDrawer?.navigationFlow
-            ?.onEach(::onNavigationItemSelected)
-            ?.catch { throwable: Throwable ->
+        navigationDrawer.navigationFlow
+            .onEach(::onNavigationItemSelected)
+            .catch { throwable: Throwable ->
                 Timber.tag(moduleTag).e(
                     throwable,
                     "observeNavigationDrawer() -> Navigation drawer flow threw an uncaught exception"
                 )
-            }?.collect()
+            }.collect()
     }
 
     /**
      * Replaces the current content with that in the selected fragment
      */
-    private fun attachSelectedNavigationItem(fragmentItem: FragmentItem?) {
+    private fun attachSelectedNavigationItem(fragmentItem: FragmentItem<Fragment>?) {
         currentFragmentTag = fragmentItem?.commit(
-            requireBinding().contentMain.contentFrame,
+            requireBinding().contentMain,
             this
         )
     }
 
     private fun setUpNavigationDrawer() {
         requireBinding().bottomAppBar.setNavigationOnClickListener {
-            navigationDrawer?.toggleDrawer()
+            navigationDrawer.toggleDrawer()
         }
         requireBinding().mainCoordinator.setOnClickListener {
-            navigationDrawer?.dismiss()
+            navigationDrawer.dismiss()
         }
         navigateToUsing(viewModel.state.selectedItem)
     }
@@ -148,7 +151,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenResumed {
-            navigationDrawer?.setCheckedItem(viewModel.state.selectedItem)
+            navigationDrawer.setCheckedItem(viewModel.state.selectedItem)
             setUpNavigationDrawer()
             observeNavigationDrawer()
         }
@@ -233,8 +236,8 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      * @see getOnBackPressedDispatcher
      */
     override fun onBackPressed() {
-        if (navigationDrawer?.isShowing() == true) {
-            navigationDrawer?.dismiss()
+        if (navigationDrawer.isShowing()) {
+            navigationDrawer.dismiss()
             return
         }
         if (viewModel.state.shouldExit)
@@ -249,8 +252,8 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      * Dispatch onPause() to fragments.
      */
     override fun onPause() {
-        navigationDrawer?.removeOnStateChangedAction(showHideFabStateAction)
-        navigationDrawer?.removeOnStateChangedAction(changeSettingsMenuStateAction)
+        navigationDrawer.removeOnStateChangedAction(showHideFabStateAction)
+        navigationDrawer.removeOnStateChangedAction(changeSettingsMenuStateAction)
         super.onPause()
     }
 
@@ -261,8 +264,8 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      */
     override fun onResume() {
         super.onResume()
-        navigationDrawer?.addOnStateChangedAction(showHideFabStateAction)
-        navigationDrawer?.addOnStateChangedAction(changeSettingsMenuStateAction)
+        navigationDrawer.addOnStateChangedAction(showHideFabStateAction)
+        navigationDrawer.addOnStateChangedAction(changeSettingsMenuStateAction)
     }
 
     override fun onDestroy() {
@@ -277,7 +280,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             if (menu.isCheckable) {
                 supportActionBar?.setTitle(viewModel.state.selectedTitle)
                 viewModel.state.selectedItem = menu.id
-                navigationDrawer?.dismiss()
+                navigationDrawer.dismiss()
             }
         }
     }
@@ -287,13 +290,16 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             R.id.navigation_home -> {
                 viewModel.state.selectedTitle = R.string.navigation_home
                 FragmentItem(
-                    fragment = MediaRouter.forCarousel()
+                    fragment = MediaCarouselRouter.forFragment()
                 )
             }
             R.id.navigation_discover -> {
                 viewModel.state.selectedTitle = R.string.navigation_discord
                 FragmentItem(
-                    fragment = MediaRouter.forDiscover()
+                    fragment = MediaDiscoverRouter.forFragment(),
+                    parameter = MediaDiscoverRouter.Param(
+                        sort = listOf(MediaSort.TRENDING)
+                    ).asBundle()
                 )
             }
             R.id.navigation_social -> {
@@ -325,7 +331,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             R.id.navigation_episodes -> {
                 viewModel.state.selectedTitle = R.string.navigation_episodes
                 FragmentItem(
-                    fragment = EpisodesRouter.forFragment()
+                    fragment = EpisodeRouter.forFragment()
                 )
             }
             R.id.navigation_donate -> {

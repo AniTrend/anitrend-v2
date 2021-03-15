@@ -18,7 +18,7 @@
 package co.anitrend.component.action
 
 import android.view.View
-import co.anitrend.navigation.drawer.action.OnStateChangedAction
+import co.anitrend.core.android.components.sheet.action.OnStateChangedAction
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 

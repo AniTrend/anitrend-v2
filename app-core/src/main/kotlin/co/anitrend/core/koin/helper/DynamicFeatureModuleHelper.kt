@@ -44,7 +44,7 @@ class DynamicFeatureModuleHelper(
     override fun onCreate() {
         super.onCreate()
         Timber.tag(moduleTag).v(
-            "Attempting to load dynamic feature modules: ${modules.size}"
+            "Loading dynamic feature modules: ${modules.size}"
         )
         loadModules()
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer.contract
+package co.anitrend.core.migration.model
 
-import androidx.startup.Initializer
+import android.content.Context
+import co.anitrend.core.android.settings.Settings
 
-/**
- * Contract for initializer
- */
-abstract class AbstractInitializer<T> : Initializer<T> {
-
-    /**
-     * @return A list of dependencies that this [Initializer] depends on. This is
-     * used to determine initialization order of [Initializer]s.
-     *
-     * For e.g. if a [Initializer] `B` defines another [Initializer] `A` as its dependency,
-     * then `A` gets initialized before `B`.
-     */
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+internal object Migrations {
+    private val FROM_20290_TO_20300 = object : Migration(20290, 20300) {
+        override fun invoke(context: Context, settings: Settings) {
+            settings.clearDataOnSwipeRefresh.value = false
+        }
+    }
+    
+    val ALL = listOf<Migration>(
+        FROM_20290_TO_20300
+    )
 }

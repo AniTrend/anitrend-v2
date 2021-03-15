@@ -24,15 +24,8 @@ plugins {
 dependencies {
     implementation(Libraries.AndroidX.Browser.browser)
 
-    /** Material Dialogs */
-    implementation(Libraries.MaterialDialogs.core)
-    implementation(Libraries.MaterialDialogs.lifecycle)
-    implementation(Libraries.MaterialDialogs.bottomsheets)
-
     implementation(Libraries.Square.OkHttp.logging)
 
     /** Timber Trees */
     implementation(Libraries.treessence)
-
-    implementation(Libraries.prettyTime)
 }

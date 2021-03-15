@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer
+package co.anitrend.core.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.initializer.InjectorInitializer
+import co.anitrend.core.android.koinOf
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.koin.appModules
+import co.anitrend.core.migration.contract.IMigrationManager
 
-class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
+/**
+ * Migration helper for managing upgrades from one version of the application to another
+ */
+class MigrationInitializer : AbstractCoreInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -32,16 +34,17 @@ class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        appModules.loadModules()
+        val migrationManager = koinOf<IMigrationManager>()
+        migrationManager.applyMigrations(context)
     }
 
     /**
      * @return A list of dependencies that this [Initializer] depends on. This is
      * used to determine initialization order of [Initializer]s.
      *
-     * For e.g. if a [Initializer] `B` defines another
-     * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
+     * By default a feature initializer should only start after koin has been initialized
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-        listOf(InjectorInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        return listOf(InjectorInitializer::class.java)
+    }
 }

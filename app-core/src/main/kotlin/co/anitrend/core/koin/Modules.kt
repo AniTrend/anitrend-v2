@@ -17,38 +17,25 @@
 
 package co.anitrend.core.koin
 
-import android.net.ConnectivityManager
 import android.os.Build
-import android.os.PowerManager
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.arch.core.model.IStateLayoutConfig
-import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.isLowRamDevice
-import co.anitrend.arch.extension.ext.systemServiceOf
-import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
-import co.anitrend.arch.extension.util.date.SupportDateHelper
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
-import co.anitrend.core.android.controller.AndroidPowerController
-import co.anitrend.core.android.controller.contract.IPowerController
-import co.anitrend.core.android.shortcut.ShortcutFacade
-import co.anitrend.core.android.shortcut.contract.IShortcutFacade
+import co.anitrend.core.android.koin.androidCoreModules
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
-import co.anitrend.core.helper.StorageHelper
-import co.anitrend.core.settings.Settings
-import co.anitrend.core.util.config.ConfigurationUtil
-import co.anitrend.core.util.config.contract.IConfigurationUtil
-import co.anitrend.core.util.locale.LocaleHelper
-import co.anitrend.core.util.locale.contract.ILocaleHelper
-import co.anitrend.core.util.theme.ThemeHelper
-import co.anitrend.core.util.theme.contract.IThemeHelper
+import co.anitrend.core.migration.MigrationManager
+import co.anitrend.core.migration.contract.IMigrationManager
 import co.anitrend.data.arch.di.dataModules
 import co.anitrend.data.arch.network.model.NetworkMessage
+import co.anitrend.data.arch.storage.contract.IStorageController
+import co.anitrend.data.arch.storage.enums.StorageType
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -61,18 +48,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.bind
-import org.koin.dsl.binds
 import org.koin.dsl.module
-import org.ocpsoft.prettytime.PrettyTime
 
 private val coreModule = module {
-    factory {
-        Settings(
-            context = androidContext()
+    factory<IMigrationManager> {
+        MigrationManager(
+            settings = get()
         )
-    } binds(Settings.BINDINGS)
-
-    factory {
+    }
+    single {
         val context = androidContext()
         NetworkMessage(
             unrecoverableErrorTittle = context.getString(R.string.error_message_unrecoverable),
@@ -89,43 +73,6 @@ private val coreModule = module {
             retryAction = R.string.label_text_action_retry
         )
     } bind IStateLayoutConfig::class
-
-    factory<IConfigurationUtil> {
-        ConfigurationUtil(
-            settings = get(),
-            localeHelper = get(),
-            themeHelper = get()
-        )
-    }
-
-    single<ISupportDispatcher> {
-        SupportDispatcher()
-    }
-
-    factory<IShortcutFacade> {
-        ShortcutFacade(
-            context = androidContext()
-        )
-    }
-
-    factory<ISupportDateHelper> {
-        SupportDateHelper()
-    }
-
-    factory<IPowerController> {
-        val context = androidContext()
-        AndroidPowerController(
-            context = context,
-            powerManager = context.systemServiceOf<PowerManager>(),
-            connectivityManager = context.systemServiceOf<ConnectivityManager>(),
-            connectivitySettings = get()
-        )
-    }
-
-    factory {
-        val localeHelper = get<ILocaleHelper>()
-        PrettyTime(localeHelper.locale)
-    }
 
     factory {
         val context = androidContext()
@@ -150,18 +97,6 @@ private val coreModule = module {
 }
 
 private val configurationModule = module {
-    single<ILocaleHelper> {
-        LocaleHelper(
-            settings = get()
-        )
-    }
-
-    single<IThemeHelper> {
-        ThemeHelper(
-            settings = get()
-        )
-    }
-
     factory {
         RequestImageMapper(
             powerController = get()
@@ -172,16 +107,18 @@ private val configurationModule = module {
         val context = androidContext()
         val isLowRamDevice = context.isLowRamDevice()
         val memoryLimit = if (isLowRamDevice) 0.15 else 0.35
+        val storageController = get<IStorageController>()
 
         val client = get<OkHttpClient.Builder> {
             parametersOf(HttpLoggingInterceptor.Level.BASIC)
         }.cache(
             Cache(
-                StorageHelper.getImageCache(
+                storageController.getImageCache(
                     context = androidContext()
                 ),
-                StorageHelper.getStorageUsageLimit(
+                storageController.getStorageUsageLimit(
                     context = androidContext(),
+                    type = StorageType.CACHE,
                     settings = get()
                 )
             )
@@ -219,4 +156,4 @@ private val configurationModule = module {
 
 internal val coreModules = listOf(
     coreModule, configurationModule
-) + dataModules
+) + androidCoreModules + dataModules

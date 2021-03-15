@@ -15,33 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer
+package co.anitrend.core.initializer.contract
 
-import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.initializer.InjectorInitializer
-import co.anitrend.core.initializer.contract.AbstractCoreInitializer
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.koin.appModules
 
-class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
-
-    /**
-     * Initializes and a component given the application [Context]
-     *
-     * @param context The application context.
-     */
-    override fun create(context: Context) {
-        appModules.loadModules()
-    }
+/**
+ * Contract for initializer
+ */
+abstract class AbstractCoreInitializer<T> : Initializer<T> {
 
     /**
      * @return A list of dependencies that this [Initializer] depends on. This is
      * used to determine initialization order of [Initializer]s.
      *
-     * For e.g. if a [Initializer] `B` defines another
-     * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
+     * For e.g. if a [Initializer] `B` defines another [Initializer] `A` as its dependency,
+     * then `A` gets initialized before `B`.
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-        listOf(InjectorInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }
