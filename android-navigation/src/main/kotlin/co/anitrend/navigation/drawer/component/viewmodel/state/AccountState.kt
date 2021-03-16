@@ -46,9 +46,7 @@ internal class AccountState(
 
     var context by Delegates.notNull<CoroutineContext>()
 
-    private val moduleTag: String = javaClass.simpleName
-
-    private val useCaseResult = MutableLiveData<DataState<List<User>?>>()
+    private val useCaseResult = MutableLiveData<DataState<List<User>>>()
 
     override val model = Transformations.switchMap(useCaseResult) { dataState ->
             dataState.model.asLiveData(context).map { users ->
@@ -140,7 +138,7 @@ internal class AccountState(
             settings.isAuthenticated.flow.onEach {
                 invoke()
             }.catch { cause ->
-                Timber.tag(moduleTag).w(cause)
+                Timber.w(cause)
             }.collect()
         }
     }
