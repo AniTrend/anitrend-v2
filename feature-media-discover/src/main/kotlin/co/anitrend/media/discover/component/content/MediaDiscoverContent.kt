@@ -18,10 +18,15 @@
 package co.anitrend.media.discover.component.content
 
 import android.view.MenuItem
+import androidx.annotation.IntegerRes
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
+import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.fragmentByTagOrNew
@@ -31,18 +36,34 @@ import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaDiscoverContent(
+    private val settings: ICustomizationSettings,
     override val inflateMenu: Int = R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<Media>,
-    override val defaultSpanSize: Int = R.integer.grid_list_x2
+    override val supportViewAdapter: ISupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
     private val viewModel by viewModel<MediaDiscoverViewModel>(
         state = { arguments.orEmpty() }
     )
+
+    override val defaultSpanSize: Int
+        get() = getSpanSizeByPreference(
+            settings.preferredViewMode.value
+        )
+
+
+    @IntegerRes
+    private fun getSpanSizeByPreference(
+        viewMode: PreferredViewMode
+    ) = when (viewMode) {
+        PreferredViewMode.COMPACT -> R.integer.grid_list_x3
+        PreferredViewMode.COMFORTABLE -> R.integer.grid_list_x2
+        else -> R.integer.single_list_size
+    }
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -91,6 +112,20 @@ class MediaDiscoverContent(
                 viewModel.param,
                 false
             )
+        }
+        lifecycleScope.launchWhenResumed {
+            settings.preferredViewMode.flow.collect {
+                val layoutManger = supportRecyclerView?.layoutManager
+                if (layoutManger is StaggeredGridLayoutManager) {
+                    val currentSpanCount = layoutManger.spanCount
+                    val newSpanCount = resources.getInteger(
+                        getSpanSizeByPreference(it)
+                    )
+                    if (currentSpanCount != newSpanCount)
+                        layoutManger.spanCount = newSpanCount
+                    else supportRecyclerView?.adapter?.notifyDataSetChanged()
+                }
+            }
         }
     }
 
