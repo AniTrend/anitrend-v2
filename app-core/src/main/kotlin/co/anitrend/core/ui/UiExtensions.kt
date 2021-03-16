@@ -117,10 +117,13 @@ inline fun <T: Fragment> FragmentItem<T>.commit(
  * @param classDefinition [Class] with an out variance of type [Fragment]
  */
 inline fun <reified T : Fragment> FragmentActivity.createFragment(
-    classDefinition: Class<out T>,
-    factory: FragmentFactory
+    classDefinition: Class<out T>
 ): T {
     val qualifier = classDefinition.name
+    val factory = supportFragmentManager.fragmentFactory
+    require(factory is KoinFragmentFactory) {
+        "Fragment factory for $this is $factory instead of KoinFragmentFactory"
+    }
     return factory.instantiate(classLoader, qualifier) as T
 }
 
@@ -131,11 +134,10 @@ inline fun <reified T : Fragment> FragmentActivity.createFragment(
  * @param tag Tag to identity the fragment
  */
 inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
-    activity: FragmentActivity,
-    factory: FragmentFactory = KoinFragmentFactory()
+    activity: FragmentActivity
 ): T {
     val fragment = activity.supportFragmentManager.findFragmentByTag(tag()) as? T ?:
-    activity.createFragment(fragment, factory)
+    activity.createFragment(fragment)
     fragment.arguments = parameter
     return fragment
 }
@@ -149,8 +151,7 @@ inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
  */
 inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
     fragmentItem: FragmentItem<T>,
-    factory: FragmentFactory = KoinFragmentFactory(),
     lazyMode: LazyThreadSafetyMode = UNSAFE
 ) = lazy(lazyMode) {
-    fragmentItem.fragmentByTagOrNew(this, factory)
+    fragmentItem.fragmentByTagOrNew(this)
 }

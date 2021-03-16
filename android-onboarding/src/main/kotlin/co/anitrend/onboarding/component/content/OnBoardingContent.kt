@@ -18,9 +18,8 @@
 package co.anitrend.onboarding.component.content
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.getCompatDrawable
@@ -91,9 +90,7 @@ class OnBoardingContent(
 
         fun newInstance(model: OnBoarding): OnBoardingContent {
             val fragment = OnBoardingContent()
-            fragment.arguments = Bundle().apply {
-                putParcelable(PARAM_KEY, model)
-            }
+            fragment.arguments = bundleOf(PARAM_KEY to model)
             return fragment
         }
     }

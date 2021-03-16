@@ -18,16 +18,12 @@
 package co.anitrend.core.component.screen
 
 import android.content.Context
-import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
-import androidx.savedstate.SavedStateRegistry
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
-import co.anitrend.core.extensions.orEmpty
-import co.anitrend.core.ui.inject
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
+import co.anitrend.core.ui.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityScope
 import org.koin.core.scope.KoinScopeComponent
@@ -39,10 +35,7 @@ import timber.log.Timber
  */
 abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
 
-    protected val savedStateProviderKey by lazy { "${moduleTag}State" }
-    protected val savedStateProvider = SavedStateRegistry.SavedStateProvider { intent.extras.orEmpty() }
-
-    protected val configurationUtil by inject<IConfigurationHelper>()
+    protected val configurationHelper by inject<IConfigurationHelper>()
 
     override val scope by lazy(UNSAFE) { activityScope() }
 
@@ -52,28 +45,18 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
      * Can be used to configure custom theme styling as desired
      */
     override fun configureActivity() {
-        configurationUtil.onCreate(this)
-        lifecycleScope.launchWhenCreated {
-            runCatching {
-                getKoin().logger.debug("Open activity scope: $scope")
-                setupKoinFragmentFactory(scope)
-            }.onFailure {
-                setupKoinFragmentFactory()
-                Timber.tag(moduleTag).d(it, "Defaulting to scope-less based fragment factory")
-            }
+        runCatching {
+            getKoin().logger.debug("Open activity scope: $scope")
+            setupKoinFragmentFactory(scope)
+        }.onFailure {
+            setupKoinFragmentFactory()
+            Timber.tag(moduleTag).v(it, "Defaulting to scope-less based fragment factory")
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        savedStateRegistry.registerSavedStateProvider(
-            savedStateProviderKey,
-            savedStateProvider
-        )
+        configurationHelper.onCreate(this)
     }
 
     override fun attachBaseContext(newBase: Context?) {
-        val newContext = configurationUtil.attachContext(newBase)
+        val newContext = configurationHelper.attachContext(newBase)
         super.attachBaseContext(newContext)
     }
 
@@ -84,14 +67,11 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
      */
     override fun onResume() {
         super.onResume()
-        configurationUtil.onResume(this)
+        configurationHelper.onResume(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        savedStateRegistry.unregisterSavedStateProvider(
-            savedStateProviderKey
-        )
         binding = null
     }
 }
