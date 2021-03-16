@@ -20,13 +20,13 @@ package co.anitrend.media.carousel.component.content.controller
 import android.content.res.Resources
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.extension.util.attribute.SeasonType
-import co.anitrend.arch.extension.util.date.SupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.media.carousel.R
 import org.threeten.bp.Instant
 
 class CarouselContentController(
-    private val dateHelper: SupportDateHelper
+    dateHelper: AbstractSupportDateHelper
 ): SupportLifecycle {
     override val moduleTag: String = javaClass.simpleName
 

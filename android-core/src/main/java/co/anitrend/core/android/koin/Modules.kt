@@ -24,7 +24,7 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.util.date.SupportDateHelper
-import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.android.controller.AndroidPowerController
 import co.anitrend.core.android.controller.contract.IPowerController
 import co.anitrend.core.android.settings.Settings
@@ -53,9 +53,9 @@ private val coreModule = module {
         SupportDispatcher()
     }
 
-    factory<ISupportDateHelper> {
+    factory<AbstractSupportDateHelper> {
         SupportDateHelper()
-    } bind SupportDateHelper::class
+    }
 
     single {
         /** TODO: On language preference change, destroy and recreate [PrettyTime] */

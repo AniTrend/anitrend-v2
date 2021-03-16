@@ -18,7 +18,6 @@
 package co.anitrend.media.carousel.koin
 
 import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import co.anitrend.common.media.ui.adapter.MediaCarouselAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.carousel.component.content.CarouselContent
