@@ -21,4 +21,5 @@
     android:id="@+id/tag"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/md_margin"
     tools:text="@sample/tag.json/name"/>
