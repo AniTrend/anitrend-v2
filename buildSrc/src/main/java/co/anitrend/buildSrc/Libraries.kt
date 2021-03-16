@@ -55,7 +55,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "7.0.0-alpha09"
+            private const val version = "7.0.0-alpha10"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
