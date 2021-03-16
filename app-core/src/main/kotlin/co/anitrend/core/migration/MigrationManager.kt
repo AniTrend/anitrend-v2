@@ -60,7 +60,7 @@ internal class MigrationManager(
             ).contains(BuildConfig.versionCode)
         }
 
-        return minMigrations + maxMigrations
+        return (minMigrations + maxMigrations).distinct()
     }
 
     /**
