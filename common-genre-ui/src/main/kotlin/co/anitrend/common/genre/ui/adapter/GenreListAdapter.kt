@@ -26,6 +26,7 @@ import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.genre.ui.controller.helpers.GenreDiffUtil
 import co.anitrend.common.genre.ui.controller.model.GenreItem
 import co.anitrend.common.genre.ui.controller.model.GenreItem.Companion.createViewHolder
@@ -33,11 +34,13 @@ import co.anitrend.domain.genre.entity.Genre
 
 class GenreListAdapter(
     override val resources: Resources,
-    override val stateConfiguration: IStateLayoutConfig,
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Genre) -> IRecyclerItem = { GenreItem(it) },
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Genre>(GenreDiffUtil) {
+
+    override val stateConfiguration: IStateLayoutConfig = StateLayoutConfig()
+
     /**
      * Should provide the required view holder, this function is a substitute for
      * [androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder] which now

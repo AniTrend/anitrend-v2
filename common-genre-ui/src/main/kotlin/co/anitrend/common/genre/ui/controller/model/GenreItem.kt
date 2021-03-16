@@ -20,11 +20,13 @@ package co.anitrend.common.genre.ui.controller.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.common.genre.R
 import co.anitrend.common.genre.databinding.GenreItemBinding
-import co.anitrend.core.android.helpers.color.asDrawable
+import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.navigation.MediaDiscoverRouter
@@ -56,8 +58,13 @@ internal class GenreItem(
         binding = GenreItemBinding.bind(view)
         requireBinding().genre.text = entity.decorated
 
-        if (entity is Genre.Extended)
-            requireBinding().genre.background = entity.background?.asDrawable(view.context)
+        if (entity is Genre.Extended && entity.background != null) {
+            val background = entity.background!!.asColorInt(view.context)
+            requireBinding().genre.setTextColor(background)
+        } else {
+            val textColor = view.context.getCompatColor(R.color.primaryTextColor)
+            requireBinding().genre.setTextColor(textColor)
+        }
 
         requireBinding().genre.setOnClickListener {
             MediaDiscoverRouter.startActivity(

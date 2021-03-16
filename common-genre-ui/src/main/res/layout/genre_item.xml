@@ -23,4 +23,5 @@
     android:id="@+id/genre"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/md_margin"
     tools:text="@sample/genre.json/name"/>
