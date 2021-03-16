@@ -52,7 +52,7 @@ object Versions {
     const val threeTenBp = "1.3.0"
 
     const val debugDB = "1.0.6"
-    const val treesSence = "0.3.2"
+    const val treesSence = "1.0.4"
 
     const val liquidSwipe = "1.3"
 

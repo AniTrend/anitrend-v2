@@ -27,7 +27,7 @@ object Libraries {
     const val threeTenBp = "com.jakewharton.threetenabp:threetenabp:${Versions.threeTenBp}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 
-    const val treessence = "fr.bipi.treessence:treessence:${Versions.treesSence}"
+    const val treessence = "com.github.bastienpaulfr:Treessence:${Versions.treesSence}"
     const val debugDb = "com.amitshekhar.android:debug-db:${Versions.debugDB}"
 
     const val junit = "junit:junit:${Versions.junit}"
