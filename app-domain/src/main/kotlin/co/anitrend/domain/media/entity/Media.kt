@@ -44,7 +44,7 @@ sealed class Media : IMedia {
     abstract val countryCode: CharSequence?
     abstract val description: CharSequence?
     abstract val favouritesCount: Long
-    abstract val genres: Collection<Genre>
+    abstract val genres: Collection<Genre.Extended>
     abstract val twitterTag: CharSequence?
     abstract val isLicensed: Boolean?
     abstract val isLocked: Boolean?
@@ -121,7 +121,7 @@ sealed class Media : IMedia {
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
         override val favouritesCount: Long,
-        override val genres: Collection<Genre>,
+        override val genres: Collection<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
@@ -188,7 +188,7 @@ sealed class Media : IMedia {
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
         override val favouritesCount: Long,
-        override val genres: Collection<Genre>,
+        override val genres: Collection<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
