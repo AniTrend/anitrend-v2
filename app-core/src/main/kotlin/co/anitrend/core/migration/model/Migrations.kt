@@ -18,6 +18,8 @@
 package co.anitrend.core.migration.model
 
 import android.content.Context
+import androidx.core.content.edit
+import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.Settings
 
 internal object Migrations {
@@ -26,8 +28,16 @@ internal object Migrations {
             settings.clearDataOnSwipeRefresh.value = false
         }
     }
+
+    private val FROM_20310_TO_20320 = object : Migration(20310, 20320) {
+        override fun invoke(context: Context, settings: Settings) {
+            val key = context.getString(R.string.settings_view_mode_preferred)
+            settings.edit(commit = true) { remove(key) }
+        }
+    }
     
     val ALL = listOf<Migration>(
-        FROM_20290_TO_20300
+        FROM_20290_TO_20300,
+        FROM_20310_TO_20320
     )
 }
