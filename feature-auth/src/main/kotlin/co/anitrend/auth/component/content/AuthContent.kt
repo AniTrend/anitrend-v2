@@ -21,7 +21,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.AuthViewModel
@@ -45,9 +45,9 @@ class AuthContent(
     private val resetNetworkStateOnBackPress =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val stateFlow = binding?.stateLayout?.networkMutableStateFlow
-                if (stateFlow?.value is NetworkState.Loading || stateFlow?.value is NetworkState.Error)
-                    stateFlow.value = NetworkState.Idle
+                val stateFlow = binding?.stateLayout?.loadStateMutableStateFlow
+                if (stateFlow?.value is LoadState.Loading || stateFlow?.value is LoadState.Error)
+                    stateFlow.value = LoadState.Idle
                 else
                     activity?.finish()
             }
@@ -96,7 +96,7 @@ class AuthContent(
      */
     override fun setUpViewModelObserver() {
         viewModelState().networkState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.networkMutableStateFlow.value = it
+            requireBinding().stateLayout.loadStateMutableStateFlow.value = it
         }
         viewModelState().model.observe(viewLifecycleOwner) {
             if (it != null)

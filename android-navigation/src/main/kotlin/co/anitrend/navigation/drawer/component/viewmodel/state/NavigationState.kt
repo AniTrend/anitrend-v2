@@ -20,7 +20,7 @@ package co.anitrend.navigation.drawer.component.viewmodel.state
 import androidx.annotation.IdRes
 import androidx.lifecycle.*
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.UNSAFE
@@ -46,16 +46,16 @@ internal class NavigationState(
         MutableStateFlow(initialState)
     }
 
-    override val model: LiveData<List<Navigation>?> by lazy(UNSAFE) {
+    override val model by lazy(UNSAFE) {
         navigationItems.asLiveData(context)
     }
 
-    override val networkState: LiveData<NetworkState> = liveData {
-        emit(NetworkState.Loading)
+    override val networkState = liveData<LoadState> {
+        emit(LoadState.Loading())
     }
 
-    override val refreshState: LiveData<NetworkState> = liveData {
-        emit(NetworkState.Loading)
+    override val refreshState = liveData<LoadState> {
+        emit(LoadState.Loading())
     }
 
     init {

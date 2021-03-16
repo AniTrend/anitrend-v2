@@ -20,7 +20,7 @@ package co.anitrend.task.tag.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.data.tag.TagInteractor
 import kotlinx.coroutines.flow.first
 
@@ -45,10 +45,10 @@ class TagWorker(
         val dataState = interactor.getMediaTags()
 
         val networkState = dataState.networkState.first { state ->
-            state is NetworkState.Success || state is NetworkState.Error
+            state is LoadState.Success || state is LoadState.Error
         }
 
-        return if (networkState is NetworkState.Success)
+        return if (networkState is LoadState.Success)
             Result.success()
         else Result.failure()
     }

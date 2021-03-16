@@ -20,7 +20,7 @@ package co.anitrend.task.news.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.data.news.NewsInteractor
@@ -50,10 +50,10 @@ class NewsWorker(
         val dataState = interactor(param)
 
         val networkState = dataState.networkState.first { state ->
-            state is NetworkState.Success || state is NetworkState.Error
+            state is LoadState.Success || state is LoadState.Error
         }
 
-        return if (networkState is NetworkState.Success)
+        return if (networkState is LoadState.Success)
             Result.success()
         else Result.failure()
     }
