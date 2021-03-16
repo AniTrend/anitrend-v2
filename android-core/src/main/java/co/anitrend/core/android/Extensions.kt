@@ -27,7 +27,8 @@ import android.view.animation.Interpolator
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.res.use
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.navigation.model.common.IParam
@@ -128,9 +129,11 @@ fun Instant.asPrettyTime(): String {
  */
 inline fun SupportStateLayout.assureParamNotMissing(param: IParam?, block: () -> Unit) {
     if (param == null)
-        networkMutableStateFlow.value = NetworkState.Error(
-            heading = context.getString(R.string.app_controller_heading_missing_param),
-            message = context.getString(R.string.app_controller_message_missing_param),
+        loadStateMutableStateFlow.value = LoadState.Error(
+            RequestError(
+                topic = context.getString(R.string.app_controller_heading_missing_param),
+                description = context.getString(R.string.app_controller_message_missing_param),
+            )
         )
     else block()
 }

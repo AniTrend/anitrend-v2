@@ -24,15 +24,14 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
-import co.anitrend.arch.core.model.IStateLayoutConfig
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.helpers.image.model.toCoverImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.screen.AnitrendScreen
-import co.anitrend.core.ui.inject
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.viewer.R
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
@@ -108,14 +107,16 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
              * Called when the request starts.
              */
             override fun onStart(placeholder: Drawable?) {
-                binding?.stateLayout?.networkMutableStateFlow?.value = NetworkState.Loading
+                binding?.stateLayout?.loadStateMutableStateFlow?.value = LoadState.Loading()
             }
 
             /**
              * Called if an error occurs while executing the request.
              */
             override fun onError(error: Drawable?) {
-                binding?.stateLayout?.networkMutableStateFlow?.value = NetworkState.Error()
+                binding?.stateLayout?.loadStateMutableStateFlow?.value = LoadState.Error(
+                    RequestError("Unable to load image")
+                )
             }
 
             /**
@@ -124,7 +125,7 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
             override fun onSuccess(result: Drawable) {
                 val source = ImageSource.bitmap(result.toBitmap())
                 binding?.subSamplingImageView?.setImage(source)
-                binding?.stateLayout?.networkMutableStateFlow?.value = NetworkState.Success
+                binding?.stateLayout?.loadStateMutableStateFlow?.value = LoadState.Success
             }
         }.using(param?.imageSrc.toCoverImage(), this)
     }

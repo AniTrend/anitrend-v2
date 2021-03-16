@@ -17,7 +17,6 @@
 
 package co.anitrend.auth.component.viewmodel.state
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
@@ -40,10 +39,11 @@ class AuthState(
     val authenticationFlow =
         MutableStateFlow<Authentication>(Authentication.Idle)
 
-    private val useCaseResult = MutableLiveData<DataState<User?>>()
+    private val useCaseResult = MutableLiveData<DataState<User>>()
 
-    override val model: LiveData<User?> =
-        Transformations.switchMap(useCaseResult) { it.model.asLiveData(context) }
+    override val model = Transformations.switchMap(useCaseResult) {
+        it.model.asLiveData(context)
+    }
 
     override val networkState =
         Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }

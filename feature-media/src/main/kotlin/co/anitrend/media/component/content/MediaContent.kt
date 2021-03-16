@@ -80,7 +80,7 @@ class MediaContent(
 
         }
         viewModelState().networkState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.networkMutableStateFlow.value = it
+            requireBinding().stateLayout.loadStateMutableStateFlow.value = it
         }
     }
 

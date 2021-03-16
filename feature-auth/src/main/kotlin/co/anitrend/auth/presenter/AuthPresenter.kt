@@ -22,7 +22,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.FragmentActivity
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
@@ -74,13 +75,15 @@ class AuthPresenter(
     fun onStateChange(authentication: Authentication, state: AuthState, stateLayout: SupportStateLayout) {
         when (authentication) {
             is Authentication.Authenticating -> {
-                stateLayout.networkMutableStateFlow.value = NetworkState.Loading
+                stateLayout.loadStateMutableStateFlow.value = LoadState.Loading()
                 state(authentication)
             }
-            is Authentication.Error -> stateLayout.networkMutableStateFlow.value =
-                NetworkState.Error(
-                    heading = authentication.title,
-                    message = authentication.message
+            is Authentication.Error -> stateLayout.loadStateMutableStateFlow.value =
+                LoadState.Error(
+                    RequestError(
+                        topic = authentication.title,
+                        description = authentication.message
+                    )
                 )
             is Authentication.Success -> {
                 shortcutManager.createShortcuts(
@@ -90,7 +93,9 @@ class AuthPresenter(
                     Shortcut.Profile()
                 )
             }
-            else -> { /** ignored */ }
+            else -> {
+                /** ignored */
+            }
         }
     }
 }
