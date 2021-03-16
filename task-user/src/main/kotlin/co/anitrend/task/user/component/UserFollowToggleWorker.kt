@@ -20,7 +20,7 @@ package co.anitrend.task.user.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.user.ToggleFollowInteractor
 import co.anitrend.domain.user.model.UserParam
@@ -57,10 +57,10 @@ class UserFollowToggleWorker(
         val dataState = toggleFollow(param)
 
         val networkState = dataState.networkState.first { state ->
-            state is NetworkState.Success || state is NetworkState.Error
+            state is LoadState.Success || state is LoadState.Error
         }
 
-        return if (networkState is NetworkState.Success)
+        return if (networkState is LoadState.Success)
             Result.success()
         else Result.failure()
     }

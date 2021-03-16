@@ -20,7 +20,7 @@ package co.anitrend.task.medialist.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.medialist.GetCollectionMediaListInteractor
@@ -59,11 +59,11 @@ class MediaListAnimeSyncWorker(
         val dataState = interactor(param)
 
         val networkState = dataState.networkState.first { state ->
-            state is NetworkState.Success || state is NetworkState.Error
+            state is LoadState.Success || state is LoadState.Error
         }
 
         return when (networkState) {
-            is NetworkState.Success -> Result.success()
+            is LoadState.Success -> Result.success()
             else -> Result.failure()
         }
     }
