@@ -27,7 +27,7 @@ object Libraries {
     const val threeTenBp = "com.jakewharton.threetenabp:threetenabp:${Versions.threeTenBp}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
 
-    const val treessence = "fr.bipi.treessence:treessence:${Versions.treesSence}"
+    const val treessence = "com.github.bastienpaulfr:Treessence:${Versions.treesSence}"
     const val debugDb = "com.amitshekhar.android:debug-db:${Versions.debugDB}"
 
     const val junit = "junit:junit:${Versions.junit}"
@@ -55,7 +55,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "7.0.0-alpha09"
+            private const val version = "7.0.0-alpha10"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -321,7 +321,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "484ee51323"
+            private const val version = "4d4a912020"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
