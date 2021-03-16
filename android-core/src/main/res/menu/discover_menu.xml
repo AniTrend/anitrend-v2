@@ -30,7 +30,7 @@
         android:id="@+id/action_list_style"
         android:orderInCategory="99"
         android:title="@string/action_list_style"
-        tools:icon="@drawable/ic_view_list"
+        tools:icon="@drawable/ic_view_summary"
         app:actionProviderClass="co.anitrend.core.android.widget.ViewStyleActionProvider"
         app:showAsAction="ifRoom" />
 </menu>

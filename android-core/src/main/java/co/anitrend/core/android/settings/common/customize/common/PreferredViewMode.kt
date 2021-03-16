@@ -18,7 +18,8 @@
 package co.anitrend.core.android.settings.common.customize.common
 
 enum class PreferredViewMode {
-    DETAILED_LIST,
-    SUMMARY_LIST,
-    GRID_LIST
+    DETAILED,
+    SUMMARY,
+    COMPACT,
+    COMFORTABLE
 }

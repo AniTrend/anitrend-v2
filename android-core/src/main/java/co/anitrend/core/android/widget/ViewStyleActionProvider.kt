@@ -27,7 +27,6 @@ import androidx.core.view.ActionProvider
 import androidx.core.view.setPadding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.extension.ext.SYNCHRONIZED
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getDrawableAttr
@@ -72,7 +71,7 @@ class ViewStyleActionProvider(context: Context) : ActionProvider(context) {
         }
     }
 
-    private val settings by lazy(SYNCHRONIZED) {
+    private val settings by lazy(UNSAFE) {
         koinOf<ICustomizationSettings>()
     }
 
@@ -82,17 +81,19 @@ class ViewStyleActionProvider(context: Context) : ActionProvider(context) {
         val current = settings.preferredViewMode.value
         val currentIndex = viewModes.indexOf(current)
         settings.preferredViewMode.value = when (currentIndex) {
-            0 -> PreferredViewMode.SUMMARY_LIST
-            1 -> PreferredViewMode.GRID_LIST
-            else -> PreferredViewMode.DETAILED_LIST
+            PreferredViewMode.DETAILED.ordinal -> PreferredViewMode.SUMMARY
+            PreferredViewMode.SUMMARY.ordinal -> PreferredViewMode.COMPACT
+            PreferredViewMode.COMPACT.ordinal -> PreferredViewMode.COMFORTABLE
+            else -> PreferredViewMode.DETAILED
         }
     }
 
     private fun iconForSetting(preferredViewMode: PreferredViewMode) {
         val resource = when (preferredViewMode) {
-            PreferredViewMode.DETAILED_LIST -> R.drawable.ic_view_detail
-            PreferredViewMode.SUMMARY_LIST -> R.drawable.ic_view_list
-            PreferredViewMode.GRID_LIST -> R.drawable.ic_view_grid
+            PreferredViewMode.DETAILED -> R.drawable.ic_view_detailed
+            PreferredViewMode.SUMMARY -> R.drawable.ic_view_summary
+            PreferredViewMode.COMPACT -> R.drawable.ic_view_compact
+            else -> R.drawable.ic_view_comfortable
         }
         val drawable = context.getCompatDrawable(resource)
         actionImageView.setImageDrawable(drawable)

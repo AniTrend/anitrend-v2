@@ -118,7 +118,7 @@ class Settings(context: Context) : SupportPreference(context),
 
     override val preferredViewMode = EnumSetting(
         key = R.string.settings_view_mode_preferred,
-        default = PreferredViewMode.GRID_LIST,
+        default = PreferredViewMode.COMFORTABLE,
         resources = context.resources,
         preference = this
     )
