@@ -28,7 +28,7 @@ import co.anitrend.domain.user.entity.User
 
 internal class AuthRepositoryImpl(
     private val source: AuthSource
-) : SupportRepository(source), AuthRepository<DataState<User?>>{
+) : SupportRepository(source), AuthRepository<DataState<User>>{
 
     override fun getAuthenticatedUser(
         param: AccountParam.SignIn

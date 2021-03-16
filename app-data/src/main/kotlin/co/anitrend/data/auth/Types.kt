@@ -26,4 +26,4 @@ import co.anitrend.domain.user.entity.User
 
 internal typealias AuthController = GraphQLController<UserModelContainer.Viewer, UserEntity>
 
-typealias AuthUserInteractor = AuthUseCase<DataState<User?>>
+typealias AuthUserInteractor = AuthUseCase<DataState<User>>

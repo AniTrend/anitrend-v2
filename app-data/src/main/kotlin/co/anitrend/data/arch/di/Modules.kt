@@ -23,6 +23,7 @@ import android.net.ConnectivityManager
 import androidx.startup.AppInitializer
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.account.koin.accountModules
 import co.anitrend.data.airing.koin.airingModules
@@ -148,7 +149,7 @@ private val retrofitModule = module {
 }
 
 private val networkModule = module {
-    factory {
+    factory<ISupportConnectivity> {
         SupportConnectivity(
             connectivityManager = androidContext()
                 .systemServiceOf<ConnectivityManager>()

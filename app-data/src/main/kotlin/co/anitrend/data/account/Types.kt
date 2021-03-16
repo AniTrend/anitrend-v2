@@ -21,4 +21,4 @@ import co.anitrend.arch.data.state.DataState
 import co.anitrend.domain.account.interactor.AccountUseCase
 import co.anitrend.domain.user.entity.User
 
-typealias AccountInteractor = AccountUseCase<DataState<List<User>?>>
+typealias AccountInteractor = AccountUseCase<DataState<List<User>>>

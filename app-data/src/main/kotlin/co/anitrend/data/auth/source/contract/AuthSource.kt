@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 
 internal abstract class AuthSource : SupportCoreDataSource() {
 
-    protected abstract val observable: Flow<User?>
-    protected abstract val observables: Flow<List<User>?>
+    protected abstract val observable: Flow<User>
+    protected abstract val observables: Flow<List<User>>
 
     abstract fun signOut(param: AccountParam.SignOut)
 
@@ -40,11 +40,11 @@ internal abstract class AuthSource : SupportCoreDataSource() {
         callback: RequestCallback
     )
 
-    internal operator fun invoke(): Flow<List<User>?> {
+    internal operator fun invoke(): Flow<List<User>> {
         return observables
     }
 
-    internal operator fun invoke(param: AccountParam.SignIn): Flow<User?> {
+    internal operator fun invoke(param: AccountParam.SignIn): Flow<User> {
         launch {
             requestHelper.runIfNotRunning(
                 Request.Default(String.empty(), Request.Type.INITIAL)

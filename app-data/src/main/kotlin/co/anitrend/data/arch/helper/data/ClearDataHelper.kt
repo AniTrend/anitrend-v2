@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.helper.data
 
-import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import kotlinx.coroutines.withContext
@@ -31,7 +31,7 @@ import kotlin.coroutines.CoroutineContext
  * @param settings behaviour related settings
  */
 internal class ClearDataHelper(
-    private val connectivity: SupportConnectivity,
+    private val connectivity: ISupportConnectivity,
     private val settings: IRefreshBehaviourSettings
 ) : IClearDataHelper {
 

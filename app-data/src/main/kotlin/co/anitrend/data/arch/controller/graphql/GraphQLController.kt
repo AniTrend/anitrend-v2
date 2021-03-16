@@ -19,8 +19,7 @@ package co.anitrend.data.arch.controller.graphql
 
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.error.RequestError
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.mapper.DefaultMapper

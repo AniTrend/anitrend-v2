@@ -17,7 +17,7 @@
 
 package co.anitrend.data.rss.extensions
 
-import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.data.arch.extension.koinOf
 import co.anitrend.data.rss.ISO8601Date
 import co.anitrend.data.rss.RCF822Date
@@ -30,7 +30,7 @@ internal const val ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ssXXX"
 
 internal fun ISO8601Date.iso8601ToUnixTime() =
     runCatching{
-        koinOf<ISupportDateHelper>()
+        koinOf<AbstractSupportDateHelper>()
             .convertToUnixTimeStamp(
                 originDate = this,
                 dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
@@ -42,7 +42,7 @@ internal fun ISO8601Date.iso8601ToUnixTime() =
 
 internal fun RCF822Date.rcf822ToUnixTime() =
     runCatching {
-        koinOf<ISupportDateHelper>()
+        koinOf<AbstractSupportDateHelper>()
             .convertToUnixTimeStamp(
                 originDate = this,
                 dateTimeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME

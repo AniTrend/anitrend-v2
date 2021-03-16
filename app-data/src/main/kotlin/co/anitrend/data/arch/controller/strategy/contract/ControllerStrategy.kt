@@ -18,7 +18,7 @@
 package co.anitrend.data.arch.controller.strategy.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.data.arch.network.model.NetworkMessage
 import retrofit2.HttpException
 import java.net.SocketTimeoutException

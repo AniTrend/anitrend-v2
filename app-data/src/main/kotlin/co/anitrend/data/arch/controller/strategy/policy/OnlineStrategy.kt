@@ -18,8 +18,8 @@
 package co.anitrend.data.arch.controller.strategy.policy
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.error.RequestError
-import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.arch.domain.entities.RequestError
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.network.model.NetworkMessage
 import timber.log.Timber
@@ -28,7 +28,7 @@ import timber.log.Timber
  * Runs connectivity check before prior to execution
  */
 internal class OnlineStrategy<D> private constructor(
-    private val connectivity: SupportConnectivity,
+    private val connectivity: ISupportConnectivity,
     override val networkMessage: NetworkMessage
 ) : ControllerStrategy<D>() {
 
@@ -66,7 +66,7 @@ internal class OnlineStrategy<D> private constructor(
 
     companion object {
         internal fun <T> create(
-            connectivity: SupportConnectivity,
+            connectivity: ISupportConnectivity,
             networkMessage: NetworkMessage
         ) = OnlineStrategy<T>(connectivity, networkMessage)
     }

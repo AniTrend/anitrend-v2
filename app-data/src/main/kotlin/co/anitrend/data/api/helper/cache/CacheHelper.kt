@@ -18,13 +18,11 @@
 package co.anitrend.data.api.helper.cache
 
 import android.content.Context
-import co.anitrend.arch.extension.network.SupportConnectivity
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.api.helper.cache.model.TimeSpecification
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Request
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.scope.Scope
 import timber.log.Timber
 import java.io.File
 
@@ -57,7 +55,7 @@ internal object CacheHelper {
      * @param request request to build on
      */
     fun addCacheControl(
-        connectivity: SupportConnectivity,
+        connectivity: ISupportConnectivity,
         cacheAge: TimeSpecification,
         staleAge: TimeSpecification,
         request: Request

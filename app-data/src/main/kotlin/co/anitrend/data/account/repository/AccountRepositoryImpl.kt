@@ -28,7 +28,7 @@ import co.anitrend.domain.user.entity.User
 
 internal class AccountRepositoryImpl(
     private val source: AuthSource
-) : SupportRepository(source), AccountRepository<DataState<List<User>?>>{
+) : SupportRepository(source), AccountRepository<DataState<List<User>>>{
 
     override fun getAccountUsers() =
         source create source()

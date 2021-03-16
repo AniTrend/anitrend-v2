@@ -247,14 +247,5 @@ internal class MediaSource {
                 }
             }
         }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            // No backing data source supported
-        }
     }
 }
