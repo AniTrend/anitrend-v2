@@ -19,6 +19,7 @@ package co.anitrend.common.media.ui.widget.rating
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.ColorRes
 import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
@@ -44,50 +45,54 @@ internal class MediaRatingWidget @JvmOverloads constructor(
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    private fun setFavouriteStatus(isFavourite: Boolean) {
+    private fun setFavouriteStatus(isFavourite: Boolean, @ColorRes tintColor: Int) {
+        requireBinding().mediaFavouriteIndicator.setImageDrawable(
+            context.getCompatDrawable(R.drawable.ic_favourite, tintColor)
+        )
         if (isFavourite)
-            binding?.mediaFavouriteIndicator?.visible()
+            requireBinding().mediaFavouriteIndicator.visible()
         else
-            binding?.mediaFavouriteIndicator?.gone()
+            requireBinding().mediaFavouriteIndicator.gone()
     }
 
-    private fun IMedia.setMediaRatingDynamically(settings: IUserSettings) {
+    private fun IMedia.setMediaRatingDynamically(settings: IUserSettings, @ColorRes tintColor: Int) {
+        requireBinding().mediaAverageScore.setTextColor(context.getCompatColor(tintColor))
         val scoreFormat: ScoreFormat = settings.scoreFormat.value
         val mediaScoreDefault = (meanScore.toFloat() * 5 / 100f).toString()
         when (scoreFormat) {
             ScoreFormat.POINT_100 -> {
                 if (mediaList.isValid())
-                   binding?.mediaAverageScore?.text = mediaList!!.score.toInt().toString()
+                   requireBinding().mediaAverageScore.text = mediaList!!.score.toInt().toString()
                 else
-                   binding?.mediaAverageScore?.text = mediaScoreDefault
+                   requireBinding().mediaAverageScore.text = mediaScoreDefault
             }
             ScoreFormat.POINT_10 -> {
                 if (mediaList.isValid())
-                   binding?.mediaAverageScore?.text = mediaList!!.score.toInt().toString()
+                   requireBinding().mediaAverageScore.text = mediaList!!.score.toInt().toString()
                 else
-                   binding?.mediaAverageScore?.text = (meanScore / 10f).toString()
+                   requireBinding().mediaAverageScore.text = (meanScore / 10f).toString()
             }
             ScoreFormat.POINT_5 -> {
                 if (mediaList.isValid())
-                   binding?.mediaAverageScore?.text = mediaList!!.score.toInt().toString()
+                   requireBinding().mediaAverageScore.text = mediaList!!.score.toInt().toString()
                 else
-                   binding?.mediaAverageScore?.text = mediaScoreDefault
+                   requireBinding().mediaAverageScore.text = mediaScoreDefault
             }
             ScoreFormat.POINT_10_DECIMAL -> {
                 if (mediaList.isValid())
-                   binding?.mediaAverageScore?.text = mediaList!!.score.format(1)
+                   requireBinding().mediaAverageScore.text = mediaList!!.score.format(1)
                 else {
                     val scoreFormatted = (meanScore / 10f)
-                   binding?.mediaAverageScore?.text = scoreFormatted.format(1)
+                    requireBinding().mediaAverageScore.text = scoreFormatted.format(1)
                 }
             }
             ScoreFormat.POINT_3 -> {
-                val faceDefault = context.getCompatDrawable(R.drawable.ic_face)
-                val faceNeutral = context.getCompatDrawable(R.drawable.ic_face_neutral)
-                val faceHappy = context.getCompatDrawable(R.drawable.ic_face_happy)
-                val faceSad = context.getCompatDrawable(R.drawable.ic_face_sad)
+                val faceDefault = context.getCompatDrawable(R.drawable.ic_face, tintColor)
+                val faceNeutral = context.getCompatDrawable(R.drawable.ic_face_neutral, tintColor)
+                val faceHappy = context.getCompatDrawable(R.drawable.ic_face_happy, tintColor)
+                val faceSad = context.getCompatDrawable(R.drawable.ic_face_sad, tintColor)
                 if (mediaList.isValid())
-                   binding?.mediaAverageScore?.setCompoundDrawablesWithIntrinsicBounds(
+                   requireBinding().mediaAverageScore.setCompoundDrawablesWithIntrinsicBounds(
                         when (mediaList!!.score) {
                         1f -> faceSad
                         2f -> faceNeutral
@@ -95,7 +100,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                         else -> faceDefault
                     }, null, null, null)
                 else {
-                   binding?.mediaAverageScore?.setCompoundDrawablesWithIntrinsicBounds(
+                   requireBinding().mediaAverageScore.setCompoundDrawablesWithIntrinsicBounds(
                         when(averageScore) {
                             in 1..33 -> faceSad
                             in 34..66 -> faceNeutral
@@ -104,47 +109,47 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                         }, null, null, null)
                 }
             }
-            else -> binding?.mediaAverageScore?.text = averageScore.toString()
+            else -> requireBinding().mediaAverageScore.text = averageScore.toString()
         }
     }
 
-    private fun setRating(media: IMedia, settings: IUserSettings) {
-        media.setMediaRatingDynamically(settings)
+    private fun setRating(media: IMedia, @ColorRes tintColor: Int, settings: IUserSettings) {
+        media.setMediaRatingDynamically(settings, tintColor)
     }
 
-    private fun setListStatus(media: IMedia, isMiniMode: Boolean) {
+    private fun setListStatus(media: IMedia, @ColorRes tintColor: Int, isMiniMode: Boolean) {
         if (!media.mediaList.isValid()) {
-           binding?.mediaListNotesIndicator?.gone()
-           binding?.mediaListStatusIndicator?.gone()
+           requireBinding().mediaListNotesIndicator.gone()
+           requireBinding().mediaListStatusIndicator.gone()
             return
         }
 
         if (!isMiniMode) {
             if (!media.mediaList!!.privacy.notes.isNullOrBlank())
-               binding?.mediaListNotesIndicator?.visible()
+               requireBinding().mediaListNotesIndicator.visible()
             else
-               binding?.mediaListNotesIndicator?.gone()
-        } else binding?.mediaListNotesIndicator?.gone()
+               requireBinding().mediaListNotesIndicator.gone()
+        } else requireBinding().mediaListNotesIndicator.gone()
 
-       binding?.mediaListStatusIndicator?.visible()
+       requireBinding().mediaListStatusIndicator.visible()
         when (media.mediaList!!.status) {
-            MediaListStatus.COMPLETED -> binding?.mediaListStatusIndicator?.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_completed)
+            MediaListStatus.COMPLETED -> requireBinding().mediaListStatusIndicator.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_completed, tintColor)
             )
-            MediaListStatus.CURRENT -> binding?.mediaListStatusIndicator?.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_current)
+            MediaListStatus.CURRENT -> requireBinding().mediaListStatusIndicator.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_current, tintColor)
             )
-            MediaListStatus.DROPPED -> binding?.mediaListStatusIndicator?.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_dropped)
+            MediaListStatus.DROPPED -> requireBinding().mediaListStatusIndicator.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_dropped, tintColor)
             )
-            MediaListStatus.PAUSED -> binding?.mediaListStatusIndicator?.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_paused)
+            MediaListStatus.PAUSED -> requireBinding().mediaListStatusIndicator.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_paused, tintColor)
             )
-            MediaListStatus.PLANNING -> binding?.mediaListStatusIndicator?.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_planning)
+            MediaListStatus.PLANNING -> requireBinding().mediaListStatusIndicator.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_planning, tintColor)
             )
-            MediaListStatus.REPEATING -> binding?.mediaListStatusIndicator?.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_repeat)
+            MediaListStatus.REPEATING -> requireBinding().mediaListStatusIndicator.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_repeat, tintColor)
             )
             null -> {}
         }
@@ -154,10 +159,19 @@ internal class MediaRatingWidget @JvmOverloads constructor(
      * @param media Media
      * @param isMiniMode If the view should display minimalistic info
      */
-    fun setupUsingMedia(media: IMedia, settings: IUserSettings, isMiniMode: Boolean = false) {
-        setFavouriteStatus(media.isFavourite)
-        setListStatus(media, isMiniMode)
-        setRating(media, settings)
+    fun setupUsingMedia(
+        media: IMedia,
+        settings: IUserSettings,
+        isMiniMode: Boolean = false,
+        @ColorRes tintColor: Int? = null
+    ) {
+        val desiredColorTint = tintColor ?: R.color.white_1000
+        setFavouriteStatus(media.isFavourite, desiredColorTint)
+        setListStatus(media, desiredColorTint, isMiniMode)
+        setRating(media, desiredColorTint, settings)
+        if (tintColor == null)
+            requireBinding().root.background =
+                context.getCompatDrawable(R.drawable.bubble_background)
     }
 
     override fun createBinding() = MediaRatingWidgetBinding.inflate(

@@ -24,7 +24,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.FULL_SPAN_SIZE
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -88,7 +88,7 @@ internal class MediaCarouselItem(
             recyclerLayoutManager = layoutManager
         )
         if (entity.mediaItems.isEmpty())
-            mediaItemAdapter.networkState = NetworkState.Loading
+            mediaItemAdapter.loadState = LoadState.Loading()
         else
             mediaItemAdapter.submitList(entity.mediaItems)
     }

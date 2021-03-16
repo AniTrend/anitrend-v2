@@ -17,7 +17,9 @@
 
 package co.anitrend.media.discover.koin
 
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.media.discover.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.component.content.MediaDiscoverContent
@@ -32,10 +34,13 @@ import org.koin.dsl.module
 
 private val fragmentModule = module {
 	fragment {
+		val settings = get<Settings>()
 		MediaDiscoverContent(
+			settings = settings,
 			stateConfig = get(),
 			supportViewAdapter = MediaPagedAdapter(
-				settings = get(),
+				settings = settings,
+				viewPool = RecyclerView.RecycledViewPool(),
 				resources = androidContext().resources,
 				stateConfiguration = get()
 			)

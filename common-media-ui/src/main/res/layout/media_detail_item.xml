@@ -16,8 +16,85 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mediaCardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/lg_margin"
+    style="@style/AppTheme.MediaCard">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4">
+
+        <co.anitrend.arch.ui.view.image.SupportImageView
+            android:id="@+id/mediaImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:layout_weight="0.7"
+            app:aspectRatio="1.6"
+            tools:src="@sample/poster"
+            tools:scaleType="centerCrop"/>
+
+        <Space
+            android:layout_width="@dimen/lg_margin"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="3.3">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <co.anitrend.common.media.ui.widget.status.MediaStatusWidget
+                    android:id="@+id/mediaStatusWidget"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/lg_margin"
+                    android:layout_height="@dimen/lg_margin" />
+
+                <Space
+                    android:layout_width="@dimen/sm_margin"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mediaTitle"
+                    android:padding="@dimen/md_margin"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    style="@style/AppTheme.SingleLineText"
+                    tools:text="@sample/series.json/title/userPreferred" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
+                android:id="@+id/mediaSubTitleWidget"
+                android:padding="@dimen/md_margin"
+                style="@style/AppTheme.SingleLineText"
+                android:textAppearance="?attr/textAppearanceCaption" />
+
+            <co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
+                android:id="@+id/mediaScheduleTitleWidget"
+                android:padding="@dimen/md_margin"
+                style="@style/AppTheme.SingleLineText"
+                />
+
+            <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
+                android:id="@+id/mediaRatingWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/md_margin"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

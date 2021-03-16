@@ -23,7 +23,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@drawable/bubble_background">
+    tools:background="@drawable/bubble_background">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mediaAverageScore"
@@ -42,7 +42,7 @@
         android:layout_marginStart="@dimen/lg_margin"
         android:layout_width="@dimen/media_rating_widget_icon_size"
         android:layout_height="@dimen/media_rating_widget_icon_size"
-        app:srcCompat="@drawable/ic_favourite" />
+        tools:srcCompat="@drawable/ic_favourite" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mediaListStatusIndicator"
@@ -58,6 +58,6 @@
         android:layout_marginStart="@dimen/lg_margin"
         android:layout_width="@dimen/media_rating_widget_icon_size"
         android:layout_height="@dimen/media_rating_widget_icon_size"
-        app:srcCompat="@drawable/ic_note" />
+        tools:srcCompat="@drawable/ic_note" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
