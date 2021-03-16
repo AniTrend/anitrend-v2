@@ -25,22 +25,37 @@ import kotlinx.serialization.Serializable
 /** [UserOptions](https://anilist.github.io/ApiV2-GraphQL-Docs/useroptions.doc.html)
  * A user's general options
  *
- * @param airingNotifications Whether the user receives notifications when a show they are watching airs
- * @param displayAdultContent Whether the user has enabled viewing of 18+ content
- * @param notificationOptions Notification options
- * @param profileColor Profile highlight color (blue, purple, pink, orange, red, green, grey)
- * @param titleLanguage The language the user wants to see media titles in
- * @param timeZone The user's timezone offset (Auth user only)
+ * @property displayAdultContent Whether the user has enabled viewing of 18+ content
+ * @property profileColor Profile highlight color (blue, purple, pink, orange, red, green, grey)
+ * @property titleLanguage The language the user wants to see media titles in
  */
 @Serializable
-internal data class UserOptionsModel(
-    @SerialName("airingNotifications") val airingNotifications: Boolean?,
-    @SerialName("displayAdultContent") val displayAdultContent: Boolean?,
-    @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>?,
-    @SerialName("profileColor") val profileColor: String?,
-    @SerialName("titleLanguage") val titleLanguage: UserTitleLanguage?,
-    @SerialName("timezone") val timeZone: String?
-) {
+internal sealed class UserOptionsModel {
+    abstract val displayAdultContent: Boolean?
+    abstract val profileColor: String?
+    abstract val titleLanguage: UserTitleLanguage?
+
+    @Serializable
+    data class Core(
+        @SerialName("displayAdultContent") override val displayAdultContent: Boolean?,
+        @SerialName("profileColor") override val profileColor: String?,
+        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage?,
+    ) : UserOptionsModel()
+
+    /**
+     * @param airingNotifications Whether the user receives notifications when a show they are watching airs
+     * @param notificationOptions Notification options
+     * @param timeZone The user's timezone offset (Auth user only)
+     */
+    @Serializable
+    data class Viewer(
+        @SerialName("airingNotifications") val airingNotifications: Boolean?,
+        @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>?,
+        @SerialName("timezone") val timeZone: String?,
+        @SerialName("displayAdultContent") override val displayAdultContent: Boolean?,
+        @SerialName("profileColor") override val profileColor: String?,
+        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage?,
+    ) : UserOptionsModel()
 
     /**
      * @param enabled Whether this type of notification is enabled

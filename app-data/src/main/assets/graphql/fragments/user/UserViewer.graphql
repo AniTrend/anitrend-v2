@@ -1,11 +1,28 @@
-fragment UserExtended on User {
-    ... UserCore
+fragment UserViewer on User {
+    id
+    name
+    about
+    avatar {
+        ... UserAvatar
+    }
+    bannerImage
+    isBlocked
+    donatorTier
+    donatorBadge
+    siteUrl
+    updatedAt
     options {
         airingNotifications
         displayAdultContent
+        notificationOptions {
+            enabled
+            type
+        }
         profileColor
         titleLanguage
+        timezone
     }
+    unreadNotificationCount
     mediaListOptions {
         animeList {
             advancedScoring

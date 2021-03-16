@@ -42,7 +42,7 @@ internal sealed class UserModelContainer {
 
     @Serializable
     data class Viewer(
-        @SerialName("Viewer") val user: UserModel.Extended
+        @SerialName("Viewer") val user: UserModel.Viewer
     ) : UserModelContainer()
 
     @Serializable

@@ -68,13 +68,17 @@ internal sealed class UserModel : IUserModel {
         @SerialName("id") override val id: Long
     ) : Identity
 
+    /**
+     * @param isFollowing If the authenticated user if following this user
+     * @param isFollower If this user if following the authenticated user
+     */
     @Serializable
     internal data class Core(
+        @SerialName("isFollowing") val isFollowing: Boolean?,
+        @SerialName("isFollower") val isFollower: Boolean?,
         @SerialName("name") override val name: String,
         @SerialName("avatar") override val avatar: SharedImage?,
         @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isFollowing") override val isFollowing: Boolean?,
-        @SerialName("isFollower") override val isFollower: Boolean?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,
         @SerialName("donatorTier") override val donatorTier: Int?,
@@ -85,20 +89,28 @@ internal sealed class UserModel : IUserModel {
     ) : UserModel()
 
     /**
-     * @param unreadNotificationCount The number of unread notifications the user has
-     * @param mediaListOptions The user's media list options
-     * @param options The user's general options
+     * @property mediaListOptions The user's media list options
+     * @property options The user's general options
+     */
+    @Serializable
+    internal abstract class WithOptions : UserModel() {
+        abstract val options: UserOptionsModel?
+        abstract val mediaListOptions: MediaListOptions?
+    }
+
+    /**
+     * @param isFollowing If the authenticated user if following this user
+     * @param isFollower If this user if following the authenticated user
      */
     @Serializable
     internal data class Extended(
-        @SerialName("options") val options: UserOptionsModel?,
-        @SerialName("unreadNotificationCount") val unreadNotificationCount: Int?,
-        @SerialName("mediaListOptions") val mediaListOptions: MediaListOptions?,
+        @SerialName("isFollowing") val isFollowing: Boolean?,
+        @SerialName("isFollower") val isFollower: Boolean?,
+        @SerialName("options") override val options: UserOptionsModel.Core?,
+        @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
         @SerialName("name") override val name: String,
         @SerialName("avatar") override val avatar: SharedImage?,
         @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isFollowing") override val isFollowing: Boolean?,
-        @SerialName("isFollower") override val isFollower: Boolean?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,
         @SerialName("donatorTier") override val donatorTier: Int?,
@@ -106,16 +118,38 @@ internal sealed class UserModel : IUserModel {
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("id") override val id: Long
-    ) : UserModel()
+    ) : WithOptions()
+
+    /**
+     * @param unreadNotificationCount The number of unread notifications the user has
+     * @param mediaListOptions The user's media list options
+     * @param options The user's general options
+     */
+    @Serializable
+    internal data class Viewer(
+        @SerialName("unreadNotificationCount") val unreadNotificationCount: Int?,
+        @SerialName("options") override val options: UserOptionsModel.Viewer?,
+        @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
+        @SerialName("name") override val name: String,
+        @SerialName("avatar") override val avatar: SharedImage?,
+        @SerialName("bannerImage") override val bannerImage: String?,
+        @SerialName("isBlocked") override val isBlocked: Boolean?,
+        @SerialName("about") override val about: String?,
+        @SerialName("donatorTier") override val donatorTier: Int?,
+        @SerialName("donatorBadge") override val donatorBadge: String?,
+        @SerialName("siteUrl") override val siteUrl: String,
+        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("id") override val id: Long
+    ) : WithOptions()
 
     @Serializable
     internal data class WithStatistic(
+        @SerialName("isFollowing") val isFollowing: Boolean?,
+        @SerialName("isFollower") val isFollower: Boolean?,
         @SerialName("statistics") val statistics: Statistic?,
         @SerialName("name") override val name: String,
         @SerialName("avatar") override val avatar: SharedImage?,
         @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isFollowing") override val isFollowing: Boolean?,
-        @SerialName("isFollower") override val isFollower: Boolean?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,
         @SerialName("donatorTier") override val donatorTier: Int?,

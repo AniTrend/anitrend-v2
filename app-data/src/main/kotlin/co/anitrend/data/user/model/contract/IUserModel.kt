@@ -27,8 +27,6 @@ import co.anitrend.data.shared.model.SharedImage
  * @property name The name of the user
  * @property avatar The user's avatar images
  * @property bannerImage The user's banner images
- * @property isFollowing If the authenticated user if following this user
- * @property isFollower If this user if following the authenticated user
  * @property isBlocked If the user is blocked by the authenticated user
  * @property siteUrl The url for the user page on the AniList website
  * @property donatorTier The donation tier of the user
@@ -41,8 +39,6 @@ internal interface IUserModel : Identity {
     val name: String
     val avatar: SharedImage?
     val bannerImage: String?
-    val isFollowing: Boolean?
-    val isFollower: Boolean?
     val isBlocked: Boolean?
     val about: String?
     val donatorTier: Int?

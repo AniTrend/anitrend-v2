@@ -89,6 +89,28 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
+                unreadNotification = 0,
+                updatedAt = source.updatedAt,
+                id = source.id
+            )
+            is UserModel.Viewer -> UserEntity(
+                about = UserEntity.About(
+                    name = source.name,
+                    bio = source.about,
+                    siteUrl = source.siteUrl,
+                    donatorTier = source.donatorTier,
+                    donatorBadge = source.donatorBadge,
+                ),
+                status = UserEntity.Status(
+                    isFollowing = false,
+                    isFollower = false,
+                    isBlocked = source.isBlocked ?: false
+                ),
+                coverImage = UserEntity.CoverImage(
+                    large = source.avatar?.large,
+                    medium = source.avatar?.medium,
+                    banner = source.bannerImage
+                ),
                 unreadNotification = source.unreadNotificationCount,
                 updatedAt = source.updatedAt,
                 id = source.id
@@ -115,6 +137,7 @@ internal class UserModelConverter(
                 updatedAt = source.updatedAt,
                 id = source.id
             )
+            else -> error("Nothing to do with this type: $source")
         }
     }
 }
@@ -135,11 +158,11 @@ internal class UserStatisticModelConverter(
 }
 
 internal class UserMediaOptionModelConverter(
-    override val fromType: (UserModel.Extended) -> UserMediaOptionEntity = ::transform,
-    override val toType: (UserMediaOptionEntity) -> UserModel.Extended = { throw NotImplementedError() }
-) : SupportConverter<UserModel.Extended, UserMediaOptionEntity>() {
-    private companion object : ISupportTransformer<UserModel.Extended, UserMediaOptionEntity> {
-        override fun transform(source: UserModel.Extended) = UserMediaOptionEntity(
+    override val fromType: (UserModel.WithOptions) -> UserMediaOptionEntity = ::transform,
+    override val toType: (UserMediaOptionEntity) -> UserModel.WithOptions = { throw NotImplementedError() }
+) : SupportConverter<UserModel.WithOptions, UserMediaOptionEntity>() {
+    private companion object : ISupportTransformer<UserModel.WithOptions, UserMediaOptionEntity> {
+        override fun transform(source: UserModel.WithOptions) = UserMediaOptionEntity(
             userId = source.id,
             scoreFormat = source.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100,
             rowOrder = source.mediaListOptions?.rowOrder,
@@ -147,38 +170,53 @@ internal class UserMediaOptionModelConverter(
                 customLists = source.mediaListOptions?.animeList?.customLists.orEmpty(),
                 sectionOrder = source.mediaListOptions?.animeList?.sectionOrder.orEmpty(),
                 advancedScoring = source.mediaListOptions?.animeList?.advancedScoring.orEmpty(),
-                advancedScoringEnabled = source.mediaListOptions?.animeList?.advancedScoringEnabled ?: false,
-                splitCompletedSectionByFormat = source.mediaListOptions?.animeList?.splitCompletedSectionByFormat ?: false
+                advancedScoringEnabled = source.mediaListOptions?.animeList?.advancedScoringEnabled
+                    ?: false,
+                splitCompletedSectionByFormat = source.mediaListOptions?.animeList?.splitCompletedSectionByFormat
+                    ?: false
             ),
             manga = UserMediaOptionEntity.MediaOption(
                 customLists = source.mediaListOptions?.mangaList?.customLists.orEmpty(),
                 sectionOrder = source.mediaListOptions?.mangaList?.sectionOrder.orEmpty(),
                 advancedScoring = source.mediaListOptions?.mangaList?.advancedScoring.orEmpty(),
-                advancedScoringEnabled = source.mediaListOptions?.mangaList?.advancedScoringEnabled ?: false,
-                splitCompletedSectionByFormat = source.mediaListOptions?.mangaList?.splitCompletedSectionByFormat ?: false
+                advancedScoringEnabled = source.mediaListOptions?.mangaList?.advancedScoringEnabled
+                    ?: false,
+                splitCompletedSectionByFormat = source.mediaListOptions?.mangaList?.splitCompletedSectionByFormat
+                    ?: false
             )
         )
     }
 }
 
 internal class UserGeneralOptionModelConverter(
-    override val fromType: (UserModel.Extended) -> UserGeneralOptionEntity = ::transform,
-    override val toType: (UserGeneralOptionEntity) -> UserModel.Extended = { throw NotImplementedError() }
-) : SupportConverter<UserModel.Extended, UserGeneralOptionEntity>() {
-    private companion object : ISupportTransformer<UserModel.Extended, UserGeneralOptionEntity> {
-        override fun transform(source: UserModel.Extended) = UserGeneralOptionEntity(
-            userId = source.id,
-            airingNotifications = source.options?.airingNotifications ?: false,
-            displayAdultContent = source.options?.displayAdultContent ?: false,
-            notificationOption = source.options?.notificationOptions?.map { option ->
-                UserGeneralOptionEntity.NotificationOption(
-                    enabled = option.enabled,
-                    notificationType = option.notificationType
-                )
-            }.orEmpty(),
-            titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
-            profileColor = source.options?.profileColor,
-        )
+    override val fromType: (UserModel.WithOptions) -> UserGeneralOptionEntity = ::transform,
+    override val toType: (UserGeneralOptionEntity) -> UserModel.WithOptions = { throw NotImplementedError() }
+) : SupportConverter<UserModel.WithOptions, UserGeneralOptionEntity>() {
+    private companion object : ISupportTransformer<UserModel.WithOptions, UserGeneralOptionEntity> {
+        override fun transform(source: UserModel.WithOptions) = when (source) {
+            is UserModel.Extended -> UserGeneralOptionEntity(
+                userId = source.id,
+                airingNotifications = false,
+                displayAdultContent = source.options?.displayAdultContent ?: false,
+                notificationOption = emptyList(),
+                titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
+                profileColor = source.options?.profileColor
+            )
+            is UserModel.Viewer -> UserGeneralOptionEntity(
+                userId = source.id,
+                airingNotifications = source.options?.airingNotifications ?: false,
+                displayAdultContent = source.options?.displayAdultContent ?: false,
+                notificationOption = source.options?.notificationOptions?.map { option ->
+                    UserGeneralOptionEntity.NotificationOption(
+                        enabled = option.enabled,
+                        notificationType = option.notificationType
+                    )
+                }.orEmpty(),
+                titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
+                profileColor = source.options?.profileColor,
+            )
+            else -> error("$source type does not contain any models of type UserGeneralOption")
+        }
     }
 }
 
