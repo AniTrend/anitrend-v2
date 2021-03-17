@@ -17,6 +17,7 @@
 
 package co.anitrend.common.episode.ui.controller.model
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import androidx.fragment.app.DialogFragment
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.common.episode.R
 import co.anitrend.common.episode.databinding.EpisodeItemBinding
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
@@ -87,6 +89,20 @@ internal class EpisodeItem(
         disposable = null
         super.unbind(view)
     }
+
+    /**
+     * Provides a preferred span size for the item, defaulted to [R.integer.single_list_size]
+     *
+     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
+     * @param position position of the current item
+     * @param resources optionally useful for dynamic size check with different configurations
+     */
+    override fun getSpanSize(
+        spanCount: Int,
+        position: Int,
+        resources: Resources
+    ) = resources.getInteger(R.integer.column_x1)
+
 
     companion object {
         internal fun LayoutInflater.createViewHolder(
