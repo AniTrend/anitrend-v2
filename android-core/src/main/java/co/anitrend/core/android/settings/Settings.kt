@@ -38,6 +38,7 @@ import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
@@ -88,9 +89,9 @@ class Settings(context: Context) : SupportPreference(context),
         preference = this
     )
 
-    override val isSortOrderDescending = BooleanSetting(
-        key = R.string.settings_is_sort_order_desc,
-        default = true,
+    override val sortOrder = EnumSetting(
+        key = R.string.settings_sort_order,
+        default = SortOrder.DESC,
         resources = context.resources,
         preference = this
     )

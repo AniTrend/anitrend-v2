@@ -22,7 +22,7 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 32
+    private const val candidate = 33
 
     private const val channel = "alpha"
 
