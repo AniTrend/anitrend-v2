@@ -17,6 +17,8 @@
 
 package co.anitrend.data.arch.database.filter
 
+import android.location.Criteria
+import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.support.query.builder.core.QueryBuilder
@@ -43,6 +45,18 @@ internal abstract class FilterQueryBuilder<F> {
      */
     protected abstract fun onBuildQuery(filter: F)
 
+    private fun asSupportSQLiteQuery(): SimpleSQLiteQuery {
+        // Temporary filter since projections seem to be added into params
+        val query = requireBuilder().build()
+        val parameters = requireBuilder().buildParameters()
+            .filterNot { it is Projection }
+            .toTypedArray()
+        Timber.d(
+            "Generated SQL query: \n\r${query} \n\rparams: [${parameters.joinToString()}]"
+        )
+        return SimpleSQLiteQuery(query, parameters)
+    }
+
     /**
      * Builds a [SupportSQLiteQuery] for raw query consumption
      *
@@ -53,7 +67,7 @@ internal abstract class FilterQueryBuilder<F> {
     fun build(filter: F): SupportSQLiteQuery = when (hash) {
         filter.hashCode() -> {
             Timber.d("Reusing existing builder instance, filter hash has not changed")
-            requireBuilder().asSupportSQLiteQuery()
+            asSupportSQLiteQuery()
         }
         else -> {
             val filterHash = filter.hashCode()
@@ -61,9 +75,7 @@ internal abstract class FilterQueryBuilder<F> {
             hash = filterHash
             builder = QueryBuilder()
             onBuildQuery(filter)
-            val query = requireBuilder().asSupportSQLiteQuery()
-            Timber.d("Generated SQL query: \n\r${query.sql} \n\rparams: [${requireBuilder().buildParameters().joinToString()}]")
-            query
+            asSupportSQLiteQuery()
         }
     }
 

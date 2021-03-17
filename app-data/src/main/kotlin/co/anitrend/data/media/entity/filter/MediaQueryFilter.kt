@@ -52,7 +52,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         private val mediaListTable = MediaListEntitySchema.tableName.asTable()
         private val tagTable = TagEntitySchema.tableName.asTable()
         private val tagConnectionTable = TagEntitySchema.tableName.asTable()
-        private val genreConnectionTable = GenreEntitySchema.tableName.asTable()
+        private val genreConnectionTable = GenreConnectionEntitySchema.tableName.asTable()
 
         private fun averageScoreSelection(filter: MediaParam.Find) {
             val column = MediaEntitySchema.averageScore.asColumn(mediaTable)
@@ -142,14 +142,15 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         }
 
         private fun genreSelection(filter: MediaParam.Find) {
-            if (filter.genre != null || filter.genre_in != null || filter.tag_not_in != null)
-                requireBuilder().innerJoin(genreConnectionTable) {
-                    on(
-                        GenreConnectionEntitySchema.mediaId,
-                        MediaEntitySchema.id
+            val column = GenreConnectionEntitySchema.genre.asColumn(genreConnectionTable)
+            if (filter.genre != null || filter.genre_in != null || filter.genre_not_in != null)
+                requireBuilder() from {
+                    innerJoin(genreConnectionTable).on(
+                        GenreConnectionEntitySchema.mediaId.asColumn(genreConnectionTable),
+                        MediaEntitySchema.id.asColumn(mediaTable)
                     )
                 }
-            val column = GenreConnectionEntitySchema.genre.asColumn(genreConnectionTable)
+
             filter.genre?.also {
                 requireBuilder() whereAnd {
                     column equal it
@@ -382,22 +383,24 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
                     filter.tagCategory_in != null || filter.tagCategory_not_in != null ||
                     filter.tag != null || filter.tag_in != null || filter.tag_not_in != null
                 ) {
-                    requireBuilder().innerJoin(tagConnectionTable) {
-                        on(
-                            TagConnectionEntitySchema.mediaId.asColumn(
-                                tagConnectionTable
-                            ),
-                            MediaEntitySchema.id.asColumn(mediaTable)
-                        )
-                    }.innerJoin(tagTable) {
-                        on(
-                            TagEntitySchema.id.asColumn(
-                                tagTable
-                            ),
-                            TagConnectionEntitySchema.tagId.asColumn(
-                                tagConnectionTable
+                    requireBuilder() from {
+                        innerJoin(tagConnectionTable) {
+                            on(
+                                TagConnectionEntitySchema.mediaId.asColumn(
+                                    tagConnectionTable
+                                ),
+                                MediaEntitySchema.id.asColumn(mediaTable)
                             )
-                        )
+                        }.innerJoin(tagTable) {
+                            on(
+                                TagEntitySchema.id.asColumn(
+                                    tagTable
+                                ),
+                                TagConnectionEntitySchema.tagId.asColumn(
+                                    tagConnectionTable
+                                )
+                            )
+                        }
                     }
                 }
             }
