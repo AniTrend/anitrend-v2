@@ -35,6 +35,8 @@
         android:id="@+id/sheetBackgroundContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/bottom_sheet_margin"
+        android:layout_marginEnd="@dimen/bottom_sheet_margin"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_skipCollapsed="true"

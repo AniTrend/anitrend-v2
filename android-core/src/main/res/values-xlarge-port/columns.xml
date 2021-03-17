@@ -17,7 +17,7 @@
 
 <resources>
     <integer name="column_x1">2</integer>
-    <integer name="column_x2">3</integer>
-    <integer name="column_x3">4</integer>
-    <integer name="column_x4">5</integer>
+    <integer name="column_x2">4</integer>
+    <integer name="column_x3">5</integer>
+    <integer name="column_x4">6</integer>
 </resources>

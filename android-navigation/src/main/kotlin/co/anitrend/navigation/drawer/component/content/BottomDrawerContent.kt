@@ -34,6 +34,7 @@ import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.components.sheet.action.OnSlideAction
 import co.anitrend.core.android.components.sheet.action.OnStateChangedAction
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.drawer.R

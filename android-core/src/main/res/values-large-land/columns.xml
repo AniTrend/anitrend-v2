@@ -15,4 +15,9 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources></resources>
+<resources>
+    <integer name="column_x1">3</integer>
+    <integer name="column_x2">5</integer>
+    <integer name="column_x3">7</integer>
+    <integer name="column_x4">8</integer>
+</resources>

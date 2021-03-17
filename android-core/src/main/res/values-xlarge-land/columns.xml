@@ -18,6 +18,6 @@
 <resources>
     <integer name="column_x1">3</integer>
     <integer name="column_x2">5</integer>
-    <integer name="column_x3">6</integer>
-    <integer name="column_x4">8</integer>
+    <integer name="column_x3">8</integer>
+    <integer name="column_x4">10</integer>
 </resources>
