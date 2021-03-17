@@ -18,6 +18,7 @@
 package co.anitrend.core.initializer.contract
 
 import androidx.startup.Initializer
+import co.anitrend.core.initializer.InjectorInitializer
 import co.anitrend.core.initializer.MigrationInitializer
 
 /**
@@ -32,6 +33,6 @@ abstract class AbstractTaskInitializer<T> : Initializer<T> {
      * By default a feature initializer should only start after koin has been initialized
      */
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(MigrationInitializer::class.java)
+        return listOf(InjectorInitializer::class.java)
     }
 }

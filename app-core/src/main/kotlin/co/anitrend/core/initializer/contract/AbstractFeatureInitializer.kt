@@ -35,6 +35,6 @@ abstract class AbstractFeatureInitializer<T> : Initializer<T> {
      * By default a feature initializer should only start after koin has been initialized
      */
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(MigrationInitializer::class.java)
+        return listOf(InjectorInitializer::class.java)
     }
 }

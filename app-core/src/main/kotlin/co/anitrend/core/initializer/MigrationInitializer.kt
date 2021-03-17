@@ -19,9 +19,9 @@ package co.anitrend.core.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
-import co.anitrend.core.migration.contract.IMigrationManager
+import co.anitrend.core.migration.MigrationManager
 
 /**
  * Migration helper for managing upgrades from one version of the application to another
@@ -34,7 +34,9 @@ class MigrationInitializer : AbstractCoreInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val migrationManager = koinOf<IMigrationManager>()
+        val migrationManager = MigrationManager(
+            settings = Settings(context)
+        )
         migrationManager.applyMigrations(context)
     }
 
@@ -45,6 +47,6 @@ class MigrationInitializer : AbstractCoreInitializer<Unit>() {
      * By default a feature initializer should only start after koin has been initialized
      */
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(InjectorInitializer::class.java)
+        return listOf(TimberInitializer::class.java)
     }
 }

@@ -30,8 +30,6 @@ import co.anitrend.core.R
 import co.anitrend.core.android.koin.androidCoreModules
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
-import co.anitrend.core.migration.MigrationManager
-import co.anitrend.core.migration.contract.IMigrationManager
 import co.anitrend.data.arch.di.dataModules
 import co.anitrend.data.arch.network.model.NetworkMessage
 import co.anitrend.data.arch.storage.contract.IStorageController
@@ -51,11 +49,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val coreModule = module {
-    factory<IMigrationManager> {
-        MigrationManager(
-            settings = get()
-        )
-    }
     single {
         val context = androidContext()
         NetworkMessage(

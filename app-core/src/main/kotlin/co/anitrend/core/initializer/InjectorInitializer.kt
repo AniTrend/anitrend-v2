@@ -59,7 +59,7 @@ class InjectorInitializer : AbstractCoreInitializer<Unit>() {
      * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
     override fun dependencies(): List<Class<out Initializer<*>>> =
-            listOf(TimberInitializer::class.java)
+            listOf(MigrationInitializer::class.java)
 
     internal class KoinLogger(
         logLevel: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
