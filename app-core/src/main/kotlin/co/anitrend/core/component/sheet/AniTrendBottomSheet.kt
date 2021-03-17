@@ -39,12 +39,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+
+import android.widget.FrameLayout
+
+
+
 
 abstract class AniTrendBottomSheet<B : ViewBinding>(
     @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
     @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
-) : BottomSheetDialogFragment(),
-    KoinScopeComponent, IBindingView<B>, CoroutineScope by MainScope(), ISupportFragment {
+) : BottomSheetDialogFragment(), KoinScopeComponent, IBindingView<B>,
+    CoroutineScope by MainScope(), ISupportFragment {
 
     override val moduleTag: String = javaClass.simpleName
 
@@ -52,7 +58,12 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
 
     override val scope by lazy(UNSAFE) { fragmentScope() }
 
-    protected val bottomSheetCallback = SheetBehaviourCallback()
+    protected lateinit var behavior: BottomSheetBehavior<*>
+
+    protected open val bottomSheetCallback = SheetBehaviourCallback()
+
+    protected open val defaultPeekHeight: Int = 250
+    protected open val defaultState: Int = BottomSheetBehavior.STATE_HALF_EXPANDED
 
     private fun applyMargins(viewParent: ViewParent) {
         runCatching {
@@ -73,6 +84,16 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         initializeComponents(savedInstanceState)
+        dialog.setOnShowListener {
+            val bottomSheet = dialog.findViewById<FrameLayout>(
+                com.google.android.material.R.id.design_bottom_sheet
+            )
+            behavior = BottomSheetBehavior.from(bottomSheet)
+            behavior.addBottomSheetCallback(bottomSheetCallback)
+            behavior.peekHeight = defaultPeekHeight
+            behavior.skipCollapsed = true
+            behavior.setState(defaultState)
+        }
         return dialog
     }
 

@@ -37,10 +37,6 @@ class MediaDiscoverFilterSheet(
     override val inflateLayout: Int = R.layout.media_discover_filter_sheet
 ) : AniTrendBottomSheet<MediaDiscoverFilterSheetBinding>() {
 
-    private val behavior: BottomSheetBehavior<FrameLayout> by lazy(UNSAFE) {
-        BottomSheetBehavior.from(requireBinding().container)
-    }
-
     private val viewModel by sharedViewModel<MediaDiscoverViewModel>(
         owner = { from(requireParentFragment(), requireParentFragment()) }
     )
@@ -89,8 +85,5 @@ class MediaDiscoverFilterSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MediaDiscoverFilterSheetBinding.bind(view)
-
-        behavior.addBottomSheetCallback(bottomSheetCallback)
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 }

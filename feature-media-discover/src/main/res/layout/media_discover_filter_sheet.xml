@@ -14,53 +14,41 @@
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/spacing_md">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sheetHandle"
+        android:layout_width="@dimen/spacing_xl"
+        android:layout_height="@dimen/md_margin"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/lg_margin"
+        app:srcCompat="@drawable/touch_thumbnail"/>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/sheetContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/bottom_sheet_behavior">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/sheetHandle"
-            android:layout_width="@dimen/spacing_xl"
-            android:layout_height="@dimen/md_margin"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/lg_margin"
-            app:srcCompat="@drawable/touch_thumbnail"/>
-
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/sheetContainer"
+        <co.anitrend.arch.recycler.SupportRecyclerView
+            android:id="@+id/filterOptionsRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/spacing_sm"
-            android:paddingBottom="@dimen/spacing_sm"
-            android:orientation="vertical">
+            app:paddingBottomSystemWindowInsets="true"
+            android:nestedScrollingEnabled="false"
+            android:alpha="0.0"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="@integer/single_list_size"/>
 
-            <co.anitrend.arch.recycler.SupportRecyclerView
-                android:id="@+id/filterOptionsRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/spacing_sm"
-                android:paddingBottom="@dimen/spacing_sm"
-                app:paddingBottomSystemWindowInsets="true"
-                android:nestedScrollingEnabled="false"
-                android:alpha="0.0"
-                android:clipToPadding="false"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="@integer/single_list_size"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </FrameLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

@@ -22,11 +22,8 @@ import android.text.util.Linkify
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.core.extensions.stackTrace
@@ -38,7 +35,6 @@ import co.anitrend.episode.databinding.EpisodeSheetBinding
 import co.anitrend.episode.presenter.EpisodePresenter
 import co.anitrend.navigation.EpisodeRouter
 import coil.request.Disposable
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import io.noties.markwon.Markwon
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,10 +44,6 @@ class EpisodeSheet(
     private val presenter: EpisodePresenter,
     override val inflateLayout: Int = R.layout.episode_sheet
 ) : AniTrendBottomSheet<EpisodeSheetBinding>() {
-
-    private val behavior: BottomSheetBehavior<ConstraintLayout> by lazy(UNSAFE) {
-        BottomSheetBehavior.from(requireBinding().container)
-    }
 
     private val viewModel by viewModel<EpisodeSheetViewModel>()
 
@@ -120,9 +112,6 @@ class EpisodeSheet(
                 }.stackTrace(moduleTag)
                 true
             }
-
-        behavior.addBottomSheetCallback(bottomSheetCallback)
-        behavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun onPostModelChange(episode: Episode) {
@@ -130,7 +119,7 @@ class EpisodeSheet(
         requireBinding().episodeTitle.createSummary(episode)
         requireBinding().episodeDuration.text = episode.about.episodeDuration
         requireBinding().episodePublisher.text = episode.series.seriesPublisher
-        requireBinding().episodeThumbnail.setOnClickListener {
+        requireBinding().episodePlay.setOnClickListener {
             presenter.handleViewIntent(it, episode.guid)
         }
         requireBinding().episodePublisher.setOnClickListener {
@@ -148,8 +137,8 @@ class EpisodeSheet(
     override fun onDestroy() {
         BetterLinkMovementMethod.linkify(Linkify.ALL, activity)
             .setOnLinkClickListener(null)
+        binding?.episodePlay?.setOnClickListener(null)
         binding?.episodePublisher?.setOnClickListener(null)
-        binding?.episodeThumbnail?.setOnClickListener(null)
         binding?.episodeDownload?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
