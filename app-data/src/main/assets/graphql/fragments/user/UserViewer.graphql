@@ -1,16 +1,5 @@
 fragment UserViewer on User {
-    id
-    name
-    about
-    avatar {
-        ... UserAvatar
-    }
-    bannerImage
-    isBlocked
-    donatorTier
-    donatorBadge
-    siteUrl
-    updatedAt
+    ... UserExtended
     options {
         airingNotifications
         displayAdultContent
@@ -18,27 +7,8 @@ fragment UserViewer on User {
             enabled
             type
         }
-        profileColor
-        titleLanguage
         timezone
     }
+    isBlocked
     unreadNotificationCount
-    mediaListOptions {
-        animeList {
-            advancedScoring
-            advancedScoringEnabled
-            customLists
-            sectionOrder
-            splitCompletedSectionByFormat
-        }
-        mangaList {
-            advancedScoring
-            advancedScoringEnabled
-            customLists
-            sectionOrder
-            splitCompletedSectionByFormat
-        }
-        rowOrder
-        scoreFormat
-    }
 }

@@ -6,7 +6,7 @@ fragment MediaFeed on ListActivity {
     isSubscribed
     likeCount
     media {
-        ... MediaCoreWithoutAiring
+        ... MediaCore
     }
     progress
     replyCount

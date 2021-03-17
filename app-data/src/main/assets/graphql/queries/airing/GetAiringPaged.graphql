@@ -1,0 +1,52 @@
+query GetAiringPaged(
+    $page: Int,
+    $perPage: Int,
+    $airingAt: Int,
+    $airingAt_greater: Int,
+    $airingAt_lesser: Int,
+    $episode: Int,
+    $episode_greater: Int,
+    $episode_in: [Int],
+    $episode_lesser: Int,
+    $episode_not: Int,
+    $episode_not_in: [Int],
+    $id: Int,
+    $id_in: [Int],
+    $id_not: Int,
+    $id_not_in: [Int],
+    $mediaId: Int,
+    $mediaId_in: [Int],
+    $mediaId_not: Int,
+    $mediaId_not_in: [Int],
+    $notYetAired: Boolean,
+    $sort: [AiringSort]
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        airingSchedules(
+            airingAt: $airingAt,
+            airingAt_greater: $airingAt_greater,
+            airingAt_lesser: $airingAt_lesser,
+            episode: $episode,
+            episode_greater: $episode_greater,
+            episode_in: $episode_in,
+            episode_lesser: $episode_lesser,
+            episode_not: $episode_not,
+            episode_not_in: $episode_not_in,
+            id: $id,
+            id_in: $id_in,
+            id_not: $id_not,
+            id_not_in: $id_not_in,
+            mediaId: $mediaId,
+            mediaId_in: $mediaId_in,
+            mediaId_not: $mediaId_not,
+            mediaId_not_in: $mediaId_not_in,
+            notYetAired: $notYetAired,
+            sort: $sort
+        ) {
+            ... AiringScheduleExtended
+        }
+    }
+}

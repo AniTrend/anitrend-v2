@@ -1,8 +1,6 @@
 fragment UserExtended on User {
     ... UserCore
     options {
-        airingNotifications
-        displayAdultContent
         profileColor
         titleLanguage
     }

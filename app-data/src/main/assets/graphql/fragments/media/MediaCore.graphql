@@ -1,57 +1,9 @@
 fragment MediaCore on Media {
-    id
-    idMal
-    title {
-        ... MediaTitle
-    }
+    ... Media
     trailer {
         id
         site
         thumbnail
-    }
-    bannerImage
-    coverImage {
-        ... MediaImage
-    }
-    type
-    format
-    season
-    status(version: 2)
-    source
-    meanScore
-    description
-    averageScore
-    countryOfOrigin
-    trending
-    popularity
-    synonyms
-    favourites
-    hashtag
-    siteUrl
-    genres
-    tags {
-        ... Tag
-        rank
-        isMediaSpoiler
-    }
-    startDate {
-        ... FuzzyDate
-    }
-    endDate {
-        ... FuzzyDate
-    }
-    episodes
-    duration
-    chapters
-    volumes
-    isAdult
-    isLocked
-    isLicensed
-    isFavourite
-    isRecommendationBlocked
-    updatedAt
-    nextAiringEpisode {
-        ... AiringScheduleCore
     }
     mediaListEntry {
         ... MediaListCore

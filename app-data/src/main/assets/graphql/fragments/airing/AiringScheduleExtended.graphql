@@ -1,10 +1,6 @@
 fragment AiringScheduleExtended on AiringSchedule {
-    airingAt
-    episode
-    id
+    ... AiringScheduleCore
     media {
         ... MediaCore
     }
-    mediaId
-    timeUntilAiring
 }
