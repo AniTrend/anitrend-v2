@@ -28,8 +28,8 @@ import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.CarouselDiffUtil
-import co.anitrend.common.media.ui.controller.model.carousel.MediaCarouselItem
-import co.anitrend.common.media.ui.controller.model.carousel.MediaCarouselItem.Companion.createCarouselViewHolder
+import co.anitrend.common.media.ui.controller.model.MediaCarouselItem
+import co.anitrend.common.media.ui.controller.model.MediaCarouselItem.Companion.createCarouselViewHolder
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.carousel.entity.MediaCarousel
 

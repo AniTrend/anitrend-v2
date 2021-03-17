@@ -17,18 +17,17 @@
 
 package co.anitrend.common.media.ui.controller.model
 
+import android.content.res.Resources
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.common.media.ui.databinding.MediaDetailItemBinding
-import co.anitrend.common.media.ui.databinding.MediaListItemBinding
-import co.anitrend.core.android.R
+import co.anitrend.common.media.ui.R
+import co.anitrend.common.media.ui.databinding.MediaComfortableItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
@@ -38,13 +37,12 @@ import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
-import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
-internal data class MediaDetailItem(
+internal data class MediaComfortableItem(
     private val entity: Media,
     private val settings: IUserSettings
-) : RecyclerItemBinding<MediaDetailItemBinding>(entity.id) {
+) : RecyclerItemBinding<MediaComfortableItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
 
@@ -65,22 +63,11 @@ internal data class MediaDetailItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = MediaDetailItemBinding.bind(view)
-        val radius = view.resources.getDimensionPixelSize(R.dimen.lg_margin).toFloat()
+        binding = MediaComfortableItemBinding.bind(view)
         disposable = requireBinding().mediaImage.using(
-            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER),
-            listOf(
-                RoundedCornersTransformation(
-                    topRight = radius,
-                    bottomRight = radius
-                )
-            )
+            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
         )
-        requireBinding().mediaRatingWidget.setupUsingMedia(
-            media = entity,
-            settings = settings,
-            tintColor = R.color.colorOnBackground
-        )
+        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
@@ -95,8 +82,7 @@ internal data class MediaDetailItem(
             )
         }
         requireBinding().mediaCardContainer.setOnLongClickListener {
-            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT).show()
             true
         }
     }
@@ -106,15 +92,30 @@ internal data class MediaDetailItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
+        binding?.mediaCardContainer?.setOnLongClickListener(null)
+        binding?.mediaCardContainer?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
         super.unbind(view)
     }
 
+    /**
+     * Provides a preferred span size for the item
+     *
+     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
+     * @param position position of the current item
+     * @param resources optionally useful for dynamic size check with different configurations
+     */
+    override fun getSpanSize(
+        spanCount: Int,
+        position: Int,
+        resources: Resources
+    ) = resources.getInteger(R.integer.column_x2)
+
     companion object {
-        internal fun LayoutInflater.createDetailViewHolder(
+        internal fun LayoutInflater.createGridViewHolder(
             viewGroup: ViewGroup
-        ) = MediaDetailItemBinding.inflate(
+        ) = MediaComfortableItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

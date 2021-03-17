@@ -27,17 +27,17 @@ import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil
-import co.anitrend.common.media.ui.controller.model.carousel.MediaItem
-import co.anitrend.common.media.ui.controller.model.carousel.MediaItem.Companion.createMediaItemViewHolder
+import co.anitrend.common.media.ui.controller.model.MediaCompactItem
+import co.anitrend.common.media.ui.controller.model.MediaCompactItem.Companion.createMediaItemViewHolder
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 
-class MediaItemAdapter(
+class MediaCompactAdapter(
     settings: IUserSettings,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
-    override val mapper: (Media) -> IRecyclerItem = { MediaItem(it, settings) },
+    override val mapper: (Media) -> IRecyclerItem = { MediaCompactItem(it, settings) },
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Media>(MediaDiffUtil) {
 

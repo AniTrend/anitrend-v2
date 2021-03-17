@@ -17,20 +17,16 @@
 
 package co.anitrend.common.media.ui.controller.model
 
+import android.content.res.Resources
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.ui.extension.setUpWith
-import co.anitrend.common.genre.ui.adapter.GenreListAdapter
-import co.anitrend.common.media.ui.databinding.MediaListItemBinding
+import co.anitrend.common.media.ui.databinding.MediaDetailedItemBinding
 import co.anitrend.core.android.R
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
@@ -44,43 +40,12 @@ import coil.request.Disposable
 import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
-internal class MediaListItem(
+internal data class MediaDetailedItem(
     private val entity: Media,
-    private val settings: IUserSettings,
-    private val viewPool: RecyclerView.RecycledViewPool
-) : RecyclerItemBinding<MediaListItemBinding>(entity.id) {
+    private val settings: IUserSettings
+) : RecyclerItemBinding<MediaDetailedItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
-
-    private fun setUpMediaGenres(view: View) {
-        val genreListAdapter = GenreListAdapter(view.resources)
-
-        val layoutManager = LinearLayoutManager(
-            view.context, RecyclerView.HORIZONTAL, false
-        )
-
-        val animator = object : DefaultItemAnimator() {
-            override fun getSupportsChangeAnimations() = false
-        }
-        animator.supportsChangeAnimations = false
-
-        with(layoutManager) {
-            // allow prefetching to speed up recycler performance
-            isItemPrefetchEnabled = true
-            initialPrefetchItemCount = 5
-            // If the view types are not the same across RecyclerView then it may lead to performance degradation.
-            recycleChildrenOnDetach = true
-        }
-
-        requireBinding().mediaGenresRecycler.setRecycledViewPool(viewPool)
-        requireBinding().mediaGenresRecycler.itemAnimator = animator
-        requireBinding().mediaGenresRecycler.setUpWith(
-            supportAdapter = genreListAdapter,
-            recyclerLayoutManager = layoutManager
-        )
-
-        genreListAdapter.submitList(entity.genres.toList())
-    }
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -99,7 +64,7 @@ internal class MediaListItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = MediaListItemBinding.bind(view)
+        binding = MediaDetailedItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(R.dimen.lg_margin).toFloat()
         disposable = requireBinding().mediaImage.using(
             MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER),
@@ -110,8 +75,11 @@ internal class MediaListItem(
                 )
             )
         )
-        setUpMediaGenres(view)
-        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
+        requireBinding().mediaRatingWidget.setupUsingMedia(
+            media = entity,
+            settings = settings,
+            tintColor = R.color.colorOnBackground
+        )
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
@@ -137,17 +105,28 @@ internal class MediaListItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        binding?.mediaCardContainer?.setOnLongClickListener(null)
-        binding?.mediaCardContainer?.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
         super.unbind(view)
     }
 
+    /**
+     * Provides a preferred span size for the item
+     *
+     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
+     * @param position position of the current item
+     * @param resources optionally useful for dynamic size check with different configurations
+     */
+    override fun getSpanSize(
+        spanCount: Int,
+        position: Int,
+        resources: Resources
+    ) = resources.getInteger(R.integer.column_x1)
+
     companion object {
-        internal fun LayoutInflater.createListViewHolder(
+        internal fun LayoutInflater.createDetailViewHolder(
             viewGroup: ViewGroup
-        ) = MediaListItemBinding.inflate(
+        ) = MediaDetailedItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

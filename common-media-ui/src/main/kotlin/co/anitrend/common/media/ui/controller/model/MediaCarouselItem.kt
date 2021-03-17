@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.common.media.ui.controller.model.carousel
+package co.anitrend.common.media.ui.controller.model
 
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -32,7 +32,7 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.extension.setUpWith
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.adapter.MediaItemAdapter
+import co.anitrend.common.media.ui.adapter.MediaCompactAdapter
 import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.data.user.settings.IUserSettings
@@ -54,7 +54,7 @@ internal class MediaCarouselItem(
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 
     private fun setUpCarouselItems(view: View) {
-        val mediaItemAdapter = MediaItemAdapter(
+        val mediaItemAdapter = MediaCompactAdapter(
             settings,
             view.resources,
             stateConfiguration = StateLayoutConfig()

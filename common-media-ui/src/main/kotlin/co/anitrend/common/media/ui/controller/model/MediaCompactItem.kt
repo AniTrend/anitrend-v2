@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.common.media.ui.controller.model.carousel
+package co.anitrend.common.media.ui.controller.model
 
 import android.content.res.Resources
 import android.text.SpannableString
@@ -27,7 +27,7 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.databinding.MediaItemBinding
+import co.anitrend.common.media.ui.databinding.MediaCompactItemBinding
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
@@ -39,10 +39,10 @@ import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
-internal class MediaItem(
+internal class MediaCompactItem(
     private val entity: Media,
     private val settings: IUserSettings
-) : RecyclerItemBinding<MediaItemBinding>(entity.id) {
+) : RecyclerItemBinding<MediaCompactItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
 
@@ -63,7 +63,7 @@ internal class MediaItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = MediaItemBinding.bind(view)
+        binding = MediaCompactItemBinding.bind(view)
         disposable = requireBinding().mediaImage.using(
             MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
         )
@@ -110,12 +110,12 @@ internal class MediaItem(
         spanCount: Int,
         position: Int,
         resources: Resources
-    ) = resources.getInteger(R.integer.grid_list_x3)
+    ) = resources.getInteger(R.integer.column_x3)
 
     companion object {
         internal fun LayoutInflater.createMediaItemViewHolder(
             viewGroup: ViewGroup
-        ) = MediaItemBinding.inflate(
+        ) = MediaCompactItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

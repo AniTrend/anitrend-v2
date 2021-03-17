@@ -30,14 +30,14 @@ import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil
-import co.anitrend.common.media.ui.controller.model.MediaDetailItem
-import co.anitrend.common.media.ui.controller.model.MediaDetailItem.Companion.createDetailViewHolder
-import co.anitrend.common.media.ui.controller.model.MediaGridItem
-import co.anitrend.common.media.ui.controller.model.MediaGridItem.Companion.createGridViewHolder
-import co.anitrend.common.media.ui.controller.model.MediaListItem
-import co.anitrend.common.media.ui.controller.model.MediaListItem.Companion.createListViewHolder
-import co.anitrend.common.media.ui.controller.model.carousel.MediaItem
-import co.anitrend.common.media.ui.controller.model.carousel.MediaItem.Companion.createMediaItemViewHolder
+import co.anitrend.common.media.ui.controller.model.MediaDetailedItem
+import co.anitrend.common.media.ui.controller.model.MediaDetailedItem.Companion.createDetailViewHolder
+import co.anitrend.common.media.ui.controller.model.MediaComfortableItem
+import co.anitrend.common.media.ui.controller.model.MediaComfortableItem.Companion.createGridViewHolder
+import co.anitrend.common.media.ui.controller.model.MediaSummaryItem
+import co.anitrend.common.media.ui.controller.model.MediaSummaryItem.Companion.createListViewHolder
+import co.anitrend.common.media.ui.controller.model.MediaCompactItem
+import co.anitrend.common.media.ui.controller.model.MediaCompactItem.Companion.createMediaItemViewHolder
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
@@ -53,10 +53,10 @@ class MediaPagedAdapter(
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Media) -> IRecyclerItem = {
         when (settings.preferredViewMode.value) {
-            PreferredViewMode.SUMMARY -> MediaListItem(it, settings, viewPool)
-            PreferredViewMode.DETAILED -> MediaDetailItem(it, settings)
-            PreferredViewMode.COMFORTABLE -> MediaGridItem(it, settings)
-            PreferredViewMode.COMPACT -> MediaItem(it, settings)
+            PreferredViewMode.SUMMARY -> MediaSummaryItem(it, settings, viewPool)
+            PreferredViewMode.DETAILED -> MediaDetailedItem(it, settings)
+            PreferredViewMode.COMFORTABLE -> MediaComfortableItem(it, settings)
+            PreferredViewMode.COMPACT -> MediaCompactItem(it, settings)
         }
     },
     override val supportAction: ISupportSelectionMode<Long>? = null

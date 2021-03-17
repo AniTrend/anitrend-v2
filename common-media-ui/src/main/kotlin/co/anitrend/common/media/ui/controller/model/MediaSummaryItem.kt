@@ -23,11 +23,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.databinding.MediaGridItemBinding
+import co.anitrend.arch.ui.extension.setUpWith
+import co.anitrend.common.genre.ui.adapter.GenreListAdapter
+import co.anitrend.common.media.ui.databinding.MediaSummaryItemBinding
+import co.anitrend.core.android.R
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
@@ -37,14 +42,46 @@ import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
+import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
-internal data class MediaGridItem(
+internal class MediaSummaryItem(
     private val entity: Media,
-    private val settings: IUserSettings
-) : RecyclerItemBinding<MediaGridItemBinding>(entity.id) {
+    private val settings: IUserSettings,
+    private val viewPool: RecyclerView.RecycledViewPool
+) : RecyclerItemBinding<MediaSummaryItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
+
+    private fun setUpMediaGenres(view: View) {
+        val genreListAdapter = GenreListAdapter(view.resources)
+
+        val layoutManager = LinearLayoutManager(
+            view.context, RecyclerView.HORIZONTAL, false
+        )
+
+        val animator = object : DefaultItemAnimator() {
+            override fun getSupportsChangeAnimations() = false
+        }
+        animator.supportsChangeAnimations = false
+
+        with(layoutManager) {
+            // allow prefetching to speed up recycler performance
+            isItemPrefetchEnabled = true
+            initialPrefetchItemCount = 5
+            // If the view types are not the same across RecyclerView then it may lead to performance degradation.
+            recycleChildrenOnDetach = true
+        }
+
+        requireBinding().mediaGenresRecycler.setRecycledViewPool(viewPool)
+        requireBinding().mediaGenresRecycler.itemAnimator = animator
+        requireBinding().mediaGenresRecycler.setUpWith(
+            supportAdapter = genreListAdapter,
+            recyclerLayoutManager = layoutManager
+        )
+
+        genreListAdapter.submitList(entity.genres.toList())
+    }
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -63,10 +100,18 @@ internal data class MediaGridItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        binding = MediaGridItemBinding.bind(view)
+        binding = MediaSummaryItemBinding.bind(view)
+        val radius = view.resources.getDimensionPixelSize(R.dimen.lg_margin).toFloat()
         disposable = requireBinding().mediaImage.using(
-            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
+            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER),
+            listOf(
+                RoundedCornersTransformation(
+                    topRight = radius,
+                    bottomRight = radius
+                )
+            )
         )
+        setUpMediaGenres(view)
         requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
@@ -82,7 +127,8 @@ internal data class MediaGridItem(
             )
         }
         requireBinding().mediaCardContainer.setOnLongClickListener {
-            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT).show()
+            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT)
+                .show()
             true
         }
     }
@@ -110,12 +156,12 @@ internal data class MediaGridItem(
         spanCount: Int,
         position: Int,
         resources: Resources
-    ) = resources.getInteger(R.integer.grid_list_x2)
+    ) = resources.getInteger(R.integer.column_x1)
 
     companion object {
-        internal fun LayoutInflater.createGridViewHolder(
+        internal fun LayoutInflater.createListViewHolder(
             viewGroup: ViewGroup
-        ) = MediaGridItemBinding.inflate(
+        ) = MediaSummaryItemBinding.inflate(
             this, viewGroup, false
         ).let { SupportViewHolder(it.root) }
     }

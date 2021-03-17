@@ -77,6 +77,6 @@
         tools:orientation="horizontal"
         tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         tools:itemCount="5"
-        tools:listitem="@layout/media_item"
+        tools:listitem="@layout/media_compact_item"
         />
 </androidx.appcompat.widget.LinearLayoutCompat>
