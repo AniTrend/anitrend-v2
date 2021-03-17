@@ -32,7 +32,7 @@ class EpisodeContent(
     private val presenter: EpisodePresenter,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: ISupportAdapter<Episode>,
-    override val defaultSpanSize: Int = R.integer.single_list_size,
+    override val defaultSpanSize: Int = R.integer.column_x1,
 ) : AniTrendListContent<Episode>() {
 
     private val viewModel by viewModel<EpisodeContentViewModel>()

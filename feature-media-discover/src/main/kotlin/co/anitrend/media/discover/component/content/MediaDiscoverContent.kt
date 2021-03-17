@@ -56,13 +56,12 @@ class MediaDiscoverContent(
         )
 
 
-    @IntegerRes
-    private fun getSpanSizeByPreference(
+    @IntegerRes private fun getSpanSizeByPreference(
         viewMode: PreferredViewMode
     ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> R.integer.grid_list_x3
-        PreferredViewMode.COMFORTABLE -> R.integer.grid_list_x2
-        else -> R.integer.single_list_size
+        PreferredViewMode.COMPACT -> R.integer.column_x3
+        PreferredViewMode.COMFORTABLE -> R.integer.column_x2
+        else -> R.integer.column_x1
     }
 
     /**
