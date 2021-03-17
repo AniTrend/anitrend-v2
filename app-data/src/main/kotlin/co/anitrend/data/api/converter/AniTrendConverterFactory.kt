@@ -33,6 +33,7 @@ import java.lang.reflect.Type
 
 internal class AniTrendConverterFactory(
     private val jsonFactory: Converter.Factory,
+    private val graphFactory: Converter.Factory,
     private val xmlFactory: Converter.Factory,
     processor: AbstractGraphProcessor,
     gson: Gson
@@ -92,8 +93,11 @@ internal class AniTrendConverterFactory(
                 is XML -> {
                     return xmlFactory.responseBodyConverter(type, annotations, retrofit)
                 }
-                is JSON, is GRAPHQL -> {
+                is JSON -> {
                     return jsonFactory.responseBodyConverter(type, annotations, retrofit)
+                }
+                is GRAPHQL -> {
+                    return graphFactory.responseBodyConverter(type, annotations, retrofit)
                 }
             }
         }

@@ -26,6 +26,7 @@ import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.account.koin.accountModules
+import co.anitrend.data.activity.model.remote.ActivityFeedModel
 import co.anitrend.data.airing.koin.airingModules
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.api.converter.AniTrendConverterFactory
@@ -129,18 +130,28 @@ private val retrofitModule = module {
                     subclass(AiringScheduleModel.Core::class, AiringScheduleModel.Core.serializer())
                     subclass(AiringScheduleModel.Extended::class, AiringScheduleModel.Extended.serializer())
                 }
+                polymorphic(ActivityFeedModel::class) {
+                    subclass(ActivityFeedModel.Progress::class, ActivityFeedModel.Progress.serializer())
+                    subclass(ActivityFeedModel.Message::class, ActivityFeedModel.Message.serializer())
+                    subclass(ActivityFeedModel.Reply::class, ActivityFeedModel.Reply.serializer())
+                    subclass(ActivityFeedModel.Status::class, ActivityFeedModel.Status.serializer())
+                }
+                classDiscriminator = "__type"
             }
             coerceInputValues = true
             isLenient = true
         }
     }
     factory {
+        val mimeType = AniRequestConverter.JSON_MIME_TYPE
         AniTrendConverterFactory(
             processor = get(),
             gson = get(),
-            jsonFactory = get<Json>().asConverterFactory(
-                AniRequestConverter.JSON_MIME_TYPE
-            ),
+            jsonFactory = Json {
+                coerceInputValues = true
+                isLenient = true
+            }.asConverterFactory(mimeType),
+            graphFactory = get<Json>().asConverterFactory(mimeType),
             xmlFactory = SimpleXmlConverterFactory.createNonStrict(
                 Persister(AnnotationStrategy())
             )
@@ -155,7 +166,7 @@ private val networkModule = module {
                 .systemServiceOf<ConnectivityManager>()
         )
     }
-    factory {
+    single {
         Retrofit.Builder()
             .addConverterFactory(
                 get<AniTrendConverterFactory>()
