@@ -99,7 +99,7 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_airing_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
                 AiringRouter.Param() builder {
-                    notYetAired = false
+                    notYetAired = true
                     sort = listOf(AiringSort.TIME)
                 }
             }
