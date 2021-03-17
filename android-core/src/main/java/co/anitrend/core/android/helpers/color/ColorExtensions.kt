@@ -32,10 +32,10 @@ fun Int.hasEnoughContrastFor(
 ) = ColorUtils.calculateContrast(
     this,
     backgroundColor
-) > 1.5f
+) > 1.8f
 
 /** Decreases the lightness of the color by the [factor] */
-fun Int.darkenByFactor(factor: Float): Int {
+fun Int.increaseContrastBy(factor: Float): Int {
     val hsl = FloatArray(3)
     ColorUtils.colorToHSL(this, hsl)
     hsl[2] = hsl[2] * factor
@@ -52,7 +52,7 @@ fun HexColor.asColorInt(@ColorInt backgroundColor: Int): Int {
     val foregroundColor = Color.parseColor(toString())
     return if (foregroundColor.hasEnoughContrastFor(backgroundColor))
         foregroundColor
-    else foregroundColor.darkenByFactor(0.5f)
+    else foregroundColor.increaseContrastBy(0.5f)
 }
 
 /**
