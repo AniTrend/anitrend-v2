@@ -18,7 +18,9 @@
 package co.anitrend.data.media.mapper
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.AiringMapper
+import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.arch.database.wrapper.SourceEntityWrapper
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
@@ -61,19 +63,57 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val airingMapper: AiringMapper.Collection,
         private val genreMapper: GenreMapper,
         private val tagMapper: TagMapper,
-        private val dispatcher: ISupportDispatcher,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ) : MediaMapper<MediaModelContainer.Paged, List<MediaEntity>>() {
 
-        private suspend fun saveEmbeddedAiringSchedule(source: List<MediaModel.Core>) {
-            val airing = source.mapNotNull(MediaModel.Core::nextAiringEpisode)
-            val entities = airingMapper.onResponseMapFrom(airing)
-            withContext(dispatcher.io) {
-                airingMapper.onResponseDatabaseInsert(entities)
-            }
+        /**
+         * Handles the persistence of [data] into a local source
+         *
+         * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+         */
+        override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
+            return runCatching {
+                localSource.upsert(data)
+                tagMapper.persistEmbedded()
+                genreMapper.persistEmbedded()
+                airingMapper.persistEmbedded()
+                OutCome.Pass(null)
+            }.getOrElse { OutCome.Fail(listOf(it)) }
         }
 
+        /**
+         * Creates mapped objects and handles the database operations which may be required to map various objects,
+         *
+         * @param source the incoming data source type
+         * @return mapped object that will be consumed by [onResponseDatabaseInsert]
+         */
+        override suspend fun onResponseMapFrom(source: MediaModelContainer.Paged): List<MediaEntity> {
+            tagMapper.onEmbedded(source.page.media)
+            genreMapper.onEmbedded(source.page.media)
+            airingMapper.onEmbedded(source.page.media)
+            return converter.convertFrom(source.page.media)
+        }
+    }
+
+    class Collection(
+        private val genreMapper: GenreMapper,
+        private val tagMapper: TagMapper,
+        override val localSource: MediaLocalSource,
+        override val converter: MediaModelConverter
+    ) : MediaMapper<List<MediaModel.Core>, List<MediaEntity>>() {
+
+        private var media: List<MediaEntity>? = null
+
+        suspend fun persistEmbedded() {
+            persistChanges(media.orEmpty())
+            media = null
+        }
+
+        suspend fun onEmbedded(source: List<AiringScheduleModel.Extended>) {
+            val models = source.mapNotNull(AiringScheduleModel.Extended::media)
+            media = onResponseMapFrom(models)
+        }
         /**
          * Handles the persistence of [data] into a local source
          *
@@ -94,11 +134,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(source: MediaModelContainer.Paged): List<MediaEntity> {
-            tagMapper.onEmbedded(source.page.media)
-            genreMapper.onEmbedded(source.page.media)
-            saveEmbeddedAiringSchedule(source.page.media)
-            return converter.convertFrom(source.page.media)
+        override suspend fun onResponseMapFrom(
+            source: List<MediaModel.Core>
+        ): List<MediaEntity> {
+            tagMapper.onEmbedded(source)
+            genreMapper.onEmbedded(source)
+            return converter.convertFrom(source)
         }
     }
 

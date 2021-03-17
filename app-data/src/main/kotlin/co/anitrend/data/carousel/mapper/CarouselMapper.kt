@@ -17,6 +17,8 @@
 
 package co.anitrend.data.carousel.mapper
 
+import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.carousel.model.CarouselModel
@@ -48,20 +50,15 @@ internal class CarouselMapper(
      */
     override suspend fun onResponseMapFrom(source: CarouselModel): List<MediaEntity> {
         val models = when (source) {
-            is CarouselModel.Anime -> (
-                    source.airingSoon?.airingSchedules
-                        ?.mapNotNull { it.media }.orEmpty() +
-                            source.anticipatedNexSeason?.media.orEmpty() +
-                            source.popularThisSeason?.media.orEmpty()
-                    )
-            is CarouselModel.Manga -> (
-                    source.popularManhwa?.media.orEmpty()
-                    )
-            is CarouselModel.Core -> (
-                    source.allTimePopular?.media.orEmpty() +
-                            source.recentlyAdded?.media.orEmpty() +
-                            source.trendingRightNow?.media.orEmpty()
-                    )
+            is CarouselModel.Anime -> source.airingSoon?.airingSchedules
+                    ?.mapNotNull(AiringScheduleModel.Extended::media).orEmpty() +
+                    source.anticipatedNexSeason?.media.orEmpty() +
+                    source.popularThisSeason?.media.orEmpty()
+
+            is CarouselModel.Manga -> source.popularManhwa?.media.orEmpty()
+            is CarouselModel.Core -> source.allTimePopular?.media.orEmpty() +
+                    source.recentlyAdded?.media.orEmpty() +
+                    source.trendingRightNow?.media.orEmpty()
         }
 
         return mapper.onResponseMapFrom(

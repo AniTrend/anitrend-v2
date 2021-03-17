@@ -118,8 +118,15 @@ private val mapperModule = module {
             tagMapper = get(),
             airingMapper = get(),
             localSource = db().mediaDao(),
-            converter = get(),
-            dispatcher = get()
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.Collection(
+            genreMapper = get(),
+            tagMapper = get(),
+            localSource = db().mediaDao(),
+            converter = get()
         )
     }
     factory {

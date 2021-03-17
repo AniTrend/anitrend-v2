@@ -496,17 +496,17 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun order(filter: MediaParam.Find) {
             filter.sort?.forEach { sort ->
-                when {
-                    sort != MediaSort.SEARCH_MATCH -> {
-                        val qualifier = sort.name.toLowerCase(Locale.ROOT)
-                        requireBuilder().orderBy(qualifier.asColumn(mediaTable), sortOrder)
-                    }
-                    else -> {
+                when (sort) {
+                    MediaSort.SEARCH_MATCH -> {
                         requireBuilder()
                             .orderBy(MediaEntitySchema.titleUser_preferred.asColumn(mediaTable), sortOrder)
                             .orderBy(MediaEntitySchema.titleEnglish.asColumn(mediaTable), sortOrder)
                             .orderBy(MediaEntitySchema.titleOriginal.asColumn(mediaTable), sortOrder)
                             .orderBy(MediaEntitySchema.titleRomaji.asColumn(mediaTable), sortOrder)
+                    }
+                    else -> {
+                        val qualifier = sort.name.toLowerCase(Locale.ROOT)
+                        requireBuilder().orderBy(qualifier.asColumn(mediaTable), sortOrder)
                     }
                 }
             }
@@ -524,7 +524,6 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
             chapterSelection(filter)
             durationSelection(filter)
             endDateSelection(filter)
-            episodeSelection(filter)
             episodeSelection(filter)
             formatSelection(filter)
             genreSelection(filter)

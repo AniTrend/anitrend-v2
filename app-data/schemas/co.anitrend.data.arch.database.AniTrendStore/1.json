@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f4a3a75a971c1b3dd57410321dcfb273",
+    "identityHash": "41678acc76dd8e77a9f7b18041d43637",
     "entities": [
       {
         "tableName": "cache_log",
@@ -676,7 +676,7 @@
       },
       {
         "tableName": "airing_schedule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`airing_at` INTEGER NOT NULL, `episode` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `time_until_airing` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`airing_at` INTEGER NOT NULL, `episode` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `time_until_airing` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "airingAt",
@@ -715,8 +715,29 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
-        "foreignKeys": []
+        "indices": [
+          {
+            "name": "index_airing_schedule_media_id",
+            "unique": false,
+            "columnNames": [
+              "media_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_airing_schedule_media_id` ON `${TABLE_NAME}` (`media_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "user",
@@ -2068,7 +2089,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f4a3a75a971c1b3dd57410321dcfb273')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '41678acc76dd8e77a9f7b18041d43637')"
     ]
   }
 }
