@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,20 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.airing.model.page
+package co.anitrend.data.airing.usecase
 
-import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import co.anitrend.arch.data.repository.contract.ISupportRepository
+import co.anitrend.data.airing.AiringSchedulePagedRepository
+import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
 
-@Serializable
-internal data class AiringSchedulePageModel(
-    @SerialName("Page") val page: Page = Page()
-) {
-    @Serializable
-    data class Page(
-        @SerialName("pageInfo") val pageInfo: PageInfo? = null,
-        @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended> = emptyList()
-    )
+internal interface AiringScheduleInteractor {
+
+    class Paged(
+        repository: AiringSchedulePagedRepository
+    ) : GetPagedAiringScheduleInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
 }

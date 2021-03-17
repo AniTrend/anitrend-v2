@@ -17,11 +17,46 @@
 
 package co.anitrend.airing.koin
 
+import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.airing.component.content.AiringContent
+import co.anitrend.airing.component.viewmodel.AiringViewModel
+import co.anitrend.airing.component.viewmodel.state.AiringState
 import co.anitrend.airing.provider.FeatureProvider
+import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.AiringRouter
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+
+private val fragmentModule = module {
+    fragment {
+        val settings = get<Settings>()
+        AiringContent(
+            settings = settings,
+            stateConfig = get(),
+            supportViewAdapter = MediaPagedAdapter(
+                settings = settings,
+                viewPool = RecyclerView.RecycledViewPool(),
+                resources = androidContext().resources,
+                stateConfiguration = get()
+            )
+        )
+    }
+}
+
+private val viewModelModule = module {
+    viewModel { _ ->
+        AiringViewModel(
+            state = AiringState(
+                interactor = get()
+            )
+        )
+    }
+}
 
 private val featureModule = module {
     factory<AiringRouter.Provider> {
@@ -29,4 +64,6 @@ private val featureModule = module {
     }
 }
 
-internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule))
+internal val moduleHelper = DynamicFeatureModuleHelper(
+    listOf(fragmentModule, viewModelModule, featureModule)
+)

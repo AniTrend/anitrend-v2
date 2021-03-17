@@ -17,13 +17,18 @@
 
 package co.anitrend.data.airing.mapper
 
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.airing.model.page.AiringSchedulePageModel
+import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
+import co.anitrend.data.media.mapper.MediaMapper
+import co.anitrend.data.media.model.MediaModel
+import kotlinx.coroutines.withContext
 
 internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
 
@@ -44,9 +49,12 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
     }
 
     class Paged(
+        private val mediaMapper: MediaMapper.Collection,
         override val localSource: AiringLocalSource,
         override val converter: AiringModelConverter
-    ) : AiringMapper<AiringSchedulePageModel, List<AiringScheduleEntity>>() {
+    ) : AiringMapper<AiringScheduleModelContainer.Paged, List<AiringScheduleEntity>>() {
+
+
         /**
          * Handles the persistence of [data] into a local source
          *
@@ -54,6 +62,7 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          */
         override suspend fun persistChanges(data: List<AiringScheduleEntity>): OutCome<Nothing?> {
             return runCatching {
+                mediaMapper.persistEmbedded()
                 localSource.upsert(data)
                 OutCome.Pass(null)
             }.getOrElse { OutCome.Fail(listOf(it)) }
@@ -66,14 +75,32 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(
-            source: AiringSchedulePageModel
-        ) = converter.convertFrom(source.page.airingSchedules)
+            source: AiringScheduleModelContainer.Paged
+        ): List<AiringScheduleEntity> {
+            mediaMapper.onEmbedded(source.page.airingSchedules)
+            return converter.convertFrom(source.page.airingSchedules)
+        }
     }
 
     class Collection(
         override val localSource: AiringLocalSource,
         override val converter: AiringModelConverter
     ) : AiringMapper<List<AiringScheduleModel>, List<AiringScheduleEntity>>() {
+
+        private var airing: List<AiringScheduleEntity>? = null
+
+        suspend fun persistEmbedded() {
+            persistChanges(airing.orEmpty())
+            airing = null
+        }
+
+        suspend fun onEmbedded(source: List<MediaModel>) {
+            val models = source.mapNotNull {
+                it.nextAiringEpisode as? AiringScheduleModel
+            }
+            airing = onResponseMapFrom(models)
+        }
+
         /**
          * Handles the persistence of [data] into a local source
          *

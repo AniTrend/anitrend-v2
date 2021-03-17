@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.domain.airing.interactor
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.airing.model.AiringParam
+import co.anitrend.domain.airing.repository.IAiringScheduleRepository
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.genre))
-    implementation(project(Libraries.AniTrend.CommonUi.tag))
+sealed class AiringScheduleUseCase : IUseCase {
 
-    implementation(project(Libraries.AniTrend.CommonUi.media))
+    abstract class GetPaged<State: UiState<*>>(
+        protected val repository: IAiringScheduleRepository.Paged<State>
+    ) : AiringScheduleUseCase() {
+        operator fun invoke(param: AiringParam.Find) = repository.getPaged(param)
+    }
 }

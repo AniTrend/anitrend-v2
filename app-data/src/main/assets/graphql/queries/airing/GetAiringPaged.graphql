@@ -19,7 +19,8 @@ query GetAiringPaged(
     $mediaId_not: Int,
     $mediaId_not_in: [Int],
     $notYetAired: Boolean,
-    $sort: [AiringSort]
+    $sort: [AiringSort],
+    $scoreFormat: ScoreFormat
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {

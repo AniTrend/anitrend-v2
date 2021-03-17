@@ -24,13 +24,17 @@ import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
+import co.anitrend.data.media.GetPagedMediaInteractor
+import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.AiringRouter
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 class AiringState(
-    private val interactor: IUseCase
+    private val interactor: GetPagedAiringScheduleInteractor
 ) : ISupportViewModelState<PagedList<Media>> {
 
     var context by Delegates.notNull<CoroutineContext>()
@@ -50,7 +54,29 @@ class AiringState(
     }
 
     operator fun invoke(param: AiringRouter.Param) {
-
+        val query = AiringParam.Find() builder {
+            id = param.id
+            mediaId = param.mediaId
+            episode = param.episode
+            airingAt = param.airingAt
+            notYetAired = param.notYetAired
+            id_not = param.id_not
+            id_in = param.id_in
+            id_not_in = param.id_not_in
+            mediaId_not = param.mediaId_not
+            mediaId_in = param.mediaId_in
+            mediaId_not_in = param.mediaId_not_in
+            episode_not = param.episode_not
+            episode_in = param.episode_in
+            episode_not_in = param.episode_not_in
+            episode_greater = param.episode_greater
+            episode_lesser = param.episode_lesser
+            airingAt_greater = param.airingAt_greater
+            airingAt_lesser = param.airingAt_lesser
+            sort = param.sort
+        }
+        val result = interactor(query)
+        useCaseResult.postValue(result)
     }
 
     /**
