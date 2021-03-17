@@ -26,7 +26,8 @@ import co.anitrend.core.android.settings.Settings
 import timber.log.Timber
 
 /**
- * Migration manager utility helper
+ * Migration manager utility helper which is executed at app startup before any
+ * dependency injector is initialized
  */
 internal class MigrationManager(
     override val settings: Settings
@@ -41,23 +42,22 @@ internal class MigrationManager(
         settings.versionCode.value = migration.endVersion
     }
 
-    override fun possibleMigrations(): List<Migration> {
-        val lastTrackedVersion = settings.versionCode.value
+    override fun possibleMigrations(previousVersion: Int, currentVersion: Int): List<Migration> {
         Timber.d(
-            "Analysing list of possible migrations for last tracked version: $lastTrackedVersion and current version ${BuildConfig.versionCode} - ${BuildConfig.versionName}"
+            "Analysing list of possible migrations for last tracked version: $previousVersion and current version ${BuildConfig.versionCode} - ${BuildConfig.versionName}"
         )
-        // TODO: rework migration filter for downgrade and upgrades exclusively
+
         val minMigrations = Migrations.ALL.filter { migration ->
             IntRange(
                 migration.startVersion,
                 migration.endVersion
-            ).contains(lastTrackedVersion)
+            ).contains(previousVersion)
         }
         val maxMigrations = Migrations.ALL.filter { migration ->
             IntRange(
                 migration.startVersion,
                 migration.endVersion
-            ).contains(BuildConfig.versionCode)
+            ).contains(currentVersion)
         }
 
         return (minMigrations + maxMigrations).distinct()
@@ -70,7 +70,7 @@ internal class MigrationManager(
      */
     override fun applyMigrations(context: Context) {
         if (shouldRunMigrations()) {
-            val migrations = possibleMigrations()
+            val migrations = possibleMigrations(settings.versionCode.value, BuildConfig.versionCode)
             Timber.d("Staring pending ${migrations.size} migrations")
             migrations.forEach { migration ->
                 runCatching {

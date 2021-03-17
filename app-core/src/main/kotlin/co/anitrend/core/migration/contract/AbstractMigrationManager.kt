@@ -37,6 +37,9 @@ internal abstract class AbstractMigrationManager : IMigrationManager {
     /**
      * Retrieves a list of all possible migrations for this installed version
      * against a list of all migrations that exist for the app
+     *
+     * @param previousVersion The last tracked version to have been installed
+     * @param currentVersion The currently installed, running version
      */
-    abstract fun possibleMigrations(): List<Migration>
+    abstract fun possibleMigrations(previousVersion: Int, currentVersion: Int): List<Migration>
 }

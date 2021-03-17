@@ -17,25 +17,23 @@
 
 package co.anitrend.core.migration
 
+import co.anitrend.core.migration.model.Migrations
+import io.mockk.mockk
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class MigrationManagerTest {
 
-    @Test
-    fun shouldRunMigrations() {
-    }
+    private val manager = MigrationManager(mockk())
 
     @Test
-    fun updateVersion() {
-    }
+    fun `check possible migrations`() {
+        val expected = Migrations.ALL.take(2)
+        val actual = manager.possibleMigrations(
+            20290,
+            20320
+        )
 
-    @Test
-    fun possibleMigrations() {
-    }
-
-    @Test
-    fun applyMigrations() {
+        assertEquals(expected, actual)
     }
 }
