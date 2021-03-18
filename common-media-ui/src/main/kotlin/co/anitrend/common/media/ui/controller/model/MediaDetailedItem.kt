@@ -78,7 +78,7 @@ internal data class MediaDetailedItem(
         requireBinding().mediaRatingWidget.setupUsingMedia(
             media = entity,
             settings = settings,
-            tintColor = R.color.colorOnBackground
+            tintColor = R.color.colorBackground
         )
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)

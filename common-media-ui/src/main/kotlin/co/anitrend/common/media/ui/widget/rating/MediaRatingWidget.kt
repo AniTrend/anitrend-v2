@@ -169,9 +169,11 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         setFavouriteStatus(media.isFavourite, desiredColorTint)
         setListStatus(media, desiredColorTint, isMiniMode)
         setRating(media, desiredColorTint, settings)
-        if (tintColor == null)
-            requireBinding().root.background =
-                context.getCompatDrawable(R.drawable.bubble_background)
+        val background = if (tintColor == null)
+            R.drawable.bubble_background
+        else R.drawable.ic_rating_background
+        requireBinding().root.background =
+            context.getCompatDrawable(background)
     }
 
     override fun createBinding() = MediaRatingWidgetBinding.inflate(
