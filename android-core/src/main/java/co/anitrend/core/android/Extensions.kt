@@ -22,11 +22,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.TypedValue
+import android.view.Menu
+import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.content.res.use
+import androidx.core.view.iterator
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
@@ -136,4 +139,56 @@ inline fun SupportStateLayout.assureParamNotMissing(param: IParam?, block: () ->
             )
         )
     else block()
+}
+
+/**
+ * Add [menu] items to [this] menu
+ *
+ * @param menu Menu containing items to add
+ * @param group Group that [menu] belongs to
+ * @param flagFor Delegate to dictate which action flags are applied
+ */
+inline fun Menu.addItems(
+    menu: Menu,
+    group: Int = Menu.NONE,
+    flagFor: (MenuItem) -> Int = { MenuItem.SHOW_AS_ACTION_IF_ROOM }
+) {
+    menu.iterator().forEach { item ->
+        add(group, item.itemId, item.order, item.title)
+            .setIcon(item.icon)
+            .setShowAsActionFlags(
+                flagFor(item)
+            )
+    }
+}
+
+/**
+ * Remove [menu] items from [this] menu
+ *
+ * @param menu Menu containing items to remove
+ * @param group Group that [menu] belongs to
+ */
+fun Menu.removeItems(
+    menu: Menu,
+    group: Int = Menu.NONE
+) {
+    menu.iterator().forEach { item ->
+        removeItem(item.itemId)
+    }
+    if (group != Menu.NONE)
+        removeGroup(group)
+}
+
+
+/**
+ * Change visibility of all items for [this] menu
+ *
+ * @param shouldShow Visibility
+ */
+fun Menu.setVisibilityForAllItems(
+    shouldShow: Boolean
+) {
+    iterator().forEach { item ->
+        item.isVisible = shouldShow
+    }
 }
