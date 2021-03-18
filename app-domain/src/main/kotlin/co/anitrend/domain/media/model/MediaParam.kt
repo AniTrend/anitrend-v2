@@ -19,6 +19,7 @@ package co.anitrend.domain.media.model
 
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.enums.ScoreFormat
 
@@ -152,7 +153,7 @@ sealed class MediaParam {
         var search: String? = null,
         var season: MediaSeason? = null,
         var seasonYear: Int? = null,
-        var sort: List<MediaSort>? = null,
+        var sort: List<ISortWithOrder<MediaSort>>? = null,
         var source: MediaSource? = null,
         var source_in: List<MediaSource>? = null,
         var startDate: DateInt? = null,

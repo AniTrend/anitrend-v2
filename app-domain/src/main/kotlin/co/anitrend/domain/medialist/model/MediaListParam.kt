@@ -20,6 +20,7 @@ package co.anitrend.domain.medialist.model
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus
@@ -76,7 +77,7 @@ sealed class MediaListParam {
         val completedAt_greater: DateInt? = null,
         val completedAt_lesser: DateInt? = null,
         val completedAt_like: DateLike? = null,
-        val sort: List<MediaListSort>?,
+        val sort: List<ISortWithOrder<MediaListSort>>?,
         val compareWithAuthList: Boolean? = null
     ) : MediaListParam()
 
@@ -118,7 +119,7 @@ sealed class MediaListParam {
         var notes: String? = null,
         var notes_like: String? = null,
         var perChunk: Int? = null,
-        var sort: List<MediaListSort>? = null,
+        var sort: List<ISortWithOrder<MediaListSort>>? = null,
         var startedAt: DateInt? = null,
         var startedAt_greater: DateInt? = null,
         var startedAt_lesser: DateInt? = null,
