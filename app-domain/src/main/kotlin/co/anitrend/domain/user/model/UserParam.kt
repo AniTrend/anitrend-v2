@@ -17,6 +17,9 @@
 
 package co.anitrend.domain.user.model
 
+import co.anitrend.domain.common.sort.SortWithOrder
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.enums.UserSort
@@ -48,7 +51,9 @@ sealed class UserParam {
      */
     data class Statistic(
         val id: Long,
-        val statisticsSort: List<UserStatisticsSort>? = listOf(UserStatisticsSort.MEAN_SCORE)
+        val statisticsSort: List<ISortWithOrder<UserStatisticsSort>>? = listOf(
+            SortWithOrder(UserStatisticsSort.MEAN_SCORE, SortOrder.DESC)
+        )
     ) : UserParam()
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -58,7 +63,7 @@ sealed class UserParam {
      */
     data class Search(
         val search: String,
-        val sort: List<UserSort>? = null
+        val sort: List<ISortWithOrder<UserSort>>? = null
     ) : UserParam()
 
     /** [UpdateUser mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)

@@ -19,21 +19,16 @@ package co.anitrend.data.airing.entity.filter
 
 import co.anitrend.data.airing.entity.AiringScheduleEntitySchema
 import co.anitrend.data.arch.database.filter.FilterQueryBuilder
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.media.entity.MediaEntitySchema
 import co.anitrend.data.medialist.entity.MediaListEntitySchema
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.airing.model.AiringParam
-import co.anitrend.domain.media.enums.MediaSort
-import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.support.query.builder.core.criteria.extensions.*
 import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.from.extentions.innerJoin
-import co.anitrend.support.query.builder.core.from.extentions.leftJoin
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
-import co.anitrend.support.query.builder.dsl.innerJoin
 import co.anitrend.support.query.builder.dsl.leftJoin
 import co.anitrend.support.query.builder.dsl.whereAnd
 import org.threeten.bp.Instant
@@ -42,7 +37,6 @@ import java.util.*
 internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
     
     class Paged(
-        private val sortOrder: ISortOrderSettings,
         private val authentication: IAuthenticationSettings
     ) : AiringQueryFilter<AiringParam.Find>() {
 
@@ -174,14 +168,13 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun order(filter: AiringParam.Find) {
             filter.sort?.forEach { sort ->
-                when (sort) {
+                when (sort.sortable) {
                     AiringSort.TIME -> requireBuilder().orderBy(
-                        AiringScheduleEntitySchema.timeUntilAiring.asColumn(airingTable),
-                        sortOrder
+                        AiringScheduleEntitySchema.timeUntilAiring.asColumn(airingTable), sort.order
                     )
                     else -> {
-                        val qualifier = sort.name.toLowerCase(Locale.ROOT)
-                        requireBuilder().orderBy(qualifier.asColumn(airingTable), sortOrder)
+                        val qualifier = sort.sortable.name.toLowerCase(Locale.ROOT)
+                        requireBuilder().orderBy(qualifier.asColumn(airingTable), sort.order)
                     }
                 }
             }

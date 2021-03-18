@@ -39,6 +39,7 @@ import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.inject
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.databinding.MainScreenBinding
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.navigation.*
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
@@ -46,6 +47,7 @@ import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawe
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.model.sorting.Sorting
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -298,7 +300,12 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 FragmentItem(
                     fragment = MediaDiscoverRouter.forFragment(),
                     parameter = MediaDiscoverRouter.Param(
-                        sort = listOf(MediaSort.TRENDING)
+                        sort = listOf(
+                            Sorting(
+                                MediaSort.TRENDING,
+                                SortOrder.DESC
+                            )
+                        )
                     ).asBundle()
                 )
             }

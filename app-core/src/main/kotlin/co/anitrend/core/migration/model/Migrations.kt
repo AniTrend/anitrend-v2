@@ -35,9 +35,17 @@ internal object Migrations {
             settings.edit(commit = true) { remove(key) }
         }
     }
+
+    private val FROM_20320_TO_20330 = object : Migration(20320, 20330) {
+        override fun invoke(context: Context, settings: Settings) {
+            // remove old preference which is no longer tracked
+            settings.edit(commit = true) { remove("_isSortOrderDescending") }
+        }
+    }
     
-    val ALL = listOf<Migration>(
+    val ALL = listOf(
         FROM_20290_TO_20300,
-        FROM_20310_TO_20320
+        FROM_20310_TO_20320,
+        FROM_20320_TO_20330
     )
 }

@@ -40,7 +40,6 @@ internal class MediaListPagedSourceImpl(
     private val localSource: MediaListLocalSource,
     private val clearDataHelper: IClearDataHelper,
     private val controller: MediaListPagedController,
-    private val sortOrderSettings: ISortOrderSettings,
     private val converter: MediaListEntityViewConverter,
     override val dispatcher: ISupportDispatcher
 ) : MediaListPagedSource() {
@@ -60,7 +59,7 @@ internal class MediaListPagedSourceImpl(
 
     override suspend fun getMediaList(requestCallback: RequestCallback) {
         val deferred = async {
-            val queryBuilder = query.toQueryContainerBuilder(settings = sortOrderSettings)
+            val queryBuilder = query.toQueryContainerBuilder()
             remoteSource.getMediaListPaged(queryBuilder)
         }
 

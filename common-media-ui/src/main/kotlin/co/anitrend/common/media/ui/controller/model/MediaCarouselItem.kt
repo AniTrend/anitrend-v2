@@ -38,6 +38,7 @@ import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.AiringRouter
@@ -45,6 +46,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.common.IParam
+import co.anitrend.navigation.model.sorting.Sorting
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaCarouselItem(
@@ -100,7 +102,9 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
                 AiringRouter.Param() builder {
                     notYetAired = true
-                    sort = listOf(AiringSort.TIME)
+                    sort = listOf(AiringSort.TIME,).map {
+                        Sorting(it, SortOrder.ASC)
+                    }
                 }
             }
             MediaCarousel.CarouselType.ALL_TIME_POPULAR -> {
@@ -113,7 +117,9 @@ internal class MediaCarouselItem(
                 }
                 MediaDiscoverRouter.Param() builder {
                     type = entity.mediaType
-                    sort = listOf(MediaSort.POPULARITY)
+                    sort = listOf(MediaSort.POPULARITY).map {
+                        Sorting(it, SortOrder.DESC)
+                    }
                 }
             }
             MediaCarousel.CarouselType.TRENDING_RIGHT_NOW -> {
@@ -127,7 +133,9 @@ internal class MediaCarouselItem(
                 }
                 MediaDiscoverRouter.Param() builder {
                     type = entity.mediaType
-                    sort = listOf(MediaSort.TRENDING)
+                    sort = listOf(MediaSort.TRENDING).map {
+                        Sorting(it, SortOrder.DESC)
+                    }
                 }
             }
             MediaCarousel.CarouselType.POPULAR_THIS_SEASON -> {
@@ -135,7 +143,9 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_season_anime_description)
                 MediaDiscoverRouter.Param() builder {
                     type = entity.mediaType
-                    sort = listOf(MediaSort.POPULARITY)
+                    sort = listOf(MediaSort.POPULARITY).map {
+                        Sorting(it, SortOrder.DESC)
+                    }
                     season = entity.mediaItems.firstOrNull()?.season
                     seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year
                 }
@@ -150,7 +160,9 @@ internal class MediaCarouselItem(
                 }
                 MediaDiscoverRouter.Param() builder {
                     type = entity.mediaType
-                    sort = listOf(MediaSort.ID)
+                    sort = listOf(MediaSort.ID).map {
+                        Sorting(it, SortOrder.DESC)
+                    }
                 }
             }
             MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON -> {
@@ -158,7 +170,9 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_anticipated_anime_description)
                 MediaDiscoverRouter.Param() builder {
                     type = entity.mediaType
-                    sort = listOf(MediaSort.POPULARITY)
+                    sort = listOf(MediaSort.POPULARITY).map {
+                        Sorting(it, SortOrder.DESC)
+                    }
                     season = entity.mediaItems.firstOrNull()?.season
                     seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year
                 }
@@ -168,7 +182,9 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manhwa_description)
                 MediaDiscoverRouter.Param() builder {
                     type = entity.mediaType
-                    sort = listOf(MediaSort.POPULARITY)
+                    sort = listOf(MediaSort.POPULARITY).map {
+                        Sorting(it, SortOrder.DESC)
+                    }
                     countryOfOrigin = entity.mediaItems.firstOrNull()?.countryCode
                 }
             }

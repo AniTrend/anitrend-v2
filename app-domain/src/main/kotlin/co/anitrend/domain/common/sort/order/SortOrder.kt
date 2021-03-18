@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.arch.database.settings
+package co.anitrend.domain.common.sort.order
 
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
-import co.anitrend.domain.common.sort.order.SortOrder
-
-interface ISortOrderSettings {
-    val sortOrder: AbstractSetting<SortOrder>
+enum class SortOrder {
+    ASC,
+    DESC
 }

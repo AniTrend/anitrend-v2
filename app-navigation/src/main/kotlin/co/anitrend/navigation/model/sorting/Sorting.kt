@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.arch.database.settings
+package co.anitrend.navigation.model.sorting
 
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
+import android.os.Parcelable
+import co.anitrend.domain.common.enums.contract.ISortable
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
-interface ISortOrderSettings {
-    val sortOrder: AbstractSetting<SortOrder>
-}
+@Parcelize
+data class Sorting<Sortable: ISortable>(
+    override val sortable: @RawValue Sortable,
+    override val order: SortOrder
+) : ISortWithOrder<Sortable>, Parcelable

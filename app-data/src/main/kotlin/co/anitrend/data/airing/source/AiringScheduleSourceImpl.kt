@@ -49,7 +49,6 @@ internal class AiringScheduleSourceImpl {
         private val controller: AiringSchedulePagedController,
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
-        private val sortOrderSettings: ISortOrderSettings,
         private val filter: AiringQueryFilter.Paged,
         override val dispatcher: ISupportDispatcher
     ) : AiringScheduleSource.Paged() {
@@ -72,8 +71,7 @@ internal class AiringScheduleSourceImpl {
         override suspend fun getAiringSchedule(requestCallback: RequestCallback) {
             val deferred = async {
                 val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper,
-                    sortOrderSettings
+                    supportPagingHelper
                 )
                 remoteSource.getAiringPaged(queryBuilder)
             }

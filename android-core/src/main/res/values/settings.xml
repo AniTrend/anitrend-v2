@@ -29,8 +29,8 @@
 
     <string name="settings_privacy_crash_analytics" translatable="false">_crashAnalytics</string>
     <string name="settings_privacy_usage_analytics" translatable="false">_usageAnalytics</string>
+    <string name="settings_sort_order" translatable="false">_sortOrder</string>
 
-    <string name="settings_is_sort_order_desc" translatable="false">_isSortOrderDescending</string>
     <string name="settings_is_new_installation" translatable="false">_isNewInstallation</string>
     <string name="settings_version_code" translatable="false">_versionCode</string>
     <string name="settings_clear_on_swipe_refresh" translatable="false">_clearOnRefresh</string>

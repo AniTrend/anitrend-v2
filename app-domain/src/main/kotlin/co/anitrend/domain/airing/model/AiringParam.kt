@@ -18,6 +18,7 @@
 package co.anitrend.domain.airing.model
 
 import co.anitrend.domain.airing.enums.AiringSort
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 
 sealed class AiringParam {
 
@@ -62,7 +63,7 @@ sealed class AiringParam {
         var episode_lesser: Int? = null,
         var airingAt_greater: Int? = null,
         var airingAt_lesser: Int? = null,
-        var sort: List<AiringSort>? = null,
+        var sort: List<ISortWithOrder<AiringSort>>? = null,
     ) : AiringParam() {
         infix fun builder(param: Find.() -> Unit): Find {
             this.param()

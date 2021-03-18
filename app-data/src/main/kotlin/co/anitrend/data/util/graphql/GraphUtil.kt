@@ -20,9 +20,9 @@ package co.anitrend.data.util.graphql
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.extension.toPageQuery
-import co.anitrend.domain.common.enums.contract.ISortable
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
+import co.anitrend.domain.common.sort.order.SortOrder
 import io.github.wax911.library.model.request.QueryContainerBuilder
 
 /**
@@ -50,7 +50,6 @@ internal object GraphUtil {
      */
     internal fun IGraphPayload.toQueryContainerBuilder(
         paging: SupportPagingHelper? = null,
-        settings: ISortOrderSettings? = null,
         ignoreNulls: Boolean = false
     ): QueryContainerBuilder {
         val queryContainerBuilder = QueryContainerBuilder()
@@ -59,18 +58,18 @@ internal object GraphUtil {
         }
         // A better way might be to perform changes on the `toMap()` contract itself
         val variables = toMap().toMutableMap()
-        if (settings != null) {
-            variables
-                .filter { it.value is List<*> }
-                .forEach { entry ->
-                    val mapped = (entry.value as List<*>).map {
-                        if (it is Enum<*> && it is ISortable)
-                            return@map it.applySortOrderUsing(settings)
-                        it
-                    }
-                    variables[entry.key] = mapped
+
+        variables
+            .filter { it.value is List<*> }
+            .forEach { entry ->
+                val mapped = (entry.value as List<*>).map {
+                    if (it is ISortWithOrder<*>)
+                        return@map it.applySortOrderUsing()
+                    it
                 }
-        }
+                variables[entry.key] = mapped
+            }
+
         queryContainerBuilder.putVariables(
             if (ignoreNulls)
                 variables.filterValues { it != null }
@@ -102,9 +101,9 @@ internal object GraphUtil {
      *
      * @see SORT_ORDER_EXCEPTIONS
      */
-    fun <E : Enum<E>> Enum<E>.applySortOrderUsing(settings: ISortOrderSettings): String {
-        val sortType = name
-        if (settings.isSortOrderDescending.value) {
+    fun ISortWithOrder<*>.applySortOrderUsing(): String {
+        val sortType = (sortable as Enum<*>).name
+        if (order == SortOrder.DESC) {
             return if (SORT_ORDER_EXCEPTIONS.contains(sortType))
                 sortType
             else

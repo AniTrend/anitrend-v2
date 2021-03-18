@@ -18,9 +18,7 @@
 package co.anitrend.data.media.entity.filter
 
 import co.anitrend.data.arch.database.filter.FilterQueryBuilder
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.genre.entity.GenreEntitySchema
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntitySchema
 import co.anitrend.data.media.entity.MediaEntitySchema
 import co.anitrend.data.medialist.entity.MediaListEntitySchema
@@ -44,7 +42,6 @@ import java.util.*
 internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
     class Paged(
-        private val sortOrder: ISortOrderSettings,
         private val authentication: IAuthenticationSettings
     ) : MediaQueryFilter<MediaParam.Find>() {
 
@@ -496,17 +493,17 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun order(filter: MediaParam.Find) {
             filter.sort?.forEach { sort ->
-                when (sort) {
+                when (sort.sortable) {
                     MediaSort.SEARCH_MATCH -> {
                         requireBuilder()
-                            .orderBy(MediaEntitySchema.titleUser_preferred.asColumn(mediaTable), sortOrder)
-                            .orderBy(MediaEntitySchema.titleEnglish.asColumn(mediaTable), sortOrder)
-                            .orderBy(MediaEntitySchema.titleOriginal.asColumn(mediaTable), sortOrder)
-                            .orderBy(MediaEntitySchema.titleRomaji.asColumn(mediaTable), sortOrder)
+                            .orderBy(MediaEntitySchema.titleUser_preferred.asColumn(mediaTable), sort.order)
+                            .orderBy(MediaEntitySchema.titleEnglish.asColumn(mediaTable), sort.order)
+                            .orderBy(MediaEntitySchema.titleOriginal.asColumn(mediaTable), sort.order)
+                            .orderBy(MediaEntitySchema.titleRomaji.asColumn(mediaTable), sort.order)
                     }
                     else -> {
-                        val qualifier = sort.name.toLowerCase(Locale.ROOT)
-                        requireBuilder().orderBy(qualifier.asColumn(mediaTable), sortOrder)
+                        val qualifier = sort.sortable.name.toLowerCase(Locale.ROOT)
+                        requireBuilder().orderBy(qualifier.asColumn(mediaTable), sort.order)
                     }
                 }
             }
