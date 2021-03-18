@@ -22,7 +22,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.appcompat.widget.ActionMenuView
 import androidx.core.app.ActivityCompat
+import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
@@ -32,6 +34,9 @@ import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
+import co.anitrend.core.android.addItems
+import co.anitrend.core.android.removeItems
+import co.anitrend.core.android.setVisibilityForAllItems
 import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.commit
@@ -82,16 +87,36 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         )
     }
 
+    private val drawerMenu by lazy(UNSAFE) {
+        val actionView = ActionMenuView(this)
+        menuInflater.inflate(R.menu.drawer_menu, actionView.menu)
+        actionView.menu
+    }
+
     private val changeSettingsMenuStateAction by lazy(UNSAFE) {
         ChangeSettingsMenuStateAction { showDrawerMenu ->
-            // TODO: take a snap shot of the current menu so we can put it back after drawer is dismissed
-            val menu = binding?.bottomAppBar?.menu
-            // Toggle between the current destination's FAB menu and the menu which should
-            // be displayed when the BottomNavigationDrawer is open.
-            binding?.bottomAppBar?.replaceMenu(
-                if (showDrawerMenu) R.menu.drawer_menu
-                else R.menu.main_menu
-            )
+            val menu = requireBinding().bottomAppBar.menu
+            lifecycleScope.launch {
+                // Toggle between the current destination's FAB menu and the menu which should
+                // be displayed when the BottomNavigationDrawer is open.
+                if (showDrawerMenu) {
+                    menu.setVisibilityForAllItems(false)
+                    menu.addItems(drawerMenu) { item ->
+                        when (item.itemId) {
+                            R.id.action_account,
+                            R.id.action_notifications -> MenuItem.SHOW_AS_ACTION_ALWAYS
+                            else -> MenuItem.SHOW_AS_ACTION_NEVER
+                        }
+                    }
+                } else {
+                    menu.removeItems(drawerMenu)
+                    menu.setVisibilityForAllItems(true)
+                }
+                //binding?.bottomAppBar?.replaceMenu(
+                //    if (showDrawerMenu) R.menu.drawer_menu
+                //    else R.menu.main_menu
+                //)
+            }
         }
     }
 
