@@ -19,6 +19,7 @@ package co.anitrend.data.base
 
 import co.anitrend.data.arch.FuzzyDateLike
 import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaStatus
 
@@ -27,7 +28,7 @@ class MockQuery(
     val id_in: List<Int>? = null,
     val status_in: List<MediaStatus>? = null,
     val startDate_like: FuzzyDateLike? = null,
-    val sort: List<MediaSort>? = null
+    val sort: List<ISortWithOrder<MediaSort>>? = null
 ) : IGraphPayload {
     override fun toMap() = mapOf(
         "isAdult" to isAdult,

@@ -18,21 +18,19 @@
 package co.anitrend.data.util.graphql
 
 import co.anitrend.data.arch.common.model.paging.query.PageQuery
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.base.MockQuery
 import co.anitrend.data.util.graphql.GraphUtil.applySortOrderUsing
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.SortWithOrder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.medialist.enums.MediaListSort
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 
 class GraphUtilTest {
-    private val settings = mockk<ISortOrderSettings>()
 
     @Test
     fun `default query has required map keys and values`() {
@@ -50,11 +48,9 @@ class GraphUtilTest {
     fun `sort order utility on enum attaches sort order correctly`() {
         val expected = "ADDED_TIME_DESC"
 
-        val sortType = MediaListSort.ADDED_TIME
+        val sortWithOrder = SortWithOrder(MediaListSort.ADDED_TIME, SortOrder.DESC)
 
-        every { settings.isSortOrderDescending.value } returns true
-
-        val actual = sortType.applySortOrderUsing(settings)
+        val actual = sortWithOrder.applySortOrderUsing()
 
         assertEquals(expected, actual)
     }
@@ -62,53 +58,47 @@ class GraphUtilTest {
 
     @Test
     fun `sorting helper does not append postfix to ignored values`() {
-        every { settings.isSortOrderDescending.value } returns false
-
         val expected = "SEARCH_MATCH"
 
-        val actual = MediaSort.SEARCH_MATCH.applySortOrderUsing(
-            settings = settings
-        )
+        val sortWithOrder = SortWithOrder(MediaSort.SEARCH_MATCH, SortOrder.DESC)
+
+        val actual = sortWithOrder.applySortOrderUsing()
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `sorting helper appends postfix to non ignored values`() {
-        every { settings.isSortOrderDescending.value } returns true
-
         val expected = "PROGRESS_VOLUMES_DESC"
 
-        val actual = MediaListSort.PROGRESS_VOLUMES.applySortOrderUsing(
-            settings = settings
-        )
+        val sortWithOrder = SortWithOrder(MediaListSort.PROGRESS_VOLUMES, SortOrder.DESC)
+
+        val actual = sortWithOrder.applySortOrderUsing()
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `sorting helper does not append postfix when preference order is not set to descending order`() {
-        every { settings.isSortOrderDescending.value } returns false
-
         val expected = "PROGRESS_VOLUMES"
 
-        val actual = MediaListSort.PROGRESS_VOLUMES.applySortOrderUsing(
-            settings = settings
-        )
+        val sortWithOrder = SortWithOrder(MediaListSort.PROGRESS_VOLUMES, SortOrder.ASC)
+
+        val actual = sortWithOrder.applySortOrderUsing()
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `mock query with sorting parameter produces mapped sorting order using sort order settings as descending`() {
-        every { settings.isSortOrderDescending.value } returns true
 
         val input = listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
+            .map { SortWithOrder(it, SortOrder.DESC) }
         val mockQuery = MockQuery(sort=input)
 
         val expected = listOf("SEARCH_MATCH", "POPULARITY_DESC", "TYPE_DESC")
 
-        val queryContainerBuilder = mockQuery.toQueryContainerBuilder(settings = settings)
+        val queryContainerBuilder = mockQuery.toQueryContainerBuilder()
         val actual = queryContainerBuilder.getVariable("sort")
 
         assertEquals(expected, actual)
@@ -116,14 +106,14 @@ class GraphUtilTest {
 
     @Test
     fun `mock query with sorting parameter produces mapped sorting order using sort order settings as ascending`() {
-        every { settings.isSortOrderDescending.value } returns false
 
         val input = listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
+            .map { SortWithOrder(it, SortOrder.ASC) }
         val mockQuery = MockQuery(sort=input)
 
         val expected = listOf("SEARCH_MATCH", "POPULARITY", "TYPE")
 
-        val queryContainerBuilder = mockQuery.toQueryContainerBuilder(settings = settings)
+        val queryContainerBuilder = mockQuery.toQueryContainerBuilder()
         val actual = queryContainerBuilder.getVariable("sort")
 
         assertEquals(expected, actual)
