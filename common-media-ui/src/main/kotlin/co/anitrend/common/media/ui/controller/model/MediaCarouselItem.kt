@@ -48,6 +48,7 @@ import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.navigation.model.sorting.Sorting
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.threeten.bp.Instant
 
 internal class MediaCarouselItem(
     private val entity: MediaCarousel,
@@ -101,7 +102,7 @@ internal class MediaCarouselItem(
                 binding?.mediaCarouselTitle?.setText(R.string.label_carousel_airing_anime)
                 binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
                 AiringRouter.Param() builder {
-                    notYetAired = true
+                    airingAt_greater = (Instant.now().epochSecond).toInt()
                     sort = listOf(AiringSort.TIME,).map {
                         Sorting(it, SortOrder.ASC)
                     }
