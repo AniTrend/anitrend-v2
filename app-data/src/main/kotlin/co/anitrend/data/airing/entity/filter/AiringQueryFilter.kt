@@ -24,12 +24,16 @@ import co.anitrend.data.media.entity.MediaEntitySchema
 import co.anitrend.data.medialist.entity.MediaListEntitySchema
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.airing.model.AiringParam
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.support.query.builder.core.criteria.extensions.*
 import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.from.extentions.innerJoin
+import co.anitrend.support.query.builder.core.from.extentions.join
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
 import co.anitrend.support.query.builder.dsl.leftJoin
+import co.anitrend.support.query.builder.dsl.where
 import co.anitrend.support.query.builder.dsl.whereAnd
 import org.threeten.bp.Instant
 import java.util.*
@@ -60,13 +64,12 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
                     AiringScheduleEntitySchema.airingAt.asColumn(airingTable) lesserThan  it
                 }
             }
-            filter.notYetAired?.also {
-                val currentTime = Instant.now().epochSecond / 1000
-                requireBuilder() whereAnd {
-                    if (it)
-                        AiringScheduleEntitySchema.airingAt.asColumn(airingTable) greaterThan currentTime
-                    else
-                        AiringScheduleEntitySchema.airingAt.asColumn(airingTable) lesserThan currentTime
+            filter.notYetAired?.also { notAired ->
+                if (notAired) requireBuilder() whereAnd {
+                    MediaEntitySchema.status.asColumn(mediaTable) equal MediaStatus.NOT_YET_RELEASED.name
+                }
+                else requireBuilder() whereAnd {
+                    MediaEntitySchema.status.asColumn(mediaTable) equal MediaStatus.RELEASING.name
                 }
             }
         }
@@ -185,11 +188,14 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
          * to add query objections
          */
         override fun onBuildQuery(filter: AiringParam.Find) {
-            requireBuilder() from mediaTable.innerJoin(airingTable) {
+            requireBuilder() from mediaTable.join(airingTable) {
                 on(
                     MediaEntitySchema.id.asColumn(mediaTable),
                     AiringScheduleEntitySchema.mediaId.asColumn(airingTable)
                 )
+            } where {
+                MediaEntitySchema.type.asColumn(mediaTable)
+                    .equal(MediaType.ANIME.name)
             }
             order(filter)
             selection(filter)
