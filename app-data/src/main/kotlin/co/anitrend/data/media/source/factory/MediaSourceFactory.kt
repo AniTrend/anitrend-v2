@@ -63,7 +63,6 @@ internal sealed class MediaSourceFactory<Key, Value> : DataSource.Factory<Key, V
             MediaSourceImpl.Network(
                 remoteSource = remoteSource,
                 controller = controller,
-                sortOrderSettings = sortOrderSettings,
                 dispatcher = dispatcher,
                 initialKey = initialKey
             ).also { stateSourceFlow.value = it }

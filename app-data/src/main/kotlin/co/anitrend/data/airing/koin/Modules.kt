@@ -30,12 +30,9 @@ import co.anitrend.data.airing.source.AiringScheduleSourceImpl
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.airing.usecase.AiringScheduleInteractor
 import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
 import co.anitrend.data.arch.extension.graphQLController
-import co.anitrend.data.media.cache.MediaCache
-import co.anitrend.data.media.mapper.MediaMapper
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -49,7 +46,6 @@ private val sourceModule = module {
             ),
             converter = get(),
             clearDataHelper = get(),
-            sortOrderSettings = get(),
             filter = get(),
             dispatcher = get(),
         )
@@ -59,7 +55,6 @@ private val sourceModule = module {
 private val filterModule = module {
     factory {
         AiringQueryFilter.Paged(
-            sortOrder = get(),
             authentication = get()
         )
     }

@@ -22,10 +22,7 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.media.MediaDetailController
@@ -43,7 +40,10 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 internal class MediaSourceImpl {
 
@@ -97,14 +97,9 @@ internal class MediaSourceImpl {
         private val controller: MediaPagedController,
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
-        private val sortOrderSettings: ISortOrderSettings,
-        authentication: IAuthenticationSettings,
+        private val filter: MediaQueryFilter.Paged,
         override val dispatcher: ISupportDispatcher
     ) : MediaSource.Paged() {
-
-        private val filter by lazy(UNSAFE) {
-            MediaQueryFilter.Paged(sortOrderSettings, authentication)
-        }
 
         override val cacheIdentity = MediaCache.Identity.Paged()
 
@@ -124,8 +119,7 @@ internal class MediaSourceImpl {
         override suspend fun getMedia(requestCallback: RequestCallback) {
             val deferred = async {
                 val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper,
-                    sortOrderSettings
+                    supportPagingHelper
                 )
                 remoteSource.getMediaPaged(queryBuilder)
             }
@@ -150,7 +144,6 @@ internal class MediaSourceImpl {
     class Network(
         private val remoteSource: MediaRemoteSource,
         private val controller: MediaNetworkController,
-        private val sortOrderSettings: ISortOrderSettings,
         override val initialKey: MediaParam.Find,
         override val dispatcher: ISupportDispatcher
     ) : MediaSource.Network() {
@@ -161,8 +154,7 @@ internal class MediaSourceImpl {
             val query = MediaQuery.Find(initialKey)
             val deferred = async {
                 val builder = query.toQueryContainerBuilder(
-                    supportPagingHelper,
-                    sortOrderSettings
+                    supportPagingHelper
                 )
                 remoteSource.getMediaPaged(builder)
             }

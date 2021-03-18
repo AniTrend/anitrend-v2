@@ -56,7 +56,6 @@ private val sourceModule = module {
             remoteSource = api(EndpointType.GRAPH_QL),
             localSource = db().userDao(),
             clearDataHelper = get(),
-            settings = get(),
             controller = graphQLController(
                 mapper = get<UserMapper.Paged>()
             ),

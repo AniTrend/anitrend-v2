@@ -42,7 +42,6 @@ private val sourceModule = module {
             controller = graphQLController(
                 mapper = get<MediaListPagedMapper>()
             ),
-            sortOrderSettings = get(),
             converter = get(),
             dispatcher = get()
         )

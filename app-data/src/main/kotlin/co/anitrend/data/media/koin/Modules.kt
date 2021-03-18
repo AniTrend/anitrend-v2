@@ -29,6 +29,7 @@ import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
+import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.repository.MediaRepository
@@ -61,10 +62,9 @@ private val sourceModule = module {
                 mapper = get<MediaMapper.Paged>()
             ),
             clearDataHelper = get(),
-            sortOrderSettings = get(),
             converter = get(),
-            dispatcher = get(),
-            authentication = get()
+            filter = get(),
+            dispatcher = get()
         )
     }
     factory {
@@ -75,6 +75,14 @@ private val sourceModule = module {
             ),
             sortOrderSettings = get(),
             dispatcher = get()
+        )
+    }
+}
+
+private val filterModule = module {
+    factory {
+        MediaQueryFilter.Paged(
+            authentication = get()
         )
     }
 }
@@ -174,6 +182,7 @@ private val repositoryModule = module {
 
 internal val mediaModules = listOf(
     sourceModule,
+    filterModule,
     cacheModule,
     converterModule,
     mapperModule,

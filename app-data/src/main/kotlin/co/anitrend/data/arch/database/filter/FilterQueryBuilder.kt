@@ -17,10 +17,9 @@
 
 package co.anitrend.data.arch.database.filter
 
-import android.location.Criteria
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.support.query.builder.core.QueryBuilder
 import co.anitrend.support.query.builder.core.contract.AbstractQueryBuilder
 import co.anitrend.support.query.builder.core.projection.Projection
@@ -82,23 +81,22 @@ internal abstract class FilterQueryBuilder<F> {
     companion object {
         /**
          * Helper to add an orderBy selector using the provided
-         * [projection] and [settings] to establish the direction
+         * [projection] and [sortOrder] to establish the direction
          *
          * @param caseSensitive If the order should be case sensitive
          */
         fun AbstractQueryBuilder.orderBy(
             projection: Projection,
-            settings: ISortOrderSettings,
+            sortOrder: SortOrder,
             caseSensitive: Boolean = true
         ): AbstractQueryBuilder {
-            val isDesc = settings.isSortOrderDescending.value
             when (caseSensitive) {
                 true -> {
-                    if (isDesc) orderByDesc(projection)
+                    if (sortOrder == SortOrder.DESC) orderByDesc(projection)
                     else orderByAsc(projection)
                 }
                 false -> {
-                    if (isDesc) orderByDescCollate(projection)
+                    if (sortOrder == SortOrder.DESC) orderByDescCollate(projection)
                     else orderByAscCollate(projection)
                 }
             }

@@ -95,7 +95,6 @@ internal class UserSourceImpl {
         private val remoteSource: UserRemoteSource,
         private val localSource: UserLocalSource,
         private val clearDataHelper: IClearDataHelper,
-        private val settings: ISortOrderSettings,
         private val controller: UserPagedController,
         private val converter: UserEntityConverter,
         override val dispatcher: ISupportDispatcher
@@ -117,8 +116,7 @@ internal class UserSourceImpl {
         override suspend fun getUsers(callback: RequestCallback) {
             val deferred = async {
                 val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper,
-                    settings
+                    supportPagingHelper
                 )
                 remoteSource.getUserPaged(queryBuilder)
             }
