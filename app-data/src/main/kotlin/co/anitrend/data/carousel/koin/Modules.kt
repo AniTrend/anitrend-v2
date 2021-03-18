@@ -17,7 +17,6 @@
 
 package co.anitrend.data.carousel.koin
 
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
