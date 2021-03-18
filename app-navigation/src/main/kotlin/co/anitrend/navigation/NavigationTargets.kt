@@ -23,11 +23,13 @@ import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.media.enums.*
 import co.anitrend.navigation.model.common.IParam
+import co.anitrend.navigation.model.sorting.Sorting
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
 import co.anitrend.navigation.work.WorkSchedulerController
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import org.koin.core.component.inject
 
 object MainRouter : NavigationRouter() {
@@ -127,7 +129,7 @@ object AiringRouter : NavigationRouter() {
         var episode_lesser: Int? = null,
         var airingAt_greater: Int? = null,
         var airingAt_lesser: Int? = null,
-        var sort: List<AiringSort>? = null
+        var sort: List<Sorting<AiringSort>>? = null
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -234,7 +236,7 @@ object MediaDiscoverRouter : NavigationRouter() {
         var search: String? = null,
         var season: MediaSeason? = null,
         var seasonYear: Int? = null,
-        var sort: List<MediaSort>? = null,
+        var sort: List<Sorting<MediaSort>>? = null,
         var source: MediaSource? = null,
         var source_in: List<MediaSource>? = null,
         var startDate: DateInt? = null,
