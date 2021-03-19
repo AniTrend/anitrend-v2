@@ -35,8 +35,16 @@ internal data class YouTubeSpanConfiguration(
     override val isClickable: Boolean = true
 ) : IPhotoSpan {
 
+    private val regex = Regex("(?:https?:\\/\\/)?(?:www\\.)?youtu(?:\\.be\\/|be.com\\/\\S*(?:watch|embed)(?:(?:(?=\\/[^&\\s\\?]+(?!\\S))\\/)|(?:\\S*v=|v\\/)))([^&\\s\\?]+)", RegexOption.IGNORE_CASE)
+
     @VisibleForTesting
-    fun getVideoId(src: String) = src.split('/').last()
+    fun getVideoId(src: String): String {
+        if (regex.containsMatchIn(src)) {
+            val result = requireNotNull(regex.find(src))
+            return result.groupValues[1]
+        }
+        return ""
+    }
 
     @VisibleForTesting
     fun getVideoUrl(src: String): String {
