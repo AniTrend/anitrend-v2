@@ -414,7 +414,7 @@ object Libraries {
         }
 
         object Turbine {
-            private const val version = "0.4.0"
+            private const val version = "0.4.1"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
