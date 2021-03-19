@@ -409,7 +409,7 @@ object Libraries {
         }
 
         object Contour {
-            private const val version = "0.1.7"
+            private const val version = "1.1.0"
             const val contour = "app.cash.contour:contour:$version"
         }
 
