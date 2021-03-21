@@ -44,6 +44,8 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
+    dependencies.implementation(Libraries.CashApp.Contour.contour)
+
     dependencies.implementation(Libraries.Google.Material.material)
 
     dependencies.implementation(Libraries.threeTenBp)
@@ -170,6 +172,8 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
+    dependencies.implementation(Libraries.CashApp.Contour.contour)
+
     dependencies.implementation(Libraries.Google.Material.material)
 
     dependencies.implementation(Libraries.Coil.coil)
@@ -203,6 +207,8 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
     dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
+
+    dependencies.implementation(Libraries.CashApp.Contour.contour)
 
     dependencies.implementation(Libraries.Google.Material.material)
 
