@@ -30,9 +30,7 @@ internal class EmptyTagHandler private constructor() : HtmlEmptyTagReplacement()
     @SuppressLint("DefaultLocale")
     override fun replace(tag: HtmlTag): String? {
         return when (tag.name().toLowerCase()) {
-            in handlingTags -> {
-                frameReplacement
-            }
+            in handlingTags -> frameReplacement
             else -> super.replace(tag)
         }
     }
