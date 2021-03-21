@@ -17,10 +17,7 @@
 
 package co.anitrend.data.genre.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 import co.anitrend.data.shared.common.Identity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
@@ -37,5 +34,23 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 internal data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") override val id: Long = 0,
-    @ColumnInfo(name = "genre") val genre: String
-) : Identity
+    @ColumnInfo(name = "genre") val genre: String,
+    @ColumnInfo(name = "emoji") val emoji: String
+) : Identity {
+
+    @DatabaseView(
+        value = """
+            select g.*, c.media_id 
+            from genre g
+            inner join genre_connection c
+            on g.genre = c.genre
+        """,
+        viewName = "view_genre_extended"
+    )
+    data class Extended(
+        @ColumnInfo(name = "genre") val genre: String,
+        @ColumnInfo(name = "emoji") val emoji: String,
+        @ColumnInfo(name = "media_id") val mediaId: Long,
+        @ColumnInfo(name = "id") override val id: Long
+    ) : Identity
+}

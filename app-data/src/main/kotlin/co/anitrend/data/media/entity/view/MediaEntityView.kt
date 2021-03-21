@@ -21,6 +21,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
+import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
@@ -34,7 +35,7 @@ internal sealed class MediaEntityView {
     abstract val nextAiring: AiringScheduleEntity?
 
     abstract val tags: List<TagEntity.Extended>
-    abstract val genres: List<String>
+    abstract val genres: List<GenreEntity.Extended>
 
     internal data class Core(
         @Embedded override val media: MediaEntity,
@@ -45,17 +46,14 @@ internal sealed class MediaEntityView {
         override val nextAiring: AiringScheduleEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id",
-            associateBy = Junction(value = TagConnectionEntity::class)
+            entityColumn = "media_id"
         )
         override val tags: List<TagEntity.Extended> = emptyList(),
         @Relation(
-            projection = ["genre"],
             parentColumn = "id",
-            entityColumn = "media_id",
-            entity = GenreConnectionEntity::class
+            entityColumn = "media_id"
         )
-        override val genres: List<String> = emptyList()
+        override val genres: List<GenreEntity.Extended> = emptyList()
     ) : MediaEntityView()
 
     internal data class WithMediaList(
@@ -72,17 +70,14 @@ internal sealed class MediaEntityView {
         override val nextAiring: AiringScheduleEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id",
-            associateBy = Junction(value = TagConnectionEntity::class)
+            entityColumn = "media_id"
         )
         override val tags: List<TagEntity.Extended> = emptyList(),
         @Relation(
-            projection = ["genre"],
             parentColumn = "id",
-            entityColumn = "media_id",
-            entity = GenreConnectionEntity::class
+            entityColumn = "media_id"
         )
-        override val genres: List<String> = emptyList()
+        override val genres: List<GenreEntity.Extended> = emptyList()
     ) : MediaEntityView()
 
     internal data class WithMediaListExtended(
@@ -109,16 +104,13 @@ internal sealed class MediaEntityView {
         override val nextAiring: AiringScheduleEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id",
-            associateBy = Junction(value = TagConnectionEntity::class)
+            entityColumn = "media_id"
         )
         override val tags: List<TagEntity.Extended> = emptyList(),
         @Relation(
-            projection = ["genre"],
             parentColumn = "id",
-            entityColumn = "media_id",
-            entity = GenreConnectionEntity::class
+            entityColumn = "media_id"
         )
-        override val genres: List<String> = emptyList()
+        override val genres: List<GenreEntity.Extended> = emptyList()
     ) : MediaEntityView()
 }

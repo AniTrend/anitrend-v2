@@ -20,8 +20,8 @@ package co.anitrend.data.genre.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.mapper.withEmoji
 import co.anitrend.domain.genre.entity.Genre
+import io.wax911.emojify.manager.IEmojiManager
 
 internal class GenreEntityConverter(
     override val fromType: (GenreEntity) -> Genre = ::transform,
@@ -30,19 +30,53 @@ internal class GenreEntityConverter(
     private companion object : ISupportTransformer<GenreEntity, Genre> {
         override fun transform(source: GenreEntity) = Genre.Core(
             name = source.genre,
-            decorated = withEmoji(
-                source.genre
-            ),
+            emoji = source.emoji,
             id = source.id
         )
     }
 }
 
 internal class GenreModelConverter(
-    override val fromType: (String) -> GenreEntity = ::transform,
+    emojiManager: IEmojiManager,
+    override val fromType: (String) -> GenreEntity = { transform(it, emojiManager) },
     override val toType: (GenreEntity) -> String = { throw NotImplementedError() }
 ) : SupportConverter<String, GenreEntity>() {
-    private companion object : ISupportTransformer<String, GenreEntity> {
-        override fun transform(source: String) = GenreEntity(genre = source)
+
+    private companion object {
+
+        fun IEmojiManager.withAlias(alias: String): String {
+            val emoji = getForAlias(alias)
+            return emoji?.emoji.orEmpty()
+        }
+
+        fun IEmojiManager.getEmojiFor(genre: String): String {
+            return when (genre) {
+                "Action" -> withAlias("cowboy")
+                "Adventure" -> withAlias("rocket")
+                "Comedy" -> withAlias("rofl")
+                "Drama" -> withAlias("speak_no_evil")
+                "Ecchi" -> withAlias("smirk")
+                "Fantasy" -> withAlias("art")
+                "Hentai" -> withAlias("eggplant")
+                "Horror" -> withAlias("scream")
+                "Mahou Shoujo" -> withAlias("woman_mage")
+                "Mecha" -> withAlias("robot_face")
+                "Music" -> withAlias("saxophone")
+                "Mystery" -> withAlias("detective")
+                "Psychological" -> withAlias("weary")
+                "Romance" -> withAlias("couplekiss")
+                "Sci-Fi" -> withAlias("space_invader")
+                "Slice of Life" -> withAlias("couple")
+                "Sports" -> withAlias("basketball")
+                "Supernatural" -> withAlias("ghost")
+                "Thriller" -> withAlias("dagger")
+                else -> withAlias("question")
+            }
+        }
+
+        fun transform(source: String, emojiManager: IEmojiManager) = GenreEntity(
+            genre = source,
+            emoji = emojiManager.getEmojiFor(source)
+        )
     }
 }

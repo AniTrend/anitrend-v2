@@ -23,4 +23,5 @@
     <dimen name="design_bottom_app_status_bar_height">24dp</dimen>
 	<dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 	<dimen name="nav_item_selector_margin">100dp</dimen>
+    <dimen name="text_drawable_margin">3dp</dimen>
 </resources>

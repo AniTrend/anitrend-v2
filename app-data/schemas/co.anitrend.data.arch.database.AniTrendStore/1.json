@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "41678acc76dd8e77a9f7b18041d43637",
+    "identityHash": "4f3cead6ee9f8a596bd8e8ce2854ab02",
     "entities": [
       {
         "tableName": "cache_log",
@@ -197,6 +197,14 @@
               "name"
             ],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tag_name` ON `${TABLE_NAME}` (`name`)"
+          },
+          {
+            "name": "index_tag_category",
+            "unique": false,
+            "columnNames": [
+              "category"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_category` ON `${TABLE_NAME}` (`category`)"
           }
         ],
         "foreignKeys": []
@@ -287,7 +295,7 @@
       },
       {
         "tableName": "genre",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `genre` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `genre` TEXT NOT NULL, `emoji` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -298,6 +306,12 @@
           {
             "fieldPath": "genre",
             "columnName": "genre",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "emoji",
+            "columnName": "emoji",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -322,7 +336,7 @@
       },
       {
         "tableName": "genre_connection",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`genre`) REFERENCES `genre`(`genre`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "mediaId",
@@ -357,6 +371,14 @@
               "media_id"
             ],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
+          },
+          {
+            "name": "index_genre_connection_genre",
+            "unique": false,
+            "columnNames": [
+              "genre"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_genre` ON `${TABLE_NAME}` (`genre`)"
           }
         ],
         "foreignKeys": [
@@ -369,6 +391,17 @@
             ],
             "referencedColumns": [
               "id"
+            ]
+          },
+          {
+            "table": "genre",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "genre"
+            ],
+            "referencedColumns": [
+              "genre"
             ]
           }
         ]
@@ -2084,12 +2117,16 @@
     "views": [
       {
         "viewName": "view_tag_extended",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select t.*, c.is_media_spoiler, c.rank, c.media_id from tag t\n            inner join tag_connection c \n            on t.id = c.tag_id"
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select t.*, c.is_media_spoiler, c.rank, c.media_id \n            from tag t\n            inner join tag_connection c \n            on t.id = c.tag_id"
+      },
+      {
+        "viewName": "view_genre_extended",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select g.*, c.media_id \n            from genre g\n            inner join genre_connection c\n            on g.genre = c.genre"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '41678acc76dd8e77a9f7b18041d43637')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f3cead6ee9f8a596bd8e8ce2854ab02')"
     ]
   }
 }

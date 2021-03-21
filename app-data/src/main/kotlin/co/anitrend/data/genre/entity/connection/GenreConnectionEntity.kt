@@ -18,14 +18,17 @@
 package co.anitrend.data.genre.entity.connection
 
 import androidx.room.*
+import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "genre_connection",
     indices = [
-        Index(value = ["media_id"])
+        Index(value = ["media_id"]),
+        Index(value = ["genre"])
     ],
     foreignKeys = [
         ForeignKey(
@@ -34,6 +37,13 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
             parentColumns = ["id"]
+        ),
+        ForeignKey(
+            entity = GenreEntity::class,
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+            childColumns = ["genre"],
+            parentColumns = ["genre"]
         )
     ]
 )

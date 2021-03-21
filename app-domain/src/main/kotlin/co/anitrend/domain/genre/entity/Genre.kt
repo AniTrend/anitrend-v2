@@ -23,18 +23,18 @@ import co.anitrend.domain.common.entity.contract.IEntity
 sealed class Genre : IEntity {
 
     abstract val name: String
-    abstract val decorated: String?
+    abstract val emoji: String?
 
     data class Core(
         override val name: String,
-        override val decorated: String?,
+        override val emoji: String?,
         override val id: Long
     ) : Genre()
 
     data class Extended(
         val background: HexColor?,
         override val name: String,
-        override val decorated: String?,
+        override val emoji: String?,
         override val id: Long
     ) : Genre()
 }

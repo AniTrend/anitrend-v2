@@ -28,6 +28,7 @@ import co.anitrend.common.genre.R
 import co.anitrend.common.genre.databinding.GenreItemBinding
 import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.core.android.views.text.TextDrawable
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
@@ -56,7 +57,8 @@ internal class GenreItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = GenreItemBinding.bind(view)
-        requireBinding().genre.text = entity.decorated
+        requireBinding().genre.text = entity.name
+        requireBinding().genre.chipIcon = TextDrawable(view.context, entity.emoji)
 
         if (entity is Genre.Extended && entity.background != null) {
             val background = entity.background!!.asColorInt(view.context)

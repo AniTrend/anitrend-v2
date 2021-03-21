@@ -63,7 +63,9 @@ private val converterModule = module {
         GenreEntityConverter()
     }
     factory {
-        GenreModelConverter()
+        GenreModelConverter(
+            emojiManager = get()
+        )
     }
 }
 
