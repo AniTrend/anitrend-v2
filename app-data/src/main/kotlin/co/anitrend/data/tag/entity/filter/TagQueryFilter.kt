@@ -29,7 +29,6 @@ internal class TagQueryFilter : FilterQueryBuilder<ISortOrderSettings>() {
      */
     override fun onBuildQuery(filter: ISortOrderSettings) {
         //val direction = filter.asOrderBy()
-        val column = TagEntity::name
         //builder.orderBy("$column $direction")
     }
 }

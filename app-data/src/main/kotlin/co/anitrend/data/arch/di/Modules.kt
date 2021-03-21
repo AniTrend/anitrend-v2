@@ -20,7 +20,6 @@
 package co.anitrend.data.arch.di
 
 import android.net.ConnectivityManager
-import androidx.startup.AppInitializer
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
@@ -64,12 +63,9 @@ import io.github.wax911.library.annotation.processor.GraphProcessor
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.annotation.processor.plugin.AssetManagerDiscoveryPlugin
 import io.github.wax911.library.logger.contract.ILogger
-import io.wax911.emojify.initializer.EmojiInitializer
-import io.wax911.emojify.manager.IEmojiManager
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -101,10 +97,6 @@ private val coreModule = module {
             connectivity = get(),
             settings = get()
         )
-    }
-    factory<IEmojiManager> {
-        AppInitializer.getInstance(androidContext())
-            .initializeComponent(EmojiInitializer::class.java)
     }
 }
 

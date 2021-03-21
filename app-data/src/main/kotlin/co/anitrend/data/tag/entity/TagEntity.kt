@@ -31,6 +31,10 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
         Index(
             value = ["name"],
             unique = true
+        ),
+        Index(
+            value = ["category"],
+            unique = false
         )
     ]
 )
@@ -46,7 +50,8 @@ internal data class TagEntity(
 
     @DatabaseView(
         value = """
-            select t.*, c.is_media_spoiler, c.rank, c.media_id from tag t
+            select t.*, c.is_media_spoiler, c.rank, c.media_id 
+            from tag t
             inner join tag_connection c 
             on t.id = c.tag_id
         """,

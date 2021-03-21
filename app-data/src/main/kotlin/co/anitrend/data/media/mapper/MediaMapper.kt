@@ -144,10 +144,9 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     }
 
     class Detail(
-        private val airingMapper: AiringMapper.Airing,
+        private val airingMapper: AiringMapper.Collection,
         private val genreMapper: GenreMapper,
         private val tagMapper: TagMapper,
-        private val dispatcher: ISupportDispatcher,
         private val rankLocalSource: RankLocalSource,
         private val linkLocalSource: LinkLocalSource,
         override val localSource: MediaLocalSource,
@@ -156,15 +155,6 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
 
         private var linkWrapper: SourceEntityWrapper<LinkEntity>? = null
         private var rankWrapper: SourceEntityWrapper<RankEntity>? = null
-        
-        private suspend fun saveEmbeddedAiringSchedule(source: MediaModel.Extended) {
-            source.nextAiringEpisode?.also {
-                val entities = airingMapper.onResponseMapFrom(it)
-                withContext(dispatcher.io) {
-                    airingMapper.onResponseDatabaseInsert(entities)
-                }
-            }
-        }
 
         private fun saveEmbeddedRanks(source: MediaModel.Extended) {
             val connections = source.rankings.map {
@@ -205,6 +195,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
                 localSource.upsertWithAttributes(data, linkWrapper, rankWrapper)
                 tagMapper.persistEmbedded()
                 genreMapper.persistEmbedded()
+                airingMapper.persistEmbedded()
                 linkWrapper = null
                 rankWrapper = null
                 OutCome.Pass(null)
@@ -222,9 +213,9 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         ): MediaEntity {
             tagMapper.onEmbedded(listOf(source.media))
             genreMapper.onEmbedded(listOf(source.media))
+            airingMapper.onEmbedded(listOf(source.media))
             saveEmbeddedLinks(source.media)
             saveEmbeddedRanks(source.media)
-            saveEmbeddedAiringSchedule(source.media)
             return converter.convertFrom(source.media)
         }
     }

@@ -116,8 +116,7 @@ private val mapperModule = module {
             rankLocalSource = db().rankDao(),
             airingMapper = get(),
             localSource = db().mediaDao(),
-            converter = get(),
-            dispatcher = get()
+            converter = get()
         )
     }
     factory {

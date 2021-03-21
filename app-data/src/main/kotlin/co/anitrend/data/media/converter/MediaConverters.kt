@@ -20,7 +20,6 @@ package co.anitrend.data.media.converter
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.arch.extension.asFuzzyDate
-import co.anitrend.data.genre.mapper.withEmoji
 import co.anitrend.data.arch.extension.toFuzzyDateInt
 import co.anitrend.data.arch.extension.toFuzzyDateModel
 import co.anitrend.data.media.entity.MediaEntity
@@ -120,7 +119,7 @@ internal class MediaConverter(
                     Genre.Extended(
                         id = it.hashCode().toLong(),
                         name = it,
-                        decorated = withEmoji(it),
+                        emoji = null,
                         background = source.coverImage?.color
                     )
                 },
@@ -207,7 +206,7 @@ internal class MediaConverter(
                    Genre.Extended(
                        id = it.hashCode().toLong(),
                        name = it,
-                       decorated = withEmoji(it),
+                       emoji = null,
                        background = source.coverImage?.color
                    )
                 },
@@ -301,7 +300,7 @@ internal class MediaConverter(
                     Genre.Extended(
                         id = it.hashCode().toLong(),
                         name = it,
-                        decorated = withEmoji(it),
+                        emoji = null,
                         background = source.coverImage?.color
                     )
                 },
@@ -468,9 +467,9 @@ internal class MediaEntityViewConverter(
                 favouritesCount = source.media.id,
                 genres = source.genres.map {
                     Genre.Extended(
-                        id = it.hashCode().toLong(),
-                        name = it,
-                        decorated = withEmoji(it),
+                        id = it.id,
+                        name = it.genre,
+                        emoji = it.emoji,
                         background = source.media.coverImage.color
                     )
                 },
@@ -554,9 +553,9 @@ internal class MediaEntityViewConverter(
                 favouritesCount = source.media.id,
                 genres = source.genres.map {
                     Genre.Extended(
-                        id = it.hashCode().toLong(),
-                        name = it,
-                        decorated = withEmoji(it),
+                        id = it.id,
+                        name = it.genre,
+                        emoji = it.emoji,
                         background = source.media.coverImage.color
                     )
                 },
@@ -647,9 +646,9 @@ internal class MediaEntityViewConverter(
                 favouritesCount = source.media.id,
                 genres = source.genres.map {
                     Genre.Extended(
-                        id = it.hashCode().toLong(),
-                        name = it,
-                        decorated = withEmoji(it),
+                        id = it.id,
+                        name = it.genre,
+                        emoji = it.emoji,
                         background = source.media.coverImage.color
                     )
                 },

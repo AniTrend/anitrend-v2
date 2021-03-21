@@ -31,6 +31,6 @@
         android:orderInCategory="99"
         android:title="@string/action_list_style"
         tools:icon="@drawable/ic_view_summary"
-        app:actionProviderClass="co.anitrend.core.android.widget.ViewStyleActionProvider"
+        app:actionProviderClass="co.anitrend.core.android.provider.StyleActionProvider"
         app:showAsAction="ifRoom" />
 </menu>

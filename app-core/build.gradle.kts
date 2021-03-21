@@ -24,6 +24,8 @@ plugins {
 dependencies {
     implementation(Libraries.AndroidX.Browser.browser)
 
+    implementation(Libraries.AniTrend.Emojify.emojify)
+
     implementation(Libraries.Square.OkHttp.logging)
 
     /** Timber Trees */

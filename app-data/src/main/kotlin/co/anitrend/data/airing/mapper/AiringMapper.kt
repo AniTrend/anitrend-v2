@@ -17,7 +17,6 @@
 
 package co.anitrend.data.airing.mapper
 
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.entity.AiringScheduleEntity
@@ -25,7 +24,6 @@ import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.MediaModel
 import kotlinx.coroutines.withContext

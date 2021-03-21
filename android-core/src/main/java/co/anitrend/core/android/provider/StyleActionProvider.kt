@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.widget
+package co.anitrend.core.android.provider
 
 import android.content.Context
 import android.view.MenuItem
@@ -32,12 +32,13 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getDrawableAttr
 import co.anitrend.core.android.R
 import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
-class ViewStyleActionProvider(context: Context) : ActionProvider(context) {
+class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
 
     private val actionImageView by lazy(UNSAFE) {
         AppCompatImageView(context).apply {
@@ -99,7 +100,12 @@ class ViewStyleActionProvider(context: Context) : ActionProvider(context) {
         actionImageView.setImageDrawable(drawable)
     }
 
-    private fun createWidget(forItem: MenuItem? = null): View {
+    /**
+     * Factory for creating the [ActionProvider] view
+     *
+     * @param forItem Optional menu item to create view for
+     */
+    override fun createWidget(forItem: MenuItem?): View {
         if (context is LifecycleOwner) {
             val owner = context as LifecycleOwner
             owner.lifecycleScope.launchWhenResumed {

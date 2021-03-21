@@ -286,24 +286,72 @@ object CharacterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val id: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "CharacterRouter#Param"
+        }
+    }
 }
 
 object CharacterDiscoverRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val id: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "CharacterDiscoverRouter#Param"
+        }
+    }
 }
 
 object StaffRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val id: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "StaffRouter#Param"
+        }
+    }
 }
 
 object StaffDiscoverRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val id: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "StaffDiscoverRouter#Param"
+        }
+    }
 }
 
 object ProfileRouter : NavigationRouter() {
@@ -314,6 +362,19 @@ object ProfileRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        val userId: Long? = null,
+        val userName: String? = null
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "ProfileRouter#Param"
+        }
+    }
 }
 
 object ForumRouter : NavigationRouter() {
@@ -424,6 +485,18 @@ object AnimeListRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        val userId: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "AnimeListRouter#Param"
+        }
+    }
 }
 
 object MangaListRouter : NavigationRouter() {
@@ -434,6 +507,18 @@ object MangaListRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        val userId: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "MangaListRouter#Param"
+        }
+    }
 }
 
 object ImageViewerRouter : NavigationRouter() {

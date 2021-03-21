@@ -20,6 +20,7 @@ package co.anitrend.core.koin
 import android.os.Build
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.startup.AppInitializer
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.getColorFromAttr
@@ -40,6 +41,8 @@ import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
 import coil.fetch.VideoFrameFileFetcher
 import coil.fetch.VideoFrameUriFetcher
+import io.wax911.emojify.initializer.EmojiInitializer
+import io.wax911.emojify.manager.IEmojiManager
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -86,6 +89,10 @@ private val coreModule = module {
                         context.getColorFromAttr(R.attr.colorSecondary)
                     ).build()
             )
+    }
+    factory<IEmojiManager> {
+        AppInitializer.getInstance(androidContext())
+            .initializeComponent(EmojiInitializer::class.java)
     }
 }
 

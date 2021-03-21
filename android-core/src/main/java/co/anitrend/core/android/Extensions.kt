@@ -184,11 +184,15 @@ fun Menu.removeItems(
  * Change visibility of all items for [this] menu
  *
  * @param shouldShow Visibility
+ * @param filter Predicate for which menu items to hid
  */
 fun Menu.setVisibilityForAllItems(
-    shouldShow: Boolean
+    shouldShow: Boolean,
+    filter: (MenuItem) -> Boolean
 ) {
-    iterator().forEach { item ->
-        item.isVisible = shouldShow
-    }
+    iterator().asSequence()
+        .filter(filter)
+        .forEach {
+            it.isVisible = shouldShow
+        }
 }

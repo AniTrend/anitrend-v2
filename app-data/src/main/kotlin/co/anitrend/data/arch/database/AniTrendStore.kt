@@ -70,7 +70,7 @@ import org.jetbrains.annotations.TestOnly
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
-    views = [TagEntity.Extended::class]
+    views = [TagEntity.Extended::class, GenreEntity.Extended::class]
 )
 @TypeConverters(
     value = [
