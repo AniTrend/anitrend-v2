@@ -26,4 +26,8 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.tag))
 
     implementation(project(Libraries.AniTrend.CommonUi.media))
+
+    //implementation(Libraries.Sheets.core)
+    //implementation(Libraries.Sheets.input)
+    //implementation(Libraries.Sheets.calendar)
 }

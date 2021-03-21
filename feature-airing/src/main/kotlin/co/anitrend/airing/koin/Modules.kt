@@ -49,11 +49,12 @@ private val fragmentModule = module {
 }
 
 private val viewModelModule = module {
-    viewModel { _ ->
+    viewModel { scope ->
         AiringViewModel(
             state = AiringState(
                 interactor = get()
-            )
+            ),
+            stateHandle = scope.get()
         )
     }
 }

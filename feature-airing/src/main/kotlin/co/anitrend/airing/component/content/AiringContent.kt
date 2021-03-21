@@ -19,24 +19,18 @@ package co.anitrend.airing.component.content
 
 import android.view.MenuItem
 import androidx.annotation.IntegerRes
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
-import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
 import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
 import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.core.ui.fragmentByTagOrNew
-import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.navigation.AiringRouter
-import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.extensions.asBundle
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,9 +41,9 @@ class AiringContent(
     override val supportViewAdapter: ISupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
-    private val viewModel by viewModel<AiringViewModel>()
-
-    private val param: AiringRouter.Param? by argument(AiringRouter.Param.KEY)
+    private val viewModel by viewModel<AiringViewModel>(
+        state = { arguments.orEmpty() }
+    )
 
     override val defaultSpanSize: Int
         get() = getSpanSizeByPreference(
@@ -86,7 +80,15 @@ class AiringContent(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
-
+                /*CalendarSheet().show(requireContext()) {
+                    title("Select date range")
+                    onPositive { dateStart: Calendar, dateEnd: Calendar? ->
+                        if (dateEnd == null)
+                            viewModel.filter.value?.airingAt = Instant.ofEpochMilli(
+                                dateStart.timeInMillis
+                            ).epochSecond.toInt()
+                    }
+                }*/
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -102,8 +104,8 @@ class AiringContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        supportStateLayout?.assureParamNotMissing(param) {
-            viewModelState().invoke(requireNotNull(param))
+        supportStateLayout?.assureParamNotMissing(viewModel.param) {
+            viewModelState().invoke(requireNotNull(viewModel.param))
         }
         lifecycleScope.launchWhenResumed {
             settings.preferredViewMode.flow.collect {
@@ -128,6 +130,9 @@ class AiringContent(
     override fun setUpViewModelObserver() {
         viewModelState().model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
+        }
+        viewModel.filter.observe(viewLifecycleOwner) {
+            viewModelState().invoke(it)
         }
     }
 
