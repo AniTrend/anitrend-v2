@@ -38,4 +38,5 @@ interface INavigationDrawer {
     fun removeOnStateChangedAction(action: OnStateChangedAction)
 
     fun setCheckedItem(@IdRes selectedItem: Int)
+    fun toggleMenuVisibility(showDrawerMenu: Boolean)
 }

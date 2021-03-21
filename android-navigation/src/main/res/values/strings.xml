@@ -70,4 +70,9 @@
     <string name="account_header_inactive">Inactive accounts</string>
     <!-- Category for other accounts accounts which may not be related to AL -->
     <string name="account_header_other">Other accounts</string>
+
+    <!-- Menu action on the app bar to open notifications screen -->
+    <string name="action_notifications">Notifications</string>
+    <!-- Menu action on the app bar to open app updates screen -->
+    <string name="action_updates">Updates</string>
 </resources>

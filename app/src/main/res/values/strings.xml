@@ -16,14 +16,6 @@
   -->
 
 <resources>
-
-    <!-- Menu action on the app bar to open accounts screen -->
-    <string name="action_account">Accounts</string>
-    <!-- Menu action on the app bar to open notifications screen -->
-    <string name="action_notifications">Notifications</string>
-    <!-- Menu action on the app bar to open app updates screen -->
-    <string name="action_updates">Updates</string>
-
     <!-- A confirmation notice to prompt use to tap the back button again to exit the application -->
     <string name="message_confirm_exit_app">Press back again to exit the app</string>
 </resources>

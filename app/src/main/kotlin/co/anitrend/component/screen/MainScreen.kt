@@ -22,9 +22,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.IdRes
-import androidx.appcompat.widget.ActionMenuView
 import androidx.core.app.ActivityCompat
-import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
@@ -34,8 +32,6 @@ import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
-import co.anitrend.core.android.addItems
-import co.anitrend.core.android.removeItems
 import co.anitrend.core.android.setVisibilityForAllItems
 import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.extensions.orEmpty
@@ -53,6 +49,7 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.sorting.Sorting
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -87,35 +84,18 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         )
     }
 
-    private val drawerMenu by lazy(UNSAFE) {
-        val actionView = ActionMenuView(this)
-        menuInflater.inflate(R.menu.drawer_menu, actionView.menu)
-        actionView.menu
-    }
-
     private val changeSettingsMenuStateAction by lazy(UNSAFE) {
         ChangeSettingsMenuStateAction { showDrawerMenu ->
             val menu = requireBinding().bottomAppBar.menu
             lifecycleScope.launch {
                 // Toggle between the current destination's FAB menu and the menu which should
                 // be displayed when the BottomNavigationDrawer is open.
-                if (showDrawerMenu) {
-                    menu.setVisibilityForAllItems(false)
-                    menu.addItems(drawerMenu) { item ->
-                        when (item.itemId) {
-                            R.id.action_account,
-                            R.id.action_notifications -> MenuItem.SHOW_AS_ACTION_ALWAYS
-                            else -> MenuItem.SHOW_AS_ACTION_NEVER
-                        }
-                    }
-                } else {
-                    menu.removeItems(drawerMenu)
-                    menu.setVisibilityForAllItems(true)
+                navigationDrawer.toggleMenuVisibility(showDrawerMenu)
+                // add a delay to hide specific menu items from this controller
+                delay(128)
+                menu.setVisibilityForAllItems(!showDrawerMenu) {
+                    it.itemId == R.id.action_search
                 }
-                //binding?.bottomAppBar?.replaceMenu(
-                //    if (showDrawerMenu) R.menu.drawer_menu
-                //    else R.menu.main_menu
-                //)
             }
         }
     }
@@ -196,27 +176,9 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 SearchRouter.startActivity(this)
                 return true
             }
-            R.id.action_about -> {
-                AboutRouter.startActivity(this)
-                return true
-            }
             R.id.action_settings -> {
                 SettingsRouter.startActivity(this)
                 return true
-            }
-            R.id.action_notifications -> {
-                NotificationRouter.startActivity(this)
-                return true
-            }
-            R.id.action_updates -> {
-                UpdaterRouter.startActivity(this)
-                return true
-            }
-            R.id.action_account -> {
-                if (presenter.settings.isAuthenticated.value)
-                    ProfileRouter.startActivity(this)
-                else
-                    AuthRouter.startActivity(this)
             }
         }
         return super.onOptionsItemSelected(item)
