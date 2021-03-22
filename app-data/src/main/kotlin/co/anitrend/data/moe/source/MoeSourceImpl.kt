@@ -24,11 +24,12 @@ import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.moe.converters.SourceEntityConverter
 import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.datasource.remote.MoeRemoteSource
-import co.anitrend.data.moe.model.local.MoeSourceQuery
 import co.anitrend.data.moe.source.contract.MoeController
 import co.anitrend.data.moe.source.contract.MoeSource
+import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -43,17 +44,20 @@ internal class MoeSourceImpl(
     override val dispatcher: ISupportDispatcher
 ) : MoeSource() {
 
-    override val observable =
-        localSource.withAniListIdX(query.id)
+    override fun observable(): Flow<IMediaSourceId> {
+        return localSource.withAniListIdFlow(query.id)
             .flowOn(dispatcher.io)
             .filterNotNull()
             .map(converter::convertFrom)
             .flowOn(coroutineContext)
-
+    }
 
     override suspend fun getSourceRelation(callback: RequestCallback): Boolean {
         val deferred = async {
-            remoteSource.getFromSource(query)
+            remoteSource.getFromSource(
+                query.source.type,
+                query.id
+            )
         }
 
         val result = controller(deferred, callback)

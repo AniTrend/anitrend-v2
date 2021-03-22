@@ -42,6 +42,6 @@ internal class MoeCache(
     class Identity(
         val query: MoeSourceQuery,
         override val id: Long = query.id,
-        override val key: String = "moe_relation_${query.source.type}"
+        override val key: String = "moe_relation_${query.source}"
     ) : CacheIdentity
 }

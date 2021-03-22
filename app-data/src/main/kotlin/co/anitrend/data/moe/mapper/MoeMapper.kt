@@ -24,19 +24,20 @@ import co.anitrend.data.moe.datasource.local.MoeLocalSource
 import co.anitrend.data.moe.entity.MoeEntity
 import co.anitrend.data.moe.model.remote.MoeModel
 
-internal class MoeResponseMapper(
+internal class MoeMapper(
     private val localSource: MoeLocalSource,
     private val converter: SourceModelConverter
-) : DefaultMapper<MoeModel, MoeEntity>() {
+) : DefaultMapper<MoeModel?, MoeEntity?>() {
 
     /**
      * Handles the persistence of [data] into a local source
      *
      * @return [OutCome.Pass] or [OutCome.Fail] of the operation
      */
-    override suspend fun persistChanges(data: MoeEntity): OutCome<Nothing?> {
+    override suspend fun persistChanges(data: MoeEntity?): OutCome<Nothing?> {
         return runCatching {
-            localSource.upsert(data)
+            if (data != null)
+                localSource.upsert(data)
             OutCome.Pass(null)
         }.getOrElse { OutCome.Fail(listOf(it)) }
     }
@@ -48,6 +49,6 @@ internal class MoeResponseMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: MoeModel
-    ) = converter.convertFrom(source)
+        source: MoeModel?
+    ) = source?.let { converter.convertFrom(it) }
 }

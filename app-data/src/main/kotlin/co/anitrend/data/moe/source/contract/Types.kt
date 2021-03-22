@@ -21,4 +21,4 @@ import co.anitrend.data.arch.controller.core.DefaultController
 import co.anitrend.data.moe.entity.MoeEntity
 import co.anitrend.data.moe.model.remote.MoeModel
 
-internal typealias MoeController = DefaultController<MoeModel, MoeEntity>
+internal typealias MoeController = DefaultController<MoeModel?, MoeEntity?>

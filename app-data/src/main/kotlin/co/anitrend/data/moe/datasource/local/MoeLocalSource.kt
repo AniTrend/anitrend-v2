@@ -53,7 +53,7 @@ internal abstract class MoeLocalSource : ILocalSource<MoeEntity> {
         select * from moe
         where anilist = :anilist
     """)
-    abstract fun withAniListIdX(
+    abstract fun withAniListIdFlow(
         anilist: Long
     ): Flow<MoeEntity?>
 

@@ -24,7 +24,7 @@ import co.anitrend.data.arch.extension.defaultController
 import co.anitrend.data.moe.cache.MoeCache
 import co.anitrend.data.moe.converters.SourceEntityConverter
 import co.anitrend.data.moe.converters.SourceModelConverter
-import co.anitrend.data.moe.mapper.MoeResponseMapper
+import co.anitrend.data.moe.mapper.MoeMapper
 import co.anitrend.data.moe.source.MoeSourceImpl
 import co.anitrend.data.moe.source.contract.MoeSource
 import org.koin.dsl.module
@@ -35,7 +35,7 @@ private val sourceModule = module {
             remoteSource = api(EndpointType.RELATION_MOE),
             localSource = db().sourceDao(),
             controller = defaultController(
-                mapper = get<MoeResponseMapper>()
+                mapper = get<MoeMapper>()
             ),
             clearDataHelper = get(),
             converter = get(),
@@ -64,13 +64,12 @@ private val cacheModule = module {
 
 private val mapperModule = module {
     factory {
-        MoeResponseMapper(
+        MoeMapper(
             localSource = db().sourceDao(),
             converter = get(),
         )
     }
 }
-
 
 internal val sourceModules = listOf(
     sourceModule,

@@ -34,24 +34,23 @@ import kotlinx.coroutines.launch
 
 internal abstract class MoeSource : SupportCoreDataSource() {
 
-    internal lateinit var query: MoeSourceQuery
+    protected lateinit var query: MoeSourceQuery
 
     protected lateinit var cacheIdentity: CacheIdentity
 
     protected abstract val cachePolicy: ICacheStorePolicy
 
-    internal abstract val observable: Flow<IMediaSourceId>
+    internal abstract fun observable(): Flow<IMediaSourceId>
 
-    internal abstract suspend fun getSourceRelation(
+    protected abstract suspend fun getSourceRelation(
         callback: RequestCallback
     ): Boolean
 
-    operator fun invoke(sourceQuery: MoeSourceQuery): Flow<IMediaSourceId> {
+    operator fun invoke(sourceQuery: MoeSourceQuery) {
         query = sourceQuery
         cacheIdentity = MoeCache.Identity(sourceQuery)
         cachePolicy(scope, requestHelper, cacheIdentity) {
             getSourceRelation(it)
         }
-        return observable
     }
 }

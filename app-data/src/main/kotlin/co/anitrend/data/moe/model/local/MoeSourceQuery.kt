@@ -22,9 +22,11 @@ import kotlinx.serialization.Serializable
 
 /**
  * Query for relation request
+ *
+ * @see MoeSourceType.ANILIST
  */
 @Serializable
 internal data class MoeSourceQuery(
-    @SerialName("source") val source: MoeSourceType,
-    @SerialName("id") val id: Long
+    @SerialName("id") val id: Long,
+    @SerialName("source") val source: MoeSourceType = MoeSourceType.ANILIST,
 )

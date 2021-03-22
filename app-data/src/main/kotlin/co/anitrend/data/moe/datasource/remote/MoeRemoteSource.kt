@@ -22,13 +22,16 @@ import co.anitrend.data.moe.model.local.MoeSourceQuery
 import co.anitrend.data.moe.model.remote.MoeModel
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 internal interface MoeRemoteSource {
 
     @JSON
-    @POST("/api/ids/source")
+    @GET("api/ids")
     suspend fun getFromSource(
-        @Body sourceQuery: MoeSourceQuery
-    ) : Response<MoeModel>
+        @Query("source") source: String,
+        @Query("id") id: Long
+    ) : Response<MoeModel?>
 }
