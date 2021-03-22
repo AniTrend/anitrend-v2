@@ -50,4 +50,18 @@ internal class DefaultController<S, out D>(
         }
         mapped
     }
+
+    suspend operator fun invoke(
+        resource: Deferred<Response<S>>,
+        requestCallback: RequestCallback,
+        transformer: (S) -> S
+    ) = strategy(requestCallback) {
+        val response = client.fetch(resource)
+        val data = transformer(response)
+        val mapped = mapper.onResponseMapFrom(data)
+        withContext(dispatcher) {
+            mapper.onResponseDatabaseInsert(mapped)
+        }
+        mapped
+    }
 }
