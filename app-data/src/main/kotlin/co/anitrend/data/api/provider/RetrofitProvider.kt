@@ -17,7 +17,7 @@
 
 package co.anitrend.data.api.provider
 
-import androidx.collection.LruCache
+import androidx.collection.lruCache
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.api.helper.cache.CacheHelper
@@ -41,7 +41,19 @@ import java.util.*
 internal object RetrofitProvider {
 
     private val moduleTag = javaClass.simpleName
-    private val cache = LruCache<EndpointType, Retrofit>(3)
+    private val cache = lruCache<EndpointType, Retrofit>(
+        4,
+        sizeOf = { key, _ ->
+            when (key) {
+                EndpointType.MEDIA_RSS,
+                EndpointType.NEWS_RSS -> 2
+                else -> 1
+            }
+        },
+        onEntryRemoved = { evicted, key, _, _ ->
+            Timber.tag(moduleTag).d("Cached retrofit removed:  key -> $key | evicted -> $evicted")
+        }
+    )
 
     private fun provideOkHttpClient(type: EndpointType, scope: Scope) : OkHttpClient {
         val isDebugEnv = BuildConfig.DEBUG
@@ -53,7 +65,7 @@ internal object RetrofitProvider {
             )
         }.dispatcher(
             Dispatcher().apply {
-                maxRequests = if (isDebugEnv) 1 else 2
+                maxRequests = if (isDebugEnv) 1 else 4
             }
         )
 
