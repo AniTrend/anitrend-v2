@@ -28,8 +28,7 @@ import org.threeten.bp.Instant
     tableName = "cache_log",
     indices = [
         Index(
-            value = ["cache_item_id"],
-            unique = true
+            value = ["cache_item_id"]
         )
     ]
 )

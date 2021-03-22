@@ -31,5 +31,6 @@ enum class CacheRequest(val alias: String) {
     NEWS("news"),
     EPISODE("episode"),
     MOE("moe"),
+    JIKAN("jikan"),
     XEM("the_xem"),
 }

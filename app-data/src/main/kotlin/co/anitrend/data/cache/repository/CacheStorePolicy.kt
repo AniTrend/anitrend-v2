@@ -23,6 +23,8 @@ import co.anitrend.data.cache.helper.inPast
 import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.model.CacheRequest
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
 
@@ -33,7 +35,9 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
 
     private suspend fun getRequestInstant(
         entityId: Long
-    ) = localSource.getCacheLog(request, entityId)?.timestamp
+    ) = withContext(Dispatchers.IO) {
+        localSource.getCacheLog(request, entityId)?.timestamp
+    }
 
     /**
      * Checks if the given [identity] has been requested before a certain time [instant]
@@ -58,19 +62,23 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
      */
     override suspend fun hasBeenRequested(
         identity: CacheIdentity
-    ) = localSource.countMatching(request, identity.id) > 0
+    ) = withContext(Dispatchers.IO) {
+        localSource.countMatching(request, identity.id) > 0
+    }
 
     /**
      * Updates the last request [timestamp] for the given [identity]
      */
     override suspend fun updateLastRequest(identity: CacheIdentity, timestamp: Instant) {
-        localSource.upsert(
-            CacheEntity(
-                request = request,
-                cacheItemId = identity.id,
-                timestamp = timestamp
+        withContext(Dispatchers.IO) {
+            localSource.upsert(
+                CacheEntity(
+                    request = request,
+                    cacheItemId = identity.id,
+                    timestamp = timestamp
+                )
             )
-        )
+        }
     }
 
     /**
