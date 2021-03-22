@@ -167,7 +167,7 @@ object MediaRouter : NavigationRouter() {
     @Parcelize
     data class Param(
         val id: Long,
-        val type: MediaType? = null,
+        val type: MediaType,
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
