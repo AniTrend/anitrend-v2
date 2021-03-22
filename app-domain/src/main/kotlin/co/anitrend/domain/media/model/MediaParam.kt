@@ -33,7 +33,7 @@ sealed class MediaParam {
      */
     data class Detail(
         val id: Long,
-        val type: MediaType? = null,
+        val type: MediaType,
         val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
     ) : MediaParam()
 

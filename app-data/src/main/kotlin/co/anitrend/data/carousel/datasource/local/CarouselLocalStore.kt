@@ -95,7 +95,7 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         pageSize: Int,
         season: MediaSeason,
         seasonYear: FuzzyDateLike
-    ): Flow<List<MediaEntityView.WithMediaList>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media

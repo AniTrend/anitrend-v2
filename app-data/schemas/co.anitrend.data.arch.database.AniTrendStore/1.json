@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4f3cead6ee9f8a596bd8e8ce2854ab02",
+    "identityHash": "5288aae2533784ecb26ebc14741efd71",
     "entities": [
       {
         "tableName": "cache_log",
@@ -42,11 +42,11 @@
         "indices": [
           {
             "name": "index_cache_log_cache_item_id",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "cache_item_id"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_cache_log_cache_item_id` ON `${TABLE_NAME}` (`cache_item_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cache_log_cache_item_id` ON `${TABLE_NAME}` (`cache_item_id`)"
           }
         ],
         "foreignKeys": []
@@ -408,7 +408,7 @@
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_recommendation_blocked` INTEGER NOT NULL, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `mal_id` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "nextAiringId",
@@ -495,6 +495,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "isRecommendationBlocked",
+            "columnName": "is_recommendation_blocked",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "isLocked",
             "columnName": "is_locked",
             "affinity": "INTEGER",
@@ -569,6 +575,12 @@
           {
             "fieldPath": "volumes",
             "columnName": "volumes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "malId",
+            "columnName": "mal_id",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -657,7 +669,16 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_media_mal_id",
+            "unique": true,
+            "columnNames": [
+              "mal_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_media_mal_id` ON `${TABLE_NAME}` (`mal_id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -2112,6 +2133,394 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "jikan",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`info` TEXT, `volumes` INTEGER, `chapters` INTEGER, `source` TEXT, `rating` TEXT, `episodes` INTEGER, `duration` TEXT, `premiered` TEXT, `broadcast` TEXT, `trailer_url` TEXT, `opening_themes` TEXT NOT NULL, `ending_themes` TEXT NOT NULL, `url` TEXT, `image_url` TEXT, `type` TEXT, `releasing` INTEGER, `synopsis` TEXT, `background` TEXT, `id` INTEGER NOT NULL, `title_japanese` TEXT, `title_english` TEXT, `title_preferred` TEXT, `title_synonyms` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "info",
+            "columnName": "info",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "volumes",
+            "columnName": "volumes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "chapters",
+            "columnName": "chapters",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "episodes",
+            "columnName": "episodes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "premiered",
+            "columnName": "premiered",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "broadcast",
+            "columnName": "broadcast",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trailerUrl",
+            "columnName": "trailer_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "openingThemes",
+            "columnName": "opening_themes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endingThemes",
+            "columnName": "ending_themes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imageUrl",
+            "columnName": "image_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "releasing",
+            "columnName": "releasing",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "synopsis",
+            "columnName": "synopsis",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "background",
+            "columnName": "background",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title.japanese",
+            "columnName": "title_japanese",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.english",
+            "columnName": "title_english",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.preferred",
+            "columnName": "title_preferred",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title.synonyms",
+            "columnName": "title_synonyms",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "jikan_studio",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "jikanId",
+            "columnName": "jikan_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_jikan_studio_jikan_id",
+            "unique": false,
+            "columnNames": [
+              "jikan_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_studio_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "jikan",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "jikan_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "jikan_licensor",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "jikanId",
+            "columnName": "jikan_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_jikan_licensor_jikan_id",
+            "unique": false,
+            "columnNames": [
+              "jikan_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_licensor_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "jikan",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "jikan_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "jikan_producer",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "jikanId",
+            "columnName": "jikan_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_jikan_producer_jikan_id",
+            "unique": false,
+            "columnNames": [
+              "jikan_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_producer_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "jikan",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "jikan_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "jikan_author",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "jikanId",
+            "columnName": "jikan_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_jikan_author_jikan_id",
+            "unique": false,
+            "columnNames": [
+              "jikan_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_author_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "jikan",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "jikan_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [
@@ -2126,7 +2535,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4f3cead6ee9f8a596bd8e8ce2854ab02')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5288aae2533784ecb26ebc14741efd71')"
     ]
   }
 }

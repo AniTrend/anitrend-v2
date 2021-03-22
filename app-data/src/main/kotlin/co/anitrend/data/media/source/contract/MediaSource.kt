@@ -39,7 +39,7 @@ internal class MediaSource {
 
     abstract class Detail : SupportCoreDataSource() {
 
-        protected lateinit var query: MediaQuery
+        protected lateinit var query: MediaQuery.Detail
 
         protected lateinit var cacheIdentity: CacheIdentity
 

@@ -22,6 +22,7 @@ import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.arch.extension.asFuzzyDate
 import co.anitrend.data.arch.extension.toFuzzyDateInt
 import co.anitrend.data.arch.extension.toFuzzyDateModel
+import co.anitrend.data.media.converter.MediaEntityViewConverter.Companion.createMediaList
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.media.model.MediaModel
@@ -37,12 +38,13 @@ import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
-import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
+import java.util.*
 
 internal class MediaConverter(
     override val fromType: (MediaModel) -> Media = ::transform,
@@ -114,7 +116,7 @@ internal class MediaConverter(
                 ),
                 countryCode = source.countryOfOrigin,
                 description = source.description,
-                favouritesCount = source.id,
+                favouritesCount = source.favourites,
                 genres = source.genres.map {
                     Genre.Extended(
                         id = it.hashCode().toLong(),
@@ -174,6 +176,8 @@ internal class MediaConverter(
                     MediaType.ANIME -> Media.Category.Anime(
                         source.episodes ?: 0,
                         source.duration ?: 0,
+                        broadcast = null,
+                        premiered = null,
                         source.nextAiringEpisode?.let {
                             AiringSchedule(
                                 airingAt = it.airingAt,
@@ -201,7 +205,7 @@ internal class MediaConverter(
                 ),
                 countryCode = source.countryOfOrigin,
                 description = source.description,
-                favouritesCount = source.id,
+                favouritesCount = source.favourites,
                 genres = source.genres.map {
                    Genre.Extended(
                        id = it.hashCode().toLong(),
@@ -261,6 +265,8 @@ internal class MediaConverter(
                     MediaType.ANIME -> Media.Category.Anime(
                         source.episodes ?: 0,
                         source.duration ?: 0,
+                        broadcast = null,
+                        premiered = null,
                         source.nextAiringEpisode?.let {
                             AiringSchedule(
                                 airingAt = it.airingAt,
@@ -282,6 +288,11 @@ internal class MediaConverter(
                 mediaList = source.createMediaList()
             )
             is MediaModel.Extended -> Media.Extended(
+                background = null,
+                ageRating = null,
+                extraInfo = null,
+                openingThemes = emptyList(),
+                endingThemes = emptyList(),
                 sourceId = MediaSourceId.empty().copy(
                     mal = source.idMal,
                     anilist = source.id
@@ -295,7 +306,7 @@ internal class MediaConverter(
                         id = it.id,
                     )
                 },
-                favouritesCount = source.id,
+                favouritesCount = source.favourites,
                 genres = source.genres.map  {
                     Genre.Extended(
                         id = it.hashCode().toLong(),
@@ -365,6 +376,8 @@ internal class MediaConverter(
                     MediaType.ANIME -> Media.Category.Anime(
                         source.episodes ?: 0,
                         source.duration ?: 0,
+                        broadcast = null,
+                        premiered = null,
                         source.nextAiringEpisode?.let {
                             AiringSchedule(
                                 airingAt = it.airingAt,
@@ -429,6 +442,7 @@ internal class MediaModelConverter(
             isAdult = source.isAdult,
             isFavourite = source.isFavourite,
             isLicensed = source.isLicensed,
+            isRecommendationBlocked = source.isRecommendationBlocked,
             isLocked = source.isLocked,
             meanScore = source.meanScore,
             popularity = source.popularity,
@@ -442,6 +456,7 @@ internal class MediaModelConverter(
             type = source.type,
             updatedAt = source.updatedAt,
             volumes = source.volumes,
+            malId = source.idMal,
             id = source.id
         )
     }
@@ -457,284 +472,171 @@ internal class MediaEntityViewConverter(
             return MediaListEntityConverter().convertFrom(this)
         }
 
+        private fun MediaEntityView.createMedia(): Media {
+            return Media.Core(
+                sourceId = MediaSourceId.empty().copy(
+                    anilist = media.id,
+                    mal = media.malId ?: moe?.mal,
+                    aniDb = moe?.aniDb,
+                    trakt = 0, // TODO provide trakt Id?
+                    kitsu = moe?.kitsu,
+                ),
+                countryCode = media.countryOfOrigin,
+                description = media.description ?: jikan?.synopsis,
+                favouritesCount = media.favourites,
+                genres = genres.map {
+                    Genre.Extended(
+                        id = it.id,
+                        name = it.genre,
+                        emoji = it.emoji,
+                        background = media.coverImage.color
+                    )
+                },
+                twitterTag = media.hashTag,
+                isLicensed = media.isLicensed,
+                isLocked = media.isLocked,
+                isRecommendationBlocked = media.isRecommendationBlocked,
+                siteUrl = media.siteUrl,
+                source = media.source ?: jikan?.source?.let {
+                    runCatching {
+                        MediaSource.valueOf(it.toUpperCase(Locale.ROOT))
+                    }.getOrNull()
+                } ?: jikan?.type?.let {
+                    runCatching {
+                        MediaSource.valueOf(it.toUpperCase(Locale.ROOT))
+                    }.getOrNull()
+                },
+                synonyms = media.synonyms.let {
+                    if (it.isEmpty())
+                        jikan?.title?.synonyms.orEmpty()
+                    else it
+                },
+                tags = tags.map {
+                    Tag.Extended(
+                        name = it.name,
+                        description = it.description,
+                        category = it.category,
+                        rank = it.rank,
+                        isGeneralSpoiler = it.isGeneralSpoiler,
+                        isMediaSpoiler = it.isMediaSpoiler,
+                        isAdult = it.isAdult,
+                        id = it.id,
+                        background = media.coverImage.color
+                    )
+                },
+                trailer = media.trailer?.let {
+                    MediaTrailer(
+                        id = it.id,
+                        site = it.site,
+                        thumbnail = it.thumbnail
+                    )
+                },
+                format = media.format,
+                season = media.season,
+                status = media.status,
+                meanScore = media.meanScore ?: 0,
+                averageScore = media.averageScore ?: 0,
+                startDate = media.startDate.toFuzzyDateModel().asFuzzyDate(),
+                endDate = media.endDate.toFuzzyDateModel().asFuzzyDate(),
+                title = MediaTitle(
+                    romaji = media.title.romaji ?: jikan?.title?.japanese,
+                    english = media.title.english ?: jikan?.title?.english,
+                    native = media.title.original,
+                    userPreferred = media.title.userPreferred ?: jikan?.title?.preferred
+                ),
+                image = MediaImage(
+                    color = media.coverImage.color,
+                    extraLarge = media.coverImage.extraLarge ?: jikan?.imageUrl,
+                    large = media.coverImage.large ?: jikan?.imageUrl,
+                    medium = media.coverImage.medium ?: jikan?.imageUrl,
+                    banner = media.coverImage.banner,
+                ),
+                category = when (media.type) {
+                    MediaType.ANIME -> Media.Category.Anime(
+                        media.episodes ?: jikan?.episodes ?: 0,
+                        media.duration ?: 0,
+                        broadcast = jikan?.broadcast,
+                        premiered = jikan?.premiered,
+                        nextAiring?.let {
+                            AiringSchedule(
+                                airingAt = it.airingAt,
+                                episode = it.episode,
+                                mediaId = media.id,
+                                timeUntilAiring = it.timeUntilAiring,
+                                id = it.id
+                            )
+                        }
+                    )
+                    MediaType.MANGA -> Media.Category.Manga(
+                        media.chapters ?: jikan?.chapters ?: 0,
+                        media.volumes ?: jikan?.volumes ?: 0
+                    )
+                },
+                isAdult = media.isAdult,
+                isFavourite = media.isFavourite,
+                id = media.id,
+                mediaList = mediaList?.createMediaList()
+            )
+        }
+
         override fun transform(source: MediaEntityView) = when (source) {
-            is MediaEntityView.Core -> Media.Core(
-                sourceId = MediaSourceId.empty().copy(
-                    anilist = source.media.id
-                ),
-                countryCode = source.media.countryOfOrigin,
-                description = source.media.description,
-                favouritesCount = source.media.id,
-                genres = source.genres.map {
-                    Genre.Extended(
-                        id = it.id,
-                        name = it.genre,
-                        emoji = it.emoji,
-                        background = source.media.coverImage.color
-                    )
-                },
-                twitterTag = source.media.hashTag,
-                isLicensed = source.media.isLicensed,
-                isLocked = source.media.isLocked,
-                isRecommendationBlocked = false,
-                siteUrl = source.media.siteUrl,
-                source = source.media.source,
-                synonyms = source.media.synonyms,
-                tags = source.tags.map {
-                    Tag.Extended(
-                        name = it.name,
-                        description = it.description,
-                        category = it.category,
-                        rank = it.rank,
-                        isGeneralSpoiler = it.isGeneralSpoiler,
-                        isMediaSpoiler = it.isMediaSpoiler,
-                        isAdult = it.isAdult,
-                        id = it.id,
-                        background = source.media.coverImage.color
-                    )
-                },
-                format = source.media.format,
-                season = source.media.season,
-                status = source.media.status,
-                meanScore = source.media.meanScore ?: 0,
-                averageScore = source.media.averageScore ?: 0,
-                startDate = source.media.startDate.toFuzzyDateModel().asFuzzyDate(),
-                endDate = source.media.endDate.toFuzzyDateModel().asFuzzyDate(),
-                title = MediaTitle(
-                    romaji = source.media.title.romaji,
-                    english = source.media.title.english,
-                    native = source.media.title.original,
-                    userPreferred = source.media.title.userPreferred
-                ),
-                trailer = source.media.trailer?.let {
-                    MediaTrailer(
-                        id = it.id,
-                        site = it.site,
-                        thumbnail = it.thumbnail
-                    )
-                },
-                image = MediaImage(
-                    color = source.media.coverImage.color,
-                    extraLarge = source.media.coverImage.extraLarge,
-                    large = source.media.coverImage.large,
-                    medium = source.media.coverImage.medium,
-                    banner = source.media.coverImage.banner,
-                ),
-                category = when (source.media.type) {
-                    MediaType.ANIME -> Media.Category.Anime(
-                        source.media.episodes ?: 0,
-                        source.media.duration ?: 0,
-                        source.nextAiring?.let {
-                            AiringSchedule(
-                                airingAt = it.airingAt,
-                                episode = it.episode,
-                                mediaId = source.media.id,
-                                timeUntilAiring = it.timeUntilAiring,
-                                id = it.id
-                            )
-                        }
-                    )
-                    MediaType.MANGA -> Media.Category.Manga(
-                        source.media.chapters ?: 0,
-                        source.media.volumes ?: 0
-                    )
-                },
-                isAdult = source.media.isAdult,
-                isFavourite = source.media.isFavourite,
-                id = source.media.id,
-                mediaList = null
-            )
-            is MediaEntityView.WithMediaList -> Media.Core(
-                sourceId = MediaSourceId.empty().copy(
-                    anilist = source.media.id
-                ),
-                countryCode = source.media.countryOfOrigin,
-                description = source.media.description,
-                favouritesCount = source.media.id,
-                genres = source.genres.map {
-                    Genre.Extended(
-                        id = it.id,
-                        name = it.genre,
-                        emoji = it.emoji,
-                        background = source.media.coverImage.color
-                    )
-                },
-                twitterTag = source.media.hashTag,
-                isLicensed = source.media.isLicensed,
-                isLocked = source.media.isLocked,
-                isRecommendationBlocked = false,
-                siteUrl = source.media.siteUrl,
-                source = source.media.source,
-                synonyms = source.media.synonyms,
-                tags = source.tags.map {
-                    Tag.Extended(
-                        name = it.name,
-                        description = it.description,
-                        category = it.category,
-                        rank = it.rank,
-                        isGeneralSpoiler = it.isGeneralSpoiler,
-                        isMediaSpoiler = it.isMediaSpoiler,
-                        isAdult = it.isAdult,
-                        id = it.id,
-                        background = source.media.coverImage.color
-                    )
-                },
-                format = source.media.format,
-                season = source.media.season,
-                status = source.media.status,
-                meanScore = source.media.meanScore ?: 0,
-                averageScore = source.media.averageScore ?: 0,
-                startDate = source.media.startDate.toFuzzyDateModel().asFuzzyDate(),
-                endDate = source.media.endDate.toFuzzyDateModel().asFuzzyDate(),
-                title = MediaTitle(
-                    romaji = source.media.title.romaji,
-                    english = source.media.title.english,
-                    native = source.media.title.original,
-                    userPreferred = source.media.title.userPreferred
-                ),
-                trailer = source.media.trailer?.let {
-                    MediaTrailer(
-                        id = it.id,
-                        site = it.site,
-                        thumbnail = it.thumbnail
-                    )
-                },
-                image = MediaImage(
-                    color = source.media.coverImage.color,
-                    extraLarge = source.media.coverImage.extraLarge,
-                    large = source.media.coverImage.large,
-                    medium = source.media.coverImage.medium,
-                    banner = source.media.coverImage.banner,
-                ),
-                category = when (source.media.type) {
-                    MediaType.ANIME -> Media.Category.Anime(
-                        source.media.episodes ?: 0,
-                        source.media.duration ?: 0,
-                        source.nextAiring?.let {
-                            AiringSchedule(
-                                airingAt = it.airingAt,
-                                episode = it.episode,
-                                mediaId = source.media.id,
-                                timeUntilAiring = it.timeUntilAiring,
-                                id = it.id
-                            )
-                        }
-                    )
-                    MediaType.MANGA -> Media.Category.Manga(
-                        source.media.chapters ?: 0,
-                        source.media.volumes ?: 0
-                    )
-                },
-                isAdult = source.media.isAdult,
-                isFavourite = source.media.isFavourite,
-                id = source.media.id,
-                mediaList = source.mediaList?.createMediaList()
-            )
-            is MediaEntityView.WithMediaListExtended -> Media.Extended(
-                sourceId = MediaSourceId.empty().copy(
-                    anilist = source.media.id
-                ),
-                countryCode = source.media.countryOfOrigin,
-                description = source.media.description,
-                externalLinks = source.links.map {
-                    MediaExternalLink(
-                        site = it.site,
-                        url = it.url,
-                        id = it.id
-                    )
-                },
-                favouritesCount = source.media.id,
-                genres = source.genres.map {
-                    Genre.Extended(
-                        id = it.id,
-                        name = it.genre,
-                        emoji = it.emoji,
-                        background = source.media.coverImage.color
-                    )
-                },
-                twitterTag = source.media.hashTag,
-                isLicensed = source.media.isLicensed,
-                isLocked = source.media.isLocked,
-                isRecommendationBlocked = false,
-                rankings = source.ranks.map {
-                    MediaRank(
-                        allTime = it.allTime,
-                        context = it.context,
-                        format = it.format,
-                        rank = it.rank,
-                        season = it.season,
-                        type = it.type,
-                        year = it.year,
-                        id = it.id
-                    )
-                },
-                siteUrl = source.media.siteUrl,
-                source = source.media.source,
-                synonyms = source.media.synonyms,
-                tags = source.tags.map {
-                    Tag.Extended(
-                        name = it.name,
-                        description = it.description,
-                        category = it.category,
-                        rank = it.rank,
-                        isGeneralSpoiler = it.isGeneralSpoiler,
-                        isMediaSpoiler = it.isMediaSpoiler,
-                        isAdult = it.isAdult,
-                        id = it.id,
-                        background = source.media.coverImage.color
-                    )
-                },
-                trailer = source.media.trailer?.let {
-                    MediaTrailer(
-                        id = it.id,
-                        site = it.site,
-                        thumbnail = it.thumbnail
-                    )
-                },
-                format = source.media.format,
-                season = source.media.season,
-                status = source.media.status,
-                meanScore = source.media.meanScore ?: 0,
-                averageScore = source.media.averageScore ?: 0,
-                startDate = source.media.startDate.toFuzzyDateModel().asFuzzyDate(),
-                endDate = source.media.endDate.toFuzzyDateModel().asFuzzyDate(),
-                title = MediaTitle(
-                    romaji = source.media.title.romaji,
-                    english = source.media.title.english,
-                    native = source.media.title.original,
-                    userPreferred = source.media.title.userPreferred
-                ),
-                image = MediaImage(
-                    color = source.media.coverImage.color,
-                    extraLarge = source.media.coverImage.extraLarge,
-                    large = source.media.coverImage.large,
-                    medium = source.media.coverImage.medium,
-                    banner = source.media.coverImage.banner,
-                ),
-                category = when (source.media.type) {
-                    MediaType.ANIME -> Media.Category.Anime(
-                        source.media.episodes ?: 0,
-                        source.media.duration ?: 0,
-                        source.nextAiring?.let {
-                            AiringSchedule(
-                                airingAt = it.airingAt,
-                                episode = it.episode,
-                                mediaId = source.media.id,
-                                timeUntilAiring = it.timeUntilAiring,
-                                id = it.id
-                            )
-                        }
-                    )
-                    MediaType.MANGA -> Media.Category.Manga(
-                        source.media.chapters ?: 0,
-                        source.media.volumes ?: 0
-                    )
-                },
-                isAdult = source.media.isAdult,
-                isFavourite = source.media.isFavourite,
-                id = source.media.id,
-                mediaList = source.mediaList?.createMediaList()
-            )
+            is MediaEntityView.Core -> source.createMedia()
+            is MediaEntityView.Extended -> source.createMedia().let { media ->
+                Media.Extended(
+                    sourceId = media.sourceId,
+                    background = source.jikan?.background,
+                    ageRating = source.jikan?.rating,
+                    extraInfo = source.jikan?.info,
+                    openingThemes = source.jikan?.openingThemes.orEmpty(),
+                    endingThemes = source.jikan?.endingThemes.orEmpty(),
+                    countryCode = media.countryCode,
+                    description = media.description,
+                    externalLinks = source.links.map {
+                        MediaExternalLink(
+                            site = it.site,
+                            url = it.url,
+                            id = it.id
+                        )
+                    },
+                    favouritesCount = media.favouritesCount,
+                    genres = media.genres,
+                    twitterTag = media.twitterTag,
+                    isLicensed = media.isLicensed,
+                    isLocked = media.isLocked,
+                    isRecommendationBlocked = media.isRecommendationBlocked,
+                    rankings = source.ranks.map {
+                        MediaRank(
+                            allTime = it.allTime,
+                            context = it.context,
+                            format = it.format,
+                            rank = it.rank,
+                            season = it.season,
+                            type = it.type,
+                            year = it.year,
+                            id = it.id
+                        )
+                    },
+                    siteUrl = media.siteUrl,
+                    source = media.source,
+                    synonyms = media.synonyms,
+                    tags = media.tags,
+                    trailer = media.trailer,
+                    format = media.format,
+                    season = media.season,
+                    status = media.status,
+                    meanScore = media.meanScore,
+                    averageScore = media.averageScore,
+                    startDate = media.startDate,
+                    endDate = media.endDate,
+                    title = media.title,
+                    image = media.image,
+                    category = media.category,
+                    isAdult = media.isAdult,
+                    isFavourite = media.isFavourite,
+                    id = media.id,
+                    mediaList = media.mediaList
+                )
+            }
         }
     }
 }

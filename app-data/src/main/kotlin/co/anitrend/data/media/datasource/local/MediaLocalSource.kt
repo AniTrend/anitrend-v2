@@ -63,24 +63,11 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
         where id = :id
     """)
     @Transaction
-    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.WithMediaListExtended?>
-
-    @Query("""
-        select * from media
-    """)
-    @Transaction
-    abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
-
-    @Query("""
-        select * from media
-        order by popularity desc
-    """)
-    @Transaction
-    abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
+    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.Extended?>
 
     @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
-    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.WithMediaList>
+    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
 
     @Transaction
     open suspend fun upsertWithAttributes(

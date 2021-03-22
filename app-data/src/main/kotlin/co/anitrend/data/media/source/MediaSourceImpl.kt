@@ -25,6 +25,8 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.source.contract.CarouselSource
+import co.anitrend.data.jikan.model.query.JikanQuery
+import co.anitrend.data.jikan.source.contract.JikanSource
 import co.anitrend.data.media.MediaDetailController
 import co.anitrend.data.media.MediaNetworkController
 import co.anitrend.data.media.MediaPagedController
@@ -35,6 +37,8 @@ import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.contract.MediaSource
+import co.anitrend.data.moe.model.local.MoeSourceQuery
+import co.anitrend.data.moe.source.contract.MoeSource
 import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
@@ -53,6 +57,8 @@ internal class MediaSourceImpl {
         private val controller: MediaDetailController,
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
+        private val moeSource: MoeSource,
+        private val jikanSource: JikanSource,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher
     ) : MediaSource.Detail() {
@@ -67,12 +73,16 @@ internal class MediaSourceImpl {
         }
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
+            moeSource(MoeSourceQuery(query.param.id))
             val deferred = async {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getMediaDetail(queryBuilder)
             }
 
             val result = controller(deferred, requestCallback)
+
+            if (result?.malId != null)
+                jikanSource(JikanQuery(result.malId, result.type))
 
             return result != null
         }
@@ -83,6 +93,8 @@ internal class MediaSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
+            jikanSource.clearDataSource(context)
+            moeSource.clearDataSource(context)
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 localSource.clearById(cacheIdentity.id)

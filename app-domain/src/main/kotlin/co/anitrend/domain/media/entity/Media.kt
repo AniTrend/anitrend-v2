@@ -32,9 +32,7 @@ import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.media.enums.*
-import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.base.IMediaList
-import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.tag.entity.Tag
 
 sealed class Media : IMedia {
@@ -43,7 +41,7 @@ sealed class Media : IMedia {
     abstract val sourceId: IMediaSourceId
     abstract val countryCode: CharSequence?
     abstract val description: CharSequence?
-    abstract val favouritesCount: Long
+    abstract val favouritesCount: Int
     abstract val genres: Collection<Genre.Extended>
     abstract val twitterTag: CharSequence?
     abstract val isLicensed: Boolean?
@@ -72,12 +70,16 @@ sealed class Media : IMedia {
         data class Anime(
             val episodes: Int,
             val duration: Int,
-            val schedule: AiringSchedule?
+            val broadcast: String?,
+            val premiered: String?,
+            val schedule: AiringSchedule?,
         ) : Category(MediaType.ANIME) {
             companion object {
                 fun empty() = Anime(
                     0,
                     0,
+                    broadcast = null,
+                    premiered = null,
                     null
                 )
             }
@@ -120,7 +122,7 @@ sealed class Media : IMedia {
         override val sourceId: IMediaSourceId,
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
-        override val favouritesCount: Long,
+        override val favouritesCount: Int,
         override val genres: Collection<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
@@ -167,6 +169,11 @@ sealed class Media : IMedia {
     }
 
     data class Extended(
+        val background: String?,
+        val ageRating: String?,
+        val extraInfo: String?,
+        val openingThemes: Collection<String>,
+        val endingThemes: Collection<String>,
         val externalLinks: Collection<IMediaExternalLink>,
         val rankings: Collection<IMediaRank>,
         override val trailer: IMediaTrailer?,
@@ -187,7 +194,7 @@ sealed class Media : IMedia {
         override val sourceId: IMediaSourceId,
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
-        override val favouritesCount: Long,
+        override val favouritesCount: Int,
         override val genres: Collection<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
@@ -200,6 +207,11 @@ sealed class Media : IMedia {
     ) : Media() {
         companion object {
             fun empty() = Extended(
+                background = null,
+                ageRating = null,
+                extraInfo = null,
+                openingThemes = emptyList(),
+                endingThemes = emptyList(),
                 sourceId = MediaSourceId.empty(),
                 countryCode = null,
                 description = null,
