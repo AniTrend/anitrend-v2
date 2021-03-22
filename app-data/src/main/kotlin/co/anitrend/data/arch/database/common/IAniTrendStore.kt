@@ -24,6 +24,7 @@ import co.anitrend.data.carousel.datasource.local.ICarouselStore
 import co.anitrend.data.character.datasource.local.ICharacterStore
 import co.anitrend.data.episode.datasource.local.IEpisodeStore
 import co.anitrend.data.genre.datasource.local.IGenreStore
+import co.anitrend.data.jikan.datasource.local.IJikanStore
 import co.anitrend.data.link.datasource.ILinkStore
 import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.medialist.datasource.local.IMediaListStore
@@ -38,7 +39,7 @@ import co.anitrend.data.user.datasource.local.IUserStore
 internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
     IMoeStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore, IUserStore,
     IMediaListStore, INewsStore, IEpisodeStore, ICharacterStore, IStaffStore, IStudioStore,
-    ILinkStore, IRankStore {
+    ILinkStore, IRankStore, IJikanStore {
 
     companion object {
 
@@ -49,7 +50,7 @@ internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
             ICarouselStore::class, ICacheStore::class, IUserStore::class,
             IMediaListStore::class, INewsStore::class, IEpisodeStore::class,
             ICharacterStore::class, IStaffStore::class, IStudioStore::class,
-            ILinkStore::class, IRankStore::class
+            ILinkStore::class, IRankStore::class, IJikanStore::class
         )
     }
 }
