@@ -46,11 +46,7 @@ internal class TraktApi(
 
         if (BuildConfig.DEBUG) {
             builder.addInterceptor(koinOf<HttpLoggingInterceptor>())
-                .addInterceptor(
-                    koinOf<ChuckerInterceptor>().apply {
-                        redactHeader("Auth-Token")
-                    }
-                )
+                .addInterceptor(koinOf<ChuckerInterceptor>())
         }
     }
 }
