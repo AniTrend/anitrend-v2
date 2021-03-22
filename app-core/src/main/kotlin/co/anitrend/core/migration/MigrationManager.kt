@@ -42,18 +42,22 @@ internal class MigrationManager(
         settings.versionCode.value = migration.endVersion
     }
 
-    override fun possibleMigrations(previousVersion: Int, currentVersion: Int): List<Migration> {
+    override fun possibleMigrations(
+        previousVersion: Int,
+        currentVersion: Int,
+        migrations: List<Migration>
+    ): List<Migration> {
         Timber.d(
             "Analysing list of possible migrations for last tracked version: $previousVersion and current version ${BuildConfig.versionCode} - ${BuildConfig.versionName}"
         )
 
-        val minMigrations = Migrations.ALL.filter { migration ->
+        val minMigrations = migrations.filter { migration ->
             IntRange(
                 migration.startVersion,
                 migration.endVersion
             ).contains(previousVersion)
         }
-        val maxMigrations = Migrations.ALL.filter { migration ->
+        val maxMigrations = migrations.filter { migration ->
             IntRange(
                 migration.startVersion,
                 migration.endVersion
@@ -70,7 +74,11 @@ internal class MigrationManager(
      */
     override fun applyMigrations(context: Context) {
         if (shouldRunMigrations()) {
-            val migrations = possibleMigrations(settings.versionCode.value, BuildConfig.versionCode)
+            val migrations = possibleMigrations(
+                settings.versionCode.value,
+                BuildConfig.versionCode,
+                Migrations.ALL
+            )
             Timber.d("Staring pending ${migrations.size} migrations")
             migrations.forEach { migration ->
                 runCatching {

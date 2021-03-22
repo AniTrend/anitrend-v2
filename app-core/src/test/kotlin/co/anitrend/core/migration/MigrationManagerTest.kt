@@ -17,21 +17,61 @@
 
 package co.anitrend.core.migration
 
-import co.anitrend.core.migration.model.Migrations
+import android.content.Context
+import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.migration.model.Migration
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
+@Suppress("LocalVariableName")
 class MigrationManagerTest {
 
     private val manager = MigrationManager(mockk())
+    private val migrations = mutableListOf<Migration>()
+
+    @Before
+    fun setUp() {
+        migrations += listOf(
+            object : Migration(20290, 20300){
+                override fun invoke(context: Context, settings: Settings) {
+
+                }
+            },
+            object : Migration(20310, 20320){
+                override fun invoke(context: Context, settings: Settings) {
+
+                }
+            },
+            object : Migration(20320, 20330){
+                override fun invoke(context: Context, settings: Settings) {
+
+                }
+            }
+        )
+    }
 
     @Test
     fun `check possible migrations`() {
-        val expected = Migrations.ALL.take(2)
+        val expected = listOf(
+            object : Migration(20290, 20300){
+                override fun invoke(context: Context, settings: Settings) {
+
+                }
+            },
+            object : Migration(20310, 20320){
+                override fun invoke(context: Context, settings: Settings) {
+
+                }
+            }
+        )
+
         val actual = manager.possibleMigrations(
-            20290,
-            20320
+            20300,
+            20310,
+            migrations
         )
 
         assertEquals(expected, actual)
