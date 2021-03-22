@@ -24,9 +24,12 @@ import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.genre.model.GenreParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class GenreSource : SupportCoreDataSource() {
+
+    protected lateinit var param: GenreParam
 
     protected val cacheIdentity: CacheIdentity = GenreCache.Identity.GENRE
 
@@ -36,7 +39,8 @@ internal abstract class GenreSource : SupportCoreDataSource() {
 
     protected abstract suspend fun getGenres(callback: RequestCallback): Boolean
 
-    internal operator fun invoke(): Flow<List<Genre>> {
+    internal operator fun invoke(param: GenreParam): Flow<List<Genre>> {
+        this.param = param
         cachePolicy(
             scope = scope,
             requestHelper = requestHelper,

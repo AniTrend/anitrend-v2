@@ -26,6 +26,7 @@ import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.cache.TagCache
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.converter.TagModelConverter
+import co.anitrend.data.tag.entity.filter.TagQueryFilter
 import co.anitrend.data.tag.mapper.TagMapper
 import co.anitrend.data.tag.repository.TagRepository
 import co.anitrend.data.tag.source.TagSourceImpl
@@ -43,10 +44,16 @@ private val sourceModule = module {
             ),
             cachePolicy = get<TagCache>(),
             clearDataHelper = get(),
+            filter = get(),
             converter = get(),
             dispatcher = get(),
-            settings = get()
         )
+    }
+}
+
+private val filterModule = module {
+    factory {
+        TagQueryFilter()
     }
 }
 
@@ -94,6 +101,7 @@ private val repositoryModule = module {
 
 internal val tagModules = listOf(
     sourceModule,
+    filterModule,
     cacheModule,
     converterModule,
     mapperModule,

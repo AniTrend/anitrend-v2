@@ -41,19 +41,17 @@ internal class GenreSourceImpl(
     private val controller: MediaGenreController,
     private val clearDataHelper: IClearDataHelper,
     private val converter: GenreEntityConverter,
-    private val settings: ISortOrderSettings,
+    private val filter: GenreQueryFilter,
     override val cachePolicy: ICacheStorePolicy,
     override val dispatcher: ISupportDispatcher
 ) : GenreSource() {
 
-    private val filter = GenreQueryFilter()
-
-    override fun observable() = flow {
-        val result = localSource.rawFlowList(filter.build(settings))
-                .flowOn(dispatcher.io)
-                .map { converter.convertFrom(it) }
-                .flowOn(dispatcher.computation)
-        emitAll(result)
+    override fun observable(): Flow<List<Genre>> {
+        return localSource.rawFlowList(
+            filter.build(param)
+        ).flowOn(dispatcher.io)
+         .map(converter::convertFrom)
+         .flowOn(dispatcher.computation)
     }
 
     override suspend fun getGenres(callback: RequestCallback): Boolean {

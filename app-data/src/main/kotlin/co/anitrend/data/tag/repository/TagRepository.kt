@@ -23,6 +23,7 @@ import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.source.contract.TagSource
 import co.anitrend.domain.tag.entity.Tag
+import co.anitrend.domain.tag.model.TagParam
 import co.anitrend.domain.tag.repository.ITagRepository
 
 internal class TagRepository(
@@ -32,6 +33,6 @@ internal class TagRepository(
     /**
      * @return media genres
      */
-    override fun getMediaTags() =
-        source create source()
+    override fun getMediaTags(param: TagParam) =
+        source create source(param)
 }

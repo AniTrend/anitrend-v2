@@ -18,17 +18,30 @@
 package co.anitrend.data.tag.entity.filter
 
 import co.anitrend.data.arch.database.filter.FilterQueryBuilder
+import co.anitrend.data.arch.database.filter.FilterQueryBuilder.Companion.orderBy
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
+import co.anitrend.data.genre.entity.GenreEntitySchema
 import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.tag.entity.TagEntitySchema
+import co.anitrend.domain.tag.model.TagParam
+import co.anitrend.support.query.builder.core.from.extentions.asTable
+import co.anitrend.support.query.builder.core.projection.extensions.asColumn
+import co.anitrend.support.query.builder.dsl.from
 
-internal class TagQueryFilter : FilterQueryBuilder<ISortOrderSettings>() {
+internal class TagQueryFilter : FilterQueryBuilder<TagParam>() {
 
     /**
      * Staring point of the query builder, that should make use of [requireBuilder]
      * to add query objections
      */
-    override fun onBuildQuery(filter: ISortOrderSettings) {
-        //val direction = filter.asOrderBy()
-        //builder.orderBy("$column $direction")
+    override fun onBuildQuery(filter: TagParam) {
+        val table = TagEntitySchema.tableName
+        requireBuilder().from(table).orderBy(
+            TagEntitySchema.category.asColumn(),
+            sortOrder = filter.sortOrder
+        ).orderBy(
+            TagEntitySchema.name.asColumn(),
+            sortOrder = filter.sortOrder
+        )
     }
 }

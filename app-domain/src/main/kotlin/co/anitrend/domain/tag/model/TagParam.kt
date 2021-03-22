@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.genre.repository
+package co.anitrend.domain.tag.model
 
-import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.data.genre.GenreListRepository
-import co.anitrend.data.genre.source.contract.GenreSource
-import co.anitrend.domain.genre.model.GenreParam
+import co.anitrend.domain.common.sort.order.SortOrder
 
-internal class GenreRepository(
-    private val source: GenreSource
-) : SupportRepository(source), GenreListRepository {
-
-    /**
-     * @return media genres
-     */
-    override fun getMediaGenres(param: GenreParam) =
-        source create source(param)
-}
+data class TagParam(
+    val sortOrder: SortOrder
+)

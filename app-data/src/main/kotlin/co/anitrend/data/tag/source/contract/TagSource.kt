@@ -24,9 +24,12 @@ import co.anitrend.data.cache.model.CacheIdentity
 import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.tag.cache.TagCache
 import co.anitrend.domain.tag.entity.Tag
+import co.anitrend.domain.tag.model.TagParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class TagSource : SupportCoreDataSource() {
+
+    protected lateinit var param: TagParam
 
     protected val cacheIdentity: CacheIdentity = TagCache.Identity.TAG
 
@@ -36,7 +39,8 @@ internal abstract class TagSource : SupportCoreDataSource() {
 
     protected abstract suspend fun getTags(callback: RequestCallback): Boolean
 
-    internal operator fun invoke(): Flow<List<Tag>> {
+    internal operator fun invoke(param: TagParam): Flow<List<Tag>> {
+        this.param = param
         cachePolicy(
             scope = scope,
             requestHelper = requestHelper,

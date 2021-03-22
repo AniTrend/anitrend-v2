@@ -26,6 +26,7 @@ import co.anitrend.data.genre.GenreListRepository
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.converters.GenreModelConverter
+import co.anitrend.data.genre.entity.filter.GenreQueryFilter
 import co.anitrend.data.genre.mapper.GenreMapper
 import co.anitrend.data.genre.repository.GenreRepository
 import co.anitrend.data.genre.source.GenreSourceImpl
@@ -43,10 +44,16 @@ private val sourceModule = module {
             ),
             cachePolicy = get<GenreCache>(),
             clearDataHelper = get(),
+            filter = get(),
             converter = get(),
-            dispatcher = get(),
-            settings = get()
+            dispatcher = get()
         )
+    }
+}
+
+private val filterModule = module {
+    factory {
+        GenreQueryFilter()
     }
 }
 
@@ -96,6 +103,7 @@ private val repositoryModule = module {
 
 internal val genreModules = listOf(
     converterModule,
+    filterModule,
     cacheModule,
     sourceModule,
     mapperModule,

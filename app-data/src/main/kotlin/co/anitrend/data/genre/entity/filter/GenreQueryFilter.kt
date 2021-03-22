@@ -20,15 +20,22 @@ package co.anitrend.data.genre.entity.filter
 import co.anitrend.data.arch.database.filter.FilterQueryBuilder
 import co.anitrend.data.arch.database.settings.ISortOrderSettings
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.entity.GenreEntitySchema
+import co.anitrend.domain.genre.model.GenreParam
+import co.anitrend.support.query.builder.core.projection.extensions.asColumn
+import co.anitrend.support.query.builder.dsl.from
 
-internal class GenreQueryFilter : FilterQueryBuilder<ISortOrderSettings>() {
+internal class GenreQueryFilter : FilterQueryBuilder<GenreParam>() {
+
     /**
      * Staring point of the query builder, that should make use of [requireBuilder]
      * to add query objections
      */
-    override fun onBuildQuery(filter: ISortOrderSettings) {
-        //val direction = filter.asOrderBy()
-        val column = GenreEntity::genre
-        //builder.orderBy("$column $direction")
+    override fun onBuildQuery(filter: GenreParam) {
+        val table = GenreEntitySchema.tableName
+        requireBuilder().from(table).orderBy(
+            GenreEntitySchema.genre.asColumn(),
+            sortOrder = filter.sortOrder
+        )
     }
 }

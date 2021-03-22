@@ -18,11 +18,12 @@
 package co.anitrend.domain.genre.repository
 
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.genre.model.GenreParam
 
 interface IGenreRepository<State: UiState<*>> {
 
     /**
      * @return media genres
      */
-    fun getMediaGenres(): State
+    fun getMediaGenres(param: GenreParam): State
 }

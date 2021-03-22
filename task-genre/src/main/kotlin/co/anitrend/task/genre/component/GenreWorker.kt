@@ -22,6 +22,8 @@ import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.data.genre.GenreInteractor
+import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.genre.model.GenreParam
 import kotlinx.coroutines.flow.first
 
 class GenreWorker(
@@ -42,7 +44,9 @@ class GenreWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val dataState = interactor.getMediaGenres()
+        val dataState = interactor.getMediaGenres(
+            GenreParam(SortOrder.DESC)
+        )
 
         val networkState = dataState.networkState.first { state ->
             state is LoadState.Success || state is LoadState.Error

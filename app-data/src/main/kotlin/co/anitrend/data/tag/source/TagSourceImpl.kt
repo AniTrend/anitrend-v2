@@ -29,13 +29,11 @@ import co.anitrend.data.tag.datasource.local.TagLocalSource
 import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
 import co.anitrend.data.tag.entity.filter.TagQueryFilter
 import co.anitrend.data.tag.source.contract.TagSource
+import co.anitrend.domain.tag.entity.Tag
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 
 internal class TagSourceImpl(
     private val remoteSource: MediaTagRemoteSource,
@@ -43,20 +41,17 @@ internal class TagSourceImpl(
     private val controller: TagController,
     private val clearDataHelper: IClearDataHelper,
     private val converter: TagEntityConverter,
-    private val settings: ISortOrderSettings,
+    private val filter: TagQueryFilter,
     override val cachePolicy: ICacheStorePolicy,
     override val dispatcher: ISupportDispatcher
 ) : TagSource() {
 
-    private val filter = TagQueryFilter()
-
-
-    override fun observable() = flow {
-        val result = localSource.rawFlowList(filter.build(settings))
-                .flowOn(dispatcher.io)
-                .map(converter::convertFrom)
-                .flowOn(dispatcher.computation)
-        emitAll(result)
+    override fun observable(): Flow<List<Tag>> {
+        return localSource.rawFlowList(
+            filter.build(param)
+        ).flowOn(dispatcher.io)
+         .map(converter::convertFrom)
+         .flowOn(dispatcher.computation)
     }
 
     override suspend fun getTags(callback: RequestCallback): Boolean {

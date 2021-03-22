@@ -18,11 +18,12 @@
 package co.anitrend.domain.tag.repository
 
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.tag.model.TagParam
 
 interface ITagRepository<R: UiState<*>> {
 
     /**
      * @return media tags
      */
-    fun getMediaTags(): R
+    fun getMediaTags(param: TagParam): R
 }

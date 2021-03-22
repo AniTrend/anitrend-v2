@@ -19,6 +19,7 @@ package co.anitrend.domain.tag.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.tag.model.TagParam
 import co.anitrend.domain.tag.repository.ITagRepository
 
 abstract class TagUseCase<R: UiState<*>>(
@@ -28,5 +29,6 @@ abstract class TagUseCase<R: UiState<*>>(
     /**
      * @return media tags user interface state
      */
-    fun getMediaTags() = repository.getMediaTags()
+    fun getMediaTags(param: TagParam) =
+        repository.getMediaTags(param)
 }

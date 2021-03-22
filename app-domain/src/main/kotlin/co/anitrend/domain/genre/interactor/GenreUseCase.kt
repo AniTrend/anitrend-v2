@@ -19,6 +19,7 @@ package co.anitrend.domain.genre.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.genre.model.GenreParam
 import co.anitrend.domain.genre.repository.IGenreRepository
 
 abstract class GenreUseCase<State: UiState<*>>(
@@ -28,5 +29,6 @@ abstract class GenreUseCase<State: UiState<*>>(
     /**
      * @return media genres user interface state
      */
-    fun getMediaGenres()= repository.getMediaGenres()
+    fun getMediaGenres(param: GenreParam) =
+        repository.getMediaGenres(param)
 }
