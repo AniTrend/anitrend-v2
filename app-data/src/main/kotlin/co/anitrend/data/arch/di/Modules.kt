@@ -44,6 +44,7 @@ import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.episode.koin.episodeModules
 import co.anitrend.data.genre.koin.genreModules
+import co.anitrend.data.jikan.koin.jikanModules
 import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
@@ -140,6 +141,7 @@ private val retrofitModule = module {
             processor = get(),
             gson = get(),
             jsonFactory = Json {
+                ignoreUnknownKeys = true
                 coerceInputValues = true
                 isLenient = true
             }.asConverterFactory(mimeType),
@@ -214,4 +216,5 @@ val dataModules = listOf(
         sourceModules + mediaModules + carouselModules +
         authModules + accountModules + userModules +
         mediaListModules + newsModules + episodeModules +
-        linkModules + rankModules + traktModules + tmdbModules
+        linkModules + rankModules + traktModules + tmdbModules +
+        jikanModules
