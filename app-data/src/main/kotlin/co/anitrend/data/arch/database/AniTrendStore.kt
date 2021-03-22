@@ -36,6 +36,7 @@ import co.anitrend.data.episode.entity.EpisodeEntity
 import co.anitrend.data.episode.entity.fts.EpisodeFtsEntity
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
+import co.anitrend.data.jikan.entity.JikanEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.fts.MediaFtsEntity
@@ -67,7 +68,9 @@ import org.jetbrains.annotations.TestOnly
         UserMediaOptionEntity::class, UserWithStatisticEntity::class, MediaListEntity::class,
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
-        StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class
+        StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
+        JikanEntity::class, JikanEntity.StudioEntity::class, JikanEntity.LicensorEntity::class,
+        JikanEntity.ProducerEntity::class, JikanEntity.AuthorEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     views = [TagEntity.Extended::class, GenreEntity.Extended::class]

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,22 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.api.contract
+package co.anitrend.data.jikan.model.error
 
-import co.anitrend.data.BuildConfig
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-internal enum class EndpointType(val url: HttpUrl) {
-    OAUTH("https://${BuildConfig.aniListAuth}".toHttpUrl()),
-    GRAPH_QL(BuildConfig.aniListApi.toHttpUrl()),
-    RELATION_MOE(BuildConfig.relationYunaMoe.toHttpUrl()),
-    THE_XEM(BuildConfig.theXemDe.toHttpUrl()),
-    MEDIA_RSS(BuildConfig.rssUrl.toHttpUrl()),
-    NEWS_RSS(BuildConfig.rssUrl.toHttpUrl()),
-    JIKAN(BuildConfig.jikanMoe.toHttpUrl());
-
-    companion object {
-        const val BASE_ENDPOINT_PATH = "/"
-    }
-}
+@Serializable
+data class JikanErrorModel(
+    @SerialName("status") val status: Int,
+    @SerialName("type") val type: String,
+    @SerialName("message") val message: String,
+    @SerialName("error") val error: String
+)

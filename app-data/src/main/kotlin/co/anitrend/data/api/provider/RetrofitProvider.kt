@@ -33,6 +33,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 import retrofit2.Retrofit
 import timber.log.Timber
+import java.util.*
 
 /**
  * Factory to supply types retrofit instances
@@ -91,7 +92,8 @@ internal object RetrofitProvider {
                     )
             }
             EndpointType.RELATION_MOE, EndpointType.THE_XEM,
-            EndpointType.NEWS_RSS, EndpointType.MEDIA_RSS -> {
+            EndpointType.NEWS_RSS, EndpointType.MEDIA_RSS,
+            EndpointType.JIKAN -> {
                 Timber.tag(moduleTag).d("""
                     Adding request interceptors for request: ${type.name}
                     """.trimIndent()
@@ -108,7 +110,7 @@ internal object RetrofitProvider {
                 builder.cache(
                     CacheHelper.createCache(
                         scope.androidContext(),
-                        type.name
+                        type.name.toLowerCase(Locale.ROOT)
                     )
                 )
             }
