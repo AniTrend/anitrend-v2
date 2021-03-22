@@ -29,7 +29,8 @@ class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        EpisodeTaskRouter.forScheduler().schedule(context)
+        // TODO Find out why the worker keeps stalling
+        //EpisodeTaskRouter.forScheduler().schedule(context)
     }
 
     /**
