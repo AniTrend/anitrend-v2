@@ -25,11 +25,11 @@ import org.threeten.bp.Instant
  *
  * @property id Unique identifier for the resource, typically could be a model id a network request
  * @property key Unique key for the identifier, this can be considered as a grouping key for the [id]
- * @property expiresAfter Time duration which the cached item should be valid for. Default is 3 hours
+ * @property expiresAt Time duration which the cached item should be valid for. Default is 3 hours in the past from now
  */
 internal interface CacheIdentity {
     val id: Long
     val key: String
-    val expiresAfter: Instant
+    val expiresAt: Instant
         get() = instantInPast(hours = 3)
 }

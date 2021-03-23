@@ -49,4 +49,10 @@ internal data class CacheEntity(
             timestamp = Instant.now()
         )
     }
+
+    /**
+     * Returns a string representation of the object.
+     */
+    override fun toString() =
+        "CacheEntity(id: $id, request: $request, cacheItemId: $cacheItemId, timestamp: $timestamp)"
 }
