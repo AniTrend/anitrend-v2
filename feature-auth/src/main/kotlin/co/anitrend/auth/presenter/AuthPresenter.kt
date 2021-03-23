@@ -55,7 +55,7 @@ class AuthPresenter(
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             customTabs.launchUrl(activity, Uri.parse(context.getString(R.string.app_faq_page_link)))
         }.onFailure {
-            Timber.tag(moduleTag).w(it, "Unable to open custom tabs")
+            Timber.w(it, "Unable to open custom tabs")
             startViewIntent(Uri.parse(context.getString(R.string.app_faq_page_link)))
         }
     }
@@ -65,7 +65,7 @@ class AuthPresenter(
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN, clientId))
         }.onFailure {
-            Timber.tag(moduleTag).w(it, "Unable to open custom tabs")
+            Timber.w(it, "Unable to open custom tabs")
             startViewIntent(authenticationUri(AuthenticationType.TOKEN, clientId))
         }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2019  AniTrend
+  ~ Copyright (C) 2021  AniTrend
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU General Public License as published by
@@ -16,13 +16,9 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="anitrendBackdropShade">#e8e8e8</color>
-    <color name="anitrendDrawerSelector">#E2E2E2</color>
-
-    <color name="colorAccent">@color/light_blue_A700</color>
-
-    <color name="card_drop_start">#E5E5E5</color>
-    <color name="card_drop_end">#BFBFBF</color>
-    <color name="bubble_color">#6e000000</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <gradient
+        android:startColor="@android:color/transparent"
+        android:endColor="#88333333"
+        android:angle="90"/>
+</shape>

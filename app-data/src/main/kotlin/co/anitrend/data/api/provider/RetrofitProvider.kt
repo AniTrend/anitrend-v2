@@ -40,7 +40,6 @@ import java.util.*
  */
 internal object RetrofitProvider {
 
-    private val moduleTag = javaClass.simpleName
     private val cache = lruCache<EndpointType, Retrofit>(
         4,
         sizeOf = { key, _ ->
@@ -51,7 +50,7 @@ internal object RetrofitProvider {
             }
         },
         onEntryRemoved = { evicted, key, _, _ ->
-            Timber.tag(moduleTag).d("Cached retrofit removed:  key -> $key | evicted -> $evicted")
+            Timber.d("Cached retrofit removed:  key -> $key | evicted -> $evicted")
         }
     )
 
@@ -71,7 +70,7 @@ internal object RetrofitProvider {
 
         when (type) {
             EndpointType.GRAPH_QL -> {
-                Timber.tag(moduleTag).d("""
+                Timber.d("""
                     Adding authenticator and request interceptors for request: ${type.name}
                     """.trimIndent()
                 )
@@ -90,7 +89,7 @@ internal object RetrofitProvider {
                     )
             }
             EndpointType.OAUTH -> {
-                Timber.tag(moduleTag).d("""
+                Timber.d("""
                     Adding request interceptors for request: ${type.name}
                     """.trimIndent()
                 )
@@ -106,7 +105,7 @@ internal object RetrofitProvider {
             EndpointType.RELATION_MOE, EndpointType.THE_XEM,
             EndpointType.NEWS_RSS, EndpointType.MEDIA_RSS,
             EndpointType.JIKAN -> {
-                Timber.tag(moduleTag).d("""
+                Timber.d("""
                     Adding request interceptors for request: ${type.name}
                     """.trimIndent()
                 )
@@ -146,13 +145,13 @@ internal object RetrofitProvider {
         val reference = cache.get(type)
         return when {
             reference != null -> {
-                Timber.tag(moduleTag).d(
+                Timber.d(
                     "Using cached retrofit instance for endpoint: ${type.name}"
                 )
                 reference
             }
             else -> {
-                Timber.tag(moduleTag).d(
+                Timber.d(
                     "Creating new retrofit instance for endpoint: ${type.name}"
                 )
                 val retrofit = create(type, scope)

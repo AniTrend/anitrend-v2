@@ -24,4 +24,26 @@
 	<dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 	<dimen name="nav_item_selector_margin">100dp</dimen>
     <dimen name="text_drawable_margin">3dp</dimen>
+
+    <dimen name="avatar_xs">8dp</dimen>
+    <dimen name="avatar_sm">12dp</dimen>
+    <dimen name="avatar_md">16dp</dimen>
+    <dimen name="avatar_lg">24dp</dimen>
+    <dimen name="avatar_xl">36dp</dimen>
+
+    <dimen name="size_2dp">2dp</dimen>
+    <dimen name="size_4dp">2dp</dimen>
+    <dimen name="size_6dp">2dp</dimen>
+    <dimen name="size_8dp">2dp</dimen>
+    <dimen name="size_10dp">10dp</dimen>
+    <dimen name="size_12dp">12dp</dimen>
+    <dimen name="size_14dp">14dp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_18dp">18dp</dimen>
+    <dimen name="size_20dp">20dp</dimen>
+    <dimen name="size_22dp">22dp</dimen>
+    <dimen name="size_24dp">24dp</dimen>
+    <dimen name="size_26dp">26dp</dimen>
+    <dimen name="size_28dp">28dp</dimen>
+    <dimen name="size_30dp">30dp</dimen>
 </resources>

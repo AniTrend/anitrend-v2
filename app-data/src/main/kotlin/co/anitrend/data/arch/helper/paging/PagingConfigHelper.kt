@@ -21,15 +21,17 @@ import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import timber.log.Timber
 
+/**
+ * Paging utility to provide paging size from cached results
+ * W.I.P
+ */
 internal object PagingConfigHelper {
-
-    private val moduleTag = PagingConfigHelper::class.java.simpleName
 
     private fun setupPagingFrom(itemCount: Int, pagingHelper: SupportPagingHelper) {
         if (itemCount > 0) {
             val lastLoadedPage = itemCount / pagingHelper.pageSize
             pagingHelper.page = lastLoadedPage
-            Timber.tag(moduleTag).v(
+            Timber.v(
                 "Setting up paging -> items: $itemCount with pages: $lastLoadedPage"
             )
         }
@@ -51,35 +53,29 @@ internal object PagingConfigHelper {
     ) {
         when (requestType) {
             Request.Type.BEFORE -> {
-                Timber.tag(moduleTag).v(
-                    "Triggered request: $requestType on paging helper configuration"
-                )
+                Timber.v("Triggered request: $requestType on paging helper configuration")
                 if (!pagingHelper.isFirstPage()) {
                     runCatching {
                         // TODO: implement on previous paging calculator
                     }.onFailure {
-                        Timber.tag(moduleTag).e(it)
+                        Timber.e(it)
                     }
                 }
             }
             Request.Type.AFTER -> {
-                Timber.tag(moduleTag).v(
-                    "Triggered request: $requestType on paging helper configuration"
-                )
+                Timber.v("Triggered request: $requestType on paging helper configuration")
                 if (pagingHelper.isInitialAfterFirstLoad()) {
                     runCatching {
                         val count = action()
                         setupPagingFrom(count, pagingHelper)
                     }.onFailure {
-                        Timber.tag(moduleTag).e(it)
+                        Timber.e(it)
                     }
                 }
             }
             else -> {
                 // We won't be support paging before a first item
-                Timber.tag(moduleTag).v(
-                    "Ignoring request: $requestType on paging helper configuration"
-                )
+                Timber.v("Ignoring request: $requestType on paging helper configuration")
             }
         }
     }

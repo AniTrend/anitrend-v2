@@ -27,9 +27,8 @@ import timber.log.Timber
 import java.io.File
 
 internal object CacheHelper {
-    const val MAX_CACHE_SIZE = (1024 * 1024 * 25).toLong()
 
-    private val moduleTag = javaClass.simpleName
+    private const val MAX_CACHE_SIZE = (1024 * 1024 * 25).toLong()
 
     fun createCache(context: Context, name: String, maxSize: Long = MAX_CACHE_SIZE): Cache {
         val destination = context.externalCacheDir ?: context.cacheDir
@@ -62,7 +61,7 @@ internal object CacheHelper {
     ): Request.Builder {
         val host = request.url.host
         return if (connectivity.isConnected) {
-            Timber.tag(moduleTag).v(
+            Timber.v(
                 "Online cache control applied on request to host: $host"
             )
             // "public, max-age=MAX_CACHE_AGE"
@@ -75,7 +74,7 @@ internal object CacheHelper {
             )
         }
         else {
-            Timber.tag(moduleTag).v(
+            Timber.v(
                 "Offline cache control applied on request to host: $host"
             )
             // "public, only-if-cached, max-stale=MAX_STALE_TIME"

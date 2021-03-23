@@ -22,6 +22,7 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.Build
+import androidx.annotation.ChecksSdkIntAtLeast
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.navigation.extensions.forActivity
@@ -45,7 +46,7 @@ internal class ShortcutController(
             val shortcutInfo = shortcuts.mapNotNull { shortcut ->
                 val intent = shortcut.router.forActivity(context)
                 if (intent == null) {
-                    Timber.tag(moduleTag).w("Intent for shortcut: `${shortcut.id}` returned null")
+                    Timber.w("Intent for shortcut: `${shortcut.id}` returned null")
                     null
                 } else {
                     ShortcutInfo.Builder(context, shortcut.id)
@@ -69,6 +70,7 @@ internal class ShortcutController(
      * @throws IllegalArgumentException If trying to enable immutable shortcuts.
      * @throws IllegalStateException when the user is locked.
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun enableShortcuts(vararg shortcuts: Shortcut) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
             shortcutManager?.enableShortcuts(shortcuts.map(Shortcut::id))
@@ -81,6 +83,7 @@ internal class ShortcutController(
      * @throws IllegalArgumentException If trying to enable immutable shortcuts.
      * @throws IllegalStateException when the user is locked.
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun disableShortcuts(vararg shortcuts: Shortcut) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
             shortcutManager?.disableShortcuts(shortcuts.map(Shortcut::id))
@@ -93,6 +96,7 @@ internal class ShortcutController(
      *
      * @throws IllegalStateException when the user is locked.
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun reportShortcutUsage(shortcut: Shortcut) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
             shortcutManager?.reportShortcutUsed(shortcut.id)
@@ -103,12 +107,9 @@ internal class ShortcutController(
      *
      * @throws IllegalStateException when the user is locked.
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun removeAllDynamicShortcuts() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
             shortcutManager?.removeAllDynamicShortcuts()
-    }
-
-    companion object {
-        private val moduleTag = ShortcutController::class.java.simpleName
     }
 }

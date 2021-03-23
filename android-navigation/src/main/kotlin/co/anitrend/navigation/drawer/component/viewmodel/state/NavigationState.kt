@@ -39,8 +39,6 @@ internal class NavigationState(
 
     var context by Delegates.notNull<CoroutineContext>()
 
-    private val moduleTag: String = javaClass.simpleName
-
     private val navigationItems by lazy(UNSAFE) {
         val initialState = createNavigationItems(settings.isAuthenticated.value)
         MutableStateFlow(initialState)
@@ -63,7 +61,7 @@ internal class NavigationState(
             settings.isAuthenticated.flow.onEach { state ->
                 onAuthenticationStateChanged(state)
             }.catch { cause ->
-                Timber.tag(moduleTag).w(cause)
+                Timber.w(cause)
             }.collect()
         }
     }
@@ -219,13 +217,13 @@ internal class NavigationState(
      * Triggers use case to perform refresh operation
      */
     override suspend fun refresh() {
-        throw UnsupportedOperationException("$moduleTag does not support refresh operation")
+        throw UnsupportedOperationException("$this does not support refresh operation")
     }
 
     /**
      * Triggers use case to perform a retry operation
      */
     override suspend fun retry() {
-        throw UnsupportedOperationException("$moduleTag does not support retry operation")
+        throw UnsupportedOperationException("$this does not support retry operation")
     }
 }

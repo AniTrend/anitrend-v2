@@ -62,7 +62,7 @@ class MediaContent(
                     viewModelState().retry()
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(cause)
+                    Timber.e(cause)
                 }
                 .collect()
         }

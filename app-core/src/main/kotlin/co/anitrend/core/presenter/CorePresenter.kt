@@ -42,6 +42,6 @@ abstract class CorePresenter(
         }
         runCatching {
             context.startActivity(intent)
-        }.onFailure { Timber.tag(moduleTag).w(it) }
+        }.onFailure { Timber.w(it) }
     }
 }

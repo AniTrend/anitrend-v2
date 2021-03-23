@@ -17,7 +17,6 @@
 
 package co.anitrend.core.coil.fetch
 
-import co.anitrend.core.android.controller.contract.IPowerController
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import coil.bitmap.BitmapPool
@@ -46,7 +45,7 @@ class RequestImageFetcher(
         val response = call.execute()
         response.body?.source()
     }.getOrElse {
-        Timber.tag(moduleTag).i(it)
+        Timber.i(it)
         null
     }
 
@@ -83,9 +82,5 @@ class RequestImageFetcher(
      */
     override fun key(data: RequestImage<*>): String {
         return mapper.getImageUrlUsing(data)
-    }
-
-    companion object {
-        private val moduleTag = RequestImageFetcher::class.java.simpleName
     }
 }

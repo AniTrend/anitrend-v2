@@ -43,7 +43,7 @@ class DynamicFeatureModuleHelper(
      */
     override fun onCreate() {
         super.onCreate()
-        Timber.tag(moduleTag).v(
+        Timber.v(
             "Loading dynamic feature modules: ${modules.size}"
         )
         loadModules()
@@ -57,7 +57,7 @@ class DynamicFeatureModuleHelper(
     override fun onDestroy() {
         super.onDestroy()
         if (unloadOnDestroy) {
-            Timber.tag(moduleTag).v(
+            Timber.v(
                 "Unloading ${modules.size} feature modules from global context"
             )
             unloadModules()

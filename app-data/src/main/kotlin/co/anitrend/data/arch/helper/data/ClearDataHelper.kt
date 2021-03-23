@@ -52,17 +52,11 @@ internal class ClearDataHelper(
                         action()
                     }
                 }.onFailure {
-                    Timber.tag(moduleTag).e(it)
+                    Timber.e(it)
                 }
             return
         }
 
-        Timber.tag(moduleTag).v(
-            "Database table will not be cleared, $settings prohibiting this"
-        )
-    }
-
-    companion object {
-        private val moduleTag = ClearDataHelper::class.java.simpleName
+        Timber.v("Action will not be ran, settings prohibiting operation")
     }
 }

@@ -28,7 +28,6 @@ import java.net.SocketTimeoutException
  */
 internal abstract class ControllerStrategy<D> {
 
-    protected val moduleTag: String = javaClass.simpleName
     protected abstract val networkMessage: NetworkMessage
 
     /**
@@ -50,11 +49,7 @@ internal abstract class ControllerStrategy<D> {
                 cause
             )
         }
-        else -> RequestError(
-            networkMessage.unrecoverableErrorTittle,
-            message,
-            cause
-        )
+        else -> RequestError(cause)
     }
 
     /**

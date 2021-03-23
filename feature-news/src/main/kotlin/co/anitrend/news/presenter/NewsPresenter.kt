@@ -63,7 +63,7 @@ class NewsPresenter(
             runCatching {
                 customTabs.launchUrl(view.context, url.toUri())
             }.onFailure {
-                Timber.tag(moduleTag).w(it, "Unable to open custom tabs")
+                Timber.w(it, "Unable to open custom tabs")
                 startViewIntent(url.toUri())
             }
         }

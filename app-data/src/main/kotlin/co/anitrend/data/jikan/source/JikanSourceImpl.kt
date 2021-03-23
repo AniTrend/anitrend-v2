@@ -64,7 +64,7 @@ internal class JikanSourceImpl(
         DefaultNetworkClient<JikanMediaModel.MoreInfo>(dispatcher.io)
             .fetch(deferred)
     }.onFailure {
-        Timber.tag(moduleTag).e(it)
+        Timber.e(it)
     }.getOrNull()
 
     override suspend fun getMedia(callback: RequestCallback): Boolean {

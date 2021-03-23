@@ -29,7 +29,7 @@ internal class ExceptionCrashHandler(
 ) : IExceptionCrashHandler {
 
     private fun showCrashActivity(thread: Thread, throwable: Throwable) {
-        Timber.tag(TAG).e(throwable, thread.name)
+        Timber.e(throwable, thread.name)
         if (BuildConfig.DEBUG) {
             // TODO: might add an activity to show the crash
         }
@@ -46,14 +46,11 @@ internal class ExceptionCrashHandler(
             showCrashActivity(thread, throwable)
         } catch (e: Exception) {
             // Timber may not have been initialized, so will log into the android logger
-            Log.w(TAG, "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
-            Log.e(TAG, "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
+            Log.w("ExceptionCrashHandler", "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
+            Log.e("ExceptionCrashHandler", "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
         } finally {
-            //exitProcess(0)
+            // terminate process after intercepting crash
+            exitProcess(0)
         }
-    }
-
-    companion object {
-        private val TAG = ExceptionCrashHandler::class.java.simpleName
     }
 }

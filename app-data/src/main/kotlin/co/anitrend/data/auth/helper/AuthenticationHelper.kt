@@ -30,8 +30,6 @@ internal class AuthenticationHelper(
     private val localSource: AuthLocalSource
 ) {
 
-    private val moduleTag = javaClass.simpleName
-
     /**
      * Handle invalid token state by either renewing it or un-authenticates
      * the user locally if the token cannot be refreshed
@@ -57,7 +55,7 @@ internal class AuthenticationHelper(
         if (entity != null)
             requestBuilder.addHeader(AUTHORIZATION, entity.accessToken)
         else
-            Timber.tag(moduleTag).w(
+            Timber.w(
                 "Settings indicates that user is authenticated, but no authentication token for the user can be found"
             )
     }

@@ -57,7 +57,7 @@ internal class GraphQLController<S, out D>(
         val response = client.fetch(resource)
 
         val error = response.errors?.onEach {
-            Timber.tag(moduleTag).w(it.toString())
+            Timber.w(it.toString())
         }?.firstOrNull()
 
         /**
@@ -78,10 +78,5 @@ internal class GraphQLController<S, out D>(
             }
             mapped
         }
-    }
-
-
-    companion object {
-        private val moduleTag = GraphQLController::class.java.simpleName
     }
 }

@@ -104,7 +104,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         navigationDrawer.navigationFlow
             .onEach(::onNavigationItemSelected)
             .catch { throwable: Throwable ->
-                Timber.tag(moduleTag).e(
+                Timber.e(
                     throwable,
                     "observeNavigationDrawer() -> Navigation drawer flow threw an uncaught exception"
                 )

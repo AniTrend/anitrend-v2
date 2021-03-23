@@ -54,7 +54,7 @@ internal class OnlineStrategy<D> private constructor(
             callback.recordSuccess()
             return result
         }.onFailure { exception ->
-            Timber.tag(moduleTag).w(exception)
+            Timber.w(exception)
             when (exception) {
                 is RequestError -> callback.recordFailure(exception)
                 else -> callback.recordFailure(exception.generateForError())

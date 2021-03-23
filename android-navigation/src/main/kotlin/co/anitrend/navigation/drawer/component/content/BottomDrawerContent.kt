@@ -223,7 +223,7 @@ class BottomDrawerContent(
                         setCheckedItem(model.id)
                     mutableNavigationStateFlow.value = model
                 }.catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(
+                    Timber.e(
                         cause,
                         "navigationAdapter.clickableStateFlow threw an uncaught exception"
                     )
@@ -240,7 +240,7 @@ class BottomDrawerContent(
                         else -> { }
                     }
                 }.catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(
+                    Timber.e(
                         cause, "accountAdapter.clickStateFlow threw an uncaught exception"
                     )
                 }

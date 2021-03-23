@@ -25,9 +25,6 @@ import co.anitrend.core.AniTrendApplication
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import timber.log.Timber
 
-
-const val moduleTag = "CoreExtensions"
-
 /**
  * Text separator character
  */
@@ -41,7 +38,7 @@ fun FragmentActivity.recreateModules() {
         val app = applicationContext as AniTrendApplication
         app.restartDependencyInjection()
     }.onFailure {
-        Timber.tag(moduleTag).e(it)
+        Timber.e(it)
     }
 }
 

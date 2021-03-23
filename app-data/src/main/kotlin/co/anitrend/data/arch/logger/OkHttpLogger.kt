@@ -22,10 +22,6 @@ import timber.log.Timber
 
 internal class OkHttpLogger : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
-        Timber.tag(TAG).v(message)
-    }
-
-    companion object {
-        private val TAG = OkHttpLogger::class.java.simpleName
+        Timber.d(message)
     }
 }

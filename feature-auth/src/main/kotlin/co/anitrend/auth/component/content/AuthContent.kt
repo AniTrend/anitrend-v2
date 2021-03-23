@@ -70,7 +70,7 @@ class AuthContent(
                     viewModelState().retry()
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(cause)
+                    Timber.e(cause)
                 }
                 .collect()
         }
@@ -84,7 +84,7 @@ class AuthContent(
                     )
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(cause)
+                    Timber.e(cause)
                 }
                 .collect()
         }
