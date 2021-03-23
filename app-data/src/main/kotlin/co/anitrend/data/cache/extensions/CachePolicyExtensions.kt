@@ -40,7 +40,7 @@ internal operator fun ICacheStorePolicy.invoke(
         requestHelper.runIfNotRunning(
             Request.Default(cacheIdentity.key, requestType)
         ) { requestCallback ->
-            if (shouldRefresh(cacheIdentity, cacheIdentity.expiresAfter)) {
+            if (shouldRefresh(cacheIdentity, cacheIdentity.expiresAt)) {
                 if (block(requestCallback))
                     updateLastRequest(cacheIdentity, Instant.now())
             }

@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
+import timber.log.Timber
 
 internal abstract class CacheStorePolicy : ICacheStorePolicy {
 
@@ -35,8 +36,10 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
 
     private suspend fun getRequestInstant(
         entityId: Long
-    ) = withContext(Dispatchers.IO) {
-        localSource.getCacheLog(request, entityId)?.timestamp
+    ): Instant? = withContext(Dispatchers.IO) {
+        val instant = localSource.getCacheLog(request, entityId)
+        Timber.v("getRequestInstant(entityId: $entityId) -> $instant")
+        instant?.timestamp
     }
 
     /**
@@ -45,7 +48,12 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
     override suspend fun isRequestBefore(
         identity: CacheIdentity,
         instant: Instant
-    ) = getRequestInstant(identity.id)?.isBefore(instant) ?: true
+    ): Boolean {
+        val lastRequestInstant = getRequestInstant(identity.id)
+        val isBefore = lastRequestInstant?.isBefore(instant)
+        Timber.v("isRequestBefore(identity: $identity, instant: $instant) -> $isBefore")
+        return isBefore ?: true
+    }
 
     /**
      * Checks if the given [identity] has expired using a [threshold]
@@ -55,15 +63,21 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
     override suspend fun isRequestExpired(
         identity: CacheIdentity,
         threshold: TemporalAmount
-    ): Boolean = isRequestBefore(identity, threshold.inPast())
+    ): Boolean {
+        Timber.v("isRequestExpired(identity: $identity, threshold: $threshold)")
+        return isRequestBefore(identity, threshold.inPast())
+    }
 
     /**
      * Checks if the given [identity] has been requested before, regardless of when
      */
     override suspend fun hasBeenRequested(
         identity: CacheIdentity
-    ) = withContext(Dispatchers.IO) {
-        localSource.countMatching(request, identity.id) > 0
+    ): Boolean = withContext(Dispatchers.IO) {
+        val requestCount = localSource.countMatching(request, identity.id)
+        val exists = requestCount > 0
+        Timber.v("hasBeenRequested(identity: $identity) -> $exists")
+        exists
     }
 
     /**
@@ -71,19 +85,21 @@ internal abstract class CacheStorePolicy : ICacheStorePolicy {
      */
     override suspend fun updateLastRequest(identity: CacheIdentity, timestamp: Instant) {
         withContext(Dispatchers.IO) {
-            localSource.upsert(
-                CacheEntity(
-                    request = request,
-                    cacheItemId = identity.id,
-                    timestamp = timestamp
-                )
+            val entity = CacheEntity(
+                request = request,
+                cacheItemId = identity.id,
+                timestamp = timestamp
             )
+            Timber.v("updateLastRequest(identity: $identity, timestamp: $timestamp)")
+            localSource.insertOrUpdate(entity)
         }
     }
 
     /**
      * Invalidates cache records for the given [identity]
      */
-    override suspend fun invalidateLastRequest(identity: CacheIdentity) =
+    override suspend fun invalidateLastRequest(identity: CacheIdentity) {
+        Timber.v("invalidateLastRequest(identity: $identity)")
         updateLastRequest(identity, Instant.EPOCH)
+    }
 }
