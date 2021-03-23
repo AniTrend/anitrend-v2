@@ -19,6 +19,7 @@ package co.anitrend.media.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.component.content.MediaContent
+import co.anitrend.media.component.screen.MediaScreen
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.component.viewmodel.state.MediaState
 import co.anitrend.media.provider.FeatureProvider
@@ -28,10 +29,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val fragmentModule = module {
-    fragment {
-        MediaContent(
-            stateLayoutConfig = get()
-        )
+    scope<MediaScreen> {
+        fragment {
+            MediaContent(
+                stateLayoutConfig = get()
+            )
+        }
     }
 }
 

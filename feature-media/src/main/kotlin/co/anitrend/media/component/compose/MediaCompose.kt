@@ -105,6 +105,5 @@ private fun BottomSheetComponent(scope: CoroutineScope, state: MediaState) {
 fun MediaDetailComponent(state: MediaState) {
     AniTrendTheme {
         val scope = rememberCoroutineScope()
-        BottomSheetComponent(scope, state)
     }
 }
