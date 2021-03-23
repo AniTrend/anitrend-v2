@@ -86,13 +86,12 @@
                 style="@style/AppTheme.SingleLineText"
                 />
 
-            <co.anitrend.arch.recycler.SupportRecyclerView
+            <co.anitrend.common.shared.ui.recycler.EmbeddedRecycler
                 android:id="@+id/mediaGenresRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/genre_item"
-                tools:itemCount="1" />
+                tools:itemCount="3" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

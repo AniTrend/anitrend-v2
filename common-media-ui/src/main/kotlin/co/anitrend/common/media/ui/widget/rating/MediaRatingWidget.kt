@@ -24,8 +24,7 @@ import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaRatingWidgetBinding
-import co.anitrend.core.android.format
-import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.extensions.format
 import co.anitrend.core.android.views.FrameLayoutWithBinding
 import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.user.settings.IUserSettings
@@ -171,7 +170,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         setRating(media, desiredColorTint, settings)
         val background = if (tintColor == null)
             R.drawable.bubble_background
-        else R.drawable.ic_rating_background
+        else R.drawable.widget_background
         requireBinding().root.background =
             context.getCompatDrawable(background)
     }

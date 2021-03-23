@@ -18,15 +18,14 @@
 package co.anitrend.domain.staff.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.entity.contract.IFavourable
+import co.anitrend.domain.common.entity.contract.ISynopsis
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.common.entity.shared.CoverName
 import co.anitrend.domain.staff.enums.StaffLanguage
 
-interface IStaff : IEntity {
-    val description: String?
-    val favourites: Int
+interface IStaff : IEntity, IFavourable, ISynopsis {
     val image: CoverImage?
-    val isFavourite: Boolean
     val language: StaffLanguage?
     val name: CoverName?
     val siteUrl: String?

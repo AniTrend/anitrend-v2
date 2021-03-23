@@ -21,15 +21,13 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.FULL_SPAN_SIZE
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.ui.extension.setUpWith
+import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.adapter.MediaCompactAdapter
@@ -63,32 +61,9 @@ internal class MediaCarouselItem(
             stateConfiguration = StateLayoutConfig()
         )
 
-        val layoutManager = LinearLayoutManager(
-            view.context,
-            if (entity.mediaItems.isEmpty())
-                RecyclerView.VERTICAL
-            else RecyclerView.HORIZONTAL,
-            false
-        )
-
-        with(layoutManager) {
-            // allow prefetching to speed up recycler performance
-            isItemPrefetchEnabled = true
-            initialPrefetchItemCount = 5
-            // If the view types are not the same across RecyclerView then it may lead to performance degradation.
-            recycleChildrenOnDetach = true
-        }
-
-        val animator = object : DefaultItemAnimator() {
-            override fun getSupportsChangeAnimations() = false
-        }
-        animator.supportsChangeAnimations = false
-
-        requireBinding().mediaCarouselRecycler.setRecycledViewPool(viewPool)
-        requireBinding().mediaCarouselRecycler.itemAnimator = animator
         requireBinding().mediaCarouselRecycler.setUpWith(
             supportAdapter = mediaItemAdapter,
-            recyclerLayoutManager = layoutManager
+            recyclerViewPool = viewPool
         )
         if (entity.mediaItems.isEmpty())
             mediaItemAdapter.loadState = LoadState.Loading()

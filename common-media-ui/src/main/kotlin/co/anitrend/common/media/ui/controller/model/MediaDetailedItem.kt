@@ -80,6 +80,7 @@ internal data class MediaDetailedItem(
             settings = settings,
             tintColor = R.color.colorBackground
         )
+        requireBinding().mediaFavourites.setFavouriteState(entity)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)

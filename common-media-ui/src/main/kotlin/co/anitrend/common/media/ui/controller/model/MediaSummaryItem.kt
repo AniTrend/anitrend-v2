@@ -23,15 +23,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.ui.extension.setUpWith
 import co.anitrend.common.genre.ui.adapter.GenreListAdapter
 import co.anitrend.common.media.ui.databinding.MediaSummaryItemBinding
+import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.core.android.R
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
@@ -56,28 +54,9 @@ internal class MediaSummaryItem(
     private fun setUpMediaGenres(view: View) {
         val genreListAdapter = GenreListAdapter(view.resources)
 
-        val layoutManager = LinearLayoutManager(
-            view.context, RecyclerView.HORIZONTAL, false
-        )
-
-        val animator = object : DefaultItemAnimator() {
-            override fun getSupportsChangeAnimations() = false
-        }
-        animator.supportsChangeAnimations = false
-
-        with(layoutManager) {
-            // allow prefetching to speed up recycler performance
-            isItemPrefetchEnabled = true
-            initialPrefetchItemCount = 5
-            // If the view types are not the same across RecyclerView then it may lead to performance degradation.
-            recycleChildrenOnDetach = true
-        }
-
-        requireBinding().mediaGenresRecycler.setRecycledViewPool(viewPool)
-        requireBinding().mediaGenresRecycler.itemAnimator = animator
         requireBinding().mediaGenresRecycler.setUpWith(
             supportAdapter = genreListAdapter,
-            recyclerLayoutManager = layoutManager
+            recyclerViewPool = viewPool
         )
 
         genreListAdapter.submitList(entity.genres.toList())

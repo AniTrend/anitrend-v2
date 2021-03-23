@@ -18,7 +18,9 @@
 package co.anitrend.domain.media.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.entity.contract.IFavourable
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.common.entity.contract.ISynopsis
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.enums.MediaFormat
@@ -27,11 +29,10 @@ import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.medialist.enums.ScoreFormat
 
-interface IMedia : IEntity {
+interface IMedia : IEntity, IFavourable, ISynopsis {
     val title: IMediaTitle
     val image: IMediaCover
     val isAdult: Boolean?
-    val isFavourite: Boolean
     val format: MediaFormat?
     val season: MediaSeason?
     val status: MediaStatus?

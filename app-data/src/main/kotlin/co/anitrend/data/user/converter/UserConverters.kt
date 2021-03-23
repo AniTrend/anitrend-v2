@@ -456,6 +456,7 @@ internal class UserViewEntityConverter(
                                             favourites = studio.favourites ?: 0,
                                             isAnimationStudio = studio.isAnimationStudio,
                                             isFavourite = studio.isFavourite,
+                                            image = null,
                                             name = studio.name,
                                             siteUrl = studio.siteUrl,
                                             id = studio.id
@@ -641,6 +642,7 @@ internal class UserViewEntityConverter(
                                              favourites = studio.favourites ?: 0,
                                              isAnimationStudio = studio.isAnimationStudio,
                                              isFavourite = studio.isFavourite,
+                                             image = null,
                                              name = studio.name,
                                              siteUrl = studio.siteUrl,
                                              id = studio.id

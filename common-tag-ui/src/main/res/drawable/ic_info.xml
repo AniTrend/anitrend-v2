@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   ~ Copyright (C) 2021  AniTrend
   ~
   ~     This program is free software: you can redistribute it and/or modify
@@ -15,12 +15,8 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tag"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:chipIcon="@drawable/ic_info"
-    tools:text="@sample/tag.json/name"/>
+<vector android:autoMirrored="true" android:height="24dp"
+    android:tint="@color/colorOnBackground" android:viewportHeight="24"
+    android:viewportWidth="24" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@android:color/white" android:pathData="M12,7c0.55,0 1,0.45 1,1v4c0,0.55 -0.45,1 -1,1s-1,-0.45 -1,-1L11,8c0,-0.55 0.45,-1 1,-1zM11.99,2C6.47,2 2,6.48 2,12s4.47,10 9.99,10C17.52,22 22,17.52 22,12S17.52,2 11.99,2zM12,20c-4.42,0 -8,-3.58 -8,-8s3.58,-8 8,-8 8,3.58 8,8 -3.58,8 -8,8zM13,17h-2v-2h2v2z"/>
+</vector>

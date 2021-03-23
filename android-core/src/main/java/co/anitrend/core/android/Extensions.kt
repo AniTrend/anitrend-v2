@@ -21,17 +21,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
-import androidx.annotation.AttrRes
-import androidx.annotation.StyleRes
+import androidx.annotation.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.use
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.net.toUri
 import androidx.core.view.iterator
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
+import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.navigation.model.common.IParam
@@ -39,31 +44,51 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import org.koin.core.context.GlobalContext
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.Instant
+import timber.log.Timber
 import java.util.*
 
 /**
  * Helper to resolve koin dependencies
+ *
+ * @param qualifier Help qualify a component
+ * @param parameters Help define a DefinitionParameters
+ *
+ * @return [T]
  */
-inline fun <reified T> koinOf(): T =
-    GlobalContext.get().get()
+inline fun <reified T> koinOf(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+): T {
+    val koin = GlobalContext.get()
+    return koin.get(qualifier, parameters)
+}
 
 /**
  * Retrieve a style from the current [android.content.res.Resources.Theme].
  */
 @StyleRes
-fun Context.themeStyle(@AttrRes attr: Int): Int {
-    val tv = TypedValue()
-    theme.resolveAttribute(attr, tv, true)
-    return tv.data
+fun Context.themeStyle(@AttrRes attributeResource: Int): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(
+        attributeResource,
+        typedValue,
+        true
+    )
+    return typedValue.data
 }
 
-fun Context.themeInterpolator(@AttrRes attr: Int): Interpolator {
+fun Context.themeInterpolator(
+    @AttrRes attributeResource: Int,
+    @InterpolatorRes interpolator: Int
+): Interpolator {
     return AnimationUtils.loadInterpolator(
         this,
-        obtainStyledAttributes(intArrayOf(attr)).use {
-            it.getResourceId(0, android.R.interpolator.fast_out_slow_in)
+        obtainStyledAttributes(intArrayOf(attributeResource)).use {
+            it.getResourceId(0, interpolator)
         }
     )
 }
@@ -88,22 +113,6 @@ fun Context.flowOfBroadcast(
         unregisterReceiver(receiver)
     }
 }
-
-/**
- * Helper value formatter
- *
- * @param digits Number of decimal places
- *
- * @author [Andrey Breslav](https://stackoverflow.com/a/23088000/1725347)
- */
-fun Double.format(digits: Int) = "%.${digits}f".format(this)
-
-/**
- * Helper value formatter for [Float] types
- *
- * @param digits Number of decimal places
- */
-fun Float.format(digits: Int) = "%.${digits}f".format(this)
 
 /**
  * Creates a string with locale applied from pretty time
@@ -195,4 +204,42 @@ fun Menu.setVisibilityForAllItems(
         .forEach {
             it.isVisible = shouldShow
         }
+}
+
+fun View.startViewIntent(url: String) {
+    val intent = Intent().apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        action = Intent.ACTION_VIEW
+        data = url.toUri()
+    }
+    runCatching {
+        context.startActivity(intent)
+    }.onFailure { Timber.w(it) }
+}
+
+
+/**
+ * Avoids resource not found when using vector drawables in API levels < Lollipop
+ * Also images loaded from this method apply the [Drawable.mutate] to assure
+ * that the state of each drawable is not shared
+ *
+ * @param resource The resource id of the drawable or vector drawable
+ * @param colorTint A specific color to tint the drawable
+ *
+ * @return [Drawable] tinted with the tint color
+ *
+ * @see Drawable
+ * @see DrawableRes
+ *
+ * TODO: Merge this into support-arch
+ */
+fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorInt colorTint : Int): Drawable? {
+    val drawableResource = AppCompatResources.getDrawable(this, resource)
+    if (drawableResource != null) {
+        val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
+        if (colorTint != 0)
+            DrawableCompat.setTint(drawableResult, colorTint)
+        return drawableResource
+    }
+    return null
 }

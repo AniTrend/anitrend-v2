@@ -17,11 +17,20 @@
 
 package co.anitrend.domain.character.entity
 
-import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.character.entity.contract.ICharacter
+import co.anitrend.domain.common.entity.shared.CoverImage
+import co.anitrend.domain.common.entity.shared.CoverName
 
-sealed class Character : IEntity {
+sealed class Character : ICharacter {
 
     data class Core(
+        override val description: String?,
+        override val image: CoverImage?,
+        override val name: CoverName?,
+        override val siteUrl: String?,
+        override val updatedAt: Long?,
+        override val favourites: Int,
+        override val isFavourite: Boolean,
         override val id: Long
     ) : Character()
 }

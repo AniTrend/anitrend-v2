@@ -18,11 +18,12 @@
 package co.anitrend.domain.studio.entity.cotract
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.entity.contract.IFavourable
+import co.anitrend.domain.common.entity.shared.CoverImage
 
-interface IStudio : IEntity {
-    val favourites: Int
-    val isAnimationStudio: Boolean
-    val isFavourite: Boolean
+interface IStudio : IEntity, IFavourable {
     val name: String
+    val image: CoverImage?
+    val isAnimationStudio: Boolean
     val siteUrl: String?
 }

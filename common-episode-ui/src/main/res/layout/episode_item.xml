@@ -101,7 +101,7 @@
         android:paddingBottom="@dimen/lg_margin"
         style="@style/AppTheme.SingleLineText"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-        android:background="@drawable/gradient_background_shadow"
+        android:background="@drawable/gradient_shadow"
         />
 
 </com.google.android.material.card.MaterialCardView>

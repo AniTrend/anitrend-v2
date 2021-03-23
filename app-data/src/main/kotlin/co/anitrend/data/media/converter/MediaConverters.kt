@@ -116,7 +116,7 @@ internal class MediaConverter(
                 ),
                 countryCode = source.countryOfOrigin,
                 description = source.description,
-                favouritesCount = source.favourites,
+                favourites = source.favourites,
                 genres = source.genres.map {
                     Genre.Extended(
                         id = it.hashCode().toLong(),
@@ -205,7 +205,7 @@ internal class MediaConverter(
                 ),
                 countryCode = source.countryOfOrigin,
                 description = source.description,
-                favouritesCount = source.favourites,
+                favourites = source.favourites,
                 genres = source.genres.map {
                    Genre.Extended(
                        id = it.hashCode().toLong(),
@@ -306,7 +306,7 @@ internal class MediaConverter(
                         id = it.id,
                     )
                 },
-                favouritesCount = source.favourites,
+                favourites = source.favourites,
                 genres = source.genres.map  {
                     Genre.Extended(
                         id = it.hashCode().toLong(),
@@ -483,7 +483,7 @@ internal class MediaEntityViewConverter(
                 ),
                 countryCode = media.countryOfOrigin,
                 description = media.description ?: jikan?.synopsis,
-                favouritesCount = media.favourites,
+                favourites = media.favourites,
                 genres = genres.map {
                     Genre.Extended(
                         id = it.id,
@@ -598,7 +598,7 @@ internal class MediaEntityViewConverter(
                             id = it.id
                         )
                     },
-                    favouritesCount = media.favouritesCount,
+                    favourites = media.favourites,
                     genres = media.genres,
                     twitterTag = media.twitterTag,
                     isLicensed = media.isLicensed,

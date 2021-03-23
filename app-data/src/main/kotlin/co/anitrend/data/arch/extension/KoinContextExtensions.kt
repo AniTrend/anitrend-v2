@@ -18,9 +18,21 @@
 package co.anitrend.data.arch.extension
 
 import org.koin.core.context.GlobalContext
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
 
 /**
  * Helper to resolve koin dependencies
+ *
+ * @param qualifier Help qualify a component
+ * @param parameters Help define a DefinitionParameters
+ *
+ * @return [T]
  */
-internal inline fun <reified T> koinOf(): T =
-    GlobalContext.get().get()
+internal inline fun <reified T> koinOf(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+): T {
+    val koin = GlobalContext.get()
+    return koin.get(qualifier, parameters)
+}

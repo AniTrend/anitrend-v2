@@ -70,12 +70,10 @@
 
     </FrameLayout>
 
-    <co.anitrend.arch.recycler.SupportRecyclerView
+    <co.anitrend.common.shared.ui.recycler.EmbeddedRecycler
         android:id="@+id/mediaCarouselRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:orientation="horizontal"
-        tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         tools:itemCount="5"
         tools:listitem="@layout/media_compact_item"
         />

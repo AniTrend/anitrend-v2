@@ -17,17 +17,21 @@
 
 package co.anitrend.common.tag.ui.controller.model
 
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewbinding.ViewBinding
+import androidx.annotation.ColorInt
+import androidx.core.text.bold
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.common.tag.R
 import co.anitrend.common.tag.databinding.TagItemBinding
-import co.anitrend.core.android.helpers.color.asDrawable
+import co.anitrend.core.android.getCompatDrawable
+import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
@@ -55,10 +59,18 @@ internal class TagItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = TagItemBinding.bind(view)
-        requireBinding().tag.text = entity.name
+        val builder = SpannableStringBuilder(entity.name)
 
-        if (entity is Tag.Extended)
-            requireBinding().tag.background = entity.background?.asDrawable(view.context)
+        if (entity is Tag.Extended) {
+            @ColorInt val colorTint = entity.background?.asColorInt(view.context) ?: 0
+            requireBinding().tag.chipIcon =
+                view.context.getCompatDrawable(R.drawable.ic_info, colorTint)
+
+            builder.append(" $CHARACTER_SEPARATOR ").bold {
+                "${entity.rank}%"
+            }
+        }
+        requireBinding().tag.text = builder
 
         requireBinding().tag.setOnClickListener {
             MediaDiscoverRouter.startActivity(

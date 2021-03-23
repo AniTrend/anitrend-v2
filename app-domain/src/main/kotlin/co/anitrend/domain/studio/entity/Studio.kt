@@ -17,23 +17,26 @@
 
 package co.anitrend.domain.studio.entity
 
+import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.studio.entity.cotract.IStudio
 
 sealed class Studio : IStudio {
 
     data class Core(
         override val favourites: Int,
-        override val isAnimationStudio: Boolean,
         override val isFavourite: Boolean,
         override val name: String,
+        override val image: CoverImage?,
+        override val isAnimationStudio: Boolean,
         override val siteUrl: String?,
         override val id: Long
     ) : Studio()
 
     data class Extended(
         override val favourites: Int,
-        override val isAnimationStudio: Boolean,
         override val isFavourite: Boolean,
+        override val image: CoverImage?,
+        override val isAnimationStudio: Boolean,
         override val name: String,
         override val siteUrl: String?,
         override val id: Long

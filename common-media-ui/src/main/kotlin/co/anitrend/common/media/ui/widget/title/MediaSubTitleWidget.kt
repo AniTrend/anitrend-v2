@@ -45,24 +45,30 @@ internal class MediaSubTitleWidget @JvmOverloads constructor(
         val unknown = context.getString(R.string.label_place_holder_to_be_announced)
         when(category) {
             is Media.Category.Anime -> {
-                when {
-                    category.episodes == 0 -> builder.italic { append(unknown) }
-                    category.episodes > 1 -> builder.bold {
-                        append("${category.episodes} ${context.getString(R.string.label_episode_plural)}")
-                    }
+                when (category.episodes) {
+                    0 -> builder.italic { append(unknown) }
                     else -> builder.bold{
-                        append("${category.episodes} ${context.getString(R.string.label_episode_singular)}")
+                        append(
+                            resources.getQuantityString(
+                                R.plurals.label_number_of_episodes,
+                                category.episodes,
+                                category.episodes
+                            )
+                        )
                     }
                 }
             }
             is Media.Category.Manga -> {
-                when {
-                    category.chapters == 0 -> builder.italic { append(unknown) }
-                    category.chapters > 1 -> builder.bold {
-                        append("${category.chapters} ${context.getString(R.string.label_chapter_plural)}")
-                    }
-                    else -> builder.bold {
-                        append("${category.chapters} ${context.getString(R.string.label_chapter_singular)}")
+                when (category.chapters) {
+                    0 -> builder.italic { append(unknown) }
+                    else -> builder.bold{
+                        append(
+                            resources.getQuantityString(
+                                R.plurals.label_number_of_chapters,
+                                category.chapters,
+                                category.chapters
+                            )
+                        )
                     }
                 }
             }

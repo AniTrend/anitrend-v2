@@ -47,7 +47,7 @@ internal sealed class UserCache : CacheStorePolicy() {
             val param: UserParam.Profile,
             override val id: Long = param.id,
             override val key: String = "user_profile",
-            override val expiresAfter: Instant = instantInFuture(minutes = 5)
+            override val expiresAt: Instant = instantInFuture(minutes = 5)
         ) : CacheIdentity
     }
 
@@ -70,7 +70,7 @@ internal sealed class UserCache : CacheStorePolicy() {
             val param: UserParam.Statistic,
             override val id: Long = param.id,
             override val key: String = "user_profile_statistic",
-            override val expiresAfter: Instant = instantInFuture(hours = 6)
+            override val expiresAt: Instant = instantInFuture(hours = 6)
         ) : CacheIdentity
     }
 }
