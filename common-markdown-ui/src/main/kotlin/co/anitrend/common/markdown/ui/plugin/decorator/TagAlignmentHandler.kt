@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.decorator
+package co.anitrend.common.markdown.ui.plugin.decorator
 
 import android.text.Layout
 import android.text.style.AlignmentSpan
@@ -26,7 +26,7 @@ import io.noties.markwon.html.MarkwonHtmlRenderer
 import io.noties.markwon.html.TagHandler
 
 
-internal class TagAlignmentHandler private constructor(): TagHandler() {
+class TagAlignmentHandler private constructor(): TagHandler() {
 
     override fun handle(
         visitor: MarkwonVisitor,

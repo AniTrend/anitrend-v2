@@ -15,9 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model
+package co.anitrend.common.markdown.ui.initializer
 
-internal enum class SizeMeasurementUnit(val attr: String) {
-    PIXEL("px"),
-    DPI("dp")
+import android.content.Context
+import co.anitrend.common.markdown.ui.koin.moduleHelper
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
+    }
 }

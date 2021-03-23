@@ -15,17 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model.contract
+package co.anitrend.common.markdown.ui.plugin.span.image
 
-import co.anitrend.news.plugin.model.SizeMeasurementUnit
+import co.anitrend.common.markdown.ui.plugin.span.configuration.ISpanConfiguration
+import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
+import io.noties.markwon.MarkwonConfiguration
+import io.noties.markwon.RenderProps
+import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.image.ImageSize
 
-internal interface IPhotoSpan : ISpanConfiguration {
+abstract class AbstractImageSpan : ISpanConfiguration {
 
-    val magnificationScale: Float
-    val sizeMeasurementUnit: SizeMeasurementUnit
+    abstract val magnificationScale: Float
+    abstract val sizeMeasurementUnit: SizeMeasurementUnit
 
-    fun addPropertiesToImage(source: String, imageSize: ImageSize)
+    abstract val configuration: MarkwonConfiguration
+    abstract val renderProps: RenderProps
+    abstract val tag: HtmlTag
+
+    abstract fun addPropertiesToImage(source: String, imageSize: ImageSize)
 
     private fun findSizeInStyle(descriptor: String, styles: String?, value: Float?): Float? {
         if (value != null) return value
@@ -67,9 +75,9 @@ internal interface IPhotoSpan : ISpanConfiguration {
     }
 
     companion object {
-        internal const val SRC_ATTR = "src"
-        internal const val HEIGHT_ATTR = "height"
-        internal const val WIDTH_ATTR = "width"
-        internal const val STYLE_ATTR = "style"
+        const val SRC_ATTR = "src"
+        const val HEIGHT_ATTR = "height"
+        const val WIDTH_ATTR = "width"
+        const val STYLE_ATTR = "style"
     }
 }

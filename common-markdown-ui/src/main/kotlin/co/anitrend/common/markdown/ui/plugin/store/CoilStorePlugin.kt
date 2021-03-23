@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.store
+package co.anitrend.common.markdown.ui.plugin.store
 
 import coil.request.Disposable
 import coil.request.ImageRequest

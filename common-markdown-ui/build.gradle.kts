@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,8 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model.contract
+import co.anitrend.buildSrc.Libraries
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
-internal interface ISpanConfiguration {
-    val isClickable: Boolean
+plugins {
+    id("co.anitrend.plugin")
+}
+
+tasks.withType(KotlinCompile::class.java) {
+	kotlinOptions {
+		freeCompilerArgs = listOf("-Xopt-in=coil.annotation.ExperimentalCoilApi")
+	}
+}
+
+dependencies {
+	implementation(Libraries.betterLinkMovement)
+	
+	implementation(Libraries.Markwon.core)
+	implementation(Libraries.Markwon.html)
+	implementation(Libraries.Markwon.coil)
 }
