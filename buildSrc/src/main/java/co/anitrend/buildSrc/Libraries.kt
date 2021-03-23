@@ -351,10 +351,12 @@ object Libraries {
             val studio = Modules.Common.Studio.path()
             val genre = Modules.Common.Genre.path()
             val tag = Modules.Common.Tag.path()
+			val shared = Modules.Common.Shared.path()
+			val markdown = Modules.Common.Markdown.path()
         }
 
         object Markdown {
-            private const val version = "0.1.0"
+			private const val version = "0.12.0-alpha01"
             const val markdown = "com.github.anitrend:support-markdown:${version}"
         }
 
