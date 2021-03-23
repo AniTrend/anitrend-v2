@@ -27,10 +27,12 @@
             <option value="$PROJECT_DIR$/common-feed-ui" />
             <option value="$PROJECT_DIR$/common-forum-ui" />
             <option value="$PROJECT_DIR$/common-genre-ui" />
+            <option value="$PROJECT_DIR$/common-markdown-ui" />
             <option value="$PROJECT_DIR$/common-media-ui" />
             <option value="$PROJECT_DIR$/common-news-ui" />
             <option value="$PROJECT_DIR$/common-recommendation-ui" />
             <option value="$PROJECT_DIR$/common-review-ui" />
+            <option value="$PROJECT_DIR$/common-shared-ui" />
             <option value="$PROJECT_DIR$/common-staff-ui" />
             <option value="$PROJECT_DIR$/common-studio-ui" />
             <option value="$PROJECT_DIR$/common-tag-ui" />
