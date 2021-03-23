@@ -15,11 +15,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model
+package co.anitrend.news.plugin.span
 
 import io.mockk.mockk
-import io.noties.markwon.MarkwonConfiguration
-import org.junit.Assert.*
 
 import junit.framework.TestCase
 

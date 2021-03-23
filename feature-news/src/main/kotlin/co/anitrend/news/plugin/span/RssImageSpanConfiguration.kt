@@ -15,24 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model
+package co.anitrend.news.plugin.span
 
-import co.anitrend.news.plugin.model.contract.IPhotoSpan
+import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
+import co.anitrend.common.markdown.ui.plugin.span.image.AbstractImageSpan
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.image.ImageProps
 import io.noties.markwon.image.ImageSize
 
-internal data class ImageSpanConfiguration(
-    val configuration: MarkwonConfiguration,
-    val renderProps: RenderProps,
-    val tag: HtmlTag,
+internal data class RssImageSpanConfiguration(
     val cutoffImageSize: Int,
+    override val configuration: MarkwonConfiguration,
+    override val renderProps: RenderProps,
+    override val tag: HtmlTag,
     override val magnificationScale: Float,
     override val sizeMeasurementUnit: SizeMeasurementUnit,
     override val isClickable: Boolean
-) : IPhotoSpan {
+) : AbstractImageSpan() {
 
     override fun addPropertiesToImage(source: String, imageSize: ImageSize) {
         ImageProps.DESTINATION.set(renderProps, source)

@@ -37,7 +37,6 @@ import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import co.anitrend.core.android.shortcut.ShortcutController
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import org.ocpsoft.prettytime.PrettyTime
@@ -109,3 +108,8 @@ private val controllerModule = module {
 }
 
 val androidCoreModules = listOf(coreModule, configurationModule, controllerModule)
+
+enum class MarkdownFlavour {
+    STANDARD,
+    ANILIST
+}

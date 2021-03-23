@@ -15,11 +15,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.decorator
+package co.anitrend.news.plugin.tag
 
 import co.anitrend.news.extensions.onFrame
-import co.anitrend.news.plugin.model.SizeMeasurementUnit
-import co.anitrend.news.plugin.model.YouTubeSpanConfiguration
+import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
+import co.anitrend.news.plugin.span.YouTubeSpanConfiguration
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlTag

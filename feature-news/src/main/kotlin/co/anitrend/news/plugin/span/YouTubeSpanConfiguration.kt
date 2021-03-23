@@ -15,10 +15,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model
+package co.anitrend.news.plugin.span
 
 import androidx.annotation.VisibleForTesting
-import co.anitrend.news.plugin.model.contract.IPhotoSpan
+import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
+import co.anitrend.common.markdown.ui.plugin.span.image.AbstractImageSpan
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.core.CoreProps
@@ -27,15 +28,15 @@ import io.noties.markwon.image.ImageProps
 import io.noties.markwon.image.ImageSize
 
 internal data class YouTubeSpanConfiguration(
-    val configuration: MarkwonConfiguration,
-    val renderProps: RenderProps,
-    val tag: HtmlTag,
+    override val configuration: MarkwonConfiguration,
+    override val renderProps: RenderProps,
+    override val tag: HtmlTag,
     override val magnificationScale: Float,
     override val sizeMeasurementUnit: SizeMeasurementUnit,
     override val isClickable: Boolean = true
-) : IPhotoSpan {
+) : AbstractImageSpan() {
 
-    private val regex = Regex("(?:https?:\\/\\/)?(?:www\\.)?youtu(?:\\.be\\/|be.com\\/\\S*(?:watch|embed)(?:(?:(?=\\/[^&\\s\\?]+(?!\\S))\\/)|(?:\\S*v=|v\\/)))([^&\\s\\?]+)", RegexOption.IGNORE_CASE)
+    private val regex = Regex(PATTERN, RegexOption.IGNORE_CASE)
 
     @VisibleForTesting
     fun getVideoId(src: String): String {
@@ -55,7 +56,7 @@ internal data class YouTubeSpanConfiguration(
     @VisibleForTesting
     fun createImageLink(src: String): String {
         val videoId = getVideoId(src)
-        return "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
+        return "https://img.youtube.com/vi/$videoId/maxresdefault.jpg"
     }
 
     override fun addPropertiesToImage(source: String, imageSize: ImageSize) {
@@ -66,6 +67,7 @@ internal data class YouTubeSpanConfiguration(
     }
 
     companion object {
+        private const val PATTERN = "(?:https?:\\/\\/)?(?:www\\.)?youtu(?:\\.be\\/|be.com\\/\\S*(?:watch|embed)(?:(?:(?=\\/[^&\\s\\?]+(?!\\S))\\/)|(?:\\S*v=|v\\/)))([^&\\s\\?]+)"
         internal const val LOOKUP_KEY = "youtube"
         internal const val IFRAME_TAG = "iframe"
     }

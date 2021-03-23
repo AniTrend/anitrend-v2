@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,23 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.common.editor.ui
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.content.Context
+import android.util.AttributeSet
+import co.anitrend.arch.ui.view.contract.CustomView
+import com.google.android.material.textfield.TextInputEditText
 
-dependencies {
-	implementation(project(Libraries.AniTrend.CommonUi.news))
-	implementation(project(Libraries.AniTrend.CommonUi.markdown))
+class MarkDownInputWidget @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : TextInputEditText(context, attrs, defStyleAttr), CustomView {
 
-    implementation(Libraries.AndroidX.Browser.browser)
+    init { onInit(context, attrs, defStyleAttr) }
 
-    implementation(Libraries.betterLinkMovement)
-    implementation(Libraries.jsoup)
+    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
 
-    /** Markwon */
-    implementation(Libraries.Markwon.core)
-	implementation(Libraries.Markwon.html)
-    implementation(Libraries.Markwon.linkify)
+    }
 }

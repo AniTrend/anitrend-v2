@@ -427,10 +427,6 @@ object NewsRouter : NavigationRouter() {
             override val KEY = "NewsRouter#Param"
         }
     }
-
-    enum class Dependency {
-        Markwon
-    }
 }
 
 object EpisodeRouter : NavigationRouter() {

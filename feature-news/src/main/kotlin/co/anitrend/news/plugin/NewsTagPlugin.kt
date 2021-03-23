@@ -17,10 +17,10 @@
 
 package co.anitrend.news.plugin
 
-import co.anitrend.news.plugin.decorator.EmptyTagHandler
-import co.anitrend.news.plugin.decorator.FrameTagHandler
-import co.anitrend.news.plugin.decorator.TagAlignmentHandler
-import co.anitrend.news.plugin.span.ImageTagHandler
+import co.anitrend.common.markdown.ui.plugin.decorator.TagAlignmentHandler
+import co.anitrend.news.plugin.decorator.FrameTagReplacer
+import co.anitrend.news.plugin.tag.FrameTagHandler
+import co.anitrend.news.plugin.tag.RssImageTagHandler
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.html.HtmlPlugin
@@ -29,9 +29,9 @@ internal class NewsTagPlugin private constructor(): AbstractMarkwonPlugin() {
 
     override fun configure(registry: MarkwonPlugin.Registry) {
         registry.require(HtmlPlugin::class.java) { plugin ->
-            plugin.emptyTagReplacement(EmptyTagHandler.create())
+            plugin.emptyTagReplacement(FrameTagReplacer.create())
             plugin.addHandler(FrameTagHandler.create())
-            plugin.addHandler(ImageTagHandler.create())
+            plugin.addHandler(RssImageTagHandler.create())
             //plugin.addHandler(ParagraphTagHandler.create()) //ignore for now
             plugin.addHandler(TagAlignmentHandler.create())
         }

@@ -22,6 +22,7 @@ import android.text.util.Linkify
 import android.view.Menu
 import android.view.MenuItem
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
@@ -41,7 +42,9 @@ class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
 
     private val viewModel by inject<NewsScreenViewModel>()
 
-    private val markwon by inject<Markwon>(named(NewsRouter.Dependency.Markwon))
+    private val markwon by inject<Markwon>(
+        named(MarkdownFlavour.STANDARD)
+    )
 
     private val param: NewsRouter.Param? by extra(NewsRouter.Param.KEY)
 

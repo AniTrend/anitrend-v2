@@ -21,7 +21,7 @@ import android.annotation.SuppressLint
 import io.noties.markwon.html.HtmlEmptyTagReplacement
 import io.noties.markwon.html.HtmlTag
 
-internal class EmptyTagHandler private constructor() : HtmlEmptyTagReplacement() {
+internal class FrameTagReplacer private constructor() : HtmlEmptyTagReplacement() {
 
     /**
      * @return replacement for supplied startTag or null if no replacement should occur (which will
@@ -39,6 +39,6 @@ internal class EmptyTagHandler private constructor() : HtmlEmptyTagReplacement()
         private const val frameReplacement = "\u00a0" // non-breakable space
         private val handlingTags = listOf("iframe")
 
-        fun create() = EmptyTagHandler()
+        fun create() = FrameTagReplacer()
     }
 }

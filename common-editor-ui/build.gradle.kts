@@ -22,5 +22,5 @@ plugins {
 }
 
 dependencies {
-
+	implementation(Libraries.Markwon.core)
 }

@@ -19,26 +19,20 @@ package co.anitrend.news.koin
 
 import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.common.news.ui.adapter.NewsPagedAdapter
+import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NewsRouter
-import co.anitrend.news.R
 import co.anitrend.news.component.content.NewsContent
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
 import co.anitrend.news.component.content.viewmodel.state.NewsContentState
 import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
 import co.anitrend.news.plugin.NewsTagPlugin
-import co.anitrend.news.plugin.store.CoilStorePlugin
 import co.anitrend.news.presenter.NewsPresenter
 import co.anitrend.news.provider.FeatureProvider
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
-import coil.transition.CrossfadeTransition
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonVisitor
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
-import io.noties.markwon.html.HtmlPlugin
-import io.noties.markwon.image.coil.CoilImagesPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
 import org.commonmark.node.Paragraph
 import org.koin.android.ext.koin.androidContext
@@ -49,44 +43,23 @@ import org.koin.dsl.module
 import timber.log.Timber
 
 private val coreModule = module {
-    single(named(NewsRouter.Dependency.Markwon)) {
-        val context = androidContext()
-
-        val radius = context.resources.getDimensionPixelSize(
-            R.dimen.md_margin
-        ).toFloat()
-
-        val duration = context.resources.getInteger(
-            R.integer.motion_duration_large
-        )
-
-        Markwon.builder(context)
-            .usePlugin(HtmlPlugin.create())
+    single(named(MarkdownFlavour.STANDARD)) {
+        val builder = get<Markwon.Builder>()
+        builder.usePlugin(NewsTagPlugin.create())
             .usePlugin(LinkifyPlugin.create())
-            .usePlugin(NewsTagPlugin.create())
+            .usePlugin(SoftBreakAddsNewLinePlugin.create())
             .usePlugin(
                 object : AbstractMarkwonPlugin() {
                     override fun configureVisitor(builder: MarkwonVisitor.Builder) {
                         builder.on(
                             Paragraph::class.java
                         ) { visitor, _ ->
+                            // TODO: Will remove this after multiple UI tests
                             Timber.v("visitor for paragraph: $visitor")
                         }
                     }
                 }
-            )
-            .usePlugin(
-                CoilImagesPlugin.create(
-                    CoilStorePlugin.create(
-                        ImageRequest.Builder(context)
-                            .transformations(RoundedCornersTransformation(radius))
-                            .transition(CrossfadeTransition(duration))
-                    ),
-                    get()
-                )
-            )
-            .usePlugin(SoftBreakAddsNewLinePlugin.create())
-            .build()
+            ).build()
     }
 }
 

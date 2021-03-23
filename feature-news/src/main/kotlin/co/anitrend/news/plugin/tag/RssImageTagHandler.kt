@@ -15,24 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.span
+package co.anitrend.news.plugin.tag
 
-import co.anitrend.news.extensions.onImage
-import co.anitrend.news.plugin.model.ImageSpanConfiguration
-import co.anitrend.news.plugin.model.SizeMeasurementUnit
+import co.anitrend.common.markdown.ui.extension.onImage
+import co.anitrend.news.plugin.span.RssImageSpanConfiguration
+import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler
 
-internal class ImageTagHandler private constructor() : SimpleTagHandler() {
+internal class RssImageTagHandler private constructor() : SimpleTagHandler() {
 
     override fun getSpans(
         configuration: MarkwonConfiguration,
         renderProps: RenderProps,
         tag: HtmlTag
     ): Any? {
-        val imageSpanConfiguration = ImageSpanConfiguration(
+        val imageSpanConfiguration = RssImageSpanConfiguration(
             magnificationScale = 1.5f,
             sizeMeasurementUnit = SizeMeasurementUnit.PIXEL,
             configuration = configuration,
@@ -48,6 +48,6 @@ internal class ImageTagHandler private constructor() : SimpleTagHandler() {
     override fun supportedTags() = listOf("img")
 
     companion object {
-        fun create() = ImageTagHandler()
+        fun create() = RssImageTagHandler()
     }
 }

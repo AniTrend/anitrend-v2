@@ -19,6 +19,7 @@ package co.anitrend.episode.koin
 
 import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.common.episode.ui.adapter.EpisodePagedAdapter
+import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
 import co.anitrend.episode.component.sheet.EpisodeSheet
@@ -29,7 +30,6 @@ import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
 import co.anitrend.episode.presenter.EpisodePresenter
 import co.anitrend.episode.provider.FeatureProvider
 import co.anitrend.navigation.EpisodeRouter
-import co.anitrend.navigation.NewsRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -49,7 +49,7 @@ private val fragmentModule = module {
     }
     fragment {
         EpisodeSheet(
-            markwon = get(named(NewsRouter.Dependency.Markwon)),
+            markwon = get(named(MarkdownFlavour.STANDARD)),
             presenter = get()
         )
     }
