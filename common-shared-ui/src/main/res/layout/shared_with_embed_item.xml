@@ -20,12 +20,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/characterCardContainer"
-    android:layout_width="match_parent"
+    android:id="@+id/sharedCardContainer"
+    android:layout_width="@dimen/series_image_sm"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/lg_margin"
     app:cardElevation="@dimen/lg_margin"
-    tools:layout_width="@dimen/series_image_sm"
     style="@style/AppTheme.MediaCard">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -34,46 +33,60 @@
         android:orientation="vertical">
 
         <co.anitrend.arch.ui.view.image.SupportImageView
-            android:id="@+id/characterImage"
+            android:id="@+id/sharedImage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            app:aspectRatio="1.6"
+            app:aspectRatio="1.45"
             tools:src="@sample/character"
             tools:scaleType="centerCrop"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/characterName"
+        <co.anitrend.common.shared.ui.view.text.SharedNameView
+            android:id="@+id/sharedName"
             android:padding="@dimen/md_margin"
-            android:textAppearance="?attr/textAppearanceBody2"
-            style="@style/AppTheme.DoubleLineText"
-            tools:text="@sample/character.json/name" />
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textSize="@dimen/shared_name_text_size"
+            style="@style/AppTheme.DoubleLineText" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/md_margin"
+            android:background="@drawable/card_drop_shadow" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="0dp">
+            android:background="@color/card_drop_start"
+            android:padding="@dimen/md_margin"
+            android:elevation="-8dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/actorAvatar"
+            <co.anitrend.common.shared.ui.view.image.CircleImageView
+                android:id="@+id/sharedEmeddedAvatar"
                 android:layout_gravity="center_vertical"
-                android:layout_width="@dimen/avatar_ripple_radius"
-                android:layout_height="@dimen/avatar_ripple_radius"
+                android:layout_width="@dimen/avatar_lg"
+                android:layout_height="@dimen/avatar_lg"
                 tools:src="@sample/actor" />
 
             <Space
                 android:layout_width="@dimen/md_margin"
                 android:layout_height="wrap_content" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/actorName"
+            <co.anitrend.common.shared.ui.view.text.SharedNameView
+                android:id="@+id/sharedEmbeddedName"
                 android:padding="@dimen/md_margin"
                 android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="@dimen/shared_name_text_size"
                 style="@style/AppTheme.DoubleLineText"
                 tools:text="@sample/character.json/actor_name" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <co.anitrend.common.shared.ui.view.FavouriteView
+        android:id="@+id/sharedFavourites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/md_margin" />
 
 </com.google.android.material.card.MaterialCardView>
