@@ -236,7 +236,6 @@ class BottomDrawerContent(
                 .onEach { clickable ->
                     when (clickable.data) {
                         is Account.Authenticated -> presenter.onAuthenticatedItemClicked(clickable, viewModel)
-                        is Account.Authorize -> AuthRouter.startActivity(clickable.view.context)
                         else -> { }
                     }
                 }.catch { cause: Throwable ->

@@ -25,9 +25,11 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.databinding.AccountAnonymousItemBinding
 import co.anitrend.navigation.drawer.model.account.Account
+import co.anitrend.navigation.extensions.startActivity
 import coil.load
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,10 +63,7 @@ class AuthorizeAccountItem(
             view.context.getCompatDrawable(R.drawable.ic_account_add_24dp, R.color.primaryTextColor)
         )
         requireBinding().accountContainer.setOnClickListener {
-            stateFlow.value = ClickableItem.Data(
-                data = entity,
-                view = it
-            )
+            AuthRouter.startActivity(it.context)
         }
     }
 
