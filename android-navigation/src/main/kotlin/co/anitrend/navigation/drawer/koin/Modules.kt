@@ -35,10 +35,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-private val coreModule = module {
-	
-}
-
 private val presenterModule = module {
 	scope<BottomDrawerContent> {
 		scoped {
