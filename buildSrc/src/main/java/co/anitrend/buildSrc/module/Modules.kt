@@ -63,7 +63,9 @@ internal object Modules {
         Feed("common-feed-ui"),
         Studio("common-studio-ui"),
         Genre("common-genre-ui"),
-        Tag("common-tag-ui")
+        Tag("common-tag-ui"),
+        Shared("common-shared-ui"),
+        Markdown("common-markdown-ui")
     }
 
     enum class Feature(override val id: String) : Module {

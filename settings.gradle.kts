@@ -45,6 +45,8 @@ include(
     ":common-studio-ui",
     ":common-genre-ui",
     ":common-tag-ui",
+	":common-shared-ui",
+	":common-markdown-ui",
     ":task-character",
     ":task-forum",
     ":task-media",

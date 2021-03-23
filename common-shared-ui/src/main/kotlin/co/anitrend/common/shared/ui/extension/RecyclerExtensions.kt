@@ -15,9 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.news.plugin.model
+package co.anitrend.common.shared.ui.extension
 
-internal enum class SizeMeasurementUnit(val attr: String) {
-    PIXEL("px"),
-    DPI("dp")
+import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.common.shared.ui.recycler.EmbeddedRecycler
+
+/**
+ * Sets up a recycler view by handling all the boilerplate code associated with it using
+ * the given layout manager or the default.
+ *
+ * @param supportAdapter recycler view adapter which will be used
+ */
+fun EmbeddedRecycler.setUpWith(
+    supportAdapter: RecyclerView.Adapter<*>,
+    recyclerViewPool: RecyclerView.RecycledViewPool
+) {
+    setHasFixedSize(true)
+    setRecycledViewPool(recyclerViewPool)
+    isNestedScrollingEnabled = true
+    adapter = supportAdapter
 }
