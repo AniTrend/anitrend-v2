@@ -57,7 +57,8 @@ class RequestImageMapper(
 
     /** Convert [data] into [HttpUrl]. */
     override fun map(data: RequestImage<*>): HttpUrl {
-        return getImageUrlUsing(data).toHttpUrl()
+        val url = getImageUrlUsing(data)
+        return url.toHttpUrl()
     }
 
     companion object {

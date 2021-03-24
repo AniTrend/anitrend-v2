@@ -29,6 +29,7 @@ import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.android.koin.androidCoreModules
+import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.data.arch.di.dataModules
@@ -128,13 +129,18 @@ private val configurationModule = module {
             .availableMemoryPercentage(memoryLimit)
             .bitmapPoolPercentage(memoryLimit)
             .dispatcher(get<ISupportDispatcher>().io)
-            .okHttpClient { client }
+            .okHttpClient { okHttpClient }
             .componentRegistry {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     add(ImageDecoderDecoder())
                 else
                     add(GifDecoder())
-                add(RequestImageFetcher(client = client, mapper = get()))
+                add(
+                    RequestImageFetcher(
+                        client = CoilRequestClient(okHttpClient),
+                        mapper = get()
+                    )
+                )
                 add(SvgDecoder(context = context))
                 add(VideoFrameFileFetcher(context = context))
                 add(VideoFrameUriFetcher(context = context))
