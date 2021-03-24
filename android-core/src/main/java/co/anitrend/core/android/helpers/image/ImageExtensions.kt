@@ -19,6 +19,7 @@ package co.anitrend.core.android.helpers.image
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.ShapeDrawable
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import co.anitrend.arch.extension.ext.getCompatDrawable
@@ -53,8 +54,12 @@ fun AppCompatImageView.using(
 
     if (requestImage is MediaRequestImage) {
         val color = requestImage.image?.color
-        if (color != null)
-            requestBuilder.placeholder(color.asDrawable(context))
+        if (color != null) {
+            // TODO: Apply corner radius to placeholder as well
+            requestBuilder.placeholder(
+                color.asDrawable(context)
+            )
+        }
     }
 
     if (transformations.isNotEmpty())
