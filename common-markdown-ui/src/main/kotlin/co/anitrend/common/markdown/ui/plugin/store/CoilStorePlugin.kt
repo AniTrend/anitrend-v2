@@ -17,6 +17,8 @@
 
 package co.anitrend.common.markdown.ui.plugin.store
 
+import co.anitrend.core.android.helpers.image.model.CoverRequestImage
+import co.anitrend.core.android.helpers.image.model.toCoverImage
 import coil.request.Disposable
 import coil.request.ImageRequest
 import coil.size.OriginalSize
@@ -29,6 +31,8 @@ internal class CoilStorePlugin private constructor(
 ) : CoilImagesPlugin.CoilStore {
 
     override fun load(drawable: AsyncDrawable): ImageRequest {
+        // TODO: Probably going to rewrite CoilImagesPlugin because this context does not seem to
+        val coverImage = drawable.destination.toCoverImage()
         val builder = requestBuilder
             .data(drawable.destination)
 

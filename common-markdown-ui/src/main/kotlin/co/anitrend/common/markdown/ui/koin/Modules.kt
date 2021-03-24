@@ -20,6 +20,7 @@ package co.anitrend.common.markdown.ui.koin
 import co.anitrend.common.markdown.R
 import co.anitrend.common.markdown.ui.plugin.store.CoilStorePlugin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import coil.Coil
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import coil.transition.CrossfadeTransition
@@ -50,7 +51,7 @@ private val builderModule = module {
                             .transformations(RoundedCornersTransformation(radius))
                             .transition(CrossfadeTransition(duration))
                     ),
-                    get()
+                    Coil.imageLoader(context)
                 )
             )
     }
