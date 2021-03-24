@@ -15,15 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.arch.network.contract
+package co.anitrend.data.arch.network.client
 
+import co.anitrend.data.arch.network.contract.AbstractNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
-import timber.log.Timber
 import java.io.IOException
 import java.net.SocketTimeoutException
 
@@ -32,10 +32,9 @@ import java.net.SocketTimeoutException
  *
  * @property dispatcher A [CoroutineDispatcher] that should be used for running requests
  */
-internal abstract class NetworkClient<T> {
+internal abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Response<T>>, Response<T>>() {
 
     protected abstract val dispatcher: CoroutineDispatcher
-    protected val moduleTag: String = javaClass.simpleName
 
     /**
      * @return [Response.body] of the response
@@ -53,7 +52,7 @@ internal abstract class NetworkClient<T> {
     /**
      * @return [Boolean] whether or not the request should be retried based on the [exception] received
      */
-    protected open fun defaultShouldRetry(exception: Throwable) = when (exception) {
+    override fun defaultShouldRetry(exception: Throwable) = when (exception) {
         is HttpException -> exception.code() == 429
         is SocketTimeoutException,
         is IOException -> true
@@ -67,59 +66,30 @@ internal abstract class NetworkClient<T> {
      * @param defaultDelay Initial delay before retrying
      * @param maxAttempts Max number of attempts to retry
      */
-    protected open suspend fun Deferred<Response<T>>.execute(
+    override suspend fun Deferred<Response<T>>.execute(
         defaultDelay: Long,
         maxAttempts: Int,
         shouldRetry: (Throwable) -> Boolean
     ): Response<T> {
         repeat(maxAttempts) { attempt ->
-            var nextDelay = attempt * attempt * defaultDelay
             runCatching {
                 withContext(dispatcher) { await() }
             }.onSuccess { response ->
                 return response
             }.onFailure { exception ->
-                Timber.tag(moduleTag).d("Request threw an exception -> $exception")
-
-                // The response failed, so lets see if we should retry again
-                if (!shouldRetry(exception)) {
-                    Timber.tag(moduleTag).w(
-                        exception, "Specific request is not allowed to retry on this exception"
+                delay(
+                    exception.getNextDelay(
+                        attempt,
+                        maxAttempts,
+                        defaultDelay,
+                        shouldRetry
                     )
-                    throw exception
-                }
-
-                if (attempt == (maxAttempts - 1)) {
-                    Timber.tag(moduleTag).w(
-                        exception, "Cannot retry on exception or maximum retries reached"
-                    )
-                    throw exception
-                }
-
-                if (exception is HttpException) {
-                    // If we have a HttpException, check whether we have a Retry-After
-                    // header to decide how long to delay
-                    val retryAfterHeader = exception.response()?.headers()?.get(RETRY_AFTER_KEY)
-                    if (retryAfterHeader != null && retryAfterHeader.isNotEmpty()) {
-                        // Got a Retry-After value, try and parse it to an long
-                        Timber.tag(moduleTag).i("Rate limit reached")
-                        try {
-                            nextDelay = (retryAfterHeader.toLong() + 10).coerceAtLeast(defaultDelay)
-                        } catch (nfe: NumberFormatException) {
-                            // Probably won't happen, ignore the value and use the generated default above
-                        }
-                    }
-                }
-
-                Timber.tag(moduleTag).i(
-                    "Retrying request in $nextDelay seconds, attempt -> $attempt/$maxAttempts"
                 )
-                delay(nextDelay)
             }
         }
 
         // We should never hit here
-        throw IllegalStateException("$moduleTag -> Unrecoverable state while executing request")
+        throw IllegalStateException("Unrecoverable state while executing request")
     }
 
     /**
@@ -133,7 +103,7 @@ internal abstract class NetworkClient<T> {
      * @throws HttpException When the [maxAttempts] have been exhausted, or unhandled exception
      */
     @Throws(HttpException::class)
-    internal suspend fun fetch(
+    open suspend fun fetch(
         deferredRequest: Deferred<Response<T>>,
         firstDelay: Long = 500,
         maxAttempts: Int = 3,
@@ -143,8 +113,4 @@ internal abstract class NetworkClient<T> {
         maxAttempts,
         shouldRetry
     ).bodyOrThrow()
-
-    companion object {
-        private const val RETRY_AFTER_KEY = "Retry-After"
-    }
 }

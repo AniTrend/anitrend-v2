@@ -24,7 +24,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-internal class NetworkClientTest : CoreTestSuite() {
+internal class DeferrableNetworkClientTest : CoreTestSuite() {
 
     @Test
     fun failingNetworkRequestRetriesWhenCriteriaIsMet() {

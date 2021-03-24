@@ -21,7 +21,7 @@ import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.network.contract.NetworkClient
+import co.anitrend.data.arch.network.client.DeferrableNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
@@ -35,7 +35,7 @@ internal class DefaultController<S, out D>(
     private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
     private val dispatcher: CoroutineDispatcher,
-    private val client: NetworkClient<S>
+    private val client: DeferrableNetworkClient<S>
 ) : ISupportResponse<Deferred<Response<S>>, D> {
 
     override suspend fun invoke(

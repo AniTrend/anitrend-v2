@@ -22,6 +22,6 @@ import timber.log.Timber
 
 internal class OkHttpLogger : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
-        Timber.d(message)
+        Timber.v(message)
     }
 }

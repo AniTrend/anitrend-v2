@@ -23,7 +23,7 @@ import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.data.api.model.GraphQLResponse
 import co.anitrend.data.arch.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.network.contract.NetworkClient
+import co.anitrend.data.arch.network.client.DeferrableNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
@@ -38,7 +38,7 @@ internal class GraphQLController<S, out D>(
     private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
     private val dispatcher: CoroutineDispatcher,
-    private val client: NetworkClient<GraphQLResponse<S>>
+    private val client: DeferrableNetworkClient<GraphQLResponse<S>>
 ) : ISupportResponse<Deferred<Response<GraphQLResponse<S>>>, D> {
 
     /**

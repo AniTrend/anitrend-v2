@@ -19,7 +19,7 @@ package co.anitrend.data.arch.network.graphql
 
 import co.anitrend.data.api.model.GraphQLError
 import co.anitrend.data.api.model.GraphQLResponse
-import co.anitrend.data.arch.network.contract.NetworkClient
+import co.anitrend.data.arch.network.client.DeferrableNetworkClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,7 +36,7 @@ import timber.log.Timber
 internal class GraphNetworkClient<R>(
     private val gson: Gson,
     override val dispatcher: CoroutineDispatcher
-) : NetworkClient<GraphQLResponse<R>>() {
+) : DeferrableNetworkClient<GraphQLResponse<R>>() {
 
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
@@ -50,7 +50,7 @@ internal class GraphNetworkClient<R>(
         }.onSuccess { error ->
             return error
         }.onFailure { exception ->
-            Timber.tag(moduleTag).w(exception)
+            Timber.w(exception)
             return GraphQLResponse(
                 errors = listOf(
                     GraphQLError(

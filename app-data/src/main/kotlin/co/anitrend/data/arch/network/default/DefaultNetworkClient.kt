@@ -17,7 +17,7 @@
 
 package co.anitrend.data.arch.network.default
 
-import co.anitrend.data.arch.network.contract.NetworkClient
+import co.anitrend.data.arch.network.client.DeferrableNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 
 /**
@@ -25,4 +25,4 @@ import kotlinx.coroutines.CoroutineDispatcher
  */
 internal class DefaultNetworkClient<R>(
     override val dispatcher: CoroutineDispatcher
-) : NetworkClient<R>()
+) : DeferrableNetworkClient<R>()
