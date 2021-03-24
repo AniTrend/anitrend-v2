@@ -129,7 +129,7 @@ private val configurationModule = module {
             .availableMemoryPercentage(memoryLimit)
             .bitmapPoolPercentage(memoryLimit)
             .dispatcher(get<ISupportDispatcher>().io)
-            .okHttpClient { okHttpClient }
+            .okHttpClient { client }
             .componentRegistry {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
                     add(ImageDecoderDecoder())
@@ -137,7 +137,7 @@ private val configurationModule = module {
                     add(GifDecoder())
                 add(
                     RequestImageFetcher(
-                        client = CoilRequestClient(okHttpClient),
+                        client = CoilRequestClient(client),
                         mapper = get()
                     )
                 )
