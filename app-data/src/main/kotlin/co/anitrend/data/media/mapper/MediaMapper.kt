@@ -17,10 +17,9 @@
 
 package co.anitrend.data.media.mapper
 
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.mapper.AiringMapper
 import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.arch.database.extensions.runInTransaction
 import co.anitrend.data.arch.database.wrapper.SourceEntityWrapper
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
@@ -37,8 +36,6 @@ import co.anitrend.data.rank.datasource.RankLocalSource
 import co.anitrend.data.rank.entity.RankEntity
 import co.anitrend.data.tag.mapper.TagMapper
 import co.anitrend.domain.media.entity.Media
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
 
@@ -74,10 +71,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          */
         override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
             return runCatching {
-                localSource.upsert(data)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-                airingMapper.persistEmbedded()
+                runInTransaction {
+                    localSource.upsert(data)
+                    tagMapper.persistEmbedded()
+                    genreMapper.persistEmbedded()
+                    airingMapper.persistEmbedded()
+                }
                 OutCome.Pass(null)
             }.getOrElse { OutCome.Fail(listOf(it)) }
         }
@@ -121,9 +120,11 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          */
         override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
             return runCatching {
-                localSource.upsert(data)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
+                runInTransaction {
+                    localSource.upsert(data)
+                    tagMapper.persistEmbedded()
+                    genreMapper.persistEmbedded()
+                }
                 OutCome.Pass(null)
             }.getOrElse { OutCome.Fail(listOf(it)) }
         }
@@ -191,15 +192,26 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * @return [OutCome.Pass] or [OutCome.Fail] of the operation
          */
         override suspend fun persistChanges(data: MediaEntity): OutCome<Nothing?> {
-            return runCatching {
-                localSource.upsertWithAttributes(data, linkWrapper, rankWrapper)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-                airingMapper.persistEmbedded()
+            runCatching {
+                runInTransaction {
+                    localSource.upsert(data)
+                    linkWrapper?.upsert()
+                    rankWrapper?.upsert()
+                    tagMapper.persistEmbedded()
+                    genreMapper.persistEmbedded()
+                    airingMapper.persistEmbedded()
+                }
+            }.onFailure {
                 linkWrapper = null
                 rankWrapper = null
-                OutCome.Pass(null)
-            }.getOrElse { OutCome.Fail(listOf(it)) }
+                return OutCome.Fail(listOf(it))
+            }.onSuccess {
+                linkWrapper = null
+                rankWrapper = null
+                return OutCome.Pass(null)
+            }
+
+            throw IllegalStateException("Unrecoverable state while persisting database changes")
         }
 
         /**
