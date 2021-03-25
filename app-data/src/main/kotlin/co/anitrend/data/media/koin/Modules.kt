@@ -112,10 +112,11 @@ private val converterModule = module {
 private val mapperModule = module {
     factory {
         MediaMapper.Detail(
+            mediaListMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
-            linkLocalSource = db().linkDao(),
-            rankLocalSource = db().rankDao(),
+            linkMapper = get(),
+            rankMapper = get(),
             airingMapper = get(),
             localSource = db().mediaDao(),
             converter = get()
@@ -123,6 +124,7 @@ private val mapperModule = module {
     }
     factory {
         MediaMapper.Paged(
+            mediaListMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
             airingMapper = get(),
@@ -131,7 +133,12 @@ private val mapperModule = module {
         )
     }
     factory {
-        MediaMapper.Collection(
+        MediaMapper.Network(
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.Embed(
             genreMapper = get(),
             tagMapper = get(),
             localSource = db().mediaDao(),
@@ -139,7 +146,21 @@ private val mapperModule = module {
         )
     }
     factory {
-        MediaMapper.Network(
+        MediaMapper.EmbedWithAiring(
+            airingMapper = get(),
+            genreMapper = get(),
+            tagMapper = get(),
+            localSource = db().mediaDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.EmbedWithMediaList(
+            mediaListMapper = get(),
+            airingMapper = get(),
+            genreMapper = get(),
+            tagMapper = get(),
+            localSource = db().mediaDao(),
             converter = get()
         )
     }

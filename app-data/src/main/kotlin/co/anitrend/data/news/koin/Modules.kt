@@ -26,7 +26,7 @@ import co.anitrend.data.news.NewsPagedRepository
 import co.anitrend.data.news.cache.NewsCache
 import co.anitrend.data.news.converter.NewsEntityConverter
 import co.anitrend.data.news.converter.NewsModelConverter
-import co.anitrend.data.news.mapper.NewsResponseMapper
+import co.anitrend.data.news.mapper.NewsMapper
 import co.anitrend.data.news.repository.NewsRepository
 import co.anitrend.data.news.source.NewsSourceImpl
 import co.anitrend.data.news.source.contract.NewsSource
@@ -40,7 +40,7 @@ private val sourceModule = module {
             localSource = db().newsDao(),
             clearDataHelper = get(),
             controller = defaultController(
-                mapper = get<NewsResponseMapper>()
+                mapper = get<NewsMapper>()
             ),
             converter = get(),
             cachePolicy = get<NewsCache>(),
@@ -68,7 +68,7 @@ private val converterModule =  module {
 
 private val mapperModule = module {
     factory {
-        NewsResponseMapper(
+        NewsMapper(
             localSource = db().newsDao(),
             converter = get()
         )

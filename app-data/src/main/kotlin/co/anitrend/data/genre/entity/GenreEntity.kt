@@ -23,6 +23,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "genre",
+    primaryKeys = ["id"],
     indices = [
         Index(
             value = ["genre"],
@@ -32,8 +33,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 )
 @EntitySchema
 internal data class GenreEntity(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") override val id: Long = 0,
+    @ColumnInfo(name = "id") override val id: Long,
     @ColumnInfo(name = "genre") val genre: String,
     @ColumnInfo(name = "emoji") val emoji: String
 ) : Identity {

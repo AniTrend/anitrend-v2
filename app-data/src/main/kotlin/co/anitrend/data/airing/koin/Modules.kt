@@ -95,7 +95,7 @@ private val mapperModule = module {
         )
     }
     factory {
-        AiringMapper.Collection(
+        AiringMapper.Embed(
             localSource = db().airingScheduleDao(),
             converter = get()
         )

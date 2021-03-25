@@ -17,7 +17,6 @@
 
 package co.anitrend.data.medialist.koin
 
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.api.contract.EndpointType
 import co.anitrend.data.arch.extension.api
 import co.anitrend.data.arch.extension.db
@@ -25,8 +24,7 @@ import co.anitrend.data.arch.extension.graphQLController
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
 import co.anitrend.data.medialist.converter.MediaListEntityConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter
-import co.anitrend.data.medialist.mapper.MediaListCollectionMapper
-import co.anitrend.data.medialist.mapper.MediaListPagedMapper
+import co.anitrend.data.medialist.mapper.MediaListMapper
 import co.anitrend.data.medialist.repository.MediaListRepository
 import co.anitrend.data.medialist.source.paged.MediaListPagedSourceImpl
 import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
@@ -40,7 +38,7 @@ private val sourceModule = module {
             localSource = db().mediaListDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<MediaListPagedMapper>()
+                mapper = get<MediaListMapper.Paged>()
             ),
             converter = get(),
             dispatcher = get()
@@ -50,21 +48,30 @@ private val sourceModule = module {
 
 private val mapperModule = module {
     factory {
-        MediaListPagedMapper(
+        MediaListMapper.Paged(
+            mediaMapper = get(),
             localSource = db().mediaListDao(),
-            converter = get(),
-            mediaLocalSource = db().mediaDao(),
-            mediaConverter = get(),
-            context = get<ISupportDispatcher>().io
+            converter = get()
         )
     }
     factory {
-        MediaListCollectionMapper(
+        MediaListMapper.Collection(
+            userMapper = get(),
             localSource = db().mediaListDao(),
-            converter = get(),
-            userLocalSource = db().userDao(),
-            userConverter = get(),
-            context = get<ISupportDispatcher>().io
+            converter = get()
+        )
+    }
+    factory {
+        MediaListMapper.Embed(
+            localSource = db().mediaListDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaListMapper.EmbedWithMedia(
+            mediaMapper = get(),
+            localSource = db().mediaListDao(),
+            converter = get()
         )
     }
 }

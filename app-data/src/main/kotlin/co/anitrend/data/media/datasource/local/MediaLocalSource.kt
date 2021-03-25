@@ -25,12 +25,9 @@ import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.arch.database.dao.ILocalSource
-import co.anitrend.data.arch.database.wrapper.SourceEntityWrapper
-import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.rank.entity.RankEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -68,15 +65,4 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
     @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
     abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
-
-    @Transaction
-    open suspend fun upsertWithAttributes(
-        entity: MediaEntity,
-        linkWrapper: SourceEntityWrapper<LinkEntity>?,
-        rankWrapper: SourceEntityWrapper<RankEntity>?
-    ) {
-        upsert(entity)
-        linkWrapper?.upsert()
-        rankWrapper?.upsert()
-    }
 }

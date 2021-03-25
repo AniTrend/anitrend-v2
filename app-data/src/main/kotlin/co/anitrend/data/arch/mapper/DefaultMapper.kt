@@ -18,6 +18,7 @@
 package co.anitrend.data.arch.mapper
 
 import co.anitrend.arch.data.mapper.SupportResponseMapper
+import co.anitrend.data.arch.database.extensions.runInTransaction
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
 import co.anitrend.data.arch.railway.extension.otherwise
@@ -30,29 +31,34 @@ import timber.log.Timber
 internal abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
 
     /**
+     * Save [data] into your desired local source
+     */
+    protected abstract suspend fun persist(data: D)
+
+    /**
      * Handles the persistence of [data] into a local source
      *
      * @return [OutCome.Pass] or [OutCome.Fail] of the operation
      */
-    protected open suspend fun persistChanges(data: D): OutCome<Nothing?> {
-        // optional
-        return OutCome.Pass(null)
+    protected fun persistChanges(data: D): OutCome<Nothing?> {
+        return runCatching {
+            persistChanges(data)
+            OutCome.Pass(null)
+        }.getOrElse { OutCome.Fail(listOf(it)) }
     }
 
     /**
      * If [data] is a type of [Collection], checks if empty otherwise checks nullability
      */
     protected fun <T> checkValidity(data: T?): OutCome<T> {
-        if (data == null)
-            return OutCome.Fail(
-                listOf(Throwable("Data validity failed data is null"))
-            )
-
-        if (data is Collection<*> && data.isEmpty())
-            return OutCome.Fail(
-                listOf(Throwable("Data validity failed collection is empty"))
-            )
-
+        if (data == null) {
+            Timber.tag(moduleTag).v("Data is null")
+            return OutCome.Fail(emptyList())
+        }
+        if (data is Collection<*> && data.isEmpty()) {
+            Timber.tag(moduleTag).v("Data is empty")
+            return OutCome.Fail(emptyList())
+        }
         return OutCome.Pass(data)
     }
 
@@ -61,7 +67,7 @@ internal abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
      */
     protected fun handleException(exceptions: List<Throwable>) {
         exceptions.forEach {
-            Timber.tag(moduleTag).w(it, "Unhandled exception thrown")
+            Timber.tag(moduleTag).w(it)
         }
     }
 

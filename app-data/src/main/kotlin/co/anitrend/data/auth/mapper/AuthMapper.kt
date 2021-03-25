@@ -17,11 +17,7 @@
 
 package co.anitrend.data.auth.mapper
 
-import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.arch.railway.extension.otherwise
-import co.anitrend.data.arch.railway.extension.then
+import  co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
@@ -55,28 +51,11 @@ internal class AuthMapper(
     }
 
     /**
-     * Handles the persistence of [data] into a local source
-     *
-     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     * Save [data] into your desired local source
      */
-    override suspend fun persistChanges(data: UserEntity): OutCome<Nothing?> {
-        return runCatching {
-            userLocalSource.upsertWithOptions(data, generalOption, mediaOption)
-            persistUserSettings()
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
-
-    /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: UserEntity) {
-        mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
+    override suspend fun persist(data: UserEntity) {
+        userLocalSource.upsertWithOptions(data, generalOption, mediaOption)
+        persistUserSettings()
     }
 
     /**

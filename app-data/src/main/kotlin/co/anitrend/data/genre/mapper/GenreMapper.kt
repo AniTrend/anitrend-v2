@@ -18,10 +18,6 @@
 package co.anitrend.data.genre.mapper
 
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.arch.railway.extension.otherwise
-import co.anitrend.data.arch.railway.extension.then
 import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.GenreLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
@@ -29,21 +25,21 @@ import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.data.media.model.MediaModel
 
-internal class GenreMapper(
-    private val localSource: GenreLocalSource,
-    private val converter: GenreModelConverter
-) : DefaultMapper<GenreCollection, List<GenreEntity>>() {
+internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEntity>>() {
+
+    protected abstract val localSource: GenreLocalSource
+    protected abstract val converter: GenreModelConverter
 
     private var connections: List<GenreConnectionEntity>? = null
 
-    suspend fun persistEmbedded() {
+    suspend fun persistConnection() {
         connections?.also {
             localSource.upsertConnections(it)
         }
         connections = null
     }
 
-    fun onEmbedded(source: List<MediaModel>) {
+    fun onConnection(source: List<MediaModel>) {
         connections = source.flatMap { media ->
             media.genres?.map {
                 GenreConnectionEntity(
@@ -54,34 +50,28 @@ internal class GenreMapper(
         }
     }
 
-    override suspend fun persistChanges(data: List<GenreEntity>): OutCome<Nothing?> {
-        return runCatching {
+    class Core(
+        override val localSource: GenreLocalSource,
+        override val converter: GenreModelConverter
+    ) : GenreMapper() {
+
+        /**
+         * Save [data] into your desired local source
+         */
+        override suspend fun persist(data: List<GenreEntity>) {
             localSource.upsert(data)
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
+        }
 
-    /**
-     * Inserts the given object into the implemented room database
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<GenreEntity>) {
-        mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
+        /**
+         * Creates mapped objects and handles the database operations which may be required to map various objects
+         *
+         * @param source the incoming data source type
+         * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
+         */
+        override suspend fun onResponseMapFrom(
+            source: GenreCollection
+        ) = converter.convertFrom(
+            source.asGenreModels()
+        )
     }
-
-    /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects
-     *
-     * @param source the incoming data source type
-     * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     */
-    override suspend fun onResponseMapFrom(
-        source: GenreCollection
-    ) = converter.convertFrom(
-        source.genreCollection
-    )
 }

@@ -166,6 +166,12 @@ private val mapperModule = module {
             converter = get(),
         )
     }
+    factory {
+        UserMapper.Embed(
+            localSource = db().userDao(),
+            converter = get(),
+        )
+    }
 }
 
 private val useCaseModule = module {

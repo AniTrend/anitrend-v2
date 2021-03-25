@@ -17,7 +17,9 @@
 
 package co.anitrend.data.rank.koin
 
+import co.anitrend.data.arch.extension.db
 import co.anitrend.data.rank.converter.RankModelConverter
+import co.anitrend.data.rank.mapper.RankMapper
 import org.koin.dsl.module
 
 private val converterModule = module {
@@ -26,4 +28,12 @@ private val converterModule = module {
     }
 }
 
-internal val rankModules = listOf(converterModule)
+private val mapperModule = module {
+    factory {
+        RankMapper(
+            localSource = db().rankDao()
+        )
+    }
+}
+
+internal val rankModules = listOf(converterModule, mapperModule)
