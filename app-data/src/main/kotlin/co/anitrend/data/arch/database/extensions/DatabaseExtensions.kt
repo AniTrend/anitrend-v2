@@ -17,7 +17,11 @@
 
 package co.anitrend.data.arch.database.extensions
 
+import androidx.room.RoomDatabase
 import co.anitrend.arch.extension.ext.empty
+import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.arch.extension.koinOf
+import kotlin.jvm.Throws
 
 internal fun List<*>.toCommaSeparatedValues(): String {
     return if (isNotEmpty()) {
@@ -41,3 +45,18 @@ internal inline fun <reified T: Enum<*>> String.toEnum(): T {
 }
 
 internal fun Enum<*>.fromEnum() = name
+
+@Throws(Exception::class)
+@Suppress("DEPRECATION")
+internal inline fun runInTransaction(action: () -> Unit) {
+    val store = koinOf<IAniTrendStore>() as RoomDatabase
+    store.beginTransaction()
+    try {
+        action()
+        store.setTransactionSuccessful()
+    } catch (exception: Exception) {
+        throw exception
+    } finally {
+        store.endTransaction()
+    }
+}
