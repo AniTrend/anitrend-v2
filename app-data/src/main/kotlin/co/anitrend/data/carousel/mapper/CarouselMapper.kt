@@ -18,28 +18,27 @@
 package co.anitrend.data.carousel.mapper
 
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper
-import co.anitrend.data.media.model.container.MediaModelContainer
 
 internal class CarouselMapper(
-    private val mapper: MediaMapper.Paged
+    private val mapper: MediaMapper.EmbedWithMediaList
 ) : DefaultMapper<CarouselModel, List<MediaEntity>>() {
 
     /**
-     * Handles the persistence of [data] into a local source
-     *
-     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     * Save [data] into your desired local source
      */
-    override suspend fun persistChanges(data: List<MediaEntity>): OutCome<Nothing?> {
-        return runCatching {
-            mapper.onResponseDatabaseInsert(data)
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
+    override suspend fun persist(data: List<MediaEntity>) {}
+
+    /**
+     * Inserts the given object into the implemented room database,
+     *
+     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
+     */
+    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
+        mapper.onResponseDatabaseInsert(mappedData)
     }
 
     /**
@@ -61,12 +60,6 @@ internal class CarouselMapper(
                     source.trendingRightNow?.media.orEmpty()
         }
 
-        return mapper.onResponseMapFrom(
-            MediaModelContainer.Paged(
-                MediaModelContainer.Paged.Page(
-                    media = models
-                )
-            )
-        )
+        return mapper.onResponseMapFrom(models)
     }
 }

@@ -32,6 +32,7 @@ import co.anitrend.data.genre.repository.GenreRepository
 import co.anitrend.data.genre.source.GenreSourceImpl
 import co.anitrend.data.genre.source.contract.GenreSource
 import co.anitrend.data.genre.usecase.GenreUseCaseImpl
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val sourceModule = module {
@@ -78,11 +79,11 @@ private val converterModule = module {
 
 private val mapperModule = module {
     factory {
-        GenreMapper(
+        GenreMapper.Core(
             localSource = db().genreDao(),
             converter = get()
         )
-    }
+    } bind GenreMapper::class
 }
 
 private val useCaseModule = module {

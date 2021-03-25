@@ -28,7 +28,7 @@ import co.anitrend.data.episode.EpisodePagedRepository
 import co.anitrend.data.episode.cache.EpisodeCache
 import co.anitrend.data.episode.converter.EpisodeEntityConverter
 import co.anitrend.data.episode.converter.EpisodeModelConverter
-import co.anitrend.data.episode.mapper.EpisodeResponseMapper
+import co.anitrend.data.episode.mapper.EpisodeMapper
 import co.anitrend.data.episode.repository.EpisodeRepository
 import co.anitrend.data.episode.source.EpisodeSourceImpl
 import co.anitrend.data.episode.source.contract.EpisodeSource
@@ -49,7 +49,7 @@ private val sourceModule = module {
             localSource = db().episodeDao(),
             clearDataHelper = get(),
             controller = defaultController(
-                mapper = get<EpisodeResponseMapper>()
+                mapper = get<EpisodeMapper>()
             ),
             converter = get(),
             cachePolicy = get<EpisodeCache>(),
@@ -77,7 +77,7 @@ private val converterModule = module {
 
 private val mapperModule = module {
     factory {
-        EpisodeResponseMapper(
+        EpisodeMapper(
             localSource = db().episodeDao(),
             converter = get()
         )

@@ -17,7 +17,9 @@
 
 package co.anitrend.data.link.koin
 
+import co.anitrend.data.arch.extension.db
 import co.anitrend.data.link.converter.LinkModelConverter
+import co.anitrend.data.link.mapper.LinkMapper
 import org.koin.dsl.module
 
 private val converterModule = module {
@@ -26,4 +28,12 @@ private val converterModule = module {
     }
 }
 
-internal val linkModules = listOf(converterModule)
+private val mapperModule = module {
+    factory {
+        LinkMapper(
+            localSource = db().linkDao()
+        )
+    }
+}
+
+internal val linkModules = listOf(converterModule, mapperModule)

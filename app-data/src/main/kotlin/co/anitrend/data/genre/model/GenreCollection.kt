@@ -23,4 +23,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class GenreCollection(
     @SerialName("GenreCollection") val genreCollection: List<String>
-)
+) {
+
+    fun asGenreModels() =
+        genreCollection
+            .sortedBy { it }
+            .mapIndexed { index, s ->
+                GenreModel(index, s)
+            }
+
+    data class GenreModel(
+        val id: Int,
+        val genre: String
+    )
+}

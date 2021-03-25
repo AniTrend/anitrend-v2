@@ -29,21 +29,21 @@ import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.tag.model.remote.TagContainerModel
 
-internal class TagMapper(
-    private val localSource: TagLocalSource,
-    private val converter: TagModelConverter
-) : DefaultMapper<TagContainerModel, List<TagEntity>>() {
+internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntity>>() {
+
+    protected abstract val localSource: TagLocalSource
+    protected abstract val converter: TagModelConverter
 
     private var connections: List<TagConnectionEntity>? = null
 
-    suspend fun persistEmbedded() {
+    suspend fun persistConnection() {
         connections?.also {
             localSource.upsertConnections(it)
         }
         connections = null
     }
 
-    fun onEmbedded(source: List<MediaModel>) {
+    fun onConnection(source: List<MediaModel>) {
         connections = source.flatMap { media ->
             media.tags?.map {
                 TagConnectionEntity(
@@ -56,22 +56,28 @@ internal class TagMapper(
         }
     }
 
-    override suspend fun persistChanges(data: List<TagEntity>): OutCome<Nothing?> {
-        return runCatching {
-            localSource.upsert(data)
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
+    class Core(
+        override val localSource: TagLocalSource,
+        override val converter: TagModelConverter
+    ) : TagMapper() {
 
-    /**
-     * Creates mapped objects and handles the database operations which may be required to map various objects
-     *
-     * @param source the incoming data source type
-     * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     */
-    override suspend fun onResponseMapFrom(
-        source: TagContainerModel
-    ) = converter.convertFrom(
-        source.mediaTagCollection
-    )
+        /**
+         * Save [data] into your desired local source
+         */
+        override suspend fun persist(data: List<TagEntity>) {
+            localSource.upsert(data)
+        }
+
+        /**
+         * Creates mapped objects and handles the database operations which may be required to map various objects
+         *
+         * @param source the incoming data source type
+         * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
+         */
+        override suspend fun onResponseMapFrom(
+            source: TagContainerModel
+        ) = converter.convertFrom(
+            source.mediaTagCollection
+        )
+    }
 }

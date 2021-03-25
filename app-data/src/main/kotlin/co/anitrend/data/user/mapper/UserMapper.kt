@@ -18,7 +18,7 @@
 package co.anitrend.data.user.mapper
 
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.railway.OutCome
+import co.anitrend.data.arch.mapper.EmbedMapper
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
@@ -28,6 +28,7 @@ import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
+import co.anitrend.data.user.model.UserModel
 import co.anitrend.data.user.model.container.UserModelContainer
 
 internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
@@ -35,34 +36,16 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     protected abstract val localSource: UserLocalSource
     protected abstract val converter: UserModelConverter
 
-    /**
-     * Handles the persistence of [data] into a local source
-     *
-     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
-     */
-    override suspend fun persistChanges(data: D): OutCome<Nothing?> {
-        return runCatching {
-            if (data is UserEntity)
-                localSource.upsert(data)
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
-
     class Paged(
         override val localSource: UserLocalSource,
         override val converter: UserModelConverter
     ) : UserMapper<UserModelContainer.Paged, List<UserEntity>>() {
 
         /**
-         * Handles the persistence of [data] into a local source
-         *
-         * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+         * Save [data] into your desired local source
          */
-        override suspend fun persistChanges(data: List<UserEntity>): OutCome<Nothing?> {
-            return runCatching {
-                localSource.upsert(data)
-                OutCome.Pass(null)
-            }.getOrElse { OutCome.Fail(listOf(it)) }
+        override suspend fun persist(data: List<UserEntity>) {
+            localSource.upsert(data)
         }
 
         /**
@@ -87,17 +70,12 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private var mediaOption: UserMediaOptionEntity? = null
 
         /**
-         * Handles the persistence of [data] into a local source
-         *
-         * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+         * Save [data] into your desired local source
          */
-        override suspend fun persistChanges(data: UserEntity): OutCome<Nothing?> {
-            return runCatching {
-                localSource.upsertWithOptions(data, generalOption, mediaOption)
-                generalOption = null
-                mediaOption = null
-                OutCome.Pass(null)
-            }.getOrElse { OutCome.Fail(listOf(it)) }
+        override suspend fun persist(data: UserEntity) {
+            localSource.upsertWithOptions(data, generalOption, mediaOption)
+            generalOption = null
+            mediaOption = null
         }
 
         /**
@@ -125,19 +103,14 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private var userEntity: UserEntity? = null
 
         /**
-         * Handles the persistence of [data] into a local source
-         *
-         * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+         * Save [data] into your desired local source
          */
-        override suspend fun persistChanges(data: UserWithStatisticEntity): OutCome<Nothing?> {
-            return runCatching {
-                val entity = requireNotNull(userEntity) {
-                    "UserEntity should not be null at this point"
-                }
-                localSource.upsertWithStatistic(entity, data)
-                userEntity = null
-                OutCome.Pass(null)
-            }.getOrElse { OutCome.Fail(listOf(it)) }
+        override suspend fun persist(data: UserWithStatisticEntity) {
+            val entity = requireNotNull(userEntity) {
+                "UserEntity should not be null at this point"
+            }
+            localSource.upsertWithStatistic(entity, data)
+            userEntity = null
         }
 
         /**
@@ -160,6 +133,13 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     ) : UserMapper<UserModelContainer.User, UserEntity>() {
 
         /**
+         * Save [data] into your desired local source
+         */
+        override suspend fun persist(data: UserEntity) {
+            localSource.upsert(data)
+        }
+
+        /**
          * Creates mapped objects and handles the database operations which may be required to map various objects,
          *
          * @param source the incoming data source type
@@ -169,4 +149,9 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
             source: UserModelContainer.User
         ) = converter.convertFrom(source.user)
     }
+
+    class Embed(
+        override val localSource: UserLocalSource,
+        override val converter: UserModelConverter
+    ) : EmbedMapper<UserModel, UserEntity>()
 }

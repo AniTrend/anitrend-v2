@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,25 +15,36 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.moe.mapper
+package co.anitrend.data.arch.mapper
 
-import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.moe.converters.SourceModelConverter
-import co.anitrend.data.moe.datasource.local.MoeLocalSource
-import co.anitrend.data.moe.entity.MoeEntity
-import co.anitrend.data.moe.model.remote.MoeModel
+import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.arch.database.dao.ILocalSource
 
-internal class MoeMapper(
-    private val localSource: MoeLocalSource,
-    private val converter: SourceModelConverter
-) : DefaultMapper<MoeModel?, MoeEntity?>() {
+internal abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
+
+    protected var entities: List<D>? = null
+    protected abstract val localSource: ILocalSource<D>
+    protected abstract val converter: SupportConverter<S, D>
+
+    open suspend fun onEmbedded(source: List<S>) {
+        entities = onResponseMapFrom(source)
+    }
+
+    open suspend fun onEmbedded(source: S?) {
+        if (source != null)
+            entities = onResponseMapFrom(listOf(source))
+    }
+
+    open suspend fun persistEmbedded() {
+        onResponseDatabaseInsert(entities.orEmpty())
+        entities = null
+    }
 
     /**
      * Save [data] into your desired local source
      */
-    override suspend fun persist(data: MoeEntity?) {
-        if (data != null)
-            localSource.upsert(data)
+    override suspend fun persist(data: List<D>) {
+        localSource.upsert(data)
     }
 
     /**
@@ -42,7 +53,7 @@ internal class MoeMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(
-        source: MoeModel?
-    ) = source?.let { converter.convertFrom(it) }
+    override suspend fun onResponseMapFrom(source: List<S>): List<D> {
+        return converter.convertFrom(source)
+    }
 }

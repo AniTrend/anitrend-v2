@@ -15,30 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.episode.mapper
+package co.anitrend.data.news.mapper
 
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.episode.converter.EpisodeModelConverter
-import co.anitrend.data.episode.datasource.local.EpisodeLocalSource
-import co.anitrend.data.episode.entity.EpisodeEntity
-import co.anitrend.data.episode.model.page.EpisodePageModel
+import co.anitrend.data.arch.railway.extension.evaluate
+import co.anitrend.data.arch.railway.extension.otherwise
+import co.anitrend.data.arch.railway.extension.then
+import co.anitrend.data.news.converter.NewsModelConverter
+import co.anitrend.data.news.datasource.local.NewsLocalSource
+import co.anitrend.data.news.entity.NewsEntity
+import co.anitrend.data.news.model.page.NewsPageModel
 
-internal class EpisodeResponseMapper(
-    private val localSource: EpisodeLocalSource,
-    private val converter: EpisodeModelConverter
-) : DefaultMapper<EpisodePageModel, List<EpisodeEntity>>() {
+internal class NewsMapper(
+    private val localSource: NewsLocalSource,
+    private val converter: NewsModelConverter
+) : DefaultMapper<NewsPageModel, List<NewsEntity>>() {
 
     /**
-     * Handles the persistence of [data] into a local source
-     *
-     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     * Save [data] into your desired local source
      */
-    override suspend fun persistChanges(data: List<EpisodeEntity>): OutCome<Nothing?> {
-        return runCatching {
-            localSource.upsert(data)
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
+    override suspend fun persist(data: List<NewsEntity>) {
+        localSource.upsert(data)
     }
 
     /**
@@ -48,6 +46,6 @@ internal class EpisodeResponseMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(
-        source: EpisodePageModel
+        source: NewsPageModel
     ) = converter.convertFrom(source.channel?.items.orEmpty())
 }

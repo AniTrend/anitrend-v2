@@ -18,7 +18,6 @@
 package co.anitrend.data.jikan.mapper
 
 import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.jikan.converters.*
 import co.anitrend.data.jikan.datasource.local.JikanLocalSource
 import co.anitrend.data.jikan.entity.JikanEntity
@@ -52,25 +51,20 @@ internal class JikanMapper(
     }
 
     /**
-     * Handles the persistence of [data] into a local source
-     *
-     * @return [OutCome.Pass] or [OutCome.Fail] of the operation
+     * Save [data] into your desired local source
      */
-    override suspend fun persistChanges(data: JikanEntity): OutCome<Nothing?> {
-        return runCatching {
-            localSource.upsertWithConnections(
-                data,
-                authors.orEmpty(),
-                producers.orEmpty(),
-                licensors.orEmpty(),
-                studios.orEmpty()
-            )
-            authors = null
-            producers = null
-            licensors = null
-            studios = null
-            OutCome.Pass(null)
-        }.getOrElse { OutCome.Fail(listOf(it)) }
+    override suspend fun persist(data: JikanEntity) {
+        localSource.upsertWithConnections(
+            data,
+            authors.orEmpty(),
+            producers.orEmpty(),
+            licensors.orEmpty(),
+            studios.orEmpty()
+        )
+        authors = null
+        producers = null
+        licensors = null
+        studios = null
     }
 
     /**

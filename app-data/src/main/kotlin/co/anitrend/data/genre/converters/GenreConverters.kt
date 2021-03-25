@@ -20,6 +20,7 @@ package co.anitrend.data.genre.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.domain.genre.entity.Genre
 import io.wax911.emojify.manager.IEmojiManager
 
@@ -38,9 +39,9 @@ internal class GenreEntityConverter(
 
 internal class GenreModelConverter(
     emojiManager: IEmojiManager,
-    override val fromType: (String) -> GenreEntity = { transform(it, emojiManager) },
-    override val toType: (GenreEntity) -> String = { throw NotImplementedError() }
-) : SupportConverter<String, GenreEntity>() {
+    override val fromType: (GenreCollection.GenreModel) -> GenreEntity = { transform(it, emojiManager) },
+    override val toType: (GenreEntity) -> GenreCollection.GenreModel = { throw NotImplementedError() }
+) : SupportConverter<GenreCollection.GenreModel, GenreEntity>() {
 
     private companion object {
 
@@ -74,9 +75,12 @@ internal class GenreModelConverter(
             }
         }
 
-        fun transform(source: String, emojiManager: IEmojiManager) = GenreEntity(
-            genre = source,
-            emoji = emojiManager.getEmojiFor(source)
+        fun transform(source: GenreCollection.GenreModel, emojiManager: IEmojiManager) = GenreEntity(
+            id = source.id.toLong(),
+            genre = source.genre,
+            emoji = emojiManager.getEmojiFor(
+                source.genre
+            )
         )
     }
 }
