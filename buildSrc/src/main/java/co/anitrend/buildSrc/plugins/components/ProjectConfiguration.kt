@@ -228,7 +228,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     if (project.hasComposeSupport()) {
         composeOptions {
             kotlinCompilerExtensionVersion = Libraries.AndroidX.Compose.version
-            kotlinCompilerVersion = Libraries.JetBrains.Kotlin.version
         }
     }
 }
