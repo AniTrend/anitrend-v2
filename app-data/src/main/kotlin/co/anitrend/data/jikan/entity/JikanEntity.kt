@@ -69,7 +69,8 @@ internal data class JikanEntity(
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE,
                 childColumns = ["jikan_id"],
-                parentColumns = ["id"]
+                parentColumns = ["id"],
+                deferred = true
             )
         ]
     )
@@ -93,7 +94,8 @@ internal data class JikanEntity(
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE,
                 childColumns = ["jikan_id"],
-                parentColumns = ["id"]
+                parentColumns = ["id"],
+                deferred = true
             )
         ]
     )
@@ -117,7 +119,8 @@ internal data class JikanEntity(
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE,
                 childColumns = ["jikan_id"],
-                parentColumns = ["id"]
+                parentColumns = ["id"],
+                deferred = true
             )
         ]
     )
@@ -141,7 +144,8 @@ internal data class JikanEntity(
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE,
                 childColumns = ["jikan_id"],
-                parentColumns = ["id"]
+                parentColumns = ["id"],
+                deferred = true
             )
         ]
     )

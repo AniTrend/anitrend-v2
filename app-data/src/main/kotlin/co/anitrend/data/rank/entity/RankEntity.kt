@@ -36,7 +36,8 @@ import co.anitrend.domain.media.enums.MediaSeason
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"]
+            parentColumns = ["id"],
+            deferred = true
         )
     ],
     indices = [Index(value = ["media_id"])]
