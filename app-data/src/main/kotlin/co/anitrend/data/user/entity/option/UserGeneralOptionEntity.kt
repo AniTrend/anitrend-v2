@@ -39,7 +39,8 @@ import kotlinx.serialization.Serializable
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
+            parentColumns = ["id"],
+            deferred = true
         )
     ]
 )

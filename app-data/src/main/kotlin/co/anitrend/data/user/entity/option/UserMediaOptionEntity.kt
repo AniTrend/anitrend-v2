@@ -36,7 +36,8 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
+            parentColumns = ["id"],
+            deferred = true
         )
     ]
 )

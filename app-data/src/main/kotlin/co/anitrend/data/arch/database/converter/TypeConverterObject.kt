@@ -34,7 +34,12 @@ internal class TypeConverterObject {
     @TypeConverter fun toListString(value: String): List<String> = value.fromCommaSeparatedValues()
 
     @TypeConverter fun fromListLong(value: List<Long>) = value.toCommaSeparatedValues()
-    @TypeConverter fun toListLong(value: String): List<Long> = value.fromCommaSeparatedValues().map { it.toLong() }
+    @TypeConverter fun toListLong(value: String): List<Long> =
+        value.fromCommaSeparatedValues().map(String::toLong)
+
+    @TypeConverter fun fromListFloat(value: List<Float>) = value.toCommaSeparatedValues()
+    @TypeConverter fun toListFloat(value: String): List<Float> =
+        value.fromCommaSeparatedValues().map(String::toFloat)
 
     @TypeConverter fun fromInstant(date: Instant?) = date?.toEpochMilli()
     @TypeConverter fun toInstant(value: Long?) = value?.let { Instant.ofEpochMilli(it) }

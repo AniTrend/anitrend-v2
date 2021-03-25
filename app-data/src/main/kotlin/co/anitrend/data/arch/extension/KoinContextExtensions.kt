@@ -17,6 +17,8 @@
 
 package co.anitrend.data.arch.extension
 
+import androidx.room.RoomDatabase
+import co.anitrend.data.arch.database.common.IAniTrendStore
 import org.koin.core.context.GlobalContext
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
@@ -36,3 +38,9 @@ internal inline fun <reified T> koinOf(
     val koin = GlobalContext.get()
     return koin.get(qualifier, parameters)
 }
+
+internal val database: RoomDatabase
+    get() {
+        val store = koinOf<IAniTrendStore>()
+        return store as RoomDatabase
+    }
