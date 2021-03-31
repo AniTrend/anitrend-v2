@@ -67,4 +67,5 @@ object Versions {
     const val trakt = "6.9.0"
 
     const val elements = "0.5.0"
+    const val rangeSeekBar = "v3.0.0"
 }

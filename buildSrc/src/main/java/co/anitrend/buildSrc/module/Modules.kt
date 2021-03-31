@@ -78,6 +78,7 @@ internal object Modules {
         Media("feature-media"),
         MediaCarousel("feature-media-carousel"),
         MediaDiscover("feature-media-discover"),
+        MediaDiscoverFilter("feature-media-discover-filter"),
         Notification("feature-notification"),
         MediaList("feature-medialist"),
         Review("feature-review"),

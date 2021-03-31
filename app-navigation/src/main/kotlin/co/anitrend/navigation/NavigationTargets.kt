@@ -272,6 +272,105 @@ object MediaDiscoverRouter : NavigationRouter() {
     }
 }
 
+object MediaDiscoverFilterRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun sorting(): Class<out Fragment>
+        fun general(): Class<out Fragment>
+        fun genre(): Class<out Fragment>
+        fun tag(): Class<out Fragment>
+    }
+
+    fun forSorting() = provider.sorting()
+    fun forGeneral() = provider.general()
+    fun forGenre() = provider.genre()
+    fun forTag() = provider.tag()
+
+    /**
+     * Filter action models
+     */
+    sealed class Action : IParam {
+
+        companion object {
+            const val KEY = "MediaDiscoverFilterRouter#Action"
+        }
+
+        @Parcelize
+        data class Sort(
+            var sort: List<Sorting<MediaSort>>
+        ) : Action() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            fun isDefault(): Boolean {
+                return sort.isNullOrEmpty()
+            }
+
+            companion object : IParam.IKey {
+                override val KEY = "Sort"
+            }
+        }
+
+        @Parcelize
+        data class General(
+            var id: Long?
+        ) : Action() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            fun isDefault(): Boolean {
+                return id == null
+            }
+
+            companion object : IParam.IKey {
+                override val KEY = "General"
+            }
+        }
+
+        @Parcelize
+        data class Genre(
+            var genre_in: List<String>? = null,
+            var genre_not_in: List<String>? = null,
+        ) : Action() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            fun isDefault() = genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
+
+            companion object : IParam.IKey {
+                override val KEY = "Genre"
+            }
+        }
+
+        @Parcelize
+        data class Tag(
+            var tagCategory_in: List<String>? = null,
+            var tagCategory_not_in: List<String>? = null,
+            var tag_in: List<String>? = null,
+            var tag_not_in: List<String>? = null
+        ) : Action() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            fun isDefault(): Boolean {
+                return tagCategory_in.isNullOrEmpty() &&
+                        tagCategory_not_in.isNullOrEmpty() &&
+                        tag_in.isNullOrEmpty() &&
+                        tag_not_in.isNullOrEmpty()
+            }
+
+            companion object : IParam.IKey {
+                override val KEY = "Tag"
+            }
+        }
+    }
+}
+
 object MediaCarouselRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 

@@ -31,6 +31,7 @@ include(
 	":feature-airing",
 	":feature-media-discover",
 	":feature-media-carousel",
+	":feature-media-discover-filter",
     ":common-character-ui",
     ":common-forum-ui",
     ":common-media-ui",

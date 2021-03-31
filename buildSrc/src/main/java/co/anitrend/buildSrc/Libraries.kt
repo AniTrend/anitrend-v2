@@ -46,6 +46,8 @@ object Libraries {
 
     const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
 
+    const val rangeSeekBar = "com.github.Jay-Goo:RangeSeekBar:${Versions.rangeSeekBar}"
+
     object Repositories {
         const val jitPack = "https://www.jitpack.io"
         const val dependencyUpdates = "https://dl.bintray.com/pdvrieze/maven"
