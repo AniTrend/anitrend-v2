@@ -19,17 +19,22 @@ package co.anitrend.media.discover.component.sheet
 
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.setFragmentResultListener
+import androidx.core.view.children
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.arch.extension.ext.getStringList
+import co.anitrend.core.android.animations.normalize
+import co.anitrend.core.android.components.sheet.action.OnSlideAction
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
-import co.anitrend.media.discover.component.sheet.action.MediaFilterAction
+import co.anitrend.media.discover.component.sheet.adapter.FilterPageAdapter
 import co.anitrend.media.discover.component.sheet.controller.MediaFilterController
 import co.anitrend.media.discover.databinding.MediaDiscoverFilterSheetBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -41,6 +46,10 @@ class MediaDiscoverFilterSheet(
         owner = { from(requireParentFragment(), requireParentFragment()) }
     )
 
+    private val titles by lazy(UNSAFE) {
+        requireContext().getStringList(R.array.titles_filter_pages)
+    }
+
     private val closeSheetOnBackPressed =
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
@@ -48,7 +57,23 @@ class MediaDiscoverFilterSheet(
             }
         }
 
-    private val controller by lazy(UNSAFE) { MediaFilterController() }
+    private val controller by lazy(UNSAFE) {
+        MediaFilterController(requireBinding().materialTabsLayout)
+    }
+
+    private fun setUpViewPager() {
+        requireBinding().viewPager.adapter = FilterPageAdapter(
+            viewModel.filter.value,
+            titles,
+            requireActivity(),
+            childFragmentManager,
+            lifecycle
+        )
+        // temporary work around for nested scrolling not working as expected
+        requireBinding().viewPager.children.find {
+            it is RecyclerView
+        }?.let { it.isNestedScrollingEnabled = false }
+    }
 
     /**
      * Additional initialization to be done in this method, this method will be called in
@@ -60,7 +85,6 @@ class MediaDiscoverFilterSheet(
         requireActivity().onBackPressedDispatcher.addCallback(
             this, closeSheetOnBackPressed
         )
-        controller.registerResultCallbacks(this, viewModel.filter)
     }
 
     /**
@@ -68,7 +92,9 @@ class MediaDiscoverFilterSheet(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
+        viewModel.filter.observe(viewLifecycleOwner) { param ->
+            viewModel.setParam(param)
+        }
     }
 
     /**
@@ -85,5 +111,19 @@ class MediaDiscoverFilterSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = MediaDiscoverFilterSheetBinding.bind(view)
+        setUpViewPager()
+        TabLayoutMediator(
+            requireBinding().materialTabsLayout,
+            requireBinding().viewPager
+        ) { tab, index -> tab.text = titles[index] }.attach()
+        controller.registerResultCallbacks(this, viewModel.filter)
+        bottomSheetCallback.addOnSlideAction(
+            object: OnSlideAction {
+                override fun onSlide(sheet: View, slideOffset: Float) {
+                    val alpha = slideOffset.normalize(-1F, 0F, 0F, 1F)
+                    requireBinding().sheetHandle.alpha = 1F - alpha
+                }
+            }
+        )
     }
 }

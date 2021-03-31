@@ -44,8 +44,8 @@ data class MediaDiscoverState(
         it.model.asLiveData(context)
     }
 
-    override val networkState = Transformations.switchMap(useCaseResult) {
-        it.networkState.asLiveData(context)
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
     }
 
     override val refreshState = Transformations.switchMap(useCaseResult) {

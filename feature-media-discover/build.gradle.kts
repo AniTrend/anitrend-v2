@@ -22,8 +22,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.genre))
-    implementation(project(Libraries.AniTrend.CommonUi.tag))
-
 	implementation(project(Libraries.AniTrend.CommonUi.media))
 }

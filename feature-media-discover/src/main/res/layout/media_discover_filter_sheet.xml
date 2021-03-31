@@ -14,41 +14,77 @@
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<FrameLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/spacing_md">
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/size_32dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sheetHandle"
-        android:layout_width="@dimen/spacing_xl"
+        android:layout_width="@dimen/size_48dp"
         android:layout_height="@dimen/md_margin"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/lg_margin"
         app:srcCompat="@drawable/touch_thumbnail"/>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/sheetContainer"
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_8dp" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_sm"
-        android:orientation="vertical">
+        android:padding="@dimen/lg_margin">
 
-        <co.anitrend.arch.recycler.SupportRecyclerView
-            android:id="@+id/filterOptionsRecycler"
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sheetFilterInfo"
+            android:layout_gravity="start"
+            android:text="@string/label_discover_filter_action_info"
+            style="@style/AppTheme.Material.TextButton"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_gravity="center"
+            android:text="@string/label_discover_filter_sheet_title"
+            style="@style/AppTheme.Material.TextHeadLine.Primary"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sheetFilterReset"
+            android:layout_gravity="end"
+            android:text="@string/label_discover_filter_action_reset"
+            style="@style/AppTheme.Material.TextButton"
+            />
+
+    </FrameLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/lg_margin" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/materialTabsLayout"
+        style="@style/AppTheme.Material.TabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="center"
+        app:tabMode="scrollable"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:paddingBottomSystemWindowInsets="true"
-            android:nestedScrollingEnabled="false"
-            android:alpha="0.0"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="@integer/single_list_size"/>
+            android:layout_height="wrap_content" />
+    </androidx.core.widget.NestedScrollView>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -18,4 +18,15 @@
 
 <resources>
 
+    <!-- Filter content headers -->
+    <string-array name="titles_filter_pages">
+        <item>Sorting</item>
+        <item>General</item>
+        <item>Genres</item>
+        <item>Tags</item>
+    </string-array>
+
+    <string name="label_discover_filter_sheet_title">Filter</string>
+    <string name="label_discover_filter_action_reset">Reset</string>
+    <string name="label_discover_filter_action_info">Info</string>
 </resources>

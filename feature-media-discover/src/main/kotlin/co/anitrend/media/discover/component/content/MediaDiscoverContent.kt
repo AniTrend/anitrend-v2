@@ -22,7 +22,7 @@ import androidx.annotation.IntegerRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
+import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
@@ -43,7 +43,7 @@ class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
     override val inflateMenu: Int = R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<Media>
+    override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
     private val viewModel by viewModel<MediaDiscoverViewModel>(
@@ -87,7 +87,7 @@ class MediaDiscoverContent(
             R.id.action_filter -> {
                 val fragmentItem = FragmentItem(
                     fragment = MediaDiscoverRouter.forSheet(),
-                    parameter = viewModel.param.asBundle()
+                    parameter = viewModel.default.asBundle()
                 )
                 val dialog = fragmentItem.fragmentByTagOrNew(requireActivity()) as DialogFragment
                 dialog.show(childFragmentManager, fragmentItem.tag())
@@ -106,9 +106,9 @@ class MediaDiscoverContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        supportStateLayout?.assureParamNotMissing(viewModel.param) {
+        supportStateLayout?.assureParamNotMissing(viewModel.default) {
             viewModelState().invoke(
-                viewModel.param,
+                viewModel.default,
                 false
             )
         }
@@ -122,7 +122,7 @@ class MediaDiscoverContent(
                     )
                     if (currentSpanCount != newSpanCount)
                         layoutManger.spanCount = newSpanCount
-                    else supportRecyclerView?.adapter?.notifyDataSetChanged()
+                    else supportViewAdapter.notifyDataSetNeedsRefreshing()
                 }
             }
         }

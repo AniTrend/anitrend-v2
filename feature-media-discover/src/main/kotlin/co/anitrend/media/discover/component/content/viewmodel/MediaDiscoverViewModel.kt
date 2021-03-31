@@ -18,11 +18,10 @@
 package co.anitrend.media.discover.component.content.viewmodel
 
 import androidx.lifecycle.*
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.media.discover.component.content.viewmodel.state.MediaDiscoverState
+import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -35,25 +34,25 @@ class MediaDiscoverViewModel(
         state.context = viewModelScope.coroutineContext
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaDiscoverRouter.Param>(
-                MediaDiscoverRouter.Param.KEY
+                MediaDiscoverFilterRouter.Action.KEY
             ).asFlow().collect { param ->
                 state(param, false)
             }
         }
     }
 
-    val param by savedStateHandle.extra(
+    val default by savedStateHandle.extra(
         MediaDiscoverRouter.Param.KEY,
         MediaDiscoverRouter.Param()
     )
 
-    val filter = MutableLiveData(param)
+    val filter = MutableLiveData(default)
 
     /**
      * Handle param changes by settings the new [param] to the [state]
      */
     fun setParam(param: MediaDiscoverRouter.Param) {
-        savedStateHandle.set(MediaDiscoverRouter.Param.KEY, param)
+        savedStateHandle.set(MediaDiscoverFilterRouter.Action.KEY, param)
     }
 
     /**
