@@ -34,7 +34,7 @@ class ProfileContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        super.initializeComponents(savedInstanceState)
     }
 
     /**

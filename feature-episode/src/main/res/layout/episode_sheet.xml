@@ -21,13 +21,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:nestedScrollingEnabled="true"
     android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/spacing_md">
+        android:paddingBottom="@dimen/size_32dp">
 
         <co.anitrend.arch.ui.view.image.SupportImageView
             android:id="@+id/episodeThumbnail"
@@ -74,8 +73,8 @@
         <FrameLayout
             android:id="@+id/episodePlay"
             android:layout_gravity="center"
-            android:layout_height="@dimen/avatar_size_xl"
-            android:layout_width="@dimen/avatar_size_xl"
+            android:layout_height="@dimen/size_70dp"
+            android:layout_width="@dimen/size_70dp"
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/bubble_background"
@@ -86,62 +85,50 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/size_42dp"
+                android:layout_height="@dimen/size_42dp"
                 app:srcCompat="@drawable/ic_play_circle" />
         </FrameLayout>
 
         <co.anitrend.common.episode.ui.widget.summary.EpisodeSummaryWidget
             android:id="@+id/episodeTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:paddingStart="@dimen/xl_margin"
             android:paddingEnd="@dimen/xl_margin"
             android:layout_marginTop="@dimen/xl_margin"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/episodeThumbnail" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/episodePublisher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/xl_margin"
             android:layout_marginTop="@dimen/lg_margin"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:clickable="true"
             android:focusable="true"
-            android:textColor="@color/white_1000"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/episodeTitle"
-            app:chipBackgroundColor="?colorAccent"
+            style="@style/AppTheme.Material.Chip.Action"
             tools:text="@sample/episode.json/publisher"
             />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/episodeDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:paddingStart="@dimen/xl_margin"
             android:paddingEnd="@dimen/xl_margin"
             android:layout_marginTop="@dimen/xl_margin"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/episodePublisher"
+            style="@style/AppTheme.Material.TextBody.Secondary"
             tools:text="@sample/episode.json/description" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/episodeDownload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/xl_margin"
             android:layout_marginEnd="@dimen/xl_margin"
             android:text="@string/label_download"
-            android:textColor="@color/white_1000"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            style="@style/AppTheme.Material.UnElevatedButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/episodeDescription"
-            app:backgroundTint="?colorAccent" />
+            app:layout_constraintTop_toBottomOf="@+id/episodeDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

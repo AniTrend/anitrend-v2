@@ -33,21 +33,21 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_lg"
+            android:padding="@dimen/size_40dp"
             android:orientation="vertical">
 
             <include layout="@layout/auth_header_frame" />
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/spacing_sm" />
+                android:layout_height="@dimen/size_24dp" />
 
             <include android:id="@+id/authorizationControls"
                 layout="@layout/auth_authorization_frame" />
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/spacing_sm" />
+                android:layout_height="@dimen/size_24dp" />
 
             <include android:id="@+id/anonymousControls"
                 layout="@layout/auth_anonymous_frame" />

@@ -18,6 +18,7 @@
 package co.anitrend.data.media.model.query
 
 import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.domain.media.enums.MediaLicensor
 import co.anitrend.domain.media.model.MediaParam
 
 internal sealed class MediaQuery : IGraphPayload {
@@ -78,8 +79,8 @@ internal sealed class MediaQuery : IGraphPayload {
             "id_not" to param.id_not,
             "id_not_in" to param.id_not_in,
             "isAdult" to param.isAdult,
-            "licensedBy" to param.licensedBy,
-            "licensedBy_in" to param.licensedBy_in,
+            "licensedBy" to param.licensedBy?.alias,
+            "licensedBy_in" to param.licensedBy_in?.map(MediaLicensor::alias),
             "minimumTagRank" to param.minimumTagRank,
             "onList" to param.onList,
             "popularity" to param.popularity,

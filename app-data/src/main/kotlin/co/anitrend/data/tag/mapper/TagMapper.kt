@@ -17,6 +17,7 @@
 
 package co.anitrend.data.tag.mapper
 
+import co.anitrend.data.arch.database.extensions.runInTransaction
 import co.anitrend.data.arch.mapper.DefaultMapper
 import co.anitrend.data.arch.railway.OutCome
 import co.anitrend.data.arch.railway.extension.evaluate
@@ -65,7 +66,9 @@ internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntit
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<TagEntity>) {
-            localSource.upsert(data)
+            runInTransaction {
+                localSource.upsert(data)
+            }
         }
 
         /**

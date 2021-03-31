@@ -40,7 +40,7 @@ class FavouriteView @JvmOverloads constructor(
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
 
     private val favouriteImageView = AppCompatImageView(context).apply {
-        val size = context.resources.getDimensionPixelSize(R.dimen.size_14dp)
+        val size = context.resources.getDimensionPixelSize(R.dimen.size_16dp)
         layoutParams = ViewGroup.LayoutParams(size, size)
         gravity = Gravity.CENTER_VERTICAL
     }
@@ -53,10 +53,10 @@ class FavouriteView @JvmOverloads constructor(
     }
 
     private val favouriteTextView = MaterialTextView(context).apply {
-        val textAppearance = context.themeStyle(R.attr.textAppearanceBody1)
+        val textAppearance = context.themeStyle(R.attr.textAppearanceHeadline6)
         TextViewCompat.setTextAppearance(this, textAppearance)
         setTextColor(context.getCompatColor(R.color.white_1000))
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 9f)
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
         gravity = Gravity.CENTER_VERTICAL
     }
 

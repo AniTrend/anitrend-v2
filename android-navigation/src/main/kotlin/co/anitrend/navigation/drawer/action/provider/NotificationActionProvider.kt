@@ -28,6 +28,7 @@ import androidx.core.view.setPadding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.*
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.data.auth.settings.IAuthenticationSettings
@@ -70,11 +71,7 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
                 ViewGroup.MarginLayoutParams.WRAP_CONTENT,
                 ViewGroup.MarginLayoutParams.WRAP_CONTENT
             )
-            setPadding(
-                context.resources.getDimensionPixelSize(
-                    R.dimen.margin_10dp
-                )
-            )
+            setPadding(10.dp)
         }
     }
 

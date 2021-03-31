@@ -52,7 +52,8 @@ internal class RankMapper(
          * Function reference from converting from [E] to [M] which will
          * be called by [convertTo]
          */
-        override val toType: (RankEntity) -> RankModel = throw NotImplementedError()
+        override val toType: (RankEntity) -> RankModel
+                get() = throw NotImplementedError()
 
     }
 }

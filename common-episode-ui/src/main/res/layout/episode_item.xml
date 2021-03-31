@@ -24,13 +24,9 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground"
-    android:layout_margin="@dimen/lg_margin"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardPreventCornerOverlap="false"
-    app:cardBackgroundColor="?cardColor"
-    app:cardElevation="@dimen/sm_margin"
-    app:cardCornerRadius="@dimen/lg_margin">
+    style="@style/AppTheme.Material.MaterialCard">
 
     <co.anitrend.arch.ui.view.image.SupportImageView
         android:id="@+id/episodeThumbnail"

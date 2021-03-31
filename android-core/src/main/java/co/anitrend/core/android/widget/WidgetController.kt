@@ -27,11 +27,6 @@ import co.anitrend.core.android.widget.contract.IWidgetController
 abstract class WidgetController : IWidgetController, SupportLifecycle {
 
     /**
-     * Tag descriptor of the current module
-     */
-    override val moduleTag: String = javaClass.simpleName
-
-    /**
      * This is called when the view is attached to a window. At this point it
      * has a Surface and will start drawing.
      *

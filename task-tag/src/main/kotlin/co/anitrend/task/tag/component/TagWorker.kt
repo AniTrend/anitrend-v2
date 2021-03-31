@@ -48,7 +48,7 @@ class TagWorker(
             TagParam(SortOrder.DESC)
         )
 
-        val networkState = dataState.networkState.first { state ->
+        val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
         }
 

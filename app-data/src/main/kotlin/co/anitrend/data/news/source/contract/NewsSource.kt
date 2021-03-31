@@ -58,7 +58,7 @@ internal abstract class NewsSource : SupportPagingDataSource<News>() {
      * @param itemAtFront The first item of PagedList
      */
     override fun onItemAtFrontLoaded(itemAtFront: News) {
-        if (supportPagingHelper.isFirstPage()) {
+        if (supportPagingHelper.isFirstPage())
             cachePolicy(
                 scope = scope,
                 requestHelper = requestHelper,
@@ -66,7 +66,6 @@ internal abstract class NewsSource : SupportPagingDataSource<News>() {
                 requestType = Request.Type.BEFORE,
                 block = ::getNews
             )
-        }
     }
 
     /**

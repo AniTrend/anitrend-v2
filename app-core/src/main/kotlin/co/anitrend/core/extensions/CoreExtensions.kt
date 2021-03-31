@@ -45,9 +45,9 @@ fun FragmentActivity.recreateModules() {
 /**
  * Prints failures to the logger
  */
-fun <T> Result<T>.stackTrace(tag: String): T? {
+fun <T> Result<T>.stackTrace(): T? {
     onFailure { throwable ->
-        Timber.tag(tag).v(throwable)
+        Timber.v(throwable)
     }
     return getOrNull()
 }

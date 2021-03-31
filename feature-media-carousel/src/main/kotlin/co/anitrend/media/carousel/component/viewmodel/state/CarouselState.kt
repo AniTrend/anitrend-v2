@@ -36,11 +36,13 @@ data class CarouselState(
 
     private val useCaseResult = MutableLiveData<DataState<List<MediaCarousel>>>()
 
-    override val model =
-        Transformations.switchMap(useCaseResult) { it.model.asLiveData(context) }
+    override val model = Transformations.switchMap(useCaseResult) {
+        it.model.asLiveData(context)
+    }
 
-    override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
+    }
 
     override val refreshState =
         Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData(context) }

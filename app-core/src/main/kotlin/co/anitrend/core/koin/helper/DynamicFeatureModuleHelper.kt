@@ -34,8 +34,6 @@ class DynamicFeatureModuleHelper(
     private val unloadOnDestroy: Boolean = false
 ) : SupportLifecycle {
 
-    override val moduleTag: String = javaClass.simpleName
-
     /**
      * Triggered when the lifecycleOwner reaches it's onCreate state
      *

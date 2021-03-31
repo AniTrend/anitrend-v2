@@ -49,7 +49,7 @@ class NewsWorker(
         val param = NewsParam(settings.locale.value.asLocaleString())
         val dataState = interactor(param)
 
-        val networkState = dataState.networkState.first { state ->
+        val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
         }
 

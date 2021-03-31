@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.R
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.ProvideWindowInsets
 
 object AniTrendTheme {
 

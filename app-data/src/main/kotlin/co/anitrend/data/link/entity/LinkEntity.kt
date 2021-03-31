@@ -23,6 +23,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.shared.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "link",
@@ -39,6 +40,7 @@ import co.anitrend.data.shared.common.Identity
     ],
     indices = [Index(value = ["media_id"])]
 )
+@EntitySchema
 internal data class LinkEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "site") val site: String,

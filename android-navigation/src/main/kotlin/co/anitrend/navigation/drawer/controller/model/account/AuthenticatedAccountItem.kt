@@ -25,7 +25,6 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.core.android.helpers.image.model.CoverRequestImage
 import co.anitrend.core.android.helpers.image.model.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
@@ -55,7 +54,7 @@ class AuthenticatedAccountItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = AccountAuthenticatedItemBinding.bind(view)
@@ -67,20 +66,22 @@ class AuthenticatedAccountItem(
         if (entity.isActiveUser) {
             requireBinding().accountSignOut.visible()
             requireBinding().accountSignOut.setOnClickListener {
-                stateFlow.value = ClickableItem.Data(
-                    data =  entity,
-                    view =  it
-                )
+                stateFlow.value =
+                    ClickableItem.Data(
+                        data = entity,
+                        view =  it
+                    )
             }
         }
         else
             requireBinding().accountSignOut.gone()
 
         requireBinding().accountContainer.setOnClickListener {
-            stateFlow.value = ClickableItem.Data(
-                data =  entity,
-                view =  it
-            )
+            stateFlow.value =
+                ClickableItem.Data(
+                    data = entity,
+                    view =  it
+                )
         }
     }
 

@@ -26,6 +26,7 @@ import co.anitrend.data.shared.common.Identity
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "rank",
@@ -42,6 +43,7 @@ import co.anitrend.domain.media.enums.MediaSeason
     ],
     indices = [Index(value = ["media_id"])]
 )
+@EntitySchema
 internal data class RankEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "all_time") val allTime: Boolean?,

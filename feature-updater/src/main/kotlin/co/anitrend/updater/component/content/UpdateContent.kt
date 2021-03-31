@@ -34,7 +34,7 @@ class UpdateContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        super.initializeComponents(savedInstanceState)
     }
 
     /**

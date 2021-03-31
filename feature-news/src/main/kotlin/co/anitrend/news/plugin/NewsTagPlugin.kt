@@ -17,7 +17,9 @@
 
 package co.anitrend.news.plugin
 
-import co.anitrend.common.markdown.ui.plugin.decorator.TagAlignmentHandler
+import co.anitrend.common.markdown.ui.plugin.decorator.AlignmentTagHandler
+import co.anitrend.common.markdown.ui.plugin.decorator.CenterTagHandler
+import co.anitrend.common.markdown.ui.plugin.decorator.ParagraphTagHandler
 import co.anitrend.news.plugin.decorator.FrameTagReplacer
 import co.anitrend.news.plugin.tag.FrameTagHandler
 import co.anitrend.news.plugin.tag.RssImageTagHandler
@@ -32,8 +34,9 @@ internal class NewsTagPlugin private constructor(): AbstractMarkwonPlugin() {
             plugin.emptyTagReplacement(FrameTagReplacer.create())
             plugin.addHandler(FrameTagHandler.create())
             plugin.addHandler(RssImageTagHandler.create())
-            //plugin.addHandler(ParagraphTagHandler.create()) //ignore for now
-            plugin.addHandler(TagAlignmentHandler.create())
+            plugin.addHandler(ParagraphTagHandler.create())
+            plugin.addHandler(CenterTagHandler.create())
+            plugin.addHandler(AlignmentTagHandler.create())
         }
     }
 

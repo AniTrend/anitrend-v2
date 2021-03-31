@@ -65,10 +65,8 @@ internal class MediaCarouselItem(
             supportAdapter = mediaItemAdapter,
             recyclerViewPool = viewPool
         )
-        if (entity.mediaItems.isEmpty())
-            mediaItemAdapter.loadState = LoadState.Loading()
-        else
-            mediaItemAdapter.submitList(entity.mediaItems)
+
+        mediaItemAdapter.submitList(entity.mediaItems)
     }
 
     private fun setUpHeadings() {
@@ -197,7 +195,7 @@ internal class MediaCarouselItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = MediaCarouselItemBinding.bind(view)

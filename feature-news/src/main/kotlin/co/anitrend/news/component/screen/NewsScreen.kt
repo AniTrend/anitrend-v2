@@ -69,7 +69,7 @@ class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
                         requireBinding().root,
                         requireNotNull(param?.link)
                     )
-                }.stackTrace(moduleTag)
+                }.stackTrace()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -98,7 +98,7 @@ class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
             .setOnLinkClickListener { view, url ->
                 runCatching {
                     presenter.handleViewIntent(view, url)
-                }.stackTrace(moduleTag)
+                }.stackTrace()
                 true
             }
         onFetchDataInitialize()

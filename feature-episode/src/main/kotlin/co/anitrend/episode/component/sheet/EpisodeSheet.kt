@@ -109,7 +109,7 @@ class EpisodeSheet(
             .setOnLinkClickListener { target, url ->
                 runCatching {
                     presenter.handleViewIntent(target, url)
-                }.stackTrace(moduleTag)
+                }.stackTrace()
                 true
             }
     }

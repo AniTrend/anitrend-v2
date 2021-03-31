@@ -59,7 +59,6 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
         select * from media
         where id = :id
     """)
-    @Transaction
     abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.Extended?>
 
     @Transaction

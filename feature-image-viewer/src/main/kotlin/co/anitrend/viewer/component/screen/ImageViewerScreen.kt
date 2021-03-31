@@ -107,14 +107,14 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
              * Called when the request starts.
              */
             override fun onStart(placeholder: Drawable?) {
-                binding?.stateLayout?.loadStateMutableStateFlow?.value = LoadState.Loading()
+                binding?.stateLayout?.loadStateFlow?.value = LoadState.Loading()
             }
 
             /**
              * Called if an error occurs while executing the request.
              */
             override fun onError(error: Drawable?) {
-                binding?.stateLayout?.loadStateMutableStateFlow?.value = LoadState.Error(
+                binding?.stateLayout?.loadStateFlow?.value = LoadState.Error(
                     RequestError("Unable to load image")
                 )
             }
@@ -125,7 +125,7 @@ class ImageViewerScreen : AnitrendScreen<ImageViewerScreenBinding>() {
             override fun onSuccess(result: Drawable) {
                 val source = ImageSource.bitmap(result.toBitmap())
                 binding?.subSamplingImageView?.setImage(source)
-                binding?.stateLayout?.loadStateMutableStateFlow?.value = LoadState.Success
+                binding?.stateLayout?.loadStateFlow?.value = LoadState.Success()
             }
         }.using(param?.imageSrc.toCoverImage(), this)
     }

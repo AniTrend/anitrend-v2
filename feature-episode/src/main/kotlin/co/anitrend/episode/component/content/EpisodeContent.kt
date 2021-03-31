@@ -17,7 +17,10 @@
 
 package co.anitrend.episode.component.content
 
-import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
+import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.adapter.SupportAdapter
+import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.core.component.content.list.AniTrendListContent
@@ -31,7 +34,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class EpisodeContent(
     private val presenter: EpisodePresenter,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<Episode>,
+    override val supportViewAdapter: SupportAdapter<Episode>,
     override val defaultSpanSize: Int = R.integer.column_x1,
 ) : AniTrendListContent<Episode>() {
 
@@ -50,6 +53,24 @@ class EpisodeContent(
         viewModelState().invoke(
             EpisodeParam.Paged(locale)
         )
+    }
+
+    /**
+     * Sets the adapter for the recycler view
+     */
+    override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
+        if (recyclerView.adapter == null) {
+            val header = SupportLoadStateAdapter(resources, stateConfig).apply {
+                registerFlowListener()
+            }
+
+            if (supportViewAdapter is RecyclerView.Adapter<*>) {
+                (supportViewAdapter as RecyclerView.Adapter<*>)
+                    .stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            }
+
+            recyclerView.adapter = supportViewAdapter.withLoadStateHeader(header = header)
+        }
     }
 
     /**

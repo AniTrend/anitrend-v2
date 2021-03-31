@@ -75,10 +75,10 @@ class AuthPresenter(
     fun onStateChange(authentication: Authentication, state: AuthState, stateLayout: SupportStateLayout) {
         when (authentication) {
             is Authentication.Authenticating -> {
-                stateLayout.loadStateMutableStateFlow.value = LoadState.Loading()
+                stateLayout.loadStateFlow.value = LoadState.Loading()
                 state(authentication)
             }
-            is Authentication.Error -> stateLayout.loadStateMutableStateFlow.value =
+            is Authentication.Error -> stateLayout.loadStateFlow.value =
                 LoadState.Error(
                     RequestError(
                         topic = authentication.title,

@@ -35,8 +35,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:appCategory="social"
+        android:hasFragileUserData="true"
         android:fullBackupContent="@xml/backup_descriptor"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:label"
+        tools:targetApi="q">
 
         <activity android:name=".component.screen.MainScreen"
             android:launchMode="singleTop"/>

@@ -56,7 +56,7 @@ class UserFollowToggleWorker(
     override suspend fun doWork(): Result {
         val dataState = toggleFollow(param)
 
-        val networkState = dataState.networkState.first { state ->
+        val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
         }
 

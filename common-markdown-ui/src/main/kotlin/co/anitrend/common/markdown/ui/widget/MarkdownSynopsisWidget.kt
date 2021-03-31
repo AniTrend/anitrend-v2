@@ -18,10 +18,10 @@
 package co.anitrend.common.markdown.ui.widget
 
 import android.content.Context
-import android.graphics.Color.DKGRAY
 import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.updatePadding
 import androidx.core.widget.TextViewCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -29,56 +29,85 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.getCompatColor
+import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.markdown.R
 import co.anitrend.common.markdown.ui.animator.PushOnPressAnimator
+import co.anitrend.core.android.getCompatDrawable
 import co.anitrend.core.android.themeStyle
 import co.anitrend.domain.common.entity.contract.ISynopsis
+import com.airbnb.paris.extensions.style
 import com.squareup.contour.ContourLayout
 
 class MarkdownSynopsisWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ContourLayout(context, attrs), CustomView {
 
-    private val textWidget = MarkdownTextWidget(context).apply {
-        val textAppearance = context.themeStyle(R.attr.textAppearanceBody1)
-        TextViewCompat.setTextAppearance(this, textAppearance)
+    private val markdownTextWidget = MarkdownTextWidget(context).apply {
+        style(R.style.AppTheme_Material_TextBody_Secondary)
+        setTextIsSelectable(false)
+        setTextColor(this.context.getColorFromAttr(R.attr.colorSecondaryText))
+        includeFontPadding = false
+    }
+
+    private val expandImageView = AppCompatImageView(context).apply {
+        val drawable = this.context.getCompatDrawable(R.drawable.ic_arrow_down)
+        setImageDrawable(drawable)
     }
 
     init { onInit(context, attrs) }
 
     fun setSynopsis(synopsis: ISynopsis) {
-        textWidget.setText(synopsis)
+        markdownTextWidget.setText(synopsis)
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        val color = context.getColorFromAttr(R.attr.cardColor)
-        background = PaintDrawable(color).also { it.setCornerRadius(8f) }
+        val color = context.getColorFromAttr(R.attr.colorPrimaryVariant)
+        background = PaintDrawable(color).also { it.setCornerRadius(16f) }
         clipToOutline = true
         elevation = 16f.dip
         stateListAnimator = PushOnPressAnimator(this)
         updatePadding(left = 16.dip, right = 16.dip)
 
-        contourHeightOf { maxOf(textWidget.bottom() + 24.ydip, textWidget.bottom() + 16.ydip) }
-        textWidget.layoutBy(
+        contourHeightOf {
+            maxOf(
+                markdownTextWidget.bottom() + 16.ydip,
+                markdownTextWidget.bottom() + 16.ydip
+            )
+        }
+
+        expandImageView.layoutBy(
+            x = centerHorizontallyTo { parent.right() },
+            y = topTo { parent.bottom() + 16.ydip }
+        )
+
+        markdownTextWidget.layoutBy(
             x = leftTo { 16.xdip }.rightTo { parent.right() },
             y = topTo {
                 when {
                     isSelected -> parent.top() + 16.ydip
-                    else -> textWidget.preferredHeight() / 2
+                    else -> markdownTextWidget.preferredHeight() / 2
                 }
             }
         )
 
-        val collapsedLines = textWidget.maxLines
+        val collapsedLines = markdownTextWidget.maxLines
+
         setOnClickListener {
-            TransitionManager.beginDelayedTransition(parent as ViewGroup, AutoTransition()
-                .setInterpolator(FastOutSlowInInterpolator())
-                .setDuration(300)
+            TransitionManager.beginDelayedTransition(
+                parent as ViewGroup,
+                AutoTransition()
+                    .setInterpolator(FastOutSlowInInterpolator())
+                    .setDuration(300)
             )
 
             isSelected = !isSelected
-            textWidget.maxLines = if (isSelected) Int.MAX_VALUE else collapsedLines
+            markdownTextWidget.maxLines = if (isSelected) Int.MAX_VALUE else collapsedLines
+            val textColor = if (isSelected) R.attr.colorPrimaryText else R.attr.colorSecondaryText
+            markdownTextWidget.setTextColor(context.getColorFromAttr(textColor))
+
+            val drawable = context.getCompatDrawable(R.drawable.ic_arrow_up)
+            expandImageView.setImageDrawable(drawable)
         }
     }
 }

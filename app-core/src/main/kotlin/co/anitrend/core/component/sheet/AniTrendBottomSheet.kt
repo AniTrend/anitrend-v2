@@ -29,7 +29,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.ui.fragment.contract.ISupportFragment
 import co.anitrend.core.R
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
@@ -40,19 +39,29 @@ import kotlinx.coroutines.MainScope
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-
 import android.widget.FrameLayout
-
-
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.getColorFromAttr
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
+import co.anitrend.arch.extension.network.model.ConnectivityState
+import co.anitrend.arch.ui.common.ILifecycleController
+import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.core.android.extensions.dp
+import co.anitrend.core.android.koinOf
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 abstract class AniTrendBottomSheet<B : ViewBinding>(
-    @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
-    @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
+    @MenuRes protected open val inflateMenu: Int = SupportFragment.NO_MENU_ITEM,
+    @LayoutRes protected open val inflateLayout: Int = SupportFragment.NO_LAYOUT_ITEM
 ) : BottomSheetDialogFragment(), KoinScopeComponent, IBindingView<B>,
-    CoroutineScope by MainScope(), ISupportFragment {
-
-    override val moduleTag: String = javaClass.simpleName
+    CoroutineScope by MainScope(), ILifecycleController {
 
     override var binding: B? = null
 
@@ -62,7 +71,7 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
 
     protected open val bottomSheetCallback = SheetBehaviourCallback()
 
-    protected open val defaultPeekHeight: Int = 250
+    protected open val defaultPeekHeight: Int = 275.dp
     protected open val defaultState: Int = BottomSheetBehavior.STATE_HALF_EXPANDED
 
     private fun applyMargins(viewParent: ViewParent) {
@@ -72,7 +81,7 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
             val width = resources.getDimensionPixelSize(R.dimen.bottom_sheet_margin)
             params.setMargins(width, 0, width, 0)
             parent.layoutParams = params
-        }.stackTrace(moduleTag)
+        }.stackTrace()
     }
 
     /**
@@ -81,6 +90,33 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
      */
     protected abstract fun setUpViewModelObserver()
 
+    /**
+     * Additional initialization to be done in this method, this method will be called in
+     * [androidx.fragment.app.FragmentActivity.onCreate].
+     *
+     * **N.B.** Calling super of this will register a connectivity change listener, so only
+     * call `super.initializeComponents` if you require this behavior
+     *
+     * @param savedInstanceState
+     */
+    override fun initializeComponents(savedInstanceState: Bundle?) {
+        lifecycleScope.launch {
+            koinOf<ISupportConnectivity>().connectivityStateFlow
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .onEach { state ->
+                    Timber.v("Connectivity state changed: $state")
+                    if (state == ConnectivityState.Connected) viewModelState()?.retry()
+                }
+                .catch { cause ->
+                    Timber.w(cause, "While collecting connectivity state")
+                }
+                .collect()
+        }
+    }
+
+    // If I set a theme then the dialog will create a window background
+    //override fun getTheme() = R.style.BottomSheetDialog
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         initializeComponents(savedInstanceState)
@@ -88,11 +124,14 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
             val bottomSheet = dialog.findViewById<FrameLayout>(
                 com.google.android.material.R.id.design_bottom_sheet
             )
-            behavior = BottomSheetBehavior.from(bottomSheet)
-            behavior.addBottomSheetCallback(bottomSheetCallback)
-            behavior.peekHeight = defaultPeekHeight
-            behavior.skipCollapsed = true
-            behavior.setState(defaultState)
+            bottomSheet.setBackgroundColor(dialog.context.getColorFromAttr(R.attr.colorPrimary))
+            behavior = BottomSheetBehavior.from(bottomSheet).apply {
+                halfExpandedRatio = 0.45f
+                addBottomSheetCallback(bottomSheetCallback)
+                peekHeight = defaultPeekHeight
+                skipCollapsed = false
+                setState(defaultState)
+            }
         }
         return dialog
     }
@@ -126,7 +165,7 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (inflateLayout != ISupportFragment.NO_LAYOUT_ITEM) {
+        return if (inflateLayout != SupportFragment.NO_LAYOUT_ITEM) {
             inflater.inflate(inflateLayout, container, false)
         } else super.onCreateView(inflater, container, savedInstanceState)
     }

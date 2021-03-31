@@ -19,8 +19,10 @@ package co.anitrend.navigation.drawer.component.presenter
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.os.Build
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
@@ -29,6 +31,7 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.model.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.presenter.CorePresenter
@@ -60,18 +63,16 @@ internal class DrawerPresenter(
             fillColor = ColorStateList.valueOf(
                 container.context.getColorFromAttr(R.attr.colorPrimary)
             )
-            elevation = context.resources.getDimension(R.dimen.xl_margin)
+            elevation = 16f.dp
             shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_NEVER
             initializeElevationOverlay(context)
             shapeAppearanceModel = shapeAppearanceModel.toBuilder()
                 .setTopEdge(
                     SemiCircleEdgeCutoutTreatment(
-                        context.resources.getDimension(R.dimen.lg_margin),
-                        context.resources.getDimension(R.dimen.spacing_sm),
-                        0F,
-                        context.resources.getDimension(
-                            R.dimen.navigation_drawer_profile_image_size_padded
-                        )
+                        8f.dp,
+                        24f.dp,
+                        0f.dp,
+                        32f.dp
                     )
                 ).build()
         }
@@ -91,7 +92,7 @@ internal class DrawerPresenter(
                 else
                     container.context.getCompatColor(R.color.anitrendDrawerSelector)
             )
-            elevation = context.resources.getDimension(R.dimen.lg_margin)
+            elevation = 8f.dp
 
             initializeElevationOverlay(context)
         }

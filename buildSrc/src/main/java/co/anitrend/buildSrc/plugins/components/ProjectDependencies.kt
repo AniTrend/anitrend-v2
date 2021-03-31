@@ -48,6 +48,7 @@ private fun Project.applyFeatureModuleGroupDependencies() {
 
     dependencies.implementation(Libraries.Google.Material.material)
 
+    dependencies.implementation(Libraries.AirBnB.Paris.paris)
     dependencies.implementation(Libraries.threeTenBp)
 
     dependencies.implementation(project(Modules.Android.Core.path()))
@@ -216,6 +217,7 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(Libraries.Glide.glide)
 
     dependencies.implementation(Libraries.threeTenBp)
+    dependencies.implementation(Libraries.AirBnB.Paris.paris)
 
     dependencies.implementation(project(Modules.Android.Core.path()))
     dependencies.implementation(project(Modules.App.Navigation.path()))
@@ -270,8 +272,13 @@ private fun Project.applyComposeDependencies() {
     dependencies.implementation(Libraries.Google.Material.Compose.themeAdapter)
     dependencies.implementation(Libraries.Koin.AndroidX.compose)
 
-    dependencies.implementation(Libraries.ChrisBanes.Accompanist.insets)
-    dependencies.implementation(Libraries.ChrisBanes.Accompanist.coil)
+    dependencies.implementation(Libraries.Google.Accompanist.pagerIndicators)
+    dependencies.implementation(Libraries.Google.Accompanist.appCompatTheme)
+    dependencies.implementation(Libraries.Google.Accompanist.uiController)
+    dependencies.implementation(Libraries.Google.Accompanist.flowLayout)
+    dependencies.implementation(Libraries.Google.Accompanist.insets)
+    dependencies.implementation(Libraries.Google.Accompanist.coil)
+    dependencies.implementation(Libraries.Google.Accompanist.pager)
 }
 
 internal fun Project.configureDependencies() {

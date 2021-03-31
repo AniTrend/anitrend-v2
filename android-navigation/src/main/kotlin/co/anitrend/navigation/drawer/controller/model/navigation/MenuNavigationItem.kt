@@ -24,11 +24,10 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.databinding.NavigationMenuItemBinding
+import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
-import timber.log.Timber
 
 class MenuNavigationItem(
     private val entity: Navigation.Menu
@@ -48,7 +47,7 @@ class MenuNavigationItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = NavigationMenuItemBinding.bind(view)
@@ -59,10 +58,11 @@ class MenuNavigationItem(
             null, null, null
         )
         requireBinding().navMenuTitle.setOnClickListener {
-            stateFlow.value = ClickableItem.Data(
-                data = entity,
-                view = it
-            )
+            stateFlow.value =
+                ClickableItem.Data(
+                    data = entity,
+                    view = it
+                )
         }
     }
 

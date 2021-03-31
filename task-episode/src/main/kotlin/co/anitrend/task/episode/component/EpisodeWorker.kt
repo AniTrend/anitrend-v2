@@ -50,7 +50,7 @@ class EpisodeWorker(
         val param = EpisodeParam.Paged(locale)
         val dataState = interactor(param)
 
-        val networkState = dataState.networkState.first { state ->
+        val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
         }
 

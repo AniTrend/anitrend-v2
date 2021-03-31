@@ -28,7 +28,6 @@ import org.threeten.bp.Instant
 class CarouselContentController(
     dateHelper: AbstractSupportDateHelper
 ): SupportLifecycle {
-    override val moduleTag: String = javaClass.simpleName
 
     val year: Int = dateHelper.getCurrentYear()
 

@@ -55,8 +55,9 @@ class MediaContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        super.initializeComponents(savedInstanceState)
         lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionStateFlow.filterNotNull()
+            requireBinding().stateLayout.interactionFlow.filterNotNull()
                 .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
                 .onEach {
                     viewModelState().retry()
@@ -77,10 +78,10 @@ class MediaContent(
      */
     override fun setUpViewModelObserver() {
         viewModelState().model.observe(viewLifecycleOwner) {
-
+            requireBinding().mediaSynopsis.setSynopsis(it)
         }
-        viewModelState().networkState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.loadStateMutableStateFlow.value = it
+        viewModelState().loadState.observe(viewLifecycleOwner) {
+            requireBinding().stateLayout.loadStateFlow.value = it
         }
     }
 

@@ -19,6 +19,7 @@ package co.anitrend.core.component.screen
 
 import android.content.Context
 import androidx.viewbinding.ViewBinding
+import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
@@ -50,7 +51,7 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
             setupKoinFragmentFactory(scope)
         }.onFailure {
             setupKoinFragmentFactory()
-            Timber.tag(moduleTag).v(it, "Defaulting to scope-less based fragment factory")
+            Timber.v(it, "Defaulting to scope-less based fragment factory")
         }
         configurationHelper.onCreate(this)
     }
@@ -69,6 +70,11 @@ abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
         super.onResume()
         configurationHelper.onResume(this)
     }
+
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState(): ISupportViewModelState<*>? = null
 
     override fun onDestroy() {
         super.onDestroy()

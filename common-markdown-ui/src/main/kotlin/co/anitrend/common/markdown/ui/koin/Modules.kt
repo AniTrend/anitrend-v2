@@ -42,16 +42,20 @@ private val builderModule = module {
             R.integer.motion_duration_large
         )
 
+        val imageLoader = Coil.imageLoader(context)
+
         Markwon.builder(context)
             .usePlugin(HtmlPlugin.create())
             .usePlugin(
                 CoilImagesPlugin.create(
                     CoilStorePlugin.create(
                         ImageRequest.Builder(context)
+                            .defaults(imageLoader.defaults)
                             .transformations(RoundedCornersTransformation(radius))
                             .transition(CrossfadeTransition(duration))
+                            .crossfade(true)
                     ),
-                    Coil.imageLoader(context)
+                    imageLoader
                 )
             )
     }

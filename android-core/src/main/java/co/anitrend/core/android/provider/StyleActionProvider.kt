@@ -31,6 +31,7 @@ import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getDrawableAttr
 import co.anitrend.core.android.R
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
@@ -47,11 +48,7 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
             )
             isClickable = true
             isFocusable = true
-            setPadding(
-                context.resources.getDimensionPixelSize(
-                    R.dimen.sm_margin
-                )
-            )
+            setPadding(2.dp)
             setOnClickListener {
                 onActionClicked()
             }
@@ -64,11 +61,7 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
                 ViewGroup.MarginLayoutParams.WRAP_CONTENT,
                 ViewGroup.MarginLayoutParams.WRAP_CONTENT
             )
-            setPadding(
-                context.resources.getDimensionPixelSize(
-                    R.dimen.margin_10dp
-                )
-            )
+            setPadding(10.dp)
         }
     }
 

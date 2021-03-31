@@ -17,11 +17,15 @@
   -->
 
 <resources>
-    <dimen name="margin_10dp">10dp</dimen>
     <dimen name="bottom_sheet_margin">0dp</dimen>
+
     <dimen name="design_bottom_app_bar_height">56dp</dimen>
     <dimen name="design_bottom_app_status_bar_height">24dp</dimen>
 	<dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
+
+	<dimen name="design_bottom_sheet_nav_divider_width">120dp</dimen>
+	<dimen name="design_tab_layout_min_width">40dp</dimen>
+
 	<dimen name="nav_item_selector_margin">100dp</dimen>
     <dimen name="text_drawable_margin">3dp</dimen>
 
@@ -30,6 +34,13 @@
     <dimen name="avatar_md">16dp</dimen>
     <dimen name="avatar_lg">24dp</dimen>
     <dimen name="avatar_xl">36dp</dimen>
+    <dimen name="avatar_xx">48dp</dimen>
+
+    <dimen name="series_image_lg">165dp</dimen>
+    <dimen name="series_image_md">145dp</dimen>
+    <dimen name="series_image_sm">125dp</dimen>
+    <dimen name="series_image_xl">185dp</dimen>
+    <dimen name="series_image_xs">100dp</dimen>
 
     <dimen name="size_2dp">2dp</dimen>
     <dimen name="size_4dp">2dp</dimen>
@@ -46,4 +57,17 @@
     <dimen name="size_26dp">26dp</dimen>
     <dimen name="size_28dp">28dp</dimen>
     <dimen name="size_30dp">30dp</dimen>
+    <dimen name="size_32dp">32dp</dimen>
+    <dimen name="size_34dp">34dp</dimen>
+    <dimen name="size_36dp">36dp</dimen>
+    <dimen name="size_38dp">38dp</dimen>
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_42dp">42dp</dimen>
+    <dimen name="size_46dp">46dp</dimen>
+    <dimen name="size_48dp">48dp</dimen>
+    <dimen name="size_50dp">50dp</dimen>
+    <dimen name="size_55dp">55dp</dimen>
+    <dimen name="size_60dp">60dp</dimen>
+    <dimen name="size_65dp">65dp</dimen>
+    <dimen name="size_70dp">70dp</dimen>
 </resources>

@@ -48,6 +48,7 @@
             <option value="$PROJECT_DIR$/feature-media" />
             <option value="$PROJECT_DIR$/feature-media-carousel" />
             <option value="$PROJECT_DIR$/feature-media-discover" />
+            <option value="$PROJECT_DIR$/feature-media-discover-filter" />
             <option value="$PROJECT_DIR$/feature-medialist" />
             <option value="$PROJECT_DIR$/feature-news" />
             <option value="$PROJECT_DIR$/feature-notification" />

@@ -18,8 +18,7 @@
 package co.anitrend.common.shared.ui.plugin
 
 import co.anitrend.common.markdown.ui.plugin.decorator.ParagraphTagHandler
-import co.anitrend.common.markdown.ui.plugin.decorator.TagAlignmentHandler
-import co.anitrend.common.shared.ui.plugin.tag.ImageTagHandler
+import co.anitrend.common.markdown.ui.plugin.decorator.CenterTagHandler
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.html.HtmlPlugin
@@ -30,7 +29,7 @@ internal class MarkdownPlugin private constructor(): AbstractMarkwonPlugin() {
         registry.require(HtmlPlugin::class.java) { plugin ->
             //plugin.addHandler(ImageTagHandler.create())
             plugin.addHandler(ParagraphTagHandler.create())
-            plugin.addHandler(TagAlignmentHandler.create())
+            plugin.addHandler(CenterTagHandler.create())
         }
     }
 

@@ -154,7 +154,7 @@ private val retrofitModule = module {
 }
 
 private val networkModule = module {
-    factory<ISupportConnectivity> {
+    single<ISupportConnectivity> {
         SupportConnectivity(
             connectivityManager = androidContext()
                 .systemServiceOf<ConnectivityManager>()

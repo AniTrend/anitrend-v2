@@ -33,7 +33,7 @@ internal interface ILocalSource<T> {
      * @param attribute item/s to insert
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(attribute: T)
+    suspend fun insert(attribute: T): Long
 
     /**
      * Inserts new items into the database ignoring items with the same primary key,
@@ -42,7 +42,7 @@ internal interface ILocalSource<T> {
      * @param attribute item/s to insert
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(attribute: List<T>)
+    suspend fun insert(attribute: List<T>): List<Long>
 
     /**
      * Updates an item in the underlying database
@@ -82,7 +82,7 @@ internal interface ILocalSource<T> {
      * @param attribute item/s to insert
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(attribute: T)
+    suspend fun upsert(attribute: T): Long
 
     /**
      * Inserts or updates matching attributes on conflict
@@ -90,5 +90,5 @@ internal interface ILocalSource<T> {
      * @param attribute item/s to insert
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(attribute: List<T>)
+    suspend fun upsert(attribute: List<T>): List<Long>
 }

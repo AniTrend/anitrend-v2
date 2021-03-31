@@ -20,14 +20,12 @@ package co.anitrend.data.media.entity.filter
 import co.anitrend.data.arch.database.filter.FilterQueryBuilder
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntitySchema
+import co.anitrend.data.link.entity.LinkEntitySchema
 import co.anitrend.data.media.entity.MediaEntitySchema
 import co.anitrend.data.medialist.entity.MediaListEntitySchema
 import co.anitrend.data.tag.entity.TagEntitySchema
 import co.anitrend.data.tag.entity.connection.TagConnectionEntitySchema
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaSort
-import co.anitrend.domain.media.enums.MediaSource
-import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.support.query.builder.core.criteria.Criteria
 import co.anitrend.support.query.builder.core.criteria.extensions.*
@@ -47,6 +45,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private val mediaTable = MediaEntitySchema.tableName.asTable()
         private val mediaListTable = MediaListEntitySchema.tableName.asTable()
+        private val linksTable = LinkEntitySchema.tableName.asTable()
         private val tagTable = TagEntitySchema.tableName.asTable()
         private val tagConnectionTable = TagEntitySchema.tableName.asTable()
         private val genreConnectionTable = GenreConnectionEntitySchema.tableName.asTable()
@@ -233,15 +232,27 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         }
 
         private fun licenseSelection(filter: MediaParam.Find) {
+            if (filter.licensedBy != null || filter.licensedBy_in != null)
+                requireBuilder() from {
+                    innerJoin(linksTable) {
+                        on(
+                            LinkEntitySchema.mediaId.asColumn(linksTable),
+                            MediaEntitySchema.id.asColumn(mediaTable)
+                        )
+                    }
+                } whereAnd {
+                    MediaEntitySchema.isLicensed.asColumn(mediaTable).equal(true)
+                }
             filter.licensedBy?.also {
                 requireBuilder() whereAnd {
-                    MediaEntitySchema.isLicensed.asColumn() equal true
-                    // TODO: media models don't return this information yet
+                    LinkEntitySchema.site.asColumn(linksTable).like(it.title.toString())
                 }
             }
             filter.licensedBy_in?.also {
-                MediaEntitySchema.isLicensed.asColumn() equal true
-                // TODO: media models don't return this information yet
+                requireBuilder() whereAnd {
+                    val inCriteria = it.map(MediaLicensor::title)
+                    LinkEntitySchema.site.asColumn(linksTable).`in`(inCriteria)
+                }
             }
         }
 

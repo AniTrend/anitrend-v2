@@ -47,6 +47,7 @@ internal class LinkMapper(
          * Function reference from converting from [E] to [M] which will
          * be called by [convertTo]
          */
-        override val toType: (LinkEntity) -> LinkModel = throw NotImplementedError()
+        override val toType: (LinkEntity) -> LinkModel
+            get() = throw NotImplementedError()
     }
 }

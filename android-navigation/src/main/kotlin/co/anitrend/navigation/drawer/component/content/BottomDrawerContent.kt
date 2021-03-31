@@ -28,6 +28,8 @@ import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentHostCallback
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
@@ -214,13 +216,13 @@ class BottomDrawerContent(
         requireActivity().onBackPressedDispatcher.addCallback(
             this, closeDrawerOnBackPressed
         )
-        lifecycleScope.launchWhenResumed {
-            navigationAdapter.clickableStateFlow.filterNotNull()
+        lifecycleScope.launch {
+            navigationAdapter.clickableFlow
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
                 .filterIsInstance<ClickableItem.Data<Navigation.Menu>>()
                 .onEach { clickable ->
                     val model = clickable.data
-                    if (model != null)
-                        setCheckedItem(model.id)
+                    setCheckedItem(model.id)
                     mutableNavigationStateFlow.value = model
                 }.catch { cause: Throwable ->
                     Timber.e(
@@ -230,8 +232,9 @@ class BottomDrawerContent(
                 }
                 .collect()
         }
-        lifecycleScope.launchWhenResumed {
-            accountAdapter.clickableStateFlow.filterNotNull()
+        lifecycleScope.launch {
+            accountAdapter.clickableFlow
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
                 .filterIsInstance<ClickableItem.Data<Account>>()
                 .onEach { clickable ->
                     when (clickable.data) {

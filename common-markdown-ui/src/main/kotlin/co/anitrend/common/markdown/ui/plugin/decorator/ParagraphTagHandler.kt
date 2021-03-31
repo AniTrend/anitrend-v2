@@ -20,11 +20,14 @@ package co.anitrend.common.markdown.ui.plugin.decorator
 import android.text.Layout
 import android.text.style.AlignmentSpan
 import android.text.style.LeadingMarginSpan
+import android.text.style.ParagraphStyle
 import io.noties.markwon.MarkwonVisitor
 import io.noties.markwon.SpannableBuilder
+import io.noties.markwon.html.CssInlineStyleParser
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.MarkwonHtmlRenderer
 import io.noties.markwon.html.TagHandler
+import timber.log.Timber
 
 /**
  * Handles attributes on paragraph tags
@@ -42,27 +45,35 @@ class ParagraphTagHandler private constructor(): TagHandler() {
         renderer: MarkwonHtmlRenderer,
         tag: HtmlTag
     ) {
-        val spans = ArrayList<Any>(2)
+        val spans = ArrayList<ParagraphStyle>(2)
         val attributes = tag.attributes()
         val style = attributes["style"]
-        @Suppress("UNUSED_VARIABLE") val styleClass = attributes["class"]
 
         if (tag.isBlock)
             visitChildren(visitor, renderer, tag.asBlock)
 
-        if (style == CENTER_ALIGN)
-            spans.add(AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER))
-        else if (style == RIGHT_ALIGN)
-            spans.add(AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE))
-
-        if (style?.startsWith(MARGIN_PREFIX) == true) {
-            // e.g. margin-left: 30px;
-            val length = style.length
-            val start = length - 5
-            val end = length - 3
-
-            val paddingSize = style.substring(start, end).toInt()
-            spans.add(LeadingMarginSpan.Standard(paddingSize))
+        if (style != null) {
+            val properties = CssInlineStyleParser.create().parse(style)
+            properties.forEach { property ->
+                when (property.key()) {
+                    TEXT_ALIGN -> {
+                        if (property.value() == CENTER_ALIGN)
+                            spans.add(AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER))
+                        else if (property.value() == RIGHT_ALIGN)
+                            spans.add(AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE))
+                    }
+                    MARGIN_LEFT -> {
+                        val attribute = property.value()
+                        if (attribute.contains("px")) {
+                            val end = attribute.length - 2
+                            val size = property.value().substring(0, end).toIntOrNull()
+                            if (size != null)
+                                spans.add(LeadingMarginSpan.Standard(size))
+                        } else Timber.v("$MARGIN_LEFT has unknown unit $property")
+                    }
+                    else -> Timber.v("Not sure how to handle $property")
+                }
+            }
         }
 
         if (spans.isNotEmpty())
@@ -78,9 +89,10 @@ class ParagraphTagHandler private constructor(): TagHandler() {
     override fun supportedTags(): List<String> = listOf("p")
 
     companion object {
-        private const val CENTER_ALIGN = "text-align: center;"
-        private const val RIGHT_ALIGN = "text-align: right;"
-        private const val MARGIN_PREFIX = "margin-left"
+        private const val CENTER_ALIGN = "center"
+        private const val RIGHT_ALIGN = "right"
+        private const val TEXT_ALIGN = "text-align"
+        private const val MARGIN_LEFT = "margin-left"
 
         fun create() = ParagraphTagHandler()
     }

@@ -45,7 +45,7 @@ object Versions {
      */
     const val versionName = "$major.$minor.$patch-$channel$candidate"
 
-    const val mockk = "1.10.6"
+    const val mockk = "1.11.0"
     const val junit = "4.13.2"
 
     const val timber = "4.7.1"
@@ -66,6 +66,7 @@ object Versions {
     const val tmdb = "2.3.1"
     const val trakt = "6.9.0"
 
-    const val elements = "0.5.0"
+    const val elements = "1.0.1"
+
     const val rangeSeekBar = "v3.0.0"
 }

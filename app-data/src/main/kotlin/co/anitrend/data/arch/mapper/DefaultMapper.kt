@@ -40,9 +40,9 @@ internal abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
      *
      * @return [OutCome.Pass] or [OutCome.Fail] of the operation
      */
-    protected fun persistChanges(data: D): OutCome<Nothing?> {
+    protected suspend fun persistChanges(data: D): OutCome<Nothing?> {
         return runCatching {
-            persistChanges(data)
+            persist(data)
             OutCome.Pass(null)
         }.getOrElse { OutCome.Fail(listOf(it)) }
     }

@@ -48,7 +48,7 @@ internal class NavigationState(
         navigationItems.asLiveData(context)
     }
 
-    override val networkState = liveData<LoadState> {
+    override val loadState = liveData<LoadState> {
         emit(LoadState.Loading())
     }
 

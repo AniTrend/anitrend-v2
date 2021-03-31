@@ -26,6 +26,7 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import androidx.annotation.*
@@ -38,6 +39,7 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
+import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.navigation.model.common.IParam
 import kotlinx.coroutines.channels.awaitClose
@@ -139,14 +141,16 @@ fun Instant.asPrettyTime(): String {
 /**
  * Displays an error message for missing parameters otherwise runs [block]
  */
-inline fun SupportStateLayout.assureParamNotMissing(param: IParam?, block: () -> Unit) {
-    if (param == null)
-        loadStateMutableStateFlow.value = LoadState.Error(
+inline fun ISupportStateLayout.assureParamNotMissing(param: IParam?, block: () -> Unit) {
+    if (param == null) {
+        this as ViewGroup
+        loadStateFlow.value = LoadState.Error(
             RequestError(
                 topic = context.getString(R.string.app_controller_heading_missing_param),
                 description = context.getString(R.string.app_controller_message_missing_param),
             )
         )
+    }
     else block()
 }
 

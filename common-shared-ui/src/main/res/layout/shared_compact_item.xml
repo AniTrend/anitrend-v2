@@ -25,7 +25,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/lg_margin"
     tools:layout_width="@dimen/series_image_xs"
-    style="@style/AppTheme.MediaCard">
+    style="@style/AppTheme.Material.MediaCard">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"

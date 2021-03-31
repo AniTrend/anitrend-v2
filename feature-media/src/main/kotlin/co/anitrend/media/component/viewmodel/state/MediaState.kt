@@ -39,15 +39,17 @@ class MediaState(
 
     private val useCaseResult = MutableLiveData<DataState<Media>>()
 
-    override val model =
-        Transformations.switchMap(useCaseResult) { it.model.asLiveData(context) }
+    override val model = Transformations.switchMap(useCaseResult) {
+        it.model.asLiveData(context)
+    }
 
-    override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
+    }
 
-    override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData(context) }
-
+    override val refreshState = Transformations.switchMap(useCaseResult) {
+        it.refreshState.asLiveData(context)
+    }
 
     operator fun invoke(parameter: MediaRouter.Param) {
         val param = MediaParam.Detail(

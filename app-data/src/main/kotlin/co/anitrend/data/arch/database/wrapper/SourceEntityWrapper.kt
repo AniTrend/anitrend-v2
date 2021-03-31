@@ -32,20 +32,20 @@ internal sealed class SourceEntityWrapper<T : Identity> {
         override val source: ILocalSource<T>,
         private val entity: T
     ) : SourceEntityWrapper<T>() {
-        override suspend fun save() = source.insert(entity)
-        override suspend fun upsert() = source.upsert(entity)
-        override suspend fun update() = source.update(entity)
-        override suspend fun delete() = source.delete(entity)
+        override suspend fun save() { source.insert(entity) }
+        override suspend fun upsert() { source.upsert(entity) }
+        override suspend fun update() { source.update(entity) }
+        override suspend fun delete() { source.delete(entity) }
     }
 
     data class Many<T : Identity>(
         override val source: ILocalSource<T>,
         private val entities: List<T>
     ) : SourceEntityWrapper<T>() {
-        override suspend fun save() = source.insert(entities)
-        override suspend fun upsert() = source.upsert(entities)
-        override suspend fun update() = source.update(entities)
-        override suspend fun delete() = source.delete(entities)
+        override suspend fun save() { source.insert(entities) }
+        override suspend fun upsert() { source.upsert(entities) }
+        override suspend fun update() { source.update(entities) }
+        override suspend fun delete() { source.delete(entities) }
         suspend fun count() = source.count()
     }
 }

@@ -59,6 +59,7 @@ class MarkdownTextWidget @JvmOverloads constructor(
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         maxLines = 4
+        /** Ellipsize won't work in this context probably because some of the characters will have /n */
         ellipsize = TextUtils.TruncateAt.END
         setTextIsSelectable(true)
         Linkify.addLinks(this, Linkify.ALL)

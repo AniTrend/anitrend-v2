@@ -1817,6 +1817,8 @@ type Mutation {
     UpdateUser(
         "User's about/bio text"
         about: String,
+        "Minutes between activity for them to be merged together. 0 is Never, Above 2 weeks (20160 mins) is Always."
+        activityMergeTime: Int,
         "If the user should get notifications when a show they are watching aires"
         airingNotifications: Boolean,
         "The user's anime list options"
@@ -3679,6 +3681,8 @@ type UserModData {
 
 "A user's general options"
 type UserOptions {
+    "Minutes between activity for them to be merged together. 0 is Never, Above 2 weeks (20160 mins) is Always."
+    activityMergeTime: Int
     "Whether the user receives notifications when a show they are watching aires"
     airingNotifications: Boolean
     "Whether the user has enabled viewing of 18+ content"

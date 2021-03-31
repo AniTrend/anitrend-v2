@@ -49,14 +49,14 @@ fun Double.format(digits: Int) = "%.${digits}f".format(this)
  */
 fun Float.format(digits: Int) = "%.${digits}f".format(this)
 
-val Float.dp: Int
-    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+val Float.dp: Float
+    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f)
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
-val Float.px: Int
-    get() = (this / Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+val Float.px: Float
+    get() = (this / Resources.getSystem().displayMetrics.density + 0.5f)
 
 val Int.px: Int
     get() = (this / Resources.getSystem().displayMetrics.density + 0.5f).toInt()

@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
+import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
@@ -38,7 +39,7 @@ class AiringContent(
     private val settings: ICustomizationSettings,
     override val inflateMenu: Int = R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: ISupportAdapter<Media>
+    override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
     private val viewModel by viewModel<AiringViewModel>(
@@ -117,7 +118,7 @@ class AiringContent(
                     )
                     if (currentSpanCount != newSpanCount)
                         layoutManger.spanCount = newSpanCount
-                    else supportRecyclerView?.adapter?.notifyDataSetChanged()
+                    else supportViewAdapter.notifyDataSetNeedsRefreshing()
                 }
             }
         }

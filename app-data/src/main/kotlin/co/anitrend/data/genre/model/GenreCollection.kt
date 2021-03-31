@@ -29,7 +29,7 @@ internal data class GenreCollection(
         genreCollection
             .sortedBy { it }
             .mapIndexed { index, s ->
-                GenreModel(index, s)
+                GenreModel(index + 1, s)
             }
 
     data class GenreModel(

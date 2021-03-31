@@ -45,11 +45,13 @@ class AuthState(
         it.model.asLiveData(context)
     }
 
-    override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
+    }
 
-    override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData(context) }
+    override val refreshState = Transformations.switchMap(useCaseResult) {
+        it.refreshState.asLiveData(context)
+    }
 
     operator fun invoke(authenticating: Authentication.Authenticating) {
         val result = useCase.getAuthenticatedUser(

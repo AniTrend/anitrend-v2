@@ -45,6 +45,7 @@ internal class HalfCounterClockwiseRotateSlideAction(
         )
     }
 }
+
 /**
  * A slide action which acts on the nav drawer between the half expanded state and
  * expanded state by:

@@ -45,9 +45,9 @@ class AuthContent(
     private val resetNetworkStateOnBackPress =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val stateFlow = binding?.stateLayout?.loadStateMutableStateFlow
+                val stateFlow = binding?.stateLayout?.loadStateFlow
                 if (stateFlow?.value is LoadState.Loading || stateFlow?.value is LoadState.Error)
-                    stateFlow.value = LoadState.Idle
+                    stateFlow.value = LoadState.Idle()
                 else
                     activity?.finish()
             }
@@ -60,11 +60,12 @@ class AuthContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        super.initializeComponents(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
             this, resetNetworkStateOnBackPress
         )
         lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionStateFlow.filterNotNull()
+            requireBinding().stateLayout.interactionFlow.filterNotNull()
                 .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
                 .onEach {
                     viewModelState().retry()
@@ -95,8 +96,8 @@ class AuthContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().networkState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.loadStateMutableStateFlow.value = it
+        viewModelState().loadState.observe(viewLifecycleOwner) {
+            requireBinding().stateLayout.loadStateFlow.value = it
         }
         viewModelState().model.observe(viewLifecycleOwner) {
             if (it != null)
