@@ -98,6 +98,9 @@ internal class DependencyStrategy(private val project: Project) {
                 implementation(Libraries.AniTrend.Arch.domain)
                 implementation(Libraries.AniTrend.Arch.data)
                 implementation(Libraries.AniTrend.Arch.ext)
+                Modules.Data.values().forEach { module ->
+                    dependencies.implementation(project(module.path()))
+                }
             }
         }
     }

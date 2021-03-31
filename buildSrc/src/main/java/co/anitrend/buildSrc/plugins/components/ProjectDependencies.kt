@@ -76,6 +76,13 @@ private fun Project.applyAppModuleDependencies() {
         }
     }
 
+    Modules.Data.values().forEach { module ->
+        if (module != Modules.Data.Android || module != Modules.Data.Core) {
+            println("Adding data module dependency ${module.path()} -> ${project.path}")
+            dependencies.implementation(project(module.path()))
+        }
+    }
+
     Modules.Android.values().forEach { module ->
         println("Adding android core module dependency ${module.path()} -> ${project.path}")
         dependencies.implementation(project(module.path()))
@@ -152,6 +159,26 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(Libraries.AndroidX.Fragment.fragment)
         }
     }
+}
+
+private fun Project.applyDataModuleGroupDependencies() {
+    implementation(Libraries.AniTrend.Arch.domain)
+    implementation(Libraries.AniTrend.Arch.data)
+    implementation(Libraries.AniTrend.Arch.ext)
+
+    dependencies.implementation(project(Modules.App.Domain.path()))
+
+    dependencies.implementation(Libraries.AndroidX.Paging.common)
+    dependencies.implementation(Libraries.AndroidX.Paging.runtime)
+    dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
+
+    dependencies.implementation(Libraries.AndroidX.Room.runtime)
+    dependencies.implementation(Libraries.AndroidX.Room.ktx)
+    dependencies.kapt(Libraries.AndroidX.Room.compiler)
+
+    dependencies.implementation(Libraries.Square.OkHttp.logging)
+    dependencies.implementation(Libraries.Square.Retrofit.retrofit)
+    dependencies.implementation(Libraries.Square.Retrofit.gsonConverter)
 }
 
 private fun Project.applyAndroidModuleGroupDependencies() {
@@ -290,6 +317,7 @@ internal fun Project.configureDependencies() {
     DependencyStrategy(project).applyDependenciesOn(dependencies)
     if (isAppModule()) applyAppModuleDependencies()
     if (matchesAppModule()) applyAppModuleGroupDependencies()
+    if (matchesDataModule()) applyDataModuleGroupDependencies()
     if (matchesAndroidModule()) applyAndroidModuleGroupDependencies()
     if (matchesFeatureModule()) applyFeatureModuleGroupDependencies()
     if (matchesCommonModule()) applyCommonModuleGroupDependencies()
