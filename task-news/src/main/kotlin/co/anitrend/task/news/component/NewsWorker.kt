@@ -22,8 +22,8 @@ import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
-import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
-import co.anitrend.data.news.NewsInteractor
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.data.feed.news.NewsSyncInteractor
 import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.first
 
@@ -31,7 +31,7 @@ class NewsWorker(
     context: Context,
     parameters: WorkerParameters,
     private val settings: ILocaleSettings,
-    private val interactor: NewsInteractor
+    private val interactor: NewsSyncInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -49,11 +49,11 @@ class NewsWorker(
         val param = NewsParam(settings.locale.value.asLocaleString())
         val dataState = interactor(param)
 
-        val networkState = dataState.loadState.first { state ->
+        val loadState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
         }
 
-        return if (networkState is LoadState.Success)
+        return if (loadState is LoadState.Success)
             Result.success()
         else Result.failure()
     }

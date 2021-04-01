@@ -19,11 +19,11 @@ package co.anitrend.data.carousel.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.api.model.GraphQLResponse
-import co.anitrend.data.arch.common.model.date.FuzzyDateModel
-import co.anitrend.data.arch.extension.toFuzzyDateLike
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.extension.toFuzzyDateLike
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.MediaCarouselListController
 import co.anitrend.data.carousel.datasource.local.CarouselLocalStore
 import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
@@ -31,7 +31,7 @@ import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.entity.view.MediaEntityView
-import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher

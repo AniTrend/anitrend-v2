@@ -18,7 +18,7 @@
 package co.anitrend.core.android.settings.common.locale
 
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
-import co.anitrend.core.android.settings.helper.locale.AniTrendLocale
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
 
 interface ILocaleSettings {
 

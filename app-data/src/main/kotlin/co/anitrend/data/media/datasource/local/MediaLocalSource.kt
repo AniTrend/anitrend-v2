@@ -24,7 +24,7 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity

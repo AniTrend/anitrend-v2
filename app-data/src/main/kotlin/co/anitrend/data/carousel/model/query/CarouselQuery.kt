@@ -34,7 +34,7 @@
 
 package co.anitrend.data.carousel.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.carousel.model.CarouselParam
 
 

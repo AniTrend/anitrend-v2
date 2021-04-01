@@ -17,9 +17,8 @@
 
 package co.anitrend.data.activity.datasource.local
 
-import androidx.room.Dao
 import co.anitrend.data.activity.entity.ActivityEntity
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 
 internal abstract class ActivityLocalSource : ILocalSource<ActivityEntity> {
     

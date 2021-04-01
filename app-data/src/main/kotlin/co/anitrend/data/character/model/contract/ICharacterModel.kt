@@ -17,7 +17,7 @@
 
 package co.anitrend.data.character.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.shared.model.SharedImage
 import co.anitrend.data.shared.model.SharedName
 

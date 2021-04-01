@@ -17,21 +17,16 @@
 
 package co.anitrend.data.media.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.*
-import co.anitrend.data.media.MediaDetailRepository
-import co.anitrend.data.media.MediaNetworkRepository
-import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.mapper.MediaMapper
-import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.repository.MediaRepository
 import co.anitrend.data.media.source.MediaSourceImpl
 import co.anitrend.data.media.source.contract.MediaSource
@@ -42,8 +37,8 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<MediaSource.Detail> {
         MediaSourceImpl.Detail(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().mediaDao(),
+            remoteSource = graphApi(),
+            localSource = store().mediaDao(),
             controller = graphQLController(
                 mapper = get<MediaMapper.Detail>()
             ),
@@ -57,8 +52,8 @@ private val sourceModule = module {
     }
     factory<MediaSource.Paged> {
         MediaSourceImpl.Paged(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().mediaDao(),
+            remoteSource = graphApi(),
+            localSource = store().mediaDao(),
             carouselSource = get(),
             controller = graphQLController(
                 mapper = get<MediaMapper.Paged>()
@@ -71,11 +66,10 @@ private val sourceModule = module {
     }
     factory {
         MediaSourceFactory.Network(
-            remoteSource = api(EndpointType.GRAPH_QL),
+            remoteSource = graphApi(),
             controller = graphQLController(
                 mapper = get<MediaMapper.Network>()
             ),
-            sortOrderSettings = get(),
             dispatcher = get()
         )
     }
@@ -92,7 +86,7 @@ private val filterModule = module {
 private val cacheModule = module {
     factory {
         MediaCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
@@ -118,7 +112,7 @@ private val mapperModule = module {
             linkMapper = get(),
             rankMapper = get(),
             airingMapper = get(),
-            localSource = db().mediaDao(),
+            localSource = store().mediaDao(),
             converter = get()
         )
     }
@@ -128,7 +122,7 @@ private val mapperModule = module {
             genreMapper = get(),
             tagMapper = get(),
             airingMapper = get(),
-            localSource = db().mediaDao(),
+            localSource = store().mediaDao(),
             converter = get()
         )
     }
@@ -141,7 +135,7 @@ private val mapperModule = module {
         MediaMapper.Embed(
             genreMapper = get(),
             tagMapper = get(),
-            localSource = db().mediaDao(),
+            localSource = store().mediaDao(),
             converter = get()
         )
     }
@@ -150,7 +144,7 @@ private val mapperModule = module {
             airingMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
-            localSource = db().mediaDao(),
+            localSource = store().mediaDao(),
             converter = get()
         )
     }
@@ -160,7 +154,7 @@ private val mapperModule = module {
             airingMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
-            localSource = db().mediaDao(),
+            localSource = store().mediaDao(),
             converter = get()
         )
     }

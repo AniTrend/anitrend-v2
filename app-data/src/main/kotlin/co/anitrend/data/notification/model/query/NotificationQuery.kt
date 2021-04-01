@@ -17,8 +17,7 @@
 
 package co.anitrend.data.notification.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.domain.notification.enums.NotificationType
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.notification.model.NotificationParam
 
 internal data class NotificationQuery(

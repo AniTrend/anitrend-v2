@@ -17,8 +17,8 @@
 
 package co.anitrend.data.genre.mapper
 
-import co.anitrend.data.arch.database.extensions.runInTransaction
-import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.android.extensions.runInTransaction
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.GenreLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
@@ -61,7 +61,9 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
          */
         override suspend fun persist(data: List<GenreEntity>) {
             runInTransaction {
-                localSource.upsert(data)
+                val ids = localSource.insert(data)
+                if (ids.isEmpty())
+                    localSource.update(data)
             }
         }
 

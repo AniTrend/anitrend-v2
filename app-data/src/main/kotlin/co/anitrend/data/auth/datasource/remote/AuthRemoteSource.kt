@@ -17,10 +17,10 @@
 
 package co.anitrend.data.auth.datasource.remote
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.api.model.GraphQLResponse
-import co.anitrend.data.arch.GRAPHQL
-import co.anitrend.data.arch.JSON
+import co.anitrend.data.core.api.factory.contract.EndpointType
+import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.core.GRAPHQL
+import co.anitrend.data.core.JSON
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.user.model.container.UserModelContainer
 import io.github.wax911.library.annotation.GraphQuery

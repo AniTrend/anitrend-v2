@@ -18,6 +18,17 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app-core" />
             <option value="$PROJECT_DIR$/app-data" />
+            <option value="$PROJECT_DIR$/app-data-android" />
+            <option value="$PROJECT_DIR$/app-data-core" />
+            <option value="$PROJECT_DIR$/app-data-feed" />
+            <option value="$PROJECT_DIR$/app-data-imgur" />
+            <option value="$PROJECT_DIR$/app-data-jikan" />
+            <option value="$PROJECT_DIR$/app-data-relation" />
+            <option value="$PROJECT_DIR$/app-data-settings" />
+            <option value="$PROJECT_DIR$/app-data-theme" />
+            <option value="$PROJECT_DIR$/app-data-thexem" />
+            <option value="$PROJECT_DIR$/app-data-tmdb" />
+            <option value="$PROJECT_DIR$/app-data-trakt" />
             <option value="$PROJECT_DIR$/app-domain" />
             <option value="$PROJECT_DIR$/app-navigation" />
             <option value="$PROJECT_DIR$/buildSrc" />

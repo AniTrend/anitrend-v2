@@ -357,6 +357,20 @@ object Libraries {
 			val markdown = Modules.Common.Markdown.path()
         }
 
+        object Data {
+            val android = Modules.Data.Android.path()
+            val core = Modules.Data.Core.path()
+            val feed = Modules.Data.Feed.path()
+            val imgur = Modules.Data.Imgur.path()
+            val jikan = Modules.Data.Jikan.path()
+            val relation = Modules.Data.Relation.path()
+            val theme = Modules.Data.Theme.path()
+            val thexem = Modules.Data.TheXem.path()
+            val tmdb = Modules.Data.Tmdb.path()
+            val trakt = Modules.Data.Trakt.path()
+            val settings = Modules.Data.Settings.path()
+        }
+
         object Markdown {
 			private const val version = "0.12.0-alpha01"
             const val markdown = "com.github.anitrend:support-markdown:${version}"

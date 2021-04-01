@@ -17,7 +17,7 @@
 
 package co.anitrend.data.thread.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.user.model.contract.IUserModel
 
 /** [Thread](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/thread.doc.html)

@@ -56,6 +56,7 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(project(Modules.App.Core.path()))
     dependencies.implementation(project(Modules.App.Domain.path()))
     dependencies.implementation(project(Modules.App.Data.path()))
+    dependencies.implementation(project(Modules.Data.Settings.path()))
 }
 
 private fun Project.applyAppModuleDependencies() {
@@ -91,6 +92,8 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.implementation(Libraries.Coil.coil)
+
+    dependencies.implementation(project(Modules.Data.Settings.path()))
 }
 
 private fun Project.applyAppModuleGroupDependencies() {
@@ -122,6 +125,10 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(Libraries.Coil.video)
             dependencies.implementation(Libraries.Glide.glide)
             dependencies.kapt(Libraries.Glide.compiler)
+
+            dependencies.implementation(project(Modules.Data.Core.path()))
+            dependencies.implementation(project(Modules.Data.Android.path()))
+            dependencies.implementation(project(Modules.Data.Settings.path()))
         }
         Modules.App.Data.id -> {
             dependencies.implementation(project(Modules.App.Domain.path()))
@@ -140,7 +147,20 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(Libraries.Devrieze.XmlUtil.Android.serialization)
 
             dependencies.implementation(Libraries.AniTrend.Retrofit.graphQL)
+            dependencies.implementation(Libraries.retrofitSerializer)
             dependencies.implementation(Libraries.threeTenBp)
+
+            dependencies.debugImplementation(Libraries.Chuncker.debug)
+            dependencies.releaseImplementation(Libraries.Chuncker.release)
+
+            dependencies.androidTest(Libraries.AndroidX.Room.test)
+            dependencies.androidTest(Libraries.Square.OkHttp.mockServer)
+
+            dependencies.compile(Libraries.Square.KotlinPoet.kotlinPoet)
+
+            Modules.Data.values().forEach { module ->
+                dependencies.implementation(project(module.path()))
+            }
         }
         Modules.App.Domain.id -> {
             dependencies.implementation(Libraries.AniTrend.Arch.domain)
@@ -150,6 +170,55 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
             dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
             dependencies.implementation(Libraries.AndroidX.Fragment.fragment)
+        }
+    }
+}
+
+private fun Project.applyDataModuleGroupDependencies() {
+    println("Applying base module dependencies for module -> $path")
+    dependencies.implementation(Libraries.AniTrend.Arch.domain)
+    dependencies.implementation(Libraries.AniTrend.Arch.data)
+    dependencies.implementation(Libraries.AniTrend.Arch.ext)
+
+    dependencies.implementation(project(Modules.App.Domain.path()))
+
+    if (name != Modules.Data.Settings.id) {
+        dependencies.implementation(Libraries.AndroidX.Paging.common)
+        dependencies.implementation(Libraries.AndroidX.Paging.runtime)
+        dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
+
+        dependencies.implementation(Libraries.AndroidX.Room.runtime)
+        dependencies.implementation(Libraries.AndroidX.Room.ktx)
+        dependencies.kapt(Libraries.AndroidX.Room.compiler)
+
+        dependencies.implementation(Libraries.Square.OkHttp.logging)
+        dependencies.implementation(Libraries.Square.Retrofit.retrofit)
+        dependencies.implementation(Libraries.Square.Retrofit.gsonConverter)
+
+        dependencies.implementation(Libraries.retrofitSerializer)
+        dependencies.implementation(Libraries.threeTenBp)
+
+        dependencies.debugImplementation(Libraries.Chuncker.debug)
+        dependencies.releaseImplementation(Libraries.Chuncker.release)
+
+        dependencies.androidTest(Libraries.AndroidX.Room.test)
+        dependencies.androidTest(Libraries.Square.OkHttp.mockServer)
+    }
+
+    when (name) {
+        Modules.Data.Android.id -> {
+            dependencies.implementation(project(Modules.Data.Core.path()))
+            dependencies.implementation(project(Modules.Data.Settings.path()))
+        }
+        Modules.Data.Settings.id -> { }
+        Modules.Data.Core.id -> {
+            dependencies.implementation(project(Modules.Data.Settings.path()))
+        }
+        else -> {
+            println("Applying core and android data dependencies for module -> $path")
+            dependencies.implementation(project(Modules.Data.Core.path()))
+            dependencies.implementation(project(Modules.Data.Android.path()))
+            dependencies.implementation(project(Modules.Data.Settings.path()))
         }
     }
 }
@@ -183,6 +252,9 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(project(Modules.App.Navigation.path()))
     dependencies.implementation(project(Modules.App.Domain.path()))
     dependencies.implementation(project(Modules.App.Data.path()))
+
+    dependencies.implementation(project(Modules.Data.Settings.path()))
+
     if (!isAndroidCoreModule()) {
         dependencies.implementation(project(Modules.Android.Core.path()))
         dependencies.implementation(project(Modules.App.Core.path()))
@@ -224,6 +296,7 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(project(Modules.App.Domain.path()))
     dependencies.implementation(project(Modules.App.Data.path()))
     dependencies.implementation(project(Modules.App.Core.path()))
+    dependencies.implementation(project(Modules.Data.Settings.path()))
 }
 
 private fun Project.applyTaskModuleGroupDependencies() {
@@ -247,6 +320,7 @@ private fun Project.applyTaskModuleGroupDependencies() {
     dependencies.implementation(project(Modules.App.Domain.path()))
     dependencies.implementation(project(Modules.App.Data.path()))
     dependencies.implementation(project(Modules.App.Core.path()))
+    dependencies.implementation(project(Modules.Data.Settings.path()))
 }
 
 private fun Project.applyComposeDependencies() {
@@ -288,8 +362,10 @@ internal fun Project.configureDependencies() {
         }
     )
     DependencyStrategy(project).applyDependenciesOn(dependencies)
+
     if (isAppModule()) applyAppModuleDependencies()
     if (matchesAppModule()) applyAppModuleGroupDependencies()
+    if (matchesDataModule()) applyDataModuleGroupDependencies()
     if (matchesAndroidModule()) applyAndroidModuleGroupDependencies()
     if (matchesFeatureModule()) applyFeatureModuleGroupDependencies()
     if (matchesCommonModule()) applyCommonModuleGroupDependencies()

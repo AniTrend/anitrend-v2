@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.mutation
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.data.notification.model.input.NotificationOptionInput
 import co.anitrend.domain.user.model.UserParam
 

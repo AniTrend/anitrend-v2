@@ -17,7 +17,7 @@
 
 package co.anitrend.data.staff.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
 import co.anitrend.data.staff.model.StaffModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

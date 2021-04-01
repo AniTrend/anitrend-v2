@@ -44,6 +44,7 @@ fun Project.isNavigationModule() = name == Modules.App.Navigation.id
 fun Project.isAndroidCoreModule() = name == Modules.Android.Core.id
 
 fun Project.matchesAppModule() = name.startsWith(Modules.appModulePattern)
+fun Project.matchesDataModule() = name.startsWith(Modules.dataModulePattern)
 fun Project.matchesAndroidModule() = name.startsWith(Modules.androidModulePattern)
 fun Project.matchesFeatureModule() = name.startsWith(Modules.featureModulePattern)
 fun Project.matchesCommonModule() = name.startsWith(Modules.commonModulePattern)

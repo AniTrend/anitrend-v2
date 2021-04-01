@@ -22,30 +22,29 @@ import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.arch.extension.settings.*
 import co.anitrend.core.android.R
-import co.anitrend.data.arch.settings.connectivity.IConnectivitySettings
-import co.anitrend.data.arch.settings.power.IPowerSettings
-import co.anitrend.core.android.settings.common.IConfigurationSettings
-import co.anitrend.data.arch.settings.cache.ICacheSettings
-import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
-import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
-import co.anitrend.core.android.settings.common.privacy.IPrivacySettings
 import co.anitrend.core.android.settings.common.theme.IThemeSettings
-import co.anitrend.core.android.settings.helper.locale.AniTrendLocale
-import co.anitrend.core.android.settings.helper.theme.AniTrendTheme
-import co.anitrend.data.arch.database.settings.IRefreshBehaviourSettings
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
+import co.anitrend.core.android.settings.common.IConfigurationSettings
+import co.anitrend.data.settings.connectivity.IConnectivitySettings
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.power.IPowerSettings
+import co.anitrend.data.settings.privacy.IPrivacySettings
+import co.anitrend.data.settings.sort.ISortOrderSettings
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
+import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
+import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
+import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
-class Settings(context: Context) : SupportPreference(context),
-    IConfigurationSettings, IPrivacySettings, IAuthenticationSettings,
-    ISortOrderSettings, IRefreshBehaviourSettings, ICustomizationSettings,
-    IPowerSettings, IConnectivitySettings, IUserSettings, ICacheSettings {
+class Settings(context: Context) : SupportPreference(context), IConfigurationSettings,
+    IPrivacySettings, IAuthenticationSettings, ISortOrderSettings, IRefreshBehaviourSettings,
+    ICustomizationSettings, IPowerSettings, IConnectivitySettings, IUserSettings, ICacheSettings {
 
     override val locale = EnumSetting(
         key = R.string.settings_configuration_locale,

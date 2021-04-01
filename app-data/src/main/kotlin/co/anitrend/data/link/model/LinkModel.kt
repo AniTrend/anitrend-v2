@@ -17,7 +17,7 @@
 
 package co.anitrend.data.link.model
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -24,9 +24,9 @@ import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.cache.extensions.invoke
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cache.extensions.invoke
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.model.mutation.UserMutation
 import co.anitrend.data.user.model.query.UserQuery

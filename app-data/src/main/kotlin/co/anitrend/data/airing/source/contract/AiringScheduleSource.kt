@@ -22,7 +22,7 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
-import co.anitrend.data.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.flow.Flow

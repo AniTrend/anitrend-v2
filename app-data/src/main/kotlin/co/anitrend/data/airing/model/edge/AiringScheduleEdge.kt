@@ -18,7 +18,7 @@
 package co.anitrend.data.airing.model.edge
 
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

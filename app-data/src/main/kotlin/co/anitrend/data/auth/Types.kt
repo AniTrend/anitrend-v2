@@ -18,7 +18,7 @@
 package co.anitrend.data.auth
 
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.domain.auth.interactor.AuthUseCase

@@ -19,8 +19,8 @@ package co.anitrend.data.medialist.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import co.anitrend.data.arch.FuzzyDateInt
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.common.FuzzyDateInt
+import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.support.query.builder.annotation.EntitySchema

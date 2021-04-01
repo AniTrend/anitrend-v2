@@ -18,7 +18,7 @@
 package co.anitrend.data.carousel
 
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.domain.carousel.entity.MediaCarousel

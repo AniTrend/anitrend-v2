@@ -17,10 +17,9 @@
 
 package co.anitrend.data.genre.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import co.anitrend.data.genre.GenreInteractor
 import co.anitrend.data.genre.GenreListRepository
 import co.anitrend.data.genre.cache.GenreCache
@@ -38,8 +37,8 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<GenreSource> {
         GenreSourceImpl(
-            localSource = db().genreDao(),
-            remoteSource = api(EndpointType.GRAPH_QL),
+            localSource = store().genreDao(),
+            remoteSource = graphApi(),
             controller = graphQLController(
                 mapper = get<GenreMapper>()
             ),
@@ -61,7 +60,7 @@ private val filterModule = module {
 private val cacheModule = module {
     factory {
         GenreCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
@@ -80,7 +79,7 @@ private val converterModule = module {
 private val mapperModule = module {
     factory {
         GenreMapper.Core(
-            localSource = db().genreDao(),
+            localSource = store().genreDao(),
             converter = get()
         )
     } bind GenreMapper::class

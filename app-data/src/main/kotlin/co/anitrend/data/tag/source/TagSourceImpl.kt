@@ -19,10 +19,8 @@ package co.anitrend.data.tag.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.tag.TagController
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.datasource.local.TagLocalSource

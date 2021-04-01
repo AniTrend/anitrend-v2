@@ -19,9 +19,9 @@ package co.anitrend.data.media.mapper
 
 import co.anitrend.data.airing.mapper.AiringMapper
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.database.extensions.runInTransaction
-import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.mapper.EmbedMapper
+import co.anitrend.data.android.extensions.runInTransaction
+import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.genre.mapper.GenreMapper
 import co.anitrend.data.link.mapper.LinkMapper
 import co.anitrend.data.media.converter.MediaConverter

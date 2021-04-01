@@ -17,7 +17,7 @@
 
 package co.anitrend.data.thread.model.mutation
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.thread.model.ThreadParam
 
 internal sealed class ThreadMutation : IGraphPayload {

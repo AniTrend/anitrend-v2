@@ -19,9 +19,9 @@ package co.anitrend.data.genre.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.data.cache.extensions.invoke
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cache.extensions.invoke
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.genre.model.GenreParam

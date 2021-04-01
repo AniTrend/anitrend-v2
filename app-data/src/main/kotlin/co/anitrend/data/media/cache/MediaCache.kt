@@ -17,10 +17,10 @@
 
 package co.anitrend.data.media.cache
 
-import co.anitrend.data.cache.datasource.CacheLocalSource
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.model.CacheRequest
-import co.anitrend.data.cache.repository.CacheStorePolicy
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.cache.repository.CacheStorePolicy
 import co.anitrend.domain.media.model.MediaParam
 import org.threeten.bp.Instant
 

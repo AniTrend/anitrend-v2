@@ -17,10 +17,8 @@
 
 package co.anitrend.data.carousel.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.carousel.GetCarouselInteractor
 import co.anitrend.data.carousel.MediaCarouselListRepository
 import co.anitrend.data.carousel.cache.CarouselCache
@@ -29,13 +27,14 @@ import co.anitrend.data.carousel.repository.MediaCarouselRepository
 import co.anitrend.data.carousel.source.CarouselSourceImpl
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.carousel.usecase.MediaCarouselUseCaseImpl
+import co.anitrend.data.core.extensions.graphApi
 import org.koin.dsl.module
 
 private val sourceModule = module {
     factory<CarouselSource> {
         CarouselSourceImpl(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().carouselDao(),
+            remoteSource = graphApi(),
+            localSource = store().carouselDao(),
             controller = graphQLController(
                 mapper = get<CarouselMapper>()
             ),
@@ -50,7 +49,7 @@ private val sourceModule = module {
 private val cacheModule = module {
     factory {
         CarouselCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }

@@ -29,18 +29,17 @@ import co.anitrend.data.airing.repository.AiringScheduleRepository
 import co.anitrend.data.airing.source.AiringScheduleSourceImpl
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.airing.usecase.AiringScheduleInteractor
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule = module {
     factory<AiringScheduleSource.Paged> {
         AiringScheduleSourceImpl.Paged(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().airingScheduleDao(),
-            mediaLocalSource = db().mediaDao(),
+            remoteSource = graphApi(),
+            localSource = store().airingScheduleDao(),
+            mediaLocalSource = store().mediaDao(),
             controller = graphQLController(
                 mapper = get<AiringMapper.Paged>()
             ),
@@ -63,7 +62,7 @@ private val filterModule = module {
 private val cacheModule = module {
     factory {
         AiringCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
@@ -83,20 +82,20 @@ private val converterModule = module {
 private val mapperModule = module {
     factory {
         AiringMapper.Airing(
-            localSource = db().airingScheduleDao(),
+            localSource = store().airingScheduleDao(),
             converter = get()
         )
     }
     factory {
         AiringMapper.Paged(
             mediaMapper = get(),
-            localSource = db().airingScheduleDao(),
+            localSource = store().airingScheduleDao(),
             converter = get()
         )
     }
     factory {
         AiringMapper.Embed(
-            localSource = db().airingScheduleDao(),
+            localSource = store().airingScheduleDao(),
             converter = get()
         )
     }

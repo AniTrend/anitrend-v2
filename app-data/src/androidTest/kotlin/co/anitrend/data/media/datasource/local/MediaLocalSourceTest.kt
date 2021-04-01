@@ -19,13 +19,12 @@ package co.anitrend.data.media.datasource.local
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import app.cash.turbine.test
-import co.anitrend.data.api.model.GraphQLResponse
+import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.core.CoreTestSuite
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before

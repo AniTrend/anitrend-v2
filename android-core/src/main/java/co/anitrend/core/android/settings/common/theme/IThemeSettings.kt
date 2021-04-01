@@ -18,7 +18,7 @@
 package co.anitrend.core.android.settings.common.theme
 
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
-import co.anitrend.core.android.settings.helper.theme.AniTrendTheme
+import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
 
 interface IThemeSettings {
 

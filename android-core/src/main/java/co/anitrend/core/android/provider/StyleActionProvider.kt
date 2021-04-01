@@ -34,8 +34,8 @@ import co.anitrend.core.android.R
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
-import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
-import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.shared.model.SharedImage
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)

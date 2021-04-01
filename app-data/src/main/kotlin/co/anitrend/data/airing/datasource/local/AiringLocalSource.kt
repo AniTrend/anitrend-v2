@@ -20,7 +20,7 @@ package co.anitrend.data.airing.datasource.local
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -19,7 +19,7 @@ package co.anitrend.data.studio.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 
 @Entity(
     tableName = "studio",

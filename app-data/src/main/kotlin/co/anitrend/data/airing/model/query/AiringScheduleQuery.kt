@@ -17,8 +17,7 @@
 
 package co.anitrend.data.airing.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.domain.airing.enums.AiringSort
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.airing.model.AiringParam
 
 internal data class AiringScheduleQuery(

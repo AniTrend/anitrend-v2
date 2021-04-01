@@ -19,7 +19,7 @@ package co.anitrend.data.user.datasource.local
 
 import androidx.paging.DataSource
 import androidx.room.*
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity

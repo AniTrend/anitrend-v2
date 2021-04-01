@@ -18,7 +18,7 @@
 package co.anitrend.data.rank.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.data.arch.mapper.EmbedMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.rank.datasource.RankLocalSource
 import co.anitrend.data.rank.entity.RankEntity
 import co.anitrend.data.rank.model.RankModel

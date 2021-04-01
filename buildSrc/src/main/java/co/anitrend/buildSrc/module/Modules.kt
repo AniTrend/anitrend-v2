@@ -19,6 +19,7 @@ package co.anitrend.buildSrc.module
 
 internal object Modules {
 
+    const val dataModulePattern = "app-data-"
     const val androidModulePattern = "android-"
     const val featureModulePattern = "feature-"
     const val commonModulePattern = "common-"
@@ -40,6 +41,20 @@ internal object Modules {
         Data("app-data"),
         Domain("app-domain"),
         Navigation("app-navigation")
+    }
+
+    enum class Data(override val id: String) : Module {
+        Android("app-data-android"),
+        Core("app-data-core"),
+        Feed("app-data-feed"),
+        Imgur("app-data-imgur"),
+        Jikan("app-data-jikan"),
+        Relation("app-data-relation"),
+        Theme("app-data-theme"),
+        TheXem("app-data-thexem"),
+        Tmdb("app-data-tmdb"),
+        Trakt("app-data-trakt"),
+        Settings("app-data-settings")
     }
 
     enum class Android(override val id: String) : Module {

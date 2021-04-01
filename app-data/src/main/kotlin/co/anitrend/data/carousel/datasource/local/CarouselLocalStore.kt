@@ -20,9 +20,9 @@ package co.anitrend.data.carousel.datasource.local
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.arch.CountryCode
-import co.anitrend.data.arch.FuzzyDateLike
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.common.CountryCode
+import co.anitrend.data.common.FuzzyDateLike
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.domain.media.enums.MediaSeason

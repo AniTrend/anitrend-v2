@@ -21,7 +21,7 @@ import androidx.room.ColumnInfo
 import androidx.room.DatabaseView
 import androidx.room.Entity
 import androidx.room.Index
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(

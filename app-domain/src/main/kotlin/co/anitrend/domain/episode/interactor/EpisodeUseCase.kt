@@ -39,4 +39,12 @@ sealed class EpisodeUseCase : IUseCase {
             param: EpisodeParam.Paged
         ) = repository.getPagedEpisode(param)
     }
+
+    abstract class Sync<State: UiState<*>>(
+        protected val repository: IEpisodeRepository.Sync<State>
+    ) : EpisodeUseCase() {
+        operator fun invoke(
+            param: EpisodeParam.Paged
+        ) = repository.sync(param)
+    }
 }

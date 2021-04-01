@@ -48,20 +48,9 @@ dependencies {
         exclude(group = "org.threeten", module = "threetenbp")
     }
 
-    implementation(Libraries.retrofitSerializer)
-
     implementation(Libraries.AniTrend.Emojify.emojify)
 
     implementation(Libraries.AniTrend.QueryBuilder.annotation)
     implementation(Libraries.AniTrend.QueryBuilder.core)
     kapt(Libraries.AniTrend.QueryBuilder.processor)
-
-    compileOnly(Libraries.Square.KotlinPoet.kotlinPoet)
-
-    debugImplementation(Libraries.Chuncker.debug)
-    releaseImplementation(Libraries.Chuncker.release)
-
-
-    androidTestImplementation(Libraries.AndroidX.Room.test)
-    androidTestImplementation(Libraries.Square.OkHttp.mockServer)
 }

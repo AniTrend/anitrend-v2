@@ -22,7 +22,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.episode.EpisodeDetailInteractor
+import co.anitrend.data.feed.episode.EpisodeDetailInteractor
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 import kotlin.coroutines.CoroutineContext

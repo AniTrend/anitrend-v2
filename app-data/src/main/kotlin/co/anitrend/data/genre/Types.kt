@@ -18,7 +18,7 @@
 package co.anitrend.data.genre
 
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.domain.genre.entity.Genre

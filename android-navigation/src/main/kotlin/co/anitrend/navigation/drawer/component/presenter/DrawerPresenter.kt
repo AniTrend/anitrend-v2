@@ -153,13 +153,13 @@ internal class DrawerPresenter(
     ) {
         when (clickable.view.id) {
             R.id.accountContainer -> {
-                if (clickable.data!!.isActiveUser)
+                if (clickable.data.isActiveUser)
                     ProfileRouter.startActivity(clickable.view.context)
                 else { /* TODO: Switch account to the selected one */ }
             }
             R.id.accountSignOut -> {
                 viewModel.accountState.signOut(
-                    clickable.data!!
+                    clickable.data
                 )
             }
         }

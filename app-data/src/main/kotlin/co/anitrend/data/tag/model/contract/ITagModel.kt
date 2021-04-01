@@ -17,7 +17,7 @@
 
 package co.anitrend.data.tag.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 
 /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
  * A tag that describes a theme or element of the media

@@ -22,10 +22,9 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.user.UserAuthController
 import co.anitrend.data.user.UserController
 import co.anitrend.data.user.UserPagedController
@@ -36,7 +35,7 @@ import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
 import co.anitrend.data.user.source.contract.UserSource
-import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async

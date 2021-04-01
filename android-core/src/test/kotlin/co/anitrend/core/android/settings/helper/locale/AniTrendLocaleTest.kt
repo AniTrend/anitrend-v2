@@ -17,7 +17,8 @@
 
 package co.anitrend.core.android.settings.helper.locale
 
-import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
 import org.junit.Assert.*
 import org.junit.Test
 

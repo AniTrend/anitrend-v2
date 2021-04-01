@@ -23,15 +23,13 @@ import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.data.source.live.SupportPagingLiveDataSource
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
-import co.anitrend.data.cache.extensions.invoke
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.repository.CacheStorePolicy
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cache.extensions.invoke
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 

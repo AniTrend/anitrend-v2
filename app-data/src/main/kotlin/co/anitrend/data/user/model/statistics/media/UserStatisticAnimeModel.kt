@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.statistics.media
 
-import co.anitrend.data.arch.CountryCode
+import co.anitrend.data.common.CountryCode
 import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.data.studio.model.StudioModel
 import co.anitrend.data.tag.model.remote.TagModel

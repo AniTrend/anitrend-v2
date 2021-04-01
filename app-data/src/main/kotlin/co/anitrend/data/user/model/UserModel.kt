@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.shared.model.SharedImage
 import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.data.user.model.option.UserOptionsModel

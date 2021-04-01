@@ -17,7 +17,7 @@
 
 package co.anitrend.data.favourite.model.contract
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
+import co.anitrend.data.common.entity.IEntityConnection
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
 import co.anitrend.data.media.model.MediaModel

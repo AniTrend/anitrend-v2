@@ -17,14 +17,9 @@
 
 package co.anitrend.data.tag.entity.filter
 
-import co.anitrend.data.arch.database.filter.FilterQueryBuilder
-import co.anitrend.data.arch.database.filter.FilterQueryBuilder.Companion.orderBy
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.genre.entity.GenreEntitySchema
-import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.tag.entity.TagEntitySchema
 import co.anitrend.domain.tag.model.TagParam
-import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
 

@@ -19,7 +19,7 @@ package co.anitrend.data.media
 
 import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.domain.media.entity.Media

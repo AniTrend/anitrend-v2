@@ -17,7 +17,7 @@
 
 package co.anitrend.data.studio.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 
 /** [Studio](https://anilist.github.io/ApiV2-GraphQL-Docs/studio.doc.html)
  * Studio contract, without connections

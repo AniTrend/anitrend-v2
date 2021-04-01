@@ -17,8 +17,7 @@
 
 package co.anitrend.data.staff.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.domain.staff.enums.StaffSort
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.staff.model.StaffParam
 
 internal data class StaffQuery(

@@ -20,7 +20,6 @@ package co.anitrend.data.auth.repository
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
 import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.auth.repository.AuthRepository

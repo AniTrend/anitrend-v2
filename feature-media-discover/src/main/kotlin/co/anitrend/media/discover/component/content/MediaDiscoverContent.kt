@@ -25,8 +25,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.core.android.settings.common.customize.ICustomizationSettings
-import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.fragmentByTagOrNew

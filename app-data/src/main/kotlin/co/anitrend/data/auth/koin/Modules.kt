@@ -17,23 +17,22 @@
 
 package co.anitrend.data.auth.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.auth.repository.AuthRepositoryImpl
 import co.anitrend.data.auth.source.AuthSourceImpl
 import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.data.auth.usecase.AuthUseCaseImpl
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule = module {
     factory<AuthSource> {
         AuthSourceImpl(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().authDao(),
+            remoteSource = graphApi(),
+            localSource = store().authDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<AuthMapper>()
@@ -41,7 +40,7 @@ private val sourceModule = module {
             userSettings = get(),
             settings = get(),
             converter = get(),
-            userLocalSource = db().userDao(),
+            userLocalSource = store().userDao(),
             dispatcher = get()
         )
     }
@@ -51,7 +50,7 @@ private val mapperModule = module {
     factory {
         AuthMapper(
             settings = get(),
-            userLocalSource = db().userDao(),
+            userLocalSource = store().userDao(),
             converter = get(),
             generalOptionConverter = get(),
             mediaOptionConverter = get(),

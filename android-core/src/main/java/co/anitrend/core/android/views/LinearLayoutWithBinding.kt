@@ -23,13 +23,11 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.core.android.binding.IBindingView
-import co.anitrend.data.arch.AniTrendExperimentalFeature
 
 /**
  * Linear layout with view binding support
  * > **N.B.** View binding seems to cause a lot of data mix-ups within a view holder item
  */
-@AniTrendExperimentalFeature
 abstract class LinearLayoutWithBinding<V : ViewBinding> @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView, IBindingView<V> {

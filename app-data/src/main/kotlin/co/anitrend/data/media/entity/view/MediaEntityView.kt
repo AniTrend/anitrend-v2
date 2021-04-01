@@ -18,27 +18,23 @@
 package co.anitrend.data.media.entity.view
 
 import androidx.room.Embedded
-import androidx.room.Junction
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
-import co.anitrend.data.jikan.entity.JikanEntity
-import co.anitrend.data.jikan.entity.projection.JikanWithConnection
+import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.moe.entity.MoeEntity
+import co.anitrend.data.relation.entity.RelationEntity
 import co.anitrend.data.rank.entity.RankEntity
 import co.anitrend.data.tag.entity.TagEntity
-import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 
 internal sealed class MediaEntityView {
     abstract val media: MediaEntity
     abstract val nextAiring: AiringScheduleEntity?
     abstract val mediaList: MediaListEntity?
     abstract val jikan: JikanEntity?
-    abstract val moe: MoeEntity?
+    abstract val moe: RelationEntity?
 
     abstract val tags: List<TagEntity.Extended>
     abstract val genres: List<GenreEntity.Extended>
@@ -49,7 +45,7 @@ internal sealed class MediaEntityView {
             parentColumn = "id",
             entityColumn = "anilist"
         )
-        override val moe: MoeEntity?,
+        override val moe: RelationEntity?,
         @Relation(
             parentColumn = "mal_id",
             entityColumn = "id"
@@ -93,7 +89,7 @@ internal sealed class MediaEntityView {
             parentColumn = "id",
             entityColumn = "anilist"
         )
-        override val moe: MoeEntity?,
+        override val moe: RelationEntity?,
         @Relation(
             parentColumn = "mal_id",
             entityColumn = "id"

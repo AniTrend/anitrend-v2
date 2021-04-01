@@ -22,6 +22,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(Libraries.AniTrend.Data.feed))
 	implementation(project(Libraries.AniTrend.CommonUi.news))
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
 

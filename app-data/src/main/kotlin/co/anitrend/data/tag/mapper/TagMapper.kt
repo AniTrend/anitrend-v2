@@ -17,12 +17,8 @@
 
 package co.anitrend.data.tag.mapper
 
-import co.anitrend.data.arch.database.extensions.runInTransaction
-import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.railway.OutCome
-import co.anitrend.data.arch.railway.extension.evaluate
-import co.anitrend.data.arch.railway.extension.otherwise
-import co.anitrend.data.arch.railway.extension.then
+import co.anitrend.data.android.extensions.runInTransaction
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.TagLocalSource
@@ -67,7 +63,9 @@ internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntit
          */
         override suspend fun persist(data: List<TagEntity>) {
             runInTransaction {
-                localSource.upsert(data)
+                val ids = localSource.insert(data)
+                if (ids.isEmpty())
+                    localSource.update(data)
             }
         }
 
