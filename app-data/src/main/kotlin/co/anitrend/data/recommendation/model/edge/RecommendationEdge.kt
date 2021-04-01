@@ -17,7 +17,7 @@
 
 package co.anitrend.data.recommendation.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
 import co.anitrend.data.recommendation.model.RecommendationModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

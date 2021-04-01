@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel

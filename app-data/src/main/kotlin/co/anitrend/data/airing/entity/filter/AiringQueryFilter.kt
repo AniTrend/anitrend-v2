@@ -18,7 +18,7 @@
 package co.anitrend.data.airing.entity.filter
 
 import co.anitrend.data.airing.entity.AiringScheduleEntitySchema
-import co.anitrend.data.arch.database.filter.FilterQueryBuilder
+import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.media.entity.MediaEntitySchema
 import co.anitrend.data.medialist.entity.MediaListEntitySchema
@@ -28,14 +28,12 @@ import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.support.query.builder.core.criteria.extensions.*
 import co.anitrend.support.query.builder.core.from.extentions.asTable
-import co.anitrend.support.query.builder.core.from.extentions.innerJoin
 import co.anitrend.support.query.builder.core.from.extentions.join
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
 import co.anitrend.support.query.builder.dsl.leftJoin
 import co.anitrend.support.query.builder.dsl.where
 import co.anitrend.support.query.builder.dsl.whereAnd
-import org.threeten.bp.Instant
 import java.util.*
 
 internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {

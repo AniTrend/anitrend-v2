@@ -17,9 +17,9 @@
 
 package co.anitrend.data.tag.datasource.remote
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.api.model.GraphQLResponse
-import co.anitrend.data.arch.GRAPHQL
+import co.anitrend.data.core.api.factory.contract.EndpointType
+import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.tag.model.remote.TagContainerModel
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder

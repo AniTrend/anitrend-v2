@@ -17,9 +17,8 @@
 
 package co.anitrend.data.recommendation.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.recommendation.RecommendationParam
-import co.anitrend.domain.recommendation.enums.RecommendationSort
 
 internal data class RecommendationQuery(
     val param: RecommendationParam.Find

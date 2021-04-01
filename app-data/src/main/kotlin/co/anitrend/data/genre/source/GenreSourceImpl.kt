@@ -19,10 +19,8 @@ package co.anitrend.data.genre.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.genre.MediaGenreController
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.GenreLocalSource

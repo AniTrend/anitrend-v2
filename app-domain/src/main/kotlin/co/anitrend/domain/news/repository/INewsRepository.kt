@@ -20,6 +20,13 @@ package co.anitrend.domain.news.repository
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.news.model.NewsParam
 
-interface INewsRepository<State: UiState<*>> {
-    fun getPagedNews(param: NewsParam): State
+interface INewsRepository {
+
+    interface Paged<State: UiState<*>> : INewsRepository {
+        fun getPagedNews(param: NewsParam): State
+    }
+
+    interface Sync<State: UiState<*>> : INewsRepository {
+        fun sync(param: NewsParam): State
+    }
 }

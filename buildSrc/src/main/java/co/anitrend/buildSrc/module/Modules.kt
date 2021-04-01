@@ -49,11 +49,12 @@ internal object Modules {
         Feed("app-data-feed"),
         Imgur("app-data-imgur"),
         Jikan("app-data-jikan"),
-        Relation("app-data-relatioin"),
+        Relation("app-data-relation"),
         Theme("app-data-theme"),
         TheXem("app-data-thexem"),
         Tmdb("app-data-tmdb"),
-        Trakt("app-data-trakt")
+        Trakt("app-data-trakt"),
+        Settings("app-data-settings")
     }
 
     enum class Android(override val id: String) : Module {

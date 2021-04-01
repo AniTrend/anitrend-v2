@@ -17,9 +17,9 @@
 
 package co.anitrend.data.medialist.mapper
 
-import co.anitrend.data.arch.database.extensions.runInTransaction
-import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.mapper.EmbedMapper
+import co.anitrend.data.android.extensions.runInTransaction
+import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource

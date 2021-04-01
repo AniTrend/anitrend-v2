@@ -22,8 +22,8 @@ import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
-import co.anitrend.core.android.settings.helper.locale.AniTrendLocale.Companion.asLocaleString
-import co.anitrend.data.episode.EpisodePagedInteractor
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.data.feed.episode.EpisodeSyncInteractor
 import co.anitrend.domain.episode.model.EpisodeParam
 import kotlinx.coroutines.flow.first
 
@@ -31,7 +31,7 @@ class EpisodeWorker(
     context: Context,
     parameters: WorkerParameters,
     private val settings: ILocaleSettings,
-    private val interactor: EpisodePagedInteractor
+    private val interactor: EpisodeSyncInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -50,11 +50,11 @@ class EpisodeWorker(
         val param = EpisodeParam.Paged(locale)
         val dataState = interactor(param)
 
-        val networkState = dataState.loadState.first { state ->
+        val loadState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
         }
 
-        return if (networkState is LoadState.Success)
+        return if (loadState is LoadState.Success)
             Result.success()
         else Result.failure()
     }

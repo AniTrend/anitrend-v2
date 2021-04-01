@@ -17,7 +17,7 @@
 
 package co.anitrend.data.activity.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.activity.enums.ActivityType
 
 /** [Activity](https://anilist.github.io/ApiV2-GraphQL-Docs/activityunion.doc.html)

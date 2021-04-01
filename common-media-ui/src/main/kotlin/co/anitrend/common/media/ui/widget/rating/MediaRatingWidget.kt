@@ -26,14 +26,12 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaRatingWidgetBinding
 import co.anitrend.core.android.extensions.format
 import co.anitrend.core.android.views.FrameLayoutWithBinding
-import co.anitrend.data.arch.AniTrendExperimentalFeature
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.extension.isValid
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 
-@OptIn(AniTrendExperimentalFeature::class)
 internal class MediaRatingWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

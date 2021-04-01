@@ -23,9 +23,7 @@ import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.databinding.MediaProgressWidgetBinding
 import co.anitrend.core.android.views.FrameLayoutWithBinding
-import co.anitrend.data.arch.AniTrendExperimentalFeature
 
-@OptIn(AniTrendExperimentalFeature::class)
 internal class MediaProgressWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

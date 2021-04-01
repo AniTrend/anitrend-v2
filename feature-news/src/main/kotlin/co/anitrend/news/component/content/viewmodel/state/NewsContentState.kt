@@ -23,14 +23,14 @@ import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.news.NewsInteractor
+import co.anitrend.data.feed.news.NewsPagedInteractor
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 class NewsContentState(
-    private val useCase: NewsInteractor
+    private val useCase: NewsPagedInteractor
 ) : ISupportViewModelState<PagedList<News>> {
 
     var context by Delegates.notNull<CoroutineContext>()

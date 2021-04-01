@@ -17,18 +17,13 @@
 
 package co.anitrend.data.user.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.auth.mapper.AuthMapper
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import co.anitrend.data.user.*
 import co.anitrend.data.user.cache.UserCache
-import co.anitrend.data.user.converter.UserEntityConverter
-import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
-import co.anitrend.data.user.converter.UserMediaOptionModelConverter
-import co.anitrend.data.user.converter.UserModelConverter
-import co.anitrend.data.user.converter.UserViewEntityConverter
+import co.anitrend.data.user.converter.*
 import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.repository.UserRepository
 import co.anitrend.data.user.source.UserSourceImpl
@@ -39,8 +34,8 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<UserSource.Authenticated> {
         UserSourceImpl.Authenticated(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().userDao(),
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<AuthMapper>()
@@ -53,8 +48,8 @@ private val sourceModule = module {
     }
     factory<UserSource.Search> {
         UserSourceImpl.Search(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().userDao(),
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<UserMapper.Paged>()
@@ -65,8 +60,8 @@ private val sourceModule = module {
     }
     factory<UserSource.Profile> {
         UserSourceImpl.Profile(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().userDao(),
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<UserMapper.Profile>()
@@ -78,8 +73,8 @@ private val sourceModule = module {
     }
     factory<UserSource.Statistic> {
         UserSourceImpl.Statistic(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().userDao(),
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<UserMapper.Statistic>()
@@ -91,8 +86,8 @@ private val sourceModule = module {
     }
     factory<UserSource.ToggleFollow> {
         UserSourceImpl.ToggleFollow(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().userDao(),
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
             controller = graphQLController(
                 mapper = get<UserMapper.User>()
             ),
@@ -102,8 +97,8 @@ private val sourceModule = module {
     }
     factory<UserSource.Update> {
         UserSourceImpl.Update(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().userDao(),
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
             controller = graphQLController(
                 mapper = get<UserMapper.Profile>()
             ),
@@ -117,12 +112,12 @@ private val sourceModule = module {
 private val cacheModule = module {
     factory {
         UserCache.Profile(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
     factory {
         UserCache.Statistic(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
@@ -148,7 +143,7 @@ private val converterModule = module {
 private val mapperModule = module {
     factory {
         UserMapper.Paged(
-            localSource = db().userDao(),
+            localSource = store().userDao(),
             converter = get(),
         )
     }
@@ -156,19 +151,19 @@ private val mapperModule = module {
         UserMapper.Profile(
             generalOptionConverter = get(),
             mediaOptionConverter = get(),
-            localSource = db().userDao(),
+            localSource = store().userDao(),
             converter = get(),
         )
     }
     factory {
         UserMapper.User(
-            localSource = db().userDao(),
+            localSource = store().userDao(),
             converter = get(),
         )
     }
     factory {
         UserMapper.Embed(
-            localSource = db().userDao(),
+            localSource = store().userDao(),
             converter = get(),
         )
     }

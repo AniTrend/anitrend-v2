@@ -18,7 +18,7 @@
 package co.anitrend.data.user.entity.statistic
 
 import androidx.room.*
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.model.statistics.UserStatisticModel
 import kotlinx.serialization.SerialName

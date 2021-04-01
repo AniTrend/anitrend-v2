@@ -23,6 +23,7 @@ plugins {
 
 
 dependencies {
+    implementation(Libraries.threeTenBp)
 	implementation(Libraries.Square.Retrofit.xmlConverter)
     // Holding off on using xml util for now, seems not to work and probably needs more testing
     implementation(Libraries.Devrieze.XmlUtil.Android.serialization)

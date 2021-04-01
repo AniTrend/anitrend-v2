@@ -18,7 +18,7 @@
 package co.anitrend.data.link.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.data.arch.mapper.EmbedMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.link.datasource.LinkLocalSource
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.link.model.LinkModel

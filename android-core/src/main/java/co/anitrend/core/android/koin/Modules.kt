@@ -36,6 +36,8 @@ import co.anitrend.core.android.settings.helper.theme.ThemeHelper
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import co.anitrend.core.android.shortcut.ShortcutController
 import co.anitrend.core.android.shortcut.contract.IShortcutController
+import co.anitrend.core.android.storage.StorageController
+import co.anitrend.core.android.storage.contract.IStorageController
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
@@ -50,6 +52,10 @@ private val coreModule = module {
 
     single<ISupportDispatcher> {
         SupportDispatcher()
+    }
+
+    single<IStorageController> {
+        StorageController()
     }
 
     factory<AbstractSupportDateHelper> {

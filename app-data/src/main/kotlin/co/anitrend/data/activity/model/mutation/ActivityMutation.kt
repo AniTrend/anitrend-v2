@@ -17,7 +17,7 @@
 
 package co.anitrend.data.activity.model.mutation
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.activity.model.ActivityParam
 
 internal sealed class ActivityMutation : IGraphPayload {

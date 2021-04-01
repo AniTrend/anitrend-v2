@@ -17,8 +17,8 @@
 
 package co.anitrend.data.medialist.model.mutation
 
-import co.anitrend.data.arch.common.model.date.query.FuzzyDateQuery
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.date.query.FuzzyDateQuery
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.medialist.model.MediaListParam
 
 internal sealed class MediaListMutation : IGraphPayload {

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.user.model.UserParam
 

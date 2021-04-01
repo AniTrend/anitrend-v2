@@ -17,8 +17,8 @@
 
 package co.anitrend.data.character.model.remote.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
 import kotlinx.serialization.SerialName

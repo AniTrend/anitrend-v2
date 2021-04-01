@@ -18,7 +18,7 @@
 package co.anitrend.data.genre.entity
 
 import androidx.room.*
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(

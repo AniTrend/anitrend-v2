@@ -17,8 +17,8 @@
 
 package co.anitrend.data.medialist.model.contract
 
-import co.anitrend.data.arch.common.model.date.contract.IFuzzyDateModel
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.common.model.date.contract.IFuzzyDateModel
+import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)

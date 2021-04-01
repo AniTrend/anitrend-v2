@@ -22,11 +22,11 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.source.contract.CarouselSource
-import co.anitrend.data.jikan.model.query.JikanQuery
-import co.anitrend.data.jikan.source.contract.JikanSource
+import co.anitrend.data.jikan.media.model.query.JikanQuery
+import co.anitrend.data.jikan.media.source.contract.JikanSource
 import co.anitrend.data.media.MediaDetailController
 import co.anitrend.data.media.MediaNetworkController
 import co.anitrend.data.media.MediaPagedController
@@ -37,9 +37,9 @@ import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.contract.MediaSource
-import co.anitrend.data.moe.model.local.MoeSourceQuery
-import co.anitrend.data.moe.source.contract.MoeSource
-import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.relation.model.local.RelationQuery
+import co.anitrend.data.relation.source.contract.RelationSource
+import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.CoroutineDispatcher
@@ -57,7 +57,7 @@ internal class MediaSourceImpl {
         private val controller: MediaDetailController,
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
-        private val moeSource: MoeSource,
+        private val moeSource: RelationSource,
         private val jikanSource: JikanSource,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher
@@ -73,7 +73,7 @@ internal class MediaSourceImpl {
         }
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
-            moeSource(MoeSourceQuery(query.param.id))
+            moeSource(RelationQuery(query.param.id))
             val deferred = async {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getMediaDetail(queryBuilder)

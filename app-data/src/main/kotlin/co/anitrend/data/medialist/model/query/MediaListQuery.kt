@@ -17,7 +17,7 @@
 
 package co.anitrend.data.medialist.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.medialist.model.MediaListParam
 
 internal sealed class MediaListQuery : IGraphPayload {

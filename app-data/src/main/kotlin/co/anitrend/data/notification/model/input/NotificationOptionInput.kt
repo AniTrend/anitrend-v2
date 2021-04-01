@@ -17,7 +17,7 @@
 
 package co.anitrend.data.notification.model.input
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.user.model.UserParam
 
 internal data class NotificationOptionInput(

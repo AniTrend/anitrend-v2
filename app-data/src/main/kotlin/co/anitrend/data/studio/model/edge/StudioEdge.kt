@@ -17,7 +17,7 @@
 
 package co.anitrend.data.studio.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
 import co.anitrend.data.studio.model.StudioModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

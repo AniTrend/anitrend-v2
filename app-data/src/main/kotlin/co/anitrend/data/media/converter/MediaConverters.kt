@@ -19,10 +19,9 @@ package co.anitrend.data.media.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.arch.extension.asFuzzyDate
-import co.anitrend.data.arch.extension.toFuzzyDateInt
-import co.anitrend.data.arch.extension.toFuzzyDateModel
-import co.anitrend.data.media.converter.MediaEntityViewConverter.Companion.createMediaList
+import co.anitrend.data.common.extension.asFuzzyDate
+import co.anitrend.data.common.extension.toFuzzyDateInt
+import co.anitrend.data.common.extension.toFuzzyDateModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.media.model.MediaModel

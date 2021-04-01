@@ -19,7 +19,7 @@ package co.anitrend.data.activity.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 
 internal sealed class ActivityEntity : Identity {
 

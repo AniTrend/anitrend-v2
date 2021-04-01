@@ -17,9 +17,7 @@
 
 package co.anitrend.data.genre.entity.filter
 
-import co.anitrend.data.arch.database.filter.FilterQueryBuilder
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.genre.entity.GenreEntitySchema
 import co.anitrend.domain.genre.model.GenreParam
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn

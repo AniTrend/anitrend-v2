@@ -21,7 +21,7 @@ import android.content.Context
 import android.util.Log
 import co.anitrend.core.BuildConfig
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
-import co.anitrend.data.arch.storage.StorageController
+import co.anitrend.core.android.storage.StorageController
 import fr.bipi.tressence.file.FileLoggerTree
 import timber.log.Timber
 import java.io.IOException

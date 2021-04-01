@@ -18,7 +18,7 @@
 package co.anitrend.data.airing.model.container
 
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.model.paging.info.PageInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

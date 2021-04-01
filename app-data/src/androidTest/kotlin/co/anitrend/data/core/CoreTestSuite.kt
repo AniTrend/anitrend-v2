@@ -19,7 +19,7 @@ package co.anitrend.data.core
 
 import android.content.ContentResolver
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.decodeFromString

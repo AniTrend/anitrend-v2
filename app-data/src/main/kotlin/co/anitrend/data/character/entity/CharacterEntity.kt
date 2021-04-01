@@ -20,7 +20,7 @@ package co.anitrend.data.character.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 
 @Entity(
     tableName = "character",

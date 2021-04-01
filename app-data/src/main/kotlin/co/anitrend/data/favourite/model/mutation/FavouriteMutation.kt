@@ -17,7 +17,7 @@
 
 package co.anitrend.data.favourite.model.mutation
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.favourite.model.FavouriteParam
 
 internal sealed class FavouriteMutation {

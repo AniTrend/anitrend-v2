@@ -32,10 +32,10 @@ import co.anitrend.core.android.koin.androidCoreModules
 import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
-import co.anitrend.data.arch.di.dataModules
-import co.anitrend.data.arch.network.model.NetworkMessage
-import co.anitrend.data.arch.storage.contract.IStorageController
-import co.anitrend.data.arch.storage.enums.StorageType
+import co.anitrend.data.android.koin.dataModules
+import co.anitrend.data.android.network.model.NetworkMessage
+import co.anitrend.core.android.storage.contract.IStorageController
+import co.anitrend.core.android.storage.enums.StorageType
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder

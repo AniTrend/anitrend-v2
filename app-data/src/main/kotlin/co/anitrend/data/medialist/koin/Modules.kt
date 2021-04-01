@@ -17,10 +17,9 @@
 
 package co.anitrend.data.medialist.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
 import co.anitrend.data.medialist.converter.MediaListEntityConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter
@@ -34,8 +33,8 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<MediaListPagedSource> {
         MediaListPagedSourceImpl(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().mediaListDao(),
+            remoteSource = graphApi(),
+            localSource = store().mediaListDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<MediaListMapper.Paged>()
@@ -50,27 +49,27 @@ private val mapperModule = module {
     factory {
         MediaListMapper.Paged(
             mediaMapper = get(),
-            localSource = db().mediaListDao(),
+            localSource = store().mediaListDao(),
             converter = get()
         )
     }
     factory {
         MediaListMapper.Collection(
             userMapper = get(),
-            localSource = db().mediaListDao(),
+            localSource = store().mediaListDao(),
             converter = get()
         )
     }
     factory {
         MediaListMapper.Embed(
-            localSource = db().mediaListDao(),
+            localSource = store().mediaListDao(),
             converter = get()
         )
     }
     factory {
         MediaListMapper.EmbedWithMedia(
             mediaMapper = get(),
-            localSource = db().mediaListDao(),
+            localSource = store().mediaListDao(),
             converter = get()
         )
     }

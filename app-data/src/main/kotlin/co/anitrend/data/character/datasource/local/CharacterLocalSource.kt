@@ -21,7 +21,7 @@ import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.character.entity.CharacterEntity
 import kotlinx.coroutines.flow.Flow
 

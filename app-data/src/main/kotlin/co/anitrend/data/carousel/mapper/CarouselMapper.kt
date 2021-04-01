@@ -18,7 +18,7 @@
 package co.anitrend.data.carousel.mapper
 
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper

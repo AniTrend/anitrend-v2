@@ -39,7 +39,7 @@ import co.anitrend.common.media.ui.controller.model.MediaSummaryItem.Companion.c
 import co.anitrend.common.media.ui.controller.model.MediaCompactItem
 import co.anitrend.common.media.ui.controller.model.MediaCompactItem.Companion.createMediaItemViewHolder
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.core.android.settings.common.customize.common.PreferredViewMode
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 
 /**

@@ -17,8 +17,8 @@
 
 package co.anitrend.data.mediatrend.model.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.mediatrend.model.MediaTrendModel
 import co.anitrend.data.mediatrend.model.edge.MediaTrendEdge
 

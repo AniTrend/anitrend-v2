@@ -19,7 +19,7 @@ package co.anitrend.data.auth.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.auth.entity.AuthEntity
 
 @Dao

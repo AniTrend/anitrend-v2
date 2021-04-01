@@ -20,7 +20,7 @@ package co.anitrend.data.auth.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.account.action.AccountAction
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.AuthController
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
 import co.anitrend.data.auth.datasource.remote.AuthRemoteSource

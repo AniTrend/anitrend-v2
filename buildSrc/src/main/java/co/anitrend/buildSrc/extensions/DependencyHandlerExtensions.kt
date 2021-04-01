@@ -26,6 +26,8 @@ private enum class DependencyType(val configurationName: String) {
     DEBUG("debugOnly"),
     KAPT("kapt"),
     IMPLEMENTATION("implementation"),
+    DEBUG_IMPLEMENTATION("debugImplementation"),
+    RELEASE_IMPLEMENTATION("releaseImplementation"),
     RUNTIME("runtimeOnly"),
     TEST("testImplementation"),
     ANDROID_TEST("androidTestImplementation")
@@ -104,6 +106,32 @@ internal fun DependencyHandler.implementation(
     dependencyNotation: Any,
     configureClosure: Closure<*>? = null
 ) = addDependency(dependencyNotation, DependencyType.IMPLEMENTATION, configureClosure)
+
+/**
+ * Adds a dependency to the given configuration, and configures the dependency using the given closure.
+ *
+ * @param dependencyNotation The dependency notation, in one of the notations described above.
+ * @param configureClosure The closure to use to configure the dependency.
+ *
+ * @return The dependency.
+ */
+internal fun DependencyHandler.debugImplementation(
+    dependencyNotation: Any,
+    configureClosure: Closure<*>? = null
+) = addDependency(dependencyNotation, DependencyType.DEBUG_IMPLEMENTATION, configureClosure)
+
+/**
+ * Adds a dependency to the given configuration, and configures the dependency using the given closure.
+ *
+ * @param dependencyNotation The dependency notation, in one of the notations described above.
+ * @param configureClosure The closure to use to configure the dependency.
+ *
+ * @return The dependency.
+ */
+internal fun DependencyHandler.releaseImplementation(
+    dependencyNotation: Any,
+    configureClosure: Closure<*>? = null
+) = addDependency(dependencyNotation, DependencyType.RELEASE_IMPLEMENTATION, configureClosure)
 
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.

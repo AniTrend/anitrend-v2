@@ -17,8 +17,7 @@
 
 package co.anitrend.data.review.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.review.model.ReviewParam
 
 internal data class ReviewQuery(

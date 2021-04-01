@@ -18,7 +18,7 @@
 package co.anitrend.data.tag
 
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.TagContainerModel
 import co.anitrend.domain.tag.entity.Tag

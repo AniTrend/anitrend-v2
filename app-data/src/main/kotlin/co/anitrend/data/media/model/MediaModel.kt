@@ -18,13 +18,12 @@
 package co.anitrend.data.media.model
 
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.CountryCode
-import co.anitrend.data.arch.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.CountryCode
+import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.link.model.LinkModel
 import co.anitrend.data.media.model.contract.IMediaModel
 import co.anitrend.data.medialist.model.MediaListModel
 import co.anitrend.data.rank.model.RankModel
-import co.anitrend.data.shared.common.Identity
 import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.media.enums.*
 import kotlinx.serialization.SerialName

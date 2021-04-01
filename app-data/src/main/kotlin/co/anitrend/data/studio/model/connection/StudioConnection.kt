@@ -17,8 +17,8 @@
 
 package co.anitrend.data.studio.model.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.studio.model.StudioModel
 import co.anitrend.data.studio.model.edge.StudioEdge
 import kotlinx.serialization.SerialName

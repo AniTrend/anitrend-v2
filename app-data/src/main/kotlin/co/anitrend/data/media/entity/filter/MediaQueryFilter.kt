@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.entity.filter
 
-import co.anitrend.data.arch.database.filter.FilterQueryBuilder
+import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntitySchema
 import co.anitrend.data.link.entity.LinkEntitySchema

@@ -20,6 +20,7 @@ package co.anitrend.buildSrc.plugins.components
 import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.androidExtensionsExtension
 import co.anitrend.buildSrc.extensions.libraryExtension
@@ -87,6 +88,13 @@ internal fun Project.configureOptions() {
             }
         }
     }
+
+    if (matchesDataModule())
+        libraryExtension().run {
+            buildTypes {
+                applyConfigurationProperties(this@configureOptions)
+            }
+        }
 
     if (isCoreModule()) {
         libraryExtension().run {

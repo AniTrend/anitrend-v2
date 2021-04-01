@@ -19,7 +19,7 @@ package co.anitrend.data.tag.entity.connection
 
 import androidx.room.*
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 

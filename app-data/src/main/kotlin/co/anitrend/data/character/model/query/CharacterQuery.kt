@@ -17,8 +17,7 @@
 
 package co.anitrend.data.character.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.domain.character.enums.CharacterSort
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.character.model.CharacterParam
 
 internal data class CharacterQuery (

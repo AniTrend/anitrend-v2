@@ -17,12 +17,11 @@
 
 package co.anitrend.data.user.cache
 
-import co.anitrend.data.cache.datasource.CacheLocalSource
-import co.anitrend.data.cache.helper.instantInFuture
-import co.anitrend.data.cache.helper.instantInPast
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.model.CacheRequest
-import co.anitrend.data.cache.repository.CacheStorePolicy
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.helper.instantInFuture
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.cache.repository.CacheStorePolicy
 import co.anitrend.domain.user.model.UserParam
 import org.threeten.bp.Instant
 

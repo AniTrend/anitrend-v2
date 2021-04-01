@@ -21,9 +21,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
-import co.anitrend.data.arch.CountryCode
-import co.anitrend.data.arch.FuzzyDateInt
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.common.CountryCode
+import co.anitrend.data.common.FuzzyDateInt
+import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.media.enums.*
 import co.anitrend.support.query.builder.annotation.EntitySchema
 

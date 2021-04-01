@@ -35,9 +35,9 @@ tasks.withType(KotlinCompile::class.java) {
 dependencies {
     implementation(Libraries.JetBrains.KotlinX.Serialization.json)
 
-    implementation(Libraries.CashApp.Copper.copper)
+    implementation(Libraries.AniTrend.Retrofit.graphQL)
 
-    implementation(Libraries.retrofitSerializer)
+    implementation(Libraries.CashApp.Copper.copper)
 
     implementation(Libraries.AniTrend.QueryBuilder.core)
 }

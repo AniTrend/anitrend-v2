@@ -17,7 +17,7 @@
 
 package co.anitrend.data.review.model.mutation
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.review.model.ReviewParam
 
 internal sealed class ReviewMutation : IGraphPayload {

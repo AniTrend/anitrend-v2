@@ -22,9 +22,19 @@ import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.news.model.NewsParam
 import co.anitrend.domain.news.repository.INewsRepository
 
-abstract class NewsUseCase<State: UiState<*>>(
-    protected val repository: INewsRepository<State>
-) : IUseCase {
-    operator fun invoke(param: NewsParam) =
-        repository.getPagedNews(param)
+sealed class NewsUseCase : IUseCase {
+
+    abstract class GetPaged<State : UiState<*>>(
+        protected val repository: INewsRepository.Paged<State>
+    ) : NewsUseCase() {
+        operator fun invoke(param: NewsParam) =
+            repository.getPagedNews(param)
+    }
+
+    abstract class Sync<State : UiState<*>>(
+        protected val repository: INewsRepository.Sync<State>
+    ) : NewsUseCase() {
+        operator fun invoke(param: NewsParam) =
+            repository.sync(param)
+    }
 }

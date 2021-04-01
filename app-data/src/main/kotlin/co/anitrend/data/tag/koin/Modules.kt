@@ -17,10 +17,9 @@
 
 package co.anitrend.data.tag.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.cache.TagCache
@@ -38,8 +37,8 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<TagSource> {
         TagSourceImpl(
-            localSource = db().mediaTagDao(),
-            remoteSource = api(EndpointType.GRAPH_QL),
+            localSource = store().mediaTagDao(),
+            remoteSource = graphApi(),
             controller = graphQLController(
                 mapper = get<TagMapper>()
             ),
@@ -61,7 +60,7 @@ private val filterModule = module {
 private val cacheModule = module {
     factory {
         TagCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
@@ -78,7 +77,7 @@ private val converterModule = module {
 private val mapperModule = module {
     factory {
         TagMapper.Core(
-            localSource = db().mediaTagDao(),
+            localSource = store().mediaTagDao(),
             converter = get()
         )
     } bind TagMapper::class

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.account.action
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.account.model.AccountParam
 
 internal sealed class AccountAction : IGraphPayload {

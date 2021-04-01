@@ -22,14 +22,13 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.arch.database.settings.ISortOrderSettings
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.medialist.MediaListPagedController
 import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
 import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
-import co.anitrend.data.util.graphql.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.medialist.entity.MediaList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async

@@ -17,8 +17,7 @@
 
 package co.anitrend.data.studio.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
-import co.anitrend.domain.studio.enums.StudioSort
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.studio.model.StudioParam
 
 

@@ -19,7 +19,7 @@ package co.anitrend.data.user
 
 import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.model.container.UserModelContainer

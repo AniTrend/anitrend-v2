@@ -17,8 +17,8 @@
 
 package co.anitrend.data.user.mapper
 
-import co.anitrend.data.arch.mapper.DefaultMapper
-import co.anitrend.data.arch.mapper.EmbedMapper
+import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter

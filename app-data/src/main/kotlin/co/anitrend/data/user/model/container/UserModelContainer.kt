@@ -17,7 +17,7 @@
 
 package co.anitrend.data.user.model.container
 
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.user.model.UserModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.data.arch.AniTrendExperimentalFeature
 import timber.log.Timber
 
 /**
@@ -32,7 +31,6 @@ const val CHARACTER_SEPARATOR: Char = '•'
 
 fun Bundle?.orEmpty(): Bundle = this ?: Bundle.EMPTY
 
-@AniTrendExperimentalFeature
 fun FragmentActivity.recreateModules() {
     runCatching {
         val app = applicationContext as AniTrendApplication

@@ -23,10 +23,9 @@ import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.episode.EpisodePagedInteractor
+import co.anitrend.data.feed.episode.EpisodePagedInteractor
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
-import kotlinx.coroutines.flow.filter
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 

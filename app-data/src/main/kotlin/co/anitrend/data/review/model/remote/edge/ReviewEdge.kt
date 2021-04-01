@@ -17,7 +17,7 @@
 
 package co.anitrend.data.review.model.remote.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
 import co.anitrend.data.review.model.remote.ReviewModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

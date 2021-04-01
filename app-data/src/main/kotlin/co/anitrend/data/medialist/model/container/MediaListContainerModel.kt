@@ -17,7 +17,7 @@
 
 package co.anitrend.data.medialist.model.container
 
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.medialist.model.MediaListModel
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.medialist.enums.MediaListStatus

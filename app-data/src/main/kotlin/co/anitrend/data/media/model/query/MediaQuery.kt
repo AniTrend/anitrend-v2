@@ -17,7 +17,7 @@
 
 package co.anitrend.data.media.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.media.enums.MediaLicensor
 import co.anitrend.domain.media.model.MediaParam
 

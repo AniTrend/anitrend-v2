@@ -29,6 +29,7 @@ import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.common.theme.IThemeSettings
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
+import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
 
 /**
  * Theme utility for applying decorations at runtime

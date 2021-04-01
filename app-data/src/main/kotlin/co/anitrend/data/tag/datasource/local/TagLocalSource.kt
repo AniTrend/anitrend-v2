@@ -19,7 +19,7 @@ package co.anitrend.data.tag.datasource.local
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import kotlinx.coroutines.flow.Flow

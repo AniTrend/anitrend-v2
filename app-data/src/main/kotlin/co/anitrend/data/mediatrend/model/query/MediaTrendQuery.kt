@@ -17,7 +17,7 @@
 
 package co.anitrend.data.mediatrend.model.query
 
-import co.anitrend.data.arch.common.model.graph.IGraphPayload
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.mediatrend.model.MediaTrendParam
 
 internal data class MediaTrendQuery(

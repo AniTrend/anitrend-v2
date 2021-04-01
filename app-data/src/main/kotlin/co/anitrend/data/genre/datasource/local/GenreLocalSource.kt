@@ -19,7 +19,7 @@ package co.anitrend.data.genre.datasource.local
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.ILocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import kotlinx.coroutines.flow.Flow
