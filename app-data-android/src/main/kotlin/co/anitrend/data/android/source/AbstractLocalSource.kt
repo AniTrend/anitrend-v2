@@ -17,14 +17,11 @@
 
 package co.anitrend.data.android.source
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.*
 
-interface ILocalSource<T> {
-    suspend fun count(): Int
-    suspend fun clear()
+abstract class AbstractLocalSource<T> {
+    abstract suspend fun count(): Int
+    abstract suspend fun clear()
 
     /**
      * Inserts a new item into the database ignoring items with the same primary key,
@@ -33,7 +30,7 @@ interface ILocalSource<T> {
      * @param attribute item/s to insert
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(attribute: T): Long
+    abstract suspend fun insert(attribute: T): Long
 
     /**
      * Inserts new items into the database ignoring items with the same primary key,
@@ -42,23 +39,23 @@ interface ILocalSource<T> {
      * @param attribute item/s to insert
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(attribute: List<T>): List<Long>
+    abstract suspend fun insert(attribute: List<T>): List<Long>
 
     /**
      * Updates an item in the underlying database
      *
      * @param attribute item/s to update
      */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(attribute: T)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun update(attribute: T)
 
     /**
      * Updates a list of items in the underlying database
      *
      * @param attribute item/s to update
      */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(attribute: List<T>)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    abstract suspend fun update(attribute: List<T>)
 
     /**
      * Deletes an item from the underlying database
@@ -66,7 +63,7 @@ interface ILocalSource<T> {
      * @param attribute item/s to delete
      */
     @Delete
-    suspend fun delete(attribute: T)
+    abstract suspend fun delete(attribute: T)
 
     /**
      * Deletes a list of items from the underlying database
@@ -74,21 +71,29 @@ interface ILocalSource<T> {
      * @param attribute item/s to delete
      */
     @Delete
-    suspend fun delete(attribute: List<T>)
+    abstract suspend fun delete(attribute: List<T>)
 
     /**
      * Inserts or updates matching attributes on conflict
      *
      * @param attribute item/s to insert
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(attribute: T): Long
+    @Transaction
+    open suspend fun upsert(attribute: T) {
+        val id = insert(attribute);
+        if (id == -1L)
+            update(attribute)
+    }
 
     /**
      * Inserts or updates matching attributes on conflict
      *
      * @param attribute item/s to insert
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(attribute: List<T>): List<Long>
+    @Transaction
+    open suspend fun upsert(attribute: List<T>) {
+        insert(attribute).withIndex()
+            .filter { it.value == -1L }
+            .forEach { update(attribute[it.index]) }
+    }
 }
