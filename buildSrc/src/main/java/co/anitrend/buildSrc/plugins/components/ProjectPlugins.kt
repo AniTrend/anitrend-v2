@@ -48,3 +48,13 @@ internal fun Project.configurePlugins() {
     addKotlinAndroidExtensions(project, plugins)
     addAnnotationProcessor(project, plugins)
 }
+
+internal fun Project.configureAdditionalPlugins() {
+    if (isAppModule()) {
+        // TODO: once build flavours are complete, we'll need to exclude certain plugins
+        if (file("google-services.json").exists()) {
+            plugins.apply("com.google.gms.google-services")
+            plugins.apply("com.google.firebase.crashlytics")
+        }
+    }
+}

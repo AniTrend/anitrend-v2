@@ -37,8 +37,3 @@ dependencies {
     debugImplementation(Libraries.debugDb)
 }
 
-if (file("google-services.json").exists()) {
-    plugins.apply("com.google.gms.google-services")
-    plugins.apply("com.google.firebase.crashlytics")
-}
-

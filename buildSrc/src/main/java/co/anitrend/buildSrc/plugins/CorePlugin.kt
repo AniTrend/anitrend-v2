@@ -60,5 +60,6 @@ open class CorePlugin : Plugin<Project> {
         target.configureAndroid()
         target.configureOptions()
         target.configureDependencies()
+        target.configureAdditionalPlugins()
     }
 }
