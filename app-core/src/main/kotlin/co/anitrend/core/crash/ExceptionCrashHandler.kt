@@ -18,6 +18,7 @@
 package co.anitrend.core.crash
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import co.anitrend.core.BuildConfig
 import co.anitrend.core.crash.contract.IExceptionCrashHandler
@@ -25,15 +26,15 @@ import timber.log.Timber
 import kotlin.system.exitProcess
 
 internal class ExceptionCrashHandler(
+    private val context: Context,
     private val handler: Thread.UncaughtExceptionHandler?
 ) : IExceptionCrashHandler {
 
-    private fun showCrashActivity(thread: Thread, throwable: Throwable) {
-        Timber.e(throwable, thread.name)
+    private fun handleUncaughtCrashException(thread: Thread, throwable: Throwable) {
+        Timber.e(throwable)
         if (BuildConfig.DEBUG) {
-            // TODO: might add an activity to show the crash
+            // TODO: might add an activity to show the crash or dump logs into a file
         }
-        handler?.uncaughtException(thread, throwable)
     }
 
     /**
@@ -41,15 +42,18 @@ internal class ExceptionCrashHandler(
      * @param throwable Exception that was unhandled
      */
     @SuppressLint("LogNotTimber")
-    override fun onException(thread: Thread, throwable: Throwable) {
+    override fun onException(thread: Thread?, throwable: Throwable?) {
+        if (thread == null) return
+        if (throwable == null) return
         try {
-            showCrashActivity(thread, throwable)
+            handleUncaughtCrashException(thread, throwable)
         } catch (e: Exception) {
             // Timber may not have been initialized, so will log into the android logger
             Log.w("ExceptionCrashHandler", "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
             Log.e("ExceptionCrashHandler", "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
         } finally {
             // terminate process after intercepting crash
+            handler?.uncaughtException(thread, throwable)
             exitProcess(0)
         }
     }
