@@ -102,6 +102,6 @@ class AuthenticatedAccountItem(
             viewGroup: ViewGroup
         ) = AccountAuthenticatedItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }
