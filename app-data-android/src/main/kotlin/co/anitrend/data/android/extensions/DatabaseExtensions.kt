@@ -19,19 +19,21 @@ package co.anitrend.data.android.extensions
 
 import androidx.room.RoomDatabase
 import co.anitrend.data.core.extensions.koinOf
+import timber.log.Timber
 import kotlin.jvm.Throws
 
 @Throws(Exception::class)
 @Suppress("DEPRECATION")
 inline fun runInTransaction(action: () -> Unit) {
-    val store = koinOf<RoomDatabase>()
-    store.beginTransaction()
+    /*val store = koinOf<RoomDatabase>()
     try {
+        store.beginTransaction()
         action()
         store.setTransactionSuccessful()
     } catch (exception: Exception) {
-        throw exception
+        Timber.e(exception)
     } finally {
         store.endTransaction()
-    }
+    }*/
+    action()
 }
