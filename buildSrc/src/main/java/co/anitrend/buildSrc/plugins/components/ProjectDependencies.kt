@@ -36,6 +36,7 @@ private fun Project.applyFeatureModuleGroupDependencies() {
 
     dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
     dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
     dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
     dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
     dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
@@ -86,6 +87,7 @@ private fun Project.applyAppModuleDependencies() {
 
     dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
     dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
     dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
     dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
     dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
@@ -109,6 +111,7 @@ private fun Project.applyAppModuleGroupDependencies() {
 
             dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
             dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+            dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
             dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
             dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
             dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
@@ -143,8 +146,6 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(Libraries.Square.OkHttp.logging)
             dependencies.implementation(Libraries.Square.Retrofit.retrofit)
             dependencies.implementation(Libraries.Square.Retrofit.gsonConverter)
-            dependencies.implementation(Libraries.Square.Retrofit.xmlConverter)
-            dependencies.implementation(Libraries.Devrieze.XmlUtil.Android.serialization)
 
             dependencies.implementation(Libraries.AniTrend.Retrofit.graphQL)
             dependencies.implementation(Libraries.retrofitSerializer)
@@ -235,6 +236,7 @@ private fun Project.applyAndroidModuleGroupDependencies() {
 
     dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
     dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
     dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
     dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
     dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
@@ -274,6 +276,7 @@ private fun Project.applyCommonModuleGroupDependencies() {
 
     dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
     dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
     dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
     dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
     dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
@@ -309,6 +312,7 @@ private fun Project.applyTaskModuleGroupDependencies() {
 
     dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
     dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
+    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
     dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
     dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
     dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
@@ -321,6 +325,8 @@ private fun Project.applyTaskModuleGroupDependencies() {
     dependencies.implementation(project(Modules.App.Data.path()))
     dependencies.implementation(project(Modules.App.Core.path()))
     dependencies.implementation(project(Modules.Data.Settings.path()))
+
+    //dependencies.androidTest(Libraries.AndroidX.Work.test)
 }
 
 private fun Project.applyComposeDependencies() {

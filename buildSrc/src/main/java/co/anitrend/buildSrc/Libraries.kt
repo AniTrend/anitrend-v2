@@ -315,6 +315,7 @@ object Libraries {
         object Work {
             private const val version = "2.7.0-alpha02"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
+            const val multiProcess = "androidx.work:work-multiprocess:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
         }
@@ -323,7 +324,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-beta40"
+            private const val version = "1.3.0-beta41"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -334,7 +335,7 @@ object Libraries {
         }
 
         object Emojify {
-            private const val version = "develop-SNAPSHOT"//"1.6.0-alpha01"
+            private const val version = "1.6.0-beta01"
             const val emojify = "com.github.anitrend:android-emojify:$version"
         }
 
@@ -605,7 +606,15 @@ object Libraries {
             const val plugin = "org.koin:koin-gradle-plugin:$version"
         }
     }
-
+    
+    object Korlibs {
+		
+		object Klock {
+			private const val version = "2.0.7"
+			const val klock = "com.soywiz.korlibs.klock:klock-jvm:$version"
+		}
+	}
+	
     object Markwon {
         private const val version = "4.6.2"
         const val core = "io.noties.markwon:core:$version"
