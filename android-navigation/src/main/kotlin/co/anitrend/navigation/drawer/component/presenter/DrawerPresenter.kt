@@ -37,6 +37,7 @@ import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.navigation.ProfileRouter
+import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.*
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
@@ -158,9 +159,9 @@ internal class DrawerPresenter(
                 else { /* TODO: Switch account to the selected one */ }
             }
             R.id.accountSignOut -> {
-                viewModel.accountState.signOut(
-                    clickable.data
-                )
+                viewModel.accountState.signOut(clickable.data)
+                UserTaskRouter.forAccountSyncScheduler().cancel(context)
+                UserTaskRouter.forStatisticSyncScheduler().cancel(context)
             }
         }
     }
