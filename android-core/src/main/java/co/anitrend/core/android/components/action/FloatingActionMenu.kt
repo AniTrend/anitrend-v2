@@ -29,30 +29,21 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.core.android.components.action.menu.IFloatingActionMenu
 import co.anitrend.core.android.databinding.ActionFrameLayoutBinding
+import co.anitrend.core.android.views.FrameLayoutWithBinding
 
 class FloatingActionMenu @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), CustomView, IFloatingActionMenu {
-
-    private var binding: ActionFrameLayoutBinding? = null
+) : FrameLayoutWithBinding<ActionFrameLayoutBinding>(context, attrs, defStyleAttr),
+    CustomView, IFloatingActionMenu {
 
     init {
         onInit(context, attrs, defStyleAttr)
     }
 
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        binding = ActionFrameLayoutBinding.inflate(
-            getLayoutInflater(),
-            this,
-            true
-        )
-        binding
-    }
-
     override fun onViewRecycled() {
         dismiss()
         binding?.actionMenuView?.setOnMenuItemClickListener(null)
-        binding = null
+        super<FrameLayoutWithBinding>.onViewRecycled()
     }
 
     override fun onDetachedFromWindow() {
@@ -85,4 +76,11 @@ class FloatingActionMenu @JvmOverloads constructor(
     override fun dismiss() {
         gone()
     }
+
+    override fun createBinding() =
+        ActionFrameLayoutBinding.inflate(
+            getLayoutInflater(),
+            this,
+            true
+        )
 }
