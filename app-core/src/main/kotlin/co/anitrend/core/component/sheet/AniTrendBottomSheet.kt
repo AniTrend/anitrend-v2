@@ -124,7 +124,6 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
             val bottomSheet = dialog.findViewById<FrameLayout>(
                 com.google.android.material.R.id.design_bottom_sheet
             )
-            bottomSheet.setBackgroundColor(dialog.context.getColorFromAttr(R.attr.colorPrimary))
             behavior = BottomSheetBehavior.from(bottomSheet).apply {
                 halfExpandedRatio = 0.45f
                 addBottomSheetCallback(bottomSheetCallback)
