@@ -383,7 +383,7 @@ object Libraries {
         }
 
         object Retrofit {
-            private const val version = "0.11.0-beta01"
+            private const val version = "0.11.0-beta02"
             const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
         }
 
