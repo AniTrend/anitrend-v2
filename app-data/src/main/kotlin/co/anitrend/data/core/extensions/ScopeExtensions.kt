@@ -25,7 +25,7 @@ import org.koin.core.scope.Scope
  * Facade for supplying retrofit interface types
  */
 internal inline fun <reified T> Scope.graphApi(): T {
-    val provider = GraphApiFactory()
+    val provider = get<GraphApiFactory>()
     return api(provider)
 }
 
