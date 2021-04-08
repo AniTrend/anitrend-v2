@@ -34,6 +34,7 @@ import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.data.auth.helper.AuthenticationType
 import co.anitrend.data.auth.helper.authenticationUri
+import co.anitrend.navigation.UserTaskRouter
 import timber.log.Timber
 
 class AuthPresenter(
@@ -45,6 +46,8 @@ class AuthPresenter(
 ) : CorePresenter(context, settings) {
 
     fun useAnonymousAccount(activity: FragmentActivity) {
+        UserTaskRouter.forAccountSyncScheduler().cancel(context)
+        UserTaskRouter.forStatisticSyncScheduler().cancel(context)
         settings.invalidateAuthenticationSettings()
         activity.finish()
     }
@@ -86,6 +89,8 @@ class AuthPresenter(
                     )
                 )
             is Authentication.Success -> {
+                UserTaskRouter.forAccountSyncScheduler().schedule(context)
+                UserTaskRouter.forStatisticSyncScheduler().schedule(context)
                 shortcutManager.createShortcuts(
                     Shortcut.AnimeList(),
                     Shortcut.MangaList(),
