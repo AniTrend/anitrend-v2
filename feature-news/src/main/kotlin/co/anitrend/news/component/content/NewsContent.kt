@@ -17,10 +17,7 @@
 
 package co.anitrend.news.component.content
 
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportAdapter
-import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.core.component.content.list.AniTrendListContent
@@ -53,24 +50,6 @@ class NewsContent(
         viewModelState().invoke(
             NewsParam(locale)
         )
-    }
-
-    /**
-     * Sets the adapter for the recycler view
-     */
-    override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
-        if (recyclerView.adapter == null) {
-            val header = SupportLoadStateAdapter(resources, stateConfig).apply {
-                registerFlowListener()
-            }
-
-            if (supportViewAdapter is RecyclerView.Adapter<*>) {
-                (supportViewAdapter as RecyclerView.Adapter<*>)
-                    .stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-            }
-
-            recyclerView.adapter = supportViewAdapter.withLoadStateHeader(header = header)
-        }
     }
 
     /**
