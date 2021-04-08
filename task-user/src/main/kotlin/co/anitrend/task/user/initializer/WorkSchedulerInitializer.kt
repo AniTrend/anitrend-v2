@@ -20,7 +20,9 @@ package co.anitrend.task.user.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import androidx.work.*
+import co.anitrend.core.android.koinOf
 import co.anitrend.core.initializer.contract.AbstractTaskInitializer
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.UserTaskRouter
 import java.util.concurrent.TimeUnit
 
@@ -32,8 +34,11 @@ class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        UserTaskRouter.forAccountSyncScheduler().schedule(context)
-        UserTaskRouter.forStatisticSyncScheduler().schedule(context)
+        val settings = koinOf<IAuthenticationSettings>()
+        if (settings.isAuthenticated.value) {
+            UserTaskRouter.forAccountSyncScheduler().schedule(context)
+            UserTaskRouter.forStatisticSyncScheduler().schedule(context)
+        }
     }
 
     /**
