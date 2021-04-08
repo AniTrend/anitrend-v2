@@ -26,15 +26,12 @@ import timber.log.Timber
 import kotlin.system.exitProcess
 
 internal class ExceptionCrashHandler(
-    private val context: Context,
     private val handler: Thread.UncaughtExceptionHandler?
 ) : IExceptionCrashHandler {
 
     private fun handleUncaughtCrashException(thread: Thread, throwable: Throwable) {
+        Timber.i("Caught exception from thread: ${thread.name}")
         Timber.e(throwable)
-        if (BuildConfig.DEBUG) {
-            // TODO: might add an activity to show the crash or dump logs into a file
-        }
     }
 
     /**

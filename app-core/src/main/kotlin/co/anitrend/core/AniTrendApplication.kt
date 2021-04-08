@@ -60,7 +60,7 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
 
     private fun createUncaughtExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(
-            UncaughtExceptionHandler(this)
+            UncaughtExceptionHandler()
         )
     }
 
