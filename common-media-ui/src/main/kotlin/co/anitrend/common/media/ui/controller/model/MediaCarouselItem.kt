@@ -230,6 +230,6 @@ internal class MediaCarouselItem(
             viewGroup: ViewGroup
         ) = MediaCarouselItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

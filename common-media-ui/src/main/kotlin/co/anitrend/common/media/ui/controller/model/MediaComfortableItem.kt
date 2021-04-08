@@ -117,6 +117,6 @@ internal data class MediaComfortableItem(
             viewGroup: ViewGroup
         ) = MediaComfortableItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

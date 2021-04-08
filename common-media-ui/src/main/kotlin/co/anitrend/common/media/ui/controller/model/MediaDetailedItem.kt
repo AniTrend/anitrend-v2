@@ -129,6 +129,6 @@ internal data class MediaDetailedItem(
             viewGroup: ViewGroup
         ) = MediaDetailedItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

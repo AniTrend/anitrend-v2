@@ -109,6 +109,6 @@ internal class EpisodeItem(
             viewGroup: ViewGroup
         ) = EpisodeItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }
