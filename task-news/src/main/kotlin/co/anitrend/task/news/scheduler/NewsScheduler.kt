@@ -19,6 +19,7 @@ package co.anitrend.task.news.scheduler
 
 import android.content.Context
 import androidx.work.*
+import androidx.work.multiprocess.RemoteWorkManager
 import co.anitrend.navigation.work.WorkSchedulerController
 import java.util.concurrent.TimeUnit
 
@@ -41,7 +42,7 @@ class NewsScheduler(
             constrains
         ).build()
 
-        WorkManager.getInstance(context)
+        RemoteWorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
                 worker.simpleName,
                 ExistingPeriodicWorkPolicy.KEEP,
@@ -53,7 +54,7 @@ class NewsScheduler(
      * Cancel a unit of work
      */
     override fun cancel(context: Context) {
-        WorkManager.getInstance(context)
+        RemoteWorkManager.getInstance(context)
             .cancelUniqueWork(worker.simpleName)
     }
 }

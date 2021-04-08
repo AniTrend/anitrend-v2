@@ -19,6 +19,7 @@ package co.anitrend.task.user.scheduler
 
 import android.content.Context
 import androidx.work.*
+import androidx.work.multiprocess.RemoteWorkManager
 import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.navigation.work.WorkSchedulerController
 import co.anitrend.task.user.initializer.WorkSchedulerInitializer
@@ -43,7 +44,7 @@ class UserAccountScheduler(
             constrains
         ).build()
 
-        WorkManager.getInstance(context)
+        RemoteWorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
                 worker.simpleName,
                 ExistingPeriodicWorkPolicy.KEEP,
@@ -55,7 +56,7 @@ class UserAccountScheduler(
      * Cancel a unit of work
      */
     override fun cancel(context: Context) {
-        WorkManager.getInstance(context)
+        RemoteWorkManager.getInstance(context)
             .cancelUniqueWork(worker.simpleName)
     }
 }
