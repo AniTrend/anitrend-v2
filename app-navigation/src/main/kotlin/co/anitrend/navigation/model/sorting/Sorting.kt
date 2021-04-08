@@ -21,7 +21,7 @@ import android.os.Parcelable
 import co.anitrend.domain.common.enums.contract.ISortable
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import kotlinx.android.parcel.RawValue
 
 @Parcelize

@@ -22,7 +22,6 @@ import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isCoreModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
-import co.anitrend.buildSrc.extensions.androidExtensionsExtension
 import co.anitrend.buildSrc.extensions.libraryExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
@@ -108,9 +107,4 @@ internal fun Project.configureOptions() {
             }
         }
     }
-
-    if (!matchesFeatureModule()) return
-
-    println("Applying extension options for feature module -> ${project.path}")
-    androidExtensionsExtension().isExperimental = true
 }

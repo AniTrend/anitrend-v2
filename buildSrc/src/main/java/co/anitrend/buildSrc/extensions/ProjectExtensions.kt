@@ -110,9 +110,6 @@ internal fun Project.kotlinAndroidProjectExtension() =
 internal fun Project.kotlinTestsRegistry() =
     extensions.getByType<KotlinTestsRegistry>()
 
-internal fun Project.androidExtensionsExtension() =
-    extensions.getByType<AndroidExtensionsExtension>()
-
 internal fun Project.publishingExtension() =
     extensions.getByType<PublishingExtension>()
 

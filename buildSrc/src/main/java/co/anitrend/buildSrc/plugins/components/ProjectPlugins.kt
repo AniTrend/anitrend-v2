@@ -39,7 +39,7 @@ private fun addAnnotationProcessor(project: Project, pluginContainer: PluginCont
 
 private fun addKotlinAndroidExtensions(project: Project, pluginContainer: PluginContainer) {
     if (project.hasKotlinAndroidExtensionSupport())
-        pluginContainer.apply("kotlin-android-extensions")
+        pluginContainer.apply("kotlin-parcelize")
 }
 
 internal fun Project.configurePlugins() {
