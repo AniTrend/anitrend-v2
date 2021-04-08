@@ -18,8 +18,8 @@
 package co.anitrend.data.activity.datasource.local
 
 import co.anitrend.data.activity.entity.ActivityEntity
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 
-internal abstract class ActivityLocalSource : ILocalSource<ActivityEntity> {
+internal abstract class ActivityLocalSource : AbstractLocalSource<ActivityEntity>() {
     
 }

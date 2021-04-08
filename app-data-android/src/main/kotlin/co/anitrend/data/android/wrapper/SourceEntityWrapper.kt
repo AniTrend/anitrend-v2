@@ -17,11 +17,14 @@
 
 package co.anitrend.data.android.wrapper
 
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.core.common.Identity
 
-internal sealed class SourceEntityWrapper<T : Identity> {
-    protected abstract val source: ILocalSource<T>
+/**
+ * Wrapper for [AbstractLocalSource] and related entities
+ */
+sealed class SourceEntityWrapper<T : Identity> {
+    protected abstract val source: AbstractLocalSource<T>
 
     abstract suspend fun save()
     abstract suspend fun upsert()
@@ -29,7 +32,7 @@ internal sealed class SourceEntityWrapper<T : Identity> {
     abstract suspend fun delete()
 
     data class Single<T : Identity>(
-        override val source: ILocalSource<T>,
+        override val source: AbstractLocalSource<T>,
         private val entity: T
     ) : SourceEntityWrapper<T>() {
         override suspend fun save() { source.insert(entity) }
@@ -39,7 +42,7 @@ internal sealed class SourceEntityWrapper<T : Identity> {
     }
 
     data class Many<T : Identity>(
-        override val source: ILocalSource<T>,
+        override val source: AbstractLocalSource<T>,
         private val entities: List<T>
     ) : SourceEntityWrapper<T>() {
         override suspend fun save() { source.insert(entities) }

@@ -18,12 +18,12 @@
 package co.anitrend.data.android.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 
 abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
 
     protected var entities: List<D>? = null
-    protected abstract val localSource: ILocalSource<D>
+    protected abstract val localSource: AbstractLocalSource<D>
     protected abstract val converter: SupportConverter<S, D>
 
     open suspend fun onEmbedded(source: List<S>) {

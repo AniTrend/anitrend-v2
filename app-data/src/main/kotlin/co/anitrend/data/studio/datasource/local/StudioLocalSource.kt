@@ -21,12 +21,12 @@ import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.studio.entity.StudioEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class StudioLocalSource : ILocalSource<StudioEntity> {
+internal abstract class StudioLocalSource : AbstractLocalSource<StudioEntity>() {
 
     @Query("""
         select count(id) from studio
@@ -48,20 +48,17 @@ internal abstract class StudioLocalSource : ILocalSource<StudioEntity> {
         select * from studio
         where id = :id
     """)
-    @Transaction
     abstract fun studioByIdFlow(id: Long): Flow<StudioEntity?>
 
     @Query("""
         select * from studio
     """)
-    @Transaction
     abstract fun allStudioFactory(): DataSource.Factory<Int, StudioEntity>
 
     @Query("""
         select * from studio
         where name match :term
     """)
-    @Transaction
     abstract fun searchStudioFactory(
         term: String
     ): DataSource.Factory<Int, StudioEntity>

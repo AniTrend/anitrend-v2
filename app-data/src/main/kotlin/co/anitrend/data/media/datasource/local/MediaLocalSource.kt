@@ -24,14 +24,14 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
+internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
 
     /**
      * Count the number of entities

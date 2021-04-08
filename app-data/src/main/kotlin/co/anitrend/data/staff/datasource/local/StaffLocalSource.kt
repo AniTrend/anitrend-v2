@@ -21,12 +21,12 @@ import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.staff.entity.StaffEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class StaffLocalSource : ILocalSource<StaffEntity> {
+internal abstract class StaffLocalSource : AbstractLocalSource<StaffEntity>() {
 
     @Query("""
         select count(id) from staff
@@ -48,20 +48,17 @@ internal abstract class StaffLocalSource : ILocalSource<StaffEntity> {
         select * from staff
         where id = :id
     """)
-    @Transaction
     abstract suspend fun staffById(id: Long): StaffEntity
 
     @Query("""
         select * from staff
         where id = :id
     """)
-    @Transaction
     abstract fun staffByIdFlow(id: Long): Flow<StaffEntity?>
 
     @Query("""
         select * from staff
     """)
-    @Transaction
     abstract fun allStaffFactory(): DataSource.Factory<Int, StaffEntity>
 
     @Query("""
@@ -72,7 +69,6 @@ internal abstract class StaffLocalSource : ILocalSource<StaffEntity> {
         or name_original match :term
         or name_alternative match :term
     """)
-    @Transaction
     abstract fun searchStaffFactory(
         term: String
     ): DataSource.Factory<Int, StaffEntity>

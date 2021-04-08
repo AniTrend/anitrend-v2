@@ -19,11 +19,11 @@ package co.anitrend.data.auth.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.auth.entity.AuthEntity
 
 @Dao
-internal abstract class AuthLocalSource : ILocalSource<AuthEntity?> {
+internal abstract class AuthLocalSource : AbstractLocalSource<AuthEntity>() {
 
     @Query("""
         select count(id) from auth

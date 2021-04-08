@@ -18,11 +18,11 @@
 package co.anitrend.data.link.datasource
 
 import androidx.room.*
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.link.entity.LinkEntity
 
 @Dao
-internal abstract class LinkLocalSource : ILocalSource<LinkEntity> {
+internal abstract class LinkLocalSource : AbstractLocalSource<LinkEntity>() {
 
     @Query("""
         select count(id)

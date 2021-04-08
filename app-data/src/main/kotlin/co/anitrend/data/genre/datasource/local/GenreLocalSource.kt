@@ -19,13 +19,13 @@ package co.anitrend.data.genre.datasource.local
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class GenreLocalSource: ILocalSource<GenreEntity> {
+internal abstract class GenreLocalSource : AbstractLocalSource<GenreEntity>() {
 
     @Query("""
         select count(id) from genre
@@ -48,7 +48,4 @@ internal abstract class GenreLocalSource: ILocalSource<GenreEntity> {
     @Transaction
     @RawQuery(observedEntities = [GenreEntity::class])
     abstract fun rawFlowList(query: SupportSQLiteQuery): Flow<List<GenreEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsertConnections(attribute: List<GenreConnectionEntity>)
 }

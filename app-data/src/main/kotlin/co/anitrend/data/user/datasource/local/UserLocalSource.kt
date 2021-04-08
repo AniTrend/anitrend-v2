@@ -18,17 +18,15 @@
 package co.anitrend.data.user.datasource.local
 
 import androidx.paging.DataSource
-import androidx.room.*
-import co.anitrend.data.android.source.ILocalSource
+import androidx.room.Dao
+import androidx.room.Query
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
-import co.anitrend.data.user.entity.option.UserMediaOptionEntity
-import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.entity.view.UserEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class UserLocalSource : ILocalSource<UserEntity> {
+internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
 
     /**
      * Count the number of entities
@@ -74,7 +72,6 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         select * from user
         where id = :id
     """)
-    @Transaction
     abstract suspend fun userByIdWithOptions(
         id: Long
     ): UserEntityView.WithOptions?
@@ -89,7 +86,6 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         select * from user
         where id = :id
     """)
-    @Transaction
     abstract fun userByIdWithStatisticFlow(
         id: Long
     ): Flow<UserEntityView.WithStatistic?>
@@ -123,35 +119,4 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
     abstract fun entrySearchFactory(
         searchTerm: String
     ): DataSource.Factory<Int, UserEntity>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsert(attribute: UserGeneralOptionEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsert(attribute: UserMediaOptionEntity)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsert(attribute: UserWithStatisticEntity)
-
-    @Transaction
-    open suspend fun upsertWithOptions(
-        userEntity: UserEntity,
-        userGeneralOptionEntity: UserGeneralOptionEntity?,
-        userMediaOptionEntity: UserMediaOptionEntity?
-    ) {
-        upsert(userEntity)
-        if (userGeneralOptionEntity != null)
-            upsert(userGeneralOptionEntity)
-        if (userMediaOptionEntity != null)
-            upsert(userMediaOptionEntity)
-    }
-
-    @Transaction
-    open suspend fun upsertWithStatistic(
-        userEntity: UserEntity,
-        userWithStatisticEntity: UserWithStatisticEntity
-    ) {
-        upsert(userEntity)
-        upsert(userWithStatisticEntity)
-    }
 }

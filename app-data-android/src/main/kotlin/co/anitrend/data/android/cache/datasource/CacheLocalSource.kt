@@ -20,13 +20,13 @@ package co.anitrend.data.android.cache.datasource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.cache.model.CacheRequest
 import org.threeten.bp.Instant
 
 @Dao
-abstract class CacheLocalSource : ILocalSource<CacheEntity> {
+abstract class CacheLocalSource : AbstractLocalSource<CacheEntity>() {
 
     @Query("""
         delete from cache_log

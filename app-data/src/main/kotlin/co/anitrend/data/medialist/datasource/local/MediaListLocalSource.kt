@@ -21,13 +21,13 @@ import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
+internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEntity>() {
 
     /**
      * Count the number of entities
@@ -51,20 +51,20 @@ internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
         """)
     abstract suspend fun clearByUserId(userId: Long)
 
-    @Transaction
     @Query("""
         select ml.* from media_list ml
         join user u on u.id = ml.user_id
         where ml.id = :id and u.id = :userId
     """)
+    @Transaction
     abstract fun byIdFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
 
-    @Transaction
     @Query("""
         select ml.* from media_list ml
         join user u on u.id = ml.user_id
         where ml.media_id = :mediaId and u.id = :userId
     """)
+    @Transaction
     abstract fun byMediaIdFlow(mediaId: Long, userId: Long): Flow<MediaListEntityView.WithMedia?>
 
 

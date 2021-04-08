@@ -19,10 +19,9 @@ package co.anitrend.data.carousel.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
 import co.anitrend.data.common.CountryCode
 import co.anitrend.data.common.FuzzyDateLike
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.domain.media.enums.MediaSeason
@@ -30,7 +29,7 @@ import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
+internal abstract class CarouselLocalStore : AbstractLocalSource<MediaEntity>() {
 
     @Query("""
         select count(id) from media
@@ -50,7 +49,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by a.time_until_airing asc
         limit :pageSize
     """)
-    @Transaction
     abstract fun airingSoonFlow(
         mediaType: MediaType = MediaType.ANIME,
         pageSize: Int,
@@ -63,7 +61,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    @Transaction
     abstract fun allTimePopularFlow(
         mediaType: MediaType,
         pageSize: Int
@@ -75,7 +72,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by trending desc
         limit :pageSize
     """)
-    @Transaction
     abstract fun trendingNowFlow(
         mediaType: MediaType,
         pageSize: Int
@@ -89,7 +85,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    @Transaction
     abstract fun popularThisSeasonFlow(
         mediaType: MediaType = MediaType.ANIME,
         pageSize: Int,
@@ -103,7 +98,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by id desc
         limit :pageSize
     """)
-    @Transaction
     abstract fun recentlyAddedFlow(
         mediaType: MediaType,
         pageSize: Int
@@ -117,7 +111,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    @Transaction
     abstract fun anticipatedNextSeasonFlow(
         mediaType: MediaType = MediaType.ANIME,
         pageSize: Int,
@@ -132,7 +125,6 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         order by popularity desc
         limit :pageSize
     """)
-    @Transaction
     abstract fun popularManhwaFlow(
         mediaType: MediaType = MediaType.MANGA,
         countryCode: CountryCode = "KR",

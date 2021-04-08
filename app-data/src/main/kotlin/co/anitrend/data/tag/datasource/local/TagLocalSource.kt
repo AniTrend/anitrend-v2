@@ -19,13 +19,13 @@ package co.anitrend.data.tag.datasource.local
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class TagLocalSource : ILocalSource<TagEntity> {
+internal abstract class TagLocalSource : AbstractLocalSource<TagEntity>() {
 
     @Query("""
         select count(id) from tag

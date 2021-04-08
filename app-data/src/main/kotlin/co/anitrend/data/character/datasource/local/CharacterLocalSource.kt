@@ -20,13 +20,12 @@ package co.anitrend.data.character.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.character.entity.CharacterEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class CharacterLocalSource : ILocalSource<CharacterEntity> {
+internal abstract class CharacterLocalSource : AbstractLocalSource<CharacterEntity>() {
 
     @Query("""
         select count(id) from character
@@ -48,20 +47,17 @@ internal abstract class CharacterLocalSource : ILocalSource<CharacterEntity> {
         select * from character
         where id = :id
     """)
-    @Transaction
     abstract suspend fun characterById(id: Long): CharacterEntity
 
     @Query("""
         select * from character
         where id = :id
     """)
-    @Transaction
     abstract fun characterByIdFlow(id: Long): Flow<CharacterEntity?>
 
     @Query("""
         select * from character
     """)
-    @Transaction
     abstract fun allCharacterFactory(): DataSource.Factory<Int, CharacterEntity>
 
     @Query("""
@@ -72,7 +68,6 @@ internal abstract class CharacterLocalSource : ILocalSource<CharacterEntity> {
         or name_original match :term
         or name_alternative match :term
     """)
-    @Transaction
     abstract fun searchCharacterFactory(
         term: String
     ): DataSource.Factory<Int, CharacterEntity>
