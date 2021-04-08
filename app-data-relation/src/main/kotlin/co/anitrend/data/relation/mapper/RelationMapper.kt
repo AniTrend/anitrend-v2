@@ -17,6 +17,7 @@
 
 package co.anitrend.data.relation.mapper
 
+import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.relation.converters.RelationModelConverter
 import co.anitrend.data.relation.datasource.local.RelationLocalSource
@@ -32,8 +33,10 @@ internal class RelationMapper(
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: RelationEntity?) {
-        if (data != null)
-            localSource.upsert(data)
+        runInTransaction {
+            if (data != null)
+                localSource.upsert(data)
+        }
     }
 
     /**

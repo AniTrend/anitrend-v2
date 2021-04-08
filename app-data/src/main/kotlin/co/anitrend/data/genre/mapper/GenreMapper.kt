@@ -17,10 +17,13 @@
 
 package co.anitrend.data.genre.mapper
 
+import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.GenreLocalSource
+import co.anitrend.data.genre.datasource.local.connection.GenreConnectionLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.genre.model.GenreCollection
@@ -30,26 +33,6 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
 
     protected abstract val localSource: GenreLocalSource
     protected abstract val converter: GenreModelConverter
-
-    private var connections: List<GenreConnectionEntity>? = null
-
-    suspend fun persistConnection() {
-        connections?.also {
-            localSource.upsertConnections(it)
-        }
-        connections = null
-    }
-
-    fun onConnection(source: List<MediaModel>) {
-        connections = source.flatMap { media ->
-            media.genres?.map {
-                GenreConnectionEntity(
-                    mediaId = media.id,
-                    genre = it
-                )
-            }.orEmpty()
-        }
-    }
 
     class Core(
         override val localSource: GenreLocalSource,
@@ -61,9 +44,7 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
          */
         override suspend fun persist(data: List<GenreEntity>) {
             runInTransaction {
-                val ids = localSource.insert(data)
-                if (ids.isEmpty())
-                    localSource.update(data)
+                localSource.upsert(data)
             }
         }
 
@@ -78,5 +59,51 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
         ) = converter.convertFrom(
             source.asGenreModels()
         )
+    }
+
+    class Embed(
+        override val localSource: GenreConnectionLocalSource
+    ) : EmbedMapper<Embed.Item, GenreConnectionEntity>() {
+
+        override val converter = object : SupportConverter<Item, GenreConnectionEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> GenreConnectionEntity = {
+                GenreConnectionEntity(
+                    mediaId = it.mediaId,
+                    genre = it.genre
+                )
+            }
+
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (GenreConnectionEntity) -> Item
+                get() = throw NotImplementedError()
+        }
+
+        data class Item(
+            val mediaId: Long,
+            val genre: String
+        )
+
+        companion object {
+
+            fun asItem(source: MediaModel) =
+                source.genres?.map { genre ->
+                    Item(
+                        mediaId = source.id,
+                        genre = genre
+                    )
+                }.orEmpty()
+
+            fun asItem(source: List<MediaModel>) =
+                source.flatMap { media ->
+                    asItem(media)
+                }
+        }
     }
 }

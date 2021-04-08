@@ -22,6 +22,7 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
+import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
@@ -54,16 +55,13 @@ internal class AiringScheduleSource {
          * @param itemAtEnd The first item of PagedList
          */
         override fun onItemAtEndLoaded(itemAtEnd: Media) {
-            supportPagingHelper.onPageNext()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.AFTER
-                    ),
-                    ::getAiringSchedule
-                )
-            }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                requestType = Request.Type.AFTER,
+                block = ::getAiringSchedule,
+            )
         }
 
         /**
@@ -75,34 +73,25 @@ internal class AiringScheduleSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            if (!supportPagingHelper.isFirstPage())
-                supportPagingHelper.onPagePrevious()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.BEFORE
-                    )
-                ) {
-                    if (!supportPagingHelper.isFirstPage())
-                        getAiringSchedule(it)
-                }
-            }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                requestType = Request.Type.BEFORE,
+                block = ::getAiringSchedule,
+            )
         }
 
         /**
          * Called when zero items are returned from an initial load of the PagedList's data source.
          */
         override fun onZeroItemsLoaded() {
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.INITIAL
-                    ),
-                    ::getAiringSchedule
-                )
-            }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                block = ::getAiringSchedule,
+            )
         }
     }
 }

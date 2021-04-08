@@ -25,21 +25,19 @@ import co.anitrend.data.link.model.LinkModel
 
 internal class LinkMapper(
     override val localSource: LinkLocalSource
-) : EmbedMapper<LinkModel, LinkEntity>() {
+) : EmbedMapper<LinkMapper.Item, LinkEntity>() {
 
-    var mediaId: Long = 0
-
-    override val converter = object : SupportConverter<LinkModel, LinkEntity>() {
+    override val converter = object : SupportConverter<Item, LinkEntity>() {
         /**
          * Function reference from converting from [M] to [E] which will
          * be called by [convertFrom]
          */
-        override val fromType: (LinkModel) -> LinkEntity = {
+        override val fromType: (Item) -> LinkEntity = {
             LinkEntity(
-                mediaId = mediaId,
-                site = it.site,
-                url = it.url,
-                id = it.id,
+                mediaId = it.mediaId,
+                site = it.link.site,
+                url = it.link.url,
+                id = it.link.id,
             )
         }
 
@@ -47,7 +45,12 @@ internal class LinkMapper(
          * Function reference from converting from [E] to [M] which will
          * be called by [convertTo]
          */
-        override val toType: (LinkEntity) -> LinkModel
+        override val toType: (LinkEntity) -> Item
             get() = throw NotImplementedError()
     }
+
+    data class Item(
+        val mediaId: Long,
+        val link: LinkModel
+    )
 }

@@ -20,12 +20,12 @@ package co.anitrend.data.feed.episode.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class EpisodeLocalSource : ILocalSource<EpisodeEntity> {
+abstract class EpisodeLocalSource : AbstractLocalSource<EpisodeEntity>() {
 
     @Query("""
         select count(id)

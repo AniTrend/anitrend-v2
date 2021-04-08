@@ -15,12 +15,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.jikan.media.entity.contract
+package co.anitrend.data.tag.datasource.local.connection
 
-import co.anitrend.data.core.common.Identity
+import androidx.room.Dao
+import androidx.room.Query
+import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 
-internal interface JikanEntityAttribute : Identity {
-    val jikanId: Long
-    val type: String?
-    val name: String?
+@Dao
+internal abstract class TagConnectionLocalSource : AbstractLocalSource<TagConnectionEntity>() {
+
+    @Query("""
+        select count(id) from tag_connection
+        """
+    )
+    abstract override suspend fun count(): Int
+
+    @Query("""
+            delete from tag_connection
+        """
+    )
+    abstract override suspend fun clear()
 }

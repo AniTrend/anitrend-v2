@@ -24,7 +24,7 @@ import org.koin.core.scope.Scope
 
 
 internal inline fun <reified T> Scope.remoteSource(): T {
-    val provider = RelationApiFactory()
+    val provider = get<RelationApiFactory>()
     return api(provider)
 }
 

@@ -23,9 +23,12 @@ import co.anitrend.data.jikan.media.datasource.local.IJikanStore
 import org.koin.core.scope.Scope
 
 internal inline fun <reified T> Scope.remoteSource(): T {
-    val provider = JikanApiFactory()
+    val provider = get<JikanApiFactory>()
     return api(provider)
 }
 
 internal fun Scope.jikanLocalSource() =
     get<IJikanStore>().jikanDao()
+
+internal fun Scope.db() =
+    get<IJikanStore>()

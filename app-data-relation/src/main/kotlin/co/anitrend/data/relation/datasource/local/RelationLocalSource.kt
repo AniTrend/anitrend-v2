@@ -19,12 +19,12 @@ package co.anitrend.data.relation.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.relation.entity.RelationEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class RelationLocalSource : ILocalSource<RelationEntity> {
+abstract class RelationLocalSource : AbstractLocalSource<RelationEntity>() {
 
     @Query("""
         select count(anilist) from relation

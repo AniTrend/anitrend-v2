@@ -72,13 +72,14 @@ internal class AuthSourceImpl(
 
     private suspend fun persistChanges(action: AccountAction.SignIn, user: UserEntity) {
         withContext(dispatcher.io) {
-            localSource.upsert(AuthEntity(
-                id = 0,
-                userId = user.id,
-                expiresOn = action.expiresAtTime,
-                tokenType = action.param.tokenType,
-                accessToken = action.param.accessToken
-            ))
+            localSource.upsert(
+                AuthEntity(
+                    userId = user.id,
+                    expiresOn = action.expiresAtTime,
+                    tokenType = action.param.tokenType,
+                    accessToken = action.param.accessToken
+                )
+            )
 
             settings.authenticatedUserId.value = user.id
             settings.isAuthenticated.value = true

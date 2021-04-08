@@ -44,6 +44,10 @@ import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.relation.entity.RelationEntity
 import co.anitrend.data.feed.news.entity.NewsEntity
 import co.anitrend.data.feed.news.entity.fts.NewsFtsEntity
+import co.anitrend.data.jikan.author.entity.JikanAuthorEntity
+import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
+import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
+import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 import co.anitrend.data.rank.entity.RankEntity
 import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.staff.entity.fts.StaffFtsEntity
@@ -69,8 +73,8 @@ import org.jetbrains.annotations.TestOnly
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
-        JikanEntity::class, JikanEntity.StudioEntity::class, JikanEntity.LicensorEntity::class,
-        JikanEntity.ProducerEntity::class, JikanEntity.AuthorEntity::class
+        JikanEntity::class, JikanStudioEntity::class, JikanLicensorEntity::class,
+        JikanProducerEntity::class, JikanAuthorEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     views = [TagEntity.Extended::class, GenreEntity.Extended::class]

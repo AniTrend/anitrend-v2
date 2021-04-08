@@ -31,7 +31,6 @@ import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 internal class MediaSource {
 
@@ -84,16 +83,13 @@ internal class MediaSource {
          * @param itemAtEnd The first item of PagedList
          */
         override fun onItemAtEndLoaded(itemAtEnd: Media) {
-            supportPagingHelper.onPageNext()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.AFTER
-                    ),
-                    ::getMedia
-                )
-            }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                requestType = Request.Type.AFTER,
+                block = ::getMedia
+            )
         }
 
         /**
@@ -105,34 +101,25 @@ internal class MediaSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            if (!supportPagingHelper.isFirstPage())
-                supportPagingHelper.onPagePrevious()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.BEFORE
-                    )
-                ) {
-                    if (!supportPagingHelper.isFirstPage())
-                        getMedia(it)
-                }
-            }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                requestType = Request.Type.BEFORE,
+                block = ::getMedia
+            )
         }
 
         /**
          * Called when zero items are returned from an initial load of the PagedList's data source.
          */
         override fun onZeroItemsLoaded() {
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.INITIAL
-                    ),
-                    ::getMedia
-                )
-            }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                block = ::getMedia
+            )
         }
     }
 
@@ -166,16 +153,13 @@ internal class MediaSource {
             params: LoadInitialParams<MediaParam.Find>,
             callback: LoadInitialCallback<MediaParam.Find, Media>
         ) {
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(
-                        cacheIdentity.key,
-                        Request.Type.INITIAL
-                    )
-                ) {
-                    val result = getMedia(initialKey, it)
-                    callback.onResult(result, null, initialKey)
-                }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper
+            ) {
+                val result = getMedia(initialKey, it)
+                callback.onResult(result, null, initialKey)
             }
         }
 
@@ -200,14 +184,14 @@ internal class MediaSource {
             params: LoadParams<MediaParam.Find>,
             callback: LoadCallback<MediaParam.Find, Media>
         ) {
-            supportPagingHelper.onPageNext()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(cacheIdentity.key, Request.Type.AFTER)
-                ) {
-                    val result = getMedia(params.key, it)
-                    callback.onResult(result, params.key)
-                }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                requestType = Request.Type.AFTER
+            ) {
+                val result = getMedia(params.key, it)
+                callback.onResult(result, params.key)
             }
         }
 
@@ -232,18 +216,16 @@ internal class MediaSource {
             params: LoadParams<MediaParam.Find>,
             callback: LoadCallback<MediaParam.Find, Media>
         ) {
-            if (!supportPagingHelper.isFirstPage())
-                supportPagingHelper.onPagePrevious()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(cacheIdentity.key, Request.Type.BEFORE)
-                ) {
-                    if (!supportPagingHelper.isFirstPage()) {
-                        val result = getMedia(params.key, it)
-                        callback.onResult(result, params.key)
-                    }
-                }
+            cacheIdentity(
+                scope = scope,
+                paging = supportPagingHelper,
+                requestHelper = requestHelper,
+                requestType = Request.Type.BEFORE
+            ) {
+                val result = getMedia(params.key, it)
+                callback.onResult(result, params.key)
             }
+
         }
     }
 }

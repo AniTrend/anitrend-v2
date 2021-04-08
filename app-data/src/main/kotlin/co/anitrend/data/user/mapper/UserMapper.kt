@@ -17,6 +17,7 @@
 
 package co.anitrend.data.user.mapper
 
+import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
@@ -24,12 +25,16 @@ import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
+import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
+import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
+import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.data.user.model.container.UserModelContainer
+import co.anitrend.data.user.settings.IUserSettings
 
 internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
 
@@ -45,7 +50,9 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<UserEntity>) {
-            localSource.upsert(data)
+            runInTransaction {
+                localSource.upsert(data)
+            }
         }
 
         /**
@@ -60,22 +67,22 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     }
 
     class Profile(
-        private val generalOptionConverter: UserGeneralOptionModelConverter,
-        private val mediaOptionConverter: UserMediaOptionModelConverter,
+        private val generalOptionMapper: GeneralOptionEmbed,
+        private val mediaOptionMapper: MediaOptionEmbed,
         override val localSource: UserLocalSource,
         override val converter: UserModelConverter
     ) : UserMapper<UserModelContainer.Profile, UserEntity>() {
 
-        private var generalOption: UserGeneralOptionEntity? = null
-        private var mediaOption: UserMediaOptionEntity? = null
 
         /**
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserEntity) {
-            localSource.upsertWithOptions(data, generalOption, mediaOption)
-            generalOption = null
-            mediaOption = null
+            runInTransaction {
+                localSource.upsert(data)
+                generalOptionMapper.persistEmbedded()
+                mediaOptionMapper.persistEmbedded()
+            }
         }
 
         /**
@@ -87,30 +94,27 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun onResponseMapFrom(
             source: UserModelContainer.Profile
         ): UserEntity {
-            generalOption = generalOptionConverter.convertFrom(source.user)
-            mediaOption = mediaOptionConverter.convertFrom(source.user)
-
+            generalOptionMapper.onEmbedded(source.user)
+            mediaOptionMapper.onEmbedded(source.user)
             return converter.convertFrom(source.user)
         }
     }
 
     class Statistic(
-        private val localSource: UserLocalSource,
+        private val userMapper: Embed,
+        private val localSource: UserStatisticLocalSource,
         private val converter: UserStatisticModelConverter,
-        private val userConverter: UserModelConverter
     ) : DefaultMapper<UserModelContainer.WithStatistic, UserWithStatisticEntity>() {
 
-        private var userEntity: UserEntity? = null
 
         /**
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserWithStatisticEntity) {
-            val entity = requireNotNull(userEntity) {
-                "UserEntity should not be null at this point"
+            runInTransaction {
+                userMapper.persistEmbedded()
+                localSource.upsert(data)
             }
-            localSource.upsertWithStatistic(entity, data)
-            userEntity = null
         }
 
         /**
@@ -122,7 +126,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun onResponseMapFrom(
             source: UserModelContainer.WithStatistic
         ): UserWithStatisticEntity {
-            userEntity = userConverter.convertFrom(source.user)
+            userMapper.onEmbedded(source.user)
             return converter.convertFrom(source.user)
         }
     }
@@ -136,7 +140,9 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserEntity) {
-            localSource.upsert(data)
+            runInTransaction {
+                localSource.upsert(data)
+            }
         }
 
         /**
@@ -154,4 +160,30 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: UserLocalSource,
         override val converter: UserModelConverter
     ) : EmbedMapper<UserModel, UserEntity>()
+
+    class MediaOptionEmbed(
+        override val localSource: UserMediaOptionLocalSource,
+        override val converter: UserMediaOptionModelConverter
+    ) : EmbedMapper<UserModel.WithOptions, UserMediaOptionEntity>() {
+        suspend fun persistEmbedded(settings: IUserSettings) {
+            onResponseDatabaseInsert(entities.orEmpty())
+            entities?.firstOrNull()?.also {
+                settings.scoreFormat.value = it.scoreFormat
+            }
+            entities = null
+        }
+    }
+
+    class GeneralOptionEmbed(
+        override val localSource: UserGeneralOptionLocalSource,
+        override val converter: UserGeneralOptionModelConverter
+    ) : EmbedMapper<UserModel.WithOptions, UserGeneralOptionEntity>() {
+        suspend fun persistEmbedded(settings: IUserSettings) {
+            onResponseDatabaseInsert(entities.orEmpty())
+            entities?.firstOrNull()?.also {
+                settings.titleLanguage.value = it.titleLanguage
+            }
+            entities = null
+        }
+    }
 }

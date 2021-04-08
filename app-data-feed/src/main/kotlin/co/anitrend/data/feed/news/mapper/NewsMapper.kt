@@ -17,6 +17,7 @@
 
 package co.anitrend.data.feed.news.mapper
 
+import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.feed.news.converter.NewsModelConverter
 import co.anitrend.data.feed.news.datasource.local.NewsLocalSource
@@ -32,7 +33,9 @@ internal class NewsMapper(
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: List<NewsEntity>) {
-        localSource.upsert(data)
+        runInTransaction {
+            localSource.upsert(data)
+        }
     }
 
     /**

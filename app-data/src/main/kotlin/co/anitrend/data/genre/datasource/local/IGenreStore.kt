@@ -17,6 +17,9 @@
 
 package co.anitrend.data.genre.datasource.local
 
+import co.anitrend.data.genre.datasource.local.connection.GenreConnectionLocalSource
+
 internal interface IGenreStore {
     fun genreDao(): GenreLocalSource
+    fun genreConnectionDao(): GenreConnectionLocalSource
 }

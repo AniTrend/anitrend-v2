@@ -19,6 +19,7 @@ package co.anitrend.data.relation.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.defaultController
+import co.anitrend.data.relation.api.RelationApiFactory
 import co.anitrend.data.relation.cache.RelationCache
 import co.anitrend.data.relation.converters.RelationEntityConverter
 import co.anitrend.data.relation.converters.RelationModelConverter
@@ -28,6 +29,12 @@ import co.anitrend.data.relation.mapper.RelationMapper
 import co.anitrend.data.relation.source.RelationSourceImpl
 import co.anitrend.data.relation.source.contract.RelationSource
 import org.koin.dsl.module
+
+private val coreModule = module {
+    single {
+        RelationApiFactory()
+    }
+}
 
 private val sourceModule = module {
     factory<RelationSource> {
@@ -72,6 +79,7 @@ private val mapperModule = module {
 }
 
 val sourceModules = listOf(
+    coreModule,
     sourceModule,
     converterModule,
     cacheModule,

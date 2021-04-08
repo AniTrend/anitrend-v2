@@ -40,16 +40,19 @@ import co.anitrend.data.android.logger.OkHttpLogger
 import co.anitrend.data.auth.helper.AuthenticationHelper
 import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
-import co.anitrend.data.feed.episode.koin.episodeModules
+import co.anitrend.data.core.api.factory.GraphApiFactory
+import co.anitrend.data.feed.api.factory.IFeedFactory
+import co.anitrend.data.feed.koin.feedModules
 import co.anitrend.data.genre.koin.genreModules
-import co.anitrend.data.jikan.media.koin.jikanModules
+import co.anitrend.data.jikan.koin.jikanModules
 import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.relation.koin.sourceModules
-import co.anitrend.data.feed.news.koin.newsModules
 import co.anitrend.data.rank.koin.rankModules
 import co.anitrend.data.tag.koin.tagModules
+import co.anitrend.data.themes.koin.themesModule
+import co.anitrend.data.thexem.koin.theXemModules
 import co.anitrend.data.tmdb.koin.tmdbModules
 import co.anitrend.data.trakt.koin.traktModules
 import co.anitrend.data.user.koin.userModules
@@ -70,10 +73,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.binds
 import org.koin.dsl.module
-import org.simpleframework.xml.convert.AnnotationStrategy
-import org.simpleframework.xml.core.Persister
 import retrofit2.Retrofit
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
@@ -82,6 +82,9 @@ private val coreModule = module {
             applicationContext = androidContext()
         )
     } binds IAniTrendStore.BINDINGS
+    single {
+        GraphApiFactory()
+    }
     factory {
         AuthenticationHelper(
             settings = get(),
@@ -141,9 +144,7 @@ private val retrofitModule = module {
                 isLenient = true
             }.asConverterFactory(mimeType),
             graphFactory = get<Json>().asConverterFactory(mimeType),
-            xmlFactory = SimpleXmlConverterFactory.createNonStrict(
-                Persister(AnnotationStrategy())
-            )
+            xmlFactory = get<IFeedFactory>().provideConverterFactory()
         )
     }
 }
@@ -210,6 +211,6 @@ val dataModules = listOf(
 ) + airingModules + tagModules + genreModules +
         sourceModules + mediaModules + carouselModules +
         authModules + accountModules + userModules +
-        mediaListModules + newsModules + episodeModules +
+        mediaListModules + feedModules + jikanModules +
         linkModules + rankModules + traktModules + tmdbModules +
-        jikanModules
+        themesModule + theXemModules

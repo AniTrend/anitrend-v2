@@ -18,15 +18,12 @@
 package co.anitrend.data.auth.source.contract
 
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.extension.ext.empty
 import co.anitrend.data.account.action.AccountAction
+import co.anitrend.data.android.extensions.invoke
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 internal abstract class AuthSource : SupportCoreDataSource() {
 
@@ -45,11 +42,11 @@ internal abstract class AuthSource : SupportCoreDataSource() {
     }
 
     internal operator fun invoke(param: AccountParam.SignIn): Flow<User> {
-        launch {
-            requestHelper.runIfNotRunning(
-                Request.Default(String.empty(), Request.Type.INITIAL)
-            ) { getAuthorizedUser(AccountAction.SignIn(param), it) }
-        }
+        invoke(
+            block = {
+                getAuthorizedUser(AccountAction.SignIn(param), it)
+            }
+        )
         return observable
     }
 }

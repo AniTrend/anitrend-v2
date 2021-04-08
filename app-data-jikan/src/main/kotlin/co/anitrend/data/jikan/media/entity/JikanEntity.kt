@@ -18,7 +18,7 @@
 package co.anitrend.data.jikan.media.entity
 
 import androidx.room.*
-import co.anitrend.data.jikan.media.entity.contract.JikanEntityAttribute
+import co.anitrend.data.jikan.contract.JikanEntityAttribute
 import co.anitrend.data.core.common.Identity
 
 @Entity(
@@ -54,100 +54,4 @@ data class JikanEntity(
         @ColumnInfo(name = "preferred") val preferred: String? = null,
         @ColumnInfo(name = "synonyms") val synonyms: List<String> = emptyList()
     )
-
-    @Entity(
-        tableName = "jikan_author",
-        primaryKeys = ["id"],
-        indices = [
-            Index(value = ["jikan_id"])
-        ],
-        foreignKeys = [
-            ForeignKey(
-                entity = JikanEntity::class,
-                onDelete = ForeignKey.CASCADE,
-                onUpdate = ForeignKey.CASCADE,
-                childColumns = ["jikan_id"],
-                parentColumns = ["id"],
-                deferred = true
-            )
-        ]
-    )
-    data class AuthorEntity(
-        @ColumnInfo(name = "jikan_id") override val jikanId: Long,
-        @ColumnInfo(name = "type") override val type: String?,
-        @ColumnInfo(name = "name") override val name: String?,
-        @ColumnInfo(name = "id") override val id: Long
-    ) : JikanEntityAttribute
-
-    @Entity(
-        tableName = "jikan_producer",
-        primaryKeys = ["id"],
-        indices = [
-            Index(value = ["jikan_id"])
-        ],
-        foreignKeys = [
-            ForeignKey(
-                entity = JikanEntity::class,
-                onDelete = ForeignKey.CASCADE,
-                onUpdate = ForeignKey.CASCADE,
-                childColumns = ["jikan_id"],
-                parentColumns = ["id"],
-                deferred = true
-            )
-        ]
-    )
-    data class ProducerEntity(
-        @ColumnInfo(name = "jikan_id") override val jikanId: Long,
-        @ColumnInfo(name = "type") override val type: String?,
-        @ColumnInfo(name = "name") override val name: String?,
-        @ColumnInfo(name = "id") override val id: Long
-    ) : JikanEntityAttribute
-
-    @Entity(
-        tableName = "jikan_licensor",
-        primaryKeys = ["id"],
-        indices = [
-            Index(value = ["jikan_id"])
-        ],
-        foreignKeys = [
-            ForeignKey(
-                entity = JikanEntity::class,
-                onDelete = ForeignKey.CASCADE,
-                onUpdate = ForeignKey.CASCADE,
-                childColumns = ["jikan_id"],
-                parentColumns = ["id"],
-                deferred = true
-            )
-        ]
-    )
-    data class LicensorEntity(
-        @ColumnInfo(name = "jikan_id") override val jikanId: Long,
-        @ColumnInfo(name = "type") override val type: String?,
-        @ColumnInfo(name = "name") override val name: String?,
-        @ColumnInfo(name = "id") override val id: Long
-    ) : JikanEntityAttribute
-
-    @Entity(
-        tableName = "jikan_studio",
-        primaryKeys = ["id"],
-        indices = [
-            Index(value = ["jikan_id"])
-        ],
-        foreignKeys = [
-            ForeignKey(
-                entity = JikanEntity::class,
-                onDelete = ForeignKey.CASCADE,
-                onUpdate = ForeignKey.CASCADE,
-                childColumns = ["jikan_id"],
-                parentColumns = ["id"],
-                deferred = true
-            )
-        ]
-    )
-    data class StudioEntity(
-        @ColumnInfo(name = "jikan_id") override val jikanId: Long,
-        @ColumnInfo(name = "type") override val type: String?,
-        @ColumnInfo(name = "name") override val name: String?,
-        @ColumnInfo(name = "id") override val id: Long
-    ) : JikanEntityAttribute
 }

@@ -37,10 +37,10 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<TagSource> {
         TagSourceImpl(
-            localSource = store().mediaTagDao(),
+            localSource = store().tagDao(),
             remoteSource = graphApi(),
             controller = graphQLController(
-                mapper = get<TagMapper>()
+                mapper = get<TagMapper.Core>()
             ),
             cachePolicy = get<TagCache>(),
             clearDataHelper = get(),
@@ -77,10 +77,15 @@ private val converterModule = module {
 private val mapperModule = module {
     factory {
         TagMapper.Core(
-            localSource = store().mediaTagDao(),
+            localSource = store().tagDao(),
             converter = get()
         )
-    } bind TagMapper::class
+    }
+    factory {
+        TagMapper.Embed(
+            localSource = store().tagConnectionDao()
+        )
+    }
 }
 
 private val useCaseModule = module {

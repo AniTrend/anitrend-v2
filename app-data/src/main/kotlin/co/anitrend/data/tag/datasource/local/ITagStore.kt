@@ -17,6 +17,9 @@
 
 package co.anitrend.data.tag.datasource.local
 
+import co.anitrend.data.tag.datasource.local.connection.TagConnectionLocalSource
+
 internal interface ITagStore {
-    fun mediaTagDao(): TagLocalSource
+    fun tagDao(): TagLocalSource
+    fun tagConnectionDao(): TagConnectionLocalSource
 }

@@ -17,6 +17,15 @@
 
 package co.anitrend.data.jikan.media.datasource.local
 
+import co.anitrend.data.jikan.author.datasource.local.JikanAuthorLocalSource
+import co.anitrend.data.jikan.licensor.datasource.local.JikanLicensorLocalSource
+import co.anitrend.data.jikan.producer.datasource.local.JikanProducerLocalSource
+import co.anitrend.data.jikan.studio.datasource.local.JikanStudioLocalSource
+
 interface IJikanStore {
     fun jikanDao(): JikanLocalSource
+    fun jikanAuthorDao(): JikanAuthorLocalSource
+    fun jikanLicensorDao(): JikanLicensorLocalSource
+    fun jikanProducerDao(): JikanProducerLocalSource
+    fun jikanStudioDao(): JikanStudioLocalSource
 }

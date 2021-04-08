@@ -65,8 +65,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     class Paged(
         private val mediaListMapper: MediaListMapper.Embed,
         private val airingMapper: AiringMapper.Embed,
-        private val genreMapper: GenreMapper,
-        private val tagMapper: TagMapper,
+        private val genreMapper: GenreMapper.Embed,
+        private val tagMapper: TagMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ) : MediaMapper<MediaModelContainer.Paged, List<MediaEntity>>() {
@@ -77,8 +77,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun persist(data: List<MediaEntity>) {
             runInTransaction {
                 localSource.upsert(data)
-                tagMapper.persistConnection()
-                genreMapper.persistConnection()
+                tagMapper.persistEmbedded()
+                genreMapper.persistEmbedded()
                 airingMapper.persistEmbedded()
                 mediaListMapper.persistEmbedded()
             }
@@ -91,8 +91,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(source: MediaModelContainer.Paged): List<MediaEntity> {
-            tagMapper.onConnection(source.page.media)
-            genreMapper.onConnection(source.page.media)
+            tagMapper.onEmbedded(
+                TagMapper.Embed.asItem(source.page.media)
+            )
+            genreMapper.onEmbedded(
+                GenreMapper.Embed.asItem(source.page.media)
+            )
             airingMapper.onEmbedded(
                 source.page.media.mapNotNull {
                     it.nextAiringEpisode
@@ -110,8 +114,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     class Detail(
         private val mediaListMapper: MediaListMapper.Embed,
         private val airingMapper: AiringMapper.Embed,
-        private val genreMapper: GenreMapper,
-        private val tagMapper: TagMapper,
+        private val genreMapper: GenreMapper.Embed,
+        private val tagMapper: TagMapper.Embed,
         private val linkMapper: LinkMapper,
         private val rankMapper: RankMapper,
         override val localSource: MediaLocalSource,
@@ -123,8 +127,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
                 localSource.upsert(data)
                 linkMapper.persistEmbedded()
                 rankMapper.persistEmbedded()
-                tagMapper.persistConnection()
-                genreMapper.persistConnection()
+                tagMapper.persistEmbedded()
+                genreMapper.persistEmbedded()
                 airingMapper.persistEmbedded()
                 mediaListMapper.persistEmbedded()
             }
@@ -139,27 +143,33 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun onResponseMapFrom(
             source: MediaModelContainer.Detail
         ): MediaEntity {
-            tagMapper.onConnection(listOf(source.media))
-            genreMapper.onConnection(listOf(source.media))
+            tagMapper.onEmbedded(
+                TagMapper.Embed.asItem(source.media)
+            )
+            genreMapper.onEmbedded(
+                GenreMapper.Embed.asItem(source.media)
+            )
             airingMapper.onEmbedded(source.media.nextAiringEpisode)
             mediaListMapper.onEmbedded(
                 source.media.mediaListEntry
             )
-            linkMapper.apply {
-                mediaId = source.media.id
-                onEmbedded(source.media.externalLinks)
-            }
-            rankMapper.apply {
-                mediaId = source.media.id
-                onEmbedded(source.media.rankings)
-            }
+            linkMapper.onEmbedded(
+                source.media.externalLinks.map {
+                    LinkMapper.Item(source.media.id, it)
+                }
+            )
+            rankMapper.onEmbedded(
+                source.media.rankings.map {
+                    RankMapper.Item(source.media.id, it)
+                }
+            )
             return converter.convertFrom(source.media)
         }
     }
 
     class Embed(
-        private val genreMapper: GenreMapper,
-        private val tagMapper: TagMapper,
+        private val genreMapper: GenreMapper.Embed,
+        private val tagMapper: TagMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ): EmbedMapper<MediaModel, MediaEntity>() {
@@ -170,8 +180,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun persist(data: List<MediaEntity>) {
             runInTransaction {
                 super.persist(data)
-                tagMapper.persistConnection()
-                genreMapper.persistConnection()
+                tagMapper.persistEmbedded()
+                genreMapper.persistEmbedded()
             }
         }
 
@@ -182,16 +192,20 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(source: List<MediaModel>): List<MediaEntity> {
-            tagMapper.onConnection(source)
-            genreMapper.onConnection(source)
+            tagMapper.onEmbedded(
+                TagMapper.Embed.asItem(source)
+            )
+            genreMapper.onEmbedded(
+                GenreMapper.Embed.asItem(source)
+            )
             return super.onResponseMapFrom(source)
         }
     }
 
     class EmbedWithAiring(
         private val airingMapper: AiringMapper.Embed,
-        private val genreMapper: GenreMapper,
-        private val tagMapper: TagMapper,
+        private val genreMapper: GenreMapper.Embed,
+        private val tagMapper: TagMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ): EmbedMapper<MediaModel, MediaEntity>() {
@@ -199,8 +213,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun persist(data: List<MediaEntity>) {
             runInTransaction {
                 super.persist(data)
-                tagMapper.persistConnection()
-                genreMapper.persistConnection()
+                tagMapper.persistEmbedded()
+                genreMapper.persistEmbedded()
                 airingMapper.persistEmbedded()
             }
         }
@@ -212,8 +226,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(source: List<MediaModel>): List<MediaEntity> {
-            tagMapper.onConnection(source)
-            genreMapper.onConnection(source)
+            tagMapper.onEmbedded(
+                TagMapper.Embed.asItem(source)
+            )
+            genreMapper.onEmbedded(
+                GenreMapper.Embed.asItem(source)
+            )
             airingMapper.onEmbedded(
                 source.mapNotNull {
                     it.nextAiringEpisode as? AiringScheduleModel
@@ -227,8 +245,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     class EmbedWithMediaList(
         private val airingMapper: AiringMapper.Embed,
         private val mediaListMapper: MediaListMapper.Embed,
-        private val genreMapper: GenreMapper,
-        private val tagMapper: TagMapper,
+        private val genreMapper: GenreMapper.Embed,
+        private val tagMapper: TagMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ): EmbedMapper<MediaModel, MediaEntity>() {
@@ -236,8 +254,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun persist(data: List<MediaEntity>) {
             runInTransaction {
                 super.persist(data)
-                tagMapper.persistConnection()
-                genreMapper.persistConnection()
+                tagMapper.persistEmbedded()
+                genreMapper.persistEmbedded()
                 airingMapper.persistEmbedded()
                 mediaListMapper.persistEmbedded()
             }
@@ -250,8 +268,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(source: List<MediaModel>): List<MediaEntity> {
-            tagMapper.onConnection(source)
-            genreMapper.onConnection(source)
+            tagMapper.onEmbedded(
+                TagMapper.Embed.asItem(source)
+            )
+            genreMapper.onEmbedded(
+                GenreMapper.Embed.asItem(source)
+            )
             airingMapper.onEmbedded(
                 source.mapNotNull {
                     it.nextAiringEpisode as? AiringScheduleModel

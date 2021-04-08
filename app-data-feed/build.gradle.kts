@@ -24,7 +24,11 @@ plugins {
 
 dependencies {
     implementation(Libraries.threeTenBp)
-	implementation(Libraries.Square.Retrofit.xmlConverter)
+	implementation(Libraries.Square.Retrofit.xmlConverter) {
+        exclude("xpp3", "xpp3")
+        exclude("stax", "stax-api")
+        exclude("stax", "stax")
+    }
     // Holding off on using xml util for now, seems not to work and probably needs more testing
     implementation(Libraries.Devrieze.XmlUtil.Android.serialization)
 }

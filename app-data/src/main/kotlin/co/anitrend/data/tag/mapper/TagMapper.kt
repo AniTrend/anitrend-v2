@@ -17,41 +17,24 @@
 
 package co.anitrend.data.tag.mapper
 
+import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.TagLocalSource
+import co.anitrend.data.tag.datasource.local.connection.TagConnectionLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.tag.model.remote.TagContainerModel
+import co.anitrend.data.tag.model.remote.TagModel
 
 internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntity>>() {
 
     protected abstract val localSource: TagLocalSource
     protected abstract val converter: TagModelConverter
-
-    private var connections: List<TagConnectionEntity>? = null
-
-    suspend fun persistConnection() {
-        connections?.also {
-            localSource.upsertConnections(it)
-        }
-        connections = null
-    }
-
-    fun onConnection(source: List<MediaModel>) {
-        connections = source.flatMap { media ->
-            media.tags?.map {
-                TagConnectionEntity(
-                    rank = it.rank ?: 0,
-                    isMediaSpoiler = it.isMediaSpoiler ?: false,
-                    mediaId = media.id,
-                    tagId = it.id,
-                )
-            }.orEmpty()
-        }
-    }
 
     class Core(
         override val localSource: TagLocalSource,
@@ -63,9 +46,7 @@ internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntit
          */
         override suspend fun persist(data: List<TagEntity>) {
             runInTransaction {
-                val ids = localSource.insert(data)
-                if (ids.isEmpty())
-                    localSource.update(data)
+                localSource.upsert(data)
             }
         }
 
@@ -80,5 +61,57 @@ internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntit
         ) = converter.convertFrom(
             source.mediaTagCollection
         )
+    }
+
+    class Embed(
+        override val localSource: TagConnectionLocalSource
+    ) : EmbedMapper<Embed.Item, TagConnectionEntity>() {
+
+        override val converter = object : SupportConverter<Item, TagConnectionEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> TagConnectionEntity = {
+                TagConnectionEntity(
+                    rank = it.rank ?: 0,
+                    tagId = it.tagId,
+                    mediaId = it.mediaId,
+                    isMediaSpoiler = it.isMediaSpoiler ?: false
+                )
+            }
+
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (TagConnectionEntity) -> Item
+                get() = throw NotImplementedError()
+        }
+
+        data class Item(
+            val rank: Int?,
+            val tagId: Long,
+            val mediaId: Long,
+            val isMediaSpoiler: Boolean?,
+        )
+
+        companion object {
+
+            fun asItem(source: MediaModel) =
+                source.tags?.map { tag ->
+                    Item(
+                        rank = tag.rank,
+                        tagId = tag.id,
+                        mediaId = source.id,
+                        isMediaSpoiler = tag.isMediaSpoiler
+                    )
+                }.orEmpty()
+
+            fun asItem(source: List<MediaModel>) =
+                source.flatMap { media ->
+                    asItem(media)
+                }
+        }
     }
 }

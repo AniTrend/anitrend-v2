@@ -17,6 +17,7 @@
 
 package co.anitrend.data.feed.episode.mapper
 
+import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.feed.episode.converter.EpisodeModelConverter
 import co.anitrend.data.feed.episode.datasource.local.EpisodeLocalSource
@@ -32,7 +33,9 @@ internal class EpisodeMapper(
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: List<EpisodeEntity>) {
-        localSource.upsert(data)
+        runInTransaction {
+            localSource.upsert(data)
+        }
     }
 
     /**

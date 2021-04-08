@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("DEPRECATION")
+
 package co.anitrend.data.feed.api
 
 import co.anitrend.data.android.network.cache.CacheHelper
@@ -22,13 +24,18 @@ import co.anitrend.data.core.api.factory.IEndpointFactory
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.extensions.defaultBuilder
 import co.anitrend.data.feed.BuildConfig
+import co.anitrend.data.feed.api.factory.IFeedFactory
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
+import org.simpleframework.xml.convert.AnnotationStrategy
+import org.simpleframework.xml.core.Persister
+import retrofit2.Converter
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
-internal class FeedApiFactory : IEndpointFactory {
+internal class FeedApiFactory : IEndpointFactory, IFeedFactory {
     override val endpointType = object : IEndpointType {
         override val url: HttpUrl = BuildConfig.rssUrl.toHttpUrl()
     }
@@ -42,5 +49,11 @@ internal class FeedApiFactory : IEndpointFactory {
             )
         )
         return builder.build()
+    }
+
+    override fun provideConverterFactory(): Converter.Factory {
+        return SimpleXmlConverterFactory.createNonStrict(
+            Persister(AnnotationStrategy())
+        )
     }
 }

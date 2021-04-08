@@ -20,11 +20,11 @@ package co.anitrend.data.feed.news.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.feed.news.entity.NewsEntity
 
 @Dao
-abstract class NewsLocalSource : ILocalSource<NewsEntity> {
+abstract class NewsLocalSource : AbstractLocalSource<NewsEntity>() {
     @Query("""
         select count(id)
         from news

@@ -26,7 +26,7 @@ import org.simpleframework.xml.Root
 internal data class NewsModelItem @JvmOverloads constructor(
     @field:Element(name = "title")
     var title: String = String.empty(),
-    @field:Element(name = "author")
+    @field:Element(name = "author", required = false)
     var author: String = String.empty(),
     @field:Element(name = "description")
     var description: String = String.empty(),

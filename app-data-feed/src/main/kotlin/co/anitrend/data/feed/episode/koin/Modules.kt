@@ -119,7 +119,7 @@ private val repositoryModule = module {
     }
 }
 
-val episodeModules = listOf(
+internal val episodeModules = listOf(
     sourceModule,
     cacheModule,
     converterModule,

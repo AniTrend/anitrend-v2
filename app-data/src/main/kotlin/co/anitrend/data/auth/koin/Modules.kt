@@ -50,10 +50,10 @@ private val mapperModule = module {
     factory {
         AuthMapper(
             settings = get(),
-            userLocalSource = store().userDao(),
+            generalOptionMapper = get(),
+            mediaOptionMapper = get(),
+            localSource = store().userDao(),
             converter = get(),
-            generalOptionConverter = get(),
-            mediaOptionConverter = get(),
         )
     }
 }

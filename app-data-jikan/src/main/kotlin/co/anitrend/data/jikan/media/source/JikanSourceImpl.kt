@@ -32,6 +32,7 @@ import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
@@ -51,6 +52,7 @@ internal class JikanSourceImpl(
         return localSource.withConnectionFlow(query.id)
             .flowOn(dispatcher.io)
             .filterNotNull()
+            .distinctUntilChanged()
             .flowOn(coroutineContext)
     }
 

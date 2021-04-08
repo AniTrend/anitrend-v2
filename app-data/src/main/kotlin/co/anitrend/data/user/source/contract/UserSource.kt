@@ -22,11 +22,11 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
-import co.anitrend.arch.extension.ext.empty
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.extensions.invoke
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.model.mutation.UserMutation
 import co.anitrend.data.user.model.query.UserQuery
@@ -34,7 +34,6 @@ import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 internal class UserSource {
 
@@ -63,9 +62,12 @@ internal class UserSource {
                 "User id for supplied query is invalid"
             }
             cacheIdentity = UserCache.Profile.Identity(query.param)
-            cachePolicy(scope, requestHelper, cacheIdentity) {
-                getProfile(it)
-            }
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::getProfile
+            )
             return observable()
         }
     }
@@ -92,12 +94,11 @@ internal class UserSource {
          * @param itemAtEnd The first item of PagedList
          */
         override fun onItemAtEndLoaded(itemAtEnd: User) {
-            supportPagingHelper.onPageNext()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default("user_paged_after", Request.Type.AFTER)
-                ) { getUsers(it) }
-            }
+            invoke(
+                paging = supportPagingHelper,
+                requestType = Request.Type.AFTER,
+                block = ::getUsers
+            )
         }
 
         /**
@@ -109,27 +110,21 @@ internal class UserSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: User) {
-            if (!supportPagingHelper.isFirstPage())
-                supportPagingHelper.onPagePrevious()
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default("user_paged_before", Request.Type.BEFORE)
-                ) {
-                    if (!supportPagingHelper.isFirstPage())
-                        getUsers(it)
-                }
-            }
+            invoke(
+                paging = supportPagingHelper,
+                requestType = Request.Type.BEFORE,
+                block = ::getUsers
+            )
         }
 
         /**
          * Called when zero items are returned from an initial load of the PagedList's data source.
          */
         override fun onZeroItemsLoaded() {
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default("user_paged_initial", Request.Type.INITIAL)
-                ) { getUsers(it) }
-            }
+            invoke(
+                paging = supportPagingHelper,
+                block = ::getUsers
+            )
         }
     }
 
@@ -148,9 +143,12 @@ internal class UserSource {
         operator fun invoke(param: UserParam.Profile): Flow<User> {
             query = UserQuery.Profile(param)
             cacheIdentity = UserCache.Profile.Identity(param)
-            cachePolicy(scope, requestHelper, cacheIdentity) {
-                getProfile(it)
-            }
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::getProfile
+            )
             return observable()
         }
     }
@@ -190,12 +188,7 @@ internal class UserSource {
 
         operator fun invoke(param: UserParam.ToggleFollow): Flow<User> {
             query = UserMutation.ToggleFollow(param)
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(String.empty(), Request.Type.INITIAL),
-                    ::toggleFollow
-                )
-            }
+            invoke(block = ::toggleFollow)
             return observable()
         }
 
@@ -219,12 +212,7 @@ internal class UserSource {
 
         operator fun invoke(param: UserParam.Update): Flow<User> {
             query = UserMutation.Update(param)
-            launch {
-                requestHelper.runIfNotRunning(
-                    Request.Default(String.empty(), Request.Type.INITIAL),
-                    ::updateProfile
-                )
-            }
+            invoke(block = ::updateProfile)
             return observable()
         }
 

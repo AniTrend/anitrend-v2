@@ -18,11 +18,11 @@
 package co.anitrend.data.rank.datasource
 
 import androidx.room.*
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.rank.entity.RankEntity
 
 @Dao
-internal abstract class RankLocalSource : ILocalSource<RankEntity> {
+internal abstract class RankLocalSource : AbstractLocalSource<RankEntity>() {
 
     @Query("""
         select count(id)

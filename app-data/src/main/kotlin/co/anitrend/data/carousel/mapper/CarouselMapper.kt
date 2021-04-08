@@ -30,15 +30,8 @@ internal class CarouselMapper(
     /**
      * Save [data] into your desired local source
      */
-    override suspend fun persist(data: List<MediaEntity>) {}
-
-    /**
-     * Inserts the given object into the implemented room database,
-     *
-     * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     */
-    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaEntity>) {
-        mapper.onResponseDatabaseInsert(mappedData)
+    override suspend fun persist(data: List<MediaEntity>) {
+        mapper.onResponseDatabaseInsert(data)
     }
 
     /**

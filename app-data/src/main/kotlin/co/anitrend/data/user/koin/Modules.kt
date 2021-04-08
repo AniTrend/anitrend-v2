@@ -149,8 +149,8 @@ private val mapperModule = module {
     }
     factory {
         UserMapper.Profile(
-            generalOptionConverter = get(),
-            mediaOptionConverter = get(),
+            generalOptionMapper = get(),
+            mediaOptionMapper = get(),
             localSource = store().userDao(),
             converter = get(),
         )
@@ -164,6 +164,18 @@ private val mapperModule = module {
     factory {
         UserMapper.Embed(
             localSource = store().userDao(),
+            converter = get(),
+        )
+    }
+    factory {
+        UserMapper.MediaOptionEmbed(
+            localSource = store().userMediaOptionDao(),
+            converter = get(),
+        )
+    }
+    factory {
+        UserMapper.GeneralOptionEmbed(
+            localSource = store().userGeneralOptionDao(),
             converter = get(),
         )
     }

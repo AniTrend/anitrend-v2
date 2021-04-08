@@ -17,54 +17,38 @@
 
 package co.anitrend.data.jikan.media.mapper
 
+import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.jikan.author.mapper.JikanAuthorMapper
+import co.anitrend.data.jikan.contract.JikanItem
+import co.anitrend.data.jikan.licensor.mapper.JikanLicensorMapper
 import co.anitrend.data.jikan.media.converters.*
 import co.anitrend.data.jikan.media.datasource.local.JikanLocalSource
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
+import co.anitrend.data.jikan.producer.mapper.JikanProducerMapper
+import co.anitrend.data.jikan.studio.mapper.JikanStudioMapper
 
 internal class JikanMapper(
+    private val authorMapper: JikanAuthorMapper.Embed,
+    private val licensorMapper: JikanLicensorMapper.Embed,
+    private val producerMapper: JikanProducerMapper.Embed,
+    private val studioMapper: JikanStudioMapper.Embed,
     private val localSource: JikanLocalSource,
     private val converter: JikanModelConverter
 ) : DefaultMapper<JikanMediaModel, JikanEntity>() {
-
-    private var authors: List<JikanEntity.AuthorEntity>? = null
-    private var producers: List<JikanEntity.ProducerEntity>? = null
-    private var licensors: List<JikanEntity.LicensorEntity>? = null
-    private var studios: List<JikanEntity.StudioEntity>? = null
-
-    private fun onConnectionModel(source: JikanMediaModel) {
-        when (source) {
-            is JikanMediaModel.Anime -> {
-                producers = JikanProducerModelConverter(source.malId)
-                        .convertFrom(source.licensors.orEmpty())
-                licensors = JikanLicensorModelConverter(source.malId)
-                    .convertFrom(source.producers.orEmpty())
-                studios = JikanStudioModelConverter(source.malId)
-                    .convertFrom(source.studios.orEmpty())
-            }
-            is JikanMediaModel.Manga -> {
-                authors = JikanAuthorModelConverter(source.malId)
-                    .convertFrom(source.authors.orEmpty())
-            }
-        }
-    }
 
     /**
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: JikanEntity) {
-        localSource.upsertWithConnections(
-            data,
-            authors.orEmpty(),
-            producers.orEmpty(),
-            licensors.orEmpty(),
-            studios.orEmpty()
-        )
-        authors = null
-        producers = null
-        licensors = null
-        studios = null
+        runInTransaction {
+            localSource.upsert(data)
+            licensorMapper.persistEmbedded()
+            producerMapper.persistEmbedded()
+            studioMapper.persistEmbedded()
+            authorMapper.persistEmbedded()
+        }
     }
 
     /**
@@ -74,7 +58,44 @@ internal class JikanMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(source: JikanMediaModel): JikanEntity {
-        onConnectionModel(source)
+        when (source) {
+            is JikanMediaModel.Anime -> {
+                licensorMapper.onEmbedded(
+                    source.licensors?.map {
+                        JikanItem(
+                            jikanId = source.malId,
+                            model = it
+                        )
+                    }.orEmpty()
+                )
+                producerMapper.onEmbedded(
+                    source.producers?.map {
+                        JikanItem(
+                            jikanId = source.malId,
+                            model = it
+                        )
+                    }.orEmpty()
+                )
+                studioMapper.onEmbedded(
+                    source.studios?.map {
+                        JikanItem(
+                            jikanId = source.malId,
+                            model = it
+                        )
+                    }.orEmpty()
+                )
+            }
+            is JikanMediaModel.Manga -> {
+                authorMapper.onEmbedded(
+                    source.authors?.map {
+                        JikanItem(
+                            jikanId = source.malId,
+                            model = it
+                        )
+                    }.orEmpty()
+                )
+            }
+        }
         return converter.convertFrom(source)
     }
 }

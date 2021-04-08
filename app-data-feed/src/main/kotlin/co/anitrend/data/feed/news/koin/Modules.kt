@@ -103,7 +103,7 @@ private val repositoryModule = module {
     }
 }
 
-val newsModules = listOf(
+internal val newsModules = listOf(
     sourceModule,
     cacheModule,
     converterModule,

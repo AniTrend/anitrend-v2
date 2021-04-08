@@ -17,45 +17,32 @@
 
 package co.anitrend.data.auth.mapper
 
-import  co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
-import co.anitrend.data.user.converter.UserMediaOptionModelConverter
+import co.anitrend.data.android.extensions.runInTransaction
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
-import co.anitrend.data.user.entity.option.UserMediaOptionEntity
+import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.settings.IUserSettings
 
 internal class AuthMapper(
     private val settings: IUserSettings,
-    private val userLocalSource: UserLocalSource,
-    private val converter: UserModelConverter,
-    private val generalOptionConverter: UserGeneralOptionModelConverter,
-    private val mediaOptionConverter: UserMediaOptionModelConverter,
+    private val generalOptionMapper: UserMapper.GeneralOptionEmbed,
+    private val mediaOptionMapper: UserMapper.MediaOptionEmbed,
+    private val localSource: UserLocalSource,
+    private val converter: UserModelConverter
 ) : DefaultMapper<UserModelContainer.Viewer, UserEntity>() {
-
-    private var generalOption: UserGeneralOptionEntity? = null
-    private var mediaOption: UserMediaOptionEntity? = null
-
-    private fun persistUserSettings() {
-        generalOption?.also {
-            settings.titleLanguage.value = it.titleLanguage
-        }
-        mediaOption?.also {
-            settings.scoreFormat.value = it.scoreFormat
-        }
-        generalOption = null
-        mediaOption = null
-    }
 
     /**
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: UserEntity) {
-        userLocalSource.upsertWithOptions(data, generalOption, mediaOption)
-        persistUserSettings()
+        runInTransaction {
+            localSource.upsert(data)
+            generalOptionMapper.persistEmbedded(settings)
+            mediaOptionMapper.persistEmbedded(settings)
+        }
     }
 
     /**
@@ -67,9 +54,8 @@ internal class AuthMapper(
     override suspend fun onResponseMapFrom(
         source: UserModelContainer.Viewer
     ): UserEntity {
-        generalOption = generalOptionConverter.convertFrom(source.user)
-        mediaOption = mediaOptionConverter.convertFrom(source.user)
-
+        generalOptionMapper.onEmbedded(source.user)
+        mediaOptionMapper.onEmbedded(source.user)
         return converter.convertFrom(source.user)
     }
 }

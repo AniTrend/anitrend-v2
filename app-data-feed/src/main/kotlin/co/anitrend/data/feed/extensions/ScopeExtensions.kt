@@ -24,7 +24,7 @@ import co.anitrend.data.feed.news.datasource.local.INewsStore
 import org.koin.core.scope.Scope
 
 internal inline fun <reified T> Scope.remoteSource(): T {
-    val provider = FeedApiFactory()
+    val provider = get<FeedApiFactory>()
     return api(provider)
 }
 

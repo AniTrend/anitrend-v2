@@ -22,6 +22,7 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.medialist.model.query.MediaListQuery
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.model.MediaListParam
@@ -45,10 +46,9 @@ internal abstract class MediaListPagedSource : SupportPagingDataSource<MediaList
      * Called when zero items are returned from an initial load of the PagedList's data source.
      */
     override fun onZeroItemsLoaded() {
-        launch {
-            requestHelper.runIfNotRunning(
-                Request.Default("media_list_paged", Request.Type.INITIAL)
-            ) { getMediaList(it) }
-        }
+        invoke(
+            paging = supportPagingHelper,
+            block = ::getMediaList
+        )
     }
 }

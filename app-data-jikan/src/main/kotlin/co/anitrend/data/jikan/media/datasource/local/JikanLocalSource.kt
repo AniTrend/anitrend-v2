@@ -18,13 +18,13 @@
 package co.anitrend.data.jikan.media.datasource.local
 
 import androidx.room.*
-import co.anitrend.data.android.source.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.entity.projection.JikanWithConnection
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-abstract class JikanLocalSource : ILocalSource<JikanEntity> {
+abstract class JikanLocalSource : AbstractLocalSource<JikanEntity>() {
 
     @Query("""
         select count(id) from jikan
@@ -58,35 +58,4 @@ abstract class JikanLocalSource : ILocalSource<JikanEntity> {
     abstract fun withConnectionFlow(
         id: Long
     ): Flow<JikanWithConnection?>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsertAuthors(entities: List<JikanEntity.AuthorEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsertProducers(entities: List<JikanEntity.ProducerEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsertLicensors(entities: List<JikanEntity.LicensorEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsertStudios(entities: List<JikanEntity.StudioEntity>)
-
-    @Transaction
-    open suspend fun upsertWithConnections(
-        entity: JikanEntity,
-        authors: List<JikanEntity.AuthorEntity>,
-        producers: List<JikanEntity.ProducerEntity>,
-        licensors: List<JikanEntity.LicensorEntity>,
-        studios: List<JikanEntity.StudioEntity>
-    ) {
-        upsert(entity)
-        if (authors.isNotEmpty())
-            upsertAuthors(authors)
-        if (producers.isNotEmpty())
-            upsertProducers(producers)
-        if (licensors.isNotEmpty())
-            upsertLicensors(licensors)
-        if (studios.isNotEmpty())
-            upsertStudios(studios)
-    }
 }

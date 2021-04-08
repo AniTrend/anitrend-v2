@@ -48,6 +48,7 @@ internal sealed class EpisodeSourceImpl {
                     .flowOn(dispatcher.io)
                     .filterNotNull()
                     .map(converter::convertFrom)
+                    .distinctUntilChanged()
                     .flowOn(dispatcher.computation)
         }
 

@@ -40,7 +40,7 @@ private val sourceModule = module {
             localSource = store().genreDao(),
             remoteSource = graphApi(),
             controller = graphQLController(
-                mapper = get<GenreMapper>()
+                mapper = get<GenreMapper.Core>()
             ),
             cachePolicy = get<GenreCache>(),
             clearDataHelper = get(),
@@ -82,7 +82,12 @@ private val mapperModule = module {
             localSource = store().genreDao(),
             converter = get()
         )
-    } bind GenreMapper::class
+    }
+    factory {
+        GenreMapper.Embed(
+            localSource = store().genreConnectionDao()
+        )
+    }
 }
 
 private val useCaseModule = module {

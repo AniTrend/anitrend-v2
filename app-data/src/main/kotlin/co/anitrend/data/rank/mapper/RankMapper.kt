@@ -25,26 +25,24 @@ import co.anitrend.data.rank.model.RankModel
 
 internal class RankMapper(
     override val localSource: RankLocalSource
-) : EmbedMapper<RankModel, RankEntity>() {
+) : EmbedMapper<RankMapper.Item, RankEntity>() {
 
-    var mediaId: Long = 0
-
-    override val converter = object : SupportConverter<RankModel, RankEntity>() {
+    override val converter = object : SupportConverter<Item, RankEntity>() {
         /**
          * Function reference from converting from [M] to [E] which will
          * be called by [convertFrom]
          */
-        override val fromType: (RankModel) -> RankEntity = {
+        override val fromType: (Item) -> RankEntity = {
             RankEntity(
-                mediaId = mediaId,
-                allTime = it.allTime,
-                context = it.context,
-                format = it.format,
-                rank = it.rank,
-                season = it.season,
-                type = it.type,
-                year = it.year,
-                id = it.id,
+                mediaId = it.mediaId,
+                allTime = it.rank.allTime,
+                context = it.rank.context,
+                format = it.rank.format,
+                rank = it.rank.rank,
+                season = it.rank.season,
+                type = it.rank.type,
+                year = it.rank.year,
+                id = it.rank.id,
             )
         }
 
@@ -52,8 +50,13 @@ internal class RankMapper(
          * Function reference from converting from [E] to [M] which will
          * be called by [convertTo]
          */
-        override val toType: (RankEntity) -> RankModel
+        override val toType: (RankEntity) -> Item
                 get() = throw NotImplementedError()
 
     }
+
+    data class Item(
+        val mediaId: Long,
+        val rank: RankModel
+    )
 }

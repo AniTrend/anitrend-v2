@@ -19,8 +19,13 @@ package co.anitrend.data.jikan.media.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
+import co.anitrend.data.jikan.author.entity.JikanAuthorEntity
+import co.anitrend.data.jikan.contract.JikanItem
+import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
+import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
+import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 
 internal class JikanModelConverter(
     override val fromType: (JikanMediaModel) -> JikanEntity = ::transform,
@@ -76,61 +81,57 @@ internal class JikanModelConverter(
 }
 
 internal class JikanAuthorModelConverter(
-    jikanId: Long,
-    override val fromType: (JikanMediaModel.Attribute) -> JikanEntity.AuthorEntity = { transform(it, jikanId) },
-    override val toType: (JikanEntity.AuthorEntity) -> JikanMediaModel.Attribute = { throw NotImplementedError() }
-) : SupportConverter<JikanMediaModel.Attribute, JikanEntity.AuthorEntity>() {
-    private companion object {
-        fun transform(source: JikanMediaModel.Attribute, jikanId: Long) = JikanEntity.AuthorEntity(
-            jikanId = jikanId,
-            type = source.type,
-            name = source.name,
-            id = source.malId
+    override val fromType: (JikanItem) -> JikanAuthorEntity = ::transform,
+    override val toType: (JikanAuthorEntity) -> JikanItem = { throw NotImplementedError() }
+) : SupportConverter<JikanItem, JikanAuthorEntity>() {
+    private companion object : ISupportTransformer<JikanItem, JikanAuthorEntity> {
+        override fun transform(source: JikanItem) = JikanAuthorEntity(
+        jikanId = source.jikanId,
+        type = source.model.type,
+        name = source.model.name,
+        id = source.model.malId,
         )
     }
 }
 
 internal class JikanLicensorModelConverter(
-    jikanId: Long,
-    override val fromType: (JikanMediaModel.Attribute) -> JikanEntity.LicensorEntity = { transform(it, jikanId) },
-    override val toType: (JikanEntity.LicensorEntity) -> JikanMediaModel.Attribute = { throw NotImplementedError() }
-) : SupportConverter<JikanMediaModel.Attribute, JikanEntity.LicensorEntity>() {
-    private companion object {
-        fun transform(source: JikanMediaModel.Attribute, jikanId: Long) = JikanEntity.LicensorEntity(
-            jikanId = jikanId,
-            type = source.type,
-            name = source.name,
-            id = source.malId
+    override val fromType: (JikanItem) -> JikanLicensorEntity = ::transform,
+    override val toType: (JikanLicensorEntity) -> JikanItem = { throw NotImplementedError() }
+) : SupportConverter<JikanItem, JikanLicensorEntity>() {
+    private companion object : ISupportTransformer<JikanItem, JikanLicensorEntity> {
+        override fun transform(source: JikanItem) = JikanLicensorEntity(
+        jikanId = source.jikanId,
+        type = source.model.type,
+        name = source.model.name,
+        id = source.model.malId,
         )
     }
 }
 
 internal class JikanProducerModelConverter(
-    jikanId: Long,
-    override val fromType: (JikanMediaModel.Attribute) -> JikanEntity.ProducerEntity = { transform(it, jikanId) },
-    override val toType: (JikanEntity.ProducerEntity) -> JikanMediaModel.Attribute = { throw NotImplementedError() }
-) : SupportConverter<JikanMediaModel.Attribute, JikanEntity.ProducerEntity>() {
-    private companion object {
-        fun transform(source: JikanMediaModel.Attribute, jikanId: Long) = JikanEntity.ProducerEntity(
-            jikanId = jikanId,
-            type = source.type,
-            name = source.name,
-            id = source.malId
+    override val fromType: (JikanItem) -> JikanProducerEntity = ::transform,
+    override val toType: (JikanProducerEntity) -> JikanItem = { throw NotImplementedError() }
+) : SupportConverter<JikanItem, JikanProducerEntity>() {
+    private companion object : ISupportTransformer<JikanItem, JikanProducerEntity> {
+        override fun transform(source: JikanItem) = JikanProducerEntity(
+        jikanId = source.jikanId,
+        type = source.model.type,
+        name = source.model.name,
+        id = source.model.malId,
         )
     }
 }
 
 internal class JikanStudioModelConverter(
-    jikanId: Long,
-    override val fromType: (JikanMediaModel.Attribute) -> JikanEntity.StudioEntity = { transform(it, jikanId) },
-    override val toType: (JikanEntity.StudioEntity) -> JikanMediaModel.Attribute = { throw NotImplementedError() }
-) : SupportConverter<JikanMediaModel.Attribute, JikanEntity.StudioEntity>() {
-    private companion object {
-        fun transform(source: JikanMediaModel.Attribute, jikanId: Long) = JikanEntity.StudioEntity(
-            jikanId = jikanId,
-            type = source.type,
-            name = source.name,
-            id = source.malId
+    override val fromType: (JikanItem) -> JikanStudioEntity = ::transform,
+    override val toType: (JikanStudioEntity) -> JikanItem = { throw NotImplementedError() }
+) : SupportConverter<JikanItem, JikanStudioEntity>() {
+    private companion object : ISupportTransformer<JikanItem, JikanStudioEntity> {
+        override fun transform(source: JikanItem) = JikanStudioEntity(
+            jikanId = source.jikanId,
+            type = source.model.type,
+            name = source.model.name,
+            id = source.model.malId,
         )
     }
 }

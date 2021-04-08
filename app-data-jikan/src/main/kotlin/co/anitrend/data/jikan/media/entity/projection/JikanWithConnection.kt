@@ -19,7 +19,11 @@ package co.anitrend.data.jikan.media.entity.projection
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import co.anitrend.data.jikan.author.entity.JikanAuthorEntity
+import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
 import co.anitrend.data.jikan.media.entity.JikanEntity
+import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
+import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 
 data class JikanWithConnection(
     @Embedded val entity: JikanEntity,
@@ -27,20 +31,20 @@ data class JikanWithConnection(
         parentColumn = "id",
         entityColumn = "jikan_id"
     )
-    val authors: List<JikanEntity.AuthorEntity> = emptyList(),
+    val authors: List<JikanAuthorEntity> = emptyList(),
     @Relation(
         parentColumn = "id",
         entityColumn = "jikan_id"
     )
-    val producers: List<JikanEntity.ProducerEntity> = emptyList(),
+    val producers: List<JikanProducerEntity> = emptyList(),
     @Relation(
         parentColumn = "id",
         entityColumn = "jikan_id"
     )
-    val licensors: List<JikanEntity.LicensorEntity> = emptyList(),
+    val licensors: List<JikanLicensorEntity> = emptyList(),
     @Relation(
         parentColumn = "id",
         entityColumn = "jikan_id"
     )
-    val studios: List<JikanEntity.StudioEntity> = emptyList()
+    val studios: List<JikanStudioEntity> = emptyList()
 )

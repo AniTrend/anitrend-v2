@@ -162,6 +162,7 @@ internal class CarouselSourceImpl(
             combine(carouselFlows) { carouselItems ->
                 carouselItems.toList()
             }.filter(List<MediaCarousel>::isNotEmpty)
+                .distinctUntilChanged()
 
         emitAll(mergedFlows)
     }
