@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2020  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,18 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer
+package co.anitrend.core.initializer.injector
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
-import co.anitrend.core.migration.MigrationManager
+import co.anitrend.core.initializer.injector.extensions.defaultProperties
+import co.anitrend.core.initializer.injector.extensions.koinTimberLogger
+import co.anitrend.core.initializer.injector.extensions.workManagerFactory
+import co.anitrend.core.initializer.migration.MigrationInitializer
+import co.anitrend.core.koin.coreModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.core.context.startKoin
 
-/**
- * Migration helper for managing upgrades from one version of the application to another
- */
-class MigrationInitializer : AbstractCoreInitializer<Unit>() {
+class InjectorInitializer : AbstractCoreInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -34,19 +37,23 @@ class MigrationInitializer : AbstractCoreInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        val migrationManager = MigrationManager(
-            settings = Settings(context)
-        )
-        migrationManager.applyMigrations(context)
+        startKoin {
+            androidContext(context)
+            koinTimberLogger()
+            workManagerFactory()
+            fragmentFactory()
+            defaultProperties()
+            modules(coreModules)
+        }
     }
 
     /**
      * @return A list of dependencies that this [Initializer] depends on. This is
      * used to determine initialization order of [Initializer]s.
      *
-     * By default a feature initializer should only start after koin has been initialized
+     * For e.g. if a [Initializer] `B` defines another
+     * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(TimberInitializer::class.java)
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> =
+            listOf(MigrationInitializer::class.java)
 }

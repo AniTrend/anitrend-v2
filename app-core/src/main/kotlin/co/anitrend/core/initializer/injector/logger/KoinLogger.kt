@@ -15,24 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer.contract
+package co.anitrend.core.initializer.injector.logger
 
-import androidx.startup.Initializer
-import co.anitrend.core.initializer.injector.InjectorInitializer
-import co.anitrend.core.initializer.migration.MigrationInitializer
+import co.anitrend.core.BuildConfig
+import org.koin.core.logger.KOIN_TAG
+import org.koin.core.logger.Level
+import org.koin.core.logger.Logger
+import org.koin.core.logger.MESSAGE
+import timber.log.Timber
 
-/**
- * Contract for task initializer that runs after [MigrationInitializer]
- */
-abstract class AbstractTaskInitializer<T> : Initializer<T> {
-
-    /**
-     * @return A list of dependencies that this [Initializer] depends on. This is
-     * used to determine initialization order of [Initializer]s.
-     *
-     * By default a feature initializer should only start after koin has been initialized
-     */
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(InjectorInitializer::class.java)
+internal class KoinLogger(
+    logLevel: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR
+) : Logger(logLevel) {
+    override fun log(level: Level, msg: MESSAGE) {
+        when (level) {
+            Level.DEBUG -> Timber.tag(KOIN_TAG).v(msg)
+            Level.INFO -> Timber.tag(KOIN_TAG).i(msg)
+            Level.ERROR -> Timber.tag(KOIN_TAG).e(msg)
+            Level.NONE -> { /* logging disabled */ }
+        }
     }
 }

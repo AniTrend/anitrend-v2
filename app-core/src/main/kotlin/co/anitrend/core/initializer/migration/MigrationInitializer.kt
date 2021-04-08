@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,31 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer.contract
+package co.anitrend.core.initializer.migration
 
+import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.initializer.injector.InjectorInitializer
-import co.anitrend.core.initializer.migration.MigrationInitializer
+import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.initializer.logger.TimberInitializer
+import co.anitrend.core.initializer.contract.AbstractCoreInitializer
+import co.anitrend.core.migration.MigrationManager
 
 /**
- * Contract for feature initializer that runs after [MigrationInitializer]
+ * Migration helper for managing upgrades from one version of the application to another
  */
-abstract class AbstractFeatureInitializer<T> : Initializer<T> {
+class MigrationInitializer : AbstractCoreInitializer<Unit>() {
+
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        val migrationManager = MigrationManager(
+            settings = Settings(context)
+        )
+        migrationManager.applyMigrations(context)
+    }
 
     /**
      * @return A list of dependencies that this [Initializer] depends on. This is
@@ -33,6 +48,6 @@ abstract class AbstractFeatureInitializer<T> : Initializer<T> {
      * By default a feature initializer should only start after koin has been initialized
      */
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(InjectorInitializer::class.java)
+        return listOf(TimberInitializer::class.java)
     }
 }

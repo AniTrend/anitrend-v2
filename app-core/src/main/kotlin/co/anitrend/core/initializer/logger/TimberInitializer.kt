@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.initializer
+package co.anitrend.core.initializer.logger
 
 import android.content.Context
 import android.util.Log
