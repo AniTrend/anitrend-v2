@@ -14,71 +14,65 @@
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-<androidx.core.widget.NestedScrollView
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/xl_margin">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/xl_margin">
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="start|center_vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="@string/label_discover_filter_sort_title"
+                    style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/md_margin" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_discover_filter_sort_sub_title"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/sort_by_ascending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:text="@string/label_discover_filter_sort_order_switch"/>
+
+        </FrameLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/sort_chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="start|center_vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:text="@string/label_discover_filter_sort_title"
-                        style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
-
-                    <Space
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/md_margin" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_discover_filter_sort_sub_title"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/sort_by_ascending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:text="@string/label_discover_filter_sort_order_switch"/>
-
-            </FrameLayout>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/lg_margin" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/sort_chip_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:selectionRequired="false"
-                app:singleSelection="false"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            app:selectionRequired="false"
+            app:singleSelection="false"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-</androidx.core.widget.NestedScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

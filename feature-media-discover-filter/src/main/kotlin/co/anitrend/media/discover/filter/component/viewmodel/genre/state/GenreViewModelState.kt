@@ -48,7 +48,6 @@ class GenreViewModelState(
         it.refreshState.asLiveData(context)
     }
 
-
     operator fun invoke(param: GenreParam) {
         val result = interactor.getMediaGenres(param)
         useCaseResult.postValue(result)

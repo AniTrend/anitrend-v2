@@ -24,5 +24,6 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.genre))
     implementation(project(Libraries.AniTrend.CommonUi.tag))
+    implementation(Libraries.Google.FlexBox.flexBox)
 	implementation(Libraries.rangeSeekBar)
 }

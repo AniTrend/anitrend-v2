@@ -19,24 +19,31 @@ package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.common.tag.databinding.TagItemBinding
-import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.arch.recycler.adapter.SupportAdapter
+import co.anitrend.arch.recycler.extensions.isEmpty
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.component.content.selection.AniTrendSelectionContent
+import co.anitrend.core.extensions.combine
+import co.anitrend.core.extensions.union
 import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterTagBinding
-import co.anitrend.media.discover.filter.extensions.withChip
 import co.anitrend.navigation.MediaDiscoverRouter
-import com.google.android.material.chip.Chip
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class TagContent(
-    override val inflateLayout: Int = R.layout.media_discover_filter_tag
-) : AniTrendContent<MediaDiscoverFilterTagBinding>() {
+    override val stateConfig: StateLayoutConfig,
+    override val supportViewAdapter: SupportAdapter<Tag>,
+    override val inflateLayout: Int = R.layout.media_discover_filter_tag,
+    override val bindingMapper: (View) -> MediaDiscoverFilterTagBinding = {
+        MediaDiscoverFilterTagBinding.bind(it)
+    }
+) : AniTrendSelectionContent<MediaDiscoverFilterTagBinding, Tag>() {
 
     private val param by argument(
         MediaDiscoverRouter.Param.KEY,
@@ -45,41 +52,37 @@ internal class TagContent(
 
     private val viewModel by viewModel<TagViewModel>()
 
-    private fun bindModelToViews(entity: Tag): Chip {
-        val binding = TagItemBinding.inflate(
-            layoutInflater,
-            requireBinding().tagsChipGroup,
-            false
-        )
-        binding.tag.text = entity.name
-        return binding.tag
-    }
+    private fun applySelections(tags: List<Tag>) {
+        // to avoid double triggers with the same data
+        if (supportViewAdapter.isEmpty()) {
+            val tagParams = param.tag_in.combine(param.tag)
 
-    private fun initializeViewsWithOptions(tags: List<Tag>) {
-        tags.forEach {
-            requireBinding().tagsChipGroup.addView(
-                bindModelToViews(it).withChip {
-                    isChecked = when {
-                        param.tag != null ->
-                            param.tag == it.name
-                        param.tag_in != null ->
-                            param.tag_in?.contains(it.name) == true
-                        param.tagCategory != null ->
-                            param.tagCategory == it.category
-                        param.tagCategory_in != null ->
-                            param.tagCategory_in?.contains(it.category) == true
-                        else -> false
-                    }
-                }
-            )
+            val tagSelectedIds = tags.union(tagParams) { p, s ->
+                p.name == s
+            }.map(Tag::id)
+
+            val categories = param.tagCategory_in.combine(param.tagCategory)
+
+            val categorySelectedIds = tags.union(categories) { p, s ->
+                p.category == s
+            }.map(Tag::id)
+
+            val selectedIds = (tagSelectedIds + categorySelectedIds).distinct()
+            supportViewAdapter.supportAction?.selectAllItems(selectedIds)
         }
     }
 
-    private fun onFetchDataInitialize() {
-        if (requireBinding().tagsChipGroup.childCount < 1) {
-            val param = TagParam(SortOrder.ASC)
-            viewModelState().invoke(param)
-        }
+    /**
+     * Stub to trigger the loading of data, by default this is only called
+     * when [supportViewAdapter] has no data in its underlying source.
+     *
+     * This is called when the fragment reaches it's [onResume] state
+     *
+     * @see initializeComponents
+     */
+    override fun onFetchDataInitialize() {
+        val param = TagParam(SortOrder.ASC)
+        viewModelState().invoke(param)
     }
 
     /**
@@ -88,7 +91,8 @@ internal class TagContent(
      */
     override fun setUpViewModelObserver() {
         viewModelState().model.observe(viewLifecycleOwner) {
-            initializeViewsWithOptions(it)
+            applySelections(it)
+            onPostModelChange(it)
         }
     }
 
@@ -105,8 +109,7 @@ internal class TagContent(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = MediaDiscoverFilterTagBinding.bind(view)
-        onFetchDataInitialize()
+        requireBinding().tagsRecyclerSelection.configure()
     }
 
     /**

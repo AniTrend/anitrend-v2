@@ -21,12 +21,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
+import co.anitrend.core.android.extensions.createChipChoice
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterSortingBinding
-import co.anitrend.media.discover.filter.extensions.withChip
 import co.anitrend.navigation.MediaDiscoverRouter
 import kotlinx.coroutines.launch
 
@@ -49,7 +49,7 @@ internal class SortingContent(
     private fun initializeViewsWithOptions() {
         MediaSort.values().forEach {
             requireBinding().sortChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.sort?.map { sorting ->
                         sorting.sortable

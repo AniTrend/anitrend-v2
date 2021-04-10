@@ -18,26 +18,55 @@
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.common.genre.databinding.GenreItemBinding
-import co.anitrend.core.android.views.text.TextDrawable
+import co.anitrend.arch.extension.ext.attachComponent
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.adapter.SupportAdapter
+import co.anitrend.arch.recycler.adapter.SupportListAdapter
+import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
+import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.extensions.isEmpty
+import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
+import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.recycler.decorator.DefaultSpacingDecorator
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.core.component.content.selection.AniTrendSelectionContent
+import co.anitrend.core.extensions.combine
+import co.anitrend.core.extensions.union
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.genre.model.GenreParam
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGenreBinding
-import co.anitrend.media.discover.filter.extensions.withChip
 import co.anitrend.navigation.MediaDiscoverRouter
-import com.google.android.material.chip.Chip
+import com.google.android.flexbox.AlignContent
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 internal class GenreContent(
-    override val inflateLayout: Int = R.layout.media_discover_filter_genre
-) : AniTrendContent<MediaDiscoverFilterGenreBinding>() {
+    override val stateConfig: StateLayoutConfig,
+    override val supportViewAdapter: SupportAdapter<Genre>,
+    override val inflateLayout: Int = R.layout.media_discover_filter_genre,
+    override val bindingMapper: (View) -> MediaDiscoverFilterGenreBinding = {
+        MediaDiscoverFilterGenreBinding.bind(it)
+    }
+) : AniTrendSelectionContent<MediaDiscoverFilterGenreBinding, Genre>() {
 
     private val param by argument(
         MediaDiscoverRouter.Param.KEY,
@@ -46,40 +75,30 @@ internal class GenreContent(
 
     private val viewModel by viewModel<GenreViewModel>()
 
-    private fun bindModelToViews(entity: Genre): Chip {
-        val binding = GenreItemBinding.inflate(
-            layoutInflater,
-            requireBinding().genresChipGroup,
-            false
-        )
-        val context = binding.root.context
-        binding.genre.text = entity.name
-        binding.genre.chipIcon = TextDrawable(context, entity.emoji)
-        return binding.genre
-    }
+    private fun applySelections(genres: List<Genre>) {
+        // to avoid double triggers with the same data
+        if (supportViewAdapter.isEmpty()) {
+            val items = param.genre_in.combine(param.genre)
 
+            val selectedIds = genres.union(items) { p, s ->
+                s == p.name
+            }.map(Genre::id)
 
-    private fun initializeViewsWithOptions(genres: List<Genre>) {
-        genres.forEach {
-            requireBinding().genresChipGroup.addView(
-                bindModelToViews(it).withChip {
-                    isChecked = when {
-                        param.genre != null ->
-                            param.genre == it.name
-                        param.genre_in != null ->
-                            param.genre_in?.contains(it.name) == true
-                        else -> false
-                    }
-                }
-            )
+            supportViewAdapter.supportAction?.selectAllItems(selectedIds)
         }
     }
 
-    private fun onFetchDataInitialize() {
-        if (requireBinding().genresChipGroup.childCount < 1) {
-            val param = GenreParam(SortOrder.ASC)
-            viewModelState().invoke(param)
-        }
+    /**
+     * Stub to trigger the loading of data, by default this is only called
+     * when [supportViewAdapter] has no data in its underlying source.
+     *
+     * This is called when the fragment reaches it's [onResume] state
+     *
+     * @see initializeComponents
+     */
+    override fun onFetchDataInitialize() {
+        val param = GenreParam(SortOrder.ASC)
+        viewModelState().invoke(param)
     }
 
     /**
@@ -88,7 +107,8 @@ internal class GenreContent(
      */
     override fun setUpViewModelObserver() {
         viewModelState().model.observe(viewLifecycleOwner) {
-            initializeViewsWithOptions(it)
+            applySelections(it)
+            onPostModelChange(it)
         }
     }
 
@@ -105,8 +125,7 @@ internal class GenreContent(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = MediaDiscoverFilterGenreBinding.bind(view)
-        onFetchDataInitialize()
+        requireBinding().genresRecyclerSelection.configure()
     }
 
     /**

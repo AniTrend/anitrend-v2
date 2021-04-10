@@ -17,6 +17,9 @@
 
 package co.anitrend.media.discover.filter.koin
 
+import co.anitrend.common.genre.ui.adapter.GenreListAdapter
+import co.anitrend.common.tag.ui.adpter.TagListAdapter
+import co.anitrend.core.android.recycler.selection.DefaultSelectionMode
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.filter.component.content.GeneralContent
 import co.anitrend.media.discover.filter.component.content.GenreContent
@@ -28,6 +31,7 @@ import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
 import co.anitrend.media.discover.filter.component.viewmodel.tag.state.TagViewModelState
 import co.anitrend.media.discover.filter.provider.FeatureProvider
 import co.anitrend.navigation.MediaDiscoverFilterRouter
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -42,10 +46,24 @@ private val fragmentModule = module {
 		)
 	}
 	fragment {
-		GenreContent()
+		GenreContent(
+			stateConfig = get(),
+			supportViewAdapter = GenreListAdapter(
+				stateConfiguration = get(),
+				resources = androidContext().resources,
+				supportAction = DefaultSelectionMode()
+			)
+		)
 	}
 	fragment {
-		TagContent()
+		TagContent(
+			stateConfig = get(),
+			supportViewAdapter = TagListAdapter(
+				stateConfiguration = get(),
+				resources = androidContext().resources,
+				supportAction = DefaultSelectionMode()
+			)
+		)
 	}
 }
 

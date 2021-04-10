@@ -23,11 +23,11 @@ import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.capitalizeWords
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
+import co.anitrend.core.android.extensions.createChipChoice
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.domain.media.enums.*
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGeneralBinding
-import co.anitrend.media.discover.filter.extensions.withChip
 import co.anitrend.navigation.MediaDiscoverRouter
 import kotlinx.coroutines.launch
 import java.util.*
@@ -58,7 +58,7 @@ internal class GeneralContent(
     private fun initializeViewsWithOptions() {
         MediaStatus.values().forEach {
             requireBinding().statusChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.status_in?.contains(it) == true || param.status == it
                 }
@@ -66,7 +66,7 @@ internal class GeneralContent(
         }
         MediaType.values().forEach {
             requireBinding().mediaTypeChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.type == it
                 }
@@ -74,7 +74,7 @@ internal class GeneralContent(
         }
         MediaSeason.values().forEach {
             requireBinding().seasonChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.season == it
                 }
@@ -82,7 +82,7 @@ internal class GeneralContent(
         }
         MediaFormat.values().forEach {
             requireBinding().formatChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.format_in?.contains(it) == true || param.format == it
                 }
@@ -90,7 +90,7 @@ internal class GeneralContent(
         }
         MediaSource.values().forEach {
             requireBinding().sourceChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.source_in?.contains(it) == true || param.source == it
                 }
@@ -98,7 +98,7 @@ internal class GeneralContent(
         }
         MediaCountry.values().forEach {
             requireBinding().countryChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.name.toLowerCase(Locale.ROOT).capitalizeWords()
                     isChecked = param.countryOfOrigin == it.alias
                 }
@@ -106,7 +106,7 @@ internal class GeneralContent(
         }
         MediaLicensor.values().forEach {
             requireBinding().streamingChipGroup.addView(
-                requireContext().withChip {
+                requireContext().createChipChoice {
                     text = it.title
                     isChecked = param.licensedBy_in?.contains(it) == true || param.licensedBy == it
                 }
