@@ -40,8 +40,8 @@
     <!-- Airs October 21st -->
     <string name="label_episode_airing_on_date">Airs %s</string>
 
-    <!-- Carousel see all button -->
-    <string name="label_carousel_see_all">See All</string>
+    <!-- Carousel see more button -->
+    <string name="label_carousel_see_more">More</string>
 
 
     <string name="label_carousel_airing_anime">Airing Soon</string>

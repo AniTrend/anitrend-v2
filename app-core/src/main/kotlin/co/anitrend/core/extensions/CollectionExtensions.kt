@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.core.extensions
 
-plugins {
-    id("co.anitrend.plugin")
+inline fun <P, S> List<P>.union(
+    secondary: List<S>,
+    predicate: (P, S) -> Boolean
+) = filter { p ->
+    secondary.any { s ->
+        predicate(p, s)
+    }
 }
 
-dependencies {
-    implementation(Libraries.AndroidX.Browser.browser)
-
-    implementation(Libraries.AniTrend.Emojify.emojify)
-
-    implementation(Libraries.Square.OkHttp.logging)
-
-    implementation(Libraries.Google.FlexBox.flexBox)
-
-    /** Timber Trees */
-    implementation(Libraries.treessence)
+fun <T> List<T>?.combine(item: T?): List<T> {
+    return if (item != null)
+        orEmpty().plus(listOf(item))
+    else orEmpty()
 }

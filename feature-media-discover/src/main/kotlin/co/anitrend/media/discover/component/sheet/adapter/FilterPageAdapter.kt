@@ -58,10 +58,10 @@ internal class FilterPageAdapter(
     override fun createFragment(position: Int): Fragment {
         val fragment = when (position) {
             0 -> FragmentItem(
-                fragment = MediaDiscoverFilterRouter.forSorting()
+                fragment = MediaDiscoverFilterRouter.forGeneral()
             ).fragmentByTagOrNew(fragmentActivity)
             1 -> FragmentItem(
-                fragment = MediaDiscoverFilterRouter.forGeneral()
+                fragment = MediaDiscoverFilterRouter.forSorting()
             ).fragmentByTagOrNew(fragmentActivity)
             2 -> FragmentItem(
                 fragment = MediaDiscoverFilterRouter.forGenre()

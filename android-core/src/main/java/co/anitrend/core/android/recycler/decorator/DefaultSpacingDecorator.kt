@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.common.shared.ui.recycler.decorator
+package co.anitrend.core.android.recycler.decorator
 
 import android.graphics.Rect
 import android.view.View
@@ -24,20 +24,27 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import co.anitrend.common.shared.R
+import co.anitrend.core.android.R
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import timber.log.Timber
 
-class DefaultOrientationDecorator(
-    @DimenRes private val itemSpacingDimen: Int = R.dimen.size_8dp,
-    @DimenRes private val edgeSpacingDimen: Int = R.dimen.size_8dp
+class DefaultSpacingDecorator(
+    @DimenRes private val itemSpacingDimen: Int = R.dimen.size_2dp,
+    @DimenRes private val edgeSpacingDimen: Int = R.dimen.size_2dp
 ): RecyclerView.ItemDecoration() {
 
     private fun isVerticalOrientation(recyclerView: RecyclerView): Boolean {
         return when (val layoutManager = recyclerView.layoutManager) {
+            is FlexboxLayoutManager -> layoutManager.flexDirection == FlexDirection.COLUMN
             is LinearLayoutManager -> layoutManager.orientation == LinearLayoutManager.VERTICAL
             is GridLayoutManager -> layoutManager.orientation == GridLayoutManager.VERTICAL
             is StaggeredGridLayoutManager -> layoutManager.orientation == StaggeredGridLayoutManager.VERTICAL
-            null -> true
-            else -> throw NotImplementedError("Unknown layout manager encountered $layoutManager")
+            null -> {
+                Timber.v("Recycler does not have a layout manager attached to it yet, returning true")
+                true
+            }
+            else -> throw NotImplementedError("Not sure how to handle $layoutManager")
         }
     }
 

@@ -20,12 +20,11 @@ package co.anitrend.common.genre.ui.controller.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.common.genre.R
 import co.anitrend.common.genre.databinding.GenreItemBinding
+import co.anitrend.core.android.extensions.asChoice
 import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.views.text.TextDrawable
@@ -36,7 +35,8 @@ import co.anitrend.navigation.extensions.startActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class GenreItem(
-    private val entity: Genre
+    private val entity: Genre,
+    override val supportsSelectionMode: Boolean = true
 ) : RecyclerItemBinding<GenreItemBinding>(entity.id) {
 
     /**
@@ -57,24 +57,30 @@ internal class GenreItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = GenreItemBinding.bind(view)
-        requireBinding().genre.text = entity.name
+        val isSelectable = selectionMode != null
         requireBinding().genre.chipIcon = TextDrawable(view.context, entity.emoji)
 
         if (entity is Genre.Extended && entity.background != null) {
             val background = entity.background!!.asColorInt(view.context)
             requireBinding().genre.setTextColor(background)
-        } else {
-            val textColor = view.context.getCompatColor(R.color.primaryTextColor)
-            requireBinding().genre.setTextColor(textColor)
         }
 
+        if (isSelectable)
+            requireBinding().genre.asChoice()
+
+        requireBinding().genre.text = entity.name
+
         requireBinding().genre.setOnClickListener {
-            MediaDiscoverRouter.startActivity(
-                context = it.context,
-                navPayload = MediaDiscoverRouter.Param(
-                    genre = entity.name
-                ).asNavPayload()
-            )
+            if (!isSelectable) {
+                MediaDiscoverRouter.startActivity(
+                    context = it.context,
+                    navPayload = MediaDiscoverRouter.Param(
+                        genre = entity.name
+                    ).asNavPayload()
+                )
+            } else {
+                selectionMode?.isSelectionClickable(it, decorator, id)
+            }
         }
     }
 

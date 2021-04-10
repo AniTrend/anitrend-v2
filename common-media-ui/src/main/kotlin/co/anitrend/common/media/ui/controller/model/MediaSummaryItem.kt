@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.genre.ui.adapter.GenreListAdapter
 import co.anitrend.common.media.ui.databinding.MediaSummaryItemBinding
 import co.anitrend.common.shared.ui.extension.setUpWith
@@ -50,16 +51,17 @@ internal class MediaSummaryItem(
 ) : RecyclerItemBinding<MediaSummaryItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
+    private var genreListAdapter: GenreListAdapter? = null
 
     private fun setUpMediaGenres(view: View) {
-        val genreListAdapter = GenreListAdapter(view.resources)
+        val adapter = GenreListAdapter(view.resources, StateLayoutConfig())
 
         requireBinding().mediaGenresRecycler.setUpWith(
-            supportAdapter = genreListAdapter,
+            supportAdapter = adapter,
             recyclerViewPool = viewPool
         )
 
-        genreListAdapter.submitList(entity.genres.toList())
+        adapter.submitList(entity.genres.toList())
     }
 
     /**
@@ -119,6 +121,8 @@ internal class MediaSummaryItem(
     override fun unbind(view: View) {
         binding?.mediaCardContainer?.setOnLongClickListener(null)
         binding?.mediaCardContainer?.setOnClickListener(null)
+        binding?.mediaGenresRecycler?.onDestroy()
+        genreListAdapter?.onPause()
         disposable?.dispose()
         disposable = null
         super.unbind(view)

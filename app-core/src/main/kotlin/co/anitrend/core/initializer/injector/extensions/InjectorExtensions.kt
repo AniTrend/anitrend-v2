@@ -23,6 +23,7 @@ import androidx.work.DelegatingWorkerFactory
 import androidx.work.WorkManager
 import co.anitrend.core.BuildConfig
 import co.anitrend.core.initializer.injector.InjectorInitializer
+import co.anitrend.core.initializer.injector.factory.WorkManagerFactory
 import co.anitrend.core.initializer.injector.logger.KoinLogger
 import org.koin.androidx.workmanager.factory.KoinWorkerFactory
 import org.koin.core.KoinApplication
@@ -32,7 +33,7 @@ import org.koin.core.KoinExperimentalAPI
 private fun KoinApplication.createWorkManagerFactory() {
     val factory = DelegatingWorkerFactory()
         .apply {
-            addFactory(KoinWorkerFactory())
+            addFactory(WorkManagerFactory())
         }
 
     val configuration = Configuration.Builder()

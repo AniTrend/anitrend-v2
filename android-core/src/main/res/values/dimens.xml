@@ -43,9 +43,9 @@
     <dimen name="series_image_xs">100dp</dimen>
 
     <dimen name="size_2dp">2dp</dimen>
-    <dimen name="size_4dp">2dp</dimen>
-    <dimen name="size_6dp">2dp</dimen>
-    <dimen name="size_8dp">2dp</dimen>
+    <dimen name="size_4dp">4dp</dimen>
+    <dimen name="size_6dp">6dp</dimen>
+    <dimen name="size_8dp">8dp</dimen>
     <dimen name="size_10dp">10dp</dimen>
     <dimen name="size_12dp">12dp</dimen>
     <dimen name="size_14dp">14dp</dimen>

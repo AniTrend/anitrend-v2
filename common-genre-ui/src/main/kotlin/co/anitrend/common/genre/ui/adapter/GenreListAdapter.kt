@@ -34,12 +34,11 @@ import co.anitrend.domain.genre.entity.Genre
 
 class GenreListAdapter(
     override val resources: Resources,
+    override val stateConfiguration: IStateLayoutConfig,
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Genre) -> IRecyclerItem = { GenreItem(it) },
     override val supportAction: ISupportSelectionMode<Long>? = null
 ) : SupportListAdapter<Genre>(GenreDiffUtil) {
-
-    override val stateConfiguration: IStateLayoutConfig = StateLayoutConfig()
 
     /**
      * Should provide the required view holder, this function is a substitute for

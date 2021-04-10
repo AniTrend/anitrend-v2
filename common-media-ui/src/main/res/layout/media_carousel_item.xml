@@ -27,12 +27,16 @@
         android:id="@+id/mediaCarouselHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/xl_margin">
+        android:paddingTop="@dimen/lg_margin"
+        android:paddingBottom="@dimen/lg_margin"
+        android:paddingEnd="@dimen/md_margin"
+        android:paddingStart="@dimen/xl_margin">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/mediaCarouselTitle"
@@ -54,23 +58,18 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <com.google.android.material.textview.MaterialTextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/mediaCarouselAction"
             android:layout_gravity="end|center_horizontal"
-            android:padding="@dimen/md_margin"
-            android:layout_width="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody1"
+            style="@style/AppTheme.Material.TextButton"
             android:textColor="?colorAccent"
-            android:textStyle="bold"
             android:clickable="true"
             android:focusable="true"
-            android:background="?selectableItemBackground"
-            style="@style/AppTheme.SingleLineText"
-            android:text="@string/label_carousel_see_all" />
+            android:text="@string/label_carousel_see_more" />
 
     </FrameLayout>
 
-    <co.anitrend.common.shared.ui.recycler.EmbeddedRecycler
+    <co.anitrend.core.android.recycler.CarouselRecycler
         android:id="@+id/mediaCarouselRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

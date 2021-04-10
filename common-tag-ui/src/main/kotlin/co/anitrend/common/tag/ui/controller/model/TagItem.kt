@@ -28,6 +28,7 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.tag.R
 import co.anitrend.common.tag.databinding.TagItemBinding
+import co.anitrend.core.android.extensions.asChoice
 import co.anitrend.core.android.getCompatDrawable
 import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
@@ -36,11 +37,14 @@ import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
+import com.airbnb.paris.extensions.style
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class TagItem(
-    private val entity: Tag
+    private val entity: Tag,
+    override val supportsSelectionMode: Boolean = true
 ) : RecyclerItemBinding<TagItemBinding>(entity.id) {
+
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
      * assign text, load images, e.t.c
@@ -60,6 +64,7 @@ internal class TagItem(
     ) {
         binding = TagItemBinding.bind(view)
         val builder = SpannableStringBuilder(entity.name)
+        val isSelectable = selectionMode != null
 
         if (entity is Tag.Extended) {
             @ColorInt val colorTint = entity.background?.asColorInt(view.context) ?: 0
@@ -70,15 +75,23 @@ internal class TagItem(
                 "${entity.rank}%"
             }
         }
+
+        if (isSelectable)
+            requireBinding().tag.asChoice()
+
         requireBinding().tag.text = builder
 
         requireBinding().tag.setOnClickListener {
-            MediaDiscoverRouter.startActivity(
-                context = it.context,
-                navPayload = MediaDiscoverRouter.Param(
-                    tag = entity.name
-                ).asNavPayload()
-            )
+            if (!isSelectable) {
+                MediaDiscoverRouter.startActivity(
+                    context = it.context,
+                    navPayload = MediaDiscoverRouter.Param(
+                        tag = entity.name
+                    ).asNavPayload()
+                )
+            } else {
+                selectionMode?.isSelectionClickable(it, decorator, id)
+            }
         }
     }
 

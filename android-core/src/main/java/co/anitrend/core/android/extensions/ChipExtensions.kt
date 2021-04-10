@@ -15,37 +15,45 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.media.discover.filter.extensions
+package co.anitrend.core.android.extensions
 
 import android.content.Context
-import co.anitrend.media.discover.filter.R
+import co.anitrend.core.android.R
 import com.airbnb.paris.extensions.style
 import com.google.android.material.chip.Chip
 
-
-internal inline fun Context.withChip(
-    action: Chip.() -> Unit
-): Chip {
-    val chip = Chip(this)
-    chip.style(R.style.AppTheme_Material_Chip_Choice)
-    chip.setChipBackgroundColorResource(
-        R.color.selector_chip_background
-    )
-    chip.isCheckedIconVisible = false
-    chip.isCheckable = true
-    action(chip)
-    return chip
-}
-
-internal inline fun Chip.withChip(
-    action: Chip.() -> Unit
-): Chip {
+/**
+ * Themes and styles chip for choice selection
+ */
+fun Chip.asChoice() {
     style(R.style.AppTheme_Material_Chip_Choice)
     setChipBackgroundColorResource(
         R.color.selector_chip_background
     )
     isCheckedIconVisible = false
     isCheckable = true
+}
+
+/**
+ * Themes and styles chip for choice selection
+ *
+ * @param action Delegate to access the chip
+ *
+ * @see asChoice
+ */
+inline fun Chip.asChoice(
+    action: Chip.() -> Unit
+): Chip {
+    asChoice()
     action(this)
     return this
 }
+
+/**
+ * Creates a themed and styled chip for choice selection
+ *
+ * @param action Delegate to access the chip
+ */
+inline fun Context.createChipChoice(
+    action: Chip.() -> Unit
+): Chip = Chip(this).asChoice(action)

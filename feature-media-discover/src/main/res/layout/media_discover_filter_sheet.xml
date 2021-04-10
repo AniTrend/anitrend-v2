@@ -25,10 +25,10 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sheetHandle"
-        android:layout_width="@dimen/size_48dp"
+        android:layout_width="@dimen/size_65dp"
         android:layout_height="@dimen/md_margin"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/lg_margin"
+        android:layout_marginTop="@dimen/xl_margin"
         app:srcCompat="@drawable/touch_thumbnail"/>
 
     <Space
@@ -76,15 +76,9 @@
         app:tabMode="scrollable"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical">
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </androidx.core.widget.NestedScrollView>
-
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

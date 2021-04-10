@@ -20,8 +20,8 @@
 
     <!-- Filter content headers -->
     <string-array name="titles_filter_pages">
-        <item>Sorting</item>
         <item>General</item>
+        <item>Sorting</item>
         <item>Genres</item>
         <item>Tags</item>
     </string-array>

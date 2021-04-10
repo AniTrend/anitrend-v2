@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.common.shared.ui.recycler
+package co.anitrend.core.android.recycler
 
 import android.content.Context
 import android.util.AttributeSet
@@ -24,9 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.shared.ui.recycler.decorator.DefaultOrientationDecorator
+import co.anitrend.core.android.recycler.decorator.DefaultSpacingDecorator
 
-class EmbeddedRecycler @JvmOverloads constructor(
+class CarouselRecycler @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
 ) : SupportRecyclerView(context, attrs, defStyle), CustomView {
 
@@ -39,7 +39,7 @@ class EmbeddedRecycler @JvmOverloads constructor(
     }
 
     private val defaultDecorator by lazy(UNSAFE) {
-        DefaultOrientationDecorator()
+        DefaultSpacingDecorator()
     }
 
     init { onInit(context, attrs, defStyle) }
