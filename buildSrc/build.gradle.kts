@@ -29,16 +29,12 @@ repositories {
         url = URI("https://www.jitpack.io")
     }
     maven {
-        url = URI("http://oss.sonatype.org/content/repositories/snapshots")
+        url = URI("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }
 
-kotlinDslPluginOptions {
-	experimentalWarning.set(false)
-}
-
 val kotlinVersion = "1.4.31"
-val buildToolsVersion = "7.0.0-alpha12"
+val buildToolsVersion = "7.0.0-alpha14"
 val manesVersion = "0.33.0"
 
 dependencies {
