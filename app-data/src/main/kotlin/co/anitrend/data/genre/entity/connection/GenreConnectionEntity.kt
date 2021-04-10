@@ -26,8 +26,10 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 @Entity(
     tableName = "genre_connection",
     indices = [
-        Index(value = ["media_id"]),
-        Index(value = ["genre"])
+        Index(
+            value = ["media_id", "genre"],
+            unique = true
+        ),
     ],
     foreignKeys = [
         ForeignKey(

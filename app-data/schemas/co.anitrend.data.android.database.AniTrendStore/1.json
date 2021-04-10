@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a04f2da9ff4b135b4c2c5b355eefa457",
+    "identityHash": "d6e2437468553627e92167e7c818831e",
     "entities": [
       {
         "tableName": "cache_log",
@@ -365,20 +365,13 @@
         },
         "indices": [
           {
-            "name": "index_genre_connection_media_id",
-            "unique": false,
+            "name": "index_genre_connection_media_id_genre",
+            "unique": true,
             "columnNames": [
-              "media_id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
-          },
-          {
-            "name": "index_genre_connection_genre",
-            "unique": false,
-            "columnNames": [
+              "media_id",
               "genre"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_genre` ON `${TABLE_NAME}` (`genre`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_connection_media_id_genre` ON `${TABLE_NAME}` (`media_id`, `genre`)"
           }
         ],
         "foreignKeys": [
@@ -2535,7 +2528,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a04f2da9ff4b135b4c2c5b355eefa457')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd6e2437468553627e92167e7c818831e')"
     ]
   }
 }
