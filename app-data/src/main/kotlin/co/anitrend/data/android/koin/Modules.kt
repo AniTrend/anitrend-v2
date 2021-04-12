@@ -41,6 +41,8 @@ import co.anitrend.data.auth.helper.AuthenticationHelper
 import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.core.api.factory.GraphApiFactory
+import co.anitrend.data.customlist.koin.customListModules
+import co.anitrend.data.customscore.koin.customScoreModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.koin.feedModules
 import co.anitrend.data.genre.koin.genreModules
@@ -213,4 +215,4 @@ val dataModules = listOf(
         authModules + accountModules + userModules +
         mediaListModules + feedModules + jikanModules +
         linkModules + rankModules + traktModules + tmdbModules +
-        themesModule + theXemModules
+        themesModule + theXemModules + customListModules + customScoreModules
