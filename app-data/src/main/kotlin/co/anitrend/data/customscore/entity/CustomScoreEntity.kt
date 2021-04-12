@@ -33,22 +33,13 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             childColumns = ["media_list_id"],
             parentColumns = ["id"],
             deferred = true
-        ),
-        ForeignKey(
-            entity = UserEntity::class,
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
-            childColumns = ["user_id"],
-            parentColumns = ["id"],
-            deferred = true
         )
     ],
     indices = [
         Index(
             value = [
                 "media_list_id",
-                "score_name",
-                "user_id"
+                "score_name"
             ],
             unique = true
         )
@@ -56,7 +47,6 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 )
 @EntitySchema
 internal data class CustomScoreEntity(
-    @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "score") val score: Float,
     @ColumnInfo(name = "score_name") val scoreName: String,
     @ColumnInfo(name = "media_list_id") val mediaListId: Long,
