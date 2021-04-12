@@ -21,7 +21,6 @@ import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.core.extensions.graphApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
-import co.anitrend.data.medialist.converter.MediaListEntityConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.mapper.MediaListMapper
 import co.anitrend.data.medialist.repository.MediaListRepository
@@ -47,8 +46,34 @@ private val sourceModule = module {
 
 private val mapperModule = module {
     factory {
+        MediaListMapper.Deleted(
+            localSource = store().mediaListDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaListMapper.Single(
+            mediaMapper = get(),
+            customListMapper = get(),
+            customScoreMapper = get(),
+            localSource = store().mediaListDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaListMapper.Many(
+            mediaMapper = get(),
+            customListMapper = get(),
+            customScoreMapper = get(),
+            localSource = store().mediaListDao(),
+            converter = get()
+        )
+    }
+    factory {
         MediaListMapper.Paged(
             mediaMapper = get(),
+            customListMapper = get(),
+            customScoreMapper = get(),
             localSource = store().mediaListDao(),
             converter = get()
         )
@@ -56,12 +81,17 @@ private val mapperModule = module {
     factory {
         MediaListMapper.Collection(
             userMapper = get(),
+            mediaMapper = get(),
+            customListMapper = get(),
+            customScoreMapper = get(),
             localSource = store().mediaListDao(),
             converter = get()
         )
     }
     factory {
         MediaListMapper.Embed(
+            customListMapper = get(),
+            customScoreMapper = get(),
             localSource = store().mediaListDao(),
             converter = get()
         )
@@ -78,9 +108,6 @@ private val mapperModule = module {
 private val converterModule = module {
     factory {
         MediaListModelConverter()
-    }
-    factory {
-        MediaListEntityConverter()
     }
 }
 

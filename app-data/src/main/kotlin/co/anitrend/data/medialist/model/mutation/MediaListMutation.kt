@@ -23,17 +23,6 @@ import co.anitrend.domain.medialist.model.MediaListParam
 
 internal sealed class MediaListMutation : IGraphPayload {
 
-    data class DeleteEntry(
-        val param: MediaListParam.DeleteEntry
-    ) : MediaListMutation() {
-        /**
-         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-         */
-        override fun toMap() = mapOf(
-            "id" to param.id
-        )
-    }
-
     data class SaveEntry(
         val param: MediaListParam.SaveEntry
     ) : MediaListMutation() {
@@ -91,6 +80,31 @@ internal sealed class MediaListMutation : IGraphPayload {
                 FuzzyDateQuery(it.year, it.month, it.day).toMap()
             },
             "ids" to param.ids
+        )
+    }
+
+    data class DeleteEntry(
+        val param: MediaListParam.DeleteEntry
+    ) : MediaListMutation() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id
+        )
+    }
+
+    data class DeleteCustomList(
+        val param: MediaListParam.DeleteCustomList
+    ) : MediaListMutation() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "customList" to param.customList,
+            "type" to param.type
         )
     }
 }

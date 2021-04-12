@@ -42,4 +42,39 @@ internal interface MediaListRemoteSource {
     suspend fun getMediaListCollection(
         @Body queryContainer: QueryContainerBuilder
     ): Response<GraphQLResponse<MediaListContainerModel.Collection>>
+
+    @GRAPHQL
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaListEntry")
+    suspend fun getMediaListEntry(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<MediaListContainerModel.Entry>>
+
+    @GRAPHQL
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("UpdateMediaListEntries")
+    suspend fun saveMediaListEntries(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<MediaListContainerModel.SavedEntries>>
+
+    @GRAPHQL
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("SaveMediaListEntry")
+    suspend fun saveMediaListEntry(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<MediaListContainerModel.SavedEntry>>
+
+    @GRAPHQL
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("DeleteMediaListEntry")
+    suspend fun deleteMediaListEntry(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<MediaListContainerModel.DeletedEntry>>
+
+    @GRAPHQL
+    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("DeleteCustomList")
+    suspend fun deleteCustomList(
+        @Body queryContainer: QueryContainerBuilder
+    ): Response<GraphQLResponse<MediaListContainerModel.DeletedCustomList>>
 }

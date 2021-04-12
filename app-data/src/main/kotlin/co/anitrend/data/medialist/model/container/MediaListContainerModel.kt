@@ -17,6 +17,9 @@
 
 package co.anitrend.data.medialist.model.container
 
+import co.anitrend.data.common.model.delete.DeletedModel
+import co.anitrend.data.common.model.delete.contract.IDeletedModel
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.medialist.model.MediaListModel
 import co.anitrend.data.user.model.UserModel
@@ -27,15 +30,27 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal sealed class MediaListContainerModel {
 
+    abstract class Single : MediaListContainerModel() {
+        abstract val entry: MediaListModel.Extended
+    }
+
+    abstract class Many : MediaListContainerModel() {
+        abstract val entries: List<MediaListModel.Extended>
+    }
+
+    abstract class Deleted : MediaListContainerModel() {
+        abstract val entry: DeletedModel
+    }
+
     @Serializable
     data class Paged(
         @SerialName("Page") val page: Page = Page()
     ) : MediaListContainerModel() {
         @Serializable
         data class Page(
-            @SerialName("pageInfo") val pageInfo: PageInfo? = null,
-            @SerialName("mediaList") val mediaList: List<MediaListModel.Extended> = emptyList()
-        )
+            @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
+            @SerialName("mediaList") override val entries: List<MediaListModel.Extended> = emptyList()
+        ) : Many(), IPageModel
     }
 
     /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
@@ -63,11 +78,36 @@ internal sealed class MediaListContainerModel {
          */
         @Serializable
         internal data class Group(
-            @SerialName("entries") val entries: List<MediaListModel.Extended>?,
+            @SerialName("entries") override val entries: List<MediaListModel.Extended> = emptyList(),
             @SerialName("isCustomList") val isCustomList: Boolean,
             @SerialName("isSplitCompletedList") val isSplitCompletedList: Boolean,
             @SerialName("name") val name: String,
             @SerialName("status") val status: MediaListStatus
-        )
+        ) : Many()
     }
+
+    @Serializable
+    data class Entry(
+        @SerialName("MediaList") override val entry: MediaListModel.Extended
+    ) : Single()
+
+    @Serializable
+    data class SavedEntry(
+        @SerialName("SaveMediaListEntry") override val entry: MediaListModel.Extended
+    ) : Single()
+
+    @Serializable
+    data class SavedEntries(
+        @SerialName("UpdateMediaListEntries") override val entries: List<MediaListModel.Extended>
+    ) : Many()
+
+    @Serializable
+    data class DeletedEntry(
+        @SerialName("DeleteMediaListEntry") override val entry: DeletedModel
+    ) : Deleted()
+
+    @Serializable
+    data class DeletedCustomList(
+        @SerialName("DeleteCustomList") override val entry: DeletedModel
+    ) : Deleted()
 }

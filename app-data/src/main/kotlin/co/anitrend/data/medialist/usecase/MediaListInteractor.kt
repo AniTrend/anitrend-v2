@@ -21,7 +21,7 @@ import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
 import co.anitrend.data.medialist.repository.MediaListRepository
 
-internal class MediaListInteractor {
+internal interface MediaListInteractor {
     class Paged(
         repository: MediaListRepository.Paged
     ) : GetPagedMediaListInteractor(repository) {

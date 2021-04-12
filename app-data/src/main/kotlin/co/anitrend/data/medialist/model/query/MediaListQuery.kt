@@ -22,6 +22,19 @@ import co.anitrend.domain.medialist.model.MediaListParam
 
 internal sealed class MediaListQuery : IGraphPayload {
 
+    data class Entry(
+        val param: MediaListParam.Entry
+    ) : IGraphPayload {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id,
+            "userId" to param.userId
+        )
+    }
+
     data class Paged(
         val param: MediaListParam.Paged
     ) : IGraphPayload {
