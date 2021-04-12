@@ -24,6 +24,13 @@ import co.anitrend.domain.medialist.repository.IMediaListRepository
 
 sealed class MediaListUseCase : IUseCase {
 
+    abstract class GetEntry<State: UiState<*>>(
+        protected val repository: IMediaListRepository.Entry<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.Entry): State =
+            repository.getEntry(param)
+    }
+
     abstract class GetPaged<State: UiState<*>>(
         protected val repository: IMediaListRepository.Paged<State>
     ) : MediaListUseCase() {
@@ -38,17 +45,31 @@ sealed class MediaListUseCase : IUseCase {
             repository.getCollection(param)
     }
 
-    abstract class Save<State: UiState<*>>(
-        protected val repository: IMediaListRepository.Save<State>
+    abstract class SaveEntry<State: UiState<*>>(
+        protected val repository: IMediaListRepository.SaveEntry<State>
     ) : MediaListUseCase() {
-        operator fun invoke(param: MediaListParam.Save): State =
-            repository.save(param)
+        operator fun invoke(param: MediaListParam.SaveEntry): State =
+            repository.saveEntry(param)
     }
 
-    abstract class Delete<State: UiState<*>>(
-        protected val repository: IMediaListRepository.Delete<State>
+    abstract class SaveEntries<State: UiState<*>>(
+        protected val repository: IMediaListRepository.SaveEntries<State>
     ) : MediaListUseCase() {
-        operator fun invoke(param: MediaListParam.Delete): State =
-            repository.delete(param)
+        operator fun invoke(param: MediaListParam.SaveEntries): State =
+            repository.saveEntries(param)
+    }
+
+    abstract class DeleteCustomList<State: UiState<*>>(
+        protected val repository: IMediaListRepository.DeleteCustomList<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.DeleteCustomList): State =
+            repository.deleteCustomList(param)
+    }
+
+    abstract class DeleteEntry<State: UiState<*>>(
+        protected val repository: IMediaListRepository.DeleteEntry<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.DeleteEntry): State =
+            repository.deleteEntry(param)
     }
 }

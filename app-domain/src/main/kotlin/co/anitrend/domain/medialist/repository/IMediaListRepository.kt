@@ -22,6 +22,10 @@ import co.anitrend.domain.medialist.model.MediaListParam
 
 interface IMediaListRepository {
 
+    interface Entry<State: UiState<*>> : IMediaListRepository {
+        fun getEntry(param: MediaListParam.Entry): State
+    }
+
     interface Paged<State: UiState<*>> : IMediaListRepository {
         fun getPaged(param: MediaListParam.Paged): State
     }
@@ -30,15 +34,19 @@ interface IMediaListRepository {
         fun getCollection(param: MediaListParam.Collection): State
     }
 
-    interface Save<State: UiState<*>> : IMediaListRepository {
-        fun save(param: MediaListParam.Save): State
+    interface SaveEntries<State: UiState<*>> : IMediaListRepository {
+        fun saveEntries(param: MediaListParam.SaveEntries): State
     }
 
-    interface Delete<State: UiState<*>> : IMediaListRepository {
-        fun delete(param: MediaListParam.Delete): State
+    interface SaveEntry<State: UiState<*>> : IMediaListRepository {
+        fun saveEntry(param: MediaListParam.SaveEntry): State
     }
 
-    interface UpdateMany<State: UiState<*>> : IMediaListRepository {
-        fun updateMany(param: MediaListParam.UpdateMany): State
+    interface DeleteCustomList<State: UiState<*>> : IMediaListRepository {
+        fun deleteCustomList(param: MediaListParam.DeleteCustomList): State
+    }
+
+    interface DeleteEntry<State: UiState<*>> : IMediaListRepository {
+        fun deleteEntry(param: MediaListParam.DeleteEntry): State
     }
 }
