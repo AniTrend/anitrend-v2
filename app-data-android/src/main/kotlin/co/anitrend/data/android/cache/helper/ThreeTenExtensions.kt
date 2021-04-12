@@ -23,7 +23,7 @@ import org.threeten.bp.Period
 import org.threeten.bp.temporal.ChronoUnit
 import org.threeten.bp.temporal.TemporalAmount
 
-internal fun TemporalAmount.inPast(): Instant = Instant.now().minus(this)
+fun TemporalAmount.inPast(): Instant = Instant.now().minus(this)
 
 /**
  * Proxy for obtaining a [Period] representing a number of years, months and days.
@@ -35,7 +35,7 @@ internal fun TemporalAmount.inPast(): Instant = Instant.now().minus(this)
  *
  * @return the period of years, months and days
 */
-internal fun periodOf(
+fun periodOf(
     years: Int = 0,
     months: Int = 0,
     days: Int = 0
@@ -50,7 +50,7 @@ internal fun periodOf(
  *
  * @return [Instant] of the time measurement
  */
-internal fun instantInPast(days: Int = 0, hours: Int = 0, minutes: Int = 0): Instant {
+fun instantInPast(days: Int = 0, hours: Int = 0, minutes: Int = 0): Instant {
     var instant = Instant.now()
     if (days != 0) {
         instant = instant.minus(days.toLong(), ChronoUnit.DAYS)
