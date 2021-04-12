@@ -26,13 +26,26 @@ import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.interactor.MediaListUseCase
 import co.anitrend.domain.medialist.repository.IMediaListRepository
 
+internal typealias MediaListEntryController = GraphQLController<MediaListContainerModel.Entry, MediaListEntity>
 internal typealias MediaListPagedController = GraphQLController<MediaListContainerModel.Paged, List<MediaListEntity>>
 internal typealias MediaListCollectionController = GraphQLController<MediaListContainerModel.Collection, List<MediaListEntity>>
+internal typealias MediaListSaveEntryController = GraphQLController<MediaListContainerModel.SavedEntry, MediaListEntity>
+internal typealias MediaListSaveEntriesController = GraphQLController<MediaListContainerModel.SavedEntries, List<MediaListEntity>>
+internal typealias MediaListDeleteEntryController = GraphQLController<MediaListContainerModel.DeletedEntry, Boolean>
+internal typealias DeleteCustomListController = GraphQLController<MediaListContainerModel.DeletedCustomList, Boolean>
 
+internal typealias MediaListEntryRepository = IMediaListRepository.Entry<DataState<MediaList>>
 internal typealias MediaListCollectionRepository = IMediaListRepository.Collection<DataState<PagedList<MediaList>>>
 internal typealias MediaListPagedRepository = IMediaListRepository.Paged<DataState<PagedList<MediaList>>>
-internal typealias MediaListDeleteRepository = IMediaListRepository.Delete<DataState<MediaList>>
-internal typealias MediaListSaveRepository = IMediaListRepository.Save<DataState<MediaList>>
+internal typealias MediaListSaveEntryRepository = IMediaListRepository.SaveEntry<DataState<MediaList>>
+internal typealias MediaListSaveEntriesRepository = IMediaListRepository.SaveEntries<DataState<Boolean>>
+internal typealias MediaListDeleteEntryRepository = IMediaListRepository.DeleteEntry<DataState<Boolean>>
+internal typealias DeleteCustomMediaListRepository = IMediaListRepository.DeleteCustomList<DataState<Boolean>>
 
+typealias GetMediaListEntryInteractor = MediaListUseCase.GetEntry<DataState<MediaList>>
 typealias GetPagedMediaListInteractor = MediaListUseCase.GetPaged<DataState<PagedList<MediaList>>>
 typealias GetCollectionMediaListInteractor = MediaListUseCase.GetCollection<DataState<PagedList<MediaList>>>
+typealias SaveMediaListEntryInteractor = MediaListUseCase.SaveEntry<DataState<MediaList>>
+typealias SaveMediaListEntriesInteractor = MediaListUseCase.GetPaged<DataState<Boolean>>
+typealias DeleteMediaListEntryInteractor = MediaListUseCase.DeleteEntry<DataState<Boolean>>
+typealias DeleteCustomMediaListInteractor = MediaListUseCase.DeleteEntry<DataState<Boolean>>
