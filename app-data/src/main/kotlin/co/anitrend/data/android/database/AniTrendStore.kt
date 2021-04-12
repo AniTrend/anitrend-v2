@@ -32,6 +32,8 @@ import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.fts.CharacterFtsEntity
+import co.anitrend.data.customlist.entity.CustomListEntity
+import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.entity.fts.EpisodeFtsEntity
 import co.anitrend.data.genre.entity.GenreEntity
@@ -74,7 +76,8 @@ import org.jetbrains.annotations.TestOnly
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
         JikanEntity::class, JikanStudioEntity::class, JikanLicensorEntity::class,
-        JikanProducerEntity::class, JikanAuthorEntity::class
+        JikanProducerEntity::class, JikanAuthorEntity::class,
+        CustomListEntity::class, CustomScoreEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     views = [TagEntity.Extended::class, GenreEntity.Extended::class]
