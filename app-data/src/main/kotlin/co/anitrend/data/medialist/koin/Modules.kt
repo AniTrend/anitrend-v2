@@ -22,21 +22,25 @@ import co.anitrend.data.core.extensions.graphApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
 import co.anitrend.data.medialist.converter.MediaListModelConverter
+import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
 import co.anitrend.data.medialist.mapper.MediaListMapper
 import co.anitrend.data.medialist.repository.MediaListRepository
-import co.anitrend.data.medialist.source.paged.MediaListPagedSourceImpl
-import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
+import co.anitrend.data.medialist.source.MediaListSourceImpl
+import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.data.medialist.usecase.MediaListInteractor.Paged
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory<MediaListPagedSource> {
-        MediaListPagedSourceImpl(
+    factory<MediaListSource.Paged> {
+        MediaListSourceImpl.Paged(
             remoteSource = graphApi(),
             localSource = store().mediaListDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<MediaListMapper.Paged>()
+            ),
+            filter = MediaListQueryFilter.Paged(
+                authentication = get()
             ),
             converter = get(),
             dispatcher = get()

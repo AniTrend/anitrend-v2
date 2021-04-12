@@ -21,7 +21,7 @@ import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.medialist.MediaListPagedRepository
-import co.anitrend.data.medialist.source.paged.contract.MediaListPagedSource
+import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.domain.medialist.model.MediaListParam
 
 internal sealed class MediaListRepository(
@@ -29,7 +29,7 @@ internal sealed class MediaListRepository(
 ) : SupportRepository(source) {
 
     class Paged(
-        private val source: MediaListPagedSource
+        private val source: MediaListSource.Paged
     ) : MediaListRepository(source), MediaListPagedRepository {
         override fun getPaged(param: MediaListParam.Paged) =
             source create source(param)
