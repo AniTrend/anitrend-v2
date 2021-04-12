@@ -23,8 +23,8 @@ import co.anitrend.domain.medialist.model.MediaListParam
 
 internal sealed class MediaListMutation : IGraphPayload {
 
-    data class Delete(
-        val param: MediaListParam.Delete
+    data class DeleteEntry(
+        val param: MediaListParam.DeleteEntry
     ) : MediaListMutation() {
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
@@ -34,8 +34,8 @@ internal sealed class MediaListMutation : IGraphPayload {
         )
     }
 
-    data class Save(
-        val param: MediaListParam.Save
+    data class SaveEntry(
+        val param: MediaListParam.SaveEntry
     ) : MediaListMutation() {
 
         /**
@@ -65,8 +65,8 @@ internal sealed class MediaListMutation : IGraphPayload {
         )
     }
 
-    data class UpdateMany(
-        val param: MediaListParam.UpdateMany
+    data class SaveEntries(
+        val param: MediaListParam.SaveEntries
     ) : MediaListMutation() {
 
         /**
