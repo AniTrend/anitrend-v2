@@ -71,31 +71,6 @@ internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEnti
     @Transaction
     abstract fun byIdFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
 
-    @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where ml.media_id = :mediaId and u.id = :userId
-    """)
-    @Transaction
-    abstract fun byMediaIdFlow(mediaId: Long, userId: Long): Flow<MediaListEntityView.WithMedia?>
-
-
-    @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where ml.id = :id and u.id = :userId
-    """)
-    @Transaction
-    abstract fun byIdCoreFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
-
-    @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where u.id = :userId
-    """)
-    @Transaction
-    abstract fun entryFactory(userId: Long): DataSource.Factory<Int, MediaListEntityView.WithMedia>
-
     @Transaction
     @RawQuery(observedEntities = [MediaListEntity::class, MediaEntity::class, UserEntity::class])
     abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaListEntityView.WithMedia>

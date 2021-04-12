@@ -37,10 +37,9 @@ internal abstract class CustomListLocalSource : AbstractLocalSource<CustomListEn
 
     @Query("""
         delete from custom_list
-        where user_id = :userId and list_name = :listName
+        where list_name = :listName
     """)
     abstract suspend fun clear(
-        userId: Long,
         listName: String
     )
 }

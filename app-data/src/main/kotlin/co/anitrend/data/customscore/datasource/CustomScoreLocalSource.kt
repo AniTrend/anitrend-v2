@@ -37,10 +37,9 @@ internal abstract class CustomScoreLocalSource : AbstractLocalSource<CustomScore
 
     @Query("""
         delete from custom_score
-        where user_id = :userId and score_name = :scoreName
+        where score_name = :scoreName
     """)
     abstract suspend fun clear(
-        userId: Long,
         scoreName: String
     )
 }

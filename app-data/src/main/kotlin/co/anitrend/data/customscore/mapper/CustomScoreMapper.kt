@@ -36,8 +36,7 @@ internal class CustomScoreMapper(
             CustomScoreEntity(
                 score = it.score,
                 scoreName = it.scoreName,
-                mediaListId = it.mediaListId,
-                userId = it.userId
+                mediaListId = it.mediaListId
             )
         }
 
@@ -53,8 +52,7 @@ internal class CustomScoreMapper(
     data class Item(
         val score: Float,
         val scoreName: String,
-        val mediaListId: Long,
-        val userId: Long
+        val mediaListId: Long
     )
 
     companion object {
@@ -63,8 +61,7 @@ internal class CustomScoreMapper(
                 Item(
                     score = it.value,
                     scoreName = it.key,
-                    mediaListId = source.id,
-                    userId = source.userId
+                    mediaListId = source.id
                 )
             }.orEmpty()
 
