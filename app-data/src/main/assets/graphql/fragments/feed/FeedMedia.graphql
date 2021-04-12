@@ -1,4 +1,4 @@
-fragment MediaFeed on ListActivity {
+fragment FeedMedia on ListActivity {
     createdAt
     id
     isLiked

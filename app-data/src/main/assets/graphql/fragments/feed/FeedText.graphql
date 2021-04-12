@@ -1,4 +1,4 @@
-fragment TextFeed on TextActivity {
+fragment FeedText on TextActivity {
     createdAt
     id
     isLiked

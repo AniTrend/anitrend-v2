@@ -1,0 +1,16 @@
+mutation ToggleMangaFavourite($mangaId: Int) {
+    ToggleFavourite(mangaId: $mangaId) {
+        manga {
+            edges {
+                favouriteOrder
+                node {
+                    ... MediaCore
+                }
+                id
+            }
+            pageInfo {
+                ... PageInfo
+            }
+        }
+    }
+}

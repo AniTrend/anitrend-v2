@@ -1,0 +1,5 @@
+query GetMediaListEntry($id: Int!) {
+    MediaList(id: $id) {
+        ... MediaListExtended
+    }
+}
