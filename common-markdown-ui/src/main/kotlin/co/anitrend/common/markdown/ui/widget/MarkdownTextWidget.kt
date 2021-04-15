@@ -43,8 +43,7 @@ class MarkdownTextWidget @JvmOverloads constructor(
 
     fun setText(synopsis: ISynopsis, entity: IEntityName) {
         val markwon = koinOf<Markwon>(named(MarkdownFlavour.ANILIST))
-        if (entity.alternative.isEmpty())
-            maxLines = 7
+        maxLines = if (entity.alternative.isEmpty()) 7 else 4
         val description = synopsis.description?.toString()
             ?: context.getString(R.string.label_place_holder_no_description)
         markwon.setMarkdown(this, description)
@@ -58,7 +57,6 @@ class MarkdownTextWidget @JvmOverloads constructor(
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        maxLines = 4
         /** Ellipsize won't work in this context probably because some of the characters will have /n */
         ellipsize = TextUtils.TruncateAt.END
         setTextIsSelectable(true)

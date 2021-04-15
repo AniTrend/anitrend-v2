@@ -22,8 +22,11 @@ import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import androidx.core.widget.TextViewCompat
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
@@ -33,7 +36,9 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.markdown.R
 import co.anitrend.common.markdown.ui.animator.PushOnPressAnimator
+import co.anitrend.core.android.extensions.px
 import co.anitrend.core.android.getCompatDrawable
+import co.anitrend.core.android.getCompatDrawableAttr
 import co.anitrend.core.android.themeStyle
 import co.anitrend.domain.common.entity.contract.ISynopsis
 import com.airbnb.paris.extensions.style
@@ -45,13 +50,19 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
 
     private val markdownTextWidget = MarkdownTextWidget(context).apply {
         style(R.style.AppTheme_Material_TextBody_Secondary)
-        setTextIsSelectable(false)
         setTextColor(this.context.getColorFromAttr(R.attr.colorSecondaryText))
+        setTextIsSelectable(false)
         includeFontPadding = false
     }
 
     private val expandImageView = AppCompatImageView(context).apply {
         val drawable = this.context.getCompatDrawable(R.drawable.ic_arrow_down)
+        background = this.context.getCompatDrawableAttr(
+            android.R.attr.selectableItemBackgroundBorderless
+        )
+        setPadding(16.px)
+        isFocusable = true
+        isClickable = true
         setImageDrawable(drawable)
     }
 
@@ -59,6 +70,29 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
 
     fun setSynopsis(synopsis: ISynopsis) {
         markdownTextWidget.setText(synopsis)
+        markdownTextWidget.maxLines = collapsedLines
+    }
+
+    private fun onExpandToggle(isExpanded: Boolean): Boolean {
+        markdownTextWidget.maxLines = if (isExpanded) Int.MAX_VALUE else collapsedLines
+        if (isExpanded) {
+            markdownTextWidget.setTextIsSelectable(true)
+            markdownTextWidget.setTextColor(
+                context.getColorFromAttr(R.attr.colorPrimaryText)
+            )
+            expandImageView.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_arrow_up)
+            )
+        } else {
+            markdownTextWidget.setTextIsSelectable(false)
+            markdownTextWidget.setTextColor(
+                context.getColorFromAttr(R.attr.colorSecondaryText)
+            )
+            expandImageView.setImageDrawable(
+                context.getCompatDrawable(R.drawable.ic_arrow_down)
+            )
+        }
+        return isExpanded
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
@@ -72,15 +106,11 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
         contourHeightOf {
             maxOf(
                 markdownTextWidget.bottom() + 16.ydip,
-                markdownTextWidget.bottom() + 16.ydip
+                expandImageView.bottom() + 16.ydip
             )
         }
 
-        expandImageView.layoutBy(
-            x = centerHorizontallyTo { parent.right() },
-            y = topTo { parent.bottom() + 16.ydip }
-        )
-
+        // TODO: Need to figure out why max lines doesn't get applied unless I collapse the widget
         markdownTextWidget.layoutBy(
             x = leftTo { 16.xdip }.rightTo { parent.right() },
             y = topTo {
@@ -90,10 +120,12 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
                 }
             }
         )
+        expandImageView.layoutBy(
+            x = centerHorizontallyTo { parent.centerX() },
+            y = topTo { markdownTextWidget.bottom() + 16.ydip }
+        )
 
-        val collapsedLines = markdownTextWidget.maxLines
-
-        setOnClickListener {
+        expandImageView.setOnClickListener {
             TransitionManager.beginDelayedTransition(
                 parent as ViewGroup,
                 AutoTransition()
@@ -101,13 +133,11 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
                     .setDuration(300)
             )
 
-            isSelected = !isSelected
-            markdownTextWidget.maxLines = if (isSelected) Int.MAX_VALUE else collapsedLines
-            val textColor = if (isSelected) R.attr.colorPrimaryText else R.attr.colorSecondaryText
-            markdownTextWidget.setTextColor(context.getColorFromAttr(textColor))
-
-            val drawable = context.getCompatDrawable(R.drawable.ic_arrow_up)
-            expandImageView.setImageDrawable(drawable)
+            isSelected = onExpandToggle(!isSelected)
         }
+    }
+
+    private companion object {
+        const val collapsedLines = 4
     }
 }
