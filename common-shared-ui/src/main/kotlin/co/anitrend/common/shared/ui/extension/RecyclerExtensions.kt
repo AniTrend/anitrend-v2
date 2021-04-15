@@ -30,6 +30,8 @@ fun CarouselRecycler.setUpWith(
     supportAdapter: RecyclerView.Adapter<*>,
     recyclerViewPool: RecyclerView.RecycledViewPool
 ) {
+    supportAdapter.stateRestorationPolicy =
+        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
     setHasFixedSize(true)
     setRecycledViewPool(recyclerViewPool)
     isNestedScrollingEnabled = true
