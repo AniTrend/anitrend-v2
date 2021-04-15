@@ -38,6 +38,7 @@ import androidx.core.view.iterator
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.ext.getCompatColor
+import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
@@ -221,7 +222,6 @@ fun View.startViewIntent(url: String) {
     }.onFailure { Timber.w(it) }
 }
 
-
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
  * Also images loaded from this method apply the [Drawable.mutate] to assure
@@ -246,4 +246,25 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorInt colorTint :
         return drawableResource
     }
     return null
+}
+
+/**
+ * Avoids resource not found when using vector drawables in API levels < Lollipop
+ * Also images loaded from this method apply the [Drawable.mutate] to assure
+ * that the state of each drawable is not shared
+ *
+ * @param attribute The resource id of the drawable or vector drawable as an attribute
+ *
+ * @return [Drawable] tinted with the tint color
+ *
+ * @see Drawable
+ * @see DrawableRes
+ *
+ * TODO: Merge this into support-arch
+ */
+fun Context.getCompatDrawableAttr(@AttrRes attribute : Int): Drawable? {
+    val typedValue = TypedValue().apply {
+        theme.resolveAttribute(attribute, this, true)
+    }
+    return getCompatDrawable(typedValue.resourceId)
 }
