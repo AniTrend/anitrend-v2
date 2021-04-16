@@ -1,19 +1,4 @@
- /*
- * Copyright (C) 2020  AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */ /*
+/*
  *   Copyright 2018 Google LLC
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -254,7 +239,7 @@ public class InkPageIndicator extends View implements View.OnAttachStateChangeLi
          int bottom = height - getPaddingBottom();
 
          int requiredWidth = getRequiredWidth();
-         float startLeft = left + ((right - left - requiredWidth) / 2) + dotRadius;
+         float startLeft = left + ((right - left - requiredWidth) >> 1) + dotRadius;
 
          dotCenterX = new float[pageCount];
          for (int i = 0; i < pageCount; i++) {
