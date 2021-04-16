@@ -32,4 +32,4 @@ internal data class AiringScheduleConnection(
     @SerialName("edges") override val edges: List<AiringScheduleEdge>?,
     @SerialName("nodes") override val nodes: List<AiringScheduleModel>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<AiringScheduleEdge, AiringScheduleModel>
+) : IEntityConnection, IEntityConnection.INode<AiringScheduleModel>, IEntityConnection.IEdge<AiringScheduleEdge>

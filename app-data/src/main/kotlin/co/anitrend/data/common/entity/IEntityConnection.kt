@@ -22,12 +22,29 @@ import co.anitrend.data.common.model.paging.info.IPageInfo
 /**
  * Connection contract to supply paging information
  *
- * @property edges The connection edge
- * @property nodes The relational nodes
  * @property pageInfo The pagination information
+ *
+ * @see IEdge
+ * @see INode
  */
-internal interface IEntityConnection<E, N> {
-    val edges: List<E>?
-    val nodes: List<N>?
+internal interface IEntityConnection {
     val pageInfo: IPageInfo?
+
+    /**
+     * Connection contract
+     *
+     * @property edges The connection edge
+     */
+    interface IEdge<E> {
+        val edges: List<E>?
+    }
+
+    /**
+     * Node contract
+     *
+     * @property nodes The relational nodes
+     */
+    interface INode<N> {
+        val nodes: List<N>?
+    }
 }

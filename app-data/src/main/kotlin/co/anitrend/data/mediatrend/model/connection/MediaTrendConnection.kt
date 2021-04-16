@@ -29,4 +29,5 @@ internal data class MediaTrendConnection(
     override val edges: List<MediaTrendEdge>?,
     override val nodes: List<MediaTrendModel.Core>?,
     override val pageInfo: PageInfo?
-) : IEntityConnection<MediaTrendEdge, MediaTrendModel>
+) : IEntityConnection, IEntityConnection.IEdge<MediaTrendEdge>,
+    IEntityConnection.INode<MediaTrendModel>

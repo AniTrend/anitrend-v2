@@ -32,4 +32,4 @@ internal data class ReviewConnection(
     @SerialName("edges") override val edges: List<ReviewEdge>?,
     @SerialName("nodes") override val nodes: List<ReviewModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<ReviewEdge, ReviewModel>
+) : IEntityConnection, IEntityConnection.IEdge<ReviewEdge>, IEntityConnection.INode<ReviewModel>
