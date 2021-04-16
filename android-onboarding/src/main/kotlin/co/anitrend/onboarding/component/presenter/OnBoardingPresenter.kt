@@ -24,9 +24,9 @@ import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.navigation.MainRouter
+import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.onboarding.R
-import co.anitrend.onboarding.model.OnBoarding
 
 class OnBoardingPresenter(
     context: Context,
@@ -35,7 +35,7 @@ class OnBoardingPresenter(
 ) : CorePresenter(context, settings) {
 
     val onBoardingItems = listOf(
-        OnBoarding(
+        OnBoardingRouter.Param(
             resource = R.raw.anitrend,
             background = R.drawable.gradient_slide_01,
             title = buildSpannedString {
@@ -49,7 +49,7 @@ class OnBoardingPresenter(
             },
             textColor = R.color.primaryTextColor
         ),
-        OnBoarding(
+        OnBoardingRouter.Param(
             resource = R.raw.bookmark,
             background = R.drawable.gradient_slide_02,
             title = buildSpannedString {
@@ -63,7 +63,7 @@ class OnBoardingPresenter(
             },
             textColor = R.color.primaryTextColor
         ),
-        OnBoarding(
+        OnBoardingRouter.Param(
             resource = R.raw.search,
             background = R.drawable.gradient_slide_01,
             title = buildSpannedString {
@@ -77,7 +77,7 @@ class OnBoardingPresenter(
             },
             textColor = R.color.primaryTextColor
         ),
-        OnBoarding(
+        OnBoardingRouter.Param(
             resource = R.raw.rating_system,
             background = R.drawable.gradient_slide_02,
             title = buildSpannedString {
@@ -91,7 +91,7 @@ class OnBoardingPresenter(
             },
             textColor = R.color.primaryTextColor
         ),
-        OnBoarding(
+        OnBoardingRouter.Param(
             resource = R.raw.cartoon_loading,
             background = R.drawable.gradient_slide_01,
             title = buildSpannedString {
@@ -105,7 +105,7 @@ class OnBoardingPresenter(
             },
             textColor = R.color.primaryTextColor
         ),
-        OnBoarding(
+        OnBoardingRouter.Param(
             resource = R.raw.open_book,
             background = R.drawable.gradient_slide_02,
             title = buildSpannedString {
@@ -125,7 +125,10 @@ class OnBoardingPresenter(
 
     fun onBoardingExperienceCompleted() {
         settings.isNewInstallation.value = false
-        controller.createShortcuts(Shortcut.Search())
+        controller.createShortcuts(
+            Shortcut.AiringSchedule(),
+            Shortcut.Search()
+        )
         MainRouter.startActivity(context)
     }
 }

@@ -32,12 +32,6 @@ class OnBoardingScreen : AnitrendScreen<OnboardingScreenBinding>() {
 
     private val presenter by inject<OnBoardingPresenter>()
 
-    private val onBoardingPageAdapter by lazy(UNSAFE) {
-        OnBoardingPageAdapter(
-            presenter.onBoardingItems,
-            supportFragmentManager
-        )
-    }
 
     private val pageChangeListener =
         object : ViewPager.OnPageChangeListener {
@@ -145,7 +139,11 @@ class OnBoardingScreen : AnitrendScreen<OnboardingScreenBinding>() {
     private fun onUpdateUserInterface() {
         // workaround, for some reason updating motion progress messes up the view pager
         binding?.liquidSwipeViewPager?.offscreenPageLimit = presenter.pages - 1
-        binding?.liquidSwipeViewPager?.adapter = onBoardingPageAdapter
+        binding?.liquidSwipeViewPager?.adapter = OnBoardingPageAdapter(
+            presenter.onBoardingItems,
+            this,
+            supportFragmentManager
+        )
         /*binding.liquidSwipeViewPager.setPageTransformer(
             false
         ) { page, position ->

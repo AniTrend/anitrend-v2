@@ -18,26 +18,25 @@
 package co.anitrend.onboarding.component.content
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.os.bundleOf
+import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.onboarding.R
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
-import co.anitrend.onboarding.model.OnBoarding
 import com.airbnb.lottie.LottieDrawable
 
 class OnBoardingContent(
     override val inflateLayout: Int = R.layout.onboarding_content
 ) : AniTrendContent<OnboardingContentBinding>() {
 
-    private val onBoarding by argument<OnBoarding>(PARAM_KEY)
-
-    private fun requireArgument(): OnBoarding {
-        return requireNotNull(onBoarding)
-    }
+    private val param by argument<OnBoardingRouter.Param>(
+        OnBoardingRouter.Param.KEY
+    )
 
     /**
      * Invoke view model observer to watch for changes
@@ -61,6 +60,39 @@ class OnBoardingContent(
     }
 
     /**
+     * Called to have the fragment instantiate its user interface view. This is optional, and
+     * non-graphical fragments can return null. This will be called between
+     * [onCreate] & [onActivityCreated].
+     *
+     * A default View can be returned by calling [Fragment] in your
+     * constructor. Otherwise, this method returns null.
+     *
+     * It is recommended to __only__ inflate the layout in this method and move
+     * logic that operates on the returned View to [onViewCreated].
+     *
+     * If you return a View from here, you will later be called in [onDestroyView]
+     * when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container If non-null, this is the parent view that the fragment's UI should be
+     * attached to. The fragment should not add the view itself, but this can be used to generate
+     * the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        binding = OnboardingContentBinding.bind(requireNotNull(view))
+        return view
+    }
+
+    /**
      * Called immediately after [onCreateView]
      * has returned, but before any saved state has been restored in to the view.
      * This gives subclasses a chance to initialize themselves once
@@ -73,25 +105,15 @@ class OnBoardingContent(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = OnboardingContentBinding.bind(view)
+        param?.also { model ->
+            view.background = context?.getCompatDrawable(model.background)
 
-        view.background = context?.getCompatDrawable(requireArgument().background)
+            requireBinding().onBoardingLottieAnimationView.repeatCount = LottieDrawable.INFINITE
+            requireBinding().onBoardingLottieAnimationView.setAnimation(model.resource)
 
-        requireBinding().onBoardingLottieAnimationView.repeatCount = LottieDrawable.INFINITE
-        requireBinding().onBoardingLottieAnimationView.setAnimation(requireArgument().resource)
-
-        requireBinding().onBoardingTitle.text = requireArgument().title
-        requireBinding().onBoardingSubTitle.text = requireArgument().subTitle
-        requireBinding().onBoardingDescription.text = requireArgument().description
-    }
-
-    companion object {
-        private const val PARAM_KEY = "OnBoardingContent:OnBoarding"
-
-        fun newInstance(model: OnBoarding): OnBoardingContent {
-            val fragment = OnBoardingContent()
-            fragment.arguments = bundleOf(PARAM_KEY to model)
-            return fragment
+            requireBinding().onBoardingTitle.text = model.title
+            requireBinding().onBoardingSubTitle.text = model.subTitle
+            requireBinding().onBoardingDescription.text = model.description
         }
     }
 }

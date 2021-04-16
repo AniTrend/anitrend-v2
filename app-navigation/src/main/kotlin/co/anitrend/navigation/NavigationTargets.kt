@@ -17,6 +17,10 @@
 
 package co.anitrend.navigation
 
+import android.text.SpannedString
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.RawRes
 import androidx.fragment.app.Fragment
 import androidx.work.ListenableWorker
 import co.anitrend.domain.airing.enums.AiringSort
@@ -29,6 +33,7 @@ import co.anitrend.navigation.router.NavigationRouter
 import co.anitrend.navigation.work.WorkSchedulerController
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import org.koin.core.component.inject
 
 object MainRouter : NavigationRouter() {
@@ -56,7 +61,28 @@ object SplashRouter : NavigationRouter() {
 object OnBoardingRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider
+    interface Provider : INavigationProvider {
+        fun fragment(): Class<out Fragment>
+    }
+
+    fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        @RawRes val resource: Int,
+        @DrawableRes val background: Int,
+        val title: @RawValue SpannedString,
+        val subTitle: @RawValue SpannedString,
+        val description: @RawValue SpannedString,
+        @ColorRes val textColor: Int
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY: String = "OnBoardingRouter#Param"
+        }
+    }
 }
 
 object SearchRouter : NavigationRouter() {
