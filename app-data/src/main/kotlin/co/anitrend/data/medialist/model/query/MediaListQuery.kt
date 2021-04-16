@@ -45,7 +45,6 @@ internal sealed class MediaListQuery : IGraphPayload {
         override fun toMap() = mapOf(
             "id" to param.id,
             "userId" to param.userId,
-            "userName" to param.userName,
             "type" to param.type,
             "status" to param.status,
             "mediaId" to param.mediaId,
@@ -96,8 +95,7 @@ internal sealed class MediaListQuery : IGraphPayload {
             "status_not" to param.status_not,
             "status_not_in" to param.status_not_in,
             "type" to param.type,
-            "userId" to param.userId,
-            "userName" to param.userName
+            "userId" to param.userId
         )
     }
 }

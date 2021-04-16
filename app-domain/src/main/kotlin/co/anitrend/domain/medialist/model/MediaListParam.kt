@@ -27,6 +27,10 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
 
 sealed class MediaListParam {
 
+    /**
+     * @param id Filter by media list id
+     * @param userId Filter by user id
+     */
     data class Entry(
         val id: Long,
         val userId: Long
@@ -34,7 +38,6 @@ sealed class MediaListParam {
 
     /**
      * @property userId Filter by a user's id
-     * @property userName Filter by a user's name
      * @property type Filter by the list entries media type
      * @property status Filter by the watching/reading status
      * @property notes Filter by note words and #tags
@@ -52,7 +55,6 @@ sealed class MediaListParam {
     abstract class Entries : MediaListParam() {
         abstract val type: MediaType
         abstract val userId: Long
-        abstract val userName: String
         abstract val completedAt: DateInt?
         abstract val completedAt_greater: DateInt?
         abstract val completedAt_lesser: DateInt?
@@ -91,7 +93,6 @@ sealed class MediaListParam {
         val compareWithAuthList: Boolean? = null,
         override val type: MediaType,
         override val userId: Long,
-        override val userName: String,
         override val completedAt: DateInt? = null,
         override val completedAt_greater: DateInt? = null,
         override val completedAt_lesser: DateInt? = null,
@@ -139,8 +140,7 @@ sealed class MediaListParam {
         override val status_not: MediaListStatus? = null,
         override val status_not_in: List<MediaListStatus>? = null,
         override val type: MediaType,
-        override val userId: Long,
-        override val userName: String
+        override val userId: Long
     ) : Entries()
 
     /** [SaveMediaListEntry mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)

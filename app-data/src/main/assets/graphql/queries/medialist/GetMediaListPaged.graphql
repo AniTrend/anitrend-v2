@@ -21,7 +21,6 @@ query GetMediaListPaged(
     $type: MediaType,
     $userId: Int,
     $userId_in: [Int],
-    $userName: String,
     $scoreFormat: ScoreFormat = POINT_100,
     $page: Int,
     $perPage: Int
@@ -33,7 +32,6 @@ query GetMediaListPaged(
         mediaList(
             id: $id,
             userId: $userId,
-            userName: $userName,
             type: $type,
             status: $status,
             mediaId: $mediaId,

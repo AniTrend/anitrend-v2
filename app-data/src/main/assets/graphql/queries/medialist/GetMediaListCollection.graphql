@@ -18,8 +18,7 @@ query GetMediaListCollection(
     $status_not: MediaListStatus,
     $status_not_in: [MediaListStatus],
     $type: MediaType,
-    $userId: Int,
-    $userName: String
+    $userId: Int
 ) {
     MediaListCollection(
         chunk: $chunk,
@@ -41,8 +40,7 @@ query GetMediaListCollection(
         status_not: $status_not,
         status_not_in: $status_not_in,
         type: $type,
-        userId: $userId,
-        userName: $userName
+        userId: $userId
     ) {
         hasNextChunk
         lists {
