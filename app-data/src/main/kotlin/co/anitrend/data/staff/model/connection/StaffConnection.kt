@@ -29,7 +29,8 @@ import kotlinx.serialization.Serializable
  *
  */
 @Serializable
-internal sealed class StaffConnection : IEntityConnection<StaffEdge, StaffModel> {
+internal sealed class StaffConnection : IEntityConnection,
+    IEntityConnection.IEdge<StaffEdge>, IEntityConnection.INode<StaffModel> {
 
     @Serializable
     data class Favourite(

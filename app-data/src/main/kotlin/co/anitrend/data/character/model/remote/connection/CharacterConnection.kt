@@ -28,7 +28,8 @@ import kotlinx.serialization.Serializable
  * Character Connection
  */
 @Serializable
-internal sealed class CharacterConnection : IEntityConnection<CharacterEdge, CharacterModel> {
+internal sealed class CharacterConnection : IEntityConnection,
+    IEntityConnection.IEdge<CharacterEdge> , IEntityConnection.INode<CharacterModel> {
 
     @Serializable
     data class Favourite(

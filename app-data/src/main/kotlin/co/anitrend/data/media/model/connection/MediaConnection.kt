@@ -28,7 +28,8 @@ import kotlinx.serialization.Serializable
  * Media connection
  */
 @Serializable
-internal sealed class MediaConnection : IEntityConnection<MediaEdge, MediaModel> {
+internal sealed class MediaConnection : IEntityConnection,
+    IEntityConnection.IEdge<MediaEdge>, IEntityConnection.INode<MediaModel> {
 
     @Serializable
     data class Relation(

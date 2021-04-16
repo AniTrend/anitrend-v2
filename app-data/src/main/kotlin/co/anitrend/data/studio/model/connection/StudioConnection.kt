@@ -28,7 +28,8 @@ import kotlinx.serialization.Serializable
  * Studio Connection
  */
 @Serializable
-internal sealed class StudioConnection : IEntityConnection<StudioEdge, StudioModel> {
+internal sealed class StudioConnection : IEntityConnection,
+    IEntityConnection.IEdge<StudioEdge>, IEntityConnection.INode<StudioModel> {
 
     @Serializable
     data class Favourite(
