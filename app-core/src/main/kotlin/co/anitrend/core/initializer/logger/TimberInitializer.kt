@@ -55,6 +55,6 @@ class TimberInitializer : AbstractCoreInitializer<Unit>() {
     companion object {
         val MIN_LOG_LEVEL = if (BuildConfig.DEBUG) Log.DEBUG else Log.WARN
         const val FILE_SIZE_LIMIT = 2 * 1024 * 1024
-        const val FILE_CREATION_LIMIT = 4
+        const val FILE_CREATION_LIMIT = 1
     }
 }
