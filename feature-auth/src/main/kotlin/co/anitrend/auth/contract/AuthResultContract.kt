@@ -19,19 +19,24 @@ package co.anitrend.auth.contract
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.browser.customtabs.CustomTabsIntent
+import co.anitrend.auth.R
 import co.anitrend.auth.model.Authentication
-import co.anitrend.data.auth.helper.AuthenticationType
-import co.anitrend.data.auth.helper.authenticationUri
+import co.anitrend.data.auth.helper.*
+import timber.log.Timber
 
 class AuthResultContract(
-    private val clientId: String
-): ActivityResultContract<Unit, Authentication>() {
+    private val resources: Resources
+) : ActivityResultContract<String, Authentication>() {
+
     /** Create an intent that can be used for [Activity.startActivityForResult]  */
-    override fun createIntent(context: Context, input: Unit?): Intent {
-        val uri = authenticationUri(AuthenticationType.TOKEN, clientId)
+    override fun createIntent(context: Context, input: String): Intent {
+        val uri = authenticationUri(AuthenticationType.TOKEN, input)
         return Intent().apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            flags = Intent.FLAG_ACTIVITY_NO_HISTORY
             action = Intent.ACTION_VIEW
             data = uri
         }
@@ -39,6 +44,36 @@ class AuthResultContract(
 
     /** Convert result obtained from [Activity.onActivityResult] to O  */
     override fun parseResult(resultCode: Int, intent: Intent?): Authentication {
-        TODO("Not yet implemented")
+        val data = intent?.data
+            ?: return Authentication.Error(
+                title = resources.getString(R.string.auth_error_default_title),
+                message = resources.getString(R.string.auth_error_default_message)
+            )
+
+        // APP_URL/callback#access_token=TOKEN_HERE&token_type=TOKEN_TYPE&expires_in=EXPIRES_IN_HERE
+        // Why are we even using fragments :not_like:
+        val uri = Uri.parse(data.toString().replaceFirst('#', '?'))
+
+        return runCatching {
+            Authentication.Authenticating(
+                requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
+                    "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $uri"
+                },
+                requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
+                    "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $uri"
+                },
+                requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
+                    "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $uri"
+                }.toLong()
+            )
+        }.getOrElse {
+            Timber.w(it)
+            Authentication.Error(
+                title = uri.getQueryParameter(CALLBACK_QUERY_ERROR_KEY)
+                    ?: resources.getString(R.string.auth_error_default_title),
+                message = uri.getQueryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY)
+                    ?: resources.getString(R.string.auth_error_default_message)
+            )
+        }
     }
 }
