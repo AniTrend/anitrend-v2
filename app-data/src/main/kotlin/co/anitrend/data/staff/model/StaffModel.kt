@@ -38,7 +38,6 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("language") override val language: StaffLanguage?,
         @SerialName("name") override val name: SharedName?,
         @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("id") override val id: Long
     ) : StaffModel()
 
@@ -57,7 +56,6 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("language") override val language: StaffLanguage?,
         @SerialName("name") override val name: SharedName?,
         @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("id") override val id: Long
     ) : StaffModel()
 }

@@ -31,7 +31,6 @@ import co.anitrend.data.shared.model.SharedName
  * @property isFavourite If the character is marked as favourite by the currently authenticated user
  * @property name The names of the character
  * @property siteUrl The url for the character page on the AniList website
- * @property updatedAt When the character's data was last updated
  */
 internal interface ICharacterModel : Identity {
     val description: String?
@@ -40,5 +39,4 @@ internal interface ICharacterModel : Identity {
     val isFavourite: Boolean
     val name: SharedName?
     val siteUrl: String?
-    val updatedAt: Long?
 }

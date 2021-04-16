@@ -32,7 +32,6 @@ sealed class Staff : IStaff {
         override val language: StaffLanguage?,
         override val name: CoverName?,
         override val siteUrl: String?,
-        override val updatedAt: Long?,
         override val id: Long
     ) : Staff()
 
@@ -44,7 +43,6 @@ sealed class Staff : IStaff {
         override val language: StaffLanguage?,
         override val name: CoverName?,
         override val siteUrl: String?,
-        override val updatedAt: Long?,
         override val id: Long
     ) : Staff()
 }

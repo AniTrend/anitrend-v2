@@ -29,5 +29,4 @@ interface IStaff : IEntity, IFavourable, ISynopsis {
     val language: StaffLanguage?
     val name: CoverName?
     val siteUrl: String?
-    val updatedAt: Long?
 }

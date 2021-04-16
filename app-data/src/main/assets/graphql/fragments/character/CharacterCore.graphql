@@ -15,5 +15,4 @@ fragment CharacterCore on Character {
         native
     }
     siteUrl
-    updatedAt
 }

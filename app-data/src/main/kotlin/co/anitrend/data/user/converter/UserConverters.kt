@@ -421,7 +421,6 @@ internal class UserViewEntityConverter(
                                                 )
                                             },
                                             siteUrl = staff.siteUrl,
-                                            updatedAt = staff.updatedAt,
                                             id = staff.id
                                         )
                                     },
@@ -510,7 +509,6 @@ internal class UserViewEntityConverter(
                                                 )
                                             },
                                             siteUrl = staff.siteUrl,
-                                            updatedAt = staff.updatedAt,
                                             id = staff.id
                                         )
                                     },
@@ -607,7 +605,6 @@ internal class UserViewEntityConverter(
                                                  )
                                              },
                                              siteUrl = staff.siteUrl,
-                                             updatedAt = staff.updatedAt,
                                              id = staff.id
                                          )
                                      },
@@ -696,7 +693,6 @@ internal class UserViewEntityConverter(
                                                  )
                                              },
                                              siteUrl = staff.siteUrl,
-                                             updatedAt = staff.updatedAt,
                                              id = staff.id
                                          )
                                      },

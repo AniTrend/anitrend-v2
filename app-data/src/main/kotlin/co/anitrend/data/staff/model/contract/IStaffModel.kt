@@ -32,7 +32,6 @@ import co.anitrend.domain.staff.enums.StaffLanguage
  * @property language The primary language of the staff member
  * @property name The names of the staff member
  * @property siteUrl The url for the staff page on the AniList website
- * @property updatedAt When the staff's data was last updated
  */
 internal interface IStaffModel : Identity {
     val description: String?
@@ -42,5 +41,4 @@ internal interface IStaffModel : Identity {
     val language: StaffLanguage?
     val name: SharedName?
     val siteUrl: String?
-    val updatedAt: Long?
 }
