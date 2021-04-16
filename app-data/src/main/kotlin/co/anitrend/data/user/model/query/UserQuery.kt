@@ -23,15 +23,16 @@ import co.anitrend.domain.user.model.UserParam
 
 internal sealed class UserQuery : IGraphPayload {
 
-    data class FindId(
-        val param: UserParam.FindId
+    data class Identifier(
+        val param: UserParam.Identifier
     ) : UserQuery() {
 
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
         override fun toMap() = mapOf(
-            "name" to param.name
+            "name" to param.name,
+            "id" to param.id
         )
     }
 

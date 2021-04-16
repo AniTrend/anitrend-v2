@@ -24,6 +24,19 @@ import co.anitrend.data.user.UserProfileRepository
 
 internal interface UserInteractor {
 
+    class Identifier(
+        repository: UserIdentifierRepository
+    ) : GetUserInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+
+    }
+
     class Paged(
         repository: UserSearchRepository
     ) : GetProfilePagedInteractor(repository) {

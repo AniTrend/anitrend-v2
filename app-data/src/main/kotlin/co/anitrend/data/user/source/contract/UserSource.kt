@@ -37,6 +37,31 @@ import kotlinx.coroutines.flow.Flow
 
 internal class UserSource {
 
+    abstract class Identifier : SupportCoreDataSource() {
+
+        protected lateinit var cacheIdentity: CacheIdentity
+
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected lateinit var query: UserQuery.Identifier
+
+        protected abstract fun observable(): Flow<User>
+
+        protected abstract suspend fun getUser(callback: RequestCallback): Boolean
+
+        operator fun invoke(param: UserParam.Identifier): Flow<User> {
+            query = UserQuery.Identifier(param)
+            cacheIdentity = UserCache.Identifier.Identity(query.param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::getUser
+            )
+            return observable()
+        }
+    }
+
     abstract class Authenticated : SupportCoreDataSource() {
 
         protected lateinit var cacheIdentity: CacheIdentity

@@ -32,6 +32,19 @@ import co.anitrend.data.user.usecase.UserInteractor
 import org.koin.dsl.module
 
 private val sourceModule = module {
+    factory<UserSource.Identifier> {
+        UserSourceImpl.Identifier(
+            remoteSource = graphApi(),
+            localSource = store().userDao(),
+            clearDataHelper = get(),
+            controller = graphQLController(
+                mapper = get<UserMapper.User>()
+            ),
+            converter = get(),
+            cachePolicy = get<UserCache.Identifier>(),
+            dispatcher = get()
+        )
+    }
     factory<UserSource.Authenticated> {
         UserSourceImpl.Authenticated(
             remoteSource = graphApi(),
@@ -111,6 +124,11 @@ private val sourceModule = module {
 
 private val cacheModule = module {
     factory {
+        UserCache.Identifier(
+            localSource = store().cacheDao()
+        )
+    }
+    factory {
         UserCache.Profile(
             localSource = store().cacheDao()
         )
@@ -182,6 +200,11 @@ private val mapperModule = module {
 }
 
 private val useCaseModule = module {
+    factory<GetUserInteractor> {
+        UserInteractor.Identifier(
+            repository = get()
+        )
+    }
     factory<GetProfilePagedInteractor> {
         UserInteractor.Paged(
             repository = get()
@@ -210,6 +233,11 @@ private val useCaseModule = module {
 }
 
 private val repositoryModule = module {
+    factory<UserIdentifierRepository> {
+        UserRepository.Identifier(
+            source = get()
+        )
+    }
     factory<UserAuthenticatedRepository> {
         UserRepository.Authenticated(
             source = get()

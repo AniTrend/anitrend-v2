@@ -42,6 +42,49 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 
 internal class UserSourceImpl {
+    
+    class Identifier(
+        private val remoteSource: UserRemoteSource,
+        private val localSource: UserLocalSource,
+        private val clearDataHelper: IClearDataHelper,
+        private val controller: UserController,
+        private val converter: UserEntityConverter,
+        override val cachePolicy: ICacheStorePolicy,
+        override val dispatcher: ISupportDispatcher
+    ) : UserSource.Identifier() {
+
+        override fun observable(): Flow<User> {
+            return localSource.userByNameFlow(query.param.name)
+                .flowOn(dispatcher.io)
+                .filterNotNull()
+                .map(converter::convertFrom)
+                .distinctUntilChanged()
+                .flowOn(dispatcher.computation)
+        }
+
+        override suspend fun getUser(callback: RequestCallback): Boolean {
+            val deferred = async {
+                val queryBuilder = query.toQueryContainerBuilder()
+                remoteSource.getUserByName(queryBuilder)
+            }
+
+            val result = controller(deferred, callback)
+
+            return result != null
+        }
+
+        /**
+         * Clears data sources (databases, preferences, e.t.c)
+         *
+         * @param context Dispatcher context to run in
+         */
+        override suspend fun clearDataSource(context: CoroutineDispatcher) {
+            clearDataHelper(context) {
+                cachePolicy.invalidateLastRequest(cacheIdentity)
+                localSource.clearByUserName(query.param.name)
+            }
+        }
+    }
 
     class Authenticated(
         private val remoteSource: UserRemoteSource,

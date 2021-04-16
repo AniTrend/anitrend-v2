@@ -17,6 +17,7 @@
 
 package co.anitrend.data.user.model.container
 
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.user.model.UserModel
 import kotlinx.serialization.SerialName
@@ -24,11 +25,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class UserModelContainer {
-
-    @Serializable
-    data class Id(
-        @SerialName("User") val user: UserModel.Id
-    ) : UserModelContainer()
 
     @Serializable
     data class User(
@@ -56,8 +52,8 @@ internal sealed class UserModelContainer {
     ) : UserModelContainer() {
         @Serializable
         data class Page(
-            @SerialName("pageInfo") val pageInfo: PageInfo? = null,
+            @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
             @SerialName("users") val userList: List<UserModel.Core> = emptyList()
-        )
+        ) : IPageModel
     }
 }

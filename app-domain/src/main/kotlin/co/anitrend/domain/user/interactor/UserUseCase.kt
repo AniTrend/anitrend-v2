@@ -24,6 +24,12 @@ import co.anitrend.domain.user.repository.IUserRepository
 
 sealed class UserUseCase : IUseCase {
 
+    abstract class GetUser<State: UiState<*>>(
+        protected val repository: IUserRepository.User<State>
+    ) : UserUseCase() {
+        operator fun invoke(param: UserParam.Identifier) = repository.getUser(param)
+    }
+
     abstract class GetAuthenticated<State: UiState<*>>(
         protected val repository: IUserRepository.Authenticated<State>
     ) : UserUseCase() {

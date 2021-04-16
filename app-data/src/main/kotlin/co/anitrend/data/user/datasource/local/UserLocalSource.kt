@@ -52,6 +52,12 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
 
     @Query("""
         delete from user
+        where user_name = :userName
+        """)
+    abstract suspend fun clearByUserName(userName: String)
+
+    @Query("""
+        delete from user
         where user_name match :userName
         """)
     abstract suspend fun clearByMatch(userName: String)
@@ -81,6 +87,12 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
         where id = :id
     """)
     abstract fun userByIdFlow(id: Long): Flow<UserEntity?>
+
+    @Query("""
+        select * from user
+        where user_name = :userName
+    """)
+    abstract fun userByNameFlow(userName: String): Flow<UserEntity?>
 
     @Query("""
         select * from user

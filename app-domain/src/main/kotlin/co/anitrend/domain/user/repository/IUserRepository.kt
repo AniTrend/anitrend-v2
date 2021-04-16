@@ -22,6 +22,10 @@ import co.anitrend.domain.user.model.UserParam
 
 interface IUserRepository {
 
+    interface User<State: UiState<*>> : IUserRepository {
+        fun getUser(param: UserParam.Identifier): State
+    }
+
     interface Authenticated<State: UiState<*>> : IUserRepository {
         fun getProfile(): State
     }

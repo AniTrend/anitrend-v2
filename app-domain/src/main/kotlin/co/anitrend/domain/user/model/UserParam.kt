@@ -30,10 +30,12 @@ sealed class UserParam {
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
+     * @param id Filter by id of the user
      * @param name Filter by the name of the user
      */
-    data class FindId(
+    data class Identifier(
         val name: String,
+        val id: Long? = null
     ) : UserParam()
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)

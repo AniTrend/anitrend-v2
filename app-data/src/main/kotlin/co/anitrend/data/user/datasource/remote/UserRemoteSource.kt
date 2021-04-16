@@ -30,11 +30,11 @@ import retrofit2.http.POST
 internal interface UserRemoteSource {
 
     @GRAPHQL
-    @GraphQuery("GetUserId")
+    @GraphQuery("GetUserByName")
     @POST(EndpointType.BASE_ENDPOINT_PATH)
-    suspend fun getUserId(
+    suspend fun getUserByName(
         @Body queryContainer: QueryContainerBuilder
-    ): Response<GraphQLResponse<UserModelContainer.Id>>
+    ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @GRAPHQL
     @GraphQuery("GetUserPaged")

@@ -34,6 +34,7 @@ internal typealias UserController = GraphQLController<UserModelContainer.User, U
 internal typealias UserProfileStatisticController =
         GraphQLController<UserModelContainer.WithStatistic, UserWithStatisticEntity>
 
+internal typealias UserIdentifierRepository = IUserRepository.User<DataState<User>>
 internal typealias UserAuthenticatedRepository = IUserRepository.Authenticated<DataState<User>>
 internal typealias UserSearchRepository = IUserRepository.Search<DataState<PagedList<User>>>
 internal typealias UserProfileRepository = IUserRepository.Profile<DataState<User>>
@@ -41,6 +42,7 @@ internal typealias UserProfileStatisticRepository = IUserRepository.Statistic<Da
 internal typealias UserFollowRepository = IUserRepository.ToggleFollow<DataState<User>>
 internal typealias UserUpdateRepository = IUserRepository.Update<DataState<User>>
 
+typealias GetUserInteractor = UserUseCase.GetUser<DataState<User>>
 typealias GetProfilePagedInteractor = UserUseCase.GetPaged<DataState<PagedList<User>>>
 typealias GetProfileInteractor = UserUseCase.GetProfile<DataState<User>>
 typealias GetProfileStatisticInteractor = UserUseCase.Statistic<DataState<User.WithStats>>

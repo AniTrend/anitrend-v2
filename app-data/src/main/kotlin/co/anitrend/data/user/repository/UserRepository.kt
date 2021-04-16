@@ -34,6 +34,14 @@ internal sealed class UserRepository(
     source: ISupportCoroutine
 ) : SupportRepository(source) {
 
+    class Identifier(
+        private val source: UserSource.Identifier
+    ) : UserRepository(source), UserIdentifierRepository {
+        override fun getUser(
+            param: UserParam.Identifier
+        ) = source create source(param)
+    }
+
     class Authenticated(
         private val source: UserSource.Authenticated
     ) : UserRepository(source), UserAuthenticatedRepository {
