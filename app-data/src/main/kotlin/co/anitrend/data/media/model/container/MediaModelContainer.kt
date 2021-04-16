@@ -17,6 +17,7 @@
 
 package co.anitrend.data.media.model.container
 
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.media.model.MediaModel
 import kotlinx.serialization.SerialName
@@ -36,8 +37,8 @@ internal sealed class MediaModelContainer {
     ) {
         @Serializable
         data class Page(
-            @SerialName("pageInfo") val pageInfo: PageInfo? = null,
+            @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
             @SerialName("media") val media: List<MediaModel.Core> = emptyList()
-        )
+        ) : IPageModel
     }
 }

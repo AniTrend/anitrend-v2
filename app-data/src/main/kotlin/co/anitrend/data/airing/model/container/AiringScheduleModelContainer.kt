@@ -18,6 +18,7 @@
 package co.anitrend.data.airing.model.container
 
 import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -32,8 +33,8 @@ internal sealed class AiringScheduleModelContainer {
 
         @Serializable
         data class Page(
-            @SerialName("pageInfo") val pageInfo: PageInfo? = null,
+            @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
             @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended> = emptyList()
-        )
+        ) : IPageModel
     }
 }
