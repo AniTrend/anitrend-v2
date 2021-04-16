@@ -1,5 +1,5 @@
-query GetMediaListEntry($id: Int!) {
-    MediaList(id: $id) {
+query GetMediaListEntry($id: Int!, $userId: Int!) {
+    MediaList(id: $id, userId: $userId) {
         ... MediaListExtended
     }
 }
