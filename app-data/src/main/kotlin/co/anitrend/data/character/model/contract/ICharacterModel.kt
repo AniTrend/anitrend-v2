@@ -18,8 +18,8 @@
 package co.anitrend.data.character.model.contract
 
 import co.anitrend.data.core.common.Identity
-import co.anitrend.data.shared.model.SharedImage
-import co.anitrend.data.shared.model.SharedName
+import co.anitrend.data.shared.model.SharedImageModel
+import co.anitrend.data.shared.model.SharedNameModel
 
 /** [Character](https://anilist.github.io/ApiV2-GraphQL-Docs/character.doc.html)
  * Character contract without any connections
@@ -29,14 +29,16 @@ import co.anitrend.data.shared.model.SharedName
  * @property id The id of the character
  * @property image Character images
  * @property isFavourite If the character is marked as favourite by the currently authenticated user
+ * @property isFavouriteBlocked If the character is blocked from being added to favourites
  * @property name The names of the character
  * @property siteUrl The url for the character page on the AniList website
  */
 internal interface ICharacterModel : Identity {
     val description: String?
     val favourites: Int?
-    val image: SharedImage?
+    val image: SharedImageModel?
     val isFavourite: Boolean
-    val name: SharedName?
+    val isFavouriteBlocked: Boolean
+    val name: SharedNameModel?
     val siteUrl: String?
 }
