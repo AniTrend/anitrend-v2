@@ -1,0 +1,22 @@
+query GetForumCommentPaged(
+    $page: Int,
+    $perPage: Int,
+    $id: Int,
+    $sort: [ThreadCommentSort],
+    $threadId: Int,
+    $userId: Int
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        threadComments(
+            id: $id
+            sort: $sort
+            threadId: $threadId
+            userId: $userId
+        ) {
+            ... ForumComment
+        }
+    }
+}

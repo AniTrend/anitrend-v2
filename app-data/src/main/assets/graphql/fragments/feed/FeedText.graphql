@@ -5,6 +5,9 @@ fragment FeedText on TextActivity {
     isLocked
     isSubscribed
     likeCount
+    likes {
+        ... UserCore
+    }
     replyCount
     siteUrl
     text

@@ -1,0 +1,18 @@
+query GetCharacterWithActor(
+    $page: Int,
+    $perPage: Int,
+    $id: Int,
+    $type: MediaType = ANIME,
+    $sort: [StaffSort],
+    $language: StaffLanguage
+) {
+    Character(id: $id) {
+        media(
+            page: $page,
+            perPage: $perPage,
+            type: $type
+        ) {
+            ... CharacterStaffConnection
+        }
+    }
+}

@@ -1,8 +1,5 @@
 fragment ForumExtended on Thread {
     ... ForumCore
-    likes {
-        ... UserCore
-    }
     mediaCategories {
         ... Media
     }

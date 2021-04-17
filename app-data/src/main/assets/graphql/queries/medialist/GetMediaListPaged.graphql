@@ -21,9 +21,9 @@ query GetMediaListPaged(
     $type: MediaType,
     $userId: Int,
     $userId_in: [Int],
-    $scoreFormat: ScoreFormat = POINT_100,
-    $page: Int,
-    $perPage: Int
+    $scoreFormat: ScoreFormat!,
+    $page: Int!,
+    $perPage: Int!
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {

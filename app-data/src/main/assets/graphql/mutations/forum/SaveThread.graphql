@@ -1,0 +1,21 @@
+mutation SaveThread(
+    $body: String,
+    $categories: [Int],
+    $id: Int,
+    $locked: Boolean,
+    $mediaCategories: [Int],
+    $sticky: Boolean,
+    $title: String
+) {
+    SaveThread(
+        body: $body,
+        categories: $categories,
+        id: $id,
+        locked: $locked,
+        mediaCategories: $mediaCategories,
+        sticky: $sticky,
+        title: $title,
+    ) {
+        ... ForumCore
+    }
+}

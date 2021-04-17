@@ -1,0 +1,9 @@
+query GetMangaFavourites($id: Int!) {
+    User(id: $id) {
+        favourites {
+            manga {
+                ... MediaFavouriteConnection
+            }
+        }
+    }
+}

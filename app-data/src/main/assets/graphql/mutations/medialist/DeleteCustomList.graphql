@@ -1,8 +1,11 @@
-mutaion DeleteCustomList(
+mutation DeleteCustomList(
     $customList: String,
     $type: MediaType
 ) {
-    DeleteCustomList {
+    DeleteCustomList(
+        customList: $customList,
+        type: $type,
+    ) {
         deleted
     }
 }

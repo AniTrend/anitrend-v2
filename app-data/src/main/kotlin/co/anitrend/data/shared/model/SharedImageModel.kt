@@ -27,7 +27,7 @@ import kotlinx.serialization.Serializable
  * @property medium Image at it's medium size
  */
 @Serializable
-internal data class SharedImage(
+internal data class SharedImageModel(
     @SerialName("large") val large: String?,
     @SerialName("medium") val medium: String?
 )

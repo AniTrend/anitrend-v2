@@ -1,0 +1,9 @@
+fragment ThreadCommentLikeNotification on ThreadCommentLikeNotification {
+    id
+    type
+    createdAt
+    context
+    user {
+        ... UserCore
+    }
+}

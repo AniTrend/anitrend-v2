@@ -1,0 +1,24 @@
+query GetReviewPaged(
+    $id: Int!,
+    $mediaId: Int,
+    $mediaType: MediaType,
+    $sort: [ReviewSort],
+    $userId: Int,
+    $page: Int!,
+    $perPage: Int!
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        reviews(
+            id: $id,
+            mediaId: $mediaId,
+            mediaType: $mediaType,
+            sort: $sort,
+            userId: $userId
+        ) {
+            ... ReviewCore
+        }
+    }
+}

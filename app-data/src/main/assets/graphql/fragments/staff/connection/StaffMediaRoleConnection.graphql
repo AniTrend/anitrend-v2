@@ -1,0 +1,12 @@
+fragment StaffMediaRoleConnection on MediaConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        staffRole
+        node {
+            ... MediaCore
+        }
+    }
+}

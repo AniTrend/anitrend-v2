@@ -28,5 +28,6 @@ enum class StaffSort(override val alias: CharSequence) : IAliasable, ISortable {
     ID("Id"),
     LANGUAGE("Language"),
     ROLE("Role"),
+    RELEVANCE("Relevance"),
     SEARCH_MATCH("Search match")
 }

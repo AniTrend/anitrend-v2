@@ -6,6 +6,9 @@ fragment FeedMessage on MessageActivity {
     isPrivate
     isSubscribed
     likeCount
+    likes {
+        ... UserCore
+    }
     message
     messenger {
         ... UserCore

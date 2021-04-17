@@ -23,24 +23,18 @@ import co.anitrend.domain.common.enums.contract.IAliasable
  * The primary language of the voice actor
  */
 enum class StaffLanguage(override val alias: CharSequence) : IAliasable {
-    /** English */
-    ENGLISH("English"),
-    /** French */
-    FRENCH("French"),
-    /** German */
-    GERMAN("German"),
-    /** Hebrew */
-    HEBREW("Hebrew"),
-    /** Hungarian */
-    HUNGARIAN("Hungarian"),
-    /** Italian */
-    ITALIAN("Italian"),
-    /** Japanese */
     JAPANESE("Japanese"),
-    /** Korean */
+    ENGLISH("English"),
     KOREAN("Korean"),
-    /** Portuguese */
+    ITALIAN("Italian"),
+    SPANISH("Spanish"),
     PORTUGUESE("Portuguese"),
-    /** Spanish */
-    SPANISH("Spanish")
+    FRENCH("French"),
+    GERMAN("German"),
+    HEBREW("Hebrew"),
+    HUNGARIAN("Hungarian"),
+    CHINESE("Chinese"),
+    ARABIC("Arabic"),
+    FILIPINO("Filipino"),
+    CATALAN("Catalan")
 }

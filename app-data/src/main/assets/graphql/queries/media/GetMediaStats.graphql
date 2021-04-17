@@ -1,0 +1,15 @@
+query GetMediaStats($id: Int) {
+    Media(id: $id) {
+        id
+        stats {
+            scoreDistribution {
+                amount
+                score
+            }
+            statusDistribution {
+                amount
+                status
+            }
+        }
+    }
+}

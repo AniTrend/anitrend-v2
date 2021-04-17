@@ -25,7 +25,7 @@ import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.account.koin.accountModules
-import co.anitrend.data.activity.model.remote.ActivityFeedModel
+import co.anitrend.data.feed.model.remote.FeedModel
 import co.anitrend.data.airing.koin.airingModules
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
@@ -123,11 +123,11 @@ private val retrofitModule = module {
                     subclass(AiringScheduleModel.Core::class, AiringScheduleModel.Core.serializer())
                     subclass(AiringScheduleModel.Extended::class, AiringScheduleModel.Extended.serializer())
                 }
-                polymorphic(ActivityFeedModel::class) {
-                    subclass(ActivityFeedModel.Progress::class, ActivityFeedModel.Progress.serializer())
-                    subclass(ActivityFeedModel.Message::class, ActivityFeedModel.Message.serializer())
-                    subclass(ActivityFeedModel.Reply::class, ActivityFeedModel.Reply.serializer())
-                    subclass(ActivityFeedModel.Status::class, ActivityFeedModel.Status.serializer())
+                polymorphic(FeedModel::class) {
+                    subclass(FeedModel.Progress::class, FeedModel.Progress.serializer())
+                    subclass(FeedModel.Message::class, FeedModel.Message.serializer())
+                    subclass(FeedModel.Reply::class, FeedModel.Reply.serializer())
+                    subclass(FeedModel.Status::class, FeedModel.Status.serializer())
                 }
                 classDiscriminator = "__type"
             }

@@ -1,0 +1,41 @@
+query GetFeedTextPaged(
+    $page: Int,
+    $perPage: Int,
+    $createdAt: Int,
+    $createdAt_greater: Int,
+    $createdAt_lesser: Int,
+    $hasReplies: Boolean,
+    $id_in: [Int],
+    $id_not: Int,
+    $id_not_in: [Int],
+    $isFollowing: Boolean,
+    $sort: [ActivitySort],
+    $userId: Int,
+    $userId_in: [Int],
+    $userId_not: Int,
+    $userId_not_in: [Int]
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        activities(
+            createdAt: $createdAt,
+            createdAt_greater: $createdAt_greater,
+            createdAt_lesser: $createdAt_lesser,
+            hasReplies: $hasReplies,
+            id_in: $id_in,
+            id_not: $id_not,
+            id_not_in: $id_not_in,
+            isFollowing: $isFollowing,
+            sort: $sort,
+            type: TEXT
+            userId: $userId,
+            userId_in: $userId_in,
+            userId_not: $userId_not,
+            userId_not_in: $userId_not_in
+        ) {
+            ... FeedText
+        }
+    }
+}

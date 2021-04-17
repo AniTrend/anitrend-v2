@@ -19,6 +19,7 @@ package co.anitrend.data.staff.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
 import co.anitrend.data.common.model.paging.info.PageInfo
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.data.staff.model.edge.StaffEdge
 import kotlinx.serialization.SerialName
@@ -29,21 +30,23 @@ import kotlinx.serialization.Serializable
  *
  */
 @Serializable
-internal sealed class StaffConnection : IEntityConnection,
-    IEntityConnection.IEdge<StaffEdge>, IEntityConnection.INode<StaffModel> {
+internal sealed class StaffConnection : IEntityConnection {
 
     @Serializable
     data class Favourite(
         @SerialName("edges") override val edges: List<StaffEdge.Favourite>?,
-        @SerialName("nodes") override val nodes: List<StaffModel.Core>?,
         @SerialName("pageInfo") override val pageInfo: PageInfo?
-    ) : StaffConnection()
+    ) : StaffConnection(), IEntityConnection.IEdge<StaffEdge>
+
+    @Serializable
+    data class MediaWithRole(
+        @SerialName("edges") override val edges: List<StaffEdge.MediaWithRole>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : StaffConnection(), IEntityConnection.IEdge<StaffEdge>
 
     @Serializable
     data class Media(
-        @SerialName("edges") override val edges: List<StaffEdge.Media>?,
-        @SerialName("nodes") override val nodes: List<StaffModel.Core>?,
+        @SerialName("nodes") override val nodes: List<MediaModel.Core>?,
         @SerialName("pageInfo") override val pageInfo: PageInfo?
-    ) : StaffConnection()
-
+    ) : StaffConnection(), IEntityConnection.INode<MediaModel>
 }
