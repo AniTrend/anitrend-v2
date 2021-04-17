@@ -31,7 +31,7 @@ import io.github.wax911.library.model.request.QueryContainerBuilder
 internal object GraphUtil {
 
     private val SORT_ORDER_EXCEPTIONS = listOf(
-        "SEARCH_MATCH"
+        "SEARCH_MATCH", "RELEVANCE"
     )
 
     private const val SORT_ORDER_DESC_POSTFIX = "_DESC"
