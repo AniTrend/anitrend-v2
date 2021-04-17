@@ -1,14 +1,6 @@
 fragment RecommendationCore on Recommendation {
-    id
-    media {
-        ... MediaCore
-    }
+    ... Recommendation
     mediaRecommendation {
         ... MediaCore
     }
-    rating
-    user {
-        ... UserCore
-    }
-    userRating
 }

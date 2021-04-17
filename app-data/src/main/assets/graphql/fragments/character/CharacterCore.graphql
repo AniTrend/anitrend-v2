@@ -1,4 +1,9 @@
 fragment CharacterCore on Character {
+    age,
+    dateOfBirth {
+        ... FuzzyDate
+    }
+    gender
     description
     favourites
     id
@@ -7,11 +12,14 @@ fragment CharacterCore on Character {
         medium
     }
     isFavourite
+    isFavouriteBlocked
     name {
         alternative
+        alternativeSpoiler
         first
         full
         last
+        middle
         native
     }
     siteUrl

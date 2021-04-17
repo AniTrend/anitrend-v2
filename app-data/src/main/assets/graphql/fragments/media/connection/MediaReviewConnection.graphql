@@ -1,0 +1,8 @@
+fragment MediaReviewConnection on ReviewConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    nodes {
+        ... ReviewCore
+    }
+}

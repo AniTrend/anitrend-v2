@@ -18,7 +18,7 @@
 package co.anitrend.data.character.model.remote.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.character.model.remote.CharacterModel
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
@@ -26,7 +26,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal sealed class CharacterEdge : IEntityEdge<CharacterModel> {
+internal sealed class CharacterEdge {
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
      * Character connection edge
@@ -35,34 +35,32 @@ internal sealed class CharacterEdge : IEntityEdge<CharacterModel> {
      */
     @Serializable
     data class Favourite(
-        @SerialName("favouriteOrder") val favouriteOrder: Int?,
-        @SerialName("node") override val node: CharacterModel.Core?,
-        @SerialName("id") override val id: Long
+        @SerialName("favouriteOrder") val favouriteOrder: Int?
     ) : CharacterEdge()
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
      * Character connection edge
      *
-     * @param role The characters role in the media
+     * @param characterRole The characters role in the media
      * @param media The media the character is in
      */
     @Serializable
     data class Media(
-        @SerialName("role") val role: CharacterRole?,
+        @SerialName("characterRole") val characterRole: CharacterRole?,
         @SerialName("media") val media: List<MediaModel.Core>?,
-        @SerialName("node") override val node: CharacterModel.Core?,
         @SerialName("id") override val id: Long
-    ) : CharacterEdge()
+    ) : CharacterEdge(), Identity
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
      * Character connection edge
      *
-     * @param voiceActors The voice actors of the character
+     * @param voiceActorRoles The voice actors of the character
      */
     @Serializable
     data class Staff(
-        @SerialName("voiceActors") val voiceActors: List<StaffModel.Core>?,
-        @SerialName("node") override val node: CharacterModel.Core?,
+        @SerialName("characterRole") val characterRole: CharacterRole?,
+        @SerialName("voiceActorRoles") val voiceActorRoles: List<StaffModel.ActorRole>?,
+        @SerialName("node") override val node: MediaModel.Core?,
         @SerialName("id") override val id: Long
-    ) : CharacterEdge()
+    ) : CharacterEdge(), IEntityEdge<MediaModel>, Identity
 }

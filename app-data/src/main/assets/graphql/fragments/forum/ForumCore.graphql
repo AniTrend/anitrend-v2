@@ -11,6 +11,9 @@ fragment ForumCore on Thread {
     isSticky
     isSubscribed
     likeCount
+    likes {
+        ... UserCore
+    }
     repliedAt
     replyCommentId
     replyCount

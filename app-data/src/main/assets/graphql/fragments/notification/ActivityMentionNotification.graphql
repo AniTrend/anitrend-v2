@@ -1,0 +1,10 @@
+fragment ActivityMentionNotification on ActivityMentionNotification {
+    id
+    type
+    createdAt
+    context
+    activityId
+    user {
+        ... UserCore
+    }
+}

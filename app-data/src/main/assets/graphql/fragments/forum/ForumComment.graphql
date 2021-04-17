@@ -1,0 +1,15 @@
+fragment ForumComment on ThreadComment {
+    childComments
+    comment
+    createdAt
+    id
+    likes {
+        ... UserCore
+    }
+    siteUrl
+    threadId
+    updatedAt
+    user {
+        ... UserCore
+    }
+}

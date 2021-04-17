@@ -1,0 +1,15 @@
+query GetForumComment(
+    $id: Int,
+    $sort: [ThreadCommentSort],
+    $threadId: Int,
+    $userId: Int
+) {
+    ThreadComment(
+        id: $id
+        sort: $sort
+        threadId: $threadId
+        userId: $userId
+    ) {
+        ... ForumComment
+    }
+}

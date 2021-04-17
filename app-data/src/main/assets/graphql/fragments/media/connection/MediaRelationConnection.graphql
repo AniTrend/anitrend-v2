@@ -1,0 +1,12 @@
+fragment MediaRelationConnection on MediaConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        relationType
+        node {
+            ... MediaCore
+        }
+    }
+}

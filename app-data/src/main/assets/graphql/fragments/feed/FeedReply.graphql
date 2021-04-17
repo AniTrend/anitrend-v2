@@ -4,6 +4,9 @@ fragment FeedReply on ActivityReply {
     id
     isLiked
     likeCount
+    likes {
+        ... UserCore
+    }
     text
     user {
         ... UserCore

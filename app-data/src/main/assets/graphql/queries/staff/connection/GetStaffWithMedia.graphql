@@ -1,0 +1,20 @@
+query GetStaffWithMediaRole(
+    $id: Int!,
+    $page: Int!,
+    $perPage: Int!,
+    $onList: Boolean,
+    $sort: [MediaSort],
+    $type: MediaType
+) {
+    Staff(id: $id) {
+        staffMedia(
+            page: $page,
+            perPage: $perPage,
+            onList: $onList,
+            sort: $sort,
+            type: $type,
+        ) {
+            ... StaffMediaConnection
+        }
+    }
+}

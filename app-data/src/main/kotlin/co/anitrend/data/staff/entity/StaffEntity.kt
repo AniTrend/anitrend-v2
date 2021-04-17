@@ -20,14 +20,19 @@ package co.anitrend.data.staff.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import co.anitrend.data.common.FuzzyDateInt
+import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.staff.enums.StaffLanguage
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "staff",
     primaryKeys = ["id"]
 )
+@EntitySchema
 internal data class StaffEntity(
+    @Embedded(prefix = "attribute_") val attribute: Attribute?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "favourites") val favourites: Int,
     @Embedded(prefix = "image_") val image: CoverImage,
@@ -50,5 +55,16 @@ internal data class StaffEntity(
         @ColumnInfo(name = "full") var full: String? = null,
         @ColumnInfo(name = "last") val last: String? = null,
         @ColumnInfo(name = "original") var original: String? = null
+    )
+
+    data class Attribute(
+        @ColumnInfo(name = "age") val age: Int? = null,
+        @ColumnInfo(name = "date_of_birth") val dateOfBirth: FuzzyDateInt? = null,
+        @ColumnInfo(name = "date_of_death") val dateOfDeath: FuzzyDateInt? = null,
+        @ColumnInfo(name = "gender") val gender: String? = null,
+        @ColumnInfo(name = "home_town") val homeTown: String? = null,
+        @ColumnInfo(name = "primary_occupations") val primaryOccupations: List<String>?= null,
+        @ColumnInfo(name = "year_active_start") val yearActiveStart: Int? = null,
+        @ColumnInfo(name = "year_active_end") val yearActiveEnd: Int? = null,
     )
 }

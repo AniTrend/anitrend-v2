@@ -1,0 +1,47 @@
+query GetFeedMessagePaged(
+    $page: Int,
+    $perPage: Int,
+    $createdAt: Int,
+    $createdAt_greater: Int,
+    $createdAt_lesser: Int,
+    $hasReplies: Boolean,
+    $id_in: [Int],
+    $id_not: Int,
+    $id_not_in: [Int],
+    $messengerId: Int,
+    $messengerId_in: [Int],
+    $messengerId_not: Int,
+    $messengerId_not_in: [Int],
+    $sort: [ActivitySort],
+    $userId: Int,
+    $userId_in: [Int],
+    $userId_not: Int,
+    $userId_not_in: [Int]
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        activities(
+            createdAt: $createdAt,
+            createdAt_greater: $createdAt_greater,
+            createdAt_lesser: $createdAt_lesser,
+            hasReplies: $hasReplies,
+            id_in: $id_in,
+            id_not: $id_not,
+            id_not_in: $id_not_in,
+            messengerId: $messengerId,
+            messengerId_in: $messengerId_in,
+            messengerId_not: $messengerId_not,
+            messengerId_not_in: $messengerId_not_in,
+            sort: $sort,
+            type: MESSAGE,
+            userId: $userId,
+            userId_in: $userId_in,
+            userId_not: $userId_not,
+            userId_not_in: $userId_not_in,
+        ) {
+            ... FeedMessage
+        }
+    }
+}

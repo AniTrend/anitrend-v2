@@ -5,6 +5,9 @@ fragment FeedMedia on ListActivity {
     isLocked
     isSubscribed
     likeCount
+    likes {
+        ... UserCore
+    }
     media {
         ... MediaCore
     }

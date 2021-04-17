@@ -18,7 +18,7 @@
 package co.anitrend.data.user.model
 
 import co.anitrend.data.core.common.Identity
-import co.anitrend.data.shared.model.SharedImage
+import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.data.user.model.option.UserOptionsModel
 import co.anitrend.data.user.model.statistics.UserStatisticModel
@@ -77,7 +77,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("isFollowing") val isFollowing: Boolean?,
         @SerialName("isFollower") val isFollower: Boolean?,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImage?,
+        @SerialName("avatar") override val avatar: SharedImageModel?,
         @SerialName("bannerImage") override val bannerImage: String?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,
@@ -109,7 +109,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("options") override val options: UserOptionsModel.Core?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImage?,
+        @SerialName("avatar") override val avatar: SharedImageModel?,
         @SerialName("bannerImage") override val bannerImage: String?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,
@@ -131,7 +131,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("options") override val options: UserOptionsModel.Viewer?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImage?,
+        @SerialName("avatar") override val avatar: SharedImageModel?,
         @SerialName("bannerImage") override val bannerImage: String?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,
@@ -148,7 +148,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("isFollower") val isFollower: Boolean?,
         @SerialName("statistics") val statistics: Statistic?,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImage?,
+        @SerialName("avatar") override val avatar: SharedImageModel?,
         @SerialName("bannerImage") override val bannerImage: String?,
         @SerialName("isBlocked") override val isBlocked: Boolean?,
         @SerialName("about") override val about: String?,

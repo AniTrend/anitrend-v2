@@ -18,7 +18,7 @@
 package co.anitrend.data.user.model.contract
 
 import co.anitrend.data.core.common.Identity
-import co.anitrend.data.shared.model.SharedImage
+import co.anitrend.data.shared.model.SharedImageModel
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
  * A user from the anilist platform, media options and stats
@@ -37,7 +37,7 @@ import co.anitrend.data.shared.model.SharedImage
  */
 internal interface IUserModel : Identity {
     val name: String
-    val avatar: SharedImage?
+    val avatar: SharedImageModel?
     val bannerImage: String?
     val isBlocked: Boolean?
     val about: String?

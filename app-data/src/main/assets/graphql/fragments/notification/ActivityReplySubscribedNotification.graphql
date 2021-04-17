@@ -1,0 +1,10 @@
+fragment ActivityReplySubscribedNotification on ActivityReplySubscribedNotification {
+    id
+    type
+    createdAt
+    context
+    activityId
+    user {
+        ... UserCore
+    }
+}

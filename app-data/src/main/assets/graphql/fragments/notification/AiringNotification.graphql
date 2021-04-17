@@ -1,0 +1,10 @@
+fragment AiringNotification on AiringNotification {
+    id
+    type
+    createdAt
+    contexts
+    episode
+    media {
+        ... MediaCore
+    }
+}

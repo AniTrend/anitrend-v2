@@ -18,12 +18,14 @@
 package co.anitrend.data.staff.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
+import co.anitrend.data.core.common.Identity
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal sealed class StaffEdge : IEntityEdge<StaffModel> {
+internal sealed class StaffEdge : Identity {
 
     /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
      * Staff connection edge
@@ -35,7 +37,7 @@ internal sealed class StaffEdge : IEntityEdge<StaffModel> {
         @SerialName("favouriteOrder") val favouriteOrder: Int?,
         @SerialName("node") override val node: StaffModel.Core?,
         @SerialName("id") override val id: Long
-    ) : StaffEdge()
+    ) : StaffEdge(), IEntityEdge<StaffModel>
 
     /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
      * Staff connection edge
@@ -43,9 +45,9 @@ internal sealed class StaffEdge : IEntityEdge<StaffModel> {
      * @param role The role of the staff member in the production of the media
      */
     @Serializable
-    data class Media(
+    data class MediaWithRole(
         @SerialName("role") val role: String?,
-        @SerialName("node") override val node: StaffModel.Core?,
+        @SerialName("node") override val node: MediaModel.Core?,
         @SerialName("id") override val id: Long
-    ) : StaffEdge()
+    ) : StaffEdge(), IEntityEdge<MediaModel>, Identity
 }
