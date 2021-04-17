@@ -24,16 +24,20 @@ import kotlinx.serialization.Serializable
  * Name contract
  *
  * @property alternative Other names that might be referred to as (pen names)
+ * @property alternativeSpoiler Other names that might be referred to as but are spoilers
  * @property first First name
  * @property full Full name
  * @property last Last name
+ * @property middle Middle name
  * @property native The full name in the native language
  */
 @Serializable
-internal data class SharedName(
+internal data class SharedNameModel(
     @SerialName("alternative") val alternative: List<String>?,
+    @SerialName("alternativeSpoiler") val alternativeSpoiler: List<String>?,
     @SerialName("first") val first: String?,
     @SerialName("full") val full: String?,
     @SerialName("last") val last: String?,
+    @SerialName("middle") val middle: String?,
     @SerialName("native") val native: String?
 )
