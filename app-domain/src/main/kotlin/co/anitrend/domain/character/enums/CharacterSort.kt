@@ -26,5 +26,6 @@ import co.anitrend.domain.common.enums.contract.ISortable
 enum class CharacterSort(override val alias: CharSequence) : IAliasable, ISortable {
     ID("Id"),
     ROLE("Role"),
+    RELEVANCE("Relevance"),
     SEARCH_MATCH("Search match")
 }
