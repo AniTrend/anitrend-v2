@@ -187,7 +187,7 @@ type AiringProgression {
     watching: Int
 }
 
-"Media Airing Schedule"
+"Media Airing Schedule. NOTE: We only aim to guarantee that FUTURE airing data is present and accurate."
 type AiringSchedule {
     "The time the episode airs at"
     airingAt: Int!
@@ -225,6 +225,10 @@ type AniChartUser {
 
 "A character that features in an anime or manga"
 type Character {
+    "The character's age. Note this is a string, not an int, it may contain further text and additional ages."
+    age: String
+    "The character's birth date"
+    dateOfBirth: FuzzyDate
     "A general description of the character"
     description(
         "Return the string in pre-parsed html instead of markdown"
@@ -232,12 +236,16 @@ type Character {
     ): String
     "The amount of user's who have favourited the character"
     favourites: Int
+    "The character's gender. Usually Male, Female, or Non-binary but can be any string."
+    gender: String
     "The id of the character"
     id: Int!
     "Character images"
     image: CharacterImage
     "If the character is marked as favourite by the currently authenticated user"
     isFavourite: Boolean!
+    "If the character is blocked from being added to favourites"
+    isFavouriteBlocked: Boolean!
     "Media that includes the character"
     media(
         onList: Boolean,
@@ -272,9 +280,13 @@ type CharacterEdge {
     id: Int
     "The media the character is in"
     media: [Media]
+    "Media specific character name"
+    name: String
     node: Character
     "The characters role in the media"
     role: CharacterRole
+    "The voice actors of the character with role date"
+    voiceActorRoles(language: StaffLanguage, sort: [StaffSort]): [StaffRoleType]
     "The voice actors of the character"
     voiceActors(language: StaffLanguage, sort: [StaffSort]): [Staff]
 }
@@ -290,12 +302,16 @@ type CharacterImage {
 type CharacterName {
     "Other names the character might be referred to as"
     alternative: [String]
+    "Other names the character might be referred to as but are spoilers"
+    alternativeSpoiler: [String]
     "The character's given name"
     first: String
-    "The character's full name"
+    "The character's first and last name"
     full: String
     "The character's surname"
     last: String
+    "The character's middle name"
+    middle: String
     "The character's full name in their native language"
     native: String
 }
@@ -544,6 +560,8 @@ type InternalPage {
         id_not: Int,
         "Filter by character id"
         id_not_in: [Int],
+        "Filter by character by if its their birthday today"
+        isBirthday: Boolean,
         "Filter by search query"
         search: String,
         "The order the results will be returned in"
@@ -880,6 +898,8 @@ type InternalPage {
         id_not: Int,
         "Filter by the staff id"
         id_not_in: [Int],
+        "Filter by staff by if its their birthday today"
+        isBirthday: Boolean,
         "Filter by search query"
         search: String,
         "The order the results will be returned in"
@@ -1155,10 +1175,14 @@ type Media {
 type MediaCharacter {
     "The characters in the media voiced by the parent actor"
     character: Character
+    "Media specific character name"
+    characterName: String
+    dubGroup: String
     "The id of the connection"
     id: Int
     "The characters role in the media"
     role: CharacterRole
+    roleNotes: String
     "The voice actor of the character"
     voiceActor: Staff
 }
@@ -1183,10 +1207,14 @@ type MediaCoverImage {
 
 "Media connection edge"
 type MediaEdge {
+    "Media specific character name"
+    characterName: String
     "The characters role in the media"
     characterRole: CharacterRole
     "The characters in the media voiced by the parent actor"
     characters: [Character]
+    "Used for grouping roles where multiple dubs exist for the same language. Either dubbing company name or language variant."
+    dubGroup: String
     "The order the media should be displayed from the users favourites"
     favouriteOrder: Int
     "The id of the connection"
@@ -1199,8 +1227,12 @@ type MediaEdge {
         "Provide 2 to use new version 2 of relation enum"
         version: Int
     ): MediaRelation
+    "Notes regarding the VA's role for the character"
+    roleNotes: String
     "The role of the staff member in the production of the media"
     staffRole: String
+    "The voice actors of the character with role date"
+    voiceActorRoles(language: StaffLanguage, sort: [StaffSort]): [StaffRoleType]
     "The voice actors of the character"
     voiceActors(language: StaffLanguage, sort: [StaffSort]): [Staff]
 }
@@ -1391,12 +1423,15 @@ type MediaSubmissionComparison {
 
 type MediaSubmissionEdge {
     character: Character
+    characterName: String
     characterRole: CharacterRole
     characterSubmission: Character
+    dubGroup: String
     "The id of the direct submission"
     id: Int
     isMain: Boolean
     media: Media
+    roleNotes: String
     staff: Staff
     staffRole: String
     staffSubmission: Staff
@@ -1965,6 +2000,8 @@ type Page {
         id_not: Int,
         "Filter by character id"
         id_not_in: [Int],
+        "Filter by character by if its their birthday today"
+        isBirthday: Boolean,
         "Filter by search query"
         search: String,
         "The order the results will be returned in"
@@ -2277,6 +2314,8 @@ type Page {
         id_not: Int,
         "Filter by the staff id"
         id_not_in: [Int],
+        "Filter by staff by if its their birthday today"
+        isBirthday: Boolean,
         "Filter by search query"
         search: String,
         "The order the results will be returned in"
@@ -2474,6 +2513,8 @@ type Query {
         id_not: Int,
         "Filter by character id"
         id_not_in: [Int],
+        "Filter by character by if its their birthday today"
+        isBirthday: Boolean,
         "Filter by search query"
         search: String,
         "The order the results will be returned in"
@@ -2859,6 +2900,8 @@ type Query {
         id_not: Int,
         "Filter by the staff id"
         id_not_in: [Int],
+        "Filter by staff by if its their birthday today"
+        isBirthday: Boolean,
         "Filter by search query"
         search: String,
         "The order the results will be returned in"
@@ -3134,6 +3177,8 @@ type SiteTrendEdge {
 
 "Voice actors or production staff"
 type Staff {
+    "The person's age in years"
+    age: Int
     "Media the actor voiced characters in. (Same data as characters with media as node instead of characters)"
     characterMedia(
         onList: Boolean,
@@ -3151,6 +3196,8 @@ type Staff {
         perPage: Int,
         sort: [CharacterSort]
     ): CharacterConnection
+    dateOfBirth: FuzzyDate
+    dateOfDeath: FuzzyDate
     "A general description of the staff member"
     description(
         "Return the string in pre-parsed html instead of markdown"
@@ -3158,18 +3205,28 @@ type Staff {
     ): String
     "The amount of user's who have favourited the staff member"
     favourites: Int
+    "The staff's gender. Usually Male, Female, or Non-binary but can be any string."
+    gender: String
+    "The persons birthplace or hometown"
+    homeTown: String
     "The id of the staff member"
     id: Int!
     "The staff images"
     image: StaffImage
     "If the staff member is marked as favourite by the currently authenticated user"
     isFavourite: Boolean!
-    "The primary language of the staff member"
-    language: StaffLanguage
+    "If the staff member is blocked from being added to favourites"
+    isFavouriteBlocked: Boolean!
+    "The primary language the staff member dub's in"
+    language: StaffLanguage @deprecated(reason : "Replaced with languageV2")
+    "The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan"
+    languageV2: String
     "Notes for site moderators"
     modNotes: String
     "The names of the staff member"
     name: StaffName
+    "The person's primary occupations"
+    primaryOccupations: [String]
     "The url for the staff page on the AniList website"
     siteUrl: String
     "Staff member that the submission is referencing"
@@ -3191,6 +3248,8 @@ type Staff {
     "Submitter for the submission"
     submitter: User
     updatedAt: Int @deprecated(reason : "No data available")
+    "[startYear, endYear] (If the 2nd value is not present staff is still active)"
+    yearsActive: [Int]
 }
 
 type StaffConnection {
@@ -3224,12 +3283,24 @@ type StaffName {
     alternative: [String]
     "The person's given name"
     first: String
-    "The person's full name"
+    "The person's first and last name"
     full: String
     "The person's surname"
     last: String
+    "The person's middle name"
+    middle: String
     "The person's full name in their native language"
     native: String
+}
+
+"Voice actor role for a character"
+type StaffRoleType {
+    "Used for grouping roles where multiple dubs exist for the same language. Either dubbing company name or language variant."
+    dubGroup: String
+    "Notes regarding the VA's role for the character"
+    roleNotes: String
+    "The voice actors of the character"
+    voiceActor: Staff
 }
 
 "User's staff statistics"
@@ -3875,6 +3946,8 @@ enum CharacterSort {
     FAVOURITES_DESC
     ID
     ID_DESC
+    "Order manually decided by moderators"
+    RELEVANCE
     ROLE
     ROLE_DESC
     SEARCH_MATCH
@@ -4255,6 +4328,8 @@ enum StaffSort {
     ID_DESC
     LANGUAGE
     LANGUAGE_DESC
+    "Order manually decided by moderators"
+    RELEVANCE
     ROLE
     ROLE_DESC
     SEARCH_MATCH
@@ -4367,10 +4442,14 @@ input AniChartHighlightInput {
 input CharacterNameInput {
     "Other names the character might be referred by"
     alternative: [String]
+    "Other names the character might be referred to as but are spoilers"
+    alternativeSpoiler: [String]
     "The character's given name"
     first: String
     "The character's surname"
     last: String
+    "The character's middle name"
+    middle: String
     "The character's full name in their native language"
     native: String
 }
@@ -4437,6 +4516,8 @@ input StaffNameInput {
     first: String
     "The person's surname"
     last: String
+    "The person's middle name"
+    middle: String
     "The person's full name in their native language"
     native: String
 }
