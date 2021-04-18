@@ -23,8 +23,37 @@ import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.tag.entity.Tag
 
+internal class TagConverter(
+    override val fromType: (TagModel) -> Tag = ::transform,
+    override val toType: (Tag) -> TagModel = { throw NotImplementedError() }
+) : SupportConverter<TagModel, Tag>() {
+    private companion object : ISupportTransformer<TagModel, Tag> {
+        override fun transform(source: TagModel) = when (source) {
+            is TagModel.Core -> Tag.Core(
+                name = source.name,
+                description = source.description,
+                category = source.category,
+                isGeneralSpoiler = source.isGeneralSpoiler ?: false,
+                isAdult = source.isAdult ?: false,
+                id = source.id,
+            )
+            is TagModel.Extended -> Tag.Extended(
+                rank = source.rank ?: 0,
+                isMediaSpoiler = source.isMediaSpoiler ?: false,
+                background = null,
+                name = source.name,
+                description = source.description,
+                category = source.category,
+                isGeneralSpoiler = source.isGeneralSpoiler ?: false,
+                isAdult = source.isAdult ?: false,
+                id = source.id,
+            )
+        }
+    }
+}
+
 internal class TagEntityConverter(
-    override val fromType: (TagEntity) -> Tag = { transform(it) },
+    override val fromType: (TagEntity) -> Tag = ::transform,
     override val toType: (Tag) -> TagEntity = { throw NotImplementedError() }
 ) : SupportConverter<TagEntity, Tag>() {
     private companion object : ISupportTransformer<TagEntity, Tag> {

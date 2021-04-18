@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cd3ec008d80bbf70098087e52b9b3c8e",
+    "identityHash": "0e3f9c4e0d697b61234c4252394f0b5f",
     "entities": [
       {
         "tableName": "cache_log",
@@ -401,7 +401,7 @@
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_recommendation_blocked` INTEGER NOT NULL, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `mal_id` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_favourite_blocked` INTEGER NOT NULL, `is_licensed` INTEGER, `is_recommendation_blocked` INTEGER NOT NULL, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `mal_id` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "nextAiringId",
@@ -478,6 +478,12 @@
           {
             "fieldPath": "isFavourite",
             "columnName": "is_favourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavouriteBlocked",
+            "columnName": "is_favourite_blocked",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -1588,8 +1594,26 @@
       },
       {
         "tableName": "character",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`age` INTEGER, `date_of_birth` TEXT, `gender` TEXT, `description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `isFavouriteBlocked` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_alternative_spoiler` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_middle` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "age",
+            "columnName": "age",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateOfBirth",
+            "columnName": "date_of_birth",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "gender",
+            "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
           {
             "fieldPath": "description",
             "columnName": "description",
@@ -1609,16 +1633,16 @@
             "notNull": true
           },
           {
+            "fieldPath": "isFavouriteBlocked",
+            "columnName": "isFavouriteBlocked",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "siteUrl",
             "columnName": "site_url",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "updatedAt",
-            "columnName": "updated_at",
-            "affinity": "INTEGER",
-            "notNull": false
           },
           {
             "fieldPath": "id",
@@ -1645,6 +1669,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "name.alternativeSpoiler",
+            "columnName": "name_alternative_spoiler",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "name.first",
             "columnName": "name_first",
             "affinity": "TEXT",
@@ -1659,6 +1689,12 @@
           {
             "fieldPath": "name.last",
             "columnName": "name_last",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.middle",
+            "columnName": "name_middle",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1739,7 +1775,7 @@
       },
       {
         "tableName": "studio",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`favourites` INTEGER NOT NULL, `is_animation_studio` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `name` TEXT NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`favourites` INTEGER NOT NULL, `is_animation_studio` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `is_favourite_blocked` INTEGER NOT NULL, `name` TEXT NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "favourites",
@@ -1756,6 +1792,12 @@
           {
             "fieldPath": "isFavourite",
             "columnName": "is_favourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavouriteBlocked",
+            "columnName": "is_favourite_blocked",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -1824,7 +1866,7 @@
       },
       {
         "tableName": "staff",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `attribute_age` INTEGER, `attribute_date_of_birth` TEXT, `attribute_date_of_death` TEXT, `attribute_gender` TEXT, `attribute_home_town` TEXT, `attribute_primary_occupations` TEXT, `attribute_year_active_start` INTEGER, `attribute_year_active_end` INTEGER, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "description",
@@ -1867,6 +1909,54 @@
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "attribute.age",
+            "columnName": "attribute_age",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.dateOfBirth",
+            "columnName": "attribute_date_of_birth",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.dateOfDeath",
+            "columnName": "attribute_date_of_death",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.gender",
+            "columnName": "attribute_gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.homeTown",
+            "columnName": "attribute_home_town",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.primaryOccupations",
+            "columnName": "attribute_primary_occupations",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.yearActiveStart",
+            "columnName": "attribute_year_active_start",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.yearActiveEnd",
+            "columnName": "attribute_year_active_end",
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "image.large",
@@ -2648,7 +2738,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cd3ec008d80bbf70098087e52b9b3c8e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0e3f9c4e0d697b61234c4252394f0b5f')"
     ]
   }
 }

@@ -40,5 +40,5 @@ internal interface ICharacterModel : Identity {
     val isFavourite: Boolean
     val isFavouriteBlocked: Boolean
     val name: SharedNameModel?
-    val siteUrl: String?
+    val siteUrl: String
 }

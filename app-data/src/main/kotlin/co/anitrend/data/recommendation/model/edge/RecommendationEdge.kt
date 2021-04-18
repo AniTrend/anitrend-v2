@@ -18,6 +18,7 @@
 package co.anitrend.data.recommendation.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.recommendation.model.RecommendationModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -29,4 +30,4 @@ import kotlinx.serialization.Serializable
 internal class RecommendationEdge(
     @SerialName("id") override val id: Long,
     @SerialName("node") override val node: RecommendationModel.Core?
-) : IEntityEdge<RecommendationModel>
+) : IEntityEdge<RecommendationModel>, Identity

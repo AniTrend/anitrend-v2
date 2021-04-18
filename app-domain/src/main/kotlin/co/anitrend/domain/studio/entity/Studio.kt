@@ -25,6 +25,7 @@ sealed class Studio : IStudio {
     data class Core(
         override val favourites: Int,
         override val isFavourite: Boolean,
+        override val isFavouriteBlocked: Boolean,
         override val name: String,
         override val image: CoverImage?,
         override val isAnimationStudio: Boolean,
@@ -35,6 +36,7 @@ sealed class Studio : IStudio {
     data class Extended(
         override val favourites: Int,
         override val isFavourite: Boolean,
+        override val isFavouriteBlocked: Boolean,
         override val image: CoverImage?,
         override val isAnimationStudio: Boolean,
         override val name: String,

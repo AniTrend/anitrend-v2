@@ -19,6 +19,10 @@ package co.anitrend.data.user.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
+import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.staff.converter.StaffConverter
+import co.anitrend.data.studio.converter.StudioConverter
+import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
@@ -225,26 +229,24 @@ internal class UserEntityConverter(
     override val toType: (User) -> UserEntity = { throw NotImplementedError() }
 ) : SupportConverter<UserEntity, User>() {
     private companion object : ISupportTransformer<UserEntity, User> {
-        override fun transform(source: UserEntity): User {
-            return User.Core(
-                name = source.about.name,
-                avatar = UserImage(
-                    large = source.coverImage.large,
-                    medium = source.coverImage.medium,
-                    banner = source.coverImage.banner
-                ),
-                status = UserStatus(
-                    about = source.about.bio,
-                    donationBadge = source.about.donatorBadge,
-                    donationTier = source.about.donatorTier,
-                    isFollowing = source.status?.isFollowing,
-                    isFollower = source.status?.isFollower,
-                    isBlocked = source.status?.isBlocked,
-                    pageUrl = source.about.siteUrl,
-                ),
-                id = source.id
-            )
-        }
+        override fun transform(source: UserEntity) = User.Core(
+            name = source.about.name,
+            avatar = UserImage(
+                large = source.coverImage.large,
+                medium = source.coverImage.medium,
+                banner = source.coverImage.banner
+            ),
+            status = UserStatus(
+                about = source.about.bio,
+                donationBadge = source.about.donatorBadge,
+                donationTier = source.about.donatorTier,
+                isFollowing = source.status?.isFollowing,
+                isFollower = source.status?.isFollower,
+                isBlocked = source.status?.isBlocked,
+                pageUrl = source.about.siteUrl,
+            ),
+            id = source.id
+        )
     }
 }
 
@@ -400,29 +402,7 @@ internal class UserViewEntityConverter(
                             staff = entity.staff?.map {
                                 MediaStatistic.Anime.Staff(
                                     staff = it.staff?.let { staff ->
-                                        Staff.Core(
-                                            description = staff.description,
-                                            favourites = staff.favourites,
-                                            image = staff.image?.let { image ->
-                                                CoverImage(
-                                                    large = image.large,
-                                                    medium = image.medium
-                                                )
-                                            },
-                                            isFavourite = staff.isFavourite,
-                                            language = staff.language,
-                                            name = staff.name?.let { name ->
-                                                CoverName(
-                                                    alternative = name.alternative.orEmpty(),
-                                                    first = name.first,
-                                                    full = name.full,
-                                                    last = name.last,
-                                                    native = name.native,
-                                                )
-                                            },
-                                            siteUrl = staff.siteUrl,
-                                            id = staff.id
-                                        )
+                                        koinOf<StaffConverter>().convertFrom(staff)
                                     },
                                     count = it.count,
                                     meanScore = it.meanScore,
@@ -451,15 +431,7 @@ internal class UserViewEntityConverter(
                             studios = entity.studios?.map {
                                 MediaStatistic.Anime.Studio(
                                     studio = it.studio?.let { studio ->
-                                        Studio.Core(
-                                            favourites = studio.favourites ?: 0,
-                                            isAnimationStudio = studio.isAnimationStudio,
-                                            isFavourite = studio.isFavourite,
-                                            image = null,
-                                            name = studio.name,
-                                            siteUrl = studio.siteUrl,
-                                            id = studio.id
-                                        )
+                                        koinOf<StudioConverter>().convertFrom(studio)
                                     },
                                     count = it.count,
                                     meanScore = it.meanScore,
@@ -470,14 +442,7 @@ internal class UserViewEntityConverter(
                             tags = entity.tags?.map {
                                 MediaStatistic.Anime.Tag(
                                     tag = it.tag?.let { tag ->
-                                        Tag.Core(
-                                            name = tag.name,
-                                            description = tag.description,
-                                            category = tag.category,
-                                            isGeneralSpoiler = tag.isGeneralSpoiler ?: false,
-                                            isAdult = tag.isAdult ?: false,
-                                            id = tag.id,
-                                        )
+                                        koinOf<TagConverter>().convertFrom(tag)
                                     },
                                     count = it.count,
                                     meanScore = it.meanScore,
@@ -488,29 +453,7 @@ internal class UserViewEntityConverter(
                             voiceActors = entity.voiceActors?.map {
                                 MediaStatistic.Anime.VoiceActor(
                                     voiceActor = it.voiceActor?.let { staff ->
-                                        Staff.Core(
-                                            description = staff.description,
-                                            favourites = staff.favourites,
-                                            image = staff.image?.let { image ->
-                                                CoverImage(
-                                                    large = image.large,
-                                                    medium = image.medium
-                                                )
-                                            },
-                                            isFavourite = staff.isFavourite,
-                                            language = staff.language,
-                                            name = staff.name?.let { name ->
-                                                CoverName(
-                                                    alternative = name.alternative.orEmpty(),
-                                                    first = name.first,
-                                                    full = name.full,
-                                                    last = name.last,
-                                                    native = name.native,
-                                                )
-                                            },
-                                            siteUrl = staff.siteUrl,
-                                            id = staff.id
-                                        )
+                                        koinOf<StaffConverter>().convertFrom(staff)
                                     },
                                     count = it.count,
                                     meanScore = it.meanScore,
@@ -584,29 +527,7 @@ internal class UserViewEntityConverter(
                             staff = entity.staff?.map {
                                  MediaStatistic.Manga.Staff(
                                      staff = it.staff?.let { staff ->
-                                         Staff.Core(
-                                             description = staff.description,
-                                             favourites = staff.favourites,
-                                             image = staff.image?.let { image ->
-                                                 CoverImage(
-                                                     large = image.large,
-                                                     medium = image.medium
-                                                 )
-                                             },
-                                             isFavourite = staff.isFavourite,
-                                             language = staff.language,
-                                             name = staff.name?.let { name ->
-                                                 CoverName(
-                                                     alternative = name.alternative.orEmpty(),
-                                                     first = name.first,
-                                                     full = name.full,
-                                                     last = name.last,
-                                                     native = name.native,
-                                                 )
-                                             },
-                                             siteUrl = staff.siteUrl,
-                                             id = staff.id
-                                         )
+                                         koinOf<StaffConverter>().convertFrom(staff)
                                      },
                                      count = it.count,
                                      meanScore = it.meanScore,
@@ -635,15 +556,7 @@ internal class UserViewEntityConverter(
                             studios = entity.studios?.map {
                                  MediaStatistic.Manga.Studio(
                                      studio = it.studio?.let { studio ->
-                                         Studio.Core(
-                                             favourites = studio.favourites ?: 0,
-                                             isAnimationStudio = studio.isAnimationStudio,
-                                             isFavourite = studio.isFavourite,
-                                             image = null,
-                                             name = studio.name,
-                                             siteUrl = studio.siteUrl,
-                                             id = studio.id
-                                         )
+                                         koinOf<StudioConverter>().convertFrom(studio)
                                      },
                                      count = it.count,
                                      meanScore = it.meanScore,
@@ -654,14 +567,7 @@ internal class UserViewEntityConverter(
                             tags = entity.tags?.map {
                                  MediaStatistic.Manga.Tag(
                                      tag = it.tag?.let { tag ->
-                                         Tag.Core(
-                                             name = tag.name,
-                                             description = tag.description,
-                                             category = tag.category,
-                                             isGeneralSpoiler = tag.isGeneralSpoiler ?: false,
-                                             isAdult = tag.isAdult ?: false,
-                                             id = tag.id,
-                                         )
+                                         koinOf<TagConverter>().convertFrom(tag)
                                      },
                                      count = it.count,
                                      meanScore = it.meanScore,
@@ -672,29 +578,7 @@ internal class UserViewEntityConverter(
                             voiceActors = entity.voiceActors?.map {
                                  MediaStatistic.Manga.VoiceActor(
                                      voiceActor = it.voiceActor?.let { staff ->
-                                         Staff.Core(
-                                             description = staff.description,
-                                             favourites = staff.favourites,
-                                             image = staff.image?.let { image ->
-                                                 CoverImage(
-                                                     large = image.large,
-                                                     medium = image.medium
-                                                 )
-                                             },
-                                             isFavourite = staff.isFavourite,
-                                             language = staff.language,
-                                             name = staff.name?.let { name ->
-                                                 CoverName(
-                                                     alternative = name.alternative.orEmpty(),
-                                                     first = name.first,
-                                                     full = name.full,
-                                                     last = name.last,
-                                                     native = name.native,
-                                                 )
-                                             },
-                                             siteUrl = staff.siteUrl,
-                                             id = staff.id
-                                         )
+                                         koinOf<StaffConverter>().convertFrom(staff)
                                      },
                                      count = it.count,
                                      meanScore = it.meanScore,

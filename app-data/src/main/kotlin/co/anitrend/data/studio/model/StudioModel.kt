@@ -28,13 +28,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal sealed class StudioModel : IStudioModel {
 
+    abstract val isFavouriteBlocked: Boolean?
+
     @Serializable
     internal data class Core(
         @SerialName("favourites") override val favourites: Int?,
         @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
         @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean?,
         @SerialName("name") override val name: String,
-        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long
     ) : StudioModel()
 
@@ -47,8 +50,9 @@ internal sealed class StudioModel : IStudioModel {
         @SerialName("favourites") override val favourites: Int?,
         @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
         @SerialName("isFavourite") override val isFavourite: Boolean,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean?,
         @SerialName("name") override val name: String,
-        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long
     ) : StudioModel()
 }

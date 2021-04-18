@@ -23,4 +23,5 @@ package co.anitrend.domain.common.entity.contract
 interface IFavourable {
     val favourites: Int
     val isFavourite: Boolean
+    val isFavouriteBlocked: Boolean
 }

@@ -91,7 +91,7 @@ sealed class MediaStatistic {
         ) : Anime()
 
         data class Staff(
-            val staff: StaffEntity.Core?,
+            val staff: StaffEntity?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
@@ -115,7 +115,7 @@ sealed class MediaStatistic {
         ) : Anime()
 
         data class Studio(
-            val studio: StudioEntity.Core?,
+            val studio: StudioEntity?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
@@ -131,7 +131,7 @@ sealed class MediaStatistic {
         ) : Anime()
 
         data class VoiceActor(
-            val voiceActor: StaffEntity.Core?,
+            val voiceActor: StaffEntity?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
@@ -194,7 +194,7 @@ sealed class MediaStatistic {
         ) : Manga()
 
         data class Staff(
-            val staff: StaffEntity.Core?,
+            val staff: StaffEntity?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
@@ -218,7 +218,7 @@ sealed class MediaStatistic {
         ) : Manga()
 
         data class Studio(
-            val studio: StudioEntity.Core?,
+            val studio: StudioEntity?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
@@ -234,7 +234,7 @@ sealed class MediaStatistic {
         ) : Manga()
 
         data class VoiceActor(
-            val voiceActor: StaffEntity.Core?,
+            val voiceActor: StaffEntity?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,

@@ -32,6 +32,15 @@ internal fun IFuzzyDateModel?.asFuzzyDate(): FuzzyDate {
     )
 }
 
+internal fun FuzzyDateInt?.asFuzzyDate(): FuzzyDate {
+    val model = toFuzzyDateModel()
+    return FuzzyDate(
+        year = model.year,
+        month = model.month,
+        day = model.day
+    )
+}
+
 internal fun FuzzyDate?.asFuzzyDateModel(): IFuzzyDateModel {
     val model = this ?: FuzzyDate.empty()
     return FuzzyDateModel(
