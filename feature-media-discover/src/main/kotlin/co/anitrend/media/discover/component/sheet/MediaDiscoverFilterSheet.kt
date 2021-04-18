@@ -20,14 +20,11 @@ package co.anitrend.media.discover.component.sheet
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.children
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getStringList
 import co.anitrend.core.android.animations.normalize
-import co.anitrend.core.android.components.sheet.action.OnSlideAction
+import co.anitrend.core.android.components.sheet.action.SheetHandleSlideAction
+import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
@@ -50,6 +47,10 @@ class MediaDiscoverFilterSheet(
         requireContext().getStringList(R.array.titles_filter_pages)
     }
 
+    private val handleSlideAction by lazy(UNSAFE) {
+        SheetHandleSlideAction(requireBinding().sheetHandle)
+    }
+
     private val closeSheetOnBackPressed =
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
@@ -70,9 +71,9 @@ class MediaDiscoverFilterSheet(
             lifecycle
         )
         // temporary work around for nested scrolling not working as expected
-        requireBinding().viewPager.children.find {
-            it is RecyclerView
-        }?.let { it.isNestedScrollingEnabled = false }
+        //requireBinding().viewPager.children.find {
+        //    it is RecyclerView
+        //}?.let { it.isNestedScrollingEnabled = false }
     }
 
     /**
@@ -117,13 +118,30 @@ class MediaDiscoverFilterSheet(
             requireBinding().viewPager
         ) { tab, index -> tab.text = titles[index] }.attach()
         controller.registerResultCallbacks(this, viewModel.filter)
+    }
+
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     * This is generally
+     * tied to [Activity.onResume] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onResume() {
+        super.onResume()
         bottomSheetCallback.addOnSlideAction(
-            object: OnSlideAction {
-                override fun onSlide(sheet: View, slideOffset: Float) {
-                    val alpha = slideOffset.normalize(-1F, 0F, 0F, 1F)
-                    requireBinding().sheetHandle.alpha = 1F - alpha
-                }
-            }
+            handleSlideAction
         )
+    }
+
+    /**
+     * Called when the Fragment is no longer resumed.  This is generally
+     * tied to [Activity.onPause] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onPause() {
+        bottomSheetCallback.removeOnSlideAction(
+            handleSlideAction
+        )
+        super.onPause()
     }
 }

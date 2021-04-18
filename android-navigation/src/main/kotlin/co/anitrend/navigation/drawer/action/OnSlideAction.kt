@@ -2,13 +2,11 @@ package co.anitrend.navigation.drawer.action
 
 import android.view.View
 import android.widget.ImageView
-import androidx.annotation.FloatRange
 import androidx.core.view.marginTop
 import androidx.core.view.updatePadding
 import co.anitrend.navigation.drawer.R
 import co.anitrend.core.android.animations.normalize
-import co.anitrend.core.android.components.sheet.action.OnSlideAction
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import com.google.android.material.shape.MaterialShapeDrawable
 
 

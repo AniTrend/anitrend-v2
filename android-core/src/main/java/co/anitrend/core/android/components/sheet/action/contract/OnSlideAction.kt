@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.components.sheet.action
+package co.anitrend.core.android.components.sheet.action.contract
 
 import android.view.View
 import androidx.annotation.FloatRange

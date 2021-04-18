@@ -21,8 +21,8 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import co.anitrend.core.android.R
 import co.anitrend.core.android.animations.normalize
-import co.anitrend.core.android.components.sheet.action.OnSlideAction
-import co.anitrend.core.android.components.sheet.action.OnStateChangedAction
+import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
+import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlin.math.max
 

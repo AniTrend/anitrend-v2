@@ -19,15 +19,12 @@ package co.anitrend.navigation.drawer.component.content
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
-import androidx.fragment.app.FragmentHostCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -37,13 +34,11 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.core.android.animations.lerp
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
-import co.anitrend.core.android.components.sheet.action.OnSlideAction
-import co.anitrend.core.android.components.sheet.action.OnStateChangedAction
+import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
+import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
 import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AboutRouter
-import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.UpdaterRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.OnSandwichSlideAction
