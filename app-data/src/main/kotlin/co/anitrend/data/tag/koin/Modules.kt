@@ -23,6 +23,7 @@ import co.anitrend.data.core.extensions.store
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.cache.TagCache
+import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.entity.filter.TagQueryFilter
@@ -66,6 +67,9 @@ private val cacheModule = module {
 }
 
 private val converterModule = module {
+    factory {
+        TagConverter()
+    }
     factory {
         TagEntityConverter()
     }

@@ -27,5 +27,4 @@ interface ICharacter : IEntity, IFavourable, ISynopsis {
     val image: CoverImage?
     val name: CoverName?
     val siteUrl: String?
-    val updatedAt: Long?
 }

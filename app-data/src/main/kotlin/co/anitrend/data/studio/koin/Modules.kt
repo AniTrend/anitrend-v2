@@ -17,10 +17,25 @@
 
 package co.anitrend.data.studio.koin
 
+import co.anitrend.data.studio.converter.StudioConverter
+import co.anitrend.data.studio.converter.StudioEntityConverter
+import co.anitrend.data.studio.converter.StudioModelConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
 
+}
+
+private val converterModule = module {
+    factory {
+        StudioConverter()
+    }
+    factory {
+        StudioModelConverter()
+    }
+    factory {
+        StudioEntityConverter()
+    }
 }
 
 private val mapperModule = module {
@@ -37,6 +52,7 @@ private val repositoryModule = module {
 
 internal val studioModules = listOf(
     sourceModule,
+    converterModule,
     mapperModule,
     useCaseModule,
     repositoryModule

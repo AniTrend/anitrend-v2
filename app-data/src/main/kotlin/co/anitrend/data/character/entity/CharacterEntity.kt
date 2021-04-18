@@ -20,6 +20,7 @@ package co.anitrend.data.character.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import co.anitrend.data.common.FuzzyDateInt
 import co.anitrend.data.core.common.Identity
 
 @Entity(
@@ -27,13 +28,16 @@ import co.anitrend.data.core.common.Identity
     primaryKeys = ["id"]
 )
 internal data class CharacterEntity(
+    @ColumnInfo(name = "age") val age: Int?,
+    @ColumnInfo(name = "date_of_birth") val dateOfBirth: FuzzyDateInt?,
+    @ColumnInfo(name = "gender") val gender: String?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "favourites") val favourites: Int,
     @Embedded(prefix = "image_") val image: CoverImage,
     @ColumnInfo(name = "isFavourite") val isFavourite: Boolean,
+    @ColumnInfo(name = "isFavouriteBlocked") val isFavouriteBlocked: Boolean,
     @Embedded(prefix = "name_") val name: Name,
     @ColumnInfo(name = "site_url") val siteUrl: String,
-    @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "id") override val id: Long
 ) : Identity {
 
@@ -43,10 +47,12 @@ internal data class CharacterEntity(
     )
 
     data class Name(
-        @ColumnInfo(name = "alternative") var alternatives: List<String>? = null,
-        @ColumnInfo(name = "first") var first: String? = null,
-        @ColumnInfo(name = "full") var full: String? = null,
+        @ColumnInfo(name = "alternative") val alternatives: List<String>? = null,
+        @ColumnInfo(name = "alternative_spoiler") val alternativeSpoiler: List<String>? = null,
+        @ColumnInfo(name = "first") val first: String? = null,
+        @ColumnInfo(name = "full") val full: String? = null,
         @ColumnInfo(name = "last") val last: String? = null,
-        @ColumnInfo(name = "original") var original: String? = null
+        @ColumnInfo(name = "middle") val middle: String? = null,
+        @ColumnInfo(name = "original") val original: String? = null
     )
 }

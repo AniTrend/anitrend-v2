@@ -47,6 +47,7 @@ internal sealed class MediaModel : IMediaModel {
     abstract val isLocked: Boolean
     abstract val isLicensed: Boolean
     abstract val isRecommendationBlocked: Boolean
+    abstract val isFavouriteBlocked: Boolean
 
     /** [MediaCover](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
      *
@@ -120,6 +121,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("volumes") override val volumes: Int?,
         @SerialName("isAdult") override val isAdult: Boolean?,
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long
@@ -161,6 +163,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("volumes") override val volumes: Int?,
         @SerialName("isAdult") override val isAdult: Boolean?,
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long
@@ -204,6 +207,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("volumes") override val volumes: Int?,
         @SerialName("isAdult") override val isAdult: Boolean?,
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long

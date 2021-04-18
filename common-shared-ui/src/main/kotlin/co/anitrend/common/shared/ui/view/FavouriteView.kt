@@ -93,6 +93,7 @@ class FavouriteView @JvmOverloads constructor(
                 object : IFavourable {
                     override val favourites: Int = 1650
                     override val isFavourite: Boolean = false
+                    override val isFavouriteBlocked: Boolean = false
                 }
             )
     }

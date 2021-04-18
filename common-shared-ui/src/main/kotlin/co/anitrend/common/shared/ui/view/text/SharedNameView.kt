@@ -45,9 +45,11 @@ class SharedNameView @JvmOverloads constructor(
             setEntityName(
                 object : IEntityName {
                     override val alternative: List<String> = emptyList()
+                    override val alternativeSpoiler: List<String> = emptyList()
                     override val first: String = "Ruka"
                     override val full: String = "Ruka Sarashina"
                     override val last: String = "Sarashina"
+                    override val middle: String? = null
                     override val native: String = "更科るか"
                 }
             )

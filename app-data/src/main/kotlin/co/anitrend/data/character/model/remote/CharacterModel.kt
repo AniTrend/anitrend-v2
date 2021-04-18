@@ -46,7 +46,7 @@ internal sealed class CharacterModel : ICharacterModel {
         @SerialName("isFavourite") override val isFavourite: Boolean,
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
         @SerialName("name") override val name: SharedNameModel?,
-        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long,
     ) : CharacterModel()
 
@@ -62,7 +62,7 @@ internal sealed class CharacterModel : ICharacterModel {
         @SerialName("isFavourite") override val isFavourite: Boolean,
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
         @SerialName("name") override val name: SharedNameModel?,
-        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long,
     ) : CharacterModel()
 }

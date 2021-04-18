@@ -55,6 +55,7 @@ internal data class MediaEntity(
     @ColumnInfo(name = "hash_tag") val hashTag: String?,
     @ColumnInfo(name = "is_adult") val isAdult: Boolean?,
     @ColumnInfo(name = "is_favourite") val isFavourite: Boolean,
+    @ColumnInfo(name = "is_favourite_blocked") val isFavouriteBlocked: Boolean,
     @ColumnInfo(name = "is_licensed") val isLicensed: Boolean?,
     @ColumnInfo(name = "is_recommendation_blocked") val isRecommendationBlocked: Boolean,
     @ColumnInfo(name = "is_locked") val isLocked: Boolean?,

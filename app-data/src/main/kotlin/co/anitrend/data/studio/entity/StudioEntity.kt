@@ -20,15 +20,18 @@ package co.anitrend.data.studio.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import co.anitrend.data.core.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "studio",
     primaryKeys = ["id"]
 )
+@EntitySchema
 internal data class StudioEntity(
     @ColumnInfo(name = "favourites") val favourites: Int,
     @ColumnInfo(name = "is_animation_studio") val isAnimationStudio: Boolean,
     @ColumnInfo(name = "is_favourite") val isFavourite: Boolean,
+    @ColumnInfo(name = "is_favourite_blocked") val isFavouriteBlocked: Boolean,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "site_url") val siteUrl: String,
     @ColumnInfo(name = "id") override val id: Long

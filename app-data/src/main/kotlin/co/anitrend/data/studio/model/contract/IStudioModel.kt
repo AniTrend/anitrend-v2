@@ -34,5 +34,5 @@ internal interface IStudioModel : Identity {
     val isAnimationStudio: Boolean
     val isFavourite: Boolean
     val name: String
-    val siteUrl: String?
+    val siteUrl: String
 }

@@ -20,17 +20,25 @@ package co.anitrend.domain.character.entity
 import co.anitrend.domain.character.entity.contract.ICharacter
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.common.entity.shared.CoverName
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 
 sealed class Character : ICharacter {
 
+    abstract val age: Int?
+    abstract val dateOfBirth: FuzzyDate?
+    abstract val gender: String?
+
     data class Core(
+        override val age: Int?,
+        override val dateOfBirth: FuzzyDate?,
+        override val gender: String?,
         override val description: String?,
         override val image: CoverImage?,
         override val name: CoverName?,
         override val siteUrl: String?,
-        override val updatedAt: Long?,
         override val favourites: Int,
         override val isFavourite: Boolean,
+        override val isFavouriteBlocked: Boolean,
         override val id: Long
     ) : Character()
 }

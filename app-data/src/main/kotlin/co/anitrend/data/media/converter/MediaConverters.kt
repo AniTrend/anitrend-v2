@@ -22,12 +22,14 @@ import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.common.extension.asFuzzyDate
 import co.anitrend.data.common.extension.toFuzzyDateInt
 import co.anitrend.data.common.extension.toFuzzyDateModel
+import co.anitrend.data.core.extensions.koinOf
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.medialist.converter.MediaListEntityConverter
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.model.MediaListModel
+import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -124,7 +126,7 @@ internal class MediaConverter(
                         background = source.coverImage?.color
                     )
                 },
-                twitterTag = null,
+                twitterTag = source.hashTag,
                 isRecommendationBlocked = false,
                 isLicensed = source.isLicensed,
                 isLocked = source.isLocked,
@@ -194,6 +196,7 @@ internal class MediaConverter(
                 },
                 isAdult = source.isAdult,
                 isFavourite = source.isFavourite,
+                isFavouriteBlocked = source.isFavouriteBlocked,
                 id = source.id,
                 mediaList = null
             )
@@ -283,6 +286,7 @@ internal class MediaConverter(
                 },
                 isAdult = source.isAdult,
                 isFavourite = source.isFavourite,
+                isFavouriteBlocked = source.isFavouriteBlocked,
                 id = source.id,
                 mediaList = source.createMediaList()
             )
@@ -394,6 +398,7 @@ internal class MediaConverter(
                 },
                 isAdult = source.isAdult,
                 isFavourite = source.isFavourite,
+                isFavouriteBlocked = source.isFavouriteBlocked,
                 id = source.id,
                 mediaList = source.createMediaList()
             )
@@ -440,6 +445,7 @@ internal class MediaModelConverter(
             hashTag = source.hashTag,
             isAdult = source.isAdult,
             isFavourite = source.isFavourite,
+            isFavouriteBlocked = source.isFavouriteBlocked,
             isLicensed = source.isLicensed,
             isRecommendationBlocked = source.isRecommendationBlocked,
             isLocked = source.isLocked,
@@ -535,8 +541,8 @@ internal class MediaEntityViewConverter(
                 status = media.status,
                 meanScore = media.meanScore ?: 0,
                 averageScore = media.averageScore ?: 0,
-                startDate = media.startDate.toFuzzyDateModel().asFuzzyDate(),
-                endDate = media.endDate.toFuzzyDateModel().asFuzzyDate(),
+                startDate = media.startDate.asFuzzyDate(),
+                endDate = media.endDate.asFuzzyDate(),
                 title = MediaTitle(
                     romaji = media.title.romaji ?: jikan?.title?.japanese,
                     english = media.title.english ?: jikan?.title?.english,
@@ -573,6 +579,7 @@ internal class MediaEntityViewConverter(
                 },
                 isAdult = media.isAdult,
                 isFavourite = media.isFavourite,
+                isFavouriteBlocked = media.isFavouriteBlocked,
                 id = media.id,
                 mediaList = mediaList?.createMediaList()
             )
@@ -632,6 +639,7 @@ internal class MediaEntityViewConverter(
                     category = media.category,
                     isAdult = media.isAdult,
                     isFavourite = media.isFavourite,
+                    isFavouriteBlocked = media.isFavouriteBlocked,
                     id = media.id,
                     mediaList = media.mediaList
                 )
