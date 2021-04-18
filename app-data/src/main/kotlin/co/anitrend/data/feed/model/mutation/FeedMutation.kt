@@ -23,7 +23,7 @@ import co.anitrend.domain.feed.model.FeedParam
 internal sealed class FeedMutation : IGraphPayload {
 
     data class SaveFeed(
-        val param: co.anitrend.domain.feed.model.ActivityParam.SaveFeed
+        val param: FeedParam.SaveFeed
     ) : FeedMutation() {
 
         /**
