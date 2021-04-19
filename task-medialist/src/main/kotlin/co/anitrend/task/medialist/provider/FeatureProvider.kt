@@ -18,26 +18,25 @@
 package co.anitrend.task.medialist.provider
 
 import co.anitrend.navigation.MediaListTaskRouter
-import co.anitrend.navigation.work.WorkSchedulerController
-import co.anitrend.task.medialist.component.MediaListCollectionWorker
 import co.anitrend.task.medialist.component.MediaListMutationWorker
 import co.anitrend.task.medialist.component.MediaListAnimeSyncWorker
 import co.anitrend.task.medialist.component.MediaListMangaSyncWorker
+import co.anitrend.task.medialist.scheduler.AnimeSyncScheduler
+import co.anitrend.task.medialist.scheduler.MangaSyncScheduler
 
 internal class FeatureProvider : MediaListTaskRouter.Provider {
-    override fun mediaListCollectionWorker() = MediaListCollectionWorker::class.java
 
     override fun mediaListMutationWorker() = MediaListMutationWorker::class.java
 
-    override fun mediaListAnimeSyncWorker() = MediaListAnimeSyncWorker::class.java
+    override fun animeSyncWorker() = MediaListAnimeSyncWorker::class.java
 
-    override fun mediaListMangaSyncWorker() = MediaListMangaSyncWorker::class.java
+    override fun mangaSyncWorker() = MediaListMangaSyncWorker::class.java
 
-    override fun animeSyncScheduler(): WorkSchedulerController {
-        TODO("Not yet implemented")
-    }
+    override fun animeSyncScheduler() = AnimeSyncScheduler(
+        worker = animeSyncWorker()
+    )
 
-    override fun mangaSyncScheduler(): WorkSchedulerController {
-        TODO("Not yet implemented")
-    }
+    override fun mangaSyncScheduler() = MangaSyncScheduler(
+        worker = mangaSyncWorker()
+    )
 }
