@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,17 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.model
+package co.anitrend.medialist.provider
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.content.Context
+import android.content.Intent
+import co.anitrend.medialist.component.content.MediaListContent
+import co.anitrend.medialist.component.screen.MediaListScreen
+import co.anitrend.navigation.MediaListRouter
 
-/**
- * Fragment loader holder helper
- */
-data class FragmentItem<T: Fragment>(
-    val fragment: Class<out T>,
-    val parameter: Bundle? = null
-) {
-    fun tag(): String? = fragment.simpleName
+class FeatureProvider : MediaListRouter.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, MediaListScreen::class.java)
+
+    override fun fragment() = MediaListContent::class.java
 }

@@ -597,7 +597,7 @@ object UpdaterRouter : NavigationRouter() {
     fun forFragment() = ProfileRouter.provider.fragment()
 }
 
-object AnimeListRouter : NavigationRouter() {
+object MediaListRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
@@ -608,35 +608,14 @@ object AnimeListRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val userId: Long
+        val userId: Long,
+        val mediaType: MediaType
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
 
         companion object : IParam.IKey {
-            override val KEY = "AnimeListRouter#Param"
-        }
-    }
-}
-
-object MangaListRouter : NavigationRouter() {
-    override val provider by inject<Provider>()
-
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
-
-    @Parcelize
-    data class Param(
-        val userId: Long
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "MangaListRouter#Param"
+            override val KEY = "MediaListRouter#Param"
         }
     }
 }
@@ -707,19 +686,17 @@ object MediaListTaskRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
-        fun mediaListCollectionWorker(): Class<out ListenableWorker>
         fun mediaListMutationWorker(): Class<out ListenableWorker>
-        fun mediaListAnimeSyncWorker(): Class<out ListenableWorker>
-        fun mediaListMangaSyncWorker(): Class<out ListenableWorker>
+        fun animeSyncWorker(): Class<out ListenableWorker>
+        fun mangaSyncWorker(): Class<out ListenableWorker>
 
         fun animeSyncScheduler(): WorkSchedulerController
         fun mangaSyncScheduler(): WorkSchedulerController
     }
 
-    fun forMediaListCollectionWorker() = provider.mediaListCollectionWorker()
     fun forMediaListMutationWorker() = provider.mediaListMutationWorker()
-    fun forMediaListAnimeSyncWorker() = provider.mediaListAnimeSyncWorker()
-    fun forMediaListMangaSyncWorker() = provider.mediaListMangaSyncWorker()
+    fun forMediaListAnimeSyncWorker() = provider.animeSyncWorker()
+    fun forMediaListMangaSyncWorker() = provider.mangaSyncWorker()
 
     fun forAnimeScheduler() = provider.animeSyncScheduler()
     fun forMangaScheduler() = provider.mangaSyncScheduler()

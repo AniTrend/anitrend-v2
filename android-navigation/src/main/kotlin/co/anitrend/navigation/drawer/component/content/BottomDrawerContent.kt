@@ -36,6 +36,7 @@ import co.anitrend.core.android.animations.lerp
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
+import co.anitrend.core.android.extensions.applySystemBarsWindowInsetsListener
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AboutRouter
@@ -208,12 +209,15 @@ class BottomDrawerContent(
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        super.initializeComponents(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
             this, closeDrawerOnBackPressed
         )
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
+            viewModel.accountState()
+        }
+        lifecycleScope.launchWhenResumed {
             navigationAdapter.clickableFlow
-                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
                 .filterIsInstance<ClickableItem.Data<Navigation.Menu>>()
                 .onEach { clickable ->
                     val model = clickable.data
@@ -227,9 +231,8 @@ class BottomDrawerContent(
                 }
                 .collect()
         }
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
             accountAdapter.clickableFlow
-                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
                 .filterIsInstance<ClickableItem.Data<Account>>()
                 .onEach { clickable ->
                     when (clickable.data) {
@@ -244,7 +247,16 @@ class BottomDrawerContent(
                 .collect()
         }
         lifecycleScope.launchWhenResumed {
-            viewModel.accountState()
+            presenter.settings.isAuthenticated.flow
+                .onEach {
+                    viewModel.accountState()
+                    viewModel.navigationState.onAuthenticationStateChanged(it)
+                }.catch { cause: Throwable ->
+                    Timber.e(
+                        cause, "accountAdapter.clickStateFlow threw an uncaught exception"
+                    )
+                }
+                .collect()
         }
     }
 
@@ -266,7 +278,7 @@ class BottomDrawerContent(
         super.onViewCreated(view, savedInstanceState)
         binding = BottomNavigationDrawerBinding.bind(view)
         requireBinding().run {
-            presenter.applyWindowInsetsListener(sheetForegroundContainer)
+            sheetForegroundContainer.applySystemBarsWindowInsetsListener()
 
             sheetBackgroundContainer.background = backgroundShapeDrawable
             sheetForegroundContainer.background = foregroundShapeDrawable

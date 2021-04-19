@@ -42,7 +42,7 @@ import kotlin.properties.Delegates
 internal class AccountState(
     settings: IAuthenticationSettings,
     private val useCase: AccountInteractor
-) : ISupportViewModelState<List<Account>>, ISupportCoroutine by Main() {
+) : ISupportViewModelState<List<Account>> {
 
     var context by Delegates.notNull<CoroutineContext>()
 
@@ -133,16 +133,6 @@ internal class AccountState(
         it.refreshState.asLiveData(context)
     }
 
-    init {
-        launch {
-            settings.isAuthenticated.flow.onEach {
-                invoke()
-            }.catch { cause ->
-                Timber.w(cause)
-            }.collect()
-        }
-    }
-
     operator fun invoke() {
         val result = useCase.getAuthorizedAccounts()
         useCaseResult.postValue(result)
@@ -165,7 +155,6 @@ internal class AccountState(
      */
     override fun onCleared() {
         useCase.onCleared()
-        cancelAllChildren()
     }
 
     /**

@@ -44,7 +44,7 @@ sealed class Shortcut {
 
     data class AnimeList(
         override val id: String = "anime_list",
-        override val router: NavigationRouter = AnimeListRouter,
+        override val router: NavigationRouter = MediaListRouter,
         override val label: Int = R.string.shortcut_label_anime_list,
         override val icon: Int = R.drawable.ic_shortcut_anime_list,
         override val disabledMessage: Int = R.string.shortcut_label_anime_list
@@ -52,7 +52,7 @@ sealed class Shortcut {
 
     data class MangaList(
         override val id: String = "manga_list",
-        override val router: NavigationRouter = MangaListRouter,
+        override val router: NavigationRouter = MediaListRouter,
         override val label: Int = R.string.shortcut_label_manga_list,
         override val icon: Int = R.drawable.ic_shortcut_manga_list,
         override val disabledMessage: Int = R.string.shortcut_label_manga_list

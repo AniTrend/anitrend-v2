@@ -35,7 +35,7 @@ import kotlin.properties.Delegates
 
 internal class NavigationState(
     settings: IAuthenticationSettings
-) : ISupportViewModelState<List<Navigation>>, ISupportCoroutine by Main() {
+) : ISupportViewModelState<List<Navigation>> {
 
     var context by Delegates.notNull<CoroutineContext>()
 
@@ -54,16 +54,6 @@ internal class NavigationState(
 
     override val refreshState = liveData<LoadState> {
         emit(LoadState.Loading())
-    }
-
-    init {
-        launch {
-            settings.isAuthenticated.flow.onEach { state ->
-                onAuthenticationStateChanged(state)
-            }.catch { cause ->
-                Timber.w(cause)
-            }.collect()
-        }
     }
 
     private fun createNavigationItems(authenticated: Boolean): List<Navigation> {
@@ -170,7 +160,7 @@ internal class NavigationState(
         return navigationItems
     }
 
-    private suspend fun onAuthenticationStateChanged(isAuthenticated: Boolean) {
+    suspend fun onAuthenticationStateChanged(isAuthenticated: Boolean) {
         val snapshot = mutableListOf<Navigation>()
         snapshot.addAll(navigationItems.value)
         val checked = snapshot.firstOrNull { nav ->
@@ -210,7 +200,7 @@ internal class NavigationState(
      * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
      */
     override fun onCleared() {
-        cancelAllChildren()
+        throw UnsupportedOperationException("$this does not support clear operation")
     }
 
     /**

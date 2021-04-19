@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.drawer.component.viewmodel
+package co.anitrend.medialist.component.content.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
-import co.anitrend.navigation.drawer.component.viewmodel.state.NavigationState
+import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
 
-internal class BottomDrawerViewModel(
-    val navigationState: NavigationState,
-    val accountState: AccountState
+class MediaListViewModel(
+    val state: MediaListState
 ) : ViewModel() {
 
     init {
-        accountState.context = viewModelScope.coroutineContext
-        navigationState.context = viewModelScope.coroutineContext
+        state.context = viewModelScope.coroutineContext
     }
 
     /**
@@ -40,7 +37,7 @@ internal class BottomDrawerViewModel(
      * prevent a leak of this ViewModel.
      */
     override fun onCleared() {
+        state.onCleared()
         super.onCleared()
-        accountState.onCleared()
     }
 }

@@ -19,10 +19,7 @@ package co.anitrend.navigation.drawer.component.presenter
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.os.Build
-import android.view.WindowInsets
 import android.widget.FrameLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
@@ -30,20 +27,23 @@ import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
+import co.anitrend.core.android.components.shape.SemiCircleEdgeCutoutTreatment
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.model.toRequestImage
 import co.anitrend.core.android.helpers.image.using
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.extensions.onRevokeAuthentication
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.ProfileRouter
-import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.navigation.drawer.R
-import co.anitrend.navigation.drawer.action.*
+import co.anitrend.navigation.drawer.action.AlphaSlideAction
+import co.anitrend.navigation.drawer.action.ForegroundSheetTransformSlideAction
+import co.anitrend.navigation.drawer.action.ScrollToTopStateAction
+import co.anitrend.navigation.drawer.action.VisibilityStateAction
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
-import co.anitrend.navigation.drawer.shape.SemiCircleEdgeCutoutTreatment
 import co.anitrend.navigation.extensions.startActivity
 import coil.transform.CircleCropTransformation
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -101,18 +101,6 @@ internal class DrawerPresenter(
         return shapeDrawable
     }
 
-    fun applyWindowInsetsListener(container: LinearLayoutCompat) {
-        container.setOnApplyWindowInsetsListener { view, windowInsets ->
-            // Record the window's top inset so it can be applied when the bottom sheet is slide up
-            // to meet the top edge of the screen.
-            view.setTag(
-                R.id.tag_system_window_inset_top,
-                windowInsets.getInsets(WindowInsets.Type.systemBars())
-            )
-            windowInsets
-        }
-    }
-
     fun applyStateAndSlideActions(
         binding: BottomNavigationDrawerBinding,
         callback: SheetBehaviourCallback,
@@ -160,8 +148,7 @@ internal class DrawerPresenter(
             }
             R.id.accountSignOut -> {
                 viewModel.accountState.signOut(clickable.data)
-                UserTaskRouter.forAccountSyncScheduler().cancel(context)
-                UserTaskRouter.forStatisticSyncScheduler().cancel(context)
+                context.onRevokeAuthentication()
             }
         }
     }

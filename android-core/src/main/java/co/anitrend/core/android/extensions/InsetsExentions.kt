@@ -15,20 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.components.sheet.action
+package co.anitrend.core.android.extensions
 
-import android.view.View
-import co.anitrend.core.android.animations.normalize
-import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
+import android.view.ViewGroup
+import androidx.core.view.WindowInsetsCompat
+import co.anitrend.core.android.R
 
-class SheetHandleSlideAction(private val handle: View) : OnSlideAction {
-    override fun onSlide(sheet: View, slideOffset: Float) {
-        val alpha = slideOffset.normalize(
-            -1f,
-            0f,
-            0f,
-            1f
+/**
+ * Record the window's top inset so it can be applied when the bottom sheet is slide up
+ * to meet the top edge of the screen.
+ */
+fun ViewGroup.applySystemBarsWindowInsetsListener() {
+    setOnApplyWindowInsetsListener { view, windowInsets ->
+        val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(windowInsets)
+        val systemBars = WindowInsetsCompat.Type.systemBars()
+        view.setTag(
+            R.id.tag_system_window_inset_top,
+            windowInsetsCompat.getInsets(systemBars)
         )
-        handle.alpha = 1f - alpha
+        windowInsets
     }
 }

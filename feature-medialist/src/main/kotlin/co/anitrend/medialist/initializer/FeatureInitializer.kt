@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,17 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.ui.model
+package co.anitrend.medialist.initializer
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.content.Context
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.medialist.koin.moduleHelper
 
-/**
- * Fragment loader holder helper
- */
-data class FragmentItem<T: Fragment>(
-    val fragment: Class<out T>,
-    val parameter: Bundle? = null
-) {
-    fun tag(): String? = fragment.simpleName
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
+    }
 }
