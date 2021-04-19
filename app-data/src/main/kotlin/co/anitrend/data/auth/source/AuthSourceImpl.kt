@@ -20,6 +20,8 @@ package co.anitrend.data.auth.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.account.action.AccountAction
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.AuthController
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
@@ -27,6 +29,7 @@ import co.anitrend.data.auth.datasource.remote.AuthRemoteSource
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.source.contract.AuthSource
+import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.entity.UserEntity
@@ -48,6 +51,8 @@ internal class AuthSourceImpl(
     private val settings: IAuthenticationSettings,
     private val converter: UserEntityConverter,
     private val userLocalSource: UserLocalSource,
+    private val mediaListLocalSource: MediaListLocalSource,
+    private val cacheLocalSource: CacheLocalSource,
     override val dispatcher: ISupportDispatcher
 ) : AuthSource() {
 
@@ -95,6 +100,9 @@ internal class AuthSourceImpl(
 
             settings.invalidateAuthenticationSettings()
             localSource.clearByUserId(action.param.userId)
+            mediaListLocalSource.clearByUserId(action.param.userId)
+            cacheLocalSource.clearByType(CacheRequest.MEDIA_LIST)
+            cacheLocalSource.clearByType(CacheRequest.USER)
             userIdFlow.emit(IAuthenticationSettings.INVALID_USER_ID)
         }
     }

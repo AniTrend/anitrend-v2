@@ -18,7 +18,11 @@
 package co.anitrend.data.auth.helper
 
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.auth.source.contract.AuthSource
+import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
+import co.anitrend.domain.account.model.AccountParam
 import okhttp3.Request
 import timber.log.Timber
 
@@ -27,40 +31,40 @@ import timber.log.Timber
  */
 internal class AuthenticationHelper(
     private val settings: IAuthenticationSettings,
-    private val localSource: AuthLocalSource
-) {
+    private val localSource: AuthLocalSource,
+    private val authSource: AuthSource
+) : IAuthenticationHelper {
 
     /**
-     * Handle invalid token state by either renewing it or un-authenticates
-     * the user locally if the token cannot be refreshed
+     * Invalidates any properties related to authentication state
      */
-    fun onInvalidToken() {
-        with (settings) {
-            localSource.clearByUserId(authenticatedUserId.value)
-            invalidateAuthenticationSettings()
-        }
+    override fun invalidateAuthenticationState() {
+        val setting = settings.authenticatedUserId
+        val param = AccountParam.SignOut(setting.value)
+        authSource.signOut(param)
     }
 
     /**
      * Facade to provide information on authentication status of the application,
      * on demand
      */
-    val isAuthenticated: Boolean
+    override val isAuthenticated: Boolean
         get() = settings.isAuthenticated.value
 
-    operator fun invoke(requestBuilder: Request.Builder) {
+    /**
+     * Injects authorization properties into the ongoing request
+     *
+     * @param requestBuilder The current ongoing request builder
+     */
+    override operator fun invoke(requestBuilder: Request.Builder) {
         val entity = localSource.byUserId(
             settings.authenticatedUserId.value
         )
         if (entity != null)
-            requestBuilder.addHeader(AUTHORIZATION, entity.accessToken)
+            requestBuilder.addHeader(IAuthenticationHelper.AUTHORIZATION, entity.accessToken)
         else
             Timber.w(
                 "Settings indicates that user is authenticated, but no authentication token for the user can be found"
             )
-    }
-
-    companion object {
-        const val AUTHORIZATION = "Authorization"
     }
 }
