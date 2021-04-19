@@ -126,7 +126,6 @@ internal class UserSourceImpl {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 localSource.clearById(query.param.id)
-                settings.invalidateAuthenticationSettings()
             }
         }
     }
