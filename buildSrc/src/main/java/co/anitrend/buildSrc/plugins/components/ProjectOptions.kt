@@ -20,6 +20,7 @@ package co.anitrend.buildSrc.plugins.components
 import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.libraryExtension
@@ -38,10 +39,23 @@ private fun Properties.applyToBuildConfigFor(buildType: BuildType) {
     }
 }
 
+private fun NamedDomainObjectContainer<BuildType>.applyVersionProperties() {
+    asMap.forEach { buildTypeEntry ->
+        println("Adding version build configuration fields -> ${buildTypeEntry.key}")
+        val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
+    }
+}
+
 private fun NamedDomainObjectContainer<BuildType>.applyConfigurationProperties(project: Project) {
     asMap.forEach { buildTypeEntry ->
         println("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
 
         val secretsFile = project.file(".config/secrets.properties")
         if (secretsFile.exists())
@@ -77,33 +91,22 @@ private fun DefaultConfig.applyRoomCompilerOptions(project: Project) {
 }
 
 internal fun Project.configureOptions() {
-    if (isDataModule()) {
+    if (isDataModule() || matchesDataModule()) {
         libraryExtension().run {
-            defaultConfig {
-                applyRoomCompilerOptions(this@configureOptions)
-            }
+            if (isDataModule())
+                defaultConfig {
+                    applyRoomCompilerOptions(this@configureOptions)
+                }
             buildTypes {
                 applyConfigurationProperties(this@configureOptions)
             }
         }
     }
 
-    if (matchesDataModule())
+    if (isCoreModule() || isAndroidCoreModule()) {
         libraryExtension().run {
             buildTypes {
-                applyConfigurationProperties(this@configureOptions)
-            }
-        }
-
-    if (isCoreModule()) {
-        libraryExtension().run {
-            buildTypes {
-                asMap.forEach { buildTypeEntry ->
-                    val buildType = buildTypeEntry.value
-                    println("Configuring build type -> ${buildTypeEntry.key}")
-                    buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
-                    buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
-                }
+                applyVersionProperties()
             }
         }
     }
