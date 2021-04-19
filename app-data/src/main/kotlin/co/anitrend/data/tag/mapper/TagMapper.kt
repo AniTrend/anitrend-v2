@@ -18,10 +18,8 @@
 package co.anitrend.data.tag.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
-import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.tag.converter.TagModelConverter
 import co.anitrend.data.tag.datasource.local.TagLocalSource
@@ -29,7 +27,6 @@ import co.anitrend.data.tag.datasource.local.connection.TagConnectionLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.tag.model.remote.TagContainerModel
-import co.anitrend.data.tag.model.remote.TagModel
 
 internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntity>>() {
 
@@ -45,9 +42,7 @@ internal sealed class TagMapper : DefaultMapper<TagContainerModel, List<TagEntit
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<TagEntity>) {
-            runInTransaction {
-                localSource.upsert(data)
-            }
+            localSource.upsert(data)
         }
 
         /**

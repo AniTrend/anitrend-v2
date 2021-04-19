@@ -17,7 +17,6 @@
 
 package co.anitrend.data.auth.mapper
 
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
@@ -38,11 +37,9 @@ internal class AuthMapper(
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: UserEntity) {
-        runInTransaction {
-            localSource.upsert(data)
-            generalOptionMapper.persistEmbedded(settings)
-            mediaOptionMapper.persistEmbedded(settings)
-        }
+        localSource.upsert(data)
+        generalOptionMapper.persistEmbedded(settings)
+        mediaOptionMapper.persistEmbedded(settings)
     }
 
     /**

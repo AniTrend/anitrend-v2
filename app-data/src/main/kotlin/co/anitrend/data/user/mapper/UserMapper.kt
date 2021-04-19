@@ -17,7 +17,6 @@
 
 package co.anitrend.data.user.mapper
 
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
@@ -50,9 +49,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<UserEntity>) {
-            runInTransaction {
-                localSource.upsert(data)
-            }
+            localSource.upsert(data)
         }
 
         /**
@@ -78,11 +75,9 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserEntity) {
-            runInTransaction {
-                localSource.upsert(data)
-                generalOptionMapper.persistEmbedded()
-                mediaOptionMapper.persistEmbedded()
-            }
+            localSource.upsert(data)
+            generalOptionMapper.persistEmbedded()
+            mediaOptionMapper.persistEmbedded()
         }
 
         /**
@@ -111,10 +106,8 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserWithStatisticEntity) {
-            runInTransaction {
-                userMapper.persistEmbedded()
-                localSource.upsert(data)
-            }
+            userMapper.persistEmbedded()
+            localSource.upsert(data)
         }
 
         /**
@@ -140,9 +133,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserEntity) {
-            runInTransaction {
-                localSource.upsert(data)
-            }
+            localSource.upsert(data)
         }
 
         /**

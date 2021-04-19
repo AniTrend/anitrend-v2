@@ -17,12 +17,11 @@
 
 package co.anitrend.data.jikan.media.mapper
 
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.jikan.author.mapper.JikanAuthorMapper
 import co.anitrend.data.jikan.contract.JikanItem
 import co.anitrend.data.jikan.licensor.mapper.JikanLicensorMapper
-import co.anitrend.data.jikan.media.converters.*
+import co.anitrend.data.jikan.media.converters.JikanModelConverter
 import co.anitrend.data.jikan.media.datasource.local.JikanLocalSource
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
@@ -42,13 +41,12 @@ internal class JikanMapper(
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: JikanEntity) {
-        runInTransaction {
-            localSource.upsert(data)
-            licensorMapper.persistEmbedded()
-            producerMapper.persistEmbedded()
-            studioMapper.persistEmbedded()
-            authorMapper.persistEmbedded()
-        }
+        localSource.upsert(data)
+        licensorMapper.persistEmbedded()
+        producerMapper.persistEmbedded()
+        studioMapper.persistEmbedded()
+        authorMapper.persistEmbedded()
+
     }
 
     /**

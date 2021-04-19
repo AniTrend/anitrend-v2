@@ -18,7 +18,6 @@
 package co.anitrend.data.genre.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.genre.converters.GenreModelConverter
@@ -43,9 +42,7 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<GenreEntity>) {
-            runInTransaction {
-                localSource.upsert(data)
-            }
+            localSource.upsert(data)
         }
 
         /**

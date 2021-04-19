@@ -23,9 +23,13 @@ import timber.log.Timber
 import kotlin.jvm.Throws
 
 @Throws(Exception::class)
-@Suppress("DEPRECATION")
+@Deprecated(
+    message = "Highly error prone, rather use the @Transaction annotation",
+    replaceWith = ReplaceWith(""),
+    level = DeprecationLevel.ERROR
+)
 inline fun runInTransaction(action: () -> Unit) {
-    /*val store = koinOf<RoomDatabase>()
+    val store = koinOf<RoomDatabase>()
     try {
         store.beginTransaction()
         action()
@@ -34,6 +38,6 @@ inline fun runInTransaction(action: () -> Unit) {
         Timber.e(exception)
     } finally {
         store.endTransaction()
-    }*/
+    }
     action()
 }

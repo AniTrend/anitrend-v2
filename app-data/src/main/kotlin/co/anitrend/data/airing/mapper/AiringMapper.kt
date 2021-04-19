@@ -22,7 +22,6 @@ import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.media.mapper.MediaMapper
@@ -42,10 +41,8 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<AiringScheduleEntity>) {
-            runInTransaction {
-                mediaMapper.persistEmbedded()
-                localSource.upsert(data)
-            }
+            mediaMapper.persistEmbedded()
+            localSource.upsert(data)
         }
 
         /**
@@ -75,9 +72,7 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: AiringScheduleEntity) {
-            runInTransaction {
-                localSource.upsert(data)
-            }
+            localSource.upsert(data)
         }
 
         /**

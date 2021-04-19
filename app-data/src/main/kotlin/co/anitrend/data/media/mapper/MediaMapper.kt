@@ -19,7 +19,6 @@ package co.anitrend.data.media.mapper
 
 import co.anitrend.data.airing.mapper.AiringMapper
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.android.extensions.runInTransaction
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.genre.mapper.GenreMapper
@@ -75,13 +74,11 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaEntity>) {
-            runInTransaction {
-                localSource.upsert(data)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-                airingMapper.persistEmbedded()
-                mediaListMapper.persistEmbedded()
-            }
+            localSource.upsert(data)
+            tagMapper.persistEmbedded()
+            genreMapper.persistEmbedded()
+            airingMapper.persistEmbedded()
+            mediaListMapper.persistEmbedded()
         }
 
         /**
@@ -123,15 +120,13 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     ) : MediaMapper<MediaModelContainer.Detail, MediaEntity>() {
 
         override suspend fun persist(data: MediaEntity) {
-            runInTransaction {
-                localSource.upsert(data)
-                linkMapper.persistEmbedded()
-                rankMapper.persistEmbedded()
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-                airingMapper.persistEmbedded()
-                mediaListMapper.persistEmbedded()
-            }
+            localSource.upsert(data)
+            linkMapper.persistEmbedded()
+            rankMapper.persistEmbedded()
+            tagMapper.persistEmbedded()
+            genreMapper.persistEmbedded()
+            airingMapper.persistEmbedded()
+            mediaListMapper.persistEmbedded()
         }
 
         /**
@@ -178,11 +173,9 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaEntity>) {
-            runInTransaction {
-                super.persist(data)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-            }
+            super.persist(data)
+            tagMapper.persistEmbedded()
+            genreMapper.persistEmbedded()
         }
 
         /**
@@ -211,12 +204,10 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     ): EmbedMapper<MediaModel, MediaEntity>() {
 
         override suspend fun persist(data: List<MediaEntity>) {
-            runInTransaction {
-                super.persist(data)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-                airingMapper.persistEmbedded()
-            }
+            super.persist(data)
+            tagMapper.persistEmbedded()
+            genreMapper.persistEmbedded()
+            airingMapper.persistEmbedded()
         }
 
         /**
@@ -252,13 +243,11 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     ): EmbedMapper<MediaModel, MediaEntity>() {
 
         override suspend fun persist(data: List<MediaEntity>) {
-            runInTransaction {
-                super.persist(data)
-                tagMapper.persistEmbedded()
-                genreMapper.persistEmbedded()
-                airingMapper.persistEmbedded()
-                mediaListMapper.persistEmbedded()
-            }
+            super.persist(data)
+            tagMapper.persistEmbedded()
+            genreMapper.persistEmbedded()
+            airingMapper.persistEmbedded()
+            mediaListMapper.persistEmbedded()
         }
 
         /**
