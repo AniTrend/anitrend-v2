@@ -27,7 +27,7 @@ dependencies {
 
     implementation(Libraries.AndroidX.Browser.browser)
 
-    implementation(Libraries.betterLinkMovement)
+    implementation(Libraries.Saket.BetterLinkMovement.betterLinkMovement)
     implementation(Libraries.jsoup)
 
     /** Markwon */

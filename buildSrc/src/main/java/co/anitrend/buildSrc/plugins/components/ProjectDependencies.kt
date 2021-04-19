@@ -45,6 +45,7 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
+    dependencies.implementation(Libraries.Saket.Cascade.cascade)
     dependencies.implementation(Libraries.CashApp.Contour.contour)
 
     dependencies.implementation(Libraries.Google.Material.material)
@@ -94,6 +95,7 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.implementation(Libraries.Coil.coil)
+    dependencies.implementation(Libraries.Saket.Cascade.cascade)
 
     dependencies.implementation(project(Modules.Data.Settings.path()))
 }
@@ -245,6 +247,7 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
 
     dependencies.implementation(Libraries.CashApp.Contour.contour)
+    dependencies.implementation(Libraries.Saket.Cascade.cascade)
 
     dependencies.implementation(Libraries.Google.Material.material)
 

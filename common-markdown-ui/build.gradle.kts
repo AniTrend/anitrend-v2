@@ -29,7 +29,7 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
-	implementation(Libraries.betterLinkMovement)
+	implementation(Libraries.Saket.BetterLinkMovement.betterLinkMovement)
 	
 	implementation(Libraries.Markwon.core)
 	implementation(Libraries.Markwon.html)

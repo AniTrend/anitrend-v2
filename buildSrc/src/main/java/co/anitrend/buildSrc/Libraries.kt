@@ -37,7 +37,6 @@ object Libraries {
     const val tmdb = "com.uwetrottmann.tmdb2:tmdb-java:${Versions.tmdb}"
     const val trakt = "com.uwetrottmann.trakt5:trakt-java:${Versions.trakt}"
 
-    const val betterLinkMovement = "me.saket:better-link-movement-method:${Versions.betterLinkMovement}"
     const val jsoup = "org.jsoup:jsoup:${Versions.jsoup}"
 
     const val scalingImageView = "com.davemorrissey.labs:subsampling-scale-image-view-androidx:${Versions.scalingImageView}"
@@ -632,6 +631,19 @@ object Libraries {
             const val strikeThrough = "io.noties.markwon:ext-strikethrough:$version"
             const val tables = "io.noties.markwon:ext-tables:$version"
             const val latex = "io.noties.markwon:ext-latex:$version"
+        }
+    }
+
+    object Saket {
+
+        object BetterLinkMovement {
+            private const val version = "2.2.0"
+            const val betterLinkMovement = "me.saket:better-link-movement-method:$version"
+        }
+
+        object Cascade {
+            private const val version = "1.3.0"
+            const val cascade = "me.saket.cascade:cascade:$version"
         }
     }
 
