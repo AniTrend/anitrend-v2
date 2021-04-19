@@ -26,6 +26,8 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.media.converter.MediaEntityViewConverter
+import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.medialist.*
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
@@ -35,6 +37,7 @@ import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
 import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
@@ -42,6 +45,34 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 
 internal class MediaListSourceImpl {
+
+    class Sync(
+        private val remoteSource: MediaListRemoteSource,
+        private val controller: MediaListCollectionController,
+        override val dispatcher: ISupportDispatcher
+    ) : MediaListSource.Sync() {
+
+        override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
+
+        override suspend fun getMediaList(requestCallback: RequestCallback) {
+            val deferred = async {
+                val queryBuilder = query.toQueryContainerBuilder()
+                remoteSource.getMediaListCollection(queryBuilder)
+            }
+
+            val result = controller(deferred, requestCallback)
+            observable.value = result != null
+        }
+
+        /**
+         * Clears data sources (databases, preferences, e.t.c)
+         *
+         * @param context Dispatcher context to run in
+         */
+        override suspend fun clearDataSource(context: CoroutineDispatcher) {
+
+        }
+    }
 
     class Entry(
         private val remoteSource: MediaListRemoteSource,
@@ -94,8 +125,9 @@ internal class MediaListSourceImpl {
     class Paged(
         private val remoteSource: MediaListRemoteSource,
         private val localSource: MediaListLocalSource,
+        private val mediaLocalSource: MediaLocalSource,
         private val controller: MediaListPagedController,
-        private val converter: MediaListEntityViewConverter,
+        private val converter: MediaEntityViewConverter,
         private val filter: MediaListQueryFilter.Paged,
         private val clearDataHelper: IClearDataHelper,
         override val dispatcher: ISupportDispatcher
@@ -103,8 +135,8 @@ internal class MediaListSourceImpl {
 
         override val cacheIdentity: CacheIdentity = MediaListCache.Identity.Paged()
 
-        override fun observable(): Flow<PagedList<MediaList>> {
-            val dataSourceFactory = localSource
+        override fun observable(): Flow<PagedList<Media>> {
+            val dataSourceFactory = mediaLocalSource
                 .rawFactory(filter.build(query.param))
                 .map(converter::convertFrom)
 
@@ -144,8 +176,9 @@ internal class MediaListSourceImpl {
     class Collection(
         private val remoteSource: MediaListRemoteSource,
         private val localSource: MediaListLocalSource,
+        private val mediaLocalSource: MediaLocalSource,
         private val controller: MediaListCollectionController,
-        private val converter: MediaListEntityViewConverter,
+        private val converter: MediaEntityViewConverter,
         private val filter: MediaListQueryFilter.Collection,
         private val clearDataHelper: IClearDataHelper,
         override val dispatcher: ISupportDispatcher
@@ -153,8 +186,8 @@ internal class MediaListSourceImpl {
 
         override val cacheIdentity: CacheIdentity = MediaListCache.Identity.Collection()
 
-        override fun observable(): Flow<PagedList<MediaList>> {
-            val dataSourceFactory = localSource
+        override fun observable(): Flow<PagedList<Media>> {
+            val dataSourceFactory = mediaLocalSource
                 .rawFactory(filter.build(query.param))
                 .map(converter::convertFrom)
 

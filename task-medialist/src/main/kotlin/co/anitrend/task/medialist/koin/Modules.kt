@@ -19,31 +19,34 @@ package co.anitrend.task.medialist.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MediaListTaskRouter
-import co.anitrend.task.medialist.component.MediaListCollectionWorker
 import co.anitrend.task.medialist.component.MediaListMutationWorker
 import co.anitrend.task.medialist.component.MediaListAnimeSyncWorker
+import co.anitrend.task.medialist.component.MediaListMangaSyncWorker
 import co.anitrend.task.medialist.provider.FeatureProvider
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 
 private val workManagerModule = module {
-    worker {
-        MediaListCollectionWorker(
-            context = get(),
-            parameters = get()
-        )
-    }
-    worker {
+    worker { scope ->
         MediaListMutationWorker(
-            context = get(),
-            parameters = get()
+            context = androidContext(),
+            parameters = scope.get()
         )
     }
-    worker {
+    worker { scope ->
         MediaListAnimeSyncWorker(
-            context = get(),
-            parameters = get(),
+            context = androidContext(),
+            parameters = scope.get(),
+            interactor = get(),
+            settings = get()
+        )
+    }
+    worker { scope ->
+        MediaListMangaSyncWorker(
+            context = androidContext(),
+            parameters = scope.get(),
             interactor = get(),
             settings = get()
         )

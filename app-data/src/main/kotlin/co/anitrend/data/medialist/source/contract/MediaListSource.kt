@@ -29,12 +29,30 @@ import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.model.mutation.MediaListMutation
 import co.anitrend.data.medialist.model.query.MediaListQuery
+import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.model.MediaListParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaListSource {
+
+    abstract class Sync : SupportCoreDataSource() {
+
+        protected lateinit var query: MediaListQuery.Collection
+
+        protected abstract val observable: Flow<Boolean?>
+
+        protected abstract suspend fun getMediaList(
+            requestCallback: RequestCallback
+        )
+
+        operator fun invoke(param: MediaListParam.Collection): Flow<Boolean> {
+            query = MediaListQuery.Collection(param)
+            invoke(block = ::getMediaList)
+            return observable.filterNotNull()
+        }
+    }
 
     abstract class Entry : SupportCoreDataSource() {
 
@@ -63,19 +81,19 @@ internal class MediaListSource {
         }
     }
 
-    abstract class Paged : SupportPagingDataSource<MediaList>() {
+    abstract class Paged : SupportPagingDataSource<Media>() {
 
         protected lateinit var query: MediaListQuery.Paged
 
         protected abstract val cacheIdentity: CacheIdentity
 
-        protected abstract fun observable(): Flow<PagedList<MediaList>>
+        protected abstract fun observable(): Flow<PagedList<Media>>
 
         protected abstract suspend fun getMediaList(
             requestCallback: RequestCallback
         )
 
-        operator fun invoke(param: MediaListParam.Paged): Flow<PagedList<MediaList>> {
+        operator fun invoke(param: MediaListParam.Paged): Flow<PagedList<Media>> {
             query = MediaListQuery.Paged(param)
             return observable()
         }
@@ -88,7 +106,7 @@ internal class MediaListSource {
          *
          * @param itemAtEnd The first item of PagedList
          */
-        override fun onItemAtEndLoaded(itemAtEnd: MediaList) {
+        override fun onItemAtEndLoaded(itemAtEnd: Media) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
@@ -106,7 +124,7 @@ internal class MediaListSource {
          *
          * @param itemAtFront The first item of PagedList
          */
-        override fun onItemAtFrontLoaded(itemAtFront: MediaList) {
+        override fun onItemAtFrontLoaded(itemAtFront: Media) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
@@ -129,19 +147,19 @@ internal class MediaListSource {
         }
     }
 
-    abstract class Collection : SupportPagingDataSource<MediaList>() {
+    abstract class Collection : SupportPagingDataSource<Media>() {
 
         protected lateinit var query: MediaListQuery.Collection
 
         protected abstract val cacheIdentity: CacheIdentity
 
-        protected abstract fun observable(): Flow<PagedList<MediaList>>
+        protected abstract fun observable(): Flow<PagedList<Media>>
 
         protected abstract suspend fun getMediaList(
             requestCallback: RequestCallback
         )
 
-        operator fun invoke(param: MediaListParam.Collection): Flow<PagedList<MediaList>> {
+        operator fun invoke(param: MediaListParam.Collection): Flow<PagedList<Media>> {
             query = MediaListQuery.Collection(param)
             return observable()
         }
@@ -154,7 +172,7 @@ internal class MediaListSource {
          *
          * @param itemAtEnd The first item of PagedList
          */
-        override fun onItemAtEndLoaded(itemAtEnd: MediaList) {
+        override fun onItemAtEndLoaded(itemAtEnd: Media) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
@@ -172,7 +190,7 @@ internal class MediaListSource {
          *
          * @param itemAtFront The first item of PagedList
          */
-        override fun onItemAtFrontLoaded(itemAtFront: MediaList) {
+        override fun onItemAtFrontLoaded(itemAtFront: Media) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,

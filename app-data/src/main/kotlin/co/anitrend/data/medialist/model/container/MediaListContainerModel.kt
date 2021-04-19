@@ -55,16 +55,10 @@ internal sealed class MediaListContainerModel {
 
     /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
      * List of anime or manga
-     *
-     * @param lists Grouped media list entries
-     * @param hasNextChunk If there is another chunk
-     * @param user The owner of the list
      */
     @Serializable
     data class Collection(
-        @SerialName("lists") val lists: List<Group>,
-        @SerialName("hasNextChunk") val hasNextChunk: Boolean,
-        @SerialName("user") val user: UserModel.Core?
+        @SerialName("MediaListCollection") val mediaListCollection: ListCollection
     ) : MediaListContainerModel(){
 
         /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
@@ -84,6 +78,18 @@ internal sealed class MediaListContainerModel {
             @SerialName("name") val name: String,
             @SerialName("status") val status: MediaListStatus
         ) : Many()
+
+        /**
+         * @param lists Grouped media list entries
+         * @param hasNextChunk If there is another chunk
+         * @param user The owner of the list
+         */
+        @Serializable
+        data class ListCollection(
+            @SerialName("lists") val lists: List<Group>,
+            @SerialName("hasNextChunk") val hasNextChunk: Boolean,
+            @SerialName("user") val user: UserModel.Core?
+        )
     }
 
     @Serializable

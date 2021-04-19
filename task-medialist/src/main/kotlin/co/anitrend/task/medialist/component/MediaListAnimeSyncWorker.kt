@@ -21,23 +21,19 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.medialist.GetCollectionMediaListInteractor
+import co.anitrend.core.android.settings.Settings
+import co.anitrend.data.medialist.SyncMediaListEntryInteractor
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.model.MediaListParam
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.coroutineContext
+import kotlinx.coroutines.flow.first
 
 class MediaListAnimeSyncWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: GetCollectionMediaListInteractor,
-    private val settings: IAuthenticationSettings
+    private val interactor: SyncMediaListEntryInteractor,
+    private val settings: Settings
 ) : SupportCoroutineWorker(context, parameters) {
-
-    private val userId by lazy(UNSAFE) {
-        settings.authenticatedUserId.value
-    }
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -52,9 +48,10 @@ class MediaListAnimeSyncWorker(
      */
     override suspend fun doWork(): Result {
         val param = MediaListParam.Collection(
+            scoreFormat = settings.scoreFormat.value,
             type = MediaType.ANIME,
             sort = emptyList(),
-            userId = userId
+            userId = settings.authenticatedUserId.value
         )
         val dataState = interactor(param)
 
