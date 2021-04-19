@@ -38,6 +38,8 @@ import co.anitrend.data.auth.helper.authenticationUri
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.UserTaskRouter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class AuthPresenter(
@@ -49,12 +51,14 @@ class AuthPresenter(
     private val authenticationHelper: IAuthenticationHelper
 ) : CorePresenter(context, settings) {
 
-    fun useAnonymousAccount(activity: FragmentActivity) {
+    suspend fun useAnonymousAccount(activity: FragmentActivity) {
         MediaListTaskRouter.forAnimeScheduler().cancel(context)
         MediaListTaskRouter.forMangaScheduler().cancel(context)
         UserTaskRouter.forAccountSyncScheduler().cancel(context)
         UserTaskRouter.forStatisticSyncScheduler().cancel(context)
-        authenticationHelper.invalidateAuthenticationState()
+        withContext(Dispatchers.IO) {
+            authenticationHelper.invalidateAuthenticationState()
+        }
         activity.finish()
     }
 

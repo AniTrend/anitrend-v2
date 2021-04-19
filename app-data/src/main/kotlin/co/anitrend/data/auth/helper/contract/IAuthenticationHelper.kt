@@ -30,7 +30,7 @@ interface IAuthenticationHelper {
     /**
      * Invalidates any properties related to authentication state
      */
-    fun invalidateAuthenticationState()
+    suspend fun invalidateAuthenticationState()
 
     /**
      * Injects authorization properties into the ongoing request

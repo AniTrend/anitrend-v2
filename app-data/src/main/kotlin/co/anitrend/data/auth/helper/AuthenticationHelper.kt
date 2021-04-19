@@ -17,11 +17,13 @@
 
 package co.anitrend.data.auth.helper
 
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.account.model.AccountParam
 import okhttp3.Request
 import timber.log.Timber
@@ -30,18 +32,27 @@ import timber.log.Timber
  * Provides an api to handle authentication based processes
  */
 internal class AuthenticationHelper(
-    private val settings: IAuthenticationSettings,
+    private val authSettings: IAuthenticationSettings,
+    private val userSettings: IUserSettings,
     private val localSource: AuthLocalSource,
-    private val authSource: AuthSource
+    private val mediaListLocalSource: MediaListLocalSource,
+    private val cacheLocalSource: CacheLocalSource,
 ) : IAuthenticationHelper {
 
     /**
      * Invalidates any properties related to authentication state
      */
-    override fun invalidateAuthenticationState() {
-        val setting = settings.authenticatedUserId
+    override suspend fun invalidateAuthenticationState() {
+        val setting = authSettings.authenticatedUserId
         val param = AccountParam.SignOut(setting.value)
-        authSource.signOut(param)
+
+        userSettings.invalidateSettings()
+        authSettings.invalidateAuthenticationSettings()
+
+        localSource.clearByUserId(param.userId)
+        mediaListLocalSource.clearByUserId(param.userId)
+        cacheLocalSource.clearByType(CacheRequest.MEDIA_LIST)
+        cacheLocalSource.clearByType(CacheRequest.USER)
     }
 
     /**
@@ -49,7 +60,7 @@ internal class AuthenticationHelper(
      * on demand
      */
     override val isAuthenticated: Boolean
-        get() = settings.isAuthenticated.value
+        get() = authSettings.isAuthenticated.value
 
     /**
      * Injects authorization properties into the ongoing request
@@ -58,7 +69,7 @@ internal class AuthenticationHelper(
      */
     override operator fun invoke(requestBuilder: Request.Builder) {
         val entity = localSource.byUserId(
-            settings.authenticatedUserId.value
+            authSettings.authenticatedUserId.value
         )
         if (entity != null)
             requestBuilder.addHeader(IAuthenticationHelper.AUTHORIZATION, entity.accessToken)
