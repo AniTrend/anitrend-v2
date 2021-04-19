@@ -17,7 +17,7 @@
 
 package co.anitrend.data.core.api.interceptor
 
-import co.anitrend.data.auth.helper.AuthenticationHelper
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import okhttp3.*
 
 /**
@@ -26,7 +26,7 @@ import okhttp3.*
  * on the dispatching caller, as such take care to assure thread safety
  */
 internal class GraphAuthenticator(
-    private val authenticationHelper: AuthenticationHelper
+    private val authenticationHelper: IAuthenticationHelper
 ) : Authenticator {
 
     /**
@@ -38,15 +38,17 @@ internal class GraphAuthenticator(
      * available. It may also not be provided when an authenticator is re-used manually in an
      * application interceptor, such as when implementing client-specific retries.
      */
-    override fun authenticate(route: Route?, response: Response): Request? {
+    override fun authenticate(route: Route?, response: Response): Request {
+        val requestBuilder = response.request.newBuilder()
         if (response.code == UNAUTHORIZED) {
-            val requestBuilder = response.request.newBuilder()
             if (authenticationHelper.isAuthenticated) {
-                authenticationHelper(requestBuilder)
-                return requestBuilder.build()
+                /**
+                 * TODO: Track the number of failed requests, given that the auth header exists and logout the user
+                 */
+                authenticationHelper.invalidateAuthenticationState()
             }
         }
-        return null
+        return requestBuilder.build()
     }
 
     companion object {

@@ -39,6 +39,12 @@ abstract class CacheLocalSource : AbstractLocalSource<CacheEntity>() {
     abstract override suspend fun count(): Int
 
     @Query("""
+        delete from cache_log
+        where request = :request
+    """)
+    abstract suspend fun clearByType(request: CacheRequest)
+
+    @Query("""
         select count(id)
         from cache_log 
         where request = :request and cache_item_id = :itemId

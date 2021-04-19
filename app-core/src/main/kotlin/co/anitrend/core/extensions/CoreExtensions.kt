@@ -45,7 +45,7 @@ fun FragmentActivity.recreateModules() {
  */
 fun <T> Result<T>.stackTrace(): T? {
     onFailure { throwable ->
-        Timber.v(throwable)
+        Timber.w(throwable)
     }
     return getOrNull()
 }
