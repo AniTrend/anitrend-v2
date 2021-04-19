@@ -24,6 +24,7 @@ import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.domain.medialist.enums.ScoreFormat
 
 sealed class MediaListParam {
 
@@ -53,19 +54,20 @@ sealed class MediaListParam {
      * @property sort The order the results will be returned in
      */
     abstract class Entries : MediaListParam() {
+        abstract val scoreFormat: ScoreFormat
         abstract val type: MediaType
         abstract val userId: Long
         abstract val completedAt: DateInt?
         abstract val completedAt_greater: DateInt?
         abstract val completedAt_lesser: DateInt?
-        abstract val completedAt_like: String?
+        abstract val completedAt_like: DateLike?
         abstract val notes: String?
         abstract val notes_like: String?
         abstract val sort: List<ISortWithOrder<MediaListSort>>?
         abstract val startedAt: DateInt?
         abstract val startedAt_greater: DateInt?
         abstract val startedAt_lesser: DateInt?
-        abstract val startedAt_like: String?
+        abstract val startedAt_like: DateLike?
         abstract val status: MediaListStatus?
         abstract val status_in: List<MediaListStatus>?
         abstract val status_not: MediaListStatus?
@@ -91,19 +93,20 @@ sealed class MediaListParam {
         val isFollowing: Boolean? = null,
         val userId_in: List<Long>? = null,
         val compareWithAuthList: Boolean? = null,
+        override val scoreFormat: ScoreFormat,
         override val type: MediaType,
         override val userId: Long,
         override val completedAt: DateInt? = null,
         override val completedAt_greater: DateInt? = null,
         override val completedAt_lesser: DateInt? = null,
-        override val completedAt_like: String? = null,
+        override val completedAt_like: DateLike? = null,
         override val notes: String? = null,
         override val notes_like: String? = null,
         override val sort: List<ISortWithOrder<MediaListSort>>? = null,
         override val startedAt: DateInt? = null,
         override val startedAt_greater: DateInt? = null,
         override val startedAt_lesser: DateInt? = null,
-        override val startedAt_like: String? = null,
+        override val startedAt_like: DateLike? = null,
         override val status: MediaListStatus? = null,
         override val status_in: List<MediaListStatus>? = null,
         override val status_not: MediaListStatus? = null,
@@ -124,17 +127,18 @@ sealed class MediaListParam {
         val chunk: Int? = null,
         val perChunk: Int? = null,
         val forceSingleCompletedList: Boolean? = null,
+        override val scoreFormat: ScoreFormat,
         override val completedAt: DateInt? = null,
         override val completedAt_greater: DateInt? = null,
         override val completedAt_lesser: DateInt? = null,
-        override val completedAt_like: String? = null,
+        override val completedAt_like: DateLike? = null,
         override val notes: String? = null,
         override val notes_like: String? = null,
         override val sort: List<ISortWithOrder<MediaListSort>>? = null,
         override val startedAt: DateInt? = null,
         override val startedAt_greater: DateInt? = null,
         override val startedAt_lesser: DateInt? = null,
-        override val startedAt_like: String? = null,
+        override val startedAt_like: DateLike? = null,
         override val status: MediaListStatus? = null,
         override val status_in: List<MediaListStatus>? = null,
         override val status_not: MediaListStatus? = null,
