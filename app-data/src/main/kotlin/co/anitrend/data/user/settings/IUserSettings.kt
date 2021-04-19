@@ -18,12 +18,21 @@
 package co.anitrend.data.user.settings
 
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
 interface IUserSettings {
     val titleLanguage: AbstractSetting<UserTitleLanguage>
     val scoreFormat: AbstractSetting<ScoreFormat>
+
+    /**
+     * Invalidates authentication settings state
+     */
+    fun invalidateSettings() {
+        scoreFormat.value = DEFAULT_SCORE_FORMAT
+        titleLanguage.value = DEFAULT_TITLE_LANGUAGE
+    }
 
     companion object {
         val DEFAULT_SCORE_FORMAT = ScoreFormat.POINT_10_DECIMAL
