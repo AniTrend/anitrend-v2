@@ -82,7 +82,6 @@ class FavouriteView @JvmOverloads constructor(
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        orientation = HORIZONTAL
         layoutParams = LayoutParams(context, attrs)
         background = context.getCompatDrawable(R.drawable.widget_background, R.color.bubble_color)
         val padding = context.resources.getDimensionPixelSize(R.dimen.md_margin)

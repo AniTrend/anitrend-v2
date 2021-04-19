@@ -29,14 +29,14 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="4">
+        android:weightSum="4.05">
 
         <co.anitrend.arch.ui.view.image.SupportImageView
             android:id="@+id/mediaImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            android:layout_weight="1"
+            android:layout_weight="1.05"
             app:aspectRatio="1.6"
             tools:src="@sample/poster"
             tools:scaleType="centerCrop"/>
@@ -69,7 +69,7 @@
                     android:id="@+id/mediaTitle"
                     android:padding="@dimen/md_margin"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    style="@style/AppTheme.DoubleLineText"
+                    style="@style/AppTheme.SingleLineText"
                     tools:text="@sample/series.json/title/userPreferred" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -93,15 +93,21 @@
                 tools:listitem="@layout/genre_item"
                 tools:itemCount="3" />
 
+            <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
+                android:id="@+id/mediaRatingWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/md_margin"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
-        android:id="@+id/mediaRatingWidget"
+    <co.anitrend.common.shared.ui.view.FavouriteView
+        android:id="@+id/mediaFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|start"
-        android:layout_margin="@dimen/md_margin"/>
+        android:layout_margin="@dimen/md_margin"
+        />
 
 </com.google.android.material.card.MaterialCardView>

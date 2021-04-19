@@ -37,9 +37,7 @@ import androidx.core.net.toUri
 import androidx.core.view.iterator
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
-import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.navigation.model.common.IParam
@@ -267,4 +265,37 @@ fun Context.getCompatDrawableAttr(@AttrRes attribute : Int): Drawable? {
         theme.resolveAttribute(attribute, this, true)
     }
     return getCompatDrawable(typedValue.resourceId)
+}
+
+/**
+ * Updates layout margins with the given values
+ *
+ * @throws UnsupportedOperationException if layoutParams is not a
+ * type of [ViewGroup.MarginLayoutParams]
+ */
+@Throws(UnsupportedOperationException::class)
+fun View.updateMargins(
+    start: Int = 0,
+    top: Int = 0,
+    end: Int = 0,
+    bottom: Int = 0
+) {
+    if (layoutParams !is ViewGroup.MarginLayoutParams)
+        throw UnsupportedOperationException(
+            "Expected layoutParams to be type of ViewGroup.MarginLayoutParams but was $layoutParams instead"
+        )
+    val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
+    marginLayoutParams.setMargins(start, top, end, bottom)
+    requestLayout()
+}
+
+/**
+ * Updates layout margins with the given values
+ *
+ * @throws UnsupportedOperationException if layoutParams is not a
+ * type of [ViewGroup.MarginLayoutParams]
+ */
+@Throws(UnsupportedOperationException::class)
+fun View.updateMargins(margin: Int) {
+    updateMargins(margin, margin, margin, margin)
 }

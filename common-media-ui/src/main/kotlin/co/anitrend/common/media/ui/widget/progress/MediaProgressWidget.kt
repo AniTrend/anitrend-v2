@@ -19,25 +19,27 @@ package co.anitrend.common.media.ui.widget.progress
 
 import android.content.Context
 import android.util.AttributeSet
-import co.anitrend.arch.extension.ext.getLayoutInflater
+import android.widget.FrameLayout
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.media.ui.databinding.MediaProgressWidgetBinding
-import co.anitrend.core.android.views.FrameLayoutWithBinding
 
 internal class MediaProgressWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayoutWithBinding<MediaProgressWidgetBinding>(
+) : FrameLayout(
     context, attrs, defStyleAttr
 ), CustomView {
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    override fun createBinding() =
-        MediaProgressWidgetBinding.inflate(
-            context.getLayoutInflater(),
-            this,
-            true
-        )
+    /**
+     * Callable in view constructors to perform view inflation and attribute initialization
+     *
+     * @param context view context
+     * @param attrs view attributes if applicable
+     * @param styleAttr style attribute if applicable
+     */
+    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
+
+    }
 }
