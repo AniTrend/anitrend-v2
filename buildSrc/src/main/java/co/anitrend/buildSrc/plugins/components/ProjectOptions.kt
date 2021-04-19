@@ -24,6 +24,7 @@ import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.libraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.NamedDomainObjectContainer
@@ -86,6 +87,30 @@ private fun DefaultConfig.applyRoomCompilerOptions(project: Project) {
                     "room.incremental" to "true"
                 )
             )
+        }
+    }
+}
+
+internal fun Project.createSigningConfiguration(extension: BaseAppModuleExtension) {
+    var properties: Properties? = null
+    val keyStoreFile = project.file(".config/keystore.properties")
+    if (keyStoreFile.exists())
+        keyStoreFile.inputStream().use { fis ->
+            Properties().run {
+                load(fis);
+                properties = this
+            }
+        }
+    else println("${keyStoreFile.absolutePath} could not be found, automated releases may not be singed")
+    properties?.also {
+        extension.signingConfigs {
+            create("release") {
+                storeFile(file(it["STORE_FILE"] as String))
+                storePassword(it["STORE_PASSWORD"] as String)
+                keyAlias(it["STORE_KEY_ALIAS"] as String)
+                keyPassword(it["STORE_KEY_PASSWORD"] as String)
+                isV2SigningEnabled = true
+            }
         }
     }
 }

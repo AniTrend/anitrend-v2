@@ -43,7 +43,10 @@ object Versions {
      * Naming schema: X.Y.Z-variant##
      * > **X**(Major).**Y**(Minor).**Z**(Patch)
      */
-    const val versionName = "$major.$minor.$patch-$channel$candidate"
+    val versionName = if (candidate > 0)
+        "$major.$minor.$patch-$channel$candidate"
+    else
+        "$major.$minor.$patch"
 
     const val mockk = "1.11.0"
     const val junit = "4.13.2"
