@@ -20,15 +20,12 @@ package co.anitrend.buildSrc.plugins.components
 import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.extensions.isAppModule
-import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isCoreModule
 import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.isNavigationModule
 import co.anitrend.buildSrc.extensions.hasCoroutineSupport
 import co.anitrend.buildSrc.extensions.matchesAppModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
-import co.anitrend.buildSrc.extensions.matchesCommonModule
-import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.baseAppExtension
 import co.anitrend.buildSrc.extensions.baseExtension
 import co.anitrend.buildSrc.extensions.libraryExtension
@@ -43,37 +40,29 @@ import java.io.File
 
 private fun configureBuildFlavours(project: Project) {
     project.baseAppExtension().run {
-        flavorDimensions("version")
+        flavorDimensions("default")
         productFlavors {
             create("fdroid") {
-                dimension = "version"
+                dimension = "default"
                 applicationIdSuffix = ".fdroid"
                 versionNameSuffix = "-fdroid"
-                versionCode = defaultConfig.versionCode!!.times(10)
+            }
+            create("google") {
+                dimension = "default"
+            }
+            create("github") {
+                dimension = "default"
+                applicationIdSuffix = ".github"
+                versionNameSuffix = "-github"
             }
         }
         applicationVariants.all {
             outputs.map { it as BaseVariantOutputImpl }.forEach { output ->
                 val original = output.outputFileName
-                val versionCode = defaultConfig.versionCode
-                val versionName = defaultConfig.versionName
-                val currentName = "app-${output.name}.apk"
-                val prefix = "anitrend_v${versionName}_rc_${versionCode}"
-                val outputFileName = when (output.name) {
-                    "release" -> {
-                        val abi = output.getFilter("ABI") ?: "universal"
-                        original.replace(
-                            currentName, "${prefix}_${abi}-${output.name}.apk"
-                        )
-                    }
-                    else ->
-                        original.replace(
-                            currentName, "${prefix}-${output.name}.apk"
-                        )
-                }
-                output.outputFileName = outputFileName
+                output.outputFileName = original
             }
         }
+        project.createSigningConfiguration(this)
     }
 }
 
@@ -85,9 +74,7 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             viewBinding = true
             compose = true
         }
-        // TODO: Configure build flavours
-        // this might be deprecated in favour of app bundles
-        //configureBuildFlavours(project)
+        configureBuildFlavours(project)
     }
     else
         consumerProguardFiles.add(File("consumer-rules.pro"))
@@ -131,6 +118,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 ),
                 "proguard-rules.pro"
             )
+            if (isAppModule() && project.file(".config/keystore.properties").exists())
+                signingConfig = signingConfigs.getByName("release")
         }
 
         getByName("debug") {

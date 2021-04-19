@@ -20,9 +20,11 @@ package co.anitrend.buildSrc.plugins.components
 import co.anitrend.buildSrc.common.Versions
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.libraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.NamedDomainObjectContainer
@@ -38,10 +40,23 @@ private fun Properties.applyToBuildConfigFor(buildType: BuildType) {
     }
 }
 
+private fun NamedDomainObjectContainer<BuildType>.applyVersionProperties() {
+    asMap.forEach { buildTypeEntry ->
+        println("Adding version build configuration fields -> ${buildTypeEntry.key}")
+        val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
+    }
+}
+
 private fun NamedDomainObjectContainer<BuildType>.applyConfigurationProperties(project: Project) {
     asMap.forEach { buildTypeEntry ->
         println("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
 
         val secretsFile = project.file(".config/secrets.properties")
         if (secretsFile.exists())
@@ -76,34 +91,47 @@ private fun DefaultConfig.applyRoomCompilerOptions(project: Project) {
     }
 }
 
-internal fun Project.configureOptions() {
-    if (isDataModule()) {
-        libraryExtension().run {
-            defaultConfig {
-                applyRoomCompilerOptions(this@configureOptions)
+internal fun Project.createSigningConfiguration(extension: BaseAppModuleExtension) {
+    var properties: Properties? = null
+    val keyStoreFile = project.file(".config/keystore.properties")
+    if (keyStoreFile.exists())
+        keyStoreFile.inputStream().use { fis ->
+            Properties().run {
+                load(fis);
+                properties = this
             }
+        }
+    else println("${keyStoreFile.absolutePath} could not be found, automated releases may not be singed")
+    properties?.also {
+        extension.signingConfigs {
+            create("release") {
+                storeFile(file(it["STORE_FILE"] as String))
+                storePassword(it["STORE_PASSWORD"] as String)
+                keyAlias(it["STORE_KEY_ALIAS"] as String)
+                keyPassword(it["STORE_KEY_PASSWORD"] as String)
+                isV2SigningEnabled = true
+            }
+        }
+    }
+}
+
+internal fun Project.configureOptions() {
+    if (isDataModule() || matchesDataModule()) {
+        libraryExtension().run {
+            if (isDataModule())
+                defaultConfig {
+                    applyRoomCompilerOptions(this@configureOptions)
+                }
             buildTypes {
                 applyConfigurationProperties(this@configureOptions)
             }
         }
     }
 
-    if (matchesDataModule())
+    if (isCoreModule() || isAndroidCoreModule()) {
         libraryExtension().run {
             buildTypes {
-                applyConfigurationProperties(this@configureOptions)
-            }
-        }
-
-    if (isCoreModule()) {
-        libraryExtension().run {
-            buildTypes {
-                asMap.forEach { buildTypeEntry ->
-                    val buildType = buildTypeEntry.value
-                    println("Configuring build type -> ${buildTypeEntry.key}")
-                    buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
-                    buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
-                }
+                applyVersionProperties()
             }
         }
     }
