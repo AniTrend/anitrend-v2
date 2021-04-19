@@ -18,13 +18,97 @@
 package co.anitrend.data.medialist.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.medialist.GetPagedMediaListInteractor
-import co.anitrend.data.medialist.repository.MediaListRepository
+import co.anitrend.data.medialist.*
 
 internal interface MediaListInteractor {
+
+    class Sync(
+        repository: MediaListSyncRepository
+    ) : SyncMediaListEntryInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
+    class Entry(
+        repository: MediaListEntryRepository
+    ) : GetMediaListEntryInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
+    class Collection(
+        repository: MediaListCollectionRepository
+    ) : GetCollectionMediaListInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
     class Paged(
-        repository: MediaListRepository.Paged
+        repository: MediaListPagedRepository
     ) : GetPagedMediaListInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
+    class SaveEntry(
+        repository: MediaListSaveEntryRepository
+    ) : SaveMediaListEntryInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
+    class SaveEntries(
+        repository: MediaListSaveEntriesRepository
+    ) : SaveMediaListEntriesInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
+    class DeleteEntry(
+        repository: MediaListDeleteEntryRepository
+    ) : DeleteMediaListEntryInteractor(repository) {
+        /**
+         * Informs underlying repositories or related components running background operations to stop
+         */
+        override fun onCleared() {
+            repository as ISupportRepository
+            repository.onCleared()
+        }
+    }
+
+    class DeleteCustomList(
+        repository: DeleteCustomMediaListRepository
+    ) : DeleteCustomMediaListInteractor(repository) {
         /**
          * Informs underlying repositories or related components running background operations to stop
          */

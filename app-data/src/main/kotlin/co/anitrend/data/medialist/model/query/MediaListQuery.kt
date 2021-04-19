@@ -48,6 +48,7 @@ internal sealed class MediaListQuery : IGraphPayload {
             "type" to param.type,
             "status" to param.status,
             "mediaId" to param.mediaId,
+            "scoreFormat" to param.scoreFormat,
             "isFollowing" to param.isFollowing,
             "notes" to param.notes,
             "startedAt" to param.startedAt,
@@ -77,6 +78,7 @@ internal sealed class MediaListQuery : IGraphPayload {
          */
         override fun toMap() = mapOf(
             "chunk" to param.chunk,
+            "scoreFormat" to param.scoreFormat,
             "completedAt" to param.completedAt,
             "completedAt_greater" to param.completedAt_greater,
             "completedAt_lesser" to param.completedAt_lesser,
