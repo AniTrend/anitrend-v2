@@ -18,7 +18,8 @@
 package co.anitrend.data.core.api.factory
 
 import co.anitrend.data.BuildConfig
-import co.anitrend.data.auth.helper.AuthenticationHelper
+import co.anitrend.data.android.network.agent.UserAgentInterceptor
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.interceptor.GraphAuthenticator
 import co.anitrend.data.core.api.interceptor.GraphClientInterceptor
@@ -36,13 +37,16 @@ internal class GraphApiFactory : IEndpointFactory {
     }
 
     override fun okHttpConfig(scope: Scope): OkHttpClient {
-        val builder = scope.defaultBuilder(setOf(AuthenticationHelper.AUTHORIZATION))
+        val builder = scope.defaultBuilder(setOf(IAuthenticationHelper.AUTHORIZATION))
         Timber.d("Adding authenticator and request interceptors for request")
-        builder.authenticator(
-            GraphAuthenticator(
-                authenticationHelper = scope.get()
-            )
-        ).addInterceptor(GraphClientInterceptor())
+        val authenticatorHelper = scope.get<IAuthenticationHelper>()
+        builder.addInterceptor(
+            UserAgentInterceptor(deviceInfo = scope.get())
+        ).addInterceptor(
+            GraphClientInterceptor(authenticatorHelper)
+        ).authenticator(
+            GraphAuthenticator(authenticatorHelper)
+        )
         return builder.build()
     }
 }
@@ -54,7 +58,9 @@ internal class AuthenticationApiFactory : IEndpointFactory {
     }
 
     override fun okHttpConfig(scope: Scope): OkHttpClient {
-        val builder = scope.defaultBuilder()
+        val builder = scope.defaultBuilder().addInterceptor(
+            UserAgentInterceptor(deviceInfo = scope.get())
+        )
         return builder.build()
     }
 }

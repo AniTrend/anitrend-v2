@@ -56,20 +56,33 @@ internal class AniTrendConverterFactory(
         methodAnnotations: Array<out Annotation>,
         retrofit: Retrofit
     ): Converter<*, RequestBody>? {
-        for (annotation in methodAnnotations) {
+        return methodAnnotations.map { annotation ->
             when (annotation) {
-                is XML -> {
-                    return xmlFactory.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
-                }
-                is GRAPHQL -> {
-                    return AniRequestConverter(methodAnnotations, graphProcessor, gson)
-                }
-                is JSON -> {
-                    return jsonFactory.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
-                }
+                is XML -> xmlFactory.requestBodyConverter(
+                    type,
+                    parameterAnnotations,
+                    methodAnnotations,
+                    retrofit
+                )
+                is GRAPHQL -> AniRequestConverter(
+                    methodAnnotations,
+                    graphProcessor,
+                    gson
+                )
+                is JSON -> jsonFactory.requestBodyConverter(
+                    type,
+                    parameterAnnotations,
+                    methodAnnotations,
+                    retrofit
+                )
+                else -> GsonConverterFactory.create(gson).requestBodyConverter(
+                    type,
+                    parameterAnnotations,
+                    methodAnnotations,
+                    retrofit
+                )
             }
-        }
-        return GsonConverterFactory.create(gson).requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
+        }.first()
     }
 
     /**
@@ -88,19 +101,32 @@ internal class AniTrendConverterFactory(
         annotations: Array<out Annotation>,
         retrofit: Retrofit
     ): Converter<ResponseBody, *>? {
-        for (annotation in annotations) {
+        return annotations.map { annotation ->
             when (annotation) {
-                is XML -> {
-                    return xmlFactory.responseBodyConverter(type, annotations, retrofit)
-                }
-                is JSON -> {
-                    return jsonFactory.responseBodyConverter(type, annotations, retrofit)
-                }
-                is GRAPHQL -> {
-                    return graphFactory.responseBodyConverter(type, annotations, retrofit)
-                }
+                is XML ->
+                    xmlFactory.responseBodyConverter(
+                        type,
+                        annotations,
+                        retrofit
+                    )
+                is JSON ->
+                    jsonFactory.responseBodyConverter(
+                        type,
+                        annotations,
+                        retrofit
+                    )
+                is GRAPHQL ->
+                    graphFactory.responseBodyConverter(
+                        type,
+                        annotations,
+                        retrofit
+                    )
+                else -> GsonConverterFactory.create(gson).responseBodyConverter(
+                    type,
+                    annotations,
+                    retrofit
+                )
             }
-        }
-        return GsonConverterFactory.create(gson).responseBodyConverter(type, annotations, retrofit)
+        }.first()
     }
 }

@@ -17,6 +17,7 @@
 
 package co.anitrend.data.core.api.interceptor
 
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import io.github.wax911.library.converter.GraphConverter
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -26,18 +27,25 @@ import okhttp3.Response
  * The context in which an [Interceptor] may be  parallel or asynchronous depending
  * on the dispatching caller, as such take care to assure thread safety
  */
-internal class GraphClientInterceptor: Interceptor {
+internal class GraphClientInterceptor(
+    private val authenticationHelper: IAuthenticationHelper
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
 
-        val request = original.newBuilder()
-            .header(CONTENT_TYPE, GraphConverter.MimeType)
+        val requestBuilder = original.newBuilder()
+
+        requestBuilder.header(CONTENT_TYPE, GraphConverter.MimeType)
             .header(ACCEPT, ACCEPT_TYPE)
             .method(original.method, original.body)
-            .build()
 
-        return chain.proceed(request)
+        if (authenticationHelper.isAuthenticated) {
+            authenticationHelper(requestBuilder)
+            return chain.proceed(requestBuilder.build())
+        }
+
+        return chain.proceed(requestBuilder.build())
     }
 
     companion object {
