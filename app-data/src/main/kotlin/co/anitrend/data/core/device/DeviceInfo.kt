@@ -48,7 +48,7 @@ class DeviceInfo(context: Context) : IDeviceInfo {
         val packageManager = context.packageManager
         val source = when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->
-                packageManager.getInstallSourceInfo(context.packageName)
+                packageManager.getInstallSourceInfo(context.packageName).installingPackageName
             else ->
                 packageManager.getInstallerPackageName(context.packageName)
         } ?: "StandAloneInstall"
