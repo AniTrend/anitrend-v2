@@ -42,17 +42,15 @@ private fun configureBuildFlavours(project: Project) {
     project.baseAppExtension().run {
         flavorDimensions("default")
         productFlavors {
-            create("fdroid") {
-                dimension = "default"
-                applicationIdSuffix = ".fdroid"
-                versionNameSuffix = "-fdroid"
-            }
             create("google") {
                 dimension = "default"
             }
+            create("fdroid") {
+                dimension = "default"
+                versionNameSuffix = "-fdroid"
+            }
             create("github") {
                 dimension = "default"
-                applicationIdSuffix = ".github"
                 versionNameSuffix = "-github"
             }
         }
@@ -74,7 +72,7 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             viewBinding = true
             compose = true
         }
-        configureBuildFlavours(project)
+        //configureBuildFlavours(project)
     }
     else
         consumerProguardFiles.add(File("consumer-rules.pro"))
