@@ -127,6 +127,8 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal data class Viewer(
+        @SerialName("isFollower") val isFollower: Boolean?,
+        @SerialName("isFollowing") val isFollowing: Boolean?,
         @SerialName("unreadNotificationCount") val unreadNotificationCount: Int?,
         @SerialName("options") override val options: UserOptionsModel.Viewer?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
