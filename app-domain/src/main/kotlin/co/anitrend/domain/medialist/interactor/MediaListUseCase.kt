@@ -24,6 +24,13 @@ import co.anitrend.domain.medialist.repository.IMediaListRepository
 
 sealed class MediaListUseCase : IUseCase {
 
+    abstract class Sync<State: UiState<*>>(
+        protected val repository: IMediaListRepository.Sync<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.Collection): State =
+            repository.sync(param)
+    }
+
     abstract class GetEntry<State: UiState<*>>(
         protected val repository: IMediaListRepository.Entry<State>
     ) : MediaListUseCase() {

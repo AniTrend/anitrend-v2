@@ -22,6 +22,10 @@ import co.anitrend.domain.medialist.model.MediaListParam
 
 interface IMediaListRepository {
 
+    interface Sync<State: UiState<*>> : IMediaListRepository {
+        fun sync(param: MediaListParam.Collection): State
+    }
+
     interface Entry<State: UiState<*>> : IMediaListRepository {
         fun getEntry(param: MediaListParam.Entry): State
     }
