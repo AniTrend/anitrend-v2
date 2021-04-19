@@ -66,7 +66,8 @@ private val presenterModule = module {
                 settings = get(),
                 clientId = getProperty("aniListClientId"),
                 customTabs = get<CustomTabsIntent.Builder>().build(),
-                shortcutManager = get()
+                shortcutManager = get(),
+                authenticationHelper = get()
             )
         }
     }

@@ -28,12 +28,15 @@ import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.model.Authentication
-import co.anitrend.core.android.shortcut.contract.IShortcutController
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
+import co.anitrend.core.extensions.onAuthenticated
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.auth.helper.AuthenticationType
 import co.anitrend.data.auth.helper.authenticationUri
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
+import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.UserTaskRouter
 import timber.log.Timber
 
@@ -42,13 +45,16 @@ class AuthPresenter(
     settings: Settings,
     private val clientId: String,
     private val customTabs: CustomTabsIntent,
-    private val shortcutManager: IShortcutController
+    private val shortcutManager: IShortcutController,
+    private val authenticationHelper: IAuthenticationHelper
 ) : CorePresenter(context, settings) {
 
     fun useAnonymousAccount(activity: FragmentActivity) {
+        MediaListTaskRouter.forAnimeScheduler().cancel(context)
+        MediaListTaskRouter.forMangaScheduler().cancel(context)
         UserTaskRouter.forAccountSyncScheduler().cancel(context)
         UserTaskRouter.forStatisticSyncScheduler().cancel(context)
-        settings.invalidateAuthenticationSettings()
+        authenticationHelper.invalidateAuthenticationState()
         activity.finish()
     }
 
@@ -89,18 +95,27 @@ class AuthPresenter(
                     )
                 )
             is Authentication.Success -> {
-                UserTaskRouter.forAccountSyncScheduler().schedule(context)
-                UserTaskRouter.forStatisticSyncScheduler().schedule(context)
-                shortcutManager.createShortcuts(
-                    Shortcut.AnimeList(),
-                    Shortcut.MangaList(),
-                    Shortcut.Notification(),
-                    Shortcut.Profile()
-                )
+                runCatching {
+                    shortcutManager.createShortcuts(
+                        Shortcut.AnimeList(),
+                        Shortcut.MangaList(),
+                        Shortcut.Notification(),
+                        Shortcut.Profile()
+                    )
+                }.onFailure { cause: Throwable ->
+                    Timber.w(cause)
+                }
             }
             else -> {
                 /** ignored */
             }
         }
+    }
+
+    /**
+     * Starts tasks that rely on a valid authentication state
+     */
+    fun scheduleAuthenticationBasedTasks() {
+        context.onAuthenticated()
     }
 }

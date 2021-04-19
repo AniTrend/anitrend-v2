@@ -99,9 +99,13 @@ class AuthContent(
         viewModelState().loadState.observe(viewLifecycleOwner) {
             requireBinding().stateLayout.loadStateFlow.value = it
         }
-        viewModelState().model.observe(viewLifecycleOwner) {
-            if (it != null)
+        viewModelState().model.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                presenter.scheduleAuthenticationBasedTasks()
                 activity?.finish()
+            } else {
+                // TODO: Inform the user auth was successful but account could not be fetched
+            }
         }
     }
 
