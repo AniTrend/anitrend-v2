@@ -38,9 +38,12 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.logger.GraphLogger
 import co.anitrend.data.android.logger.OkHttpLogger
 import co.anitrend.data.auth.helper.AuthenticationHelper
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.core.api.factory.GraphApiFactory
+import co.anitrend.data.core.device.DeviceInfo
+import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.customlist.koin.customListModules
 import co.anitrend.data.customscore.koin.customScoreModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
@@ -73,6 +76,7 @@ import kotlinx.serialization.modules.polymorphic
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -87,10 +91,16 @@ private val coreModule = module {
     single {
         GraphApiFactory()
     }
-    factory {
+    single<IDeviceInfo> {
+        DeviceInfo(
+            context = androidContext()
+        )
+    } bind DeviceInfo::class
+    factory<IAuthenticationHelper> {
         AuthenticationHelper(
             settings = get(),
-            localSource = store().authDao()
+            localSource = store().authDao(),
+            authSource = get()
         )
     }
     factory<IClearDataHelper> {

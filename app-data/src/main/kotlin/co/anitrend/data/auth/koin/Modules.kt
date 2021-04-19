@@ -42,6 +42,7 @@ private val sourceModule = module {
             converter = get(),
             userLocalSource = store().userDao(),
             mediaListLocalSource = store().mediaListDao(),
+            cacheLocalSource = store().cacheDao(),
             dispatcher = get()
         )
     }
