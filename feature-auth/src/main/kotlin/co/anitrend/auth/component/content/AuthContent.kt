@@ -30,6 +30,7 @@ import co.anitrend.auth.presenter.AuthPresenter
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
@@ -114,7 +115,9 @@ class AuthContent(
         binding = AuthContentBinding.bind(view)
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
         requireBinding().anonymousControls.anonymousAccount.setOnClickListener {
-            presenter.useAnonymousAccount(requireActivity())
+            lifecycleScope.launch {
+                presenter.useAnonymousAccount(requireActivity())
+            }
         }
         requireBinding().authorizationControls.authorizationIssues.setOnClickListener {
             presenter.authorizationIssues(requireActivity())

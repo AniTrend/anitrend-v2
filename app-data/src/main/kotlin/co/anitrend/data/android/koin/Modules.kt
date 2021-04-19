@@ -88,19 +88,21 @@ private val coreModule = module {
             applicationContext = androidContext()
         )
     } binds IAniTrendStore.BINDINGS
-    single {
-        GraphApiFactory()
-    }
     single<IDeviceInfo> {
         DeviceInfo(
             context = androidContext()
         )
     } bind DeviceInfo::class
+    single {
+        GraphApiFactory()
+    }
     factory<IAuthenticationHelper> {
         AuthenticationHelper(
-            settings = get(),
+            authSettings = get(),
+            userSettings = get(),
             localSource = store().authDao(),
-            authSource = get()
+            mediaListLocalSource = store().mediaListDao(),
+            cacheLocalSource = store().cacheDao()
         )
     }
     factory<IClearDataHelper> {

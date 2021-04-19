@@ -37,12 +37,10 @@ private val sourceModule = module {
             controller = graphQLController(
                 mapper = get<AuthMapper>()
             ),
-            userSettings = get(),
             settings = get(),
             converter = get(),
             userLocalSource = store().userDao(),
-            mediaListLocalSource = store().mediaListDao(),
-            cacheLocalSource = store().cacheDao(),
+            authenticationHelper = get(),
             dispatcher = get()
         )
     }

@@ -18,6 +18,7 @@
 package co.anitrend.data.core.api.interceptor
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
+import kotlinx.coroutines.runBlocking
 import okhttp3.*
 
 /**
@@ -45,7 +46,9 @@ internal class GraphAuthenticator(
                 /**
                  * TODO: Track the number of failed requests, given that the auth header exists and logout the user
                  */
-                authenticationHelper.invalidateAuthenticationState()
+                runBlocking {
+                    authenticationHelper.invalidateAuthenticationState()
+                }
             }
         }
         return requestBuilder.build()
