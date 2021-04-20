@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.controller
+package co.anitrend.core.android.controller.power
 
 import android.content.Context
 import android.content.IntentFilter
@@ -23,10 +23,9 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
-import co.anitrend.core.android.controller.contract.IPowerController
-import co.anitrend.core.android.controller.contract.PowerSaverState
+import co.anitrend.core.android.controller.power.contract.IPowerController
+import co.anitrend.core.android.controller.power.contract.PowerSaverState
 import co.anitrend.core.android.flowOfBroadcast
-import co.anitrend.data.settings.connectivity.IConnectivitySettings
 import co.anitrend.data.settings.power.IPowerSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -41,7 +40,7 @@ internal class AndroidPowerController(
     private val powerManager: PowerManager?,
     private val connectivityManager: ConnectivityManager?,
     private val connectivitySettings: co.anitrend.data.settings.connectivity.IConnectivitySettings,
-    private val powerSettings: co.anitrend.data.settings.power.IPowerSettings,
+    private val powerSettings: IPowerSettings,
 ) : IPowerController {
 
     override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> {

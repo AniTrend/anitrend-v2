@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.controller.contract
+package co.anitrend.core.android.controller.power.contract
 
 import kotlinx.coroutines.flow.Flow
 
