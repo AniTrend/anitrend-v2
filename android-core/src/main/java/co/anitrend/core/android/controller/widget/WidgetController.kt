@@ -15,12 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.widget.contract
+package co.anitrend.core.android.controller.widget
+
+import co.anitrend.arch.extension.lifecycle.SupportLifecycle
+import co.anitrend.core.android.controller.widget.contract.IWidgetController
 
 /**
- * Widget controller contract
+ * Abstract contract for widget controllers, the sole responsibility of controller
+ * is to delegate view logic outside of the UI driver (e.g. Activity, Fragment, View)
  */
-interface IWidgetController {
+abstract class WidgetController : IWidgetController, SupportLifecycle {
 
     /**
      * This is called when the view is attached to a window. At this point it
@@ -28,7 +32,9 @@ interface IWidgetController {
      *
      * @see android.view.View.onDetachedFromWindow
      */
-    fun onAttached()
+    override fun onAttached() {
+        // Optional use-case
+    }
 
     /**
      * This is called when the view is detached from a window. At this point it
@@ -36,5 +42,7 @@ interface IWidgetController {
      *
      * @see android.view.View.onAttachedToWindow
      */
-    fun onDetached()
+    override fun onDetached() {
+        // Optional use-case
+    }
 }

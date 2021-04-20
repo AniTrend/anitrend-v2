@@ -17,7 +17,7 @@
 
 package co.anitrend.common.episode.ui.widget.summary.controller
 
-import co.anitrend.core.android.widget.WidgetController
+import co.anitrend.core.android.controller.widget.WidgetController
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.episode.entity.Episode
 
