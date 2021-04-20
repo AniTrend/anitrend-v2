@@ -25,10 +25,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/secondaryLightColor</item>
 
+        <item name="popupMenuStyle">@style/PopupMenu</item>
         <item name="bottomSheetStyle">@style/BottomSheetModal</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
+        <!--<item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>-->
 
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
-        
         <!-- ShapeAppearances -->
         <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
         <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>
