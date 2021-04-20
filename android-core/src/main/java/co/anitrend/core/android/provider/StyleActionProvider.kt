@@ -41,28 +41,24 @@ import timber.log.Timber
 
 class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
 
-    private val actionImageView by lazy(UNSAFE) {
-        AppCompatImageView(context).apply {
-            background = context.getDrawableAttr(
-                R.attr.selectableItemBackgroundBorderless
-            )
-            isClickable = true
-            isFocusable = true
-            setPadding(2.dp)
-            setOnClickListener {
-                onActionClicked()
-            }
+    private val actionImageView = AppCompatImageView(context).apply {
+        background = context.getDrawableAttr(
+            R.attr.selectableItemBackgroundBorderless
+        )
+        isClickable = true
+        isFocusable = true
+        setPadding(2.dp)
+        setOnClickListener {
+            onActionClicked()
         }
     }
 
-    private val container by lazy(UNSAFE) {
-        FrameLayout(context).apply {
-            layoutParams = FrameLayout.LayoutParams(
-                ViewGroup.MarginLayoutParams.WRAP_CONTENT,
-                ViewGroup.MarginLayoutParams.WRAP_CONTENT
-            )
-            setPadding(10.dp)
-        }
+    private val container = FrameLayout(context).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT,
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT
+        )
+        setPadding(10.dp)
     }
 
     private val settings by lazy(UNSAFE) {

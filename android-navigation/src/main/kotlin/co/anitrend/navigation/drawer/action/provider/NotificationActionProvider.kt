@@ -33,35 +33,34 @@ import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.NotificationRouter
-import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.R
-import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 class NotificationActionProvider(context: Context) : AbstractActionProvider(context) {
 
-    private val actionImageView by lazy(UNSAFE) {
-        AppCompatImageView(context).apply {
-            background = context.getDrawableAttr(
-                R.attr.selectableItemBackgroundBorderless
+    private val notificationBadge = BadgeDrawable.create(context).apply {
+        horizontalOffset = (-16).dp
+        verticalOffset = 14.dp
+    }
+
+    private val actionImageView = AppCompatImageView(context).apply {
+        background = context.getDrawableAttr(
+            R.attr.selectableItemBackgroundBorderless
+        )
+        isClickable = true
+        isFocusable = true
+        setPadding(2.dp)
+        setImageDrawable(
+            context.getCompatDrawable(
+                R.drawable.ic_notifications_24
             )
-            isClickable = true
-            isFocusable = true
-            setPadding(
-                context.resources.getDimensionPixelSize(
-                    R.dimen.sm_margin
-                )
-            )
-            setImageDrawable(
-                context.getCompatDrawable(
-                    R.drawable.ic_notifications_24
-                )
-            )
-            setOnClickListener {
-                NotificationRouter.startActivity(it.context)
-            }
+        )
+        setOnClickListener {
+            NotificationRouter.startActivity(it.context)
         }
     }
 
@@ -97,6 +96,7 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
      *
      * @param forItem Optional menu item to create view for
      */
+    @com.google.android.material.badge.ExperimentalBadgeUtils
     override fun createWidget(forItem: MenuItem?): View {
         setUpVisibility(forItem)
         if (context is LifecycleOwner) {
@@ -108,6 +108,9 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
                 }
             }
         } else Timber.e("$context is not a lifecycle owner")
+        BadgeUtils.attachBadgeDrawable(
+            notificationBadge, actionImageView, container
+        )
         return container
     }
 }
