@@ -323,7 +323,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-beta41"
+            private const val version = "1.3.0-rc02"
             const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
             const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
             const val core = "com.github.anitrend.support-arch:support-core:${version}"
@@ -550,7 +550,7 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "1.4.20"
+            private const val version = "1.4.30"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 

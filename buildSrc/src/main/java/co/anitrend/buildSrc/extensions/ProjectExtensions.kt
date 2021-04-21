@@ -20,6 +20,7 @@ package co.anitrend.buildSrc.extensions
 import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.module.Modules
 import com.android.build.gradle.*
+import com.diffplug.gradle.spotless.SpotlessExtension
 import com.android.build.gradle.api.AndroidBasePlugin
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -112,6 +113,9 @@ internal fun Project.kotlinTestsRegistry() =
 
 internal fun Project.publishingExtension() =
     extensions.getByType<PublishingExtension>()
+
+internal fun Project.spotlessExtension() =
+    extensions.getByType<SpotlessExtension>()
 
 internal fun Project.containsAndroidPlugin(): Boolean {
     return project.plugins.toList().any { plugin ->

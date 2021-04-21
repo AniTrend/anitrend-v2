@@ -31,6 +31,7 @@ private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer)
 
 private fun addKotlinAndroidPlugin(pluginContainer: PluginContainer) {
     pluginContainer.apply("kotlin-android")
+    pluginContainer.apply("com.diffplug.spotless")
 }
 
 private fun addAnnotationProcessor(project: Project, pluginContainer: PluginContainer) {
