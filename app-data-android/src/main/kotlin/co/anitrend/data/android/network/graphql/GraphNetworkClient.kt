@@ -40,13 +40,13 @@ class GraphNetworkClient<R>(
 
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
-        return gson.fromJson(body, object : TypeToken<GraphQLResponse<Any>>(){}.type)
+        return gson.fromJson(body, object : TypeToken<GraphQLResponse<R>>(){}.type)
     }
 
     private fun Response<GraphQLResponse<R>>.responseErrors(): GraphQLResponse<R> {
         runCatching {
             val errorBodyString = errorBody()?.string()
-            getGraphQLError(errorBodyString)
+            getGraphQLError(errorBodyString).copy(data = null)
         }.onSuccess { error ->
             return error
         }.onFailure { exception ->
