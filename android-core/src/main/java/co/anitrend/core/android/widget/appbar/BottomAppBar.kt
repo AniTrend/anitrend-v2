@@ -22,11 +22,10 @@ import android.util.AttributeSet
 import android.view.MenuItem
 import androidx.core.view.iterator
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.core.android.extensions.cascadePopupStyler
+import co.anitrend.core.android.extensions.cascadeMenu
 import com.google.android.material.R
 import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.coroutines.delay
-import me.saket.cascade.CascadePopupMenu
 import me.saket.cascade.overrideAllPopupMenus
 
 class BottomAppBar @JvmOverloads constructor(
@@ -69,8 +68,8 @@ class BottomAppBar @JvmOverloads constructor(
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         hideOnScroll = true
         isHapticFeedbackEnabled = true
-        overrideAllPopupMenus { ctx, anchor ->
-            CascadePopupMenu(ctx, anchor, styler = ctx.cascadePopupStyler())
+        overrideAllPopupMenus { _, anchor ->
+            anchor.cascadeMenu()
         }
         // HideBottomViewOnScrollBehavior
     }

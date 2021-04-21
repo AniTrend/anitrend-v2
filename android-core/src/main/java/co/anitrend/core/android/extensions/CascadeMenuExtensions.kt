@@ -19,9 +19,9 @@ package co.anitrend.core.android.extensions
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.RippleDrawable
+import android.view.Gravity
 import android.view.Menu
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
@@ -84,6 +84,7 @@ fun View.cascadeMenu(): CascadePopupMenu {
     return CascadePopupMenu(
         context = context,
         anchor = this,
+        gravity = Gravity.NO_GRAVITY,
         styler = context.cascadePopupStyler()
     )
 }
@@ -91,17 +92,22 @@ fun View.cascadeMenu(): CascadePopupMenu {
 /**
  * Allows the manipulation of internal menu and returns itself
  *
+ * @param shouldNavigateBack Applies back navigation on any menu items without an intent
  * @param action Manipulator delegate
  */
-fun CascadePopupMenu.onMenu(action: Menu.() -> Unit): CascadePopupMenu {
+fun CascadePopupMenu.onMenu(
+    shouldNavigateBack: Boolean = true,
+    action: Menu.() -> Unit
+): CascadePopupMenu {
     MenuCompat.setGroupDividerEnabled(menu, true)
     menu.action()
-    menu.allChildren.filter { menuItem ->
-        menuItem.intent == null
-    }.forEach { menuItem ->
-        menuItem.setOnMenuItemClickListener {
-            navigateBack()
+    if (shouldNavigateBack)
+        menu.allChildren.filter { menuItem ->
+            menuItem.intent == null
+        }.forEach { menuItem ->
+            menuItem.setOnMenuItemClickListener {
+                navigateBack()
+            }
         }
-    }
     return this
 }
