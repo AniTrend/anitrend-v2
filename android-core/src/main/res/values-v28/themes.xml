@@ -15,20 +15,15 @@
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
 <resources>
-
     <style name="AppTheme" parent="SupportTheme.AppTheme">
         <item name="android:textViewStyle">@style/AppTheme.FontFamily</item>
 
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/secondaryTextColor</item>
 
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-        <item name="bottomSheetStyle">@style/BottomSheetModal</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
-        <!--<item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>-->
-
+        <item name="bottomAppBarStyle">@style/AppTheme.Material.BottomAppBar</item>
+        
         <!-- ShapeAppearances -->
         <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
         <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>

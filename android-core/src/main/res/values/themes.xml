@@ -18,176 +18,22 @@
 
 <resources>
 
-    <style name="PopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@drawable/bottom_dialog_background</item>
-        <item name="android:popupElevation">@dimen/size_4dp</item>
+    <style name="AppTheme" parent="SupportTheme.AppTheme">
+        <item name="android:windowAnimationStyle">@style/SupportTheme.WindowAnimationStyle</item>
+        <item name="android:textViewStyle">@style/AppTheme.FontFamily</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/secondaryLightColor</item>
+
+        <item name="bottomAppBarStyle">@style/AppTheme.Material.BottomAppBar</item>
+        
+        <!-- ShapeAppearances -->
+        <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>
+        <item name="shapeAppearanceLargeComponent">@style/AppTheme.ShapeAppearance.Large.Rounded</item>
     </style>
 
-    <style name="BottomSheetModal" parrent="@style/Widget.MaterialComponents.BottomSheet.Modal">
-        <item name="android:backgroundTint">?colorPrimary</item>
-    </style>
+    <!-- Dark theme will have it's attributes defined in night mode -->
+    <style name="AppTheme.Dark"/>
 
-    <style name="BottomSheetDialog" parrent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <!-- Applyting this as my dialog theme tends to result in a background being applied -->
-        <item name="android:navigationBarColor">?colorPrimary</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="AppTheme.FontFamily" parent="SupportTheme.FontFamily">
-        <item name="android:fontFamily">@font/product_sans_regular</item>
-    </style>
-
-    <style name="AppTheme.ShapeAppearance.Small.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/lg_margin</item>
-    </style>
-
-    <style name="AppTheme.ShapeAppearance.Medium.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/xl_margin</item>
-    </style>
-
-    <style name="AppTheme.ShapeAppearance.Large.Rounded" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/xl_margin</item>
-    </style>
-
-
-    <style name="AppTheme.TextAppearance.Material.TabLayout" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="AppTheme.Material.TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
-        <item name="tabMode">fixed</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabInlineLabel">true</item>
-        <item name="tabIndicatorFullWidth">false</item>
-        <item name="tabIndicatorColor">?colorOnSurface</item>
-        <item name="tabIndicatorHeight">@dimen/size_4dp</item>
-        <item name="tabTextColor">@color/material_tab_text_color</item>
-        <item name="tabIndicator">@drawable/material_tab_indicator</item>
-        <item name="tabMinWidth">@dimen/design_tab_layout_min_width</item>
-        <item name="tabTextAppearance">@style/AppTheme.TextAppearance.Material.TabLayout</item>
-    </style>
-
-    <style name="AppTheme.Material.MaterialCard" parent="Widget.MaterialComponents.CardView">
-        <item name="android:layout_margin">@dimen/lg_margin</item>
-        <item name="cardPreventCornerOverlap">false</item>
-        <item name="cardBackgroundColor">?colorPrimary</item>
-        <item name="cardElevation">@dimen/size_2dp</item>
-        <item name="cardCornerRadius">@dimen/lg_margin</item>
-    </style>
-
-    <style name="AppTheme.Material.MediaCard" parent="Widget.MaterialComponents.CardView">
-        <item name="android:layout_margin">@dimen/lg_margin</item>
-        <item name="android:foreground">?selectableItemBackground</item>
-        <item name="cardPreventCornerOverlap">false</item>
-        <item name="cardBackgroundColor">?colorPrimary</item>
-        <item name="cardElevation">0dp</item>
-        <item name="cardCornerRadius">@dimen/lg_margin</item>
-    </style>
-
-    <style name="AppTheme.Material.UnElevatedButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
-        <item name="android:backgroundTint">?colorAccent</item>
-        <item name="android:textColor">@color/white_1000</item>
-        <item name="android:iconTint">@color/white_1000</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">?colorOnSurface</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="rippleColor">@color/selector_text_button_ripple</item>
-    </style>
-
-    <style name="AppTheme.MediaImage">
-        <item name="android:layout_width">@dimen/series_image_xl</item>
-        <item name="android:layout_height">0dp</item>
-    </style>
-
-    <style name="AppTheme.MediaStatus">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/size_2dp</item>
-    </style>
-
-    <style name="AppTheme.SingleLineText" parent="Widget.MaterialComponents.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="AppTheme.DoubleLineText" parent="Widget.MaterialComponents.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">2</item>
-    </style>
-
-    <style name="AppTheme.Material.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
-        <item name="android:textColor">@color/white_1000</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="chipBackgroundColor">?colorAccent</item>
-    </style>
-
-    <style name="AppTheme.Material.Chip.Choice" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
-        <item name="android:textColor">@color/selector_chip_text_color</item>
-        <item name="checkedIconEnabled">false</item>
-        <item name="checkedIconVisible">false</item>
-        <item name="chipBackgroundColor">@color/selector_chip_background</item>
-        <item name="android:checkable">true</item>
-    </style>
-
-    <style name="AppTheme.Material.TextBody.Primary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?textAppearanceBody1</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.TextBody.Secondary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?textAppearanceBody2</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.TextSubTitle.Primary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?textAppearanceSubtitle1</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.TextSubTitle.Secondary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?textAppearanceSubtitle2</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.TextHeadLine.Primary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?textAppearanceHeadline5</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="AppTheme.Material.TextHeadLine.Secondary" parent="Widget.MaterialComponents.TextView">
-        <item name="android:textAppearance">?textAppearanceHeadline6</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
 </resources>
