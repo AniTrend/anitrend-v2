@@ -40,10 +40,8 @@ allprojects {
 
 plugins.apply("koin")
 
-tasks {
-    val clean by registering(Delete::class) {
-        delete(rootProject.buildDir)
-    }
+tasks.create("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }
 
 tasks.named(
