@@ -31,16 +31,10 @@
         android:layout_height="match_parent"
         app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <co.anitrend.core.android.widget.appbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:hapticFeedbackEnabled="true"
-        android:backgroundTint="@color/primaryColor"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:fabAlignmentMode="center"
-        app:hideOnScroll="true"/>
+        style="@style/AppTheme.Material.BottomAppBar"
+        app:fabAlignmentMode="center"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingShortcutButton"

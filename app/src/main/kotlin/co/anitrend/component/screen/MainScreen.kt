@@ -32,7 +32,8 @@ import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
-import co.anitrend.core.android.setVisibilityForAllItems
+import co.anitrend.core.android.extensions.cascadeMenu
+import co.anitrend.core.android.extensions.onMenu
 import co.anitrend.core.component.screen.AnitrendScreen
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.commit
@@ -49,7 +50,6 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.sorting.Sorting
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -86,14 +86,12 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
 
     private val changeSettingsMenuStateAction by lazy(UNSAFE) {
         ChangeSettingsMenuStateAction { showDrawerMenu ->
-            val menu = requireBinding().bottomAppBar.menu
             lifecycleScope.launch {
                 // Toggle between the current destination's FAB menu and the menu which should
                 // be displayed when the BottomNavigationDrawer is open.
                 navigationDrawer.toggleMenuVisibility(showDrawerMenu)
                 // add a delay to hide specific menu items from this controller
-                delay(128)
-                menu.setVisibilityForAllItems(!showDrawerMenu) {
+                requireBinding().bottomAppBar.toggleVisibility(!showDrawerMenu) {
                     it.itemId == R.id.action_search
                 }
             }
@@ -104,10 +102,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         navigationDrawer.navigationFlow
             .onEach(::onNavigationItemSelected)
             .catch { throwable: Throwable ->
-                Timber.e(
-                    throwable,
-                    "observeNavigationDrawer() -> Navigation drawer flow threw an uncaught exception"
-                )
+                Timber.e(throwable, "Navigation drawer flow threw an uncaught exception")
             }.collect()
     }
 
@@ -127,6 +122,15 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         }
         requireBinding().mainCoordinator.setOnClickListener {
             navigationDrawer.dismiss()
+        }
+        requireBinding().floatingShortcutButton.setOnClickListener { fab ->
+            fab.cascadeMenu().onMenu {
+                add("Account").setIcon(R.drawable.ic_account_add_24dp)
+                addSubMenu("Extras").also { subMenu ->
+                    subMenu.add("Discord").setIcon(R.drawable.ic_discord_24dp)
+                    subMenu.add("Support").setIcon(R.drawable.ic_patreon_24dp)
+                }
+            }.show()
         }
         navigateToUsing(viewModel.state.selectedItem)
     }
@@ -260,6 +264,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     override fun onDestroy() {
         binding?.floatingShortcutButton?.setOnClickListener(null)
         binding?.bottomAppBar?.setNavigationOnClickListener(null)
+        binding?.mainCoordinator?.setOnClickListener(null)
         super.onDestroy()
     }
 
@@ -283,7 +288,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 )
             }
             R.id.navigation_discover -> {
-                viewModel.state.selectedTitle = R.string.navigation_discord
+                viewModel.state.selectedTitle = R.string.navigation_discover
                 FragmentItem(
                     fragment = MediaDiscoverRouter.forFragment(),
                     parameter = MediaDiscoverRouter.Param(

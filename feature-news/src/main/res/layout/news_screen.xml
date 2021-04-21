@@ -26,14 +26,9 @@
 
     <include android:id="@+id/newsContent" layout="@layout/news_content" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <co.anitrend.core.android.widget.appbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:hapticFeedbackEnabled="true"
-        android:backgroundTint="@color/primaryColor"
-        app:hideOnScroll="true"
+        style="@style/AppTheme.Material.BottomAppBar"
         app:fabAlignmentMode="end" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
