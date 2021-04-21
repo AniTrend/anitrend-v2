@@ -23,9 +23,9 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
+import co.anitrend.arch.extension.ext.flowOfBroadcast
 import co.anitrend.core.android.controller.power.contract.IPowerController
 import co.anitrend.core.android.controller.power.contract.PowerSaverState
-import co.anitrend.core.android.flowOfBroadcast
 import co.anitrend.data.settings.power.IPowerSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

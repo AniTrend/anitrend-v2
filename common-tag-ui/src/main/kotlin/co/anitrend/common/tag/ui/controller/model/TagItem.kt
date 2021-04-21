@@ -23,13 +23,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.core.text.bold
+import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.tag.R
 import co.anitrend.common.tag.databinding.TagItemBinding
 import co.anitrend.core.android.extensions.asChoice
-import co.anitrend.core.android.getCompatDrawable
 import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR

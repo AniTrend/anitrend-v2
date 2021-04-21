@@ -22,12 +22,12 @@ import android.text.TextUtils
 import android.text.util.Linkify
 import android.util.AttributeSet
 import androidx.core.widget.TextViewCompat
+import co.anitrend.arch.extension.ext.themeStyle
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.markdown.R
 import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.android.koinOf
-import co.anitrend.core.android.startViewIntent
-import co.anitrend.core.android.themeStyle
+import co.anitrend.core.android.extensions.startViewIntent
 import co.anitrend.domain.common.entity.contract.IEntityName
 import co.anitrend.domain.common.entity.contract.ISynopsis
 import com.google.android.material.textview.MaterialTextView

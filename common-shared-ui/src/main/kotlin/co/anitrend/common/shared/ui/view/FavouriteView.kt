@@ -28,10 +28,10 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.widget.TextViewCompat
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
+import co.anitrend.arch.extension.ext.themeStyle
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.shared.R
 import co.anitrend.core.android.extensions.toHumanReadableQuantity
-import co.anitrend.core.android.themeStyle
 import co.anitrend.domain.common.entity.contract.IFavourable
 import com.google.android.material.textview.MaterialTextView
 
@@ -83,7 +83,10 @@ class FavouriteView @JvmOverloads constructor(
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         layoutParams = LayoutParams(context, attrs)
-        background = context.getCompatDrawable(R.drawable.widget_background, R.color.bubble_color)
+        background = context.getCompatDrawable(
+            R.drawable.widget_background,
+            context.getCompatColor(R.color.bubble_color)
+        )
         val padding = context.resources.getDimensionPixelSize(R.dimen.md_margin)
         setPadding(padding, padding, padding, padding)
         addChildrenItems()

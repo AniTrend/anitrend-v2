@@ -27,15 +27,11 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.extension.ext.visible
+import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.extensions.format
-import co.anitrend.core.android.updateMargins
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.extension.isValid
 import co.anitrend.domain.media.entity.Media
@@ -96,7 +92,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    private fun setFavouriteStatus(isFavourite: Boolean, tintColor: Int) {
+    private fun setFavouriteStatus(isFavourite: Boolean, @ColorRes tintColor: Int) {
         mediaFavouriteIndicator.setImageDrawable(
             context.getCompatDrawable(R.drawable.ic_favourite, tintColor)
         )
@@ -106,7 +102,10 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             mediaFavouriteIndicator.gone()
     }
 
-    private fun IMedia.setMediaRatingDynamically(settings: IUserSettings, tintColor: Int) {
+    private fun IMedia.setMediaRatingDynamically(
+        settings: IUserSettings,
+        @ColorRes tintColor: Int
+    ) {
         mediaAverageScore.setTextColor(context.getCompatColor(tintColor))
         val scoreFormat: ScoreFormat = settings.scoreFormat.value
         val mediaScoreDefault = (meanScore.toFloat() * 5 / 100f).toString()
@@ -164,7 +163,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         }
     }
 
-    private fun setListStatus(media: IMedia, tintColor: Int) {
+    private fun setListStatus(media: IMedia, @ColorRes tintColor: Int) {
         if (!media.mediaList.isValid()) {
            mediaListNotesIndicator.gone()
            mediaListStatusIndicator.gone()
