@@ -151,7 +151,7 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
             }
         }
 
-        private fun mediaListSelection() {
+        private fun mediaListSelection(filter: AiringParam.Find) {
             if (authentication.isAuthenticated.value) {
                 val userId = authentication.authenticatedUserId.value
                 requireBuilder() from {
@@ -200,7 +200,8 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
             mediaSelection(filter)
             episodeSelection(filter)
             airingSelection(filter)
-            mediaListSelection()
+            // query on airing schedules does not have a `onList`
+            // mediaListSelection(filter)
         }
     }
 }
