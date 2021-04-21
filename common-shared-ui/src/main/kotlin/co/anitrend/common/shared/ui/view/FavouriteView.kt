@@ -18,6 +18,7 @@
 package co.anitrend.common.shared.ui.view
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -29,8 +30,10 @@ import androidx.core.widget.TextViewCompat
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.themeStyle
+import co.anitrend.arch.extension.ext.updateMargins
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.shared.R
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.extensions.toHumanReadableQuantity
 import co.anitrend.domain.common.entity.contract.IFavourable
 import com.google.android.material.textview.MaterialTextView
@@ -40,24 +43,21 @@ class FavouriteView @JvmOverloads constructor(
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
 
     private val favouriteImageView = AppCompatImageView(context).apply {
-        val size = context.resources.getDimensionPixelSize(R.dimen.size_16dp)
-        layoutParams = ViewGroup.LayoutParams(size, size)
-        gravity = Gravity.CENTER_VERTICAL
-    }
-
-    private val space = Space(context).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            context.resources.getDimensionPixelSize(R.dimen.md_margin),
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
+            param.gravity = Gravity.CENTER_VERTICAL
+        }
     }
 
     private val favouriteTextView = MaterialTextView(context).apply {
-        val textAppearance = context.themeStyle(R.attr.textAppearanceHeadline6)
-        TextViewCompat.setTextAppearance(this, textAppearance)
+        layoutParams = LayoutParams(
+            LayoutParams.WRAP_CONTENT,
+            LayoutParams.WRAP_CONTENT
+        ).also { param ->
+            param.gravity = Gravity.CENTER_VERTICAL
+        }
         setTextColor(context.getCompatColor(R.color.white_1000))
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
-        gravity = Gravity.CENTER_VERTICAL
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+        setTypeface(typeface, Typeface.BOLD)
     }
 
     init { onInit(context, attrs, defStyleAttr) }
@@ -75,25 +75,21 @@ class FavouriteView @JvmOverloads constructor(
         )
     }
 
-    private fun addChildrenItems() {
-        addView(favouriteImageView)
-        addView(space)
-        addView(favouriteTextView)
-    }
-
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        layoutParams = LayoutParams(context, attrs)
+        addView(favouriteImageView)
+        addView(favouriteTextView)
+
         background = context.getCompatDrawable(
             R.drawable.widget_background,
             R.color.bubble_color
         )
-        val padding = context.resources.getDimensionPixelSize(R.dimen.md_margin)
-        setPadding(padding, padding, padding, padding)
-        addChildrenItems()
+
+        favouriteTextView.updateMargins(start = 8.dp)
+
         if (isInEditMode)
             setFavouriteState(
                 object : IFavourable {
-                    override val favourites: Int = 1650
+                    override val favourites: Int = 11650
                     override val isFavourite: Boolean = false
                     override val isFavouriteBlocked: Boolean = false
                 }
