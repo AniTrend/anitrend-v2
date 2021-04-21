@@ -90,8 +90,11 @@ abstract class AbstractLocalSource<T> {
      * @param attribute item/s to insert
      */
     open suspend fun upsert(attribute: List<T>) {
-        insert(attribute).withIndex()
+        val pendingUpdates = insert(attribute).withIndex()
             .filter { it.value == -1L }
-            .forEach { update(attribute[it.index]) }
+            .map { attribute[it.index] }
+
+        if (pendingUpdates.isNotEmpty())
+            update(pendingUpdates)
     }
 }
