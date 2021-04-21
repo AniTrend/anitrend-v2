@@ -27,7 +27,7 @@ import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
-import co.anitrend.core.android.components.shape.SemiCircleEdgeCutoutTreatment
+import co.anitrend.core.android.components.edgetreatment.SemiCircleCutout
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.model.toRequestImage
@@ -69,7 +69,7 @@ internal class DrawerPresenter(
             initializeElevationOverlay(context)
             shapeAppearanceModel = shapeAppearanceModel.toBuilder()
                 .setTopEdge(
-                    SemiCircleEdgeCutoutTreatment(
+                    SemiCircleCutout(
                         8f.dp,
                         24f.dp,
                         0f.dp,

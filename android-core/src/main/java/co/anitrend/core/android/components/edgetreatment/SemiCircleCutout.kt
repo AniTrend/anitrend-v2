@@ -15,17 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.components.shape
+package co.anitrend.core.android.components.edgetreatment
 
 import com.google.android.material.shape.EdgeTreatment
 import com.google.android.material.shape.ShapePath
 import kotlin.math.atan
 import kotlin.math.sqrt
-
-private const val ARC_QUARTER = 90
-private const val ARC_HALF = 180
-private const val ANGLE_UP = 270
-private const val ANGLE_LEFT = 180
 
 /**
  * An edge treatment which draws a semicircle cutout at any point along the edge.
@@ -40,7 +35,7 @@ private const val ANGLE_LEFT = 180
  * @param cutoutHorizontalOffset The horizontal offset, from the middle of the edge, where the
  *      cutout should be drawn.
  */
-class SemiCircleEdgeCutoutTreatment(
+class SemiCircleCutout(
     private var cutoutMargin: Float = 0F,
     private var cutoutRoundedCornerRadius: Float = 0F,
     private var cutoutVerticalOffset: Float = 0F,
@@ -155,5 +150,12 @@ class SemiCircleEdgeCutoutTreatment(
 
         // Draw the ending line after the right rounded corner.
         shapePath.lineTo(length, 0f)
+    }
+
+    private companion object {
+        const val ARC_QUARTER = 90
+        const val ARC_HALF = 180
+        const val ANGLE_UP = 270
+        const val ANGLE_LEFT = 180
     }
 }
