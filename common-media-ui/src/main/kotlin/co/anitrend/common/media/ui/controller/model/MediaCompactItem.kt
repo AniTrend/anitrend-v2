@@ -67,7 +67,7 @@ internal class MediaCompactItem(
         disposable = requireBinding().mediaImage.using(
             MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
         )
-        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
+        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings, R.color.colorBackground)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)

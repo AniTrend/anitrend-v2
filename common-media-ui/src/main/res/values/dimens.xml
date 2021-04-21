@@ -17,6 +17,5 @@
   -->
 
 <resources>
-    <item name="media_rating_widget_text_size" type="dimen">10sp</item>
-    <item name="media_rating_widget_icon_size" type="dimen">14dp</item>
+    <item name="media_image_comfortable" type="dimen">130dp</item>
 </resources>

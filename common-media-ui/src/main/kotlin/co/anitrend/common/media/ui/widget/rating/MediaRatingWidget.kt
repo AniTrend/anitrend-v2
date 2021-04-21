@@ -27,6 +27,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.updatePadding
 import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
@@ -52,39 +53,40 @@ internal class MediaRatingWidget @JvmOverloads constructor(
 ), CustomView {
 
     private val mediaAverageScore = MaterialTextView(context).apply {
-        layoutParams = MarginLayoutParams(
+        layoutParams = LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        ).also { param ->
+            param.gravity = Gravity.CENTER_VERTICAL
+        }
         setTextColor(context.getCompatColor(R.color.white_1000))
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         setTypeface(typeface, Typeface.BOLD)
-        gravity = Gravity.CENTER_VERTICAL
         text = "83"
     }
     
     private val mediaFavouriteIndicator = AppCompatImageView(context).apply {
-        val size = resources.getDimensionPixelSize(R.dimen.media_rating_widget_icon_size)
-        layoutParams = MarginLayoutParams(size, size)
-        gravity = Gravity.CENTER_VERTICAL
+        layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
+            param.gravity = Gravity.CENTER_VERTICAL
+        }
         setImageDrawable(
             this.context.getCompatDrawable(R.drawable.ic_favourite)
         )
     }
     
     private val mediaListStatusIndicator = AppCompatImageView(context).apply {
-        val size = resources.getDimensionPixelSize(R.dimen.media_rating_widget_icon_size)
-        layoutParams = MarginLayoutParams(size, size)
-        gravity = Gravity.CENTER_VERTICAL
+        layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
+            param.gravity = Gravity.CENTER_VERTICAL
+        }
         setImageDrawable(
             this.context.getCompatDrawable(R.drawable.ic_paused)
         )
     }
     
     private val mediaListNotesIndicator = AppCompatImageView(context).apply {
-        val size = resources.getDimensionPixelSize(R.dimen.media_rating_widget_icon_size)
-        layoutParams = MarginLayoutParams(size, size)
-        gravity = Gravity.CENTER_VERTICAL
+        layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
+            param.gravity = Gravity.CENTER_VERTICAL
+        }
         setImageDrawable(
             this.context.getCompatDrawable(R.drawable.ic_note)
         )
@@ -218,7 +220,8 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         media.setMediaRatingDynamically(settings, tint)
         val background = if (tintColor == null)
             R.drawable.bubble_background
-        else R.drawable.widget_background
+        else
+            R.drawable.widget_background
         setBackground(context.getCompatDrawable(background))
     }
 

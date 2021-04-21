@@ -86,22 +86,27 @@
                 style="@style/AppTheme.SingleLineText"
                 />
 
-            <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
-                android:id="@+id/mediaRatingWidget"
-                android:layout_width="wrap_content"
+
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_4dp"
-                />
+                android:layout_margin="@dimen/md_margin">
+
+                <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
+                    android:id="@+id/mediaRatingWidget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"/>
+
+                <co.anitrend.common.media.ui.widget.progress.MediaProgressWidget
+                    android:id="@+id/mediaProgressWidget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"/>
+            </FrameLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <co.anitrend.common.shared.ui.view.FavouriteView
-        android:id="@+id/mediaFavourites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/md_margin"
-        />
 
 </com.google.android.material.card.MaterialCardView>
