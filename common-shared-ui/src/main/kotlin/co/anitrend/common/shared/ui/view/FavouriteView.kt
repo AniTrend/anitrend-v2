@@ -85,7 +85,7 @@ class FavouriteView @JvmOverloads constructor(
         layoutParams = LayoutParams(context, attrs)
         background = context.getCompatDrawable(
             R.drawable.widget_background,
-            context.getCompatColor(R.color.bubble_color)
+            R.color.bubble_color
         )
         val padding = context.resources.getDimensionPixelSize(R.dimen.md_margin)
         setPadding(padding, padding, padding, padding)
