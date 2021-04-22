@@ -19,11 +19,14 @@ package co.anitrend.episode.component.sheet
 
 import android.os.Bundle
 import android.text.util.Linkify
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
+import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.core.extensions.stackTrace
@@ -57,6 +60,18 @@ class EpisodeSheet(
                 dismiss()
             }
         }
+
+    private val shapeTransformationAction = object : OnSlideAction {
+        /**
+         * Called when the bottom sheet's [slideOffset] is changed. [slideOffset] will always be a
+         * value between -1.0 and 1.0. -1.0 is equal to [BottomSheetBehavior.STATE_HIDDEN], 0.0
+         * is equal to [BottomSheetBehavior.STATE_HALF_EXPANDED] and 1.0 is equal to
+         * [BottomSheetBehavior.STATE_EXPANDED].
+         */
+        override fun onSlide(sheet: View, slideOffset: Float) {
+
+        }
+    }
 
     /**
      * Invoke view model observer to watch for changes, this will be called
@@ -92,6 +107,40 @@ class EpisodeSheet(
     }
 
     /**
+     * Called to have the fragment instantiate its user interface view.
+     * This is optional, and non-graphical fragments can return null. This will be called between
+     * [onCreate] and [onViewCreated].
+     *
+     * A default View can be returned by calling [Fragment] in your
+     * constructor. Otherwise, this method returns null.
+     *
+     * It is recommended to **only** inflate the layout in this method and move
+     * logic that operates on the returned View to [onViewCreated].
+     *
+     * If you return a View from here, you will later be called in
+     * [onDestroyView] when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        binding = EpisodeSheetBinding.bind(requireNotNull(view))
+        return view
+    }
+
+    /**
      * Called immediately after [onCreateView] has returned, but before any saved state has been
      * restored in to the view. This gives subclasses a chance to initialize themselves once
      * they know their view hierarchy has been completely created.
@@ -104,7 +153,6 @@ class EpisodeSheet(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = EpisodeSheetBinding.bind(view)
         BetterLinkMovementMethod.linkify(Linkify.ALL, activity)
             .setOnLinkClickListener { target, url ->
                 runCatching {
@@ -131,6 +179,36 @@ class EpisodeSheet(
     }
 
     /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
+
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     * This is generally
+     * tied to [Activity.onResume] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onResume() {
+        super.onResume()
+        bottomSheetCallback.addOnSlideAction(
+            shapeTransformationAction
+        )
+    }
+
+    /**
+     * Called when the Fragment is no longer resumed.  This is generally
+     * tied to [Activity.onPause] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onPause() {
+        bottomSheetCallback.removeOnSlideAction(
+            shapeTransformationAction
+        )
+        super.onPause()
+    }
+
+    /**
      * Called when the fragment is no longer in use. This is called
      * after [onStop] and before [onDetach].
      */
@@ -144,9 +222,4 @@ class EpisodeSheet(
         disposable = null
         super.onDestroy()
     }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState() = viewModel.state
 }
