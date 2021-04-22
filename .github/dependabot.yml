@@ -1,7 +1,7 @@
 version: 2
 updates:
 - package-ecosystem: gradle
-  directory: "/gradle"
+  directory: "/"
   schedule:
     interval: weekly
     time: "03:00"
@@ -11,4 +11,4 @@ updates:
   reviewers:
   - wax911
   labels:
-  - enhancement
+  - dependencies
