@@ -77,7 +77,7 @@
         <item name="android:textAppearance">?textAppearanceSubtitle2</item>
         <item name="android:backgroundTint">?colorAccent</item>
         <item name="android:textColor">@color/white_1000</item>
-        <item name="android:iconTint" tools:targetApi="o">@color/white_1000</item>
+        <item name="iconTint">@color/white_1000</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
