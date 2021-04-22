@@ -20,6 +20,7 @@ package co.anitrend.data.genre.mapper
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.core.extensions.toHashId
 import co.anitrend.data.genre.converters.GenreModelConverter
 import co.anitrend.data.genre.datasource.local.GenreLocalSource
 import co.anitrend.data.genre.datasource.local.connection.GenreConnectionLocalSource
@@ -70,7 +71,7 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
             override val fromType: (Item) -> GenreConnectionEntity = {
                 GenreConnectionEntity(
                     mediaId = it.mediaId,
-                    genre = it.genre
+                    genreId = it.genreId
                 )
             }
 
@@ -84,7 +85,7 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
 
         data class Item(
             val mediaId: Long,
-            val genre: String
+            val genreId: Long
         )
 
         companion object {
@@ -93,7 +94,7 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
                 source.genres?.map { genre ->
                     Item(
                         mediaId = source.id,
-                        genre = genre
+                        genreId = genre.toHashId()
                     )
                 }.orEmpty()
 

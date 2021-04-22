@@ -26,7 +26,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     primaryKeys = ["id"],
     indices = [
         Index(
-            value = ["genre"],
+            value = ["genre", "emoji"],
             unique = true
         )
     ]
@@ -43,7 +43,7 @@ internal data class GenreEntity(
             select g.*, c.media_id 
             from genre g
             inner join genre_connection c
-            on g.genre = c.genre
+            on g.id = c.genre_id
         """,
         viewName = "view_genre_extended"
     )

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0e3f9c4e0d697b61234c4252394f0b5f",
+    "identityHash": "8b857b1ec791dea27ddd982682171ba4",
     "entities": [
       {
         "tableName": "cache_log",
@@ -324,19 +324,20 @@
         },
         "indices": [
           {
-            "name": "index_genre_genre",
+            "name": "index_genre_genre_emoji",
             "unique": true,
             "columnNames": [
-              "genre"
+              "genre",
+              "emoji"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_genre` ON `${TABLE_NAME}` (`genre`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_genre_emoji` ON `${TABLE_NAME}` (`genre`, `emoji`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "genre_connection",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`genre`) REFERENCES `genre`(`genre`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`genre_id`) REFERENCES `genre`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
         "fields": [
           {
             "fieldPath": "mediaId",
@@ -345,9 +346,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "genre",
-            "columnName": "genre",
-            "affinity": "TEXT",
+            "fieldPath": "genreId",
+            "columnName": "genre_id",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -365,13 +366,13 @@
         },
         "indices": [
           {
-            "name": "index_genre_connection_media_id_genre",
+            "name": "index_genre_connection_media_id_genre_id",
             "unique": true,
             "columnNames": [
               "media_id",
-              "genre"
+              "genre_id"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_connection_media_id_genre` ON `${TABLE_NAME}` (`media_id`, `genre`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_connection_media_id_genre_id` ON `${TABLE_NAME}` (`media_id`, `genre_id`)"
           }
         ],
         "foreignKeys": [
@@ -391,10 +392,10 @@
             "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
-              "genre"
+              "genre_id"
             ],
             "referencedColumns": [
-              "genre"
+              "id"
             ]
           }
         ]
@@ -2733,12 +2734,12 @@
       },
       {
         "viewName": "view_genre_extended",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select g.*, c.media_id \n            from genre g\n            inner join genre_connection c\n            on g.genre = c.genre"
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select g.*, c.media_id \n            from genre g\n            inner join genre_connection c\n            on g.id = c.genre_id"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0e3f9c4e0d697b61234c4252394f0b5f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8b857b1ec791dea27ddd982682171ba4')"
     ]
   }
 }

@@ -17,6 +17,7 @@
 
 package co.anitrend.data.genre.model
 
+import co.anitrend.data.core.extensions.toHashId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,12 +29,15 @@ internal data class GenreCollection(
     fun asGenreModels() =
         genreCollection
             .sortedBy { it }
-            .mapIndexed { index, s ->
-                GenreModel(index + 1, s)
+            .map { text ->
+                GenreModel(
+                    id = text.toHashId(),
+                    genre = text
+                )
             }
 
     data class GenreModel(
-        val id: Int,
+        val id: Long,
         val genre: String
     )
 }

@@ -27,7 +27,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     tableName = "genre_connection",
     indices = [
         Index(
-            value = ["media_id", "genre"],
+            value = ["media_id", "genre_id"],
             unique = true
         ),
     ],
@@ -44,8 +44,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             entity = GenreEntity::class,
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
-            childColumns = ["genre"],
-            parentColumns = ["genre"],
+            childColumns = ["genre_id"],
+            parentColumns = ["id"],
             deferred = true
         )
     ]
@@ -53,6 +53,6 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 @EntitySchema
 internal data class GenreConnectionEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
-    @ColumnInfo(name = "genre") val genre: String,
+    @ColumnInfo(name = "genre_id") val genreId: Long,
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long = 0
 ) : Identity
