@@ -17,12 +17,18 @@
 
 package co.anitrend.data.core.extensions
 
+import timber.log.Timber
+
 /**
  * Hash code generator with the ability to mask negative values
  */
 fun String.toHashId(): Long {
     val hash = hashCode()
-    if (hash < 0)
-        return ((hash and 0x7fffffff)).toLong()
+    if (hash < 0) {
+        val id = (hash and 0x7fffffff).toLong()
+        Timber.v("Hash id generated -> $id")
+        return id
+    }
+    Timber.v("Hash id default -> $hash")
     return hash.toLong()
 }
