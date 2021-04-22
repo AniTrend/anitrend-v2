@@ -22,7 +22,23 @@
 
     <application>
         <activity android:name=".component.screen.SearchScreen"
-            android:label="@string/title_activity_search_screen" />
+            android:label="@string/title_activity_search_screen">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="com.google.android.gms.actions.SEARCH_ACTION"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="eu.kanade.tachiyomi.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
 
         <provider
             android:name="androidx.startup.InitializationProvider"
