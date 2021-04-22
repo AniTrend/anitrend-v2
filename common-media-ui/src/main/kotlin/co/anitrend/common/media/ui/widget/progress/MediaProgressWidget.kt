@@ -86,7 +86,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         onInit(context, attrs, defStyleAttr)
     }
 
-    private fun setUpClickListener(controller: MediaProgressController) {
+    private fun setUpClickListener(currentProgress: Int) {
         isFocusable = true
         setOnClickListener {
             //TODO: Call task-media-list to update media list progress
@@ -99,7 +99,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
                         progressSpinner.isIndeterminate = true
                         progressSpinner.show()
                         delay(500)
-                        val progress = controller.getCurrentProgress().plus(1)
+                        val progress = currentProgress.plus(1)
                         progressSpinner.setProgressCompat(progress, true)
                         progressIncrement.visible()
                     } else
@@ -115,16 +115,18 @@ internal class MediaProgressWidget @JvmOverloads constructor(
     }
 
     private fun initialise(controller: MediaProgressController) {
+        val currentProgress = controller.getCurrentProgress()
+
         progressSpinner.max = controller.getMaximumProgress()
-        progressSpinner.progress = controller.getCurrentProgress()
+        progressSpinner.progress = currentProgress
         progressText.text = controller.getCurrentProgressText()
 
-        if (progressSpinner.progress == 0)
+        if (currentProgress == 0)
             progressSpinner.gone()
 
         if (controller.isIncrementPossible()) {
             progressIncrement.visible()
-            setUpClickListener(controller)
+            setUpClickListener(currentProgress)
         }
         else {
             progressIncrement.gone()
@@ -166,8 +168,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         addView(progressText)
         addView(progressIncrement)
 
-        progressText.updateMargins(start = 8.dp)
-        progressIncrement.updateMargins(start = 8.dp)
+        progressText.updateMargins(start = 8.dp, end = 8.dp)
         background = context.getCompatDrawable(R.drawable.widget_background)
 
         if (isInEditMode) {
