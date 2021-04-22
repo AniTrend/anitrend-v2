@@ -20,7 +20,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaCardContainer"
-    android:layout_width="@dimen/media_image_comfortable"
+    android:layout_width="@dimen/media_image_compact"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/lg_margin"
     style="@style/AppTheme.Material.MediaCard">

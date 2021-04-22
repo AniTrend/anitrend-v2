@@ -17,5 +17,6 @@
   -->
 
 <resources>
-    <item name="media_image_comfortable" type="dimen">130dp</item>
+    <item name="media_image_comfortable" type="dimen">175dp</item>
+    <item name="media_image_compact" type="dimen">138dp</item>
 </resources>

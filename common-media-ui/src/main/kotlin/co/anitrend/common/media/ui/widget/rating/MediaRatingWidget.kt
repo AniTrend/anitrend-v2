@@ -207,7 +207,6 @@ internal class MediaRatingWidget @JvmOverloads constructor(
 
     /**
      * @param media Media
-     * @param isMiniMode If the view should display minimalistic info
      */
     fun setupUsingMedia(
         media: IMedia,

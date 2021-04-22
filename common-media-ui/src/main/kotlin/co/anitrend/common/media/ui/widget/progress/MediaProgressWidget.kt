@@ -23,29 +23,27 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.view.ViewCompat
-import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.extension.ext.updateMargins
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
+import co.anitrend.common.media.ui.widget.progress.controller.MediaProgressController
 import co.anitrend.core.android.extensions.dp
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.domain.media.entity.contract.IMedia
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("SetTextI18n")
 internal class MediaProgressWidget @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : LinearLayoutCompat(
-    context, attrs, defStyleAttr
-), CustomView {
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
 
     private val progressText = MaterialTextView(context).apply {
         layoutParams = LayoutParams(
@@ -54,19 +52,19 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         ).also { params ->
             params.gravity = Gravity.CENTER_VERTICAL
         }
-        setTextColor(context.getCompatColor(R.color.white_1000))
+        setTextColor(context.getCompatColor(R.color.colorBackground))
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         setTypeface(typeface, Typeface.BOLD)
     }
 
-    private val incrementIndicator = AppCompatImageView(context).apply {
+    private val progressIncrement = AppCompatImageView(context).apply {
         layoutParams = LayoutParams(14.dp, 14.dp).also { params ->
             params.gravity = Gravity.CENTER_VERTICAL
         }
         setImageDrawable(
             this.context.getCompatDrawable(
                 R.drawable.ic_add,
-                R.color.white_1000
+                R.color.colorBackground
             )
         )
     }
@@ -84,7 +82,77 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         isIndeterminate = false
     }
 
-    init { onInit(context, attrs, defStyleAttr) }
+    init {
+        onInit(context, attrs, defStyleAttr)
+    }
+
+    private fun setUpClickListener(controller: MediaProgressController) {
+        isFocusable = true
+        setOnClickListener {
+            //TODO: Call task-media-list to update media list progress
+            val lifecycleOwner = it.context as LifecycleOwner
+            lifecycleOwner.lifecycleScope.launch {
+                runCatching {
+                    if (!progressSpinner.isIndeterminate) {
+                        progressIncrement.gone()
+                        progressSpinner.hide()
+                        progressSpinner.isIndeterminate = true
+                        progressSpinner.show()
+                        delay(500)
+                        val progress = controller.getCurrentProgress().plus(1)
+                        progressSpinner.setProgressCompat(progress, true)
+                        progressIncrement.visible()
+                    } else
+                        Toast.makeText(it.context, "I'm still busy..", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun removeClickListener() {
+        isFocusable = false
+        setOnClickListener(null)
+    }
+
+    private fun initialise(controller: MediaProgressController) {
+        progressSpinner.max = controller.getMaximumProgress()
+        progressSpinner.progress = controller.getCurrentProgress()
+        progressText.text = controller.getCurrentProgressText()
+
+        if (progressSpinner.progress == 0)
+            progressSpinner.gone()
+
+        if (controller.isIncrementPossible()) {
+            progressIncrement.visible()
+            setUpClickListener(controller)
+        }
+        else {
+            progressIncrement.gone()
+            removeClickListener()
+        }
+
+        if (controller.hasCaughtUp())
+            progressSpinner.setIndicatorColor(
+                context.getCompatColor(R.color.green_A700)
+            )
+        else
+            progressSpinner.setIndicatorColor(
+                context.getCompatColor(R.color.orange_A700)
+            )
+    }
+
+    /**
+     * @param media Media
+     */
+    fun setupUsingMedia(media: IMedia, settings: IAuthenticationSettings) {
+        val controller = MediaProgressController(media, settings)
+        if (controller.shouldHideWidget()) {
+            gone()
+            return
+        }
+        visible()
+        initialise(controller)
+    }
 
     /**
      * Callable in view constructors to perform view inflation and attribute initialization
@@ -96,16 +164,27 @@ internal class MediaProgressWidget @JvmOverloads constructor(
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         addView(progressSpinner)
         addView(progressText)
-        addView(incrementIndicator)
+        addView(progressIncrement)
 
-        //if (isInEditMode) {
+        progressText.updateMargins(start = 8.dp)
+        progressIncrement.updateMargins(start = 8.dp)
+        background = context.getCompatDrawable(R.drawable.widget_background)
+
+        if (isInEditMode) {
             progressText.text = "5 / 25"
             progressSpinner.max = 25
             progressSpinner.progress = 5
-            background = context.getCompatDrawable(R.drawable.widget_background)
-        //}
+        }
+    }
 
-        progressText.updateMargins(start = 8.dp)
-        incrementIndicator.updateMargins(start = 8.dp)
+    /**
+     * Should be called on a view's detach from window to unbind or release object references
+     * and cancel all running coroutine jobs if the current view
+     *
+     * Consider calling this in [android.view.View.onDetachedFromWindow]
+     */
+    override fun onViewRecycled() {
+        super.onViewRecycled()
+        removeClickListener()
     }
 }

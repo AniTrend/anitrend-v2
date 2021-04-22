@@ -35,6 +35,7 @@ import co.anitrend.core.android.R
 import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.MediaRouter
@@ -46,7 +47,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaSummaryItem(
     private val entity: Media,
-    private val settings: IUserSettings,
+    private val settings: Settings,
     private val viewPool: RecyclerView.RecycledViewPool
 ) : RecyclerItemBinding<MediaSummaryItemBinding>(entity.id) {
 
@@ -98,6 +99,7 @@ internal class MediaSummaryItem(
         requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings, R.color.colorBackground)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
+        requireBinding().mediaProgressWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaTitle.text = SpannableString(entity.title.userPreferred)
         requireBinding().mediaCardContainer.setOnClickListener {
             MediaRouter.startActivity(
