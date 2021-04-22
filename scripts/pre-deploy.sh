@@ -22,13 +22,8 @@ function create_directories {
     cd ./app-core/src/main/resources/org/koin/core/
 }
 
-function create_files {
-    touch koin.properties
-    echo "aniListClientId=\"aniListClientId\"" >> koin.properties
-    echo "aniListClientSecret=\"aniListClientSecret\"" >> koin.properties
-    echo "traktClientId=\"traktClientId\"" >> koin.properties
-    echo "traktClientSecret=\"traktClientSecret\"" >> koin.properties
-    echo "tmdbClientSecret=\"tmdbClientSecret\"" >> koin.properties
+function  create_files {
+    # Access github secrets to create files
 }
 
 create_directories
