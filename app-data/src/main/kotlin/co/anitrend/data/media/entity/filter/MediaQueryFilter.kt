@@ -19,6 +19,7 @@ package co.anitrend.data.media.entity.filter
 
 import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.genre.entity.GenreEntitySchema
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntitySchema
 import co.anitrend.data.link.entity.LinkEntitySchema
 import co.anitrend.data.media.entity.MediaEntitySchema
@@ -46,8 +47,11 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         private val mediaTable = MediaEntitySchema.tableName.asTable()
         private val mediaListTable = MediaListEntitySchema.tableName.asTable()
         private val linksTable = LinkEntitySchema.tableName.asTable()
+
         private val tagTable = TagEntitySchema.tableName.asTable()
         private val tagConnectionTable = TagEntitySchema.tableName.asTable()
+
+        private val genreTable = GenreEntitySchema.tableName.asTable()
         private val genreConnectionTable = GenreConnectionEntitySchema.tableName.asTable()
 
         private fun averageScoreSelection(filter: MediaParam.Find) {
@@ -138,13 +142,24 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         }
 
         private fun genreSelection(filter: MediaParam.Find) {
-            val column = GenreConnectionEntitySchema.genre.asColumn(genreConnectionTable)
+            val column = GenreEntitySchema.genre.asColumn(genreTable)
             if (filter.genre != null || filter.genre_in != null || filter.genre_not_in != null)
                 requireBuilder() from {
-                    innerJoin(genreConnectionTable).on(
-                        GenreConnectionEntitySchema.mediaId.asColumn(genreConnectionTable),
-                        MediaEntitySchema.id.asColumn(mediaTable)
-                    )
+                    innerJoin(genreConnectionTable) {
+                        on(
+                            GenreConnectionEntitySchema.mediaId.asColumn(
+                                genreConnectionTable
+                            ),
+                            MediaEntitySchema.id.asColumn(mediaTable)
+                        )
+                    }.innerJoin(genreTable) {
+                        on(
+                            GenreConnectionEntitySchema.genreId.asColumn(
+                                genreConnectionTable
+                            ),
+                            GenreEntitySchema.id.asColumn(genreTable)
+                        )
+                    }
                 }
 
             filter.genre?.also {
