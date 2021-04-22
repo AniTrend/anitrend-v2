@@ -29,7 +29,8 @@ class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        EpisodeTaskRouter.forScheduler().schedule(context)
+        // TODO: Never completes, and keeps retrying to schedule
+        //EpisodeTaskRouter.forScheduler().schedule(context)
     }
 
     /**
