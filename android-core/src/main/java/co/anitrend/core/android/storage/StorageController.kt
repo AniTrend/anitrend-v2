@@ -76,7 +76,7 @@ class StorageController : IStorageController {
     override fun getStorageUsageLimit(
         context: Context,
         type: StorageType,
-        settings: co.anitrend.data.settings.cache.ICacheSettings
+        settings: ICacheSettings
     ): Long {
         val freeSpace = getFreeSpace(context, type)
         val ratio = settings.cacheUsageRatio.value

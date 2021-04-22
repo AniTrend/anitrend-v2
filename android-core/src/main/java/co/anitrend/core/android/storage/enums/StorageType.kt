@@ -17,6 +17,8 @@
 
 package co.anitrend.core.android.storage.enums
 
+import android.os.Environment
+
 /**
  * Types of storage that can be used
  *
@@ -25,7 +27,7 @@ package co.anitrend.core.android.storage.enums
 enum class StorageType(val type: String?) {
     CACHE(null),
     FILES(null),
-    MUSIC(android.os.Environment.DIRECTORY_MUSIC),
-    PICTURES(android.os.Environment.DIRECTORY_PICTURES),
-    MOVIES(android.os.Environment.DIRECTORY_MOVIES)
+    MUSIC(Environment.DIRECTORY_MUSIC),
+    PICTURES(Environment.DIRECTORY_PICTURES),
+    MOVIES(Environment.DIRECTORY_MOVIES)
 }
