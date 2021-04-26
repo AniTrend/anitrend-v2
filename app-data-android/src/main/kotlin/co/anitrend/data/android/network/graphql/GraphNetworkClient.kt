@@ -20,6 +20,7 @@ package co.anitrend.data.android.network.graphql
 import co.anitrend.data.core.api.model.GraphQLError
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
+import co.anitrend.data.core.extensions.typeToken
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,7 +41,20 @@ class GraphNetworkClient<R>(
 
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
-        return gson.fromJson(body, object : TypeToken<GraphQLResponse<R>>(){}.type)
+        val type = typeToken<GraphQLResponse<R>>().type
+        return runCatching {
+            gson.fromJson<GraphQLResponse<R>>(body, type)
+        }.onFailure {
+            Timber.d(it)
+        }.getOrDefault(
+            GraphQLResponse(
+                errors = listOf(
+                    GraphQLError(
+                        message = body
+                    )
+                )
+            )
+        )
     }
 
     private fun Response<GraphQLResponse<R>>.responseErrors(): GraphQLResponse<R> {
