@@ -34,10 +34,12 @@ internal class GraphClientInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
 
+        val contentLength = original.body?.contentLength() ?: 0
         val requestBuilder = original.newBuilder()
 
         requestBuilder.header(CONTENT_TYPE, GraphConverter.MimeType)
             .header(ACCEPT, ACCEPT_TYPE)
+            .header(CONTENT_LENGTH, contentLength.toString())
             .method(original.method, original.body)
 
         if (authenticationHelper.isAuthenticated) {
@@ -49,6 +51,7 @@ internal class GraphClientInterceptor(
     }
 
     companion object {
+        private const val CONTENT_LENGTH = "Content-Length"
         private const val CONTENT_TYPE = "Content-Type"
         private const val ACCEPT = "Accept"
 
