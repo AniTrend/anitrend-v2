@@ -17,6 +17,7 @@
 
 package co.anitrend.data.core.extensions
 
+import com.google.gson.reflect.TypeToken
 import timber.log.Timber
 
 /**
@@ -32,3 +33,11 @@ fun String.toHashId(): Long {
     Timber.v("Hash id default -> $hash")
     return hash.toLong()
 }
+
+/**
+ * Type token resolver helper
+ *
+ * @return [TypeToken]
+ */
+inline fun <reified T> typeToken(): TypeToken<T> =
+    object : TypeToken<T>(){}
