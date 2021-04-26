@@ -29,6 +29,7 @@ import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.baseAppExtension
 import co.anitrend.buildSrc.extensions.baseExtension
 import co.anitrend.buildSrc.extensions.libraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
@@ -38,12 +39,13 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
 
-private fun configureBuildFlavours(project: Project) {
-    project.baseAppExtension().run {
+private fun Project.configureBuildFlavours() {
+    baseAppExtension().run {
         flavorDimensions("default")
         productFlavors {
             create("google") {
                 dimension = "default"
+                setIsDefault(true)
             }
             create("fdroid") {
                 dimension = "default"
@@ -60,7 +62,6 @@ private fun configureBuildFlavours(project: Project) {
                 output.outputFileName = original
             }
         }
-        project.createSigningConfiguration(this)
     }
 }
 
@@ -68,11 +69,12 @@ private fun configureBuildFlavours(project: Project) {
 private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
     if (project.isAppModule()) {
         applicationId = "co.anitrend"
-        project.baseAppExtension().buildFeatures {
-            viewBinding = true
-            compose = true
+        project.baseAppExtension().run {
+            buildFeatures {
+                viewBinding = true
+                compose = true
+            }
         }
-        //configureBuildFlavours(project)
     }
     else
         consumerProguardFiles.add(File("consumer-rules.pro"))
@@ -105,6 +107,11 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         applyAdditionalConfiguration(project)
     }
 
+    if (isAppModule()) {
+        project.configureBuildFlavours()
+        project.createSigningConfiguration(this)
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -116,7 +123,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 ),
                 "proguard-rules.pro"
             )
-            if (isAppModule() && project.file(".config/keystore.properties").exists())
+            if (project.file(".config/keystore.properties").exists())
                 signingConfig = signingConfigs.getByName("release")
         }
 

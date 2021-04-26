@@ -52,21 +52,23 @@ internal fun Project.configurePlugins() {
 }
 
 internal fun Project.configureAdditionalPlugins() {
-    if (isAppModule()) {
+    /*if (isAppModule()) {
         println("Applying additional google plugins")
         if (file("google-services.json").exists()) {
             plugins.apply("com.google.gms.google-services")
             plugins.apply("com.google.firebase.crashlytics")
         } else println("google-services.json cannot be found and will not be using any of the google plugins")
-    }
-    /*baseExtension().variantFilter {
+    }*/
+    if (isAppModule()) {
+        baseExtension().variantFilter {
             println("VariantFilter { defaultConfig: ${defaultConfig.name}, buildType: ${buildType.name}, flavors: [${flavors.joinToString { it.name }}], name: $name }")
-            if (flavors.first().name == "google" && buildType.name == "release") {
+            if (flavors.isNotEmpty() && flavors.first().name == "google") {
                 println("Applying additional google plugins on -> variant: $name | type: ${buildType.name}")
-                if (file("src/google/google-services.json").exists()) {
+                if (file("google-services.json").exists()) {
                     plugins.apply("com.google.gms.google-services")
                     plugins.apply("com.google.firebase.crashlytics")
                 } else println("google-services.json cannot be found and will not be using any of the google plugins")
             }
-        }*/
+        }
+    }
 }

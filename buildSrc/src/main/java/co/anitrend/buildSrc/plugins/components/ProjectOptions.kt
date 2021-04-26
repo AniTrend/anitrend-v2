@@ -24,7 +24,7 @@ import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.libraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.NamedDomainObjectContainer
@@ -91,7 +91,7 @@ private fun DefaultConfig.applyRoomCompilerOptions(project: Project) {
     }
 }
 
-internal fun Project.createSigningConfiguration(extension: BaseAppModuleExtension) {
+internal fun Project.createSigningConfiguration(extension: BaseExtension) {
     var properties: Properties? = null
     val keyStoreFile = project.file(".config/keystore.properties")
     if (keyStoreFile.exists())
