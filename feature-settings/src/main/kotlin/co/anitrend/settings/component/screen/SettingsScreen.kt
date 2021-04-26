@@ -45,11 +45,6 @@ class SettingsScreen : AnitrendScreen<SettingsActivityBinding>() {
         onUpdateUserInterface()
     }
 
-    /**
-     * Handles the updating, binding, creation or state change, depending on the context of views.
-     *
-     * **N.B.** Where this is called is up to the developer
-     */
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(
             fragment = SettingsContent::class.java
