@@ -45,12 +45,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingShortcutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="@color/colorAccent"
+        style="@style/AppTheme.Material.FloatingActionButton"
         app:layout_anchor="@id/bottomAppBar"
-        app:srcCompat="@drawable/ic_explore_24dp"
-        app:tint="@color/white_1000"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:srcCompat="@drawable/ic_explore_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

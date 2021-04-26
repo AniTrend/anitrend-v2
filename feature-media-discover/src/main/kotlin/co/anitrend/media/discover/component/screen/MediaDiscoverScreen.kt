@@ -35,7 +35,7 @@ class MediaDiscoverScreen : AnitrendScreen<MediaDiscoverScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        requireBinding().floatingActionSearch.setOnClickListener {
+        requireBinding().floatingAction.setOnClickListener {
             SearchRouter.startActivity(context = this)
         }
         updateUserInterface()

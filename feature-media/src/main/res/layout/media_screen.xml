@@ -34,15 +34,12 @@
     <co.anitrend.core.android.widget.appbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         style="@style/AppTheme.Material.BottomAppBar"
-        app:fabAlignmentMode="center" />
+        app:fabAlignmentMode="end" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchorGravity="center"
-        app:tint="@color/white_1000"
+        android:id="@+id/floatingAction"
+        style="@style/AppTheme.Material.FloatingActionButton"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_search" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

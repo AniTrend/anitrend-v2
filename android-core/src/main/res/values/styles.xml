@@ -182,4 +182,19 @@
         <item name="android:backgroundTint">?colorPrimary</item>
         <item name="android:layout_gravity">bottom</item>
     </style>
+
+    <style name="AppTheme.Material.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <!--<item name="tint">@color/white_1000</item>
+        <item name="backgroundTint">?colorAccent</item>-->
+    </style>
+
+    <style name="AppTheme.Material.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <!--<item name="tint">@color/white_1000</item>
+        <item name="backgroundTint">?colorAccent</item>-->
+    </style>
+
 </resources>

@@ -33,12 +33,9 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/shareAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/AppTheme.Material.FloatingActionButton"
         app:layout_anchorGravity="end|right"
-        app:tint="@color/white_1000"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_share_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
