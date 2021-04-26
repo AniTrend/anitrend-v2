@@ -15,8 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import java.net.URI
-
 plugins {
     `kotlin-dsl`
 }
@@ -26,13 +24,13 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = URI("https://www.jitpack.io")
+        setUrl("https://www.jitpack.io")
     }
     maven {
-        url = URI("https://oss.sonatype.org/content/repositories/snapshots")
+        setUrl("https://oss.sonatype.org/content/repositories/snapshots")
     }
     maven {
-        url = URI("https://plugins.gradle.org/m2/")
+        setUrl("https://plugins.gradle.org/m2/")
     }
 }
 

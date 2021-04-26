@@ -30,10 +30,10 @@ allprojects {
         jcenter()
         mavenCentral()
         maven {
-            url = java.net.URI(co.anitrend.buildSrc.Libraries.Repositories.jitPack)
+            setUrl(co.anitrend.buildSrc.Libraries.Repositories.jitPack)
         }
         maven {
-            url = java.net.URI(co.anitrend.buildSrc.Libraries.Repositories.dependencyUpdates)
+            setUrl(co.anitrend.buildSrc.Libraries.Repositories.dependencyUpdates)
         }
     }
 }
