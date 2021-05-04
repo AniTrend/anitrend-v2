@@ -21,6 +21,7 @@ import android.content.Context
 import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.arch.extension.settings.*
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.common.theme.IThemeSettings
@@ -37,6 +38,7 @@ import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.medialist.enums.ScoreFormat
@@ -44,7 +46,8 @@ import co.anitrend.domain.user.enums.UserTitleLanguage
 
 class Settings(context: Context) : SupportPreference(context), IConfigurationSettings,
     IPrivacySettings, IAuthenticationSettings, ISortOrderSettings, IRefreshBehaviourSettings,
-    ICustomizationSettings, IPowerSettings, IConnectivitySettings, IUserSettings, ICacheSettings {
+    ICustomizationSettings, IPowerSettings, IConnectivitySettings, IUserSettings, ICacheSettings,
+    ISyncSettings {
 
     override val locale = EnumSetting(
         key = R.string.settings_configuration_locale,
@@ -158,6 +161,13 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
         preference = this
     )
 
+    override val syncInterval = IntSetting(
+        key = R.string.settings_sync_interval,
+        default = ISyncSettings.MINIMUM_INTERVAL,
+        resources = context.resources,
+        preference = this
+    )
+
     companion object {
         /**
          * Binding types for [Settings]
@@ -169,7 +179,7 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
             ISortOrderSettings::class, IRefreshBehaviourSettings::class,
             ICustomizationSettings::class, IPowerSettings::class,
             IConnectivitySettings::class, IUserSettings::class,
-            ICacheSettings::class
+            ICacheSettings::class, ISyncSettings::class
         )
     }
 }
