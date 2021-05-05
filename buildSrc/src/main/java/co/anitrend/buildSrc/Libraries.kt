@@ -139,7 +139,7 @@ object Libraries {
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
 
             object Compose {
-                private const val version = "1.0.0-alpha05"
+                private const val version = "1.0.0-alpha06"
                 const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$version"
             }
         }
