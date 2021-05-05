@@ -372,7 +372,7 @@ object Libraries {
         }
 
         object Markdown {
-			private const val version = "0.12.0-alpha01"
+			private const val version = "0.12.0-alpha02"
             const val markdown = "com.github.anitrend:support-markdown:${version}"
         }
 
