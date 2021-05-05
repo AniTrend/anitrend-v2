@@ -312,7 +312,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.7.0-alpha03"
+            private const val version = "2.7.0-alpha02"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val multiProcess = "androidx.work:work-multiprocess:$version"
             const val runtime = "androidx.work:work-runtime:$version"
