@@ -64,7 +64,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.3.0-alpha05"
+            private const val version = "1.3.0-alpha07"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
 
@@ -91,7 +91,7 @@ object Libraries {
         }
 
         object Compose {
-            internal const val version = "1.0.0-beta03"
+            internal const val version = "1.0.0-beta05"
 
             object Foundation {
                 const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -134,12 +134,12 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.1.0-beta01"
+            private const val version = "2.1.0-beta02"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
 
             object Compose {
-                private const val version = "1.0.0-alpha05"
+                private const val version = "1.0.0-alpha06"
                 const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$version"
             }
         }
@@ -156,7 +156,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.3.2"
+            private const val version = "1.3.3"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -171,7 +171,7 @@ object Libraries {
             const val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:$version"
 
             object Compose {
-                private const val version = "1.0.0-alpha02"
+                private const val version = "1.0.0-alpha04"
                 const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
             }
         }
@@ -260,7 +260,7 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-rc01"
+            private const val version = "1.2.0"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
 
             object Selection {
@@ -312,7 +312,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.7.0-alpha02"
+            private const val version = "2.7.0-alpha03"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val multiProcess = "androidx.work:work-multiprocess:$version"
             const val runtime = "androidx.work:work-runtime:$version"
@@ -372,7 +372,7 @@ object Libraries {
         }
 
         object Markdown {
-			private const val version = "0.12.0-alpha01"
+			private const val version = "0.12.0-alpha02"
             const val markdown = "com.github.anitrend:support-markdown:${version}"
         }
 
@@ -402,7 +402,7 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.6.1"
+            private const val version = "3.7.0"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
@@ -415,7 +415,7 @@ object Libraries {
         }
 
         object Paris {
-            private const val version = "1.7.2"
+            private const val version = "1.7.3"
             const val paris = "com.airbnb.android:paris:$version"
             /** if using annotations */
             const val processor = "com.airbnb.android:paris-processor:$version"
@@ -452,7 +452,7 @@ object Libraries {
     }
 
     object Coil {
-        private const val version = "1.1.1"
+        private const val version = "1.2.1"
         const val coil = "io.coil-kt:coil:$version"
         const val base = "io.coil-kt:coil-base:$version"
         const val gif = "io.coil-kt:coil-gif:$version"
@@ -479,7 +479,7 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.7.0"
+            private const val version = "0.8.1"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val coil = "com.google.accompanist:accompanist-coil:$version"
             const val glide = "com.google.accompanist:accompanist-glide:${version}"
@@ -505,7 +505,7 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "18.0.2"
+                private const val version = "18.0.3"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
@@ -527,11 +527,11 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.4.0-alpha01"
+            private const val version = "1.4.0-alpha02"
             const val material = "com.google.android.material:material:$version"
 
             object Compose {
-                private const val version = "1.0.0-beta03"
+                private const val version = "1.0.0-beta05"
                 const val themeAdapter = "com.google.android.material:compose-theme-adapter:$version"
             }
         }
@@ -555,7 +555,7 @@ object Libraries {
         }
 
         object Kotlin {
-            internal const val version = "1.4.31"
+            internal const val version = "1.5.0"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -574,14 +574,14 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.4.3"
+                private const val version = "1.5.0-RC"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
             }
 
             object Serialization {
-                private const val version = "1.1.0"
+                private const val version = "1.2.0"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
