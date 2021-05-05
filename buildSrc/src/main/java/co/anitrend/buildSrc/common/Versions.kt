@@ -52,7 +52,7 @@ object Versions {
     const val junit = "4.13.2"
 
     const val timber = "4.7.1"
-    const val threeTenBp = "1.3.0"
+    const val threeTenBp = "1.3.1"
 
     const val debugDB = "1.0.6"
     const val treesSence = "1.0.4"
