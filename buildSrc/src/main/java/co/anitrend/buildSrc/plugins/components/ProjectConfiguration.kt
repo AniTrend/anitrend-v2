@@ -183,8 +183,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     tasks.withType(KotlinJvmCompile::class.java) {
         kotlinOptions {
             jvmTarget = "1.8"
-            // https://blog.jetbrains.com/kotlin/2021/02/the-jvm-backend-is-in-beta-let-s-make-it-stable-together/
-            useIR
         }
     }
 
