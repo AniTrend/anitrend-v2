@@ -531,7 +531,7 @@ object Libraries {
             const val material = "com.google.android.material:material:$version"
 
             object Compose {
-                private const val version = "1.0.0-beta03"
+                private const val version = "1.0.0-beta05"
                 const val themeAdapter = "com.google.android.material:compose-theme-adapter:$version"
             }
         }
