@@ -402,7 +402,7 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "3.6.1"
+            private const val version = "3.7.0"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
