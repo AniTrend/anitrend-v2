@@ -415,7 +415,7 @@ object Libraries {
         }
 
         object Paris {
-            private const val version = "1.7.2"
+            private const val version = "1.7.3"
             const val paris = "com.airbnb.android:paris:$version"
             /** if using annotations */
             const val processor = "com.airbnb.android:paris-processor:$version"
