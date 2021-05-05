@@ -479,7 +479,7 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.7.0"
+            private const val version = "0.8.1"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val coil = "com.google.accompanist:accompanist-coil:$version"
             const val glide = "com.google.accompanist:accompanist-glide:${version}"
