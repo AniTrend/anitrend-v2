@@ -91,7 +91,7 @@ object Libraries {
         }
 
         object Compose {
-            internal const val version = "1.0.0-beta03"
+            internal const val version = "1.0.0-beta05"
 
             object Foundation {
                 const val foundation = "androidx.compose.foundation:foundation:$version"
