@@ -25,7 +25,9 @@ import androidx.fragment.app.Fragment
 import androidx.work.ListenableWorker
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.navigation.model.sorting.Sorting
 import co.anitrend.navigation.provider.INavigationProvider
@@ -686,7 +688,10 @@ object MediaListTaskRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
-        fun mediaListMutationWorker(): Class<out ListenableWorker>
+        fun mediaListSaveEntryWorker(): Class<out ListenableWorker>
+        fun mediaListSaveEntriesWorker(): Class<out ListenableWorker>
+        fun mediaListDeleteEntryWorker(): Class<out ListenableWorker>
+        fun mediaListDeleteCustomListWorker(): Class<out ListenableWorker>
         fun animeSyncWorker(): Class<out ListenableWorker>
         fun mangaSyncWorker(): Class<out ListenableWorker>
 
@@ -694,12 +699,191 @@ object MediaListTaskRouter : NavigationRouter() {
         fun mangaSyncScheduler(): WorkSchedulerController
     }
 
-    fun forMediaListMutationWorker() = provider.mediaListMutationWorker()
+    fun forMediaListSaveEntryWorker() = provider.mediaListSaveEntryWorker()
+    fun forMediaListSaveEntriesWorker() = provider.mediaListSaveEntriesWorker()
+    fun forMediaListDeleteEntryWorker() = provider.mediaListDeleteEntryWorker()
+    fun forMediaListDeleteCustomListWorker() = provider.mediaListDeleteCustomListWorker()
+
     fun forMediaListAnimeSyncWorker() = provider.animeSyncWorker()
     fun forMediaListMangaSyncWorker() = provider.mangaSyncWorker()
 
     fun forAnimeScheduler() = provider.animeSyncScheduler()
     fun forMangaScheduler() = provider.mangaSyncScheduler()
+
+    @Suppress("UNCHECKED_CAST")
+    sealed class Param : IParam {
+
+        abstract fun toMap(): Map<String, Any?>
+
+        @Parcelize
+        data class SaveEntry(
+            val id: Long? = null,
+            val mediaId: Long,
+            val status: MediaListStatus,
+            val score: Float? = null,
+            val scoreRaw: Int? = null,
+            val progress: Int? = null,
+            val progressVolumes: Int? = null,
+            val repeat: Int? = null,
+            val priority: Int? = null,
+            val private: Boolean = false,
+            val notes: String? = null,
+            val hiddenFromStatusLists: Boolean = false,
+            val customLists: List<String>? = null,
+            val advancedScores: List<Float>? = null,
+            val startedAt: @RawValue FuzzyDate? = null,
+            val completedAt: @RawValue FuzzyDate? = null
+        ) : Param() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            override fun toMap() = mapOf(
+                "id" to id,
+                "mediaId" to mediaId,
+                "status" to status,
+                "score" to score,
+                "scoreRaw" to scoreRaw,
+                "progress" to progress,
+                "progressVolumes" to progressVolumes,
+                "repeat" to repeat,
+                "priority" to priority,
+                "private" to private,
+                "notes" to notes,
+                "hiddenFromStatusLists" to hiddenFromStatusLists,
+                "advancedScores" to advancedScores,
+                "startedAt" to startedAt,
+                "completedAt" to completedAt
+            )
+
+            companion object : IParam.IKey {
+                override val KEY = "MediaListTaskRouter#SaveEntry"
+
+                fun fromMap(map: Map<String, Any?>) = SaveEntry(
+                    id = map["id"] as Long?,
+                    mediaId = map["mediaId"] as Long,
+                    status = map["status"] as MediaListStatus,
+                    score = map["score"] as Float?,
+                    scoreRaw = map["scoreRaw"] as Int?,
+                    progress = map["progress"] as Int?,
+                    progressVolumes = map["progressVolumes"] as Int?,
+                    repeat = map["repeat"] as Int?,
+                    priority = map["priority"] as Int?,
+                    private = map["private"] as Boolean ,
+                    notes = map["notes"] as String?,
+                    hiddenFromStatusLists = map["hiddenFromStatusLists"] as Boolean,
+                    advancedScores = map["advancedScores"] as List<Float>?,
+                    startedAt = map["startedAt"] as FuzzyDate?,
+                    completedAt = map["completedAt"] as FuzzyDate?
+                )
+            }
+        }
+
+        @Parcelize
+        data class SaveEntries(
+            val status: MediaListStatus,
+            val score: Float? = null,
+            val scoreRaw: Int? = null,
+            val progress: Int? = null,
+            val progressVolumes: Int? = null,
+            val repeat: Int? = null,
+            val priority: Int? = null,
+            val private: Boolean = false,
+            val notes: String? = null,
+            val hiddenFromStatusLists: Boolean = false,
+            val advancedScores: List<Float>? = null,
+            val startedAt: @RawValue FuzzyDate? = null,
+            val completedAt: @RawValue FuzzyDate? = null,
+            val ids: List<Long>
+        ) : Param() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            override fun toMap() = mapOf(
+                "status" to status,
+                "score" to score,
+                "scoreRaw" to scoreRaw,
+                "progress" to progress,
+                "progressVolumes" to progressVolumes,
+                "repeat" to repeat,
+                "priority" to priority,
+                "private" to private,
+                "notes" to notes,
+                "hiddenFromStatusLists" to hiddenFromStatusLists,
+                "advancedScores" to advancedScores,
+                "startedAt" to startedAt,
+                "completedAt" to completedAt,
+                "ids" to ids
+            )
+
+            companion object : IParam.IKey {
+                override val KEY = "MediaListTaskRouter#SaveEntries"
+
+                fun fromMap(map: Map<String, Any?>) = SaveEntries(
+                    status = map["status"] as MediaListStatus,
+                    score = map["score"] as Float?,
+                    scoreRaw = map["scoreRaw"] as Int?,
+                    progress = map["progress"] as Int?,
+                    progressVolumes = map["progressVolumes"] as Int?,
+                    repeat = map["repeat"] as Int?,
+                    priority = map["priority"] as Int?,
+                    private = map["private"] as Boolean ,
+                    notes = map["notes"] as String?,
+                    hiddenFromStatusLists = map["hiddenFromStatusLists"] as Boolean,
+                    advancedScores = map["advancedScores"] as List<Float>?,
+                    startedAt = map["startedAt"] as FuzzyDate?,
+                    completedAt = map["completedAt"] as FuzzyDate?,
+                    ids = map["ids"] as List<Long>
+                )
+            }
+        }
+
+        @Parcelize
+        data class DeleteEntry(
+            val id: Long
+        ) : Param() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            override fun toMap() = mapOf(
+                "id" to id
+            )
+
+            companion object : IParam.IKey {
+                override val KEY = "MediaListTaskRouter#DeleteEntry"
+
+                fun fromMap(map: Map<String, Any?>) = DeleteEntry(
+                    id = map["id"] as Long
+                )
+            }
+        }
+
+        @Parcelize
+        data class DeleteCustomList(
+            val customList: String,
+            val type: MediaType
+        ) : Param() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            override fun toMap() = mapOf(
+                "customList" to customList,
+                "type" to type
+            )
+
+            companion object : IParam.IKey {
+                override val KEY = "MediaListTaskRouter#DeleteCustomList"
+
+                fun fromMap(map: Map<String, Any?>) = DeleteCustomList(
+                    customList = map["customList"] as String,
+                    type = map["type"] as MediaType
+                )
+            }
+        }
+    }
 }
 
 object NewsTaskRouter : NavigationRouter() {
