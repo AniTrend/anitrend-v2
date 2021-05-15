@@ -91,7 +91,7 @@ object Libraries {
         }
 
         object Compose {
-            internal const val version = "1.0.0-beta05"
+            internal const val version = "1.0.0-beta06"
 
             object Foundation {
                 const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -270,7 +270,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.2.6"
+            private const val version = "2.4.0-alpha02]"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
@@ -439,7 +439,7 @@ object Libraries {
         }
 
         object Turbine {
-            private const val version = "0.4.1"
+            private const val version = "0.5.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
@@ -472,17 +472,16 @@ object Libraries {
     }
 
     object Dropbox {
-        private const val version = "4.0.0"
+        private const val version = "4.0.1"
         const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
     object Google {
 
         object Accompanist {
-            private const val version = "0.8.1"
+            private const val version = "0.9.1"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val coil = "com.google.accompanist:accompanist-coil:$version"
-            const val glide = "com.google.accompanist:accompanist-glide:${version}"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
             const val pager = "com.google.accompanist:accompanist-pager:${version}"
@@ -505,17 +504,17 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "18.0.3"
+                private const val version = "19.0.0"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "17.4.1"
+                private const val version = "18.0.0"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.5.2"
+                    private const val version = "2.6.1"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -527,25 +526,19 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.4.0-alpha02"
+            private const val version = "1.4.0-beta01"
             const val material = "com.google.android.material:material:$version"
 
             object Compose {
-                private const val version = "1.0.0-beta05"
+                private const val version = "1.0.0-beta06"
                 const val themeAdapter = "com.google.android.material:compose-theme-adapter:$version"
             }
         }
 
         object Services {
-            private const val version = "4.3.5"
+            private const val version = "4.3.8"
             const val googleServices = "com.google.gms:google-services:$version"
         }
-    }
-
-    object Glide {
-        private const val version = "4.12.0"
-        const val glide = "com.github.bumptech.glide:glide:$version"
-        const val compiler = "com.github.bumptech.glide:compiler:$version"
     }
 
     object JetBrains {
@@ -574,14 +567,14 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.5.0-RC"
+                private const val version = "1.5.0"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
             }
 
             object Serialization {
-                private const val version = "1.2.0"
+                private const val version = "1.2.1"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }
@@ -619,7 +612,6 @@ object Libraries {
         const val core = "io.noties.markwon:core:$version"
         const val html = "io.noties.markwon:html:$version"
         const val image = "io.noties.markwon:image:$version"
-        const val glide = "io.noties.markwon:image-glide:$version"
         const val coil = "io.noties.markwon:image-coil:$version"
         const val parser = "io.noties.markwon:inline-parser:$version"
         const val linkify = "io.noties.markwon:linkify:$version"
