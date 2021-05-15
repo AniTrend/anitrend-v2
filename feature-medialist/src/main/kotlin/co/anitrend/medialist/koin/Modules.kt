@@ -19,8 +19,8 @@ package co.anitrend.medialist.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.medialist.component.content.MediaListContent
-import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
-import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
+import co.anitrend.medialist.component.content.viewmodel.MediaListContentModel
+import co.anitrend.medialist.component.content.viewmodel.state.MediaListContentState
 import co.anitrend.medialist.provider.FeatureProvider
 import co.anitrend.navigation.MediaListRouter
 import org.koin.androidx.fragment.dsl.fragment
@@ -37,8 +37,8 @@ private val fragmentModule = module {
 
 private val viewModelModule = module {
     viewModel {
-        MediaListViewModel(
-            state = MediaListState(
+        MediaListContentModel(
+            state = MediaListContentState(
                 interactor = get()
             )
         )
