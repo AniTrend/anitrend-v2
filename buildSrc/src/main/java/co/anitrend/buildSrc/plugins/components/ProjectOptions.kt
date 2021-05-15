@@ -25,13 +25,14 @@ import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.libraryExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.api.dsl.LibraryBuildType
+import com.android.build.api.dsl.LibraryDefaultConfig
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import java.util.*
 
-private fun Properties.applyToBuildConfigFor(buildType: BuildType) {
+private fun Properties.applyToBuildConfigFor(buildType: LibraryBuildType) {
     forEach { propEntry ->
         val key = propEntry.key as String
         val value = propEntry.value as String
@@ -40,7 +41,7 @@ private fun Properties.applyToBuildConfigFor(buildType: BuildType) {
     }
 }
 
-private fun NamedDomainObjectContainer<BuildType>.applyVersionProperties() {
+private fun NamedDomainObjectContainer<LibraryBuildType>.applyVersionProperties() {
     asMap.forEach { buildTypeEntry ->
         println("Adding version build configuration fields -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
@@ -50,7 +51,7 @@ private fun NamedDomainObjectContainer<BuildType>.applyVersionProperties() {
     }
 }
 
-private fun NamedDomainObjectContainer<BuildType>.applyConfigurationProperties(project: Project) {
+private fun NamedDomainObjectContainer<LibraryBuildType>.applyConfigurationProperties(project: Project) {
     asMap.forEach { buildTypeEntry ->
         println("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
@@ -76,7 +77,7 @@ private fun NamedDomainObjectContainer<BuildType>.applyConfigurationProperties(p
     }
 }
 
-private fun DefaultConfig.applyRoomCompilerOptions(project: Project) {
+private fun LibraryDefaultConfig.applyRoomCompilerOptions(project: Project) {
     println("Adding java compiler options for room on module-> ${project.path}")
     javaCompileOptions {
         annotationProcessorOptions {

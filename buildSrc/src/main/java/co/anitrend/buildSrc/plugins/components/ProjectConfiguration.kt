@@ -41,7 +41,7 @@ import java.io.File
 
 private fun Project.configureBuildFlavours() {
     baseAppExtension().run {
-        flavorDimensions("default")
+        flavorDimensions.add("default")
         productFlavors {
             create("google") {
                 dimension = "default"
@@ -99,8 +99,8 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
     compileSdkVersion(Versions.compileSdk)
     defaultConfig {
-        minSdkVersion(Versions.minSdk)
-        targetSdkVersion(Versions.targetSdk)
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
         versionCode = Versions.versionCode
         versionName = Versions.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
