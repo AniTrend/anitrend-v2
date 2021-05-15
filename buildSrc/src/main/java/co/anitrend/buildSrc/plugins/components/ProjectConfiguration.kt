@@ -45,7 +45,7 @@ private fun Project.configureBuildFlavours() {
         productFlavors {
             create("google") {
                 dimension = "default"
-                setIsDefault(true)
+                isDefault = true
             }
             create("fdroid") {
                 dimension = "default"
