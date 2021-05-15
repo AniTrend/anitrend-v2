@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.recommendation
+package co.anitrend.domain.recommendation.model
 
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 import co.anitrend.domain.recommendation.enums.RecommendationSort

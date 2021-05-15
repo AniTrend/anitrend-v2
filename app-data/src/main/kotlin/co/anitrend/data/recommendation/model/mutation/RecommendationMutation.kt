@@ -18,7 +18,7 @@
 package co.anitrend.data.recommendation.model.mutation
 
 import co.anitrend.data.common.model.graph.IGraphPayload
-import co.anitrend.domain.recommendation.RecommendationParam
+import co.anitrend.domain.recommendation.model.RecommendationParam
 
 internal sealed class RecommendationMutation {
 
