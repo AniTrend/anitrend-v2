@@ -270,7 +270,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.4.0-alpha02]"
+            private const val version = "2.4.0-alpha02"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
