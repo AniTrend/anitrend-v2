@@ -128,8 +128,6 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(Libraries.Coil.gif)
             dependencies.implementation(Libraries.Coil.svg)
             dependencies.implementation(Libraries.Coil.video)
-            dependencies.implementation(Libraries.Glide.glide)
-            dependencies.kapt(Libraries.Glide.compiler)
 
             dependencies.implementation(project(Modules.Data.Core.path()))
             dependencies.implementation(project(Modules.Data.Android.path()))
@@ -292,7 +290,6 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(Libraries.Google.Material.material)
 
     dependencies.implementation(Libraries.Coil.coil)
-    dependencies.implementation(Libraries.Glide.glide)
 
     dependencies.implementation(Libraries.threeTenBp)
     dependencies.implementation(Libraries.AirBnB.Paris.paris)
