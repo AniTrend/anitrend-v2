@@ -28,6 +28,7 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
         ktlint(Versions.ktlint).userData(
             mapOf("android" to "true")
         )
-        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+        // android studio is currently handling this
+        // licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
     }
 }

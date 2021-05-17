@@ -29,7 +29,6 @@ import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.baseAppExtension
 import co.anitrend.buildSrc.extensions.baseExtension
 import co.anitrend.buildSrc.extensions.libraryExtension
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
@@ -43,6 +42,7 @@ private fun Project.configureBuildFlavours() {
     baseAppExtension().run {
         flavorDimensions.add("default")
         productFlavors {
+            // TODO: ApplicationProductFlavor doesn't seem to respect the `isDefault`
             create("google") {
                 dimension = "default"
                 isDefault = true
