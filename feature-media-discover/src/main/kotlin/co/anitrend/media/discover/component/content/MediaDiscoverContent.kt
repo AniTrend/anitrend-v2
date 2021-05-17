@@ -106,7 +106,7 @@ class MediaDiscoverContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        supportStateLayout?.assureParamNotMissing(viewModel.default) {
+        listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
             viewModelState().invoke(
                 viewModel.default,
                 false
@@ -114,7 +114,7 @@ class MediaDiscoverContent(
         }
         lifecycleScope.launchWhenResumed {
             settings.preferredViewMode.flow.collect {
-                val layoutManger = supportRecyclerView?.layoutManager
+                val layoutManger = listPresenter.recyclerView.layoutManager
                 if (layoutManger is StaggeredGridLayoutManager) {
                     val currentSpanCount = layoutManger.spanCount
                     val newSpanCount = resources.getInteger(

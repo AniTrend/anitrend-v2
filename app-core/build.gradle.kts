@@ -21,6 +21,12 @@ plugins {
     id("co.anitrend.plugin")
 }
 
+android {
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
 dependencies {
     implementation(Libraries.AndroidX.Browser.browser)
 

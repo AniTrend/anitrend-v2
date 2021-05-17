@@ -48,7 +48,7 @@ class CarouselContent(
             ) = false
         }
         animator.supportsChangeAnimations = false
-        supportRecyclerView?.itemAnimator = animator
+        listPresenter.recyclerView.itemAnimator = animator
     }
 
     /**

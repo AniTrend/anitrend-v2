@@ -165,7 +165,7 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
      *
      * @param loadState New state from the application
      */
-    override fun changeLayoutState(loadState: LoadState) {
+    private fun changeLayoutState(loadState: LoadState) {
         supportViewAdapter.setLoadState(loadState)
     }
 

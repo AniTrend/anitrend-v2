@@ -30,8 +30,10 @@ import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
+import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
 import co.anitrend.core.R
 import co.anitrend.core.android.koinOf
+import co.anitrend.core.component.content.list.presenter.AniTrendListContentPresenter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -40,7 +42,10 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
 import timber.log.Timber
 
-abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeComponent {
+abstract class AniTrendListContent<M>(
+    override val inflateLayout: Int = R.layout.shared_list_content,
+    override val listPresenter: SupportListPresenter<M> = AniTrendListContentPresenter()
+) : SupportFragmentList<M>(), KoinScopeComponent {
 
     override val scope by lazy(UNSAFE) { fragmentScope() }
 
@@ -65,6 +70,8 @@ abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeCompo
                 .collect()
         }
     }
+
+
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -91,7 +98,7 @@ abstract class AniTrendListContent<M> : SupportFragmentList<M>(), KoinScopeCompo
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        supportRefreshLayout?.setColorSchemeColors(
+        listPresenter.swipeRefreshLayout?.setColorSchemeColors(
             requireContext().getColorFromAttr(R.attr.colorPrimary),
             requireContext().getColorFromAttr(R.attr.colorOnBackground)
         )

@@ -104,12 +104,12 @@ class AiringContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        supportStateLayout?.assureParamNotMissing(viewModel.param) {
+        listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
             viewModelState().invoke(requireNotNull(viewModel.param))
         }
         lifecycleScope.launchWhenResumed {
             settings.preferredViewMode.flow.collect {
-                val layoutManger = supportRecyclerView?.layoutManager
+                val layoutManger = listPresenter.recyclerView.layoutManager
                 if (layoutManger is StaggeredGridLayoutManager) {
                     val currentSpanCount = layoutManger.spanCount
                     val newSpanCount = resources.getInteger(

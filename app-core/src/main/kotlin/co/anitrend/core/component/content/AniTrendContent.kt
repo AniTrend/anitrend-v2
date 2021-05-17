@@ -39,7 +39,8 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
 import timber.log.Timber
 
-abstract class AniTrendContent<B : ViewBinding> : SupportFragment(), KoinScopeComponent, IBindingView<B> {
+abstract class AniTrendContent<B : ViewBinding> : SupportFragment(),
+    KoinScopeComponent, IBindingView<B> {
 
     override var binding: B? = null
 

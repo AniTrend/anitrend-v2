@@ -26,7 +26,7 @@ import co.anitrend.support.markdown.center.CenterPlugin
 import co.anitrend.support.markdown.ephasis.EmphasisPlugin
 import co.anitrend.support.markdown.heading.HeadingPlugin
 import co.anitrend.support.markdown.image.ImagePlugin
-import co.anitrend.support.markdown.link.LinkifyPlugin
+//import co.anitrend.support.markdown.link.LinkifyPlugin
 import co.anitrend.support.markdown.spoiler.SpoilerPlugin
 import co.anitrend.support.markdown.webm.WebMPlugin
 import co.anitrend.support.markdown.youtube.YouTubePlugin
@@ -45,7 +45,7 @@ private val coreModule = module {
         val builder = get<Markwon.Builder>()
         builder.usePlugin(MarkdownPlugin.create())
             .usePlugin(CorePlugin.create())
-            .usePlugin(LinkifyPlugin.create())
+            //.usePlugin(LinkifyPlugin.create())
             .usePlugin(HeadingPlugin.create())
             .usePlugin(EmphasisPlugin.create())
             .usePlugin(CenterPlugin.create())
