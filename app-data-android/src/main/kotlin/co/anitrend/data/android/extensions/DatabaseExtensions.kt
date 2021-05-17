@@ -28,6 +28,7 @@ import kotlin.jvm.Throws
     replaceWith = ReplaceWith(""),
     level = DeprecationLevel.ERROR
 )
+@Suppress("DEPRECATION")
 inline fun runInTransaction(action: () -> Unit) {
     val store = koinOf<RoomDatabase>()
     try {
