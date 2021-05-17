@@ -32,61 +32,34 @@
         android:layout_marginTop="@dimen/xl_margin"
         app:srcCompat="@drawable/touch_thumbnail"/>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/size_8dp" />
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_8dp" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/lg_margin">
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_gravity="center"
+        android:text="@string/label_discover_filter_sheet_title"
+        android:padding="@dimen/lg_margin"
+        style="@style/AppTheme.Material.TextHeadLine.Primary"
+        />
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/lg_margin" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sheetFilterInfo"
-                android:layout_gravity="start"
-                android:text="@string/label_discover_filter_action_info"
-                style="@style/AppTheme.Material.TextButton"
-                />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_gravity="center"
-                android:text="@string/label_discover_filter_sheet_title"
-                style="@style/AppTheme.Material.TextHeadLine.Primary"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sheetFilterReset"
-                android:layout_gravity="end"
-                android:text="@string/label_discover_filter_action_reset"
-                style="@style/AppTheme.Material.TextButton"
-                />
-
-        </FrameLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/lg_margin" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/materialTabsLayout"
-            style="@style/AppTheme.Material.TabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:tabGravity="center"
-            app:tabMode="scrollable"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-<co.anitrend.core.android.views.scroll.FillNestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/materialTabsLayout"
+        style="@style/AppTheme.Material.TabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:tabGravity="center"
+        app:tabMode="scrollable"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</co.anitrend.core.android.views.scroll.FillNestedScrollView>
+        android:layout_height="match_parent" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
