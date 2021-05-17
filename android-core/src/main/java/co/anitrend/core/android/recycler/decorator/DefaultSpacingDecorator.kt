@@ -25,13 +25,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.core.android.R
+import co.anitrend.core.android.extensions.dp
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import timber.log.Timber
 
 class DefaultSpacingDecorator(
-    @DimenRes private val itemSpacingDimen: Int = R.dimen.size_2dp,
-    @DimenRes private val edgeSpacingDimen: Int = R.dimen.size_2dp
+    private val itemSpacing: Int = 2.dp,
+    private val edgeSpacing: Int = 2.dp
 ): RecyclerView.ItemDecoration() {
 
     private fun isVerticalOrientation(recyclerView: RecyclerView): Boolean {
@@ -72,8 +73,6 @@ class DefaultSpacingDecorator(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        val edgeSpacing = view.resources.getDimensionPixelSize(edgeSpacingDimen)
-        val itemSpacing = view.resources.getDimensionPixelSize(itemSpacingDimen)
         /** Credits: https://stackoverflow.com/a/64375667/1725347 */
         val count = parent.adapter?.itemCount ?: 0
         val position = parent.getChildAdapterPosition(view)
