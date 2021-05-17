@@ -27,7 +27,6 @@ import co.anitrend.core.component.content.selection.AniTrendSelectionContent
 import co.anitrend.core.extensions.combine
 import co.anitrend.core.extensions.union
 import co.anitrend.domain.common.sort.order.SortOrder
-import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
 import co.anitrend.media.discover.filter.R
