@@ -75,7 +75,6 @@ class MediaDiscoverFilterSheet(
             childFragmentManager,
             lifecycle
         )
-        requireBinding().viewPager.offscreenPageLimit = 3
         // temporary work around for nested scrolling not working as expected
         //requireBinding().viewPager.children.find {
         //    it is RecyclerView
