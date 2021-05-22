@@ -217,11 +217,9 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         setListStatus(media, tint)
         setFavouriteStatus(media.isFavourite, tint)
         media.setMediaRatingDynamically(settings, tint)
-        val background = if (tintColor == null)
-            R.drawable.bubble_background
-        else
-            R.drawable.widget_background
-        setBackground(context.getCompatDrawable(background))
+        background = if (tintColor == null)
+            context.getCompatDrawable(R.drawable.widget_background, R.color.bubble_color)
+        else context.getCompatDrawable(R.drawable.widget_background)
     }
 
     /**
