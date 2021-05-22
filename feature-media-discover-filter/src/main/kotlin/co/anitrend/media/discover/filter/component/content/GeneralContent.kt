@@ -46,11 +46,11 @@ internal class GeneralContent(
         requireBinding().excludeAdultContent.isChecked = param.isAdult == true
         val seasonYear = param.seasonYear
         if (seasonYear != null)
-            requireBinding().yearRangeSeekBar.setProgress(seasonYear.toFloat())
-        else requireBinding().yearRangeSeekBar.setProgress(dateHelper.getCurrentYear().toFloat())
+            requireBinding().yearRangeSlider.setValues(seasonYear.toFloat())
+        else requireBinding().yearRangeSlider.setValues(dateHelper.getCurrentYear().toFloat())
         when (param.onList) {
-            true -> requireBinding().onListChipGroup.check(R.id.on_list_chip_include)
-            false -> requireBinding().onListChipGroup.check(R.id.on_list_chip_exclude)
+            true -> requireBinding().onListChipGroup.check(R.id.onListChipInclude)
+            false -> requireBinding().onListChipGroup.check(R.id.onListChipExclude)
             else -> requireBinding().onListChipGroup.clearCheck()
         }
     }
@@ -112,6 +112,9 @@ internal class GeneralContent(
                 }
             )
         }
+        requireBinding().yearRangeSlider.valueTo = dateHelper.getCurrentYear(2).toFloat()
+        requireBinding().yearRangeSlider.valueFrom = 1970f
+        requireBinding().yearRangeSlider.stepSize = 1f
     }
 
     /**

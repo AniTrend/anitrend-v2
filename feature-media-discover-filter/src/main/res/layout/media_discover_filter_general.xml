@@ -16,7 +16,7 @@
   -->
 
 
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -30,7 +30,7 @@
     android:padding="@dimen/xl_margin">
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/exclude_adult_content"
+        android:id="@+id/excludeAdultContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -70,12 +70,12 @@
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/on_list_chip_include"
+                android:id="@+id/onListChipInclude"
                 android:text="@string/label_discover_filter_choice_show_on_list_title"
                 style="@style/AppTheme.Material.Chip.Choice" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/on_list_chip_exclude"
+                android:id="@+id/onListChipExclude"
                 android:text="@string/label_discover_filter_choice_hide_on_list_title"
                 style="@style/AppTheme.Material.Chip.Choice" />
 
@@ -110,7 +110,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/media_type_chip_group"
+            android:id="@+id/mediaTypeChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -145,7 +145,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/season_chip_group"
+            android:id="@+id/seasonChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -172,7 +172,7 @@
                 style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/year_range_toggle"
+                android:id="@+id/yearRangeToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -184,16 +184,11 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/lg_margin" />
 
-        <com.jaygoo.widget.RangeSeekBar
-            android:id="@+id/year_range_seek_bar"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/yearRangeSlider"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_24dp"
-            app:rsb_gravity="center"
-            app:rsb_progress_color="@color/colorAccent"
-            app:rsb_progress_height="@dimen/size_4dp"
-            app:rsb_thumb_drawable="@drawable/touch_thumbnail"
-            app:rsb_thumb_height="@dimen/size_18dp"
-            app:rsb_thumb_width="@dimen/size_18dp" />
+            android:layout_height="wrap_content"
+            app:minSeparation="@dimen/lg_margin"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -224,7 +219,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/country_chip_group"
+            android:id="@+id/countryChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -259,7 +254,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/format_chip_group"
+            android:id="@+id/formatChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -294,7 +289,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/status_chip_group"
+            android:id="@+id/statusChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -329,7 +324,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/source_chip_group"
+            android:id="@+id/sourceChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -364,7 +359,7 @@
             android:layout_height="@dimen/lg_margin" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/streaming_chip_group"
+            android:id="@+id/streamingChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="false"
@@ -374,4 +369,4 @@
 
 </androidx.appcompat.widget.LinearLayoutCompat>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

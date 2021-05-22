@@ -70,6 +70,5 @@ object Versions {
 
     const val elements = "1.0.1"
 
-    const val rangeSeekBar = "3.0.0"
     const val ktlint = "0.40.0"
 }
