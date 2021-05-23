@@ -3,6 +3,7 @@ fragment UserExtended on User {
     options {
         profileColor
         titleLanguage
+        displayAdultContent
     }
     mediaListOptions {
         animeList {
