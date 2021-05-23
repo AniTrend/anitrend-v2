@@ -78,14 +78,6 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
         select * from user
         where id = :id
     """)
-    abstract suspend fun userByIdWithOptions(
-        id: Long
-    ): UserEntityView.WithOptions?
-
-    @Query("""
-        select * from user
-        where id = :id
-    """)
     abstract fun userByIdFlow(id: Long): Flow<UserEntity?>
 
     @Query("""
@@ -93,6 +85,14 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
         where user_name = :userName
     """)
     abstract fun userByNameFlow(userName: String): Flow<UserEntity?>
+
+    @Query("""
+        select * from user
+        where id = :id
+    """)
+    abstract fun userByIdWithOptionsFlow(
+        id: Long
+    ): Flow<UserEntityView.WithOptions?>
 
     @Query("""
         select * from user

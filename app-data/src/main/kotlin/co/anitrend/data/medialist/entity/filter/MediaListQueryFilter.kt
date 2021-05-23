@@ -19,6 +19,7 @@ package co.anitrend.data.medialist.entity.filter
 
 import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.customlist.entity.CustomListEntitySchema
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntitySchema
 import co.anitrend.data.link.entity.LinkEntitySchema
 import co.anitrend.data.media.entity.MediaEntitySchema
@@ -27,6 +28,7 @@ import co.anitrend.data.tag.entity.TagEntitySchema
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.support.query.builder.core.criteria.extensions.equal
+import co.anitrend.support.query.builder.core.criteria.extensions.like
 import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.from.extentions.innerJoin
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
@@ -36,13 +38,22 @@ import java.util.*
 
 internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQueryBuilder<T>() {
 
+    protected val customListTable = CustomListEntitySchema.tableName.asTable()
     protected val mediaListTable = MediaListEntitySchema.tableName.asTable()
     protected val mediaTable = MediaEntitySchema.tableName.asTable()
 
     protected abstract val authentication: IAuthenticationSettings
 
     protected open fun selection(filter: T) {
+        requireBuilder() whereAnd {
+            MediaListEntitySchema.mediaType.asColumn(mediaListTable) equal filter.type.name
+        }
 
+        filter.status?.run {
+            requireBuilder() whereAnd {
+                MediaListEntitySchema.status.asColumn(mediaListTable) equal name
+            }
+        }
     }
 
     protected fun order(filter: T) {
@@ -124,6 +135,21 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
 
         override fun selection(filter: MediaListParam.Paged) {
             super.selection(filter)
+            filter.customListName?.also { listName ->
+                requireBuilder().from {
+                    innerJoin(customListTable).on(
+                        CustomListEntitySchema.mediaListId.asColumn(customListTable).equal(
+                            MediaListEntitySchema.id.asColumn(mediaListTable)
+                        )
+                    )
+                } whereAnd {
+                    CustomListEntitySchema.listName.asColumn(customListTable) equal listName
+                } whereAnd {
+                    CustomListEntitySchema.userId.asColumn(customListTable) equal filter.userId
+                } whereAnd {
+                    CustomListEntitySchema.enabled.asColumn(customListTable) equal true
+                }
+            }
         }
     }
 

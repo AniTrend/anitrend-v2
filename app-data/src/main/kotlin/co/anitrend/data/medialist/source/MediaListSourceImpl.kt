@@ -26,6 +26,7 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.customlist.datasource.CustomListLocalSource
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.medialist.*
@@ -320,7 +321,7 @@ internal class MediaListSourceImpl {
 
     class DeleteCustomList(
         private val remoteSource: MediaListRemoteSource,
-        private val localSource: MediaListLocalSource,
+        private val localSource: CustomListLocalSource,
         private val userSource: UserSource.Profile,
         private val controller: DeleteCustomListController,
         private val settings: IAuthenticationSettings,
@@ -355,7 +356,10 @@ internal class MediaListSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 val userId = settings.authenticatedUserId.value
-                localSource.clearByUserId(userId = userId)
+                localSource.clear(
+                    listName = mutation.param.customList,
+                    userId = userId
+                )
             }
         }
     }

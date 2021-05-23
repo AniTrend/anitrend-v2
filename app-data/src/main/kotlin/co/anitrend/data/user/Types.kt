@@ -43,7 +43,7 @@ internal typealias UserFollowRepository = IUserRepository.ToggleFollow<DataState
 internal typealias UserUpdateRepository = IUserRepository.Update<DataState<User>>
 
 typealias GetUserInteractor = UserUseCase.GetUser<DataState<User>>
-typealias GetProfilePagedInteractor = UserUseCase.GetPaged<DataState<PagedList<User>>>
+typealias GetUserPagedInteractor = UserUseCase.GetPaged<DataState<PagedList<User>>>
 typealias GetProfileInteractor = UserUseCase.GetProfile<DataState<User>>
 typealias GetProfileStatisticInteractor = UserUseCase.Statistic<DataState<User.WithStats>>
 typealias GetAuthenticatedInteractor = UserUseCase.GetAuthenticated<DataState<User>>

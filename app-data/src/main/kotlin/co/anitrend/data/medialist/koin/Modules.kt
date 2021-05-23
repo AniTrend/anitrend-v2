@@ -81,7 +81,7 @@ private val sourceModule = module {
     factory<MediaListSource.DeleteCustomList> {
         MediaListSourceImpl.DeleteCustomList(
             remoteSource = graphApi(),
-            localSource = store().mediaListDao(),
+            localSource = store().customListDao(),
             userSource = get(),
             clearDataHelper = get(),
             controller = graphQLController(

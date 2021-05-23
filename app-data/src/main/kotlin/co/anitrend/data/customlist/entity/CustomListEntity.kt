@@ -32,15 +32,22 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_list_id"],
-            parentColumns = ["id"],
+            parentColumns = ["id"]
         ),
+        ForeignKey(
+            entity = UserEntity::class,
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+            childColumns = ["user_id"],
+            parentColumns = ["id"]
         )
     ],
     indices = [
         Index(
             value = [
                 "media_list_id",
-                "list_name"
+                "list_name",
+                "user_id"
             ],
             unique = true
         )
@@ -51,5 +58,6 @@ internal data class CustomListEntity(
     @ColumnInfo(name = "enabled") val enabled: Boolean,
     @ColumnInfo(name = "list_name") val listName: String,
     @ColumnInfo(name = "media_list_id") val mediaListId: Long,
+    @ColumnInfo(name = "user_id") val userId: Long,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
 ) : Identity

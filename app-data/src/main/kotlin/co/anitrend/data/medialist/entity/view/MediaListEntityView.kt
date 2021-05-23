@@ -19,15 +19,29 @@ package co.anitrend.data.medialist.entity.view
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import co.anitrend.data.customlist.entity.CustomListEntity
+import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.user.entity.UserEntity
 
 internal sealed class MediaListEntityView {
     abstract val mediaList: MediaListEntity
+    abstract val customList: List<CustomListEntity>
+    abstract val customScore: List<CustomScoreEntity>
 
     internal data class Core(
-        @Embedded override val mediaList: MediaListEntity
+        @Embedded override val mediaList: MediaListEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_list_id"
+        )
+        override val customList: List<CustomListEntity> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_list_id"
+        )
+        override val customScore: List<CustomScoreEntity> = emptyList()
     ) : MediaListEntityView()
 
     internal data class WithMedia(
@@ -36,6 +50,16 @@ internal sealed class MediaListEntityView {
             entityColumn = "id"
         )
         val media: MediaEntity,
-        @Embedded override val mediaList: MediaListEntity
+        @Embedded override val mediaList: MediaListEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_list_id"
+        )
+        override val customList: List<CustomListEntity> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_list_id"
+        )
+        override val customScore: List<CustomScoreEntity> = emptyList()
     ) : MediaListEntityView()
 }

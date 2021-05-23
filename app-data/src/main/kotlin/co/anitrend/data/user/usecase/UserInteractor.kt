@@ -39,7 +39,7 @@ internal interface UserInteractor {
 
     class Paged(
         repository: UserSearchRepository
-    ) : GetProfilePagedInteractor(repository) {
+    ) : GetUserPagedInteractor(repository) {
         /**
          * Informs underlying repositories or related components running background operations to stop
          */

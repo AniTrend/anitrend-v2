@@ -182,13 +182,13 @@ internal class UserSourceImpl {
         private val localSource: UserLocalSource,
         private val clearDataHelper: IClearDataHelper,
         private val controller: UserProfileController,
-        private val converter: UserEntityConverter,
+        private val converter: UserViewEntityConverter,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher
     ) : UserSource.Profile() {
 
         override fun observable(): Flow<User> {
-            return localSource.userByIdFlow(query.param.id)
+            return localSource.userByIdWithOptionsFlow(query.param.id)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)

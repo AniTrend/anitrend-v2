@@ -205,7 +205,7 @@ private val useCaseModule = module {
             repository = get()
         )
     }
-    factory<GetProfilePagedInteractor> {
+    factory<GetUserPagedInteractor> {
         UserInteractor.Paged(
             repository = get()
         )

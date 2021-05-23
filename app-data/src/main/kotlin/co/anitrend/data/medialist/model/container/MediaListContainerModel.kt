@@ -73,10 +73,10 @@ internal sealed class MediaListContainerModel {
         @Serializable
         internal data class Group(
             @SerialName("entries") override val entries: List<MediaListModel.Extended> = emptyList(),
-            @SerialName("isCustomList") val isCustomList: Boolean,
-            @SerialName("isSplitCompletedList") val isSplitCompletedList: Boolean,
-            @SerialName("name") val name: String,
-            @SerialName("status") val status: MediaListStatus
+            @SerialName("isCustomList") val isCustomList: Boolean = false,
+            @SerialName("isSplitCompletedList") val isSplitCompletedList: Boolean = false,
+            @SerialName("name") val name: String? = null,
+            @SerialName("status") val status: MediaListStatus? = null
         ) : Many()
 
         /**
