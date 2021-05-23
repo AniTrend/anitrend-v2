@@ -30,7 +30,13 @@ private val converterModule = module {
 
 private val mapperModule = module {
     factory {
-        RankMapper(
+        RankMapper.Core(
+            localSource = store().rankDao(),
+            converter = get()
+        )
+    }
+    factory {
+        RankMapper.Embed(
             localSource = store().rankDao()
         )
     }

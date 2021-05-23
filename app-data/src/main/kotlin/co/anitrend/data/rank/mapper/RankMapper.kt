@@ -18,45 +18,98 @@
 package co.anitrend.data.rank.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.link.converter.LinkModelConverter
+import co.anitrend.data.link.datasource.LinkLocalSource
+import co.anitrend.data.link.entity.LinkEntity
+import co.anitrend.data.link.mapper.LinkMapper
+import co.anitrend.data.link.model.LinkModel
+import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.rank.converter.RankModelConverter
 import co.anitrend.data.rank.datasource.RankLocalSource
 import co.anitrend.data.rank.entity.RankEntity
 import co.anitrend.data.rank.model.RankModel
 
-internal class RankMapper(
-    override val localSource: RankLocalSource
-) : EmbedMapper<RankMapper.Item, RankEntity>() {
+internal sealed class RankMapper : DefaultMapper<List<RankModel>, List<RankEntity>>() {
 
-    override val converter = object : SupportConverter<Item, RankEntity>() {
+    protected abstract val localSource: RankLocalSource
+    protected abstract val converter: RankModelConverter
+
+    class Core(
+        override val localSource: RankLocalSource,
+        override val converter: RankModelConverter
+    ) : RankMapper() {
+
         /**
-         * Function reference from converting from [M] to [E] which will
-         * be called by [convertFrom]
+         * Save [data] into your desired local source
          */
-        override val fromType: (Item) -> RankEntity = {
-            RankEntity(
-                mediaId = it.mediaId,
-                allTime = it.rank.allTime,
-                context = it.rank.context,
-                format = it.rank.format,
-                rank = it.rank.rank,
-                season = it.rank.season,
-                type = it.rank.type,
-                year = it.rank.year,
-                id = it.rank.id,
-            )
+        override suspend fun persist(data: List<RankEntity>) {
+            localSource.upsert(data)
         }
 
         /**
-         * Function reference from converting from [E] to [M] which will
-         * be called by [convertTo]
+         * Creates mapped objects and handles the database operations which may be required to map various objects
+         *
+         * @param source the incoming data source type
+         * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override val toType: (RankEntity) -> Item
-                get() = throw NotImplementedError()
-
+        override suspend fun onResponseMapFrom(
+            source: List<RankModel>
+        ) = converter.convertFrom(source)
     }
 
-    data class Item(
-        val mediaId: Long,
-        val rank: RankModel
-    )
+    class Embed(
+        override val localSource: RankLocalSource
+    ) : EmbedMapper<Embed.Item, RankEntity>() {
+
+        override val converter = object : SupportConverter<Item, RankEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> RankEntity = {
+                RankEntity(
+                    mediaId = it.mediaId,
+                    allTime = it.rank.allTime,
+                    context = it.rank.context,
+                    format = it.rank.format,
+                    rank = it.rank.rank,
+                    season = it.rank.season,
+                    type = it.rank.type,
+                    year = it.rank.year,
+                    id = it.rank.id,
+                )
+            }
+
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (RankEntity) -> Item
+                get() = throw NotImplementedError()
+
+        }
+
+        data class Item(
+            val mediaId: Long,
+            val rank: RankModel
+        )
+
+        companion object {
+
+            fun asItem(source: MediaModel) =
+                source.rankings.map { rank ->
+                    Item(
+                        mediaId = source.id,
+                        rank = rank
+                    )
+                }
+
+            fun asItem(source: List<MediaModel>) =
+                source.flatMap { media ->
+                    asItem(media)
+                }
+        }
+    }
 }
