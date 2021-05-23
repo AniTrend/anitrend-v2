@@ -35,16 +35,14 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["tag_id"],
-            parentColumns = ["id"],
-            deferred = true
+            parentColumns = ["id"]
         ),
         ForeignKey(
             entity = MediaEntity::class,
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"],
-            deferred = true
+            parentColumns = ["id"]
         )
     ]
 )

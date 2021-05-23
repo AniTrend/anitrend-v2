@@ -34,8 +34,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"],
-            deferred = true
+            parentColumns = ["id"]
         )
     ],
     indices = [Index(value = ["media_id"])]

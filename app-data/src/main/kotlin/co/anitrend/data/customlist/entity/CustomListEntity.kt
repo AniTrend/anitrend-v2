@@ -33,7 +33,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_list_id"],
             parentColumns = ["id"],
-            deferred = true
+        ),
         )
     ],
     indices = [

@@ -37,16 +37,14 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"],
-            deferred = true
+            parentColumns = ["id"]
         ),
         ForeignKey(
             entity = GenreEntity::class,
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["genre_id"],
-            parentColumns = ["id"],
-            deferred = true
+            parentColumns = ["id"]
         )
     ]
 )

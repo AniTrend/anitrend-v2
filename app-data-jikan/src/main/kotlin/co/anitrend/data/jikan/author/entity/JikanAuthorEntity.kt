@@ -36,8 +36,7 @@ import co.anitrend.data.jikan.media.entity.JikanEntity
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["jikan_id"],
-            parentColumns = ["id"],
-            deferred = true
+            parentColumns = ["id"]
         )
     ]
 )
