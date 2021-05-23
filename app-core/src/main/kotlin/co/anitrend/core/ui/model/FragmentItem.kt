@@ -25,7 +25,8 @@ import androidx.fragment.app.Fragment
  */
 data class FragmentItem<T: Fragment>(
     val fragment: Class<out T>,
-    val parameter: Bundle? = null
+    val parameter: Bundle? = null,
+    val tag: String = fragment.simpleName
 ) {
-    fun tag(): String? = fragment.simpleName
+    fun tag(): String = tag
 }
