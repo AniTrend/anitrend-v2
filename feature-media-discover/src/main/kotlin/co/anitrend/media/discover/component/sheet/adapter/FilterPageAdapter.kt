@@ -33,7 +33,8 @@ internal class FilterPageAdapter(
     private val param: MediaDiscoverRouter.Param?,
     private val titles: List<String>,
     private val fragmentActivity: FragmentActivity,
-    fragmentManager: FragmentManager, lifecycle: Lifecycle
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     /**

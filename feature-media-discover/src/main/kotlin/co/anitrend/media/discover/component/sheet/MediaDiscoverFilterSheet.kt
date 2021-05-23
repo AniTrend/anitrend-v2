@@ -69,11 +69,11 @@ class MediaDiscoverFilterSheet(
 
     private fun setUpViewPager() {
         requireBinding().viewPager.adapter = FilterPageAdapter(
-            viewModel.filter.value,
-            titles,
-            requireActivity(),
-            childFragmentManager,
-            lifecycle
+            param = viewModel.filter.value,
+            titles = titles,
+            fragmentActivity = requireActivity(),
+            fragmentManager = childFragmentManager,
+            lifecycle = lifecycle
         )
         // temporary work around for nested scrolling not working as expected
         //requireBinding().viewPager.children.find {
