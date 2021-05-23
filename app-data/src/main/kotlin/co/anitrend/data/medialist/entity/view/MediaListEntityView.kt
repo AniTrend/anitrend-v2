@@ -24,15 +24,9 @@ import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.user.entity.UserEntity
 
 internal sealed class MediaListEntityView {
-    abstract val user: UserEntity
     abstract val mediaList: MediaListEntity
 
     internal data class Core(
-        @Relation(
-            parentColumn = "user_id",
-            entityColumn = "id"
-        )
-        override val user: UserEntity,
         @Embedded override val mediaList: MediaListEntity
     ) : MediaListEntityView()
 
@@ -42,11 +36,6 @@ internal sealed class MediaListEntityView {
             entityColumn = "id"
         )
         val media: MediaEntity,
-        @Relation(
-            parentColumn = "user_id",
-            entityColumn = "id"
-        )
-        override val user: UserEntity,
         @Embedded override val mediaList: MediaListEntity
     ) : MediaListEntityView()
 }
