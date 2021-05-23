@@ -93,6 +93,7 @@ sealed class MediaListParam {
         val isFollowing: Boolean? = null,
         val userId_in: List<Long>? = null,
         val compareWithAuthList: Boolean? = null,
+        val customListName: String? = null,
         override val scoreFormat: ScoreFormat,
         override val type: MediaType,
         override val userId: Long,
