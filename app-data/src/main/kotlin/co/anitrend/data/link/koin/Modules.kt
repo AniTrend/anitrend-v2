@@ -30,7 +30,13 @@ private val converterModule = module {
 
 private val mapperModule = module {
     factory {
-        LinkMapper(
+        LinkMapper.Core(
+            localSource = store().linkDao(),
+            converter = get()
+        )
+    }
+    factory {
+        LinkMapper.Embed(
             localSource = store().linkDao()
         )
     }

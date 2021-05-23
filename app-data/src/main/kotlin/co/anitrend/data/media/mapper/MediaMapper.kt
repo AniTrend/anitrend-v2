@@ -38,6 +38,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
 
     protected abstract val localSource: MediaLocalSource
     protected abstract val converter: MediaModelConverter
+    protected abstract val linkMapper: LinkMapper.Embed
+    protected abstract val rankMapper: RankMapper.Embed
 
     class Network(
         private val converter: MediaConverter
@@ -66,6 +68,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val airingMapper: AiringMapper.Embed,
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
+        override val linkMapper: LinkMapper.Embed,
+        override val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ) : MediaMapper<MediaModelContainer.Paged, List<MediaEntity>>() {
@@ -104,6 +108,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
                     MediaModel.Core::mediaListEntry
                 )
             )
+            linkMapper.onEmbedded(
+                LinkMapper.Embed.asItem(source.page.media)
+            )
+            rankMapper.onEmbedded(
+                RankMapper.Embed.asItem(source.page.media)
+            )
             return converter.convertFrom(source.page.media)
         }
     }
@@ -113,8 +123,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val airingMapper: AiringMapper.Embed,
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
-        private val linkMapper: LinkMapper,
-        private val rankMapper: RankMapper,
+        override val linkMapper: LinkMapper.Embed,
+        override val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ) : MediaMapper<MediaModelContainer.Detail, MediaEntity>() {
@@ -149,14 +159,10 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
                 source.media.mediaListEntry
             )
             linkMapper.onEmbedded(
-                source.media.externalLinks.map {
-                    LinkMapper.Item(source.media.id, it)
-                }
+                LinkMapper.Embed.asItem(source.media)
             )
             rankMapper.onEmbedded(
-                source.media.rankings.map {
-                    RankMapper.Item(source.media.id, it)
-                }
+                RankMapper.Embed.asItem(source.media)
             )
             return converter.convertFrom(source.media)
         }
@@ -165,6 +171,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     class Embed(
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
+        private val linkMapper: LinkMapper.Embed,
+        private val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ): EmbedMapper<MediaModel, MediaEntity>() {
@@ -191,6 +199,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
             genreMapper.onEmbedded(
                 GenreMapper.Embed.asItem(source)
             )
+            linkMapper.onEmbedded(
+                LinkMapper.Embed.asItem(source)
+            )
+            rankMapper.onEmbedded(
+                RankMapper.Embed.asItem(source)
+            )
             return super.onResponseMapFrom(source)
         }
     }
@@ -199,6 +213,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val airingMapper: AiringMapper.Embed,
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
+        private val linkMapper: LinkMapper.Embed,
+        private val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ): EmbedMapper<MediaModel, MediaEntity>() {
@@ -228,6 +244,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
                     it.nextAiringEpisode as? AiringScheduleModel
                 }
             )
+            linkMapper.onEmbedded(
+                LinkMapper.Embed.asItem(source)
+            )
+            rankMapper.onEmbedded(
+                RankMapper.Embed.asItem(source)
+            )
             return super.onResponseMapFrom(source)
         }
     }
@@ -238,6 +260,8 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaListMapper: MediaListMapper.Embed,
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
+        private val linkMapper: LinkMapper.Embed,
+        private val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter
     ): EmbedMapper<MediaModel, MediaEntity>() {
@@ -276,6 +300,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
                         else -> null
                     }
                 }
+            )
+            linkMapper.onEmbedded(
+                LinkMapper.Embed.asItem(source)
+            )
+            rankMapper.onEmbedded(
+                RankMapper.Embed.asItem(source)
             )
             return super.onResponseMapFrom(source)
         }

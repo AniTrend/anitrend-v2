@@ -39,6 +39,9 @@ internal sealed class MediaEntityView {
     abstract val tags: List<TagEntity.Extended>
     abstract val genres: List<GenreEntity.Extended>
 
+    abstract val links: List<LinkEntity>
+    abstract val ranks: List<RankEntity>
+
     internal data class Core(
         @Embedded override val media: MediaEntity,
         @Relation(
@@ -70,20 +73,20 @@ internal sealed class MediaEntityView {
             parentColumn = "id",
             entityColumn = "media_id"
         )
-        override val genres: List<GenreEntity.Extended> = emptyList()
+        override val genres: List<GenreEntity.Extended> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_id"
+        )
+        override val links: List<LinkEntity> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_id"
+        )
+        override val ranks: List<RankEntity> = emptyList(),
     ) : MediaEntityView()
 
     internal data class Extended(
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id"
-        )
-        val links: List<LinkEntity>,
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id"
-        )
-        val ranks: List<RankEntity>,
         @Embedded override val media: MediaEntity,
         @Relation(
             parentColumn = "id",
@@ -114,6 +117,16 @@ internal sealed class MediaEntityView {
             parentColumn = "id",
             entityColumn = "media_id"
         )
-        override val genres: List<GenreEntity.Extended> = emptyList()
+        override val genres: List<GenreEntity.Extended> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_id"
+        )
+        override val links: List<LinkEntity> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_id"
+        )
+        override val ranks: List<RankEntity> = emptyList(),
     ) : MediaEntityView()
 }

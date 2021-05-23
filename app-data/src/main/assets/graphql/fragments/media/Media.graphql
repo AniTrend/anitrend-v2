@@ -48,4 +48,19 @@ fragment Media on Media {
     nextAiringEpisode {
         ... AiringScheduleCore
     }
+    rankings {
+        id
+        allTime
+        context
+        format
+        rank
+        season
+        type
+        year
+    }
+    externalLinks {
+        id
+        site
+        url
+    }
 }

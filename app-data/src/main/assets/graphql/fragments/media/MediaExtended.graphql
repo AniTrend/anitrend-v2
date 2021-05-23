@@ -1,18 +1,3 @@
 fragment MediaExtended on Media {
     ... MediaCore
-    rankings {
-        id
-        allTime
-        context
-        format
-        rank
-        season
-        type
-        year
-    }
-    externalLinks {
-        id
-        site
-        url
-    }
 }

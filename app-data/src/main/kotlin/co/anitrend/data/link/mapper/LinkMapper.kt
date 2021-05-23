@@ -18,39 +18,92 @@
 package co.anitrend.data.link.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.core.extensions.toHashId
+import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.mapper.GenreMapper
+import co.anitrend.data.genre.model.GenreCollection
+import co.anitrend.data.link.converter.LinkModelConverter
 import co.anitrend.data.link.datasource.LinkLocalSource
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.link.model.LinkModel
+import co.anitrend.data.media.model.MediaModel
 
-internal class LinkMapper(
-    override val localSource: LinkLocalSource
-) : EmbedMapper<LinkMapper.Item, LinkEntity>() {
+internal sealed class LinkMapper : DefaultMapper<List<LinkModel>, List<LinkEntity>>() {
 
-    override val converter = object : SupportConverter<Item, LinkEntity>() {
+    protected abstract val localSource: LinkLocalSource
+    protected abstract val converter: LinkModelConverter
+
+    class Core(
+        override val localSource: LinkLocalSource,
+        override val converter: LinkModelConverter
+    ) : LinkMapper() {
+
         /**
-         * Function reference from converting from [M] to [E] which will
-         * be called by [convertFrom]
+         * Save [data] into your desired local source
          */
-        override val fromType: (Item) -> LinkEntity = {
-            LinkEntity(
-                mediaId = it.mediaId,
-                site = it.link.site,
-                url = it.link.url,
-                id = it.link.id,
-            )
+        override suspend fun persist(data: List<LinkEntity>) {
+            localSource.upsert(data)
         }
 
         /**
-         * Function reference from converting from [E] to [M] which will
-         * be called by [convertTo]
+         * Creates mapped objects and handles the database operations which may be required to map various objects
+         *
+         * @param source the incoming data source type
+         * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override val toType: (LinkEntity) -> Item
-            get() = throw NotImplementedError()
+        override suspend fun onResponseMapFrom(
+            source: List<LinkModel>
+        ) = converter.convertFrom(source)
     }
 
-    data class Item(
-        val mediaId: Long,
-        val link: LinkModel
-    )
+    class Embed(
+        override val localSource: LinkLocalSource
+    ) : EmbedMapper<Embed.Item, LinkEntity>() {
+
+        override val converter = object : SupportConverter<Item, LinkEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> LinkEntity = {
+                LinkEntity(
+                    mediaId = it.mediaId,
+                    site = it.link.site,
+                    url = it.link.url,
+                    id = it.link.id,
+                )
+            }
+
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (LinkEntity) -> Item
+                get() = throw NotImplementedError()
+        }
+
+        data class Item(
+            val mediaId: Long,
+            val link: LinkModel
+        )
+
+        companion object {
+
+            fun asItem(source: MediaModel) =
+                source.externalLinks.map { link ->
+                    Item(
+                        mediaId = source.id,
+                        link = link
+                    )
+                }
+
+            fun asItem(source: List<MediaModel>) =
+                source.flatMap { media ->
+                    asItem(media)
+                }
+        }
+    }
 }
