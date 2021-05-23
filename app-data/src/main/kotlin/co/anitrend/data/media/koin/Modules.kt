@@ -121,6 +121,8 @@ private val mapperModule = module {
             mediaListMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
             airingMapper = get(),
             localSource = store().mediaDao(),
             converter = get()
@@ -135,6 +137,8 @@ private val mapperModule = module {
         MediaMapper.Embed(
             genreMapper = get(),
             tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
             localSource = store().mediaDao(),
             converter = get()
         )
@@ -144,6 +148,8 @@ private val mapperModule = module {
             airingMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
             localSource = store().mediaDao(),
             converter = get()
         )
@@ -154,6 +160,8 @@ private val mapperModule = module {
             airingMapper = get(),
             genreMapper = get(),
             tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
             localSource = store().mediaDao(),
             converter = get()
         )
