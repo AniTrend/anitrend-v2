@@ -43,6 +43,7 @@ import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.databinding.MainScreenBinding
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.*
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
@@ -331,6 +332,28 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 viewModel.state.selectedTitle = R.string.navigation_episodes
                 FragmentItem(
                     fragment = EpisodeRouter.forFragment()
+                )
+            }
+            R.id.navigation_anime_list -> {
+                viewModel.state.selectedTitle = R.string.navigation_anime_list
+                FragmentItem(
+                    fragment = MediaListRouter.forFragment(),
+                    parameter = MediaListRouter.Param(
+                        userId = presenter.settings.authenticatedUserId.value,
+                        type = MediaType.ANIME
+                    ).asBundle(),
+                    tag = MediaType.ANIME.name
+                )
+            }
+            R.id.navigation_manga_list -> {
+                viewModel.state.selectedTitle = R.string.navigation_manga_list
+                FragmentItem(
+                    fragment = MediaListRouter.forFragment(),
+                    parameter = MediaListRouter.Param(
+                        userId = presenter.settings.authenticatedUserId.value,
+                        type = MediaType.MANGA
+                    ).asBundle(),
+                    tag = MediaType.MANGA.name
                 )
             }
             R.id.navigation_donate -> {

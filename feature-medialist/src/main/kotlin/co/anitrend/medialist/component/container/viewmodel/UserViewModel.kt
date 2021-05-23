@@ -15,19 +15,35 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.medialist.component.content.viewmodel
+package co.anitrend.medialist.component.container.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import co.anitrend.medialist.component.content.viewmodel.state.MediaListContentState
+import co.anitrend.arch.extension.ext.extra
+import co.anitrend.medialist.component.container.viewmodel.state.UserState
+import co.anitrend.navigation.MediaListRouter
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class MediaListContentViewModel(
-    val state: MediaListContentState
+class UserViewModel(
+    val state: UserState,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     init {
         state.context = viewModelScope.coroutineContext
+        viewModelScope.launch {
+            savedStateHandle.getLiveData<MediaListRouter.Param>(
+                MediaListRouter.Param.KEY
+            ).asFlow().collect { param ->
+                state(param)
+            }
+        }
     }
+
+    val param: MediaListRouter.Param? by savedStateHandle.extra(MediaListRouter.Param.KEY)
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.
