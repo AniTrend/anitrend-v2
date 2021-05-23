@@ -25,9 +25,13 @@ import androidx.fragment.app.Fragment
 import androidx.work.ListenableWorker
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
+import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.navigation.model.sorting.Sorting
 import co.anitrend.navigation.provider.INavigationProvider
@@ -610,8 +614,30 @@ object MediaListRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
+        val customListName: String? = null,
+        val mediaId_in: List<Int>? = null,
+        val mediaId_not_in: List<Int>? = null,
+        val isFollowing: Boolean? = null,
+        val userId_in: List<Long>? = null,
+        val compareWithAuthList: Boolean? = null,
+        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
+        val type: MediaType,
         val userId: Long,
-        val mediaType: MediaType
+        val completedAt: DateInt? = null,
+        val completedAt_greater: DateInt? = null,
+        val completedAt_lesser: DateInt? = null,
+        val completedAt_like: DateLike? = null,
+        val notes: String? = null,
+        val notes_like: String? = null,
+        val sort: List<Sorting<MediaListSort>>? = null,
+        val startedAt: DateInt? = null,
+        val startedAt_greater: DateInt? = null,
+        val startedAt_lesser: DateInt? = null,
+        val startedAt_like: DateLike? = null,
+        val status: MediaListStatus? = null,
+        val status_in: List<MediaListStatus>? = null,
+        val status_not: MediaListStatus? = null,
+        val status_not_in: List<MediaListStatus>? = null,
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
