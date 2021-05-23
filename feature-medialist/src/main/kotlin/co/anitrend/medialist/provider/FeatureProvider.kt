@@ -19,7 +19,7 @@ package co.anitrend.medialist.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.medialist.component.content.MediaListContent
+import co.anitrend.medialist.component.container.MediaListContainer
 import co.anitrend.medialist.component.screen.MediaListScreen
 import co.anitrend.navigation.MediaListRouter
 
@@ -27,5 +27,5 @@ class FeatureProvider : MediaListRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, MediaListScreen::class.java)
 
-    override fun fragment() = MediaListContent::class.java
+    override fun fragment() = MediaListContainer::class.java
 }

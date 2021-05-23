@@ -17,29 +17,75 @@
 
 package co.anitrend.medialist.component.content.viewmodel.state
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.model.MediaListParam
+import co.anitrend.navigation.MediaListRouter
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 class MediaListState(
-    private val interactor: GetPagedMediaListInteractor
+    private val interactor: GetPagedMediaListInteractor,
+    private val settings: IUserSettings
 ) : ISupportViewModelState<PagedList<Media>> {
 
     var context by Delegates.notNull<CoroutineContext>()
 
-    override val loadState: LiveData<LoadState>
-        get() = TODO("Not yet implemented")
+    private val useCaseResult = MutableLiveData<DataState<PagedList<Media>>>()
 
-    override val model: LiveData<PagedList<Media>>
-        get() = TODO("Not yet implemented")
+    override val model = Transformations.switchMap(useCaseResult) {
+        it.model.asLiveData(context)
+    }
 
-    override val refreshState: LiveData<LoadState>
-        get() = TODO("Not yet implemented")
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
+    }
+
+    override val refreshState = Transformations.switchMap(useCaseResult) {
+        it.refreshState.asLiveData(context)
+    }
+
+    operator fun invoke(param: MediaListRouter.Param) {
+        val query = MediaListParam.Paged(
+            customListName = param.customListName,
+            mediaId_in = param.mediaId_in,
+            mediaId_not_in = param.mediaId_not_in,
+            isFollowing = param.isFollowing,
+            userId_in = param.userId_in,
+            compareWithAuthList = param.compareWithAuthList,
+            scoreFormat = settings.scoreFormat.value,
+            type = param.type,
+            userId = param.userId,
+            completedAt = param.completedAt,
+            completedAt_greater = param.completedAt_greater,
+            completedAt_lesser = param.completedAt_lesser,
+            completedAt_like = param.completedAt_like,
+            notes = param.notes,
+            notes_like = param.notes_like,
+            sort = param.sort,
+            startedAt = param.startedAt,
+            startedAt_greater = param.startedAt_greater,
+            startedAt_lesser = param.startedAt_lesser,
+            startedAt_like = param.startedAt_like,
+            status = param.status,
+            status_in = param.status_in,
+            status_not = param.status_not,
+            status_not_in = param.status_not_in,
+        )
+
+        val result = interactor(query)
+
+        useCaseResult.postValue(result)
+
+    }
 
     /**
      * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
@@ -49,20 +95,22 @@ class MediaListState(
      * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
      */
     override fun onCleared() {
-        TODO("Not yet implemented")
+        interactor.onCleared()
     }
 
     /**
      * Triggers use case to perform refresh operation
      */
     override suspend fun refresh() {
-        TODO("Not yet implemented")
+        val uiModel = useCaseResult.value
+        uiModel?.refresh?.invoke()
     }
 
     /**
      * Triggers use case to perform a retry operation
      */
     override suspend fun retry() {
-        TODO("Not yet implemented")
+        val uiModel = useCaseResult.value
+        uiModel?.retry?.invoke()
     }
 }

@@ -17,57 +17,90 @@
 
 package co.anitrend.medialist.component.content
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.viewbinding.ViewBinding
-import co.anitrend.core.component.content.AniTrendContent
+import androidx.annotation.IntegerRes
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import co.anitrend.arch.recycler.adapter.SupportAdapter
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.core.component.content.list.AniTrendListContent
+import co.anitrend.core.extensions.orEmpty
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.R
-import co.anitrend.medialist.databinding.MediaListContentBinding
+import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
+import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListContent(
-    override val inflateLayout: Int = R.layout.media_list_content
-) : AniTrendContent<MediaListContentBinding>() {
+    private val settings: ICustomizationSettings,
+    override val stateConfig: StateLayoutConfig,
+    override val supportViewAdapter: SupportAdapter<Media>
+) : AniTrendListContent<Media>() {
+
+    private val viewModel by viewModel<MediaListViewModel>(
+        state = { arguments.orEmpty() }
+    )
+
+    override val defaultSpanSize: Int
+        get() = getSpanSizeByPreference(
+            settings.preferredViewMode.value
+        )
+
+    @IntegerRes
+    private fun getSpanSizeByPreference(
+        viewMode: PreferredViewMode
+    ) = when (viewMode) {
+        PreferredViewMode.COMPACT -> R.integer.column_x3
+        PreferredViewMode.COMFORTABLE -> R.integer.column_x2
+        else -> R.integer.column_x1
+    }
+
+    /**
+     * Stub to trigger the loading of data, by default this is only called
+     * when [supportViewAdapter] has no data in its underlying source.
+     *
+     * This is called when the fragment reaches it's [onStart] state
+     *
+     * @see initializeComponents
+     */
+    override fun onFetchDataInitialize() {
+        listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
+            viewModelState().invoke(requireNotNull(viewModel.param))
+        }
+        lifecycleScope.launchWhenResumed {
+            settings.preferredViewMode.flow.collect {
+                val layoutManger = listPresenter.recyclerView.layoutManager
+                if (layoutManger is StaggeredGridLayoutManager) {
+                    val currentSpanCount = layoutManger.spanCount
+                    val newSpanCount = resources.getInteger(
+                        getSpanSizeByPreference(it)
+                    )
+                    if (currentSpanCount != newSpanCount)
+                        layoutManger.spanCount = newSpanCount
+                    else supportViewAdapter.notifyDataSetNeedsRefreshing()
+                }
+            }
+        }
+    }
 
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
+        viewModelState().model.observe(viewLifecycleOwner) {
+            onPostModelChange(it)
+        }
+        viewModel.filter.observe(viewLifecycleOwner) {
+            if (it != null)
+                viewModelState().invoke(it)
+        }
     }
 
     /**
-     * Called to have the fragment instantiate its user interface view. This is optional, and
-     * non-graphical fragments can return null. This will be called between
-     * [onCreate] & [onActivityCreated].
-     *
-     * A default View can be returned by calling [Fragment] in your
-     * constructor. Otherwise, this method returns null.
-     *
-     * It is recommended to __only__ inflate the layout in this method and move
-     * logic that operates on the returned View to [onViewCreated].
-     *
-     * If you return a View from here, you will later be called in [onDestroyView]
-     * when the view is being released.
-     *
-     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-     * @param container If non-null, this is the parent view that the fragment's UI should be
-     * attached to. The fragment should not add the view itself, but this can be used to generate
-     * the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return Return the View for the fragment's UI, or null.
+     * Proxy for a view model state if one exists
      */
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        binding = MediaListContentBinding.bind(requireNotNull(view))
-        return view
-    }
+    override fun viewModelState() = viewModel.state
 }

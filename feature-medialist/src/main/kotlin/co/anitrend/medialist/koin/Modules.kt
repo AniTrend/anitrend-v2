@@ -17,30 +17,60 @@
 
 package co.anitrend.medialist.koin
 
+import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.medialist.component.container.MediaListContainer
+import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
+import co.anitrend.medialist.component.container.viewmodel.UserViewModel
+import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
+import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.medialist.component.content.MediaListContent
-import co.anitrend.medialist.component.content.viewmodel.MediaListContentViewModel
-import co.anitrend.medialist.component.content.viewmodel.state.MediaListContentState
 import co.anitrend.medialist.provider.FeatureProvider
 import co.anitrend.navigation.MediaListRouter
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val fragmentModule = module {
     fragment {
+        MediaListContainer(
+            stateConfig = get()
+        )
+    }
+    fragment {
+        val settings = get<Settings>()
         MediaListContent(
-
+            settings = settings,
+            stateConfig = get(),
+            supportViewAdapter = MediaPagedAdapter(
+                settings = settings,
+                viewPool = RecyclerView.RecycledViewPool(),
+                resources = androidContext().resources,
+                stateConfiguration = get()
+            )
         )
     }
 }
 
 private val viewModelModule = module {
-    viewModel {
-        MediaListContentViewModel(
-            state = MediaListContentState(
+    viewModel { scope ->
+        MediaListViewModel(
+            state = MediaListState(
+                interactor = get(),
+                settings = get()
+            ),
+            savedStateHandle = scope.get()
+        )
+    }
+    viewModel { scope ->
+        UserViewModel(
+            state = UserState(
                 interactor = get()
-            )
+            ),
+            savedStateHandle = scope.get()
         )
     }
 }
