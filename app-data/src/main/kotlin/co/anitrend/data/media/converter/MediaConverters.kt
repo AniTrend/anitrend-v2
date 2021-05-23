@@ -117,6 +117,13 @@ internal class MediaConverter(
                 ),
                 countryCode = source.countryOfOrigin,
                 description = source.description,
+                externalLinks = source.externalLinks.map {
+                    MediaExternalLink(
+                        site = it.site,
+                        url = it.url,
+                        id = it.id,
+                    )
+                },
                 favourites = source.favourites,
                 genres = source.genres.map {
                     Genre.Extended(
@@ -128,6 +135,18 @@ internal class MediaConverter(
                 },
                 twitterTag = source.hashTag,
                 isRecommendationBlocked = false,
+                rankings = source.rankings.map {
+                    MediaRank(
+                        allTime = it.allTime,
+                        context = it.context,
+                        format = it.format,
+                        rank = it.rank,
+                        season = it.season,
+                        type = it.type,
+                        year = it.year,
+                        id = it.id,
+                    )
+                },
                 isLicensed = source.isLicensed,
                 isLocked = source.isLocked,
                 siteUrl = source.siteUrl,
@@ -207,6 +226,13 @@ internal class MediaConverter(
                 ),
                 countryCode = source.countryOfOrigin,
                 description = source.description,
+                externalLinks = source.externalLinks.map {
+                    MediaExternalLink(
+                        site = it.site,
+                        url = it.url,
+                        id = it.id,
+                    )
+                },
                 favourites = source.favourites,
                 genres = source.genres.map {
                    Genre.Extended(
@@ -218,6 +244,18 @@ internal class MediaConverter(
                 },
                 twitterTag = source.hashTag,
                 isRecommendationBlocked = false,
+                rankings = source.rankings.map {
+                    MediaRank(
+                        allTime = it.allTime,
+                        context = it.context,
+                        format = it.format,
+                        rank = it.rank,
+                        season = it.season,
+                        type = it.type,
+                        year = it.year,
+                        id = it.id,
+                    )
+                },
                 isLicensed = source.isLicensed,
                 isLocked = source.isLocked,
                 siteUrl = source.siteUrl,
@@ -488,6 +526,13 @@ internal class MediaEntityViewConverter(
                 ),
                 countryCode = media.countryOfOrigin,
                 description = media.description ?: jikan?.synopsis,
+                externalLinks = links.map {
+                    MediaExternalLink(
+                        site = it.site,
+                        url = it.url,
+                        id = it.id
+                    )
+                },
                 favourites = media.favourites,
                 genres = genres.map {
                     Genre.Extended(
@@ -501,6 +546,18 @@ internal class MediaEntityViewConverter(
                 isLicensed = media.isLicensed,
                 isLocked = media.isLocked,
                 isRecommendationBlocked = media.isRecommendationBlocked,
+                rankings = ranks.map {
+                    MediaRank(
+                        allTime = it.allTime,
+                        context = it.context,
+                        format = it.format,
+                        rank = it.rank,
+                        season = it.season,
+                        type = it.type,
+                        year = it.year,
+                        id = it.id
+                    )
+                },
                 siteUrl = media.siteUrl,
                 source = media.source ?: jikan?.source?.let {
                     runCatching {
@@ -597,31 +654,14 @@ internal class MediaEntityViewConverter(
                     endingThemes = source.jikan?.endingThemes.orEmpty(),
                     countryCode = media.countryCode,
                     description = media.description,
-                    externalLinks = source.links.map {
-                        MediaExternalLink(
-                            site = it.site,
-                            url = it.url,
-                            id = it.id
-                        )
-                    },
+                    externalLinks = media.externalLinks,
                     favourites = media.favourites,
                     genres = media.genres,
                     twitterTag = media.twitterTag,
                     isLicensed = media.isLicensed,
                     isLocked = media.isLocked,
                     isRecommendationBlocked = media.isRecommendationBlocked,
-                    rankings = source.ranks.map {
-                        MediaRank(
-                            allTime = it.allTime,
-                            context = it.context,
-                            format = it.format,
-                            rank = it.rank,
-                            season = it.season,
-                            type = it.type,
-                            year = it.year,
-                            id = it.id
-                        )
-                    },
+                    rankings = media.rankings,
                     siteUrl = media.siteUrl,
                     source = media.source,
                     synonyms = media.synonyms,
