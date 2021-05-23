@@ -38,6 +38,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal sealed class MediaModel : IMediaModel {
 
+    abstract val rankings: List<RankModel>
+    abstract val externalLinks: List<LinkModel>
+
     abstract val trailer: Trailer?
     abstract val title: Title?
     abstract val coverImage: CoverImage?
@@ -88,6 +91,8 @@ internal sealed class MediaModel : IMediaModel {
 
     @Serializable
     internal data class Media(
+        @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
+        @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
         @SerialName("trailer") override val trailer: Trailer? = null,
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
@@ -130,6 +135,8 @@ internal sealed class MediaModel : IMediaModel {
     @Serializable
     internal data class Core(
         @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core?,
+        @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
+        @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
         @SerialName("trailer") override val trailer: Trailer? = null,
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
@@ -172,8 +179,8 @@ internal sealed class MediaModel : IMediaModel {
     @Serializable
     internal data class Extended(
         @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core?,
-        @SerialName("rankings") val rankings: List<RankModel> = emptyList(),
-        @SerialName("externalLinks") val externalLinks: List<LinkModel> = emptyList(),
+        @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
+        @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
         @SerialName("trailer") override val trailer: Trailer? = null,
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
