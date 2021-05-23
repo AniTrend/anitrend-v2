@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.medialist.component.content.viewmodel.state.MediaListContentState
 
-class MediaListContentModel(
+class MediaListContentViewModel(
     val state: MediaListContentState
 ) : ViewModel() {
 
