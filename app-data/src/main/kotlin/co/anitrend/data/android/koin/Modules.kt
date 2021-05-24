@@ -84,7 +84,7 @@ import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
     single {
-        AniTrendStore.create(
+        AniTrendStore.createInMemory(
             applicationContext = androidContext()
         )
     } binds IAniTrendStore.BINDINGS
@@ -180,29 +180,22 @@ private val networkModule = module {
 
 private val interceptorModules = module {
     factory { (exclusionHeaders: Set<String>) ->
-        ChuckerInterceptor.Builder(
-            context = androidContext()
-            // The previously created Collector
-        )
-            .collector(
-                collector = ChuckerCollector(
-                    context = androidContext(),
-                    // Toggles visibility of the push notification
-                    showNotification = true,
-                    // Allows to customize the retention period of collected data
-                    retentionPeriod = RetentionManager.Period.ONE_DAY
+        ChuckerInterceptor.Builder(context = androidContext())
+                .collector(
+                    collector = ChuckerCollector(
+                        context = androidContext(),
+                        showNotification = true,
+                        retentionPeriod = RetentionManager.Period.ONE_DAY
+                    )
                 )
-                // The max body content length in bytes, after this responses will be truncated.
-            )
-            .maxContentLength(
-                length = 250000L
-                // List of headers to replace with ** in the Chucker UI
-            )
-            .redactHeaders(
-                headerNames = exclusionHeaders
-            )
-            .alwaysReadResponseBody(false)
-            .build()
+                .maxContentLength(
+                    length = 250000L
+                )
+                .redactHeaders(
+                    headerNames = exclusionHeaders
+                )
+                .alwaysReadResponseBody(false)
+                .build()
     }
     factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
         OkHttpClient.Builder()

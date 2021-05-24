@@ -21,15 +21,13 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.common.extension.asFuzzyDate
 import co.anitrend.data.common.extension.toFuzzyDateInt
-import co.anitrend.data.common.extension.toFuzzyDateModel
 import co.anitrend.data.core.extensions.koinOf
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.medialist.converter.MediaListEntityConverter
-import co.anitrend.data.medialist.entity.MediaListEntity
+import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
+import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -39,7 +37,8 @@ import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
@@ -511,8 +510,8 @@ internal class MediaEntityViewConverter(
 ) : SupportConverter<MediaEntityView, Media>() {
     private companion object : ISupportTransformer<MediaEntityView, Media> {
 
-        private fun MediaListEntity.createMediaList(): MediaList {
-            return MediaListEntityConverter().convertFrom(this)
+        private fun MediaListEntityView.createMediaList(): MediaList {
+            return koinOf<MediaListEntityViewConverter>().convertFrom(this)
         }
 
         private fun MediaEntityView.createMedia(): Media {
@@ -638,7 +637,7 @@ internal class MediaEntityViewConverter(
                 isFavourite = media.isFavourite,
                 isFavouriteBlocked = media.isFavouriteBlocked,
                 id = media.id,
-                mediaList = mediaList?.createMediaList()
+                mediaList = mediaListView?.createMediaList()
             )
         }
 

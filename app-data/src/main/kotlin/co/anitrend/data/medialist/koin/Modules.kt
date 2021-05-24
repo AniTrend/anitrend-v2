@@ -25,7 +25,6 @@ import co.anitrend.data.medialist.MediaListCollectionRepository
 import co.anitrend.data.medialist.MediaListEntryRepository
 import co.anitrend.data.medialist.MediaListPagedRepository
 import co.anitrend.data.medialist.cache.MediaListCache
-import co.anitrend.data.medialist.converter.MediaListEntityConverter
 import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
@@ -223,9 +222,6 @@ private val mapperModule = module {
 private val converterModule = module {
     factory {
         MediaListModelConverter()
-    }
-    factory {
-        MediaListEntityConverter()
     }
     factory {
         MediaListEntityViewConverter()

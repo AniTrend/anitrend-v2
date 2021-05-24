@@ -21,7 +21,6 @@ import androidx.room.TypeConverter
 import co.anitrend.data.android.database.extensions.fromCommaSeparatedValues
 import co.anitrend.data.android.database.extensions.toCommaSeparatedValues
 import co.anitrend.data.core.extensions.koinOf
-import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.model.statistics.UserStatisticModel
 import kotlinx.serialization.builtins.ListSerializer
@@ -53,7 +52,7 @@ internal class TypeConverterObject {
         val serializer = ListSerializer(
             UserGeneralOptionEntity.NotificationOption.serializer()
         )
-        return json.encodeToString(serializer, value)
+        return koinOf<Json>().encodeToString(serializer, value)
     }
     @TypeConverter fun toUserNotificationSettingList(
         value: String
@@ -61,50 +60,26 @@ internal class TypeConverterObject {
         val serializer = ListSerializer(
             UserGeneralOptionEntity.NotificationOption.serializer()
         )
-        return json.decodeFromString(serializer, value)
-    }
-
-    @TypeConverter fun fromCustomList(value: List<MediaListEntity.CustomList>): String {
-        val serializer = ListSerializer(MediaListEntity.CustomList.serializer())
-        return json.encodeToString(serializer, value)
-    }
-
-    @TypeConverter fun toCustomList(value: String): List<MediaListEntity.CustomList> {
-        val serializer = ListSerializer(MediaListEntity.CustomList.serializer())
-        return json.decodeFromString(serializer, value)
-    }
-
-    @TypeConverter fun fromAdvancedScoreList(value: List<MediaListEntity.AdvancedScore>): String {
-        val serializer = ListSerializer(MediaListEntity.AdvancedScore.serializer())
-        return json.encodeToString(serializer, value)
-    }
-
-    @TypeConverter fun toAdvancedScoreList(value: String): List<MediaListEntity.AdvancedScore> {
-        val serializer = ListSerializer(MediaListEntity.AdvancedScore.serializer())
-        return json.decodeFromString(serializer, value)
+        return koinOf<Json>().decodeFromString(serializer, value)
     }
 
     @TypeConverter fun fromStatisticAnime(value: UserStatisticModel.Anime): String {
         val serializer = UserStatisticModel.Anime.serializer()
-        return json.encodeToString(serializer, value)
+        return koinOf<Json>().encodeToString(serializer, value)
     }
 
     @TypeConverter fun toStatisticAnime(value: String): UserStatisticModel.Anime {
         val serializer = UserStatisticModel.Anime.serializer()
-        return json.decodeFromString(serializer, value)
+        return koinOf<Json>().decodeFromString(serializer, value)
     }
 
     @TypeConverter fun fromStatisticManga(value: UserStatisticModel.Manga): String {
         val serializer = UserStatisticModel.Manga.serializer()
-        return json.encodeToString(serializer, value)
+        return koinOf<Json>().encodeToString(serializer, value)
     }
 
     @TypeConverter fun toStatisticManga(value: String): UserStatisticModel.Manga {
         val serializer = UserStatisticModel.Manga.serializer()
-        return json.decodeFromString(serializer, value)
-    }
-
-    companion object {
-        internal val json by lazy { koinOf<Json>() }
+        return koinOf<Json>().decodeFromString(serializer, value)
     }
 }

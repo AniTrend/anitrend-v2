@@ -39,15 +39,6 @@ internal class MediaListModelConverter(
         override fun transform(source: MediaListModel) = when (source) {
             is MediaListModel.Extended -> MediaListEntity(
                 mediaType = source.media.type,
-                advancedScores = source.advancedScores?.map {
-                    MediaListEntity.AdvancedScore(it.key, it.value)
-                }.orEmpty(),
-                customLists = source.customLists?.map {
-                    MediaListEntity.CustomList(
-                        name = it.name,
-                        enabled = it.enabled
-                    )
-                }.orEmpty(),
                 completedAt = source.completedAt?.toFuzzyDateInt(),
                 createdAt = source.createdAt,
                 hiddenFromStatus = source.hiddenFromStatusLists ?: false,
@@ -67,15 +58,6 @@ internal class MediaListModelConverter(
             )
             is MediaListModel.Core -> MediaListEntity(
                 mediaType = source.category.type,
-                advancedScores = source.advancedScores?.map {
-                    MediaListEntity.AdvancedScore(it.key, it.value)
-                }.orEmpty(),
-                customLists = source.customLists?.map {
-                    MediaListEntity.CustomList(
-                        name = it.name,
-                        enabled = it.enabled
-                    )
-                }.orEmpty(),
                 completedAt = source.completedAt?.toFuzzyDateInt(),
                 createdAt = source.createdAt,
                 hiddenFromStatus = source.hiddenFromStatusLists ?: false,
@@ -94,57 +76,6 @@ internal class MediaListModelConverter(
                 id = source.id
             )
         }
-    }
-}
-
-internal class MediaListEntityConverter(
-    override val fromType: (MediaListEntity) -> MediaList = ::transform,
-    override val toType: (MediaList) -> MediaListEntity = { throw NotImplementedError() }
-) : SupportConverter<MediaListEntity, MediaList>() {
-    private companion object : ISupportTransformer<MediaListEntity, MediaList> {
-        private fun createMediaListProgress(source: MediaListEntity): MediaListProgress {
-            return when (source.mediaType) {
-                MediaType.ANIME -> MediaListProgress.Anime(
-                    episodeProgress = source.progress,
-                    repeatedCount = source.repeatCount
-                )
-                MediaType.MANGA -> MediaListProgress.Manga(
-                    chapterProgress = source.progress,
-                    volumeProgress = source.progressVolumes,
-                    repeatedCount = source.repeatCount
-                )
-            }
-        }
-
-        /**
-         * Transforms the the [source] to the target type
-         */
-        override fun transform(source: MediaListEntity) = MediaList.Core(
-            advancedScores = source.advancedScores.map {
-                MediaList.AdvancedScore(it.name, it.score)
-            },
-            customLists = source.customLists.map {
-                MediaList.CustomList(
-                    name = it.name,
-                    enabled = it.enabled
-                )
-            },
-            userId = source.userId,
-            priority = source.priority,
-            createdOn = source.createdAt,
-            startedOn = source.startedAt.asFuzzyDate(),
-            finishedOn = source.completedAt.asFuzzyDate(),
-            mediaId = source.mediaId,
-            score = source.score,
-            status = source.status,
-            progress = createMediaListProgress(source),
-            privacy = MediaListPrivacy(
-                isPrivate = source.hidden,
-                isHidden = source.hiddenFromStatus,
-                notes = source.notes,
-            ),
-            id = source.id
-        )
     }
 }
 
@@ -175,12 +106,12 @@ internal class MediaListEntityViewConverter(
          * Transforms the the [source] to the target type
          */
         override fun transform(source: MediaListEntityView) = MediaList.Core(
-            advancedScores = source.mediaList.advancedScores.map {
-                MediaList.AdvancedScore(it.name, it.score)
+            advancedScores = source.customScore.map {
+                MediaList.AdvancedScore(it.scoreName, it.score)
             },
-            customLists = source.mediaList.customLists.map {
+            customLists = source.customList.map {
                 MediaList.CustomList(
-                    name = it.name,
+                    name = it.listName,
                     enabled = it.enabled
                 )
             },
