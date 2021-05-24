@@ -321,14 +321,14 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-rc05"
-            const val ui = "com.github.anitrend.support-arch:support-ui:${version}"
-            const val ext = "com.github.anitrend.support-arch:support-ext:${version}"
-            const val core = "com.github.anitrend.support-arch:support-core:${version}"
-            const val data = "com.github.anitrend.support-arch:support-data:${version}"
-            const val theme = "com.github.anitrend.support-arch:support-theme:${version}"
-            const val domain = "com.github.anitrend.support-arch:support-domain:${version}"
-            const val recycler = "com.github.anitrend.support-arch:support-recycler:${version}"
+            private const val version = "1.3.0-rc06"
+            const val ui = "com.github.anitrend.support-arch:ui:${version}"
+            const val ext = "com.github.anitrend.support-arch:extension:${version}"
+            const val core = "com.github.anitrend.support-arch:core:${version}"
+            const val data = "com.github.anitrend.support-arch:data:${version}"
+            const val theme = "com.github.anitrend.support-arch:theme:${version}"
+            const val domain = "com.github.anitrend.support-arch:domain:${version}"
+            const val recycler = "com.github.anitrend.support-arch:recycler:${version}"
         }
 
         object Emojify {
