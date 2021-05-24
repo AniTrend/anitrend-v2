@@ -24,8 +24,6 @@ import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.support.query.builder.annotation.EntitySchema
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 @Entity(
     tableName = "media_list",
@@ -34,8 +32,6 @@ import kotlinx.serialization.Serializable
 @EntitySchema
 internal data class MediaListEntity(
     @ColumnInfo(name = "media_type") val mediaType: MediaType,
-    @ColumnInfo(name = "advanced_scores") val advancedScores: List<AdvancedScore>,
-    @ColumnInfo(name = "custom_lists") val customLists: List<CustomList>,
     @ColumnInfo(name = "completed_at") val completedAt: FuzzyDateInt?,
     @ColumnInfo(name = "created_at") val createdAt: Long?,
     @ColumnInfo(name = "hidden_from_status") val hiddenFromStatus: Boolean,
@@ -52,17 +48,4 @@ internal data class MediaListEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "id") override val id: Long
-) : Identity {
-
-    @Serializable
-    internal data class CustomList(
-        @SerialName("name") val name: String,
-        @SerialName("enabled") val enabled: Boolean
-    )
-
-    @Serializable
-    internal data class AdvancedScore(
-        @SerialName("name") val name: String,
-        @SerialName("score") val score: Float
-    )
-}
+) : Identity
