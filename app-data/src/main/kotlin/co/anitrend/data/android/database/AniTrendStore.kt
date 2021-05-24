@@ -91,7 +91,7 @@ import org.jetbrains.annotations.TestOnly
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 1
+        const val DATABASE_SCHEMA_VERSION = 2
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(

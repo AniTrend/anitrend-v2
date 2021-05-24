@@ -84,8 +84,9 @@ import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
     single {
-        AniTrendStore.createInMemory(
-            applicationContext = androidContext()
+        AniTrendStore.create(
+            applicationContext = androidContext(),
+            migrations = emptyArray()
         )
     } binds IAniTrendStore.BINDINGS
     single<IDeviceInfo> {

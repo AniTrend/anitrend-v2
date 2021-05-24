@@ -35,7 +35,7 @@ import co.anitrend.data.tag.entity.TagEntity
 internal sealed class MediaEntityView {
     abstract val media: MediaEntity
     abstract val nextAiring: AiringScheduleEntity?
-    abstract val mediaListView: MediaListEntityView?
+    abstract val mediaListView: MediaListEntityView.Core?
     abstract val jikan: JikanEntity?
     abstract val moe: RelationEntity?
 
@@ -59,9 +59,10 @@ internal sealed class MediaEntityView {
         override val jikan: JikanEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id"
+            entityColumn = "media_id",
+            entity = MediaListEntity::class
         )
-        override val mediaListView: MediaListEntityView?,
+        override val mediaListView: MediaListEntityView.Core?,
         @Relation(
             parentColumn = "next_airing_id",
             entityColumn = "id"
@@ -103,9 +104,10 @@ internal sealed class MediaEntityView {
         override val jikan: JikanEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id"
+            entityColumn = "media_id",
+            entity = MediaListEntity::class
         )
-        override val mediaListView: MediaListEntityView?,
+        override val mediaListView: MediaListEntityView.Core?,
         @Relation(
             parentColumn = "next_airing_id",
             entityColumn = "id"
