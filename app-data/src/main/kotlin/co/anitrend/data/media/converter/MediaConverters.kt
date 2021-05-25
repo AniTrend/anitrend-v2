@@ -535,9 +535,9 @@ internal class MediaEntityViewConverter(
                 favourites = media.favourites,
                 genres = genres.map {
                     Genre.Extended(
-                        id = it.id,
-                        name = it.genre,
-                        emoji = it.emoji,
+                        id = it.genre.id,
+                        name = it.genre.genre,
+                        emoji = it.genre.emoji,
                         background = media.coverImage.color
                     )
                 },
@@ -574,14 +574,14 @@ internal class MediaEntityViewConverter(
                 },
                 tags = tags.map {
                     Tag.Extended(
-                        name = it.name,
-                        description = it.description,
-                        category = it.category,
-                        rank = it.rank,
-                        isGeneralSpoiler = it.isGeneralSpoiler,
-                        isMediaSpoiler = it.isMediaSpoiler,
-                        isAdult = it.isAdult,
-                        id = it.id,
+                        name = it.tag.name,
+                        description = it.tag.description,
+                        category = it.tag.category,
+                        rank = it.connection.rank,
+                        isGeneralSpoiler = it.tag.isGeneralSpoiler,
+                        isMediaSpoiler = it.connection.isMediaSpoiler,
+                        isAdult = it.tag.isAdult,
+                        id = it.tag.id,
                         background = media.coverImage.color
                     )
                 },
@@ -637,7 +637,7 @@ internal class MediaEntityViewConverter(
                 isFavourite = media.isFavourite,
                 isFavouriteBlocked = media.isFavouriteBlocked,
                 id = media.id,
-                mediaList = mediaListView?.createMediaList()
+                mediaList = mediaList?.createMediaList()
             )
         }
 

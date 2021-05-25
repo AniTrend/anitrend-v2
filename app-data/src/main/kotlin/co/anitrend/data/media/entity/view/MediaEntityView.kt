@@ -20,27 +20,28 @@ package co.anitrend.data.media.entity.view
 import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.customlist.entity.CustomListEntity
-import co.anitrend.data.customscore.entity.CustomScoreEntity
-import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
+import co.anitrend.data.genre.entity.view.GenreEntityView
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
-import co.anitrend.data.relation.entity.RelationEntity
 import co.anitrend.data.rank.entity.RankEntity
-import co.anitrend.data.tag.entity.TagEntity
+import co.anitrend.data.relation.entity.RelationEntity
+import co.anitrend.data.tag.entity.connection.TagConnectionEntity
+import co.anitrend.data.tag.entity.view.TagEntityView
 
 internal sealed class MediaEntityView {
     abstract val media: MediaEntity
     abstract val nextAiring: AiringScheduleEntity?
-    abstract val mediaListView: MediaListEntityView.Core?
+    abstract val mediaList: MediaListEntityView.Core?
+
     abstract val jikan: JikanEntity?
     abstract val moe: RelationEntity?
 
-    abstract val tags: List<TagEntity.Extended>
-    abstract val genres: List<GenreEntity.Extended>
+    abstract val tags: List<TagEntityView>
+    abstract val genres: List<GenreEntityView>
 
     abstract val links: List<LinkEntity>
     abstract val ranks: List<RankEntity>
@@ -62,7 +63,7 @@ internal sealed class MediaEntityView {
             entityColumn = "media_id",
             entity = MediaListEntity::class
         )
-        override val mediaListView: MediaListEntityView.Core?,
+        override val mediaList: MediaListEntityView.Core?,
         @Relation(
             parentColumn = "next_airing_id",
             entityColumn = "id"
@@ -70,14 +71,16 @@ internal sealed class MediaEntityView {
         override val nextAiring: AiringScheduleEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id"
+            entityColumn = "media_id",
+            entity = TagConnectionEntity::class
         )
-        override val tags: List<TagEntity.Extended> = emptyList(),
+        override val tags: List<TagEntityView> = emptyList(),
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id"
+            entityColumn = "media_id",
+            entity = GenreConnectionEntity::class
         )
-        override val genres: List<GenreEntity.Extended> = emptyList(),
+        override val genres: List<GenreEntityView> = emptyList(),
         @Relation(
             parentColumn = "id",
             entityColumn = "media_id"
@@ -107,7 +110,7 @@ internal sealed class MediaEntityView {
             entityColumn = "media_id",
             entity = MediaListEntity::class
         )
-        override val mediaListView: MediaListEntityView.Core?,
+        override val mediaList: MediaListEntityView.Core?,
         @Relation(
             parentColumn = "next_airing_id",
             entityColumn = "id"
@@ -115,14 +118,16 @@ internal sealed class MediaEntityView {
         override val nextAiring: AiringScheduleEntity?,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id"
+            entityColumn = "media_id",
+            entity = TagConnectionEntity::class
         )
-        override val tags: List<TagEntity.Extended> = emptyList(),
+        override val tags: List<TagEntityView> = emptyList(),
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id"
+            entityColumn = "media_id",
+            entity = GenreConnectionEntity::class
         )
-        override val genres: List<GenreEntity.Extended> = emptyList(),
+        override val genres: List<GenreEntityView> = emptyList(),
         @Relation(
             parentColumn = "id",
             entityColumn = "media_id"
