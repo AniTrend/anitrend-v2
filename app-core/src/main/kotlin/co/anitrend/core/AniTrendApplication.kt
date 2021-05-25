@@ -54,7 +54,7 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
      * Applies theme on application instance
      */
     protected open fun applyNightMode() {
-        // apply application theme on application instance'
+        // apply application theme on application instance
         get<IThemeHelper>().applyDynamicNightModeFromTheme()
     }
 
@@ -74,5 +74,5 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
     /**
      * Return a new [ImageLoader].
      */
-    override fun newImageLoader() =  get<ImageLoader>()
+    override fun newImageLoader() = get<ImageLoader>()
 }
