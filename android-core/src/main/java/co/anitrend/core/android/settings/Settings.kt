@@ -114,7 +114,7 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
 
     override val clearDataOnSwipeRefresh = BooleanSetting(
         key = R.string.settings_clear_on_swipe_refresh,
-        default = true,
+        default = false,
         resources = context.resources,
         preference = this
     )
