@@ -42,14 +42,9 @@ private fun Project.configureBuildFlavours() {
     baseAppExtension().run {
         flavorDimensions.add("default")
         productFlavors {
-            // TODO: ApplicationProductFlavor doesn't seem to respect the `isDefault`
             create("google") {
                 dimension = "default"
                 isDefault = true
-            }
-            create("fdroid") {
-                dimension = "default"
-                versionNameSuffix = "-fdroid"
             }
             create("github") {
                 dimension = "default"
