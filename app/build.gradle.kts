@@ -25,8 +25,6 @@ dependencies {
 
     /** Material Design */
     implementation(Libraries.Google.Material.material)
-    implementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
-    implementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
 
     implementation(Libraries.AniTrend.Emojify.emojify)
 

@@ -98,6 +98,9 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.implementation(Libraries.Saket.Cascade.cascade)
 
     dependencies.implementation(project(Modules.Data.Settings.path()))
+
+    dependencies.googleImplementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
+    dependencies.googleImplementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
 }
 
 private fun Project.applyAppModuleGroupDependencies() {
