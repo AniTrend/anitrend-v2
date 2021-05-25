@@ -20,6 +20,7 @@ package co.anitrend.data.user.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.view.UserEntityView
@@ -90,6 +91,7 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
         select * from user
         where id = :id
     """)
+    @Transaction
     abstract fun userByIdWithOptionsFlow(
         id: Long
     ): Flow<UserEntityView.WithOptions?>
@@ -98,6 +100,7 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
         select * from user
         where id = :id
     """)
+    @Transaction
     abstract fun userByIdWithStatisticFlow(
         id: Long
     ): Flow<UserEntityView.WithStatistic?>
