@@ -67,6 +67,7 @@ private val coreModule = module {
             loadingDrawable = R.drawable.ic_support_empty_state,
             errorDrawable = R.drawable.ic_support_empty_state,
             loadingMessage = R.string.label_text_loading,
+            defaultMessage = R.string.label_text_end_of_list,
             retryAction = R.string.label_text_action_retry
         )
     } bind IStateLayoutConfig::class
