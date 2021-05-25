@@ -22,35 +22,34 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
 import co.anitrend.data.airing.entity.AiringScheduleEntity
+import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.database.converter.TypeConverterEnum
 import co.anitrend.data.android.database.converter.TypeConverterObject
 import co.anitrend.data.android.database.migration.migrations
 import co.anitrend.data.auth.entity.AuthEntity
-import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.fts.CharacterFtsEntity
 import co.anitrend.data.customlist.entity.CustomListEntity
 import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.entity.fts.EpisodeFtsEntity
+import co.anitrend.data.feed.news.entity.NewsEntity
+import co.anitrend.data.feed.news.entity.fts.NewsFtsEntity
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
+import co.anitrend.data.jikan.author.entity.JikanAuthorEntity
+import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
 import co.anitrend.data.jikan.media.entity.JikanEntity
+import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
+import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.fts.MediaFtsEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.relation.entity.RelationEntity
-import co.anitrend.data.feed.news.entity.NewsEntity
-import co.anitrend.data.feed.news.entity.fts.NewsFtsEntity
-import co.anitrend.data.jikan.author.entity.JikanAuthorEntity
-import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
-import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
-import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 import co.anitrend.data.rank.entity.RankEntity
+import co.anitrend.data.relation.entity.RelationEntity
 import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.staff.entity.fts.StaffFtsEntity
 import co.anitrend.data.studio.entity.StudioEntity
@@ -62,7 +61,6 @@ import co.anitrend.data.user.entity.fts.UserFtsEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
-import org.jetbrains.annotations.TestOnly
 
 @Database(
     entities = [
@@ -80,7 +78,6 @@ import org.jetbrains.annotations.TestOnly
         CustomListEntity::class, CustomScoreEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
-    views = []
 )
 @TypeConverters(
     value = [
@@ -99,19 +96,6 @@ internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
                 AniTrendStore::class.java,
                 "anitrend-db"
             ).fallbackToDestructiveMigration()
-                .addMigrations(*migrations)
-                .build()
-        }
-
-        @TestOnly
-        internal fun create(
-            applicationContext: Context,
-            migrations: Array<Migration>
-        ): IAniTrendStore {
-            return Room.inMemoryDatabaseBuilder(
-                applicationContext,
-                AniTrendStore::class.java,
-            ).allowMainThreadQueries()
                 .addMigrations(*migrations)
                 .build()
         }

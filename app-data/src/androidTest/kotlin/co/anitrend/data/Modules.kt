@@ -17,6 +17,7 @@
 
 package co.anitrend.data
 
+import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
@@ -43,10 +44,11 @@ private val data = module {
 
 private val store = module {
     single(override = true) {
-        AniTrendStore.create(
+        Room.inMemoryDatabaseBuilder(
             androidContext(),
-            emptyArray()
-        )
+            AniTrendStore::class.java,
+        ).allowMainThreadQueries()
+            .build()
     } binds IAniTrendStore.BINDINGS
 }
 
