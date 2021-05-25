@@ -15,12 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.notification.provider
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.content.Context
+import android.content.Intent
+import co.anitrend.notification.component.content.NotificationContent
+import co.anitrend.notification.component.screen.NotificationScreen
+import co.anitrend.navigation.NotificationRouter
 
-dependencies {
+class FeatureProvider : NotificationRouter.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, NotificationScreen::class.java)
 
+    override fun fragment() = NotificationContent::class.java
 }

@@ -540,7 +540,11 @@ object ReviewRouter : NavigationRouter() {
 object NotificationRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider
+    interface Provider : INavigationProvider {
+        fun fragment(): Class<out Fragment>
+    }
+
+    fun forFragment() = provider.fragment()
 }
 
 object NewsRouter : NavigationRouter() {

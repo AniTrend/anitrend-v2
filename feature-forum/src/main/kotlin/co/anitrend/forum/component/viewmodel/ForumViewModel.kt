@@ -15,12 +15,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.forum.component.viewmodel
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import co.anitrend.forum.component.viewmodel.state.ForumState
 
-dependencies {
+class ForumViewModel(
+    val state: ForumState
+) : ViewModel() {
 
+    init {
+        state.context = viewModelScope.coroutineContext
+    }
+
+    /**
+     * This method will be called when this ViewModel is no longer used and will be destroyed.
+     *
+     *
+     * It is useful when ViewModel observes some data and you need to clear this subscription to
+     * prevent a leak of this ViewModel.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        state.onCleared()
+    }
 }

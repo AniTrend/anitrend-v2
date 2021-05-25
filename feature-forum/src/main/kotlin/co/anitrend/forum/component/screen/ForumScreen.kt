@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,14 @@
 package co.anitrend.forum.component.screen
 
 import android.os.Bundle
+import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.forum.databinding.ForumScreenBinding
+import co.anitrend.navigation.ForumRouter
 
 class ForumScreen : AniTrendScreen<ForumScreenBinding>() {
+    
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -29,12 +33,20 @@ class ForumScreen : AniTrendScreen<ForumScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        updateUserInterface()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ForumScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
+        setSupportActionBar(requireBinding().bottomAppBar)
+    }
+
+    private fun updateUserInterface() {
+        currentFragmentTag = FragmentItem(
+            fragment = ForumRouter.forFragment(),
+            parameter = intent.extras
+        ).commit(requireBinding().content, this)
     }
 }

@@ -15,12 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.review.provider
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.content.Context
+import android.content.Intent
+import co.anitrend.review.component.content.ReviewContent
+import co.anitrend.review.component.screen.ReviewScreen
+import co.anitrend.navigation.ReviewRouter
 
-dependencies {
-
+class FeatureProvider : ReviewRouter.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, ReviewScreen::class.java)
+        
+    override fun fragment() = ReviewContent::class.java
 }
