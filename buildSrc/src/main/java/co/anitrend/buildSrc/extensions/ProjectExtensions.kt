@@ -19,8 +19,14 @@ package co.anitrend.buildSrc.extensions
 
 import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.module.Modules
-import com.android.build.gradle.*
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.TestPlugin
+import com.android.build.gradle.DynamicFeaturePlugin
 import com.diffplug.gradle.spotless.SpotlessExtension
+import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.extension.ApplicationAndroidComponentsExtension
+import com.android.build.api.extension.LibraryAndroidComponentsExtension
 import com.android.build.gradle.api.AndroidBasePlugin
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
@@ -33,7 +39,6 @@ import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 
 
@@ -116,6 +121,12 @@ internal fun Project.publishingExtension() =
 
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
+
+internal fun Project.androidComponents() =
+    extensions.getByType<ApplicationAndroidComponentsExtension>()
+
+internal fun Project.libraryAndroidComponents() =
+    extensions.getByType<LibraryAndroidComponentsExtension>()
 
 internal fun Project.containsAndroidPlugin(): Boolean {
     return project.plugins.toList().any { plugin ->

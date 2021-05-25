@@ -42,14 +42,9 @@ private fun Project.configureBuildFlavours() {
     baseAppExtension().run {
         flavorDimensions.add("default")
         productFlavors {
-            // TODO: ApplicationProductFlavor doesn't seem to respect the `isDefault`
             create("google") {
                 dimension = "default"
                 isDefault = true
-            }
-            create("fdroid") {
-                dimension = "default"
-                versionNameSuffix = "-fdroid"
             }
             create("github") {
                 dimension = "default"
@@ -202,13 +197,13 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             compilerArgumentOptions.add("-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi")
             compilerArgumentOptions.add("-Xopt-in=androidx.compose.material.ExperimentalMaterialApi")
         }
-        
-        if (isAppModule() || isCoreModule() || isNavigationModule())
-			compilerArgumentOptions.apply {
-				add("-Xopt-in=org.koin.core.component.KoinExperimentalAPI")
-				add("-Xopt-in=org.koin.core.component.KoinApiExtension")
-				add("-Xopt-in=org.koin.core.KoinExperimentalAPI")
-			}
+
+        if (isAppModule() || isCoreModule() || isNavigationModule()) {
+            compilerArgumentOptions.apply {
+                add("-Xopt-in=org.koin.core.component.KoinApiExtension")
+                add("-Xopt-in=org.koin.core.KoinExperimentalAPI")
+            }
+        }
 		
         kotlinOptions {
             allWarningsAsErrors = false
