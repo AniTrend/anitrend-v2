@@ -304,7 +304,9 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
             }
             R.id.navigation_social -> {
                 viewModel.state.selectedTitle = R.string.navigation_social
-                null
+                FragmentItem(
+                    fragment = FeedRouter.forFragment()
+                )
             }
             R.id.navigation_reviews -> {
                 viewModel.state.selectedTitle = R.string.navigation_review

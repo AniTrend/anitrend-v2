@@ -517,7 +517,17 @@ object ForumRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 }
 
-object SocialFeedRouter : NavigationRouter() {
+object FeedRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun fragment(): Class<out Fragment>
+    }
+
+    fun forFragment() = provider.fragment()
+}
+
+object ReviewRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {

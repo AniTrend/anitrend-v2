@@ -74,9 +74,9 @@ sealed class Shortcut {
         override val disabledMessage: Int = R.string.shortcut_label_profile
     ) : Shortcut()
 
-    data class SocialFeed(
-        override val id: String = "social_feed",
-        override val router: NavigationRouter = SocialFeedRouter,
+    data class Feed(
+        override val id: String = "feed",
+        override val router: NavigationRouter = FeedRouter,
         override val label: Int = R.string.shortcut_label_activity,
         override val icon: Int = R.drawable.ic_shortcut_activity,
         override val disabledMessage: Int = R.string.shortcut_label_activity
