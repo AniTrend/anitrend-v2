@@ -33,7 +33,7 @@ allprojects {
             setUrl(co.anitrend.buildSrc.Libraries.Repositories.jitPack)
         }
         maven {
-            setUrl(co.anitrend.buildSrc.Libraries.Repositories.dependencyUpdates)
+            setUrl(co.anitrend.buildSrc.Libraries.Repositories.sonatypeReleases)
         }
     }
 }
