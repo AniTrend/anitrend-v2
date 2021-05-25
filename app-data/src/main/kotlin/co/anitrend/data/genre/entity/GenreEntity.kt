@@ -36,21 +36,4 @@ internal data class GenreEntity(
     @ColumnInfo(name = "id") override val id: Long,
     @ColumnInfo(name = "genre") val genre: String,
     @ColumnInfo(name = "emoji") val emoji: String
-) : Identity {
-
-    @DatabaseView(
-        value = """
-            select g.*, c.media_id 
-            from genre g
-            inner join genre_connection c
-            on g.id = c.genre_id
-        """,
-        viewName = "view_genre_extended"
-    )
-    data class Extended(
-        @ColumnInfo(name = "genre") val genre: String,
-        @ColumnInfo(name = "emoji") val emoji: String,
-        @ColumnInfo(name = "media_id") val mediaId: Long,
-        @ColumnInfo(name = "id") override val id: Long
-    ) : Identity
-}
+) : Identity

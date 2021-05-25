@@ -80,7 +80,7 @@ import org.jetbrains.annotations.TestOnly
         CustomListEntity::class, CustomScoreEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
-    views = [TagEntity.Extended::class, GenreEntity.Extended::class]
+    views = []
 )
 @TypeConverters(
     value = [
