@@ -54,7 +54,7 @@ class OnlineStrategy<D> private constructor(
             callback.recordSuccess()
             return result
         }.onFailure { exception ->
-            Timber.w(exception)
+            Timber.e(exception)
             when (exception) {
                 is RequestError -> callback.recordFailure(exception)
                 else -> callback.recordFailure(exception.generateForError())

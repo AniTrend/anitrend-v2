@@ -17,6 +17,7 @@
 
 package co.anitrend.data.android.network.client
 
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.data.android.network.contract.AbstractNetworkClient
 import kotlinx.coroutines.delay
 import okhttp3.Call
@@ -68,6 +69,8 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
         maxAttempts: Int,
         shouldRetry: (Throwable) -> Boolean
     ): Response {
+        var lastKnownException: Throwable? = null
+
         repeat(maxAttempts) { attempt ->
             runCatching {
                 val call = if (isExecuted()) clone() else this
@@ -75,6 +78,8 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
             }.onSuccess { response ->
                 return response
             }.onFailure { exception ->
+                if (lastKnownException != exception)
+                    lastKnownException = exception
                 delay(
                     exception.getNextDelay(
                         attempt,
@@ -86,8 +91,10 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
             }
         }
 
-        // We should never hit here
-        throw IllegalStateException("Unrecoverable state while executing request")
+        throw lastKnownException ?: RequestError(
+            "Unable to recover from unknown error",
+            "Maximum retry attempts exhausted without success"
+        )
     }
 
     /**

@@ -17,6 +17,7 @@
 
 package co.anitrend.data.android.network.client
 
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.data.android.network.contract.AbstractNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
@@ -71,12 +72,16 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Respo
         maxAttempts: Int,
         shouldRetry: (Throwable) -> Boolean
     ): Response<T> {
+        var lastKnownException: Throwable? = null
+
         repeat(maxAttempts) { attempt ->
             runCatching {
                 withContext(dispatcher) { await() }
             }.onSuccess { response ->
                 return response
             }.onFailure { exception ->
+                if (lastKnownException != exception)
+                    lastKnownException = exception
                 delay(
                     exception.getNextDelay(
                         attempt,
@@ -88,8 +93,10 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Respo
             }
         }
 
-        // We should never hit here
-        throw IllegalStateException("Unrecoverable state while executing request")
+        throw lastKnownException ?: RequestError(
+            "Unable to recover from unknown error",
+            "Maximum retry attempts exhausted without success"
+        )
     }
 
     /**

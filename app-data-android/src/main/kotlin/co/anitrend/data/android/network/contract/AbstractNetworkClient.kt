@@ -50,21 +50,15 @@ abstract class AbstractNetworkClient<in Input, out Output> {
         shouldRetry: (Throwable) -> Boolean
     ): Long {
         var nextDelay: Long = attempt * attempt * defaultDelay
-        Timber.d("Request threw an exception -> $this")
+        Timber.w("Request threw an exception -> $this")
 
         // The response failed, so lets see if we should retry again
         if (!shouldRetry(this)) {
-            Timber.w(
-                this, "Specific request is not allowed to retry on this exception"
-            )
-            throw this
+            Timber.w(this, "Specific request is not allowed to retry on this exception")
         }
 
-        if (attempt == (maxAttempts - 1)) {
-            Timber.w(
-                this, "Cannot retry on exception or maximum retries reached"
-            )
-            throw this
+        if (attempt == maxAttempts) {
+            Timber.w(this, "Cannot retry on exception or maximum retries reached")
         }
 
         if (this is HttpException) {
@@ -77,13 +71,15 @@ abstract class AbstractNetworkClient<in Input, out Output> {
                 try {
                     nextDelay = (retryAfterHeader.toLong() + 10).coerceAtLeast(defaultDelay)
                 } catch (nfe: NumberFormatException) {
-                    // Probably won't happen, ignore the value and use the generated default above
+                    Timber.e(
+                        nfe, "Highly unlikely exception was caught on header retry after"
+                    )
                 }
             }
         }
 
         Timber.i(
-            "Retrying request in $nextDelay seconds -> attempt: $attempt maxAttempts: $maxAttempts"
+            "Retrying request in $nextDelay ms -> attempt: ${attempt + 1} maxAttempts: $maxAttempts"
         )
         return nextDelay
     }
