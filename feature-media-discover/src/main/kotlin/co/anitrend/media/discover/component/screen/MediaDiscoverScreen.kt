@@ -18,7 +18,7 @@
 package co.anitrend.media.discover.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.media.discover.databinding.MediaDiscoverScreenBinding
@@ -26,7 +26,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.SearchRouter
 import co.anitrend.navigation.extensions.startActivity
 
-class MediaDiscoverScreen : AnitrendScreen<MediaDiscoverScreenBinding>() {
+class MediaDiscoverScreen : AniTrendScreen<MediaDiscoverScreenBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during

@@ -21,9 +21,8 @@ import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.ui.commit
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.multisearch.model.Search
 import co.anitrend.search.databinding.SearchScreenBinding
@@ -32,7 +31,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
 
-class SearchScreen : AnitrendScreen<SearchScreenBinding>() {
+class SearchScreen : AniTrendScreen<SearchScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

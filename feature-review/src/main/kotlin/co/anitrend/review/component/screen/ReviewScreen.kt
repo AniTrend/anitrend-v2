@@ -18,10 +18,10 @@
 package co.anitrend.review.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.review.databinding.ReviewScreenBinding
 
-class ReviewScreen : AnitrendScreen<ReviewScreenBinding>() {
+class ReviewScreen : AniTrendScreen<ReviewScreenBinding>() {
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

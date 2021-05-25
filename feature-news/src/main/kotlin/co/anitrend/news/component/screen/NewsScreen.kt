@@ -23,7 +23,7 @@ import android.view.Menu
 import android.view.MenuItem
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.android.koin.MarkdownFlavour
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.NewsRouter
@@ -36,7 +36,7 @@ import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.core.qualifier.named
 import timber.log.Timber
 
-class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
+class NewsScreen : AniTrendScreen<NewsScreenBinding>() {
 
     private val presenter by inject<NewsPresenter>()
 

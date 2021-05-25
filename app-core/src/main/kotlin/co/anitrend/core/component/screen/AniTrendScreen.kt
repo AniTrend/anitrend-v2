@@ -34,7 +34,7 @@ import timber.log.Timber
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
  */
-abstract class AnitrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
+abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
 
     protected val configurationHelper by inject<IConfigurationHelper>()
 

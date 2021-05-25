@@ -34,7 +34,7 @@ import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.android.extensions.cascadeMenu
 import co.anitrend.core.android.extensions.onMenu
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.fragmentByTagOrNew
@@ -59,7 +59,7 @@ import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainScreen : AnitrendScreen<MainScreenBinding>() {
+class MainScreen : AniTrendScreen<MainScreenBinding>() {
 
     private val drawerFragmentItem by lazy(UNSAFE) {
         FragmentItem(

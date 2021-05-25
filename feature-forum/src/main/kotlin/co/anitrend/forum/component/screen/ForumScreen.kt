@@ -18,11 +18,10 @@
 package co.anitrend.forum.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AnitrendScreen
-import co.anitrend.forum.R
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.forum.databinding.ForumScreenBinding
 
-class ForumScreen : AnitrendScreen<ForumScreenBinding>() {
+class ForumScreen : AniTrendScreen<ForumScreenBinding>() {
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

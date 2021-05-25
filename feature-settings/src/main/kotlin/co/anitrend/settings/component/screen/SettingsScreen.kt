@@ -18,15 +18,13 @@
 package co.anitrend.settings.component.screen
 
 import android.os.Bundle
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.ui.commit
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.settings.R
 import co.anitrend.settings.databinding.SettingsActivityBinding
 import co.anitrend.settings.component.content.SettingsContent
 
-class SettingsScreen : AnitrendScreen<SettingsActivityBinding>() {
+class SettingsScreen : AniTrendScreen<SettingsActivityBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

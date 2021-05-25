@@ -21,15 +21,14 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.databinding.AuthScreenBinding
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AuthRouter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
-class AuthScreen : AnitrendScreen<AuthScreenBinding>() {
+class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
 

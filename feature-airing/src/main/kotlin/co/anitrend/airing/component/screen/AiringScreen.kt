@@ -19,12 +19,12 @@ package co.anitrend.airing.component.screen
 
 import android.os.Bundle
 import co.anitrend.airing.databinding.AiringScreenBinding
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AiringRouter
 
-class AiringScreen : AnitrendScreen<AiringScreenBinding>() {
+class AiringScreen : AniTrendScreen<AiringScreenBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during

@@ -19,16 +19,15 @@ package co.anitrend.onboarding.component.screen
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.onboarding.databinding.OnboardingScreenBinding
 import co.anitrend.onboarding.component.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.component.pager.OnBoardingPageAdapter
 import kotlinx.coroutines.launch
 
-class OnBoardingScreen : AnitrendScreen<OnboardingScreenBinding>() {
+class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
 
     private val presenter by inject<OnBoardingPresenter>()
 
