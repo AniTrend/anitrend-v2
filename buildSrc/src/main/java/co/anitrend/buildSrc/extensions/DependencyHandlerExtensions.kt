@@ -29,6 +29,8 @@ private enum class DependencyType(val configurationName: String) {
     IMPLEMENTATION("implementation"),
     DEBUG_IMPLEMENTATION("debugImplementation"),
     RELEASE_IMPLEMENTATION("releaseImplementation"),
+    GITHUB_IMPLEMENTATION("githubImplementation"),
+    GOOGLE_IMPLEMENTATION("googleImplementation"),
     RUNTIME("runtimeOnly"),
     TEST("testImplementation"),
     ANDROID_TEST("androidTestImplementation")
@@ -201,6 +203,32 @@ internal fun DependencyHandler.releaseImplementation(
     dependencyNotation: Any,
     dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
 ) = addDependency(dependencyNotation, DependencyType.RELEASE_IMPLEMENTATION, dependencyConfiguration)
+
+/**
+ * Adds a dependency to the given configuration, and configures the dependency using the given closure.
+ *
+ * @param dependencyNotation The dependency notation, in one of the notations described above.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
+ *
+ * @return The dependency.
+ */
+internal fun DependencyHandler.githubImplementation(
+    dependencyNotation: Any,
+    dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
+) = addDependency(dependencyNotation, DependencyType.GITHUB_IMPLEMENTATION, dependencyConfiguration)
+
+/**
+ * Adds a dependency to the given configuration, and configures the dependency using the given closure.
+ *
+ * @param dependencyNotation The dependency notation, in one of the notations described above.
+ * @param dependencyConfiguration The closure to use to configure the dependency.
+ *
+ * @return The dependency.
+ */
+internal fun DependencyHandler.googleImplementation(
+    dependencyNotation: Any,
+    dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
+) = addDependency(dependencyNotation, DependencyType.GOOGLE_IMPLEMENTATION, dependencyConfiguration)
 
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
