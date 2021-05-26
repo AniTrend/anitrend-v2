@@ -1,6 +1,6 @@
 name: Android unit test task
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,5 +15,5 @@ jobs:
       run: |
         chmod +x ./scripts/configuration.sh
         ./scripts/configuration.sh
-    - name: Build with Gradle
+    - name: Gradle test
       run: ./gradlew test --stacktrace

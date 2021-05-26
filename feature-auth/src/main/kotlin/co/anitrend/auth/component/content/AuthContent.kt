@@ -66,7 +66,7 @@ class AuthContent(
             this, resetNetworkStateOnBackPress
         )
         lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionFlow.filterNotNull()
+            requireBinding().stateLayout.interactionFlow
                 .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
                 .onEach {
                     viewModelState().retry()
