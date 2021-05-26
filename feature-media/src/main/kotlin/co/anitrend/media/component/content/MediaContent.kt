@@ -57,7 +57,7 @@ class MediaContent(
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
         lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionFlow.filterNotNull()
+            requireBinding().stateLayout.interactionFlow
                 .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
                 .onEach {
                     viewModelState().retry()
