@@ -23,10 +23,10 @@ import co.anitrend.domain.common.enums.contract.IAliasable
  * Media list watching/reading status enum
  */
 enum class MediaListStatus(override val alias: CharSequence) : IAliasable {
-    /** Finished watching/reading */
-    COMPLETED("Completed"),
     /** Currently watching/reading */
     CURRENT("Current"),
+    /** Finished watching/reading */
+    COMPLETED("Completed"),
     /** Stopped watching/reading before completing */
     DROPPED("Dropped"),
     /** Paused watching/reading */
