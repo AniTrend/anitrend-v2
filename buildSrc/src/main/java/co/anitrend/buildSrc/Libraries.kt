@@ -47,8 +47,7 @@ object Libraries {
 
     object Repositories {
         const val jitPack = "https://www.jitpack.io"
-        const val dependencyUpdates = "https://dl.bintray.com/pdvrieze/maven"
-        const val accompanistSnapshot = "https://oss.sonatype.org/content/repositories/snapshots"
+        const val sonatypeReleases = "https://oss.sonatype.org/content/repositories/releases"
     }
 
     object Android {
@@ -460,11 +459,11 @@ object Libraries {
 
     object Devrieze {
         object XmlUtil {
-            private const val version = "0.81.1"
+            private const val version = "0.82.0"
 
             object Android {
-                const val core = "net.devrieze:xmlutil-android:$version"
-                const val serialization = "net.devrieze:xmlutil-serialization-android:$version"
+                const val core = "io.github.pdvrieze.xmlutil:core-android:$version"
+                const val serialization = "io.github.pdvrieze.xmlutil:serialization-android:$version"
             }
         }
     }
