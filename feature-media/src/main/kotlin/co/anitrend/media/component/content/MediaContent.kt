@@ -20,6 +20,7 @@ package co.anitrend.media.component.content
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
@@ -81,7 +82,9 @@ class MediaContent(
             requireBinding().mediaSynopsis.setSynopsis(it)
         }
         viewModelState().loadState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.loadStateFlow.value = it
+            if (viewModelState().model.value == null)
+                requireBinding().stateLayout.loadStateFlow.value = it
+            else requireBinding().stateLayout.loadStateFlow.value = LoadState.Idle()
         }
     }
 
