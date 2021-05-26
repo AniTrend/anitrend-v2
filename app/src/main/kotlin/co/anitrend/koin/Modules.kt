@@ -17,6 +17,8 @@
 
 package co.anitrend.koin
 
+import co.anitrend.analytics.AnalyticsTree
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.screen.MainScreen
 import co.anitrend.component.viewmodel.MainScreenViewModel
@@ -26,6 +28,15 @@ import co.anitrend.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+
+private val variantModule = module {
+    single<ISupportAnalytics> {
+        AnalyticsTree(
+            context = androidContext(),
+            settings = get()
+        )
+    }
+}
 
 private val presenterModule = module {
     scope<MainScreen> {
@@ -53,5 +64,5 @@ private val featureModule = module {
 }
 
 internal val appModules = DynamicFeatureModuleHelper(
-    listOf(presenterModule, viewModelModule, featureModule)
+    listOf(variantModule, presenterModule, viewModelModule, featureModule)
 )
