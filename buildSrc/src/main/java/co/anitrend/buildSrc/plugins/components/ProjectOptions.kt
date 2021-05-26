@@ -110,7 +110,6 @@ internal fun Project.createSigningConfiguration(extension: BaseExtension) {
                 storePassword(it["STORE_PASSWORD"] as String)
                 keyAlias(it["STORE_KEY_ALIAS"] as String)
                 keyPassword(it["STORE_KEY_PASSWORD"] as String)
-                isV2SigningEnabled = true
             }
         }
     }
