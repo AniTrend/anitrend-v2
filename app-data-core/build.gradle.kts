@@ -25,6 +25,8 @@ plugins {
 
 dependencies {
     implementation(Libraries.JetBrains.KotlinX.Serialization.json)
-	
+
+    implementation(Libraries.AndroidX.Collection.collectionKtx)
+
     implementation(Libraries.AniTrend.QueryBuilder.core)
 }
