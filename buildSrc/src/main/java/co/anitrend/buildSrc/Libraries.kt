@@ -570,6 +570,11 @@ object Libraries {
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
             }
 
+            object DateTime {
+                private const val version = "0.2.1"
+                const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:$version"
+            }
+
             object Serialization {
                 private const val version = "1.1.0"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
