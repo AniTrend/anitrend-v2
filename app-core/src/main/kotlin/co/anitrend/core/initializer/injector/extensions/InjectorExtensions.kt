@@ -22,10 +22,8 @@ import androidx.work.Configuration
 import androidx.work.DelegatingWorkerFactory
 import androidx.work.WorkManager
 import co.anitrend.core.BuildConfig
-import co.anitrend.core.initializer.injector.InjectorInitializer
 import co.anitrend.core.initializer.injector.factory.WorkManagerFactory
 import co.anitrend.core.initializer.injector.logger.KoinLogger
-import org.koin.androidx.workmanager.factory.KoinWorkerFactory
 import org.koin.core.KoinApplication
 import org.koin.core.KoinExperimentalAPI
 import org.koin.core.logger.Level
@@ -38,7 +36,6 @@ private fun KoinApplication.createWorkManagerFactory() {
         }
 
     val configuration = Configuration.Builder()
-        .setDefaultProcessName("co.anitrend:worker")
         .setWorkerFactory(factory)
 
     if (BuildConfig.DEBUG)
