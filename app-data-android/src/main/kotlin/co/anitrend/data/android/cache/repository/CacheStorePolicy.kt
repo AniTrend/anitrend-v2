@@ -37,9 +37,9 @@ abstract class CacheStorePolicy : ICacheStorePolicy {
     private suspend fun getRequestInstant(
         entityId: Long
     ): Instant? = withContext(Dispatchers.IO) {
-        val instant = localSource.getCacheLog(request, entityId)
-        Timber.v("getRequestInstant(entityId: $entityId) -> $instant")
-        instant?.timestamp
+        val entity = localSource.getCacheLog(request, entityId)
+        Timber.v("getRequestInstant(entityId: $entityId) -> $entity")
+        entity?.timestamp
     }
 
     /**
