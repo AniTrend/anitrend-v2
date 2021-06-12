@@ -26,6 +26,7 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.common.extension.from
 import co.anitrend.data.customlist.datasource.CustomListLocalSource
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
@@ -157,7 +158,10 @@ internal class MediaListSourceImpl {
                 remoteSource.getMediaListPaged(queryBuilder)
             }
 
-            controller(deferred, requestCallback)
+            controller(deferred, requestCallback) {
+                supportPagingHelper.from(it.page)
+                it
+            }
         }
 
         /**

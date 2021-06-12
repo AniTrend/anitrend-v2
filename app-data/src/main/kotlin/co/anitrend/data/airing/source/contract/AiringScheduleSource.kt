@@ -73,13 +73,13 @@ internal class AiringScheduleSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            cacheIdentity(
+            /*cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
                 requestType = Request.Type.BEFORE,
                 block = ::getAiringSchedule,
-            )
+            )*/
         }
 
         /**

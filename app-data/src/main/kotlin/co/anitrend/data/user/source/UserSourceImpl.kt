@@ -25,6 +25,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.common.extension.from
 import co.anitrend.data.user.UserAuthController
 import co.anitrend.data.user.UserController
 import co.anitrend.data.user.UserPagedController
@@ -160,7 +161,10 @@ internal class UserSourceImpl {
                 remoteSource.getUserPaged(queryBuilder)
             }
 
-            controller(deferred, callback)
+            controller(deferred, callback) {
+                supportPagingHelper.from(it.page)
+                it
+            }
         }
 
         /**

@@ -25,6 +25,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.source.contract.CarouselSource
+import co.anitrend.data.common.extension.from
 import co.anitrend.data.jikan.media.model.query.JikanQuery
 import co.anitrend.data.jikan.media.source.contract.JikanSource
 import co.anitrend.data.media.MediaDetailController
@@ -134,7 +135,10 @@ internal class MediaSourceImpl {
                 remoteSource.getMediaPaged(queryBuilder)
             }
 
-            controller(deferred, requestCallback)
+            controller(deferred, requestCallback) {
+                supportPagingHelper.from(it.page)
+                it
+            }
         }
 
         /**
@@ -169,7 +173,10 @@ internal class MediaSourceImpl {
                 remoteSource.getMediaPaged(builder)
             }
 
-            return controller(deferred, callback).orEmpty()
+            return controller(deferred, callback) {
+                supportPagingHelper.from(it.page)
+                it
+            }.orEmpty()
         }
     }
 }
