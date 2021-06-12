@@ -49,7 +49,14 @@ abstract class ControllerStrategy<D> {
                 cause
             )
         }
-        else -> RequestError(cause)
+        else -> {
+            if (cause == null)
+                RequestError(
+                    topic = javaClass.simpleName,
+                    description = message
+                )
+            else RequestError(cause)
+        }
     }
 
     /**
