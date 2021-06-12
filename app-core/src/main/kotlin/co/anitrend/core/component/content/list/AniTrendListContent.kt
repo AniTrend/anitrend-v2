@@ -24,15 +24,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
 import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
 import co.anitrend.core.R
 import co.anitrend.core.android.koinOf
+import co.anitrend.core.component.adapter.AniTrendLoadStateAdapter
 import co.anitrend.core.component.content.list.presenter.AniTrendListContentPresenter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -48,6 +52,29 @@ abstract class AniTrendListContent<M>(
 ) : SupportFragmentList<M>(), KoinScopeComponent {
 
     override val scope by lazy(UNSAFE) { fragmentScope() }
+
+    /**
+     * Sets the adapter for the recycler view
+     */
+    override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
+        if (recyclerView.adapter == null) {
+            val header = AniTrendLoadStateAdapter(resources, stateConfig).apply {
+                registerFlowListener()
+            }
+            val footer = AniTrendLoadStateAdapter(resources, stateConfig).apply {
+                registerFlowListener()
+            }
+
+            if (supportViewAdapter is RecyclerView.Adapter<*>) {
+                (supportViewAdapter as RecyclerView.Adapter<*>)
+                    .stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            }
+
+            recyclerView.adapter = supportViewAdapter.withLoadStateHeaderAndFooter(
+                header = header, footer = footer
+            )
+        }
+    }
 
     /**
      * Additional initialization to be done in this method, this method will be called in
@@ -70,8 +97,6 @@ abstract class AniTrendListContent<M>(
                 .collect()
         }
     }
-
-
 
     /**
      * Called to have the fragment instantiate its user interface view.

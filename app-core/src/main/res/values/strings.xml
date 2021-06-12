@@ -22,8 +22,8 @@
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
 
-    <!-- A label that will be shown at the end of a list when there are no more items to show -->
-    <string name="label_text_end_of_list">No results to display</string>
+    <!-- A label that will be shown at the end of a list when there are no more items to show (paging) -->
+    <string name="label_text_end_of_list">No more entries to display</string>
     <!-- A label that is shown along with a loading spinner -->
     <string name="label_text_loading">Loading, please wait..</string>
     <!-- A default label for retrying failed operations -->
