@@ -28,6 +28,7 @@ import co.anitrend.core.initializer.injector.logger.KoinLogger
 import org.koin.androidx.workmanager.factory.KoinWorkerFactory
 import org.koin.core.KoinApplication
 import org.koin.core.KoinExperimentalAPI
+import org.koin.core.logger.Level
 
 
 private fun KoinApplication.createWorkManagerFactory() {
@@ -58,7 +59,7 @@ internal fun KoinApplication.workManagerFactory() {
 }
 
 internal fun KoinApplication.koinTimberLogger() {
-    logger(KoinLogger())
+    logger(KoinLogger(Level.NONE))
 }
 
 internal fun KoinApplication.defaultProperties() {
