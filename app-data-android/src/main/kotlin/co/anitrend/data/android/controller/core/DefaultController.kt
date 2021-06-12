@@ -38,30 +38,40 @@ class DefaultController<S, out D>(
     private val client: DeferrableNetworkClient<S>
 ) : ISupportResponse<Deferred<Response<S>>, D> {
 
-    override suspend fun invoke(
-        resource: Deferred<Response<S>>,
-        requestCallback: RequestCallback
-    ) = strategy(requestCallback) {
-        val response = client.fetch(resource)
-
-        val mapped = mapper.onResponseMapFrom(response)
-        withContext(dispatcher) {
-            mapper.onResponseDatabaseInsert(mapped)
-        }
-        mapped
-    }
-
+    /**
+     * Response handler for coroutine contexts which need to observe [LoadState]
+     *
+     * @param resource awaiting execution
+     * @param requestCallback for the deferred result
+     * @param interceptor allows you to access certain network model fields 
+     * which are otherwise unaccessable from the domain/entity level
+     *
+     * @return resource fetched if present
+     */
     suspend operator fun invoke(
         resource: Deferred<Response<S>>,
         requestCallback: RequestCallback,
-        transformer: (S) -> S
+        interceptor: (S) -> S
     ) = strategy(requestCallback) {
         val response = client.fetch(resource)
-        val data = transformer(response)
+        val data = interceptor(response)
         val mapped = mapper.onResponseMapFrom(data)
         withContext(dispatcher) {
             mapper.onResponseDatabaseInsert(mapped)
         }
         mapped
     }
+
+    /**
+     * Response handler for coroutine contexts which need to observe [LoadState]
+     *
+     * @param resource awaiting execution
+     * @param requestCallback for the deferred result
+     *
+     * @return resource fetched if present
+     */
+    override suspend fun invoke(
+        resource: Deferred<Response<S>>,
+        requestCallback: RequestCallback
+    ) = invoke(resource, requestCallback) { it }
 }
