@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "4b04cc1d39d6e17301e0d0f25c792264",
+    "identityHash": "158794a2450443fe73bd7c019aa04f58",
     "entities": [
       {
         "tableName": "cache_log",
@@ -252,20 +252,13 @@
         },
         "indices": [
           {
-            "name": "index_tag_connection_tag_id",
+            "name": "index_tag_connection_tag_id_media_id",
             "unique": false,
             "columnNames": [
-              "tag_id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_tag_id` ON `${TABLE_NAME}` (`tag_id`)"
-          },
-          {
-            "name": "index_tag_connection_media_id",
-            "unique": false,
-            "columnNames": [
+              "tag_id",
               "media_id"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_tag_id_media_id` ON `${TABLE_NAME}` (`tag_id`, `media_id`)"
           }
         ],
         "foreignKeys": [
@@ -2740,19 +2733,10 @@
         ]
       }
     ],
-    "views": [
-      {
-        "viewName": "view_tag_extended",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select t.*, c.is_media_spoiler, c.rank, c.media_id \n            from tag t\n            inner join tag_connection c \n            on t.id = c.tag_id"
-      },
-      {
-        "viewName": "view_genre_extended",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select g.*, c.media_id \n            from genre g\n            inner join genre_connection c\n            on g.id = c.genre_id"
-      }
-    ],
+    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b04cc1d39d6e17301e0d0f25c792264')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '158794a2450443fe73bd7c019aa04f58')"
     ]
   }
 }
