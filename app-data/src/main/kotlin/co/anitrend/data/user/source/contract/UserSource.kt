@@ -135,11 +135,11 @@ internal class UserSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: User) {
-            invoke(
+            /*invoke(
                 paging = supportPagingHelper,
                 requestType = Request.Type.BEFORE,
                 block = ::getUsers
-            )
+            )*/
         }
 
         /**

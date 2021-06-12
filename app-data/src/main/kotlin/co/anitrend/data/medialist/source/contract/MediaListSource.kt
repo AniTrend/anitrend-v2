@@ -125,13 +125,13 @@ internal class MediaListSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            cacheIdentity(
+            /*cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
                 requestType = Request.Type.BEFORE,
                 block = ::getMediaList
-            )
+            )*/
         }
 
         /**
@@ -191,13 +191,13 @@ internal class MediaListSource {
          * @param itemAtFront The first item of PagedList
          */
         override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            cacheIdentity(
+            /*cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
                 requestType = Request.Type.BEFORE,
                 block = ::getMediaList
-            )
+            )*/
         }
 
         /**

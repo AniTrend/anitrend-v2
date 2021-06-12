@@ -29,6 +29,7 @@ import co.anitrend.data.airing.datasource.remote.AiringRemoteSource
 import co.anitrend.data.airing.entity.filter.AiringQueryFilter
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.common.extension.from
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
@@ -73,7 +74,10 @@ internal class AiringScheduleSourceImpl {
                 remoteSource.getAiringPaged(queryBuilder)
             }
 
-            controller(deferred, requestCallback)
+            controller(deferred, requestCallback) {
+                supportPagingHelper.from(it.page)
+                it
+            }
         }
 
         /**

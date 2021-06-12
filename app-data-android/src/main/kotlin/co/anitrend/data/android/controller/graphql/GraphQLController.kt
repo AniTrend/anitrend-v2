@@ -42,16 +42,19 @@ class GraphQLController<S, out D>(
 ) : ISupportResponse<Deferred<Response<GraphQLResponse<S>>>, D> {
 
     /**
-     * Response handler for coroutine contexts which need to observe [NetworkState]
+     * Response handler for coroutine contexts which need to observe [LoadState]
      *
      * @param resource awaiting execution
      * @param requestCallback for the deferred result
+     * @param interceptor allows you to access certain network model fields 
+     * which are otherwise unaccessable from the domain/entity level
      *
      * @return resource fetched if present
      */
-    override suspend fun invoke(
+    suspend operator fun invoke(
         resource: Deferred<Response<GraphQLResponse<S>>>,
-        requestCallback: RequestCallback
+        requestCallback: RequestCallback,
+        interceptor: (S) -> S
     ) = strategy(requestCallback) {
 
         val response = client.fetch(resource)
@@ -71,7 +74,8 @@ class GraphQLController<S, out D>(
                 throwable = null
             )
 
-        response.data?.let { data ->
+        response.data?.let {
+            val data = interceptor(it)
             val mapped = mapper.onResponseMapFrom(data)
             withContext(dispatcher) {
                 mapper.onResponseDatabaseInsert(mapped)
@@ -79,4 +83,17 @@ class GraphQLController<S, out D>(
             mapped
         }
     }
+
+    /**
+     * Response handler for coroutine contexts which need to observe [LoadState]
+     *
+     * @param resource awaiting execution
+     * @param requestCallback for the deferred result
+     *
+     * @return resource fetched if present
+     */
+    override suspend fun invoke(
+        resource: Deferred<Response<GraphQLResponse<S>>>,
+        requestCallback: RequestCallback
+    ) = invoke(resource, requestCallback) { it }
 }

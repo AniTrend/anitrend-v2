@@ -20,9 +20,6 @@ package co.anitrend.data.android.cache.extensions
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.model.Request
-import co.anitrend.arch.data.source.core.contract.AbstractDataSource
-import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
-import co.anitrend.arch.extension.ext.empty
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
@@ -75,9 +72,8 @@ operator fun CacheIdentity.invoke(
     block: suspend (RequestCallback) -> Unit
 ) {
     scope.launch {
-        requestHelper.runIfNotRunning(
-            Request.Default(key, requestType)
-        ) { requestCallback ->
+        val request = Request.Default(key, requestType)
+        requestHelper.runIfNotRunning(request) { requestCallback ->
             when (requestType) {
                 Request.Type.BEFORE -> {
                     if (!paging.isFirstPage()) {
@@ -87,10 +83,17 @@ operator fun CacheIdentity.invoke(
                     else requestCallback.recordSuccess()
                 }
                 Request.Type.AFTER -> {
-                    paging.onPageNext()
-                    block(requestCallback)
+                    if (!paging.isPagingLimit) {
+                        paging.onPageNext()
+                        block(requestCallback)
+                    }
+                    else requestCallback.recordSuccess()
                 }
-                else -> block(requestCallback)
+                else -> {
+                    if (!paging.isPagingLimit)
+                        block(requestCallback)
+                    else requestCallback.recordSuccess()
+                }
             }
         }
     }
