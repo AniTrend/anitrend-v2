@@ -23,27 +23,26 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.widget.progress.controller.MediaProgressController
+import co.anitrend.common.media.ui.presenter.MediaPresenter
 import co.anitrend.core.android.extensions.dp
-import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.extensions.stackTrace
 import co.anitrend.domain.media.entity.contract.IMedia
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @SuppressLint("SetTextI18n")
 internal class MediaProgressWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
+
+    private var presenter: MediaPresenter? = null
 
     private val progressText = MaterialTextView(context).apply {
         layoutParams = LayoutParams(
@@ -86,25 +85,25 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         onInit(context, attrs, defStyleAttr)
     }
 
-    private fun setUpClickListener(currentProgress: Int) {
+    private fun isLoading(loading: Boolean) {
+        progressIncrement.gone()
+        progressSpinner.hide()
+        progressSpinner.isIndeterminate = loading
+        progressSpinner.show()
+        progressIncrement.visible()
+    }
+
+    private fun setUpClickListener(presenter: MediaPresenter) {
         isFocusable = true
         setOnClickListener {
-            //TODO: Call task-media-list to update media list progress
-            val lifecycleOwner = it.context as LifecycleOwner
-            lifecycleOwner.lifecycleScope.launch {
-                runCatching {
-                    if (!progressSpinner.isIndeterminate) {
-                        progressIncrement.gone()
-                        progressSpinner.hide()
-                        progressSpinner.isIndeterminate = true
-                        progressSpinner.show()
-                        delay(500)
-                        val progress = currentProgress.plus(1)
-                        progressSpinner.setProgressCompat(progress, true)
-                        progressIncrement.visible()
-                    } else
-                        Toast.makeText(it.context, "I'm still busy..", Toast.LENGTH_SHORT).show()
+            runCatching {
+                if (!progressSpinner.isIndeterminate) {
+                    isLoading(true)
+                    presenter()
                 }
+            }.onFailure {
+                isLoading(false)
+                Timber.e(it)
             }
         }
     }
@@ -114,19 +113,19 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         setOnClickListener(null)
     }
 
-    private fun initialise(controller: MediaProgressController) {
+    private fun initialise() = presenter?.run {
         val currentProgress = controller.getCurrentProgress()
 
         progressSpinner.max = controller.getMaximumProgress()
         progressSpinner.progress = currentProgress
-        progressText.text = controller.getCurrentProgressText()
+        progressText.text = getCurrentProgressText()
 
         if (currentProgress == 0)
             progressSpinner.gone()
 
         if (controller.isIncrementPossible()) {
             progressIncrement.visible()
-            setUpClickListener(currentProgress)
+            setUpClickListener(this)
         }
         else {
             progressIncrement.gone()
@@ -146,14 +145,17 @@ internal class MediaProgressWidget @JvmOverloads constructor(
     /**
      * @param media Media
      */
-    fun setupUsingMedia(media: IMedia, settings: IAuthenticationSettings) {
-        val controller = MediaProgressController(media, settings)
-        if (controller.shouldHideWidget()) {
+    fun setupUsingMedia(media: IMedia, settings: Settings) {
+        presenter = MediaPresenter(context, settings, media)
+
+        if (presenter == null || presenter?.controller?.shouldHideWidget() == true) {
             gone()
             return
-        }
-        visible()
-        initialise(controller)
+        } else
+            visible()
+
+        isLoading(false)
+        initialise()
     }
 
     /**
@@ -187,5 +189,6 @@ internal class MediaProgressWidget @JvmOverloads constructor(
     override fun onViewRecycled() {
         super.onViewRecycled()
         removeClickListener()
+        presenter = null
     }
 }

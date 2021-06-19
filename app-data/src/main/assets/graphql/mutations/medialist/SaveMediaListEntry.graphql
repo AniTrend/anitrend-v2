@@ -1,4 +1,5 @@
-mutation SaveMediaListItem(
+mutation SaveMediaListEntry(
+    $id: Int,
     $mediaId: Int,
     $status: MediaListStatus,
     $score: Float,
@@ -13,9 +14,11 @@ mutation SaveMediaListItem(
     $customLists: [String],
     $advancedScores: [Float],
     $startedAt: FuzzyDateInput,
-    $completedAt: FuzzyDateInput
+    $completedAt: FuzzyDateInput,
+    $scoreFormat: ScoreFormat
 ) {
     SaveMediaListEntry(
+        id: $id,
         mediaId: $mediaId,
         status: $status,
         score: $score,
@@ -32,6 +35,6 @@ mutation SaveMediaListItem(
         startedAt: $startedAt,
         completedAt: $completedAt
     ) {
-        ... MediaListExtended
+        ... MediaListCore
     }
 }

@@ -173,19 +173,20 @@ sealed class MediaListParam {
         val id: Long? = null,
         val mediaId: Long,
         val status: MediaListStatus,
+        val scoreFormat: ScoreFormat,
         val score: Float? = null,
         val scoreRaw: Int? = null,
         val progress: Int? = null,
         val progressVolumes: Int? = null,
         val repeat: Int? = null,
         val priority: Int? = null,
-        val private: Boolean = false,
+        val private: Boolean? = null,
         val notes: String? = null,
-        val hiddenFromStatusLists: Boolean = false,
+        val hiddenFromStatusLists: Boolean? = null,
         val customLists: List<String>? = null,
         val advancedScores: List<Float>? = null,
         val startedAt: FuzzyDate? = null,
-        val completedAt: FuzzyDate? = null
+        val completedAt: FuzzyDate? = null,
     ) : MediaListParam()
 
     /** [UpdateMediaList mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -209,19 +210,20 @@ sealed class MediaListParam {
      */
     data class SaveEntries(
         val status: MediaListStatus,
+        val scoreFormat: ScoreFormat,
         val score: Float? = null,
         val scoreRaw: Int? = null,
         val progress: Int? = null,
         val progressVolumes: Int? = null,
         val repeat: Int? = null,
         val priority: Int? = null,
-        val private: Boolean = false,
+        val private: Boolean? = null,
         val notes: String? = null,
-        val hiddenFromStatusLists: Boolean = false,
+        val hiddenFromStatusLists: Boolean? = null,
         val advancedScores: List<Float>? = null,
         val startedAt: FuzzyDate? = null,
         val completedAt: FuzzyDate? = null,
-        val ids: List<Long>
+        val ids: List<Long>,
     ) : MediaListParam()
 
     /** [DeleteCustomList mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)

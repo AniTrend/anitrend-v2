@@ -18,12 +18,13 @@
 package co.anitrend.domain.medialist.entity.contract
 
 sealed class MediaListProgress(
-    val progress: Int
+    val progress: Int,
+    val repeated: Int
 ) {
     data class Anime(
         val episodeProgress: Int,
         val repeatedCount: Int
-    ) : MediaListProgress(episodeProgress) {
+    ) : MediaListProgress(episodeProgress, repeatedCount) {
 
         companion object {
             fun empty() = Anime(
@@ -37,7 +38,7 @@ sealed class MediaListProgress(
         val chapterProgress: Int,
         val volumeProgress: Int,
         val repeatedCount: Int
-    ) : MediaListProgress(chapterProgress) {
+    ) : MediaListProgress(chapterProgress, repeatedCount) {
 
         companion object {
             fun empty() = Manga(

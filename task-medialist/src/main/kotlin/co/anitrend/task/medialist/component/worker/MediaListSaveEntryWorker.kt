@@ -38,6 +38,26 @@ class MediaListSaveEntryWorker(
         MediaListTaskRouter.Param.SaveEntry.fromMap(map)
     }
 
+    private fun saveEntry() = MediaListParam.SaveEntry(
+        id = data.id,
+        mediaId = data.mediaId,
+        status = data.status,
+        score = data.score,
+        scoreRaw = data.scoreRaw,
+        progress = data.progress,
+        progressVolumes = data.progressVolumes,
+        repeat = data.repeat,
+        priority = data.priority,
+        private = data.private,
+        notes = data.notes,
+        hiddenFromStatusLists = data.hiddenFromStatusLists,
+        customLists = data.customLists,
+        advancedScores = data.advancedScores,
+        startedAt = data.startedAt,
+        completedAt = data.completedAt,
+        scoreFormat = data.scoreFormat
+    )
+
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
@@ -50,26 +70,7 @@ class MediaListSaveEntryWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val param = MediaListParam.SaveEntry(
-            id = data.id,
-            mediaId = data.mediaId,
-            status = data.status,
-            score = data.score,
-            scoreRaw = data.scoreRaw,
-            progress = data.progress,
-            progressVolumes = data.progressVolumes,
-            repeat = data.repeat,
-            priority = data.priority,
-            private = data.private,
-            notes = data.notes,
-            hiddenFromStatusLists = data.hiddenFromStatusLists,
-            customLists = data.customLists,
-            advancedScores = data.advancedScores,
-            startedAt = data.startedAt,
-            completedAt = data.completedAt
-        )
-
-        val dataState = interactor(param)
+        val dataState = interactor(saveEntry())
 
         val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
