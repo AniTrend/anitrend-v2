@@ -1,4 +1,4 @@
-mutation UpdateMediaListEntries(
+mutation SaveMediaListEntries(
     $status: MediaListStatus,
     $score: Float,
     $scoreRaw: Int,
@@ -12,7 +12,8 @@ mutation UpdateMediaListEntries(
     $advancedScores: [Float],
     $startedAt: FuzzyDateInput,
     $completedAt: FuzzyDateInput,
-    $ids: [Int]
+    $ids: [Int],
+    $scoreFormat: ScoreFormat
 ) {
     UpdateMediaListEntries(
         ids: $ids,

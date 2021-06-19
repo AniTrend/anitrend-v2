@@ -52,7 +52,7 @@ internal interface MediaListRemoteSource {
 
     @GRAPHQL
     @POST(EndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("UpdateMediaListEntries")
+    @GraphQuery("SaveMediaListEntries")
     suspend fun saveMediaListEntries(
         @Body queryContainer: QueryContainerBuilder
     ): Response<GraphQLResponse<MediaListContainerModel.SavedEntries>>
