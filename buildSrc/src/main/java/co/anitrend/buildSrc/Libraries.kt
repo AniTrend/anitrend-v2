@@ -486,6 +486,11 @@ object Libraries {
             const val flowLayout = "com.google.accompanist:accompanist-flowlayout:${version}"
         }
 
+        object Gson {
+            private const val version = "2.8.7"
+            const val gson = "com.google.code.gson:gson:$version"
+        }
+
         object Exo {
             private const val version = "2.12.2"
             const val workManager = "com.google.android.exoplayer:extension-workmanager:$version"
