@@ -35,6 +35,6 @@ mutation SaveMediaListEntry(
         startedAt: $startedAt,
         completedAt: $completedAt
     ) {
-        ... MediaListExtended
+        ... MediaListCore
     }
 }

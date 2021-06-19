@@ -31,11 +31,11 @@ import kotlinx.serialization.Serializable
 internal sealed class MediaListContainerModel {
 
     abstract class Single : MediaListContainerModel() {
-        abstract val entry: MediaListModel.Extended
+        abstract val entry: MediaListModel
     }
 
     abstract class Many : MediaListContainerModel() {
-        abstract val entries: List<MediaListModel.Extended>
+        abstract val entries: List<MediaListModel>
     }
 
     abstract class Deleted : MediaListContainerModel() {
@@ -99,12 +99,12 @@ internal sealed class MediaListContainerModel {
 
     @Serializable
     data class SavedEntry(
-        @SerialName("SaveMediaListEntry") override val entry: MediaListModel.Extended
+        @SerialName("SaveMediaListEntry") override val entry: MediaListModel.Core
     ) : Single()
 
     @Serializable
     data class SavedEntries(
-        @SerialName("UpdateMediaListEntries") override val entries: List<MediaListModel.Extended>
+        @SerialName("UpdateMediaListEntries") override val entries: List<MediaListModel.Core>
     ) : Many()
 
     @Serializable

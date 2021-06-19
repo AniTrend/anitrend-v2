@@ -143,9 +143,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(source: MediaListContainerModel.SavedEntry): MediaListEntity {
-            mediaMapper.onEmbedded(
-                source.entry.media
-            )
             customListMapper.onEmbedded(
                 CustomListMapper.asItem(source.entry)
             )
@@ -181,11 +178,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
         override suspend fun onResponseMapFrom(source: MediaListContainerModel.SavedEntries): List<MediaListEntity> {
-            mediaMapper.onEmbedded(
-                source.entries.map(
-                    MediaListModel.Extended::media
-                )
-            )
             customListMapper.onEmbedded(
                 CustomListMapper.asItem(source.entries)
             )
