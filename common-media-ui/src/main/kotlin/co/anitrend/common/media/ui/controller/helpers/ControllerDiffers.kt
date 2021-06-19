@@ -19,9 +19,7 @@ package co.anitrend.common.media.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
 import co.anitrend.domain.carousel.entity.MediaCarousel
-import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.contract.IMedia
 
 
 internal object MediaDiffUtil : DiffUtil.ItemCallback<Media>() {
