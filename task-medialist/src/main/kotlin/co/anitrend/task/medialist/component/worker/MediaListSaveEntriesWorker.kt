@@ -38,6 +38,24 @@ class MediaListSaveEntriesWorker(
         MediaListTaskRouter.Param.SaveEntries.fromMap(map)
     }
 
+    private fun saveEntries() = MediaListParam.SaveEntries(
+        status = data.status,
+        scoreFormat = data.scoreFormat,
+        score = data.score,
+        scoreRaw = data.scoreRaw,
+        progress = data.progress,
+        progressVolumes = data.progressVolumes,
+        repeat = data.repeat,
+        priority = data.priority,
+        private = data.private,
+        notes = data.notes,
+        hiddenFromStatusLists = data.hiddenFromStatusLists,
+        advancedScores = data.advancedScores,
+        startedAt = data.startedAt,
+        completedAt = data.completedAt,
+        ids = data.ids
+    )
+
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
@@ -50,24 +68,7 @@ class MediaListSaveEntriesWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val param = MediaListParam.SaveEntries(
-            status = data.status,
-            score = data.score,
-            scoreRaw = data.scoreRaw,
-            progress = data.progress,
-            progressVolumes = data.progressVolumes,
-            repeat = data.repeat,
-            priority = data.priority,
-            private = data.private,
-            notes = data.notes,
-            hiddenFromStatusLists = data.hiddenFromStatusLists,
-            advancedScores = data.advancedScores,
-            startedAt = data.startedAt,
-            completedAt = data.completedAt,
-            ids = data.ids
-        )
-
-        val dataState = interactor(param)
+        val dataState = interactor(saveEntries())
 
         val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error
