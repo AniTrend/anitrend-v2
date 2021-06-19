@@ -1,4 +1,4 @@
-mutation SaveMediaListItem(
+mutation SaveMediaListEntry(
     $mediaId: Int,
     $status: MediaListStatus,
     $score: Float,
