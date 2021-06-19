@@ -45,7 +45,7 @@ internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
         oldItem: MediaCarousel,
         newItem: MediaCarousel
     ): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem == newItem
     }
 
     override fun areContentsTheSame(
@@ -53,5 +53,23 @@ internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
         newItem: MediaCarousel
     ): Boolean {
         return oldItem.hashCode() == newItem.hashCode()
+    }
+
+    /**
+     * When [.areItemsTheSame] returns `true` for two items and
+     * [.areContentsTheSame] returns false for them, this method is called to
+     * get a payload about the change.
+     *
+     * For example, if you are using DiffUtil with [RecyclerView], you can return the
+     * particular field that changed in the item and your
+     * [ItemAnimator][RecyclerView.ItemAnimator] can use that
+     * information to run the correct animation.
+     *
+     * Default implementation returns `null`.
+     *
+     * @see Callback.getChangePayload
+     */
+    override fun getChangePayload(oldItem: MediaCarousel, newItem: MediaCarousel): Any {
+        return newItem
     }
 }
