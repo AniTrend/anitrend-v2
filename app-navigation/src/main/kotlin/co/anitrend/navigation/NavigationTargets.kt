@@ -760,19 +760,20 @@ object MediaListTaskRouter : NavigationRouter() {
             val id: Long? = null,
             val mediaId: Long,
             val status: MediaListStatus,
+            val scoreFormat: ScoreFormat,
             val score: Float? = null,
             val scoreRaw: Int? = null,
             val progress: Int? = null,
             val progressVolumes: Int? = null,
             val repeat: Int? = null,
             val priority: Int? = null,
-            val private: Boolean = false,
+            val private: Boolean? = null,
             val notes: String? = null,
-            val hiddenFromStatusLists: Boolean = false,
+            val hiddenFromStatusLists: Boolean? = null,
             val customLists: List<String>? = null,
             val advancedScores: List<Float>? = null,
             val startedAt: @RawValue FuzzyDate? = null,
-            val completedAt: @RawValue FuzzyDate? = null
+            val completedAt: @RawValue FuzzyDate? = null,
         ) : Param() {
 
             @IgnoredOnParcel
@@ -781,67 +782,8 @@ object MediaListTaskRouter : NavigationRouter() {
             override fun toMap() = mapOf(
                 "id" to id,
                 "mediaId" to mediaId,
-                "status" to status,
-                "score" to score,
-                "scoreRaw" to scoreRaw,
-                "progress" to progress,
-                "progressVolumes" to progressVolumes,
-                "repeat" to repeat,
-                "priority" to priority,
-                "private" to private,
-                "notes" to notes,
-                "hiddenFromStatusLists" to hiddenFromStatusLists,
-                "advancedScores" to advancedScores,
-                "startedAt" to startedAt,
-                "completedAt" to completedAt
-            )
-
-            companion object : IParam.IKey {
-                override val KEY = "MediaListTaskRouter#SaveEntry"
-
-                fun fromMap(map: Map<String, Any?>) = SaveEntry(
-                    id = map["id"] as Long?,
-                    mediaId = map["mediaId"] as Long,
-                    status = map["status"] as MediaListStatus,
-                    score = map["score"] as Float?,
-                    scoreRaw = map["scoreRaw"] as Int?,
-                    progress = map["progress"] as Int?,
-                    progressVolumes = map["progressVolumes"] as Int?,
-                    repeat = map["repeat"] as Int?,
-                    priority = map["priority"] as Int?,
-                    private = map["private"] as Boolean ,
-                    notes = map["notes"] as String?,
-                    hiddenFromStatusLists = map["hiddenFromStatusLists"] as Boolean,
-                    advancedScores = map["advancedScores"] as List<Float>?,
-                    startedAt = map["startedAt"] as FuzzyDate?,
-                    completedAt = map["completedAt"] as FuzzyDate?
-                )
-            }
-        }
-
-        @Parcelize
-        data class SaveEntries(
-            val status: MediaListStatus,
-            val score: Float? = null,
-            val scoreRaw: Int? = null,
-            val progress: Int? = null,
-            val progressVolumes: Int? = null,
-            val repeat: Int? = null,
-            val priority: Int? = null,
-            val private: Boolean = false,
-            val notes: String? = null,
-            val hiddenFromStatusLists: Boolean = false,
-            val advancedScores: List<Float>? = null,
-            val startedAt: @RawValue FuzzyDate? = null,
-            val completedAt: @RawValue FuzzyDate? = null,
-            val ids: List<Long>
-        ) : Param() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
-            override fun toMap() = mapOf(
-                "status" to status,
+                "status" to status.name,
+                "scoreFormat" to scoreFormat.name,
                 "score" to score,
                 "scoreRaw" to scoreRaw,
                 "progress" to progress,
@@ -854,23 +796,87 @@ object MediaListTaskRouter : NavigationRouter() {
                 "advancedScores" to advancedScores,
                 "startedAt" to startedAt,
                 "completedAt" to completedAt,
-                "ids" to ids
             )
 
             companion object : IParam.IKey {
-                override val KEY = "MediaListTaskRouter#SaveEntries"
+                override val KEY = "MediaListTaskRouter#SaveEntry"
 
-                fun fromMap(map: Map<String, Any?>) = SaveEntries(
-                    status = map["status"] as MediaListStatus,
+                fun fromMap(map: Map<String, Any?>) = SaveEntry(
+                    id = map["id"] as Long?,
+                    mediaId = map["mediaId"] as Long,
+                    status = MediaListStatus.valueOf(map["status"] as String),
+                    scoreFormat = ScoreFormat.valueOf(map["scoreFormat"] as String),
                     score = map["score"] as Float?,
                     scoreRaw = map["scoreRaw"] as Int?,
                     progress = map["progress"] as Int?,
                     progressVolumes = map["progressVolumes"] as Int?,
                     repeat = map["repeat"] as Int?,
                     priority = map["priority"] as Int?,
-                    private = map["private"] as Boolean ,
+                    private = map["private"] as Boolean?,
                     notes = map["notes"] as String?,
-                    hiddenFromStatusLists = map["hiddenFromStatusLists"] as Boolean,
+                    hiddenFromStatusLists = map["hiddenFromStatusLists"] as Boolean?,
+                    advancedScores = map["advancedScores"] as List<Float>?,
+                    startedAt = map["startedAt"] as FuzzyDate?,
+                    completedAt = map["completedAt"] as FuzzyDate?
+                )
+            }
+        }
+
+        @Parcelize
+        data class SaveEntries(
+            val ids: List<Long>,
+            val status: MediaListStatus,
+            val scoreFormat: ScoreFormat,
+            val score: Float? = null,
+            val scoreRaw: Int? = null,
+            val progress: Int? = null,
+            val progressVolumes: Int? = null,
+            val repeat: Int? = null,
+            val priority: Int? = null,
+            val private: Boolean? = null,
+            val notes: String? = null,
+            val hiddenFromStatusLists: Boolean? = null,
+            val advancedScores: List<Float>? = null,
+            val startedAt: @RawValue FuzzyDate? = null,
+            val completedAt: @RawValue FuzzyDate? = null,
+        ) : Param() {
+
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            override fun toMap() = mapOf(
+                "ids" to ids,
+                "status" to status,
+                "scoreFormat" to scoreFormat.name,
+                "score" to score,
+                "scoreRaw" to scoreRaw,
+                "progress" to progress,
+                "progressVolumes" to progressVolumes,
+                "repeat" to repeat,
+                "priority" to priority,
+                "private" to private,
+                "notes" to notes,
+                "hiddenFromStatusLists" to hiddenFromStatusLists,
+                "advancedScores" to advancedScores,
+                "startedAt" to startedAt,
+                "completedAt" to completedAt,
+            )
+
+            companion object : IParam.IKey {
+                override val KEY = "MediaListTaskRouter#SaveEntries"
+
+                fun fromMap(map: Map<String, Any?>) = SaveEntries(
+                    status = MediaListStatus.valueOf(map["status"] as String),
+                    scoreFormat = ScoreFormat.valueOf(map["scoreFormat"] as String),
+                    score = map["score"] as Float?,
+                    scoreRaw = map["scoreRaw"] as Int?,
+                    progress = map["progress"] as Int?,
+                    progressVolumes = map["progressVolumes"] as Int?,
+                    repeat = map["repeat"] as Int?,
+                    priority = map["priority"] as Int?,
+                    private = map["private"] as Boolean?,
+                    notes = map["notes"] as String?,
+                    hiddenFromStatusLists = map["hiddenFromStatusLists"] as Boolean?,
                     advancedScores = map["advancedScores"] as List<Float>?,
                     startedAt = map["startedAt"] as FuzzyDate?,
                     completedAt = map["completedAt"] as FuzzyDate?,
