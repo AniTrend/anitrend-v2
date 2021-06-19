@@ -173,6 +173,7 @@ sealed class MediaListParam {
         val id: Long? = null,
         val mediaId: Long,
         val status: MediaListStatus,
+        val scoreFormat: ScoreFormat,
         val score: Float? = null,
         val scoreRaw: Int? = null,
         val progress: Int? = null,
@@ -209,6 +210,7 @@ sealed class MediaListParam {
      */
     data class SaveEntries(
         val status: MediaListStatus,
+        val scoreFormat: ScoreFormat,
         val score: Float? = null,
         val scoreRaw: Int? = null,
         val progress: Int? = null,

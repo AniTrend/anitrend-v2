@@ -34,6 +34,7 @@ internal sealed class MediaListMutation : IGraphPayload {
             "id" to param.id,
             "mediaId" to param.mediaId,
             "status" to param.status,
+            "scoreFormat" to param.scoreFormat,
             "score" to param.score,
             "scoreRaw" to param.scoreRaw,
             "progress" to param.progress,
@@ -63,6 +64,7 @@ internal sealed class MediaListMutation : IGraphPayload {
          */
         override fun toMap() = mapOf(
             "status" to param.status,
+            "scoreFormat" to param.scoreFormat,
             "score" to param.score,
             "scoreRaw" to param.scoreRaw,
             "progress" to param.progress,
