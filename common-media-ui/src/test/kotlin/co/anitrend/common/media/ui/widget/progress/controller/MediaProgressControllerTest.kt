@@ -17,7 +17,7 @@
 
 package co.anitrend.common.media.ui.widget.progress.controller
 
-import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.MediaList
@@ -31,7 +31,7 @@ import org.junit.Test
 class MediaProgressControllerTest {
 
     private val media = mockk<Media>()
-    private val settings = mockk<IAuthenticationSettings>()
+    private val settings = mockk<Settings>()
     private lateinit var controller: MediaProgressController
 
     @Before

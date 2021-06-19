@@ -17,28 +17,22 @@
 
 package co.anitrend.common.media.ui.widget.progress.controller
 
-import android.content.Context
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import androidx.annotation.ColorInt
-import androidx.core.text.color
-import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.common.media.ui.R
-import co.anitrend.core.android.helpers.color.asColorInt
-import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.domain.common.HexColor
+import co.anitrend.core.android.helpers.date.AniTrendDateHelper
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
+import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.navigation.MediaListTaskRouter
 
 /**
  * Media progress widget controller
  */
 internal class MediaProgressController(
     private val entity: IMedia,
-    private val settings: IAuthenticationSettings
+    private val settings: Settings
 ) {
 
     private fun requireMediaList(): IMediaList {
@@ -101,17 +95,54 @@ internal class MediaProgressController(
     }
 
     /**
-     * @return Styled text representing progress and remaining
+     * Creates a save entry parameter object
+     *
+     * @param dateHelper Date helper/utility
+     * @param increment Progress increment steps
      */
-    fun getCurrentProgressText(): Spannable {
-        val maximum = getMaximumProgress()
-        val builder = SpannableStringBuilder()
-        builder.append("${getCurrentProgress()}")
-        builder.append(" / ")
-        if (maximum == 0)
-            builder.append("?")
-        else
-            builder.append("${getMaximumProgress()}")
-        return builder
+    fun createParams(
+        dateHelper: AniTrendDateHelper,
+        increment: Int = 1,
+    ): MediaListTaskRouter.Param.SaveEntry {
+        val progressIncremented = getCurrentProgress().plus(increment)
+
+        var startFuzzyDate = requireMediaList().startedOn
+        var finishFuzzyDate = requireMediaList().finishedOn
+
+        val statusUpdated = when {
+            progressIncremented == getMaximumProgress() -> {
+                finishFuzzyDate = dateHelper.fuzzyDateNow()
+                MediaListStatus.COMPLETED
+            }
+            requireMediaList().status == MediaListStatus.PLANNING -> {
+                startFuzzyDate = dateHelper.fuzzyDateNow()
+                MediaListStatus.CURRENT
+            }
+            else -> requireMediaList().status
+        }
+
+        val progressVolumes = when (val mediaProgress = requireMediaList().progress) {
+            is MediaListProgress.Manga -> mediaProgress.volumeProgress
+            else -> 0
+        }
+
+        return MediaListTaskRouter.Param.SaveEntry(
+            id = requireMediaList().id,
+            mediaId = requireMediaList().mediaId,
+            status = statusUpdated,
+            scoreFormat = settings.scoreFormat.value,
+            score = requireMediaList().score,
+            progress = progressIncremented,
+            progressVolumes = progressVolumes,
+            repeat = requireMediaList().progress.repeated,
+            priority = requireMediaList().priority,
+            private = requireMediaList().privacy.isPrivate,
+            notes = requireMediaList().privacy.notes as? String,
+            hiddenFromStatusLists = requireMediaList().privacy.isHidden,
+            customLists = requireMediaList().customLists.map { it.name as String },
+            advancedScores = requireMediaList().advancedScores.map { it.score },
+            startedAt = startFuzzyDate,
+            completedAt = finishFuzzyDate,
+        )
     }
 }
