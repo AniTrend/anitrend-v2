@@ -37,7 +37,7 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
     /**
      * Returns the current day in the form of an [Int].
      *
-     * @return [IntRange] between 0 - 30
+     * @return [IntRange] between 1 - 31
      */
     val day: Int
         @IntRange(from = 0, to = 30) get() =
@@ -53,9 +53,9 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
      * @return [FuzzyDate]
      */
     fun fuzzyDateNow() = FuzzyDate(
-        day = day.plus(1),
+        day = day,
         month = month.plus(1),
-        year = year.plus(1)
+        year = year
     )
 
     /**
