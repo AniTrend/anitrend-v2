@@ -25,7 +25,7 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.core.android.helpers.image.model.toRequestImage
+import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.databinding.AccountAuthenticatedItemBinding

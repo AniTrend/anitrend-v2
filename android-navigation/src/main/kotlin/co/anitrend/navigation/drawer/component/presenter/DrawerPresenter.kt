@@ -30,7 +30,7 @@ import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.components.edgetreatment.SemiCircleCutout
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.helpers.image.model.toRequestImage
+import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.extensions.onRevokeAuthentication
