@@ -19,8 +19,6 @@ package co.anitrend.core.coil.mapper
 
 import co.anitrend.core.android.controller.power.contract.IPowerController
 import co.anitrend.core.android.controller.power.contract.PowerSaverState
-import co.anitrend.core.android.helpers.image.model.CoverRequestImage
-import co.anitrend.core.android.helpers.image.model.MediaRequestImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import coil.map.Mapper
 import okhttp3.HttpUrl
@@ -35,16 +33,16 @@ class RequestImageMapper(
     ): String {
         val powerSaverState = powerController.powerSaverState()
         return when (requestImage) {
-            is MediaRequestImage -> when (requestImage.type) {
-                MediaRequestImage.ImageType.BANNER -> requestImage.image?.banner
-                MediaRequestImage.ImageType.POSTER -> {
+            is RequestImage.Media -> when (requestImage.type) {
+                RequestImage.Media.ImageType.BANNER -> requestImage.image?.banner
+                RequestImage.Media.ImageType.POSTER -> {
                     when (powerSaverState) {
                         PowerSaverState.Disabled -> requestImage.image?.extraLarge
                         else -> requestImage.image?.large
                     }
                 }
             }
-            is CoverRequestImage ->
+            is RequestImage.Cover ->
                 when (powerSaverState) {
                     PowerSaverState.Disabled -> requestImage.image?.large
                     else -> requestImage.image?.medium

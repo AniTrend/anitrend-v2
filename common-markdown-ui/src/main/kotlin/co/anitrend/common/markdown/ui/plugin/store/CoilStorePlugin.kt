@@ -17,7 +17,7 @@
 
 package co.anitrend.common.markdown.ui.plugin.store
 
-import co.anitrend.core.android.helpers.image.model.toCoverImage
+import co.anitrend.core.android.helpers.image.toCoverImage
 import coil.request.Disposable
 import coil.request.ImageRequest
 import coil.size.OriginalSize

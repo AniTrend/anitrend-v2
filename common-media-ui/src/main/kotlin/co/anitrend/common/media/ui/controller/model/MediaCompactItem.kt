@@ -28,7 +28,8 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.databinding.MediaCompactItemBinding
-import co.anitrend.core.android.helpers.image.model.MediaRequestImage
+import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.data.user.settings.IUserSettings

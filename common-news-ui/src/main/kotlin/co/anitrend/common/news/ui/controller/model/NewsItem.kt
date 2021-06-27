@@ -27,7 +27,7 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.news.databinding.NewsItemBinding
 import co.anitrend.core.android.R
-import co.anitrend.core.android.helpers.image.model.toCoverImage
+import co.anitrend.core.android.helpers.image.toCoverImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.news.entity.News
@@ -65,14 +65,17 @@ internal class NewsItem(
     ) {
         binding = NewsItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(R.dimen.sm_margin).toFloat()
-        disposable = requireBinding().newsImage.using(entity.image.toCoverImage(), listOf(
-            RoundedCornersTransformation(
-                topLeft = radius,
-                topRight = radius,
-                bottomLeft = radius,
-                bottomRight = radius
+        disposable = requireBinding().newsImage.using(
+            entity.image.toCoverImage(),
+            listOf(
+                RoundedCornersTransformation(
+                    topLeft = radius,
+                    topRight = radius,
+                    bottomLeft = radius,
+                    bottomRight = radius
+                )
             )
-        ))
+        )
 
         requireBinding().newsTitle.text = entity.title
         requireBinding().newsSubTitle.text = entity.subTitle

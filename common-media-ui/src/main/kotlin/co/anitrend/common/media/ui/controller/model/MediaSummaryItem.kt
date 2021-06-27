@@ -32,7 +32,8 @@ import co.anitrend.common.genre.ui.adapter.GenreListAdapter
 import co.anitrend.common.media.ui.databinding.MediaSummaryItemBinding
 import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.core.android.R
-import co.anitrend.core.android.helpers.image.model.MediaRequestImage
+import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.settings.Settings

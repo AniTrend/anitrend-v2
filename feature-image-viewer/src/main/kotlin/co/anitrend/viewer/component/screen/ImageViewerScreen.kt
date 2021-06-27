@@ -29,7 +29,7 @@ import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.helpers.image.model.toCoverImage
+import co.anitrend.core.android.helpers.image.toCoverImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.ImageViewerRouter

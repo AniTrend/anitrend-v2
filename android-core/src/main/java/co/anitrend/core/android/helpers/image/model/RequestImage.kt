@@ -20,31 +20,21 @@ package co.anitrend.core.android.helpers.image.model
 import co.anitrend.domain.common.entity.contract.ICoverImage
 import co.anitrend.domain.common.entity.contract.IMediaCover
 
-sealed class RequestImage<T : ICoverImage>(
-    val image: T?
-)
+/**
+ * Request image model that our custom image loader will use
+ */
+sealed class RequestImage<T : ICoverImage>(val image: T?) {
 
-class MediaRequestImage(
-    mediaImage: IMediaCover?,
-    val type: ImageType
-) : RequestImage<IMediaCover>(mediaImage) {
-    enum class ImageType {
-        BANNER, POSTER
+    class Media(
+        mediaImage: IMediaCover?,
+        val type: ImageType
+    ) : RequestImage<IMediaCover>(mediaImage) {
+        enum class ImageType {
+            BANNER, POSTER
+        }
     }
-}
 
-class CoverRequestImage(
-    coverImage: ICoverImage?
-) : RequestImage<ICoverImage>(coverImage)
-
-fun String?.toCoverImage(): ICoverImage {
-    val resource = this
-    return object : ICoverImage {
-        override val large: CharSequence? = resource
-        override val medium: CharSequence? = resource
-    }
-}
-
-fun ICoverImage.toRequestImage(): CoverRequestImage {
-    return CoverRequestImage(this)
+    class Cover(
+        coverImage: ICoverImage?
+    ) : RequestImage<ICoverImage>(coverImage)
 }
