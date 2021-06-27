@@ -665,6 +665,31 @@ object MediaListRouter : NavigationRouter() {
     }
 }
 
+object MediaListEditorRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun sheet(): Class<out Fragment>
+    }
+
+    fun forSheet() = provider.sheet()
+
+    @Parcelize
+    data class Param(
+        val mediaId: Long,
+        val mediaType: MediaType,
+        val scoreFormat: ScoreFormat,
+    ) : IParam {
+
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "MediaListEditorRouter#Param"
+        }
+    }
+}
+
 object ImageViewerRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
