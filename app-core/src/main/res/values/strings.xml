@@ -32,6 +32,12 @@
     <!-- Place holder text for when something is not available -->
     <string name="label_place_holder_to_be_announced">TBA</string>
 
+    <!-- A default label for various use-cases -->
+    <string name="label_text_action_ok">OK</string>
+
+    <!-- A default authentication requirement message -->
+    <string name="label_text_authentication_required">Authentication required to access feature.</string>
+
     <string name="error_message_no_connection_title">No active connection</string>
     <string name="error_message_no_connection_message">Please make sure you have an working internet connection</string>
 
