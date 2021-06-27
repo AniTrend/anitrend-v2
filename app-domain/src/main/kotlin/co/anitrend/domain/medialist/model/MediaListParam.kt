@@ -29,11 +29,12 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 sealed class MediaListParam {
 
     /**
-     * @param id Filter by media list id
+     * @param mediaId Filter by media id
      * @param userId Filter by user id
      */
     data class Entry(
-        val id: Long,
+        val scoreFormat: ScoreFormat,
+        val mediaId: Long,
         val userId: Long
     ) : MediaListParam()
 

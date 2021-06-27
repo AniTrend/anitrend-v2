@@ -30,7 +30,8 @@ internal sealed class MediaListQuery : IGraphPayload {
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
         override fun toMap() = mapOf(
-            "id" to param.id,
+            "scoreFormat" to param.scoreFormat,
+            "mediaId" to param.mediaId,
             "userId" to param.userId
         )
     }
