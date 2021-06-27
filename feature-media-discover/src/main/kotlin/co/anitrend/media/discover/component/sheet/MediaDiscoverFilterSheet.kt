@@ -56,13 +56,6 @@ class MediaDiscoverFilterSheet(
         SheetHandleSlideAction(requireBinding().sheetHandle)
     }
 
-    private val closeSheetOnBackPressed =
-        object : OnBackPressedCallback(false) {
-            override fun handleOnBackPressed() {
-                dismiss()
-            }
-        }
-
     private val controller by lazy(UNSAFE) {
         MediaFilterController(requireBinding().materialTabsLayout)
     }

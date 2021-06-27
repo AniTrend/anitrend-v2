@@ -54,13 +54,6 @@ class EpisodeSheet(
 
     private var disposable: Disposable? = null
 
-    private val closeSheetOnBackPressed =
-        object : OnBackPressedCallback(false) {
-            override fun handleOnBackPressed() {
-                dismiss()
-            }
-        }
-
     private val shapeTransformationAction = object : OnSlideAction {
         /**
          * Called when the bottom sheet's [slideOffset] is changed. [slideOffset] will always be a

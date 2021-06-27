@@ -40,6 +40,7 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.scope.KoinScopeComponent
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import android.widget.FrameLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -73,6 +74,13 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
 
     protected open val defaultPeekHeight: Int = 275.dp
     protected open val defaultState: Int = BottomSheetBehavior.STATE_HALF_EXPANDED
+
+    protected val closeSheetOnBackPressed =
+        object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                dismiss()
+            }
+        }
 
     private fun applyMargins(viewParent: ViewParent) {
         runCatching {
