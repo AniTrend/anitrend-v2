@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "158794a2450443fe73bd7c019aa04f58",
+    "identityHash": "00449ce5243b1ba6d2366304a3892189",
     "entities": [
       {
         "tableName": "cache_log",
@@ -1176,7 +1176,7 @@
       },
       {
         "tableName": "media_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `list_status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "mediaType",
@@ -1258,7 +1258,7 @@
           },
           {
             "fieldPath": "status",
-            "columnName": "status",
+            "columnName": "list_status",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -2736,7 +2736,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '158794a2450443fe73bd7c019aa04f58')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '00449ce5243b1ba6d2366304a3892189')"
     ]
   }
 }

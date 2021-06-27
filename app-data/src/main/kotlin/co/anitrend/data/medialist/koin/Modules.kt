@@ -106,10 +106,12 @@ private val sourceModule = module {
         MediaListSourceImpl.Entry(
             remoteSource = graphApi(),
             localSource = store().mediaListDao(),
+            mediaLocalSource = store().mediaDao(),
             clearDataHelper = get(),
             controller = graphQLController(
                 mapper = get<MediaListMapper.Entry>()
             ),
+            filter = MediaListQueryFilter.Entry(),
             cachePolicy = get<MediaListCache>(),
             converter = get(),
             dispatcher = get()

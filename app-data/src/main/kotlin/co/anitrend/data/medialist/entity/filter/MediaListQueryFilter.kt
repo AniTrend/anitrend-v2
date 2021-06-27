@@ -20,15 +20,11 @@ package co.anitrend.data.medialist.entity.filter
 import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.customlist.entity.CustomListEntitySchema
-import co.anitrend.data.genre.entity.connection.GenreConnectionEntitySchema
-import co.anitrend.data.link.entity.LinkEntitySchema
 import co.anitrend.data.media.entity.MediaEntitySchema
 import co.anitrend.data.medialist.entity.MediaListEntitySchema
-import co.anitrend.data.tag.entity.TagEntitySchema
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.support.query.builder.core.criteria.extensions.equal
-import co.anitrend.support.query.builder.core.criteria.extensions.like
 import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.from.extentions.innerJoin
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
@@ -159,6 +155,27 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
 
         override fun selection(filter: MediaListParam.Collection) {
             super.selection(filter)
+        }
+    }
+
+    class Entry : FilterQueryBuilder<MediaListParam.Entry>() {
+        private val mediaListTable = MediaListEntitySchema.tableName.asTable()
+        private val mediaTable = MediaEntitySchema.tableName.asTable()
+
+        /**
+         * Staring point of the query builder, that should make use of [requireBuilder]
+         * to add query objections
+         */
+        override fun onBuildQuery(filter: MediaListParam.Entry) {
+            requireBuilder() from (mediaTable).innerJoin(mediaListTable).on(
+                MediaEntitySchema.id.asColumn(mediaTable).equal(
+                    MediaListEntitySchema.mediaId.asColumn(mediaListTable)
+                )
+            ) whereAnd {
+                MediaListEntitySchema.userId.asColumn(mediaListTable).equal(filter.userId)
+            } whereAnd {
+                MediaEntitySchema.id.asColumn(mediaTable).equal(filter.mediaId)
+            }
         }
     }
 }

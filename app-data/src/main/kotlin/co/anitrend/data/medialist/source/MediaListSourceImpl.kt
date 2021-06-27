@@ -79,17 +79,18 @@ internal class MediaListSourceImpl {
     class Entry(
         private val remoteSource: MediaListRemoteSource,
         private val localSource: MediaListLocalSource,
+        private val mediaLocalSource: MediaLocalSource,
         private val controller: MediaListEntryController,
-        private val converter: MediaListEntityViewConverter,
+        private val filter: MediaListQueryFilter.Entry,
+        private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
         override val dispatcher: ISupportDispatcher,
         override val cachePolicy: ICacheStorePolicy
     ) : MediaListSource.Entry() {
 
-        override fun observable(): Flow<MediaList> {
-            return localSource.byIdFlow(
-                id = query.param.id,
-                userId = query.param.userId
+        override fun observable(): Flow<Media> {
+            return mediaLocalSource.rawFlow(
+                filter.build(query.param)
             ).flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -115,8 +116,8 @@ internal class MediaListSourceImpl {
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
-                localSource.clearById(
-                    id = query.param.id,
+                localSource.clearByMediaId(
+                    mediaId = query.param.mediaId,
                     userId = query.param.userId
                 )
                 cachePolicy.invalidateLastRequest(cacheIdentity)

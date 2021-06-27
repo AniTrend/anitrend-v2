@@ -44,7 +44,7 @@ internal class MediaListCache(
 
         class Entry(
             val param: MediaListParam.Entry,
-            override val id: Long = param.id,
+            override val id: Long = param.mediaId,
             override val key: String = "media_list_entry",
             override val expiresAt: Instant = instantInPast(minutes = 1)
         ) : MediaListCache.Identity()

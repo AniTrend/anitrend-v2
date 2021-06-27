@@ -36,7 +36,7 @@ internal typealias MediaListDeleteEntryController = GraphQLController<MediaListC
 internal typealias DeleteCustomListController = GraphQLController<MediaListContainerModel.DeletedCustomList, Boolean>
 
 internal typealias MediaListSyncRepository = IMediaListRepository.Sync<DataState<Boolean>>
-internal typealias MediaListEntryRepository = IMediaListRepository.Entry<DataState<MediaList>>
+internal typealias MediaListEntryRepository = IMediaListRepository.Entry<DataState<Media>>
 internal typealias MediaListCollectionRepository = IMediaListRepository.Collection<DataState<PagedList<Media>>>
 internal typealias MediaListPagedRepository = IMediaListRepository.Paged<DataState<PagedList<Media>>>
 internal typealias MediaListSaveEntryRepository = IMediaListRepository.SaveEntry<DataState<Boolean>>
@@ -45,7 +45,7 @@ internal typealias MediaListDeleteEntryRepository = IMediaListRepository.DeleteE
 internal typealias DeleteCustomMediaListRepository = IMediaListRepository.DeleteCustomList<DataState<Boolean>>
 
 typealias SyncMediaListEntryInteractor = MediaListUseCase.Sync<DataState<Boolean>>
-typealias GetMediaListEntryInteractor = MediaListUseCase.GetEntry<DataState<MediaList>>
+typealias GetMediaListEntryInteractor = MediaListUseCase.GetEntry<DataState<Media>>
 typealias GetPagedMediaListInteractor = MediaListUseCase.GetPaged<DataState<PagedList<Media>>>
 typealias GetCollectionMediaListInteractor = MediaListUseCase.GetCollection<DataState<PagedList<Media>>>
 typealias SaveMediaListEntryInteractor = MediaListUseCase.SaveEntry<DataState<Boolean>>

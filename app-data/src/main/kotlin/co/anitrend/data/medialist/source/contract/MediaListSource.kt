@@ -62,13 +62,13 @@ internal class MediaListSource {
 
         protected abstract val cachePolicy: ICacheStorePolicy
 
-        protected abstract fun observable(): Flow<MediaList>
+        protected abstract fun observable(): Flow<Media>
 
         protected abstract suspend fun getEntry(
             requestCallback: RequestCallback
         ): Boolean
 
-        operator fun invoke(param: MediaListParam.Entry): Flow<MediaList> {
+        operator fun invoke(param: MediaListParam.Entry): Flow<Media> {
             query = MediaListQuery.Entry(param)
             cacheIdentity = MediaListCache.Identity.Entry(param)
             cachePolicy(

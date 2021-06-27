@@ -64,5 +64,9 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
 
     @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
+    abstract fun rawFlow(query: SupportSQLiteQuery): Flow<MediaEntityView.Core?>
+
+    @Transaction
+    @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
     abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
 }

@@ -23,10 +23,8 @@ import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.user.entity.UserEntity
@@ -53,23 +51,21 @@ internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEnti
 
     @Query("""
         delete from media_list
+        where id = :id and user_id = :userId 
+        """)
+    abstract suspend fun clearById(id: Long, userId: Long)
+
+    @Query("""
+        delete from media_list
         where user_id = :userId
         """)
     abstract suspend fun clearByUserId(userId: Long)
 
     @Query("""
         delete from media_list
-        where user_id = :userId and id = :id
+        where user_id = :userId and media_id = :mediaId
         """)
-    abstract suspend fun clearById(id: Long, userId: Long)
-
-    @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where ml.id = :id and u.id = :userId
-    """)
-    @Transaction
-    abstract fun byIdFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
+    abstract suspend fun clearByMediaId(mediaId: Long, userId: Long)
 
     @Transaction
     @RawQuery(observedEntities = [MediaListEntity::class, MediaEntity::class, UserEntity::class])

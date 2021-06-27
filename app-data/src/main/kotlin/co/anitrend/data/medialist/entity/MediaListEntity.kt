@@ -44,7 +44,7 @@ internal data class MediaListEntity(
     @ColumnInfo(name = "repeat_count") val repeatCount: Int,
     @ColumnInfo(name = "score") val score: Float,
     @ColumnInfo(name = "started_at") val startedAt: FuzzyDateInt?,
-    @ColumnInfo(name = "status") val status: MediaListStatus,
+    @ColumnInfo(name = "list_status") val status: MediaListStatus,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "id") override val id: Long
