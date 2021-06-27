@@ -98,6 +98,7 @@ internal object Modules {
         MediaDiscoverFilter("feature-media-discover-filter"),
         Notification("feature-notification"),
         MediaList("feature-medialist"),
+        MediaListEditor("feature-medialist-editor"),
         Review("feature-review"),
         Forum("feature-forum"),
         Recommendation("feature-recommendation"),

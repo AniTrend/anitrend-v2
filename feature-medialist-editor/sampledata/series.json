@@ -1,0 +1,414 @@
+{
+  "id": 128546,
+  "idMal": 46095,
+  "title": {
+    "english": "Vivy -Fluorite Eye's Song-",
+    "romaji": "Vivy: Fluorite Eye\u2019s Song",
+    "native": "Vivy -Fluorite Eye\u2019s Song-",
+    "userPreferred": "Vivy: Fluorite Eye\u2019s Song"
+  },
+  "bannerImage": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/banner\/128546-V5KVgbzQwFYm.jpg",
+  "coverImage": {
+    "color": "#35a1bb",
+    "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/bx128546-UIwyhuhjxmL0.jpg",
+    "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx128546-UIwyhuhjxmL0.jpg",
+    "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/bx128546-UIwyhuhjxmL0.jpg"
+  },
+  "type": "ANIME",
+  "format": "TV",
+  "season": "SPRING",
+  "status": "FINISHED",
+  "source": "ORIGINAL",
+  "meanScore": 83,
+  "description": "An AI named Matsumoto appears before Vivy, the world\u2019s first autonomous humanoid AI. Matsumoto\u2019s mission is to rewrite history together with Vivy, in order to stop the war between AI and humans that will happen one century later.<br>\n<br>\n(Source: Funimation)",
+  "averageScore": 83,
+  "countryOfOrigin": "JP",
+  "trending": 0,
+  "popularity": 50404,
+  "synonyms": [
+    "\u30f4\u30a3\u30f4\u30a3 -\u30d5\u30ed\u30fc\u30e9\u30a4\u30c8\u30a2\u30a4\u30ba\u30bd\u30f3\u30b0-"
+  ],
+  "favourites": 1620,
+  "hashtag": "#\u30f4\u30a3\u30f4\u30a3",
+  "siteUrl": "https:\/\/anilist.co\/anime\/128546",
+  "genres": [
+    "Action",
+    "Drama",
+    "Music",
+    "Sci-Fi",
+    "Thriller"
+  ],
+  "tags": [
+    {
+      "category": "Cast-Traits",
+      "description": "Intelligent non-organic machines that work and react similarly to humans.",
+      "id": 517,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Artificial Intelligence",
+      "rank": 98,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features humanoid machines.",
+      "id": 175,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Robots",
+      "rank": 97,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Centers around tragic events and unhappy endings.",
+      "id": 85,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Tragedy",
+      "rank": 90,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main character is female.",
+      "id": 98,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Female Protagonist",
+      "rank": 90,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Sci-Fi",
+      "description": "Prominently features time-traveling or other time-warping phenomena.",
+      "id": 96,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Time Manipulation",
+      "rank": 87,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Partly or completely set in a society characterized by poverty, squalor or oppression",
+      "id": 217,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dystopian",
+      "rank": 87,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Setting-Time",
+      "description": "Features a gap in time used to advance the story.",
+      "id": 153,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Time Skip",
+      "rank": 85,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around the activities of a terrorist or terrorist organization.",
+      "id": 285,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Terrorism",
+      "rank": 82,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Relating or devoted to the study of the fundamental nature of knowledge, reality, and existence.",
+      "id": 391,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Philosophy",
+      "rank": 80,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Arts-Music",
+      "description": "Features a performance that combines songs, spoken dialogue, acting, and dance.",
+      "id": 265,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Musical",
+      "rank": 76,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features a character(s) who has had their memories altered.",
+      "id": 365,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Memory Manipulation",
+      "rank": 73,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Prominently features a character who generally retains a cold, blunt and cynical exterior, but once one gets to know them, they have a very warm and loving interior.",
+      "id": 779,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Kuudere",
+      "rank": 71,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Cast-Main Cast",
+      "description": "Main cast is mostly composed of female characters.",
+      "id": 86,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Primarily Female Cast",
+      "rank": 70,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "Centers around the life and activities of an idol.",
+      "id": 115,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Idol",
+      "rank": 64,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Centers around politics, politicians, or government activities.",
+      "id": 103,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Politics",
+      "rank": 60,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Theme-Action",
+      "description": "Centers around the use of traditional hand-to-hand combat.",
+      "id": 30,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Martial Arts",
+      "rank": 57,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Cast-Traits",
+      "description": "A case where one or more people share the same body.",
+      "id": 536,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Dissociative Identities",
+      "rank": 57,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Contains one or more factions controlling or attempting to control the world from the shadows.",
+      "id": 456,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Conspiracy",
+      "rank": 48,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Technical",
+      "description": "Features story arcs that are loosely tied or lack an overarching plot.",
+      "id": 193,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Episodic",
+      "rank": 47,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Other",
+      "description": "Prominently features graphic bloodshed and violence.",
+      "id": 94,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Gore",
+      "rank": 41,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Sci-Fi",
+      "description": "Set in a future of advanced technological and scientific achievements that have resulted in social disorder.",
+      "id": 108,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Cyberpunk",
+      "rank": 40,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Setting-Universe",
+      "description": "Partly or completely set in outer space.",
+      "id": 63,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Space",
+      "rank": 38,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Technical",
+      "description": "Prominently features scenes created with computer-generated imagery.",
+      "id": 90,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "CGI",
+      "rank": 37,
+      "isMediaSpoiler": false
+    },
+    {
+      "category": "Theme-Fantasy",
+      "description": "Centers around individuals swapping bodies with one another.",
+      "id": 154,
+      "isAdult": false,
+      "isGeneralSpoiler": true,
+      "name": "Body Swapping",
+      "rank": 37,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "The act or an instance of taking or attempting to take one's own life voluntarily and intentionally.",
+      "id": 1046,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Suicide",
+      "rank": 37,
+      "isMediaSpoiler": true
+    },
+    {
+      "category": "Theme-Drama",
+      "description": "Centers around a character's transition from childhood to adulthood.",
+      "id": 102,
+      "isAdult": false,
+      "isGeneralSpoiler": false,
+      "name": "Coming of Age",
+      "rank": 10,
+      "isMediaSpoiler": false
+    }
+  ],
+  "startDate": {
+    "day": 3,
+    "month": 4,
+    "year": 2021
+  },
+  "endDate": {
+    "day": 19,
+    "month": 6,
+    "year": 2021
+  },
+  "episodes": 13,
+  "duration": 23,
+  "chapters": null,
+  "volumes": null,
+  "isAdult": false,
+  "isLocked": false,
+  "isLicensed": true,
+  "isFavourite": false,
+  "isRecommendationBlocked": false,
+  "updatedAt": 1624269635,
+  "nextAiringEpisode": null,
+  "rankings": [
+    {
+      "id": 95,
+      "allTime": true,
+      "context": "highest rated all time",
+      "format": "TV",
+      "rank": 95,
+      "season": null,
+      "type": "RATED",
+      "year": null
+    },
+    {
+      "id": 937,
+      "allTime": true,
+      "context": "most popular all time",
+      "format": "TV",
+      "rank": 437,
+      "season": null,
+      "type": "POPULAR",
+      "year": null
+    },
+    {
+      "id": 9706,
+      "allTime": false,
+      "context": "highest rated",
+      "format": "TV",
+      "rank": 6,
+      "season": null,
+      "type": "RATED",
+      "year": 2021
+    },
+    {
+      "id": 9803,
+      "allTime": false,
+      "context": "most popular",
+      "format": "TV",
+      "rank": 20,
+      "season": null,
+      "type": "POPULAR",
+      "year": 2021
+    },
+    {
+      "id": 9946,
+      "allTime": false,
+      "context": "highest rated",
+      "format": "TV",
+      "rank": 3,
+      "season": "SPRING",
+      "type": "RATED",
+      "year": 2021
+    },
+    {
+      "id": 9979,
+      "allTime": false,
+      "context": "most popular",
+      "format": "TV",
+      "rank": 6,
+      "season": "SPRING",
+      "type": "POPULAR",
+      "year": 2021
+    }
+  ],
+  "externalLinks": [
+    {
+      "id": 31652,
+      "site": "Official Site",
+      "url": "https:\/\/vivy-portal.com\/"
+    },
+    {
+      "id": 31653,
+      "site": "Twitter",
+      "url": "https:\/\/twitter.com\/vivy_portal"
+    },
+    {
+      "id": 35536,
+      "site": "Funimation",
+      "url": "https:\/\/www.funimation.com\/shows\/vivy-fluorite-eyes-song-\/"
+    },
+    {
+      "id": 35597,
+      "site": "AnimeLab",
+      "url": "https:\/\/www.animelab.com\/shows\/vivy--fluorite-eyes-song-"
+    }
+  ],
+  "trailer": {
+    "id": "Y653dJQ_ecs",
+    "site": "youtube",
+    "thumbnail": "https:\/\/i.ytimg.com\/vi\/Y653dJQ_ecs\/hqdefault.jpg"
+  },
+  "mediaListEntry": null
+}

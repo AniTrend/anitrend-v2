@@ -63,6 +63,7 @@
             <option value="$PROJECT_DIR$/feature-media-discover" />
             <option value="$PROJECT_DIR$/feature-media-discover-filter" />
             <option value="$PROJECT_DIR$/feature-medialist" />
+            <option value="$PROJECT_DIR$/feature-medialist-editor" />
             <option value="$PROJECT_DIR$/feature-news" />
             <option value="$PROJECT_DIR$/feature-notification" />
             <option value="$PROJECT_DIR$/feature-profile" />

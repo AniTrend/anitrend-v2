@@ -1,0 +1,125 @@
+<!--
+  ~ Copyright (C) 2021  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<co.anitrend.arch.ui.view.widget.SupportStateLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".component.sheet.MediaListEditorContent">
+
+    <co.anitrend.core.android.views.scroll.FillNestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButton"
+                style="@style/AppTheme.Material.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/action_media_list_delete"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/AppTheme.Material.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/action_media_list_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <co.anitrend.arch.ui.view.image.SupportImageView
+                android:id="@+id/mediaListBanner"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:aspectRatio=".47"
+                app:layout_constraintTop_toBottomOf="@+id/materialButton"
+                tools:scaleType="centerCrop"
+                tools:src="@sample/banner" />
+
+            <co.anitrend.arch.ui.view.image.SupportImageView
+                android:id="@+id/mediaListPoster"
+                android:layout_width="@dimen/size_70dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/size_6dp"
+                android:layout_marginTop="-12dp"
+                app:aspectRatio="1.45"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mediaListBanner"
+                tools:scaleType="centerCrop"
+                tools:src="@sample/poster" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linearLayoutCompat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/md_margin"
+                app:layout_constraintStart_toEndOf="@+id/mediaListPoster"
+                app:layout_constraintTop_toBottomOf="@+id/mediaListBanner">
+
+                <co.anitrend.common.media.ui.widget.status.MediaStatusWidget
+                    android:id="@+id/mediaStatusWidget"
+                    android:layout_width="@dimen/lg_margin"
+                    android:layout_height="@dimen/lg_margin"
+                    android:layout_gravity="center_vertical" />
+
+                <Space
+                    android:layout_width="@dimen/sm_margin"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mediaTitle"
+                    style="@style/AppTheme.SingleLineText"
+                    android:padding="@dimen/md_margin"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    tools:text="@sample/series.json/title/userPreferred" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
+                android:id="@+id/mediaSubTitleWidget"
+                style="@style/AppTheme.SingleLineText"
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/md_margin"
+                android:padding="@dimen/md_margin"
+                android:textAppearance="?attr/textAppearanceCaption"
+                app:layout_constraintStart_toEndOf="@+id/mediaListPoster"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
+            <co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
+                android:id="@+id/mediaScheduleTitleWidget"
+                style="@style/AppTheme.SingleLineText"
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/md_margin"
+                android:padding="@dimen/md_margin"
+                app:layout_constraintStart_toEndOf="@+id/mediaListPoster"
+                app:layout_constraintTop_toBottomOf="@+id/mediaSubTitleWidget" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </co.anitrend.core.android.views.scroll.FillNestedScrollView>
+
+</co.anitrend.arch.ui.view.widget.SupportStateLayout>
