@@ -28,5 +28,5 @@ interface IStorageController {
     fun getVideoCache(context: Context): File
     fun getVideoOfflineCache(context: Context): File
     fun getFreeSpace(context: Context, type: StorageType): Long
-    fun getStorageUsageLimit(context: Context, type: StorageType, settings: co.anitrend.data.settings.cache.ICacheSettings): Long
+    fun getStorageUsageLimit(context: Context, type: StorageType, settings: ICacheSettings): Long
 }
