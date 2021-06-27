@@ -35,7 +35,7 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaFormat.Companion.isQuantitative
 import com.google.android.material.textview.MaterialTextView
 
-internal class MediaSubTitleWidget @JvmOverloads constructor(
+class MediaSubTitleWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
 

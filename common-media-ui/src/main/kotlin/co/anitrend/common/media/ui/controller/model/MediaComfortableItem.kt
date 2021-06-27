@@ -22,27 +22,25 @@ import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.R
+import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.media.ui.controller.extensions.startMediaScreenFor
 import co.anitrend.common.media.ui.databinding.MediaComfortableItemBinding
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaComfortableItem(
     private val entity: Media,
-    private val settings: IUserSettings
+    private val settings: Settings
 ) : RecyclerItemBinding<MediaComfortableItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
@@ -66,7 +64,7 @@ internal data class MediaComfortableItem(
     ) {
         binding = MediaComfortableItemBinding.bind(view)
         disposable = requireBinding().mediaImage.using(
-            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER)
+            entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER)
         )
         requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
@@ -74,17 +72,10 @@ internal data class MediaComfortableItem(
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
         requireBinding().mediaTitle.text = SpannableString(entity.title.userPreferred)
         requireBinding().mediaCardContainer.setOnClickListener {
-            MediaRouter.startActivity(
-                context = it.context,
-                navPayload = MediaRouter.Param(
-                    id = entity.id,
-                    type = entity.category.type
-                ).asNavPayload()
-            )
+            it.startMediaScreenFor(entity)
         }
         requireBinding().mediaCardContainer.setOnLongClickListener {
-            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT).show()
-            true
+            it.openMediaListSheetFor(entity, settings)
         }
     }
 

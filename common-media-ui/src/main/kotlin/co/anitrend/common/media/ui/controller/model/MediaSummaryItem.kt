@@ -22,13 +22,14 @@ import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.genre.ui.adapter.GenreListAdapter
+import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.media.ui.controller.extensions.startMediaScreenFor
 import co.anitrend.common.media.ui.databinding.MediaSummaryItemBinding
 import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.core.android.R
@@ -37,11 +38,7 @@ import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
 import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -86,7 +83,7 @@ internal class MediaSummaryItem(
         binding = MediaSummaryItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(R.dimen.lg_margin).toFloat()
         disposable = requireBinding().mediaImage.using(
-            MediaRequestImage(entity.image, MediaRequestImage.ImageType.POSTER),
+            entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
             listOf(
                 RoundedCornersTransformation(
                     topRight = radius,
@@ -103,18 +100,10 @@ internal class MediaSummaryItem(
         requireBinding().mediaProgressWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaTitle.text = SpannableString(entity.title.userPreferred)
         requireBinding().mediaCardContainer.setOnClickListener {
-            MediaRouter.startActivity(
-                context = it.context,
-                navPayload = MediaRouter.Param(
-                    id = entity.id,
-                    type = entity.category.type
-                ).asNavPayload()
-            )
+            it.startMediaScreenFor(entity)
         }
         requireBinding().mediaCardContainer.setOnLongClickListener {
-            Toast.makeText(view.context, "Opens media list bottom dialog", Toast.LENGTH_SHORT)
-                .show()
-            true
+            it.openMediaListSheetFor(entity, settings)
         }
     }
 

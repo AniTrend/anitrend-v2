@@ -22,17 +22,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.FULL_SPAN_SIZE
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.adapter.MediaCompactAdapter
 import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
+import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.carousel.entity.MediaCarousel
@@ -50,7 +50,7 @@ import org.threeten.bp.Instant
 
 internal class MediaCarouselItem(
     private val entity: MediaCarousel,
-    private val settings: IUserSettings,
+    private val settings: Settings,
     private val viewPool: RecyclerView.RecycledViewPool
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 

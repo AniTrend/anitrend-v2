@@ -32,7 +32,7 @@ import co.anitrend.core.android.asPrettyTime
 import co.anitrend.domain.media.entity.Media
 import com.google.android.material.textview.MaterialTextView
 
-internal class MediaAiringScheduleWidget @JvmOverloads constructor(
+class MediaAiringScheduleWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
 

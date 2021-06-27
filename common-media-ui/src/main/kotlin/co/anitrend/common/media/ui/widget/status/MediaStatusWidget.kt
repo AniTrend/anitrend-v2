@@ -25,7 +25,7 @@ import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
 import co.anitrend.domain.media.enums.MediaStatus
 
-internal class MediaStatusWidget @JvmOverloads constructor(
+class MediaStatusWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), CustomView {
 
