@@ -31,7 +31,6 @@ object Libraries {
     const val debugDb = "com.amitshekhar.android:debug-db:${Versions.debugDB}"
 
     const val junit = "junit:junit:${Versions.junit}"
-    const val mockk = "io.mockk:mockk:${Versions.mockk}"
 
     const val elements = "com.otaliastudios:elements:${Versions.elements}"
     const val tmdb = "com.uwetrottmann.tmdb2:tmdb-java:${Versions.tmdb}"
@@ -634,6 +633,12 @@ object Libraries {
             const val tables = "io.noties.markwon:ext-tables:$version"
             const val latex = "io.noties.markwon:ext-latex:$version"
         }
+    }
+
+    object Mockk {
+        const val version = "1.11.0"
+        const val mockk = "io.mockk:mockk:$version"
+        const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
 
     object Saket {

@@ -31,7 +31,7 @@ internal class DependencyStrategy(private val project: Project) {
             implementation(Libraries.timber)
 
         test(Libraries.junit)
-        test(Libraries.mockk)
+        test(Libraries.Mockk.mockk)
 
         /** Work around for crashing tests when startup. initializer is not found in *.test packages */
         androidTest(Libraries.AndroidX.StartUp.startUpRuntime)
@@ -43,7 +43,7 @@ internal class DependencyStrategy(private val project: Project) {
         androidTest(Libraries.AndroidX.Test.runner)
         androidTest(Libraries.AndroidX.Test.Espresso.core)
         androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
-        androidTest(Libraries.mockk)
+        androidTest(Libraries.Mockk.mockkAndroid)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
