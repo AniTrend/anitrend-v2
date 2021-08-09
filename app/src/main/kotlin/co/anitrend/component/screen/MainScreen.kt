@@ -234,6 +234,10 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
             navigationDrawer.dismiss()
             return
         }
+        if (!requireBinding().bottomAppBar.isScrolledUp) {
+            requireBinding().bottomAppBar.performShow()
+            return
+        }
         if (viewModel.state.shouldExit)
             ActivityCompat.finishAfterTransition(this)
         else {
