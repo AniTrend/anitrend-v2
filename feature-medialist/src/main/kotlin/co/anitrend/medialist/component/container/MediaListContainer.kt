@@ -54,7 +54,7 @@ class MediaListContainer(
                 statusTitles = statusList,
                 customListTitles = customLists,
                 fragmentActivity = requireActivity(),
-                fragmentManager = childFragmentManager,
+                fragmentManager = parentFragmentManager,
                 lifecycle = lifecycle
             )
 
@@ -77,11 +77,6 @@ class MediaListContainer(
             null -> emptyList()
         }.toList()
         setUpViewPager(MediaListStatus.values(), customLists)
-    }
-
-    private fun setUpViews() {
-        requireBinding().viewPager.offscreenPageLimit = 4
-        requireBinding().stateLayout.stateConfigFlow.value = stateConfig
     }
 
     /**
@@ -175,8 +170,24 @@ class MediaListContainer(
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = MediaListContainerBinding.bind(requireNotNull(view))
-        setUpViews()
         return view
+    }
+
+    /**
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view. This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.
+     *
+     * The fragment's view hierarchy is not however attached to its parent at this point.
+     *
+     * @param view The View returned by [onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //requireBinding().viewPager.offscreenPageLimit = 4
+        requireBinding().stateLayout.stateConfigFlow.value = stateConfig
     }
 
     /**
