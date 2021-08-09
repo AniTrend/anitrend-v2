@@ -17,6 +17,7 @@
 
 package co.anitrend.core.ui
 
+import android.content.Context
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
@@ -138,6 +139,19 @@ inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
     activity.createFragment(fragment)
     fragment.arguments = parameter
     return fragment
+}
+
+/**
+ * Retrieves or creates a new fragment using the underlying
+ * [FragmentActivity] from the given [context]
+ *
+ * @param context Context
+ */
+inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
+    context: Context
+): T {
+    val fragmentActivity = context as FragmentActivity
+    return fragmentByTagOrNew(fragmentActivity)
 }
 
 /**
