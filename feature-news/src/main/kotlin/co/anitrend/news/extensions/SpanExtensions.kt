@@ -19,6 +19,7 @@ package co.anitrend.news.extensions
 
 import android.text.Layout
 import android.text.style.AlignmentSpan
+import androidx.core.text.isDigitsOnly
 import co.anitrend.common.markdown.ui.plugin.span.image.AbstractImageSpan
 import co.anitrend.news.plugin.span.YouTubeSpanConfiguration
 import io.noties.markwon.Prop
@@ -44,11 +45,19 @@ internal fun AbstractImageSpan.onFrame(): ArrayList<Any?> {
             .spansFactory()
             .get(Link::class.java)
 
-        val imageSize = generateImageSize(
-            styles,
-            attributes[AbstractImageSpan.WIDTH_ATTR]?.toFloat(),
-            attributes[AbstractImageSpan.HEIGHT_ATTR]?.toFloat()
-        )
+        val width = attributes[AbstractImageSpan.WIDTH_ATTR]?.let {
+            if (it.isDigitsOnly())
+                it
+            else null
+        }?.toFloat()
+
+        val height = attributes[AbstractImageSpan.HEIGHT_ATTR]?.let {
+            if (it.isDigitsOnly())
+                it
+            else null
+        }?.toFloat()
+
+        val imageSize = generateImageSize(styles, width, height)
 
         addPropertiesToImage(source, imageSize)
         spans.add(imageSpanFactory?.getSpans(configuration, renderProps))
