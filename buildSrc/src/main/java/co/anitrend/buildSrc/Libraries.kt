@@ -345,6 +345,7 @@ object Libraries {
             val user = Modules.Common.User.path()
             val episode = Modules.Common.Episode.path()
             val news = Modules.Common.News.path()
+            val mediaList = Modules.Common.MediaList.path()
             val editor = Modules.Common.Editor.path()
             val feed = Modules.Common.Feed.path()
             val studio = Modules.Common.Studio.path()
