@@ -19,20 +19,18 @@ package co.anitrend.common.media.ui.controller.extensions
 
 import android.view.View
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.extension.ext.snackBar
 import co.anitrend.common.media.ui.R
+import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
-import com.google.android.material.snackbar.Snackbar
 
 internal fun View.startMediaScreenFor(entity: Media) {
     MediaRouter.startActivity(
@@ -49,7 +47,6 @@ internal fun View.openMediaListSheetFor(
     settings: Settings
 ): Boolean {
     if (settings.isAuthenticated.value) {
-        val controller = context as FragmentActivity
         val fragmentItem = FragmentItem(
             fragment = MediaListEditorRouter.forSheet(),
             parameter = MediaListEditorRouter.Param(
@@ -58,12 +55,11 @@ internal fun View.openMediaListSheetFor(
                 scoreFormat = settings.scoreFormat.value
             ).asBundle()
         )
-        val dialog = fragmentItem.fragmentByTagOrNew(controller) as DialogFragment
-        dialog.show(controller.supportFragmentManager, fragmentItem.tag())
-        return true
-    }
-    snackBar(
-        text = resources.getString(R.string.label_text_authentication_required)
-    ).show()
-    return false
+        val dialog = fragmentItem.fragmentByTagOrNew(context) as DialogFragment
+        dialog.show(context.fragmentManager(), fragmentItem.tag())
+    } else
+        snackBar(
+            text = resources.getString(R.string.label_text_authentication_required)
+        ).show()
+    return true
 }
