@@ -22,7 +22,9 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getScreenDimens
 import co.anitrend.arch.extension.ext.getStringList
@@ -30,6 +32,7 @@ import co.anitrend.arch.extension.ext.isLowRamDevice
 import co.anitrend.core.android.animations.normalize
 import co.anitrend.core.android.components.sheet.action.SheetHandleSlideAction
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
+import co.anitrend.core.android.extensions.enableBottomSheetScrolling
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
@@ -68,10 +71,7 @@ class MediaDiscoverFilterSheet(
             fragmentManager = childFragmentManager,
             lifecycle = lifecycle
         )
-        // temporary work around for nested scrolling not working as expected
-        //requireBinding().viewPager.children.find {
-        //    it is RecyclerView
-        //}?.let { it.isNestedScrollingEnabled = false }
+        requireBinding().viewPager.enableBottomSheetScrolling()
     }
 
     /**
