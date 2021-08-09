@@ -92,10 +92,10 @@ private val coreModule = module {
                     ).build()
             )
     }
-    factory<IEmojiManager> {
+    factory {
         AppInitializer.getInstance(androidContext())
             .initializeComponent(EmojiInitializer::class.java)
-    }
+    } bind IEmojiManager::class
 }
 
 private val configurationModule = module {
