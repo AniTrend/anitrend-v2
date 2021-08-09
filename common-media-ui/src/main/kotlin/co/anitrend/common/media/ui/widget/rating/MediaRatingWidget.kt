@@ -201,7 +201,6 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             MediaListStatus.REPEATING -> mediaListStatusIndicator.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_repeat, tintColor)
             )
-            null -> {}
         }
     }
 
