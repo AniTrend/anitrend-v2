@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,14 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.common.editor.ui.initializer
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.content.Context
+import co.anitrend.common.editor.ui.koin.moduleHelper
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 
-dependencies {
-	implementation(Libraries.Markwon.core)
-	implementation(Libraries.Markwon.editor)
-	implementation(Libraries.AniTrend.Emojify.emojify)
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+
+    /**
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
+     */
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
+    }
 }
