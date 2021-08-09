@@ -21,6 +21,11 @@ import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import org.threeten.bp.LocalDate.from
+import org.threeten.bp.LocalTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
 class AniTrendDateHelper : AbstractSupportDateHelper() {
@@ -81,5 +86,55 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
         return if (month >= 11 && currentSeason == SeasonType.WINTER)
             year + delta
         else year
+    }
+
+    fun convertToTextDate(fuzzyDate: FuzzyDate?): CharSequence? {
+        if (fuzzyDate == null || fuzzyDate.isDateNotSet()) return null
+
+        val month = if (fuzzyDate.month <= 9)
+            "0${fuzzyDate.month}"
+        else "${fuzzyDate.month}"
+
+        val day = if (fuzzyDate.day <= 9)
+            "0${fuzzyDate.day}"
+        else "${fuzzyDate.day}"
+
+        val dateFormatted = "${fuzzyDate.year}-${month}-${day}"
+        val dateFormatter = DateTimeFormatter.ofPattern(
+            "yyyy-MM-dd", Locale.getDefault()
+        )
+
+        val parsedDate = dateFormatter.parse(dateFormatted)
+        val localDate = from(parsedDate)
+
+        val outputDateFormat = DateTimeFormatter.ofPattern(
+            "MMM dd, yyyy", Locale.getDefault()
+        )
+        return localDate.format(outputDateFormat)
+    }
+
+    fun convertToUnixTimeStamp(fuzzyDate: FuzzyDate): Long {
+        val fuzzyTextDate = convertToTextDate(fuzzyDate)
+
+        val dateFormatter = DateTimeFormatter.ofPattern(
+            "MMM dd, yyyy", Locale.getDefault()
+        )
+        val parsedDate = dateFormatter.parse(fuzzyTextDate)
+
+        val instant = from(parsedDate).atTime(LocalTime.MIDNIGHT)
+            .toInstant(ZoneOffset.UTC)
+
+        return instant.toEpochMilli()
+    }
+
+    fun convertToFuzzyDate(unixTimeStamp: Long): FuzzyDate {
+        val dateString = convertFromUnixTimeStamp(unixTimeStamp)
+        val segments = dateString.split('-', ' ')
+
+        return FuzzyDate(
+            year = segments[0].toInt(),
+            month = segments[1].toInt(),
+            day = segments[2].toInt()
+        )
     }
 }
