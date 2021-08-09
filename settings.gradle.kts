@@ -62,6 +62,7 @@ include(
     ":common-tag-ui",
 	":common-shared-ui",
 	":common-markdown-ui",
+	":common-medialist-ui",
     ":task-character",
     ":task-forum",
     ":task-media",

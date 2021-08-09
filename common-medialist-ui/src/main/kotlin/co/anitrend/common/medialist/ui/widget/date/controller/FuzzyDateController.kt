@@ -15,20 +15,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.common.editor.ui
+package co.anitrend.common.medialist.ui.widget.date.controller
 
-import android.content.Context
-import android.util.AttributeSet
-import co.anitrend.arch.ui.view.contract.CustomView
-import com.google.android.material.textfield.TextInputEditText
+import co.anitrend.core.android.helpers.date.AniTrendDateHelper
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 
-class MarkDownInputWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : TextInputEditText(context, attrs, defStyleAttr), CustomView {
-
-    init { onInit(context, attrs, defStyleAttr) }
-
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-
+internal class FuzzyDateController(
+    private val dateHelper: AniTrendDateHelper
+) {
+    fun asDateFormatted(default: CharSequence, fuzzyDate: FuzzyDate): CharSequence {
+        return dateHelper.convertToTextDate(fuzzyDate) ?: default
     }
 }

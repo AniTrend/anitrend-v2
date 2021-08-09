@@ -8,7 +8,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="Android Studio java home" />
+        <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -41,6 +41,7 @@
             <option value="$PROJECT_DIR$/common-genre-ui" />
             <option value="$PROJECT_DIR$/common-markdown-ui" />
             <option value="$PROJECT_DIR$/common-media-ui" />
+            <option value="$PROJECT_DIR$/common-medialist-ui" />
             <option value="$PROJECT_DIR$/common-news-ui" />
             <option value="$PROJECT_DIR$/common-recommendation-ui" />
             <option value="$PROJECT_DIR$/common-review-ui" />

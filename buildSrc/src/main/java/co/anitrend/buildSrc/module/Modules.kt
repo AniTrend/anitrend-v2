@@ -74,6 +74,7 @@ internal object Modules {
         User("common-user-ui"),
         Episode("common-episode-ui"),
         News("common-news-ui"),
+        MediaList("common-medialist-ui"),
         Editor("common-editor-ui"),
         Feed("common-feed-ui"),
         Studio("common-studio-ui"),
