@@ -58,7 +58,10 @@ sealed class Media : IMedia {
      *
      * @param type A [MediaType] enum
      */
-    sealed class Category(val type: MediaType) {
+    sealed class Category(
+        val type: MediaType,
+        val total: Int
+        ) {
 
         /**
          * Japanese Anime
@@ -73,7 +76,7 @@ sealed class Media : IMedia {
             val broadcast: String?,
             val premiered: String?,
             val schedule: AiringSchedule?,
-        ) : Category(MediaType.ANIME) {
+        ) : Category(MediaType.ANIME, episodes) {
             companion object {
                 fun empty() = Anime(
                     0,
@@ -94,7 +97,7 @@ sealed class Media : IMedia {
         data class Manga(
             val chapters: Int,
             val volumes: Int
-        ) : Category(MediaType.MANGA) {
+        ) : Category(MediaType.MANGA, chapters) {
             companion object {
                 fun empty() = Manga(
                     0,
