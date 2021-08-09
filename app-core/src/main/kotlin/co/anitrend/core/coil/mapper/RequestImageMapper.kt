@@ -58,10 +58,4 @@ class RequestImageMapper(
         val url = getImageUrlUsing(data)
         return url.toHttpUrl()
     }
-
-    companion object {
-        private val FALLBACK_URL =
-            ("https://github.com/anitrend/anitrend-v2/raw/master/app/src/main/ic_launcher-web.png")
-                .toHttpUrl()
-    }
 }
