@@ -47,8 +47,6 @@ object Versions {
         "$major.$minor.$patch-$channel$candidate"
     else
         "$major.$minor.$patch"
-
-    const val mockk = "1.11.0"
     const val junit = "4.13.2"
 
     const val timber = "4.7.1"
