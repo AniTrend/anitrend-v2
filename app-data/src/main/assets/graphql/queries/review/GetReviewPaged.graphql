@@ -1,5 +1,5 @@
 query GetReviewPaged(
-    $id: Int!,
+    $id: Int,
     $mediaId: Int,
     $mediaType: MediaType,
     $sort: [ReviewSort],
