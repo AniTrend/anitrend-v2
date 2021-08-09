@@ -19,7 +19,13 @@ package co.anitrend.core.android.extensions
 
 import android.content.Intent
 import android.view.View
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.net.toUri
+import androidx.core.view.children
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import timber.log.Timber
 
 fun View.startViewIntent(url: String) {
@@ -31,4 +37,42 @@ fun View.startViewIntent(url: String) {
     runCatching {
         context.startActivity(intent)
     }.onFailure { Timber.w(it) }
+}
+
+/**
+ * Sets the tooltip text for the view.
+ *
+ * @param tooltipText the tooltip text
+ */
+fun View.setTooltip(tooltipText: String) {
+    TooltipCompat.setTooltipText(this, tooltipText)
+}
+
+/**
+ * Sets the tooltip text for the view.
+ *
+ * @param tooltipText the tooltip text
+ */
+fun View.setTooltip(@StringRes tooltipText: Int) {
+    setTooltip(context.getString(tooltipText))
+}
+
+/**
+ * Temporary work around for nested scrolling inside a bottom sheet for [ViewPager2]
+ *
+ * @see co.anitrend.core.android.widget.viewpager.BottomSheetViewPager
+ */
+fun ViewPager2.enableBottomSheetScrolling() {
+    children.find {
+        it is RecyclerView
+    }?.let { it.isNestedScrollingEnabled = false }
+}
+
+/**
+ * Get fragment support manager from a view
+ *
+ * @see Context.fragmentManager
+ */
+fun View.fragmentManager(): FragmentManager {
+    return context.fragmentManager()
 }
