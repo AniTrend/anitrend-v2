@@ -48,6 +48,9 @@ allprojects {
                     "kotlin-stdlib-jdk7" -> useVersion("1.4.32")
                 }
             }
+            if (requested.group == "com.google.android.material") {
+                useTarget(co.anitrend.buildSrc.Libraries.Google.Material.material)
+            }
         }
     }
 }

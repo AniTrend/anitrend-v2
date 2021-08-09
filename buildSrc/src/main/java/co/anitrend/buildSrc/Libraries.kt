@@ -528,8 +528,10 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "1.4.0-beta01"
-            const val material = "com.google.android.material:material:$version"
+            private const val version = "cbf7bcad59"
+            const val material = "com.github.wax911:material-components-android:$version"
+            //private const val version = "1.4.0-beta01"
+            //const val material = "com.google.android.material:material:$version"
 
             object Compose {
                 private const val version = "1.0.0-beta06"
