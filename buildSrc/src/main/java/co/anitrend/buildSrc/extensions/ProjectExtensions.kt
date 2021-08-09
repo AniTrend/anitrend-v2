@@ -25,8 +25,8 @@ import com.android.build.gradle.TestPlugin
 import com.android.build.gradle.DynamicFeaturePlugin
 import com.diffplug.gradle.spotless.SpotlessExtension
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.extension.ApplicationAndroidComponentsExtension
-import com.android.build.api.extension.LibraryAndroidComponentsExtension
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.api.AndroidBasePlugin
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
