@@ -48,6 +48,7 @@ abstract class EpisodeLocalSource : AbstractLocalSource<EpisodeEntity>() {
     @Query("""
         select * 
         from episode
+        where series_title not like '%dub%'
         order by available_premium_time desc, series_title desc, 
         length(info_episode_number), info_episode_number
         """)
