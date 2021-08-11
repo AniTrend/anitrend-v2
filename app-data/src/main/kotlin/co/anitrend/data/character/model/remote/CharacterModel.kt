@@ -33,6 +33,7 @@ internal sealed class CharacterModel : ICharacterModel {
 
     abstract val age: Int?
     abstract val dateOfBirth: FuzzyDateModel?
+    abstract val bloodType: String?
     abstract val gender: String?
 
     @Serializable
@@ -40,6 +41,7 @@ internal sealed class CharacterModel : ICharacterModel {
         @SerialName("age") override val age: Int?,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel?,
         @SerialName("gender") override val gender: String?,
+        @SerialName("bloodType") override val bloodType: String?,
         @SerialName("description") override val description: String?,
         @SerialName("favourites") override val favourites: Int?,
         @SerialName("image") override val image: SharedImageModel?,
@@ -56,6 +58,7 @@ internal sealed class CharacterModel : ICharacterModel {
         @SerialName("age") override val age: Int?,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel?,
         @SerialName("gender") override val gender: String?,
+        @SerialName("bloodType") override val bloodType: String?,
         @SerialName("description") override val description: String?,
         @SerialName("favourites") override val favourites: Int?,
         @SerialName("image") override val image: SharedImageModel?,

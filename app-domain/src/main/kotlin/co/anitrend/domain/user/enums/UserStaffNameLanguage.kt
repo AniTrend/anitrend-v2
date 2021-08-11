@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,20 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.common.entity.shared
+package co.anitrend.domain.user.enums
 
-import co.anitrend.domain.common.entity.contract.IEntityName
+import co.anitrend.domain.common.enums.contract.IAliasable
 
 /**
- * Name attributes for various models such as characters and staff/actors
+ * The language the user wants to see staff and character names in
  */
-data class CoverName(
-    override val middle: String?,
-    override val alternativeSpoiler: List<String>,
-    override val alternative: List<String>,
-    override val first: String?,
-    override val full: String?,
-    override val last: String?,
-    override val native: String?,
-    override val userPreferred: String?
-) : IEntityName
+enum class UserStaffNameLanguage(override val alias: CharSequence) : IAliasable {
+    /** The staff or character's name in their native language*/
+    NATIVE("native"),
+    /** The romanization of the staff or character's native name*/
+    ROMAJI("Romaji"),
+    /** The romanization of the staff or character's native name, with western name ordering*/
+    ROMAJI_WESTERN("Romaji Western"),
+}

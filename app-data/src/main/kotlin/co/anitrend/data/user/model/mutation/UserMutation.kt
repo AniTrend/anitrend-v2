@@ -70,7 +70,8 @@ internal sealed class UserMutation : IGraphPayload {
             "notificationOptions" to param.notificationOptions.map(::NotificationOptionInput)
                 .map(NotificationOptionInput::toMap),
             "animeListOptions" to MediaListOptions(param.animeListOptions).toMap(),
-            "mangaListOptions" to MediaListOptions(param.mangaListOptions).toMap()
+            "mangaListOptions" to MediaListOptions(param.mangaListOptions).toMap(),
+            "staffNameLanguage" to param.staffNameLanguage
         )
     }
 }

@@ -1,5 +1,10 @@
 fragment UserExtended on User {
     ... UserCore
+    previousNames {
+        createdAt
+        name
+        updatedAt
+    }
     options {
         profileColor
         titleLanguage

@@ -42,6 +42,7 @@ package co.anitrend.domain.common.entity.contract
  * @property full Full name
  * @property last Last name
  * @property native The full name in the native language
+ * @property userPreferred The currently authenticated users preferred name language.
  */
 interface IEntityName {
     val middle: String?
@@ -51,4 +52,5 @@ interface IEntityName {
     val full: String?
     val last: String?
     val native: String?
+    val userPreferred: String?
 }

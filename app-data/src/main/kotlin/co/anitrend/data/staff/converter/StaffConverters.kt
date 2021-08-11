@@ -38,6 +38,7 @@ internal class StaffConverter(
                 dateOfDeath = source.dateOfDeath?.asFuzzyDate(),
                 gender = source.gender,
                 homeTown = source.homeTown,
+                bloodType = source.bloodType,
                 primaryOccupations = source.primaryOccupations.orEmpty(),
                 yearsActive = Staff.ActiveYearPeriod(
                     start = source.yearsActive.firstOrNull(),
@@ -62,7 +63,8 @@ internal class StaffConverter(
                         full = name.full,
                         last = name.last,
                         middle = name.middle,
-                        native = name.native
+                        native = name.native,
+                        userPreferred = name.userPreferred
                     )
                 },
                 siteUrl = source.siteUrl,
@@ -74,6 +76,7 @@ internal class StaffConverter(
                 dateOfDeath = source.dateOfDeath?.asFuzzyDate(),
                 gender = source.gender,
                 homeTown = source.homeTown,
+                bloodType = source.bloodType,
                 primaryOccupations = source.primaryOccupations.orEmpty(),
                 yearsActive = Staff.ActiveYearPeriod(
                     start = source.yearsActive.firstOrNull(),
@@ -98,7 +101,8 @@ internal class StaffConverter(
                         full = name.full,
                         last = name.last,
                         middle = name.middle,
-                        native = name.native
+                        native = name.native,
+                        userPreferred = name.userPreferred
                     )
                 },
                 siteUrl = source.siteUrl,

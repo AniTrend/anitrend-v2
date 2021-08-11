@@ -31,6 +31,7 @@ internal data class CharacterEntity(
     @ColumnInfo(name = "age") val age: Int?,
     @ColumnInfo(name = "date_of_birth") val dateOfBirth: FuzzyDateInt?,
     @ColumnInfo(name = "gender") val gender: String?,
+    @ColumnInfo(name = "blood_type") val bloodType: String?,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "favourites") val favourites: Int,
     @Embedded(prefix = "image_") val image: CoverImage,
@@ -53,6 +54,7 @@ internal data class CharacterEntity(
         @ColumnInfo(name = "full") val full: String? = null,
         @ColumnInfo(name = "last") val last: String? = null,
         @ColumnInfo(name = "middle") val middle: String? = null,
-        @ColumnInfo(name = "original") val original: String? = null
+        @ColumnInfo(name = "original") val original: String? = null,
+        @ColumnInfo(name = "user_preferred") val userPreferred: String? = null,
     )
 }

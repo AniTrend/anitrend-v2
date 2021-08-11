@@ -30,6 +30,7 @@ import kotlinx.serialization.Serializable
  * @property last Last name
  * @property middle Middle name
  * @property native The full name in the native language
+ * @property userPreferred The currently authenticated users preferred name language
  */
 @Serializable
 internal data class SharedNameModel(
@@ -39,5 +40,6 @@ internal data class SharedNameModel(
     @SerialName("full") val full: String?,
     @SerialName("last") val last: String?,
     @SerialName("middle") val middle: String?,
-    @SerialName("native") val native: String?
+    @SerialName("native") val native: String?,
+    @SerialName("userPreferred") val userPreferred: String?
 )

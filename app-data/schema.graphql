@@ -227,6 +227,8 @@ type AniChartUser {
 type Character {
     "The character's age. Note this is a string, not an int, it may contain further text and additional ages."
     age: String
+    "The characters blood type"
+    bloodType: String
     "The character's birth date"
     dateOfBirth: FuzzyDate
     "A general description of the character"
@@ -314,6 +316,8 @@ type CharacterName {
     middle: String
     "The character's full name in their native language"
     native: String
+    "The currently authenticated users preferred name language. Default romaji for non-authenticated"
+    userPreferred: String
 }
 
 "A submission for a character that features in an anime or manga"
@@ -864,7 +868,7 @@ type InternalPage {
         "Filter by user who created the recommendation"
         userId: Int
     ): [Recommendation]
-    reports: [Report]
+    reports(reportedId: Int, reporterId: Int): [Report]
     reviews(
         "Filter by Review id"
         id: Int,
@@ -961,6 +965,8 @@ type InternalPage {
     users(
         "Filter by the user id"
         id: Int,
+        "Filter to moderators only if true"
+        isModerator: Boolean,
         "Filter by the name of the user"
         name: String,
         "Filter by search query"
@@ -1872,6 +1878,8 @@ type Mutation {
         rowOrder: String,
         "The user's list scoring system"
         scoreFormat: ScoreFormat,
+        "The language the user wants to see staff and character names in"
+        staffNameLanguage: UserStaffNameLanguage,
         "Timezone offset format: -?HH:MM"
         timezone: String,
         "User's title language"
@@ -2368,6 +2376,8 @@ type Page {
     users(
         "Filter by the user id"
         id: Int,
+        "Filter to moderators only if true"
+        isModerator: Boolean,
         "Filter by the name of the user"
         name: String,
         "Filter by search query"
@@ -2786,6 +2796,8 @@ type Query {
         "Mod Only"
         status: Int
     ): [MediaTag]
+    "Get the user who added a tag to a media"
+    MediaTagUser(mediaId: Int, tagId: Int): User
     "Media Trend query"
     MediaTrend(
         "Filter by score"
@@ -2958,6 +2970,8 @@ type Query {
     User(
         "Filter by the user id"
         id: Int,
+        "Filter to moderators only if true"
+        isModerator: Boolean,
         "Filter by the name of the user"
         name: String,
         "Filter by search query"
@@ -3014,6 +3028,7 @@ type RelatedMediaAdditionNotification {
 }
 
 type Report {
+    cleared: Boolean
     "When the entry data was created"
     createdAt: Int
     id: Int!
@@ -3179,6 +3194,8 @@ type SiteTrendEdge {
 type Staff {
     "The person's age in years"
     age: Int
+    "The persons blood type"
+    bloodType: String
     "Media the actor voiced characters in. (Same data as characters with media as node instead of characters)"
     characterMedia(
         onList: Boolean,
@@ -3291,6 +3308,8 @@ type StaffName {
     middle: String
     "The person's full name in their native language"
     native: String
+    "The currently authenticated users preferred name language. Default romaji for non-authenticated"
+    userPreferred: String
 }
 
 "Voice actor role for a character"
@@ -3651,6 +3670,8 @@ type User {
     "The user's banner images"
     bannerImage: String
     bans: Json
+    "When the user's account was created. (Does not exist for accounts created before 2020)"
+    createdAt: Int
     "Custom donation badge text"
     donatorBadge: String
     "The donation tier of the user"
@@ -3670,12 +3691,16 @@ type User {
     isFollowing: Boolean
     "The user's media list options"
     mediaListOptions: MediaListOptions
+    "The user's moderator roles if they are a site moderator"
+    moderatorRoles: [ModRole]
     "If the user is a moderator or data moderator"
-    moderatorStatus: String
+    moderatorStatus: String @deprecated(reason : "Deprecated. Replaced with moderatorRoles field.")
     "The name of the user"
     name: String!
     "The user's general options"
     options: UserOptions
+    "The user's previously used names."
+    previousNames: [UserPreviousName]
     "The url for the user page on the AniList website"
     siteUrl: String
     "The users anime & manga list statistics"
@@ -3747,7 +3772,9 @@ type UserModData {
     alts: [User]
     bans: Json
     counts: Json
+    email: String
     ip: Json
+    privacy: Int
 }
 
 "A user's general options"
@@ -3762,10 +3789,22 @@ type UserOptions {
     notificationOptions: [NotificationOption]
     "Profile highlight color (blue, purple, pink, orange, red, green, gray)"
     profileColor: String
+    "The language the user wants to see staff and character names in"
+    staffNameLanguage: UserStaffNameLanguage
     "The user's timezone offset (Auth user only)"
     timezone: String
     "The language the user wants to see media titles in"
     titleLanguage: UserTitleLanguage
+}
+
+"A user's previous name"
+type UserPreviousName {
+    "When the user first changed from this name."
+    createdAt: Int
+    "A previous name of the user."
+    name: String
+    "When the user most recently changed from this name."
+    updatedAt: Int
 }
 
 type UserReleaseYearStatistic {
@@ -4198,6 +4237,36 @@ enum ModActionType {
     RESET
 }
 
+"Mod role enums"
+enum ModRole {
+    "An AniList administrator"
+    ADMIN
+    "An anime data moderator"
+    ANIME_DATA
+    "A community moderator"
+    COMMUNITY
+    "An AniList developer"
+    DEVELOPER
+    "A discord community moderator"
+    DISCORD_COMMUNITY
+    "A lead anime data moderator"
+    LEAD_ANIME_DATA
+    "A lead community moderator"
+    LEAD_COMMUNITY
+    "A head developer of AniList"
+    LEAD_DEVELOPER
+    "A lead manga data moderator"
+    LEAD_MANGA_DATA
+    "A lead social media moderator"
+    LEAD_SOCIAL_MEDIA
+    "A manga data moderator"
+    MANGA_DATA
+    "A retired moderator"
+    RETIRED
+    "A social media moderator"
+    SOCIAL_MEDIA
+}
+
 "Notification type enum"
 enum NotificationType {
     "A user has liked your activity"
@@ -4397,6 +4466,16 @@ enum UserSort {
     USERNAME_DESC
     WATCHED_TIME
     WATCHED_TIME_DESC
+}
+
+"The language the user wants to see staff and character names in"
+enum UserStaffNameLanguage {
+    "The staff or character's name in their native language"
+    NATIVE
+    "The romanization of the staff or character's native name"
+    ROMAJI
+    "The romanization of the staff or character's native name, with western name ordering"
+    ROMAJI_WESTERN
 }
 
 "User statistics sort enum"

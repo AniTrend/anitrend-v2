@@ -73,6 +73,7 @@ internal class UserModelConverter(
                 ),
                 unreadNotification = null,
                 updatedAt = source.updatedAt,
+                createdAt = source.createdAt,
                 id = source.id
             )
             is UserModel.Extended -> UserEntity(
@@ -95,6 +96,7 @@ internal class UserModelConverter(
                 ),
                 unreadNotification = 0,
                 updatedAt = source.updatedAt,
+                createdAt = source.createdAt,
                 id = source.id
             )
             is UserModel.Viewer -> UserEntity(
@@ -117,6 +119,7 @@ internal class UserModelConverter(
                 ),
                 unreadNotification = source.unreadNotificationCount,
                 updatedAt = source.updatedAt,
+                createdAt = source.createdAt,
                 id = source.id
             )
             is UserModel.WithStatistic -> UserEntity(
@@ -139,6 +142,7 @@ internal class UserModelConverter(
                 ),
                 unreadNotification = null,
                 updatedAt = source.updatedAt,
+                createdAt = source.createdAt,
                 id = source.id
             )
             else -> error("Nothing to do with this type: $source")
@@ -244,6 +248,8 @@ internal class UserEntityConverter(
                 isFollower = source.status?.isFollower,
                 isBlocked = source.status?.isBlocked,
                 pageUrl = source.about.siteUrl,
+                createdAt = source.createdAt,
+                updatedAt = source.updatedAt,
             ),
             id = source.id
         )
@@ -302,6 +308,8 @@ internal class UserViewEntityConverter(
                     isFollower = source.user.status?.isFollower,
                     isBlocked = source.user.status?.isBlocked,
                     pageUrl = source.user.about.siteUrl,
+                    createdAt = source.user.createdAt,
+                    updatedAt = source.user.updatedAt,
                 ),
                 id = source.user.id
             )
@@ -603,6 +611,8 @@ internal class UserViewEntityConverter(
                     isFollower = source.user.status?.isFollower,
                     isBlocked = source.user.status?.isBlocked,
                     pageUrl = source.user.about.siteUrl,
+                    createdAt = source.user.createdAt,
+                    updatedAt = source.user.updatedAt,
                 ),
                 id = source.user.id
             )

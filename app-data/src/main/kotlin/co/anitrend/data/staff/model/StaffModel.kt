@@ -35,6 +35,7 @@ internal sealed class StaffModel : IStaffModel {
     abstract val dateOfDeath: FuzzyDateModel?
     abstract val gender: String?
     abstract val homeTown: String?
+    abstract val bloodType: String?
     abstract val primaryOccupations: List<String>?
     abstract val yearsActive: List<Int>
 
@@ -58,6 +59,7 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel?,
         @SerialName("gender") override val gender: String?,
         @SerialName("homeTown") override val homeTown: String?,
+        @SerialName("bloodType") override val bloodType: String?,
         @SerialName("primaryOccupations") override val primaryOccupations: List<String>?,
         @SerialName("yearsActive") override val yearsActive: List<Int>,
         @SerialName("description") override val description: String?,
@@ -84,6 +86,7 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel?,
         @SerialName("gender") override val gender: String?,
         @SerialName("homeTown") override val homeTown: String?,
+        @SerialName("bloodType") override val bloodType: String?,
         @SerialName("primaryOccupations") override val primaryOccupations: List<String>?,
         @SerialName("yearsActive") override val yearsActive: List<Int>,
         @SerialName("description") override val description: String?,

@@ -43,6 +43,12 @@ sealed class User : IEntity {
         )
     }
 
+    data class PreviousName(
+        val createdAt: Long?,
+        val name: CharSequence?,
+        val updatedAt: Long?,
+    )
+
     data class Core(
         override val name: CharSequence,
         override val avatar: UserImage,
@@ -52,6 +58,7 @@ sealed class User : IEntity {
 
     data class Extended(
         val unreadNotifications: Int,
+        val previousNames: List<PreviousName>,
         val listOption: UserMediaListOption,
         val profileOption: UserProfileOption,
         override val name: CharSequence,
@@ -62,6 +69,7 @@ sealed class User : IEntity {
 
     data class WithStats(
         val unreadNotifications: Int,
+        val previousNames: List<PreviousName>,
         val listOption: UserMediaListOption,
         val profileOption: UserProfileOption,
         val statistics: UserMediaStatisticType,

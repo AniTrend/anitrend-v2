@@ -23,6 +23,7 @@ import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.enums.UserSort
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserStatisticsSort
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
@@ -93,7 +94,8 @@ sealed class UserParam {
         val profileColor: String,
         val notificationOptions: List<NotificationOption>,
         val animeListOptions: MediaListOptions,
-        val mangaListOptions: MediaListOptions
+        val mangaListOptions: MediaListOptions,
+        val staffNameLanguage: UserStaffNameLanguage,
     ) {
         /** [MediaListOptionsInput](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistoptionsinput.doc.html)
          *

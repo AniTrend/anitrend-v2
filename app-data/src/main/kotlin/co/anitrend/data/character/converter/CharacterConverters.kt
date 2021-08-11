@@ -23,7 +23,6 @@ import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.common.extension.asFuzzyDate
 import co.anitrend.data.common.extension.toFuzzyDateInt
-import co.anitrend.data.common.extension.toFuzzyDateModel
 import co.anitrend.domain.character.entity.Character
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.common.entity.shared.CoverName
@@ -38,6 +37,7 @@ internal class CharacterConverter(
                 age = source.age,
                 dateOfBirth = source.dateOfBirth.asFuzzyDate(),
                 gender = source.gender,
+                bloodType = source.bloodType,
                 description = source.description,
                 image = CoverImage(
                     large = source.image?.large,
@@ -51,6 +51,7 @@ internal class CharacterConverter(
                     full = source.name?.full,
                     last = source.name?.last,
                     native = source.name?.native,
+                    userPreferred = source.name?.userPreferred,
                 ),
                 siteUrl = source.siteUrl,
                 favourites = source.favourites ?: 0,
@@ -72,6 +73,7 @@ internal class CharacterModelConverter(
             age = source.age,
             dateOfBirth = source.dateOfBirth?.toFuzzyDateInt(),
             gender = source.gender,
+            bloodType = source.bloodType,
             description = source.description,
             favourites = source.favourites ?: 0,
             image = CharacterEntity.CoverImage(
@@ -88,6 +90,7 @@ internal class CharacterModelConverter(
                 last = source.name?.last,
                 middle = source.name?.middle,
                 original = source.name?.native,
+                userPreferred = source.name?.userPreferred,
             ),
             siteUrl = source.siteUrl,
             id = source.id,
@@ -104,6 +107,7 @@ internal class CharacterEntityConverter(
             age = source.age,
             dateOfBirth = source.dateOfBirth.asFuzzyDate(),
             gender = source.gender,
+            bloodType = source.bloodType,
             description = source.description,
             image = CoverImage(
                 large = source.image.large,
@@ -117,6 +121,7 @@ internal class CharacterEntityConverter(
                 full = source.name.full,
                 last = source.name.last,
                 native = source.name.original,
+                userPreferred = source.name.userPreferred,
             ),
             siteUrl = source.siteUrl,
             favourites = source.favourites,

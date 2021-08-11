@@ -54,7 +54,8 @@ internal data class StaffEntity(
         @ColumnInfo(name = "first") var first: String? = null,
         @ColumnInfo(name = "full") var full: String? = null,
         @ColumnInfo(name = "last") val last: String? = null,
-        @ColumnInfo(name = "original") var original: String? = null
+        @ColumnInfo(name = "original") var original: String? = null,
+        @ColumnInfo(name = "user_preferred") val userPreferred: String? = null,
     )
 
     data class Attribute(
@@ -62,6 +63,7 @@ internal data class StaffEntity(
         @ColumnInfo(name = "date_of_birth") val dateOfBirth: FuzzyDateInt? = null,
         @ColumnInfo(name = "date_of_death") val dateOfDeath: FuzzyDateInt? = null,
         @ColumnInfo(name = "gender") val gender: String? = null,
+        @ColumnInfo(name = "blood_type") val bloodType: String?,
         @ColumnInfo(name = "home_town") val homeTown: String? = null,
         @ColumnInfo(name = "primary_occupations") val primaryOccupations: List<String>?= null,
         @ColumnInfo(name = "year_active_start") val yearActiveStart: Int? = null,

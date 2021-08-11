@@ -4,6 +4,7 @@ fragment CharacterCore on Character {
         ... FuzzyDate
     }
     gender
+    bloodType
     description
     favourites
     id

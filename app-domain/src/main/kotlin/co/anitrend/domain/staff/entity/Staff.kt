@@ -30,6 +30,7 @@ sealed class Staff : IStaff {
     abstract val dateOfDeath: FuzzyDate?
     abstract val gender: String?
     abstract val homeTown: String?
+    abstract val bloodType: String?
     abstract val primaryOccupations: List<String>
     abstract val yearsActive: ActiveYearPeriod
 
@@ -44,6 +45,7 @@ sealed class Staff : IStaff {
         override val dateOfDeath: FuzzyDate?,
         override val gender: String?,
         override val homeTown: String?,
+        override val bloodType: String?,
         override val primaryOccupations: List<String>,
         override val yearsActive: ActiveYearPeriod,
         override val description: String?,
@@ -63,6 +65,7 @@ sealed class Staff : IStaff {
         override val dateOfDeath: FuzzyDate?,
         override val gender: String?,
         override val homeTown: String?,
+        override val bloodType: String?,
         override val primaryOccupations: List<String>,
         override val yearsActive: ActiveYearPeriod,
         override val description: String?,

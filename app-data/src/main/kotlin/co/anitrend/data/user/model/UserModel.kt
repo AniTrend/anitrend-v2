@@ -63,6 +63,20 @@ internal sealed class UserModel : IUserModel {
         @SerialName("advancedScoringEnabled") val advancedScoringEnabled: Boolean
     )
 
+    /**
+     * A user's previous name
+     *
+     * @param createdAt When the user first changed from this name
+     * @param name A previous name of the user
+     * @param updatedAt When the user most recently changed from this name
+     */
+    @Serializable
+    internal data class UserPreviousName(
+        @SerialName("createdAt") val createdAt: Long?,
+        @SerialName("name") val name: String?,
+        @SerialName("updatedAt") val updatedAt: Long?,
+    )
+
     @Serializable
     internal data class Id(
         @SerialName("id") override val id: Long
@@ -85,6 +99,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("donatorBadge") override val donatorBadge: String?,
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("createdAt") override val createdAt: Long?,
         @SerialName("id") override val id: Long
     ) : UserModel()
 
@@ -94,6 +109,7 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal abstract class WithOptions : UserModel() {
+        abstract val previousNames: List<UserPreviousName>?
         abstract val options: UserOptionsModel?
         abstract val mediaListOptions: MediaListOptions?
     }
@@ -106,6 +122,7 @@ internal sealed class UserModel : IUserModel {
     internal data class Extended(
         @SerialName("isFollowing") val isFollowing: Boolean?,
         @SerialName("isFollower") val isFollower: Boolean?,
+        @SerialName("previousNames") override val previousNames: List<UserPreviousName>?,
         @SerialName("options") override val options: UserOptionsModel.Core?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
         @SerialName("name") override val name: String,
@@ -117,6 +134,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("donatorBadge") override val donatorBadge: String?,
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("createdAt") override val createdAt: Long?,
         @SerialName("id") override val id: Long
     ) : WithOptions()
 
@@ -129,6 +147,7 @@ internal sealed class UserModel : IUserModel {
     internal data class Viewer(
         @SerialName("isFollower") val isFollower: Boolean?,
         @SerialName("isFollowing") val isFollowing: Boolean?,
+        @SerialName("previousNames") override val previousNames: List<UserPreviousName>?,
         @SerialName("unreadNotificationCount") val unreadNotificationCount: Int?,
         @SerialName("options") override val options: UserOptionsModel.Viewer?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
@@ -141,6 +160,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("donatorBadge") override val donatorBadge: String?,
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("createdAt") override val createdAt: Long?,
         @SerialName("id") override val id: Long
     ) : WithOptions()
 
@@ -158,6 +178,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("donatorBadge") override val donatorBadge: String?,
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("createdAt") override val createdAt: Long?,
         @SerialName("id") override val id: Long
     ) : UserModel() {
 

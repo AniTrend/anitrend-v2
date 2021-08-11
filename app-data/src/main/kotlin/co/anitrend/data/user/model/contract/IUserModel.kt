@@ -34,6 +34,7 @@ import co.anitrend.data.shared.model.SharedImageModel
  * @property updatedAt When the user's data was last updated
  * @property siteUrl The url for the user page on the AniList website
  * @property updatedAt When the user's data was last updated
+ * @property createdAt When the user's account was created. (accounts created on/after 2020)
  */
 internal interface IUserModel : Identity {
     val name: String
@@ -45,4 +46,5 @@ internal interface IUserModel : Identity {
     val donatorBadge: String?
     val siteUrl: String
     val updatedAt: Long?
+    val createdAt: Long?
 }

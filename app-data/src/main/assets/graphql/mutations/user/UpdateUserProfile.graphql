@@ -10,7 +10,8 @@ mutation UpdateUserProfile(
     $rowOrder: String,
     $scoreFormat: ScoreFormat,
     $timezone: String,
-    $titleLanguage: UserTitleLanguage
+    $titleLanguage: UserTitleLanguage,
+    $staffNameLanguage: UserStaffNameLanguage
 ) {
     UpdateUser(
         about: $about,
@@ -24,7 +25,8 @@ mutation UpdateUserProfile(
         rowOrder: $rowOrder,
         scoreFormat: $scoreFormat,
         timezone: $timezone,
-        titleLanguage: $titleLanguage
+        titleLanguage: $titleLanguage,
+        staffNameLanguage: $staffNameLanguage
     ) {
         ... UserExtended
     }

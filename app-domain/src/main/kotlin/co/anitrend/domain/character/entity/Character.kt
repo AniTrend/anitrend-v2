@@ -26,12 +26,14 @@ sealed class Character : ICharacter {
 
     abstract val age: Int?
     abstract val dateOfBirth: FuzzyDate?
+    abstract val bloodType: String?
     abstract val gender: String?
 
     data class Core(
         override val age: Int?,
         override val dateOfBirth: FuzzyDate?,
         override val gender: String?,
+        override val bloodType: String?,
         override val description: String?,
         override val image: CoverImage?,
         override val name: CoverName?,

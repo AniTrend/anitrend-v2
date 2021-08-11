@@ -32,6 +32,7 @@ internal data class UserEntity(
     @Embedded(prefix = "cover_") val coverImage: CoverImage,
     @ColumnInfo(name = "unread_notifications") val unreadNotification: Int?,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
+    @ColumnInfo(name = "created_at") val createdAt: Long?,
     @ColumnInfo(name = "id") override val id: Long
 ) : Identity {
 
