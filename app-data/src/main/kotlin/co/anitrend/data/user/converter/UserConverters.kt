@@ -24,6 +24,7 @@ import co.anitrend.data.staff.converter.StaffConverter
 import co.anitrend.data.studio.converter.StudioConverter
 import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
@@ -295,6 +296,13 @@ internal class UserViewEntityConverter(
                     profileColor = source.generalOption.profileColor,
                 ),
                 name = source.user.about.name,
+                previousNames = source.previousNames.map {
+                    User.PreviousName(
+                        createdAt = it.createdAt,
+                        name = it.name,
+                        updatedAt = it.updatedAt,
+                    )
+                },
                 avatar = UserImage(
                     large = source.user.coverImage.large,
                     medium = source.user.coverImage.medium,
@@ -598,6 +606,13 @@ internal class UserViewEntityConverter(
                     }
                 ),
                 name = source.user.about.name,
+                previousNames = source.previousNames.map {
+                    User.PreviousName(
+                        createdAt = it.createdAt,
+                        name = it.name,
+                        updatedAt = it.updatedAt,
+                    )
+                },
                 avatar = UserImage(
                     large = source.user.coverImage.large,
                     medium = source.user.coverImage.medium,

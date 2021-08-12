@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "00449ce5243b1ba6d2366304a3892189",
+    "identityHash": "c9e13d06bcb62a643d8fb0312284a9b1",
     "entities": [
       {
         "tableName": "cache_log",
@@ -788,7 +788,7 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unread_notifications` INTEGER, `updated_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unread_notifications` INTEGER, `updated_at` INTEGER, `created_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "unreadNotification",
@@ -799,6 +799,12 @@
           {
             "fieldPath": "updatedAt",
             "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -1576,7 +1582,7 @@
       },
       {
         "tableName": "character",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`age` INTEGER, `date_of_birth` TEXT, `gender` TEXT, `description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `isFavouriteBlocked` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_alternative_spoiler` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_middle` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`age` INTEGER, `date_of_birth` TEXT, `gender` TEXT, `blood_type` TEXT, `description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `isFavouriteBlocked` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_alternative_spoiler` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_middle` TEXT, `name_original` TEXT, `name_user_preferred` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "age",
@@ -1593,6 +1599,12 @@
           {
             "fieldPath": "gender",
             "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bloodType",
+            "columnName": "blood_type",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1683,6 +1695,12 @@
           {
             "fieldPath": "name.original",
             "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.userPreferred",
+            "columnName": "name_user_preferred",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -1848,7 +1866,7 @@
       },
       {
         "tableName": "staff",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `attribute_age` INTEGER, `attribute_date_of_birth` TEXT, `attribute_date_of_death` TEXT, `attribute_gender` TEXT, `attribute_home_town` TEXT, `attribute_primary_occupations` TEXT, `attribute_year_active_start` INTEGER, `attribute_year_active_end` INTEGER, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `attribute_age` INTEGER, `attribute_date_of_birth` TEXT, `attribute_date_of_death` TEXT, `attribute_gender` TEXT, `attribute_blood_type` TEXT, `attribute_home_town` TEXT, `attribute_primary_occupations` TEXT, `attribute_year_active_start` INTEGER, `attribute_year_active_end` INTEGER, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, `name_user_preferred` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "description",
@@ -1917,6 +1935,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "attribute.bloodType",
+            "columnName": "attribute_blood_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "attribute.homeTown",
             "columnName": "attribute_home_town",
             "affinity": "TEXT",
@@ -1979,6 +2003,12 @@
           {
             "fieldPath": "name.original",
             "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.userPreferred",
+            "columnName": "name_user_preferred",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -2731,12 +2761,77 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "user_previous_name",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `name` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_previous_name_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_previous_name_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '00449ce5243b1ba6d2366304a3892189')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c9e13d06bcb62a643d8fb0312284a9b1')"
     ]
   }
 }

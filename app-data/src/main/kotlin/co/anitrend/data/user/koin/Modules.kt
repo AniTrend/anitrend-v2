@@ -169,6 +169,7 @@ private val mapperModule = module {
         UserMapper.Profile(
             generalOptionMapper = get(),
             mediaOptionMapper = get(),
+            previousNameMapper = get(),
             localSource = store().userDao(),
             converter = get(),
         )
@@ -195,6 +196,11 @@ private val mapperModule = module {
         UserMapper.GeneralOptionEmbed(
             localSource = store().userGeneralOptionDao(),
             converter = get(),
+        )
+    }
+    factory {
+        UserMapper.PreviousNameEmbed(
+            localSource = store().userPreviousNameDao()
         )
     }
 }

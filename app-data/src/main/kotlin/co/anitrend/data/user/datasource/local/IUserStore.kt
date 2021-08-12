@@ -17,6 +17,7 @@
 
 package co.anitrend.data.user.datasource.local
 
+import co.anitrend.data.user.datasource.local.name.UserPreviousNameLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
 import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
@@ -26,4 +27,5 @@ internal interface IUserStore {
     fun userGeneralOptionDao(): UserGeneralOptionLocalSource
     fun userMediaOptionDao(): UserMediaOptionLocalSource
     fun userStatisticDao(): UserStatisticLocalSource
+    fun userPreviousNameDao(): UserPreviousNameLocalSource
 }

@@ -17,17 +17,17 @@
 
 package co.anitrend.data.user.mapper
 
+import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
-import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
-import co.anitrend.data.user.converter.UserMediaOptionModelConverter
-import co.anitrend.data.user.converter.UserModelConverter
-import co.anitrend.data.user.converter.UserStatisticModelConverter
+import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.user.converter.*
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
 import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
@@ -66,6 +66,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     class Profile(
         private val generalOptionMapper: GeneralOptionEmbed,
         private val mediaOptionMapper: MediaOptionEmbed,
+        private val previousNameMapper: PreviousNameEmbed,
         override val localSource: UserLocalSource,
         override val converter: UserModelConverter
     ) : UserMapper<UserModelContainer.Profile, UserEntity>() {
@@ -78,6 +79,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
             localSource.upsert(data)
             generalOptionMapper.persistEmbedded()
             mediaOptionMapper.persistEmbedded()
+            previousNameMapper.persistEmbedded()
         }
 
         /**
@@ -91,6 +93,9 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         ): UserEntity {
             generalOptionMapper.onEmbedded(source.user)
             mediaOptionMapper.onEmbedded(source.user)
+            previousNameMapper.onEmbedded(
+                PreviousNameEmbed.asItem(source.user)
+            )
             return converter.convertFrom(source.user)
         }
     }
@@ -175,6 +180,53 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
                 settings.titleLanguage.value = it.titleLanguage
             }
             entities = null
+        }
+    }
+
+    class PreviousNameEmbed(
+        override val localSource: AbstractLocalSource<UserPreviousNameEntity>
+    ) : EmbedMapper<PreviousNameEmbed.Item, UserPreviousNameEntity>() {
+
+        override val converter = object : SupportConverter<Item, UserPreviousNameEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> UserPreviousNameEntity = {
+                UserPreviousNameEntity(
+                    userId = it.userId,
+                    createdAt = it.previousName.createdAt,
+                    name = it.previousName.name,
+                    updatedAt = it.previousName.updatedAt,
+                )
+            }
+
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (UserPreviousNameEntity) -> Item
+                get() = throw NotImplementedError()
+        }
+
+        data class Item(
+            val userId: Long,
+            val previousName: UserModel.UserPreviousName
+        )
+
+        companion object {
+            fun asItem(source: UserModel.WithOptions) =
+                source.previousNames.map {
+                    Item(
+                        userId = source.id,
+                        previousName = it
+                    )
+                }
+
+            fun asItem(source: List<UserModel.WithOptions>) =
+                source.flatMap { user ->
+                    asItem(user)
+                }
         }
     }
 }

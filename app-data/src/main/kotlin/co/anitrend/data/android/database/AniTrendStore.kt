@@ -58,6 +58,7 @@ import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.fts.UserFtsEntity
+import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
@@ -75,7 +76,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
         JikanEntity::class, JikanStudioEntity::class, JikanLicensorEntity::class,
         JikanProducerEntity::class, JikanAuthorEntity::class,
-        CustomListEntity::class, CustomScoreEntity::class
+        CustomListEntity::class, CustomScoreEntity::class,
+        UserPreviousNameEntity::class
     ],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
 )

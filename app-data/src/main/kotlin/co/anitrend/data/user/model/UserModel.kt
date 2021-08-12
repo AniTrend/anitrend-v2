@@ -72,9 +72,9 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal data class UserPreviousName(
-        @SerialName("createdAt") val createdAt: Long?,
-        @SerialName("name") val name: String?,
-        @SerialName("updatedAt") val updatedAt: Long?,
+        @SerialName("createdAt") val createdAt: Long,
+        @SerialName("name") val name: String,
+        @SerialName("updatedAt") val updatedAt: Long,
     )
 
     @Serializable
@@ -109,7 +109,7 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal abstract class WithOptions : UserModel() {
-        abstract val previousNames: List<UserPreviousName>?
+        abstract val previousNames: List<UserPreviousName>
         abstract val options: UserOptionsModel?
         abstract val mediaListOptions: MediaListOptions?
     }
@@ -122,7 +122,7 @@ internal sealed class UserModel : IUserModel {
     internal data class Extended(
         @SerialName("isFollowing") val isFollowing: Boolean?,
         @SerialName("isFollower") val isFollower: Boolean?,
-        @SerialName("previousNames") override val previousNames: List<UserPreviousName>?,
+        @SerialName("previousNames") override val previousNames: List<UserPreviousName> = emptyList(),
         @SerialName("options") override val options: UserOptionsModel.Core?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
         @SerialName("name") override val name: String,
@@ -147,7 +147,7 @@ internal sealed class UserModel : IUserModel {
     internal data class Viewer(
         @SerialName("isFollower") val isFollower: Boolean?,
         @SerialName("isFollowing") val isFollowing: Boolean?,
-        @SerialName("previousNames") override val previousNames: List<UserPreviousName>?,
+        @SerialName("previousNames") override val previousNames: List<UserPreviousName> = emptyList(),
         @SerialName("unreadNotificationCount") val unreadNotificationCount: Int?,
         @SerialName("options") override val options: UserOptionsModel.Viewer?,
         @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
