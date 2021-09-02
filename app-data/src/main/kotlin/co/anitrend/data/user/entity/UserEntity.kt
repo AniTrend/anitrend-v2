@@ -20,12 +20,18 @@ package co.anitrend.data.user.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import co.anitrend.data.core.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "user",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
+    indices = [
+        Index(value = ["user_name"], unique = true),
+    ],
 )
+@EntitySchema
 internal data class UserEntity(
     @Embedded(prefix = "user_") val about: About,
     @Embedded(prefix = "user_") val status: Status?,
