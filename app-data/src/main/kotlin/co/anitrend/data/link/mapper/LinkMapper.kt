@@ -20,11 +20,6 @@ package co.anitrend.data.link.mapper
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
-import co.anitrend.data.android.source.AbstractLocalSource
-import co.anitrend.data.core.extensions.toHashId
-import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.mapper.GenreMapper
-import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.data.link.converter.LinkModelConverter
 import co.anitrend.data.link.datasource.LinkLocalSource
 import co.anitrend.data.link.entity.LinkEntity

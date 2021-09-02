@@ -76,7 +76,7 @@ internal class GenreModelConverter(
         }
 
         fun transform(source: GenreCollection.GenreModel, emojiManager: IEmojiManager) = GenreEntity(
-            id = source.id.toLong(),
+            id = source.id,
             genre = source.genre,
             emoji = emojiManager.getEmojiFor(
                 source.genre
