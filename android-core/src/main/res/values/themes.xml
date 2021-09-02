@@ -19,6 +19,7 @@
 <resources>
 
     <style name="AppTheme" parent="SupportTheme.AppTheme">
+
         <item name="android:windowAnimationStyle">@style/SupportTheme.WindowAnimationStyle</item>
         <item name="android:textViewStyle">@style/AppTheme.FontFamily</item>
 
@@ -26,7 +27,8 @@
         <item name="colorControlNormal">@color/secondaryLightColor</item>
 
         <item name="bottomAppBarStyle">@style/AppTheme.Material.BottomAppBar</item>
-        
+        <item name="materialCalendarTheme">@style/AppTheme.Overlay.DatePicker</item>
+
         <!-- ShapeAppearances -->
         <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
         <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>

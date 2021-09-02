@@ -42,6 +42,7 @@
     <dimen name="series_image_xl">185dp</dimen>
     <dimen name="series_image_xs">100dp</dimen>
 
+    <dimen name="size_1dp">1dp</dimen>
     <dimen name="size_2dp">2dp</dimen>
     <dimen name="size_4dp">4dp</dimen>
     <dimen name="size_6dp">6dp</dimen>

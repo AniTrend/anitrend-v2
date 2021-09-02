@@ -197,4 +197,26 @@
         <item name="backgroundTint">?colorAccent</item>-->
     </style>
 
+    <style name="AppTheme.Overlay.DatePicker" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.Material.TextButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.Material.TextButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.Material.TextButton</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>
+        <!-- Customize text field of the text input mode. -->
+        <!--<item name="textInputStyle">@style/AppTheme.Material.TextInputLayout</item>-->
+    </style>
+
+    <style name="AppTheme.Material.PopupTheme" parent="SupportTheme.PopupTheme">
+        <item name="android:popupBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.AppCompat.Spinner" parent="Base.Widget.AppCompat.Spinner">
+        <item name="popupTheme">@style/AppTheme.Material.PopupTheme</item>
+    </style>
+
 </resources>
