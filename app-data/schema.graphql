@@ -1126,7 +1126,7 @@ type Media {
     siteUrl: String
     "Source type the media was adapted from."
     source(
-        "Provide 2 to use new version 2 of sources enum"
+        "Provide 2 or 3 to use new version 2 or 3 of sources enum"
         version: Int
     ): MediaSource
     "The staff who produced the media"

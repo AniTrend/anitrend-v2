@@ -12,7 +12,7 @@ fragment Media on Media {
     format
     season
     status(version: 2)
-    source
+    source(version: 3)
     meanScore
     description
     averageScore
