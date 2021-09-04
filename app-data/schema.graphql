@@ -322,11 +322,15 @@ type CharacterName {
 
 "A submission for a character that features in an anime or manga"
 type CharacterSubmission {
+    "Data Mod assigned to handle the submission"
+    assignee: User
     "Character that the submission is referencing"
     character: Character
     createdAt: Int
     "The id of the submission"
     id: Int!
+    "Whether the submission is locked"
+    locked: Boolean
     "Inner details of submission status"
     notes: String
     source: String
@@ -547,6 +551,7 @@ type InternalPage {
         sort: [AiringSort]
     ): [AiringSchedule]
     characterSubmissions(
+        assigneeId: Int,
         characterId: Int,
         "The order the results will be returned in"
         sort: [SubmissionSort],
@@ -658,6 +663,8 @@ type InternalPage {
         id_not_in: [Int],
         "Filter by if the media's intended for 18+ adult audiences"
         isAdult: Boolean,
+        "If the media is officially licensed or a self-published doujin release"
+        isLicensed: Boolean,
         "Filter media by sites with a online streaming or reading license"
         licensedBy: String,
         "Filter media by sites with a online streaming or reading license"
@@ -776,6 +783,7 @@ type InternalPage {
         userName: String
     ): [MediaList]
     mediaSubmissions(
+        assigneeId: Int,
         mediaId: Int,
         "The order the results will be returned in"
         sort: [SubmissionSort],
@@ -910,6 +918,7 @@ type InternalPage {
         sort: [StaffSort]
     ): [Staff]
     staffSubmissions(
+        assigneeId: Int,
         "The order the results will be returned in"
         sort: [SubmissionSort],
         staffId: Int,
@@ -1453,12 +1462,16 @@ type MediaStreamingEpisode {
 
 "Media submission"
 type MediaSubmission {
+    "Data Mod assigned to handle the submission"
+    assignee: User
     changes: [String]
     characters: [MediaSubmissionComparison]
     createdAt: Int
     externalLinks: [MediaExternalLink]
     "The id of the submission"
     id: Int!
+    "Whether the submission is locked"
+    locked: Boolean
     media: Media
     notes: String
     relations: [MediaEdge]
@@ -1518,6 +1531,8 @@ type MediaTag {
     name: String!
     "The relevance ranking of the tag out of the 100 for this media"
     rank: Int
+    "The user who submitted the tag"
+    userId: Int
 }
 
 "The official titles of the media in various languages"
@@ -2156,6 +2171,8 @@ type Page {
         id_not_in: [Int],
         "Filter by if the media's intended for 18+ adult audiences"
         isAdult: Boolean,
+        "If the media is officially licensed or a self-published doujin release"
+        isLicensed: Boolean,
         "Filter media by sites with a online streaming or reading license"
         licensedBy: String,
         "Filter media by sites with a online streaming or reading license"
@@ -2682,6 +2699,8 @@ type Query {
         id_not_in: [Int],
         "Filter by if the media's intended for 18+ adult audiences"
         isAdult: Boolean,
+        "If the media is officially licensed or a self-published doujin release"
+        isLicensed: Boolean,
         "Filter media by sites with a online streaming or reading license"
         licensedBy: String,
         "Filter media by sites with a online streaming or reading license"
@@ -2850,8 +2869,6 @@ type Query {
         "Mod Only"
         status: Int
     ): [MediaTag]
-    "Get the user who added a tag to a media"
-    MediaTagUser(mediaId: Int, tagId: Int): User
     "Media Trend query"
     MediaTrend(
         "Filter by score"
@@ -3387,9 +3404,13 @@ type StaffStats {
 
 "A submission for a staff that features in an anime or manga"
 type StaffSubmission {
+    "Data Mod assigned to handle the submission"
+    assignee: User
     createdAt: Int
     "The id of the submission"
     id: Int!
+    "Whether the submission is locked"
+    locked: Boolean
     "Inner details of submission status"
     notes: String
     source: String
@@ -4220,24 +4241,36 @@ enum MediaSort {
 
 "Source type the media was adapted from"
 enum MediaSource {
-    "Version 2 only. Japanese Anime"
+    "Version 2+ only. Japanese Anime"
     ANIME
-    "Version 2 only. Self-published works"
+    "Version 3 only. Comics excluding manga"
+    COMIC
+    "Version 2+ only. Self-published works"
     DOUJINSHI
+    "Version 3 only. Games excluding video games"
+    GAME
     "Written work published in volumes"
     LIGHT_NOVEL
+    "Version 3 only. Live action media such as movies or TV show"
+    LIVE_ACTION
     "Asian comic book"
     MANGA
-    "Version 2 only. Written works not published in volumes"
+    "Version 3 only. Multimedia project"
+    MULTIMEDIA_PROJECT
+    "Version 2+ only. Written works not published in volumes"
     NOVEL
     "An original production not based of another work"
     ORIGINAL
     "Other"
     OTHER
+    "Version 3 only. Picture book"
+    PICTURE_BOOK
     "Video game"
     VIDEO_GAME
     "Video game driven primary by text and narrative"
     VISUAL_NOVEL
+    "Version 3 only. Written works published online"
+    WEB_NOVEL
 }
 
 "The current releasing status of the media"
