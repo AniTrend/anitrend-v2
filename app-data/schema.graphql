@@ -12,7 +12,7 @@ union ActivityUnion = ListActivity | MessageActivity | TextActivity
 union LikeableUnion = ActivityReply | ListActivity | MessageActivity | TextActivity | Thread | ThreadComment
 
 "Notification union type"
-union NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | FollowingNotification | RelatedMediaAdditionNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification
+union NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | FollowingNotification | MediaDataChangeNotification | MediaDeletionNotification | MediaMergeNotification | RelatedMediaAdditionNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification
 
 "Notification for when a activity is liked"
 type ActivityLikeNotification {
@@ -1211,6 +1211,40 @@ type MediaCoverImage {
     medium: String
 }
 
+"Notification for when a media entry's data was changed in a significant way impacting users' list tracking"
+type MediaDataChangeNotification {
+    "The reason for the media data change"
+    context: String
+    "The time the notification was created at"
+    createdAt: Int
+    "The id of the Notification"
+    id: Int!
+    "The media that received data changes"
+    media: Media
+    "The id of the media that received data changes"
+    mediaId: Int!
+    "The reason for the media data change"
+    reason: String
+    "The type of notification"
+    type: NotificationType
+}
+
+"Notification for when a media tracked in a user's list is deleted from the site"
+type MediaDeletionNotification {
+    "The reason for the media deletion"
+    context: String
+    "The time the notification was created at"
+    createdAt: Int
+    "The title of the deleted media"
+    deletedMediaTitle: String
+    "The id of the Notification"
+    id: Int!
+    "The reason for the media deletion"
+    reason: String
+    "The type of notification"
+    type: NotificationType
+}
+
 "Media connection edge"
 type MediaEdge {
     "Media specific character name"
@@ -1356,6 +1390,26 @@ type MediaListTypeOptions {
     splitCompletedSectionByFormat: Boolean
     "The list theme options"
     theme: Json @deprecated(reason : "This field has not yet been fully implemented and may change without warning")
+}
+
+"Notification for when a media entry is merged into another for a user who had it on their list"
+type MediaMergeNotification {
+    "The reason for the media data change"
+    context: String
+    "The time the notification was created at"
+    createdAt: Int
+    "The title of the deleted media"
+    deletedMediaTitles: [String]
+    "The id of the Notification"
+    id: Int!
+    "The media that was merged into"
+    media: Media
+    "The id of the media that was merged into"
+    mediaId: Int!
+    "The reason for the media merge"
+    reason: String
+    "The type of notification"
+    type: NotificationType
 }
 
 "The ranking of a media in a particular time span and format compared to other media"
@@ -4285,6 +4339,12 @@ enum NotificationType {
     AIRING
     "A user has followed you"
     FOLLOWING
+    "An anime or manga has had a data change that affects how a user may track it in their lists"
+    MEDIA_DATA_CHANGE
+    "An anime or manga on the user's list has been deleted from the site"
+    MEDIA_DELETION
+    "Anime or manga entries on the user's list have been merged into a single entry"
+    MEDIA_MERGE
     "A new anime or manga has been added to the site where its related media is on the user's list"
     RELATED_MEDIA_ADDITION
     "A user has liked your forum comment"
