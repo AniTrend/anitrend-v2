@@ -51,6 +51,7 @@ class SharedNameView @JvmOverloads constructor(
                     override val last: String = "Sarashina"
                     override val middle: String? = null
                     override val native: String = "更科るか"
+                    override val userPreferred: String = full
                 }
             )
             setTextColor(context.getCompatColor(R.color.primaryTextColor))
