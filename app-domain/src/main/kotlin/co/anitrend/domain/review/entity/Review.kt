@@ -17,4 +17,48 @@
 
 package co.anitrend.domain.review.entity
 
-sealed class Review
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.review.entity.contract.IReview
+import co.anitrend.domain.review.enums.ReviewRating
+import co.anitrend.domain.user.entity.User
+
+sealed class Review : IReview {
+
+    data class Core(
+        override val body: String,
+        override val createdAt: Long,
+        override val mediaId: Long,
+        override val mediaType: MediaType,
+        override val private: Boolean,
+        override val rating: Int,
+        override val ratingAmount: Int,
+        override val score: Int,
+        override val siteUrl: String,
+        override val summary: String,
+        override val updatedAt: Long,
+        override val user: User,
+        override val userId: Long,
+        override val userRating: ReviewRating,
+        override val id: Long
+    ) : Review()
+
+    data class Extended(
+        val media: Media,
+        override val body: String,
+        override val createdAt: Long,
+        override val mediaId: Long,
+        override val mediaType: MediaType,
+        override val private: Boolean,
+        override val rating: Int,
+        override val ratingAmount: Int,
+        override val score: Int,
+        override val siteUrl: String,
+        override val summary: String,
+        override val updatedAt: Long,
+        override val user: User,
+        override val userId: Long,
+        override val userRating: ReviewRating,
+        override val id: Long
+    ) : Review()
+}

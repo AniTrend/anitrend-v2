@@ -52,7 +52,7 @@ internal sealed class ReviewModel : IReviewModel {
 
     @Serializable
     internal data class Extended(
-        @SerialName("media") val media: MediaModel.Core?,
+        @SerialName("media") val media: MediaModel.Core,
         @SerialName("body") override val body: String?,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("mediaId") override val mediaId: Long,
