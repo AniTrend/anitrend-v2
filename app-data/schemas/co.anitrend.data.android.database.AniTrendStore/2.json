@@ -2835,6 +2835,139 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "review",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`body` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `is_private` INTEGER NOT NULL, `rating` INTEGER NOT NULL, `rating_amount` INTEGER NOT NULL, `score` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `summary` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `user_rating` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "body",
+            "columnName": "body",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isPrivate",
+            "columnName": "is_private",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ratingAmount",
+            "columnName": "rating_amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "score",
+            "columnName": "score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "siteUrl",
+            "columnName": "site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userRating",
+            "columnName": "user_rating",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_review_media_id_user_id",
+            "unique": false,
+            "columnNames": [
+              "media_id",
+              "user_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_media_id_user_id` ON `${TABLE_NAME}` (`media_id`, `user_id`)"
+          },
+          {
+            "name": "index_review_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
