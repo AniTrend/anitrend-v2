@@ -14,112 +14,260 @@
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
-
 <co.anitrend.arch.ui.view.widget.SupportStateLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/stateLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_32dp"
     tools:context=".component.sheet.MediaListEditorContent">
 
-    <co.anitrend.core.android.views.scroll.FillNestedScrollView
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_margin="@dimen/lg_margin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/sheetHandle"
+                android:layout_width="@dimen/size_65dp"
+                android:layout_height="@dimen/md_margin"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/lg_margin"
+                app:srcCompat="@drawable/touch_thumbnail"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/materialButton"
+                android:id="@+id/mediaListActionDelete"
                 style="@style/AppTheme.Material.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_margin="@dimen/lg_margin"
                 android:text="@string/action_media_list_delete"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/white_1000"
+                app:backgroundTint="@color/colorWarning"/>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/mediaListActionSave"
                 style="@style/AppTheme.Material.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_margin="@dimen/lg_margin"
                 android:text="@string/action_media_list_save"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/white_1000"
+                app:backgroundTint="@color/colorSuccess"/>
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <co.anitrend.arch.ui.view.image.SupportImageView
-                android:id="@+id/mediaListBanner"
-                android:layout_width="match_parent"
+                android:id="@+id/mediaImage"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:aspectRatio=".47"
-                app:layout_constraintTop_toBottomOf="@+id/materialButton"
-                tools:scaleType="centerCrop"
-                tools:src="@sample/banner" />
-
-            <co.anitrend.arch.ui.view.image.SupportImageView
-                android:id="@+id/mediaListPoster"
-                android:layout_width="@dimen/size_70dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/size_6dp"
-                android:layout_marginTop="-12dp"
+                android:scaleType="centerCrop"
+                android:layout_weight="1"
                 app:aspectRatio="1.45"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mediaListBanner"
-                tools:scaleType="centerCrop"
-                tools:src="@sample/poster" />
+                tools:src="@sample/poster"
+                tools:scaleType="centerCrop"/>
+
+            <Space
+                android:layout_width="@dimen/lg_margin"
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linearLayoutCompat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/md_margin"
-                app:layout_constraintStart_toEndOf="@+id/mediaListPoster"
-                app:layout_constraintTop_toBottomOf="@+id/mediaListBanner">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="5">
 
-                <co.anitrend.common.media.ui.widget.status.MediaStatusWidget
-                    android:id="@+id/mediaStatusWidget"
-                    android:layout_width="@dimen/lg_margin"
-                    android:layout_height="@dimen/lg_margin"
-                    android:layout_gravity="center_vertical" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <Space
-                    android:layout_width="@dimen/sm_margin"
-                    android:layout_height="wrap_content" />
+                    <co.anitrend.common.media.ui.widget.status.MediaStatusWidget
+                        android:id="@+id/mediaStatusWidget"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/lg_margin"
+                        android:layout_height="@dimen/lg_margin" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mediaTitle"
-                    style="@style/AppTheme.SingleLineText"
+                    <Space
+                        android:layout_width="@dimen/sm_margin"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mediaTitle"
+                        android:padding="@dimen/md_margin"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        style="@style/AppTheme.SingleLineText"
+                        tools:text="@sample/series.json/title/userPreferred" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
+                    android:id="@+id/mediaSubTitleWidget"
                     android:padding="@dimen/md_margin"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    tools:text="@sample/series.json/title/userPreferred" />
+                    style="@style/AppTheme.SingleLineText"
+                    android:textAppearance="?attr/textAppearanceCaption" />
+
+                <co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
+                    android:id="@+id/mediaScheduleTitleWidget"
+                    android:padding="@dimen/md_margin"
+                    style="@style/AppTheme.SingleLineText"
+                    />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
-                android:id="@+id/mediaSubTitleWidget"
-                style="@style/AppTheme.SingleLineText"
-                android:layout_width="wrap_content"
-                android:layout_margin="@dimen/md_margin"
-                android:padding="@dimen/md_margin"
-                android:textAppearance="?attr/textAppearanceCaption"
-                app:layout_constraintStart_toEndOf="@+id/mediaListPoster"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
-                android:id="@+id/mediaScheduleTitleWidget"
-                style="@style/AppTheme.SingleLineText"
-                android:layout_width="wrap_content"
-                android:layout_margin="@dimen/md_margin"
-                android:padding="@dimen/md_margin"
-                app:layout_constraintStart_toEndOf="@+id/mediaListPoster"
-                app:layout_constraintTop_toBottomOf="@+id/mediaSubTitleWidget" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </co.anitrend.core.android.views.scroll.FillNestedScrollView>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="Status" />
+
+                <co.anitrend.common.medialist.ui.widget.status.StatusSpinnerWidget
+                    android:id="@+id/mediaListStatusSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    style="@style/AppTheme.AppCompat.Spinner"
+                    android:popupTheme="@style/AppTheme.Material.PopupTheme"
+                    android:spinnerMode="dropdown"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="Score" />
+
+                <co.anitrend.common.medialist.ui.widget.score.ScoreEditWidget
+                    android:id="@+id/mediaListScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="Progress" />
+
+                <co.anitrend.common.medialist.ui.widget.progress.ProgressEditWidget
+                    android:id="@+id/mediaListProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mediaListProgressVolumesLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="Progress Volumes" />
+
+                <co.anitrend.common.medialist.ui.widget.progress.ProgressEditWidget
+                    android:id="@+id/mediaListProgressVolumes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="Repeat Count" />
+
+                <co.anitrend.common.medialist.ui.widget.counter.CounterEditWidget
+                    android:id="@+id/mediaListRepeated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:layout_margin="@dimen/lg_margin" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="Start Date" />
+
+                <co.anitrend.common.medialist.ui.widget.date.FuzzyDateWidget
+                    android:id="@+id/mediaListFuzzyDateStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:layout_margin="@dimen/lg_margin" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_margin="@dimen/lg_margin"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:text="End Date" />
+
+                <co.anitrend.common.medialist.ui.widget.date.FuzzyDateWidget
+                    android:id="@+id/mediaListFuzzyDateEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/lg_margin"
+                    android:layout_margin="@dimen/lg_margin"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/lg_margin">
+
+                    <co.anitrend.common.editor.ui.widget.MarkDownInputWidget
+                        android:id="@+id/mediaListNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter your notes" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </co.anitrend.arch.ui.view.widget.SupportStateLayout>
