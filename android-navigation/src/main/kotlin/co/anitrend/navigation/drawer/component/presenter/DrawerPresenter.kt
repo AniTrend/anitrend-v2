@@ -19,6 +19,7 @@ package co.anitrend.navigation.drawer.component.presenter
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -54,7 +55,7 @@ internal class DrawerPresenter(
 ) : CorePresenter(context, settings) {
 
     fun createForegroundShape(
-        container: LinearLayoutCompat
+        container: ViewGroup
     ): MaterialShapeDrawable {
         val shapeDrawable = MaterialShapeDrawable(
             container.context, null, R.attr.bottomSheetStyle,0
