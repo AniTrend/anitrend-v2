@@ -18,5 +18,5 @@
 package co.anitrend.data.carousel.datasource.local
 
 internal interface ICarouselStore {
-    fun carouselDao(): CarouselLocalStore
+    fun carouselDao(): CarouselLocalSource
 }

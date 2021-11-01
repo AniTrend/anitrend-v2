@@ -25,7 +25,7 @@ import co.anitrend.data.common.extension.toFuzzyDateLike
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.carousel.MediaCarouselListController
-import co.anitrend.data.carousel.datasource.local.CarouselLocalStore
+import co.anitrend.data.carousel.datasource.local.CarouselLocalSource
 import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.carousel.source.contract.CarouselSource
@@ -41,7 +41,7 @@ import retrofit2.Response
 
 internal class CarouselSourceImpl(
     private val remoteSource: CarouselRemoteSource,
-    private val localSource: CarouselLocalStore,
+    private val localSource: CarouselLocalSource,
     private val clearDataHelper: IClearDataHelper,
     private val controller: MediaCarouselListController,
     private val converter: MediaEntityViewConverter,

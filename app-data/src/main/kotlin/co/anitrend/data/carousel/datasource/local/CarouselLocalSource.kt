@@ -30,7 +30,7 @@ import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class CarouselLocalStore : AbstractLocalSource<MediaEntity>() {
+internal abstract class CarouselLocalSource : AbstractLocalSource<MediaEntity>() {
 
     @Query("""
         select count(id) from media
