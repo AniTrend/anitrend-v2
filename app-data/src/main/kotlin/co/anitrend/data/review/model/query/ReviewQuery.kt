@@ -20,18 +20,32 @@ package co.anitrend.data.review.model.query
 import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.review.model.ReviewParam
 
-internal data class ReviewQuery(
-    val param: ReviewParam.Find
-) : IGraphPayload {
+internal sealed class ReviewQuery : IGraphPayload {
 
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() = mapOf(
-        "id" to param.id,
-        "mediaId" to param.mediaId,
-        "userId" to param.userId,
-        "mediaType" to param.mediaType,
-        "sort" to param.sort
-    )
+    data class Entry(
+        val param: ReviewParam.Entry
+    ) : ReviewQuery() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id,
+        )
+    }
+
+    data class Paged(
+        val param: ReviewParam.Paged
+    ) : ReviewQuery() {
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "mediaId" to param.mediaId,
+            "userId" to param.userId,
+            "mediaType" to param.mediaType,
+            "sort" to param.sort
+        )
+    }
 }

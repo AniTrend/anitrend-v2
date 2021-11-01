@@ -16,7 +16,7 @@ query GetReviewPaged(
             sort: $sort,
             userId: $userId
         ) {
-            ... ReviewCore
+            ... ReviewExtended
         }
     }
 }

@@ -17,25 +17,34 @@
 
 package co.anitrend.domain.review.model
 
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
+import co.anitrend.domain.review.enums.ReviewSort
 
 sealed class ReviewParam {
 
-    /** [Review query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
+
+    /** [EntryReview query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param id Filter by Review id
+     */
+    data class Entry(
+        val id: Long
+    ) : ReviewParam()
+
+    /** [FindReview query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
+     *
      * @param mediaId Filter by media id
      * @param userId Filter by media id
      * @param mediaType Filter by media type
      * @param sort The order the results will be returned in
      */
-    data class Find(
-        val id: Long? = null,
+    data class Paged(
         val mediaId: Long? = null,
         val userId: Long? = null,
         val mediaType: MediaType? = null,
-        val sort: List<MediaType>? = null
+        val sort: List<ISortWithOrder<ReviewSort>>? = null
     ) : ReviewParam()
 
 

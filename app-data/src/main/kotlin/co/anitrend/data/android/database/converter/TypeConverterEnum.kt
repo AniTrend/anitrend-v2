@@ -24,6 +24,7 @@ import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.staff.enums.StaffLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
@@ -60,4 +61,7 @@ internal class TypeConverterEnum {
 
     @TypeConverter fun fromStaffLanguage(value: StaffLanguage?) = value?.fromEnum()
     @TypeConverter fun toStaffLanguage(value: String?) = value?.toEnum<StaffLanguage>()
+
+    @TypeConverter fun fromReviewRating(value: ReviewRating?) = value?.fromEnum()
+    @TypeConverter fun toReviewRating(value: String?) = value?.toEnum<ReviewRating>()
 }
