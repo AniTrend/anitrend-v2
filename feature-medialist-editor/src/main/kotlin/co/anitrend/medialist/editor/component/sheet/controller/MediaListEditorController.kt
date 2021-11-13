@@ -18,6 +18,7 @@
 package co.anitrend.medialist.editor.component.sheet.controller
 
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.snackBar
 import co.anitrend.arch.extension.ext.visible
@@ -295,8 +296,8 @@ class MediaListEditorController(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         disposable?.dispose()
         disposable = null
     }

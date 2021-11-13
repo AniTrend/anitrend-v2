@@ -361,8 +361,9 @@ private fun Project.applyComposeDependencies() {
     dependencies.implementation(Libraries.Google.Accompanist.uiController)
     dependencies.implementation(Libraries.Google.Accompanist.flowLayout)
     dependencies.implementation(Libraries.Google.Accompanist.insets)
-    dependencies.implementation(Libraries.Google.Accompanist.coil)
     dependencies.implementation(Libraries.Google.Accompanist.pager)
+
+    dependencies.implementation(Libraries.Coil.compose)
 }
 
 internal fun Project.configureDependencies() {

@@ -321,7 +321,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.4.0-alpha01"
+            private const val version = "1.4.0-alpha02"
             const val ui = "com.github.anitrend.support-arch:ui:${version}"
             const val ext = "com.github.anitrend.support-arch:extension:${version}"
             const val core = "com.github.anitrend.support-arch:core:${version}"
@@ -376,7 +376,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "a368f32ed8"
+            private const val version = "0.2.0"
             const val multiSearch = "com.github.anitrend:material-multi-search:${version}"
         }
 
@@ -393,7 +393,7 @@ object Libraries {
         object QueryBuilder {
             private const val version = "0.1.4-alpha01"
             const val core = "com.github.anitrend.support-query-builder:core:$version"
-            const val annotation = "com.github.anitrend.support-query-builder:annotations:$version"
+            const val annotation = "com.github.AniTrend.support-query-builder:annotations:$version"
             const val processor = "com.github.anitrend.support-query-builder:processor:$version"
         }
     }
@@ -457,6 +457,7 @@ object Libraries {
         const val gif = "io.coil-kt:coil-gif:$version"
         const val svg = "io.coil-kt:coil-svg:$version"
         const val video = "io.coil-kt:coil-video:$version"
+        const val compose = "io.coil-kt:coil-compose:$version"
     }
 
     object Devrieze {
@@ -478,9 +479,8 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.21.0-beta"
+            private const val version = "0.21.2-beta"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
-            const val coil = "com.google.accompanist:accompanist-coil:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
             const val pager = "com.google.accompanist:accompanist-pager:${version}"
@@ -532,7 +532,7 @@ object Libraries {
         object Material {
             //private const val version = "cbf7bcad59"
             //const val material = "com.github.wax911:material-components-android:$version"
-            private const val version = "1.5.0-alpha05"
+            private const val version = "1.5.0-rc01"
             const val material = "com.google.android.material:material:$version"
 
             object Compose {
@@ -585,7 +585,7 @@ object Libraries {
             }
 
             object Serialization {
-                private const val version = "1.3.0"
+                private const val version = "1.1.0"
                 const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
             }
         }

@@ -265,7 +265,7 @@ class BottomDrawerContent(
             accountAdapter.submitList(it)
             presenter.applyProfilePicture(
                 requireBinding().profileImageView,
-                it?.single(Account::isActiveUser)
+                it?.singleOrNull(Account::isActiveUser)
             )
         }
         viewModel.navigationState.model.observe(viewLifecycleOwner) {

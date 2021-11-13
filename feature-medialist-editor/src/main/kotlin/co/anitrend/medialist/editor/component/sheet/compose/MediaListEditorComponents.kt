@@ -30,7 +30,7 @@ import co.anitrend.core.android.koinOf
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 import coil.ImageLoader
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.rememberImagePainter
 
 
 @Composable
@@ -40,7 +40,7 @@ fun BackgroundHeader(
 ) {
     Row(modifier = Modifier.aspectRatio(1.7f)) {
         Image(
-            painter = rememberCoilPainter(
+            painter = rememberImagePainter(
                 mediaState.value?.image?.banner,
                 imageLoader = imageLoader,
             ),

@@ -144,20 +144,22 @@ private val retrofitModule = module {
                 }
                 classDiscriminator = "__type"
             }
+            ignoreUnknownKeys = !BuildConfig.DEBUG
             coerceInputValues = true
             isLenient = true
         }
     }
     factory {
         val mimeType = AniRequestConverter.JSON_MIME_TYPE
+        val defaultJsonFactory = Json {
+            ignoreUnknownKeys = true
+            coerceInputValues = true
+            isLenient = true
+        }
         AniTrendConverterFactory(
             processor = get(),
             gson = get(),
-            jsonFactory = Json {
-                ignoreUnknownKeys = true
-                coerceInputValues = true
-                isLenient = true
-            }.asConverterFactory(mimeType),
+            jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
             graphFactory = get<Json>().asConverterFactory(mimeType),
             xmlFactory = get<IFeedFactory>().provideConverterFactory()
         )
