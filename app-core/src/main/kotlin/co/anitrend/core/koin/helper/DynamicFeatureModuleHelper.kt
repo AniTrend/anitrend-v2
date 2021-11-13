@@ -17,6 +17,7 @@
 
 package co.anitrend.core.koin.helper
 
+import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -39,8 +40,8 @@ class DynamicFeatureModuleHelper(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    override fun onCreate() {
-        super.onCreate()
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
         Timber.v(
             "Loading dynamic feature modules: ${modules.size}"
         )
@@ -52,8 +53,8 @@ class DynamicFeatureModuleHelper(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         if (unloadOnDestroy) {
             Timber.v(
                 "Unloading ${modules.size} feature modules from global context"

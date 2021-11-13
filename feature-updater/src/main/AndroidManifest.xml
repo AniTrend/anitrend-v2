@@ -21,7 +21,8 @@
     package="co.anitrend.updater">
 
     <application>
-        <activity android:name=".component.screen.UpdateScreen" />
+        <activity android:name=".component.screen.UpdateScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

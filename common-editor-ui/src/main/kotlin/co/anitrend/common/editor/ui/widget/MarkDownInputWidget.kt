@@ -247,7 +247,7 @@ class MarkDownInputWidget @JvmOverloads constructor(
      * default implementation
      */
     override fun onCommitContent(
-        inputContentInfo: InputContentInfoCompat?,
+        inputContentInfo: InputContentInfoCompat,
         flags: Int,
         opts: Bundle?
     ): Boolean {

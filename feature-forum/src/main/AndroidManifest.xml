@@ -21,7 +21,8 @@
     package="co.anitrend.forum" >
 
     <application>
-        <activity android:name=".component.screen.ForumScreen" />
+        <activity android:name=".component.screen.ForumScreen"
+            android:exported="true" />
         
         <provider
             android:name="androidx.startup.InitializationProvider"
