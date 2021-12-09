@@ -315,7 +315,7 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
             R.id.navigation_reviews -> {
                 viewModel.state.selectedTitle = R.string.navigation_review
                 FragmentItem(
-                    fragment = ReviewRouter.forFragment()
+                    fragment = ReviewDiscoverRouter.forFragment()
                 )
             }
             R.id.navigation_suggestions -> {
