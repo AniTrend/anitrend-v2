@@ -18,24 +18,15 @@
 package co.anitrend.news.presenter
 
 import android.content.Context
-import android.view.View
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.ShareCompat
-import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.NewsRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.news.component.screen.NewsScreen
-import timber.log.Timber
 
 class NewsPresenter(
     context: Context,
-    settings: Settings,
-    private val customTabs: CustomTabsIntent
+    settings: Settings
 ) : CorePresenter(context, settings) {
 
     fun createShareContent(
@@ -50,22 +41,5 @@ class NewsPresenter(
             .setType("text/plain")
             .setSubject(param.title)
             .setHtmlText(payloadContent.toString())
-    }
-
-    fun handleViewIntent(view: View, url: String) {
-        if (url.startsWith("https://img1.ak.crunchyroll")) {
-            ViewCompat.setTransitionName(view, url)
-            ImageViewerRouter.startActivity(
-                context = view.context,
-                navPayload = ImageViewerRouter.Param(url).asNavPayload()
-            )
-        } else {
-            runCatching {
-                customTabs.launchUrl(view.context, url.toUri())
-            }.onFailure {
-                Timber.w(it, "Unable to open custom tabs")
-                startViewIntent(url.toUri())
-            }
-        }
     }
 }

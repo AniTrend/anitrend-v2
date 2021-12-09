@@ -93,8 +93,7 @@ private val presenterModule = module {
     factory {
         NewsPresenter(
             context = get(),
-            settings = get(),
-            customTabs = get<CustomTabsIntent.Builder>().build(),
+            settings = get()
         )
     }
 }

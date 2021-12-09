@@ -75,7 +75,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         ).also { params ->
             params.gravity = Gravity.CENTER_VERTICAL
         }
-        indicatorSize = 10.dp
+        indicatorSize = 12.dp
         trackCornerRadius = 8.dp
         trackThickness = 2.dp
         isIndeterminate = false
