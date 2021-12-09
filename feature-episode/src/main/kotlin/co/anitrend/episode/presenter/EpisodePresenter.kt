@@ -18,37 +18,10 @@
 package co.anitrend.episode.presenter
 
 import android.content.Context
-import android.view.View
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.navigation.ImageViewerRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
-import timber.log.Timber
+import co.anitrend.core.presenter.CorePresenter
 
 class EpisodePresenter(
     context: Context,
-    settings: Settings,
-    private val customTabs: CustomTabsIntent
-) : CorePresenter(context, settings) {
-
-    fun handleViewIntent(view: View, url: String) {
-        if (url.startsWith("https://img1.ak.crunchyroll")) {
-            ViewCompat.setTransitionName(view, url)
-            ImageViewerRouter.startActivity(
-                context = view.context,
-                navPayload = ImageViewerRouter.Param(url).asNavPayload()
-            )
-        } else {
-            runCatching {
-                customTabs.launchUrl(view.context, url.toUri())
-            }.onFailure {
-                Timber.w(it, "Unable to open custom tabs")
-                startViewIntent(url.toUri())
-            }
-        }
-    }
-}
+    settings: Settings
+) : CorePresenter(context, settings)

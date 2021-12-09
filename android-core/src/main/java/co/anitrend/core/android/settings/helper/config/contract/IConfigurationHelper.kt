@@ -20,13 +20,13 @@ package co.anitrend.core.android.settings.helper.config.contract
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 
+/**
+ * Configuration helper contract
+ *
+ * @property themeOverride Theme resource override option
+ */
 interface IConfigurationHelper {
 
-    val moduleTag: String
-
-    /**
-     * Theme override option
-     */
     var themeOverride: Int?
 
     /**

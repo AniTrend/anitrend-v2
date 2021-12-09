@@ -21,13 +21,21 @@ import android.content.Context
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.R
 import co.anitrend.core.ui.model.FragmentItem
 import org.koin.androidx.fragment.android.KoinFragmentFactory
+import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ViewModelOwnerDefinition
+import org.koin.androidx.viewmodel.koin.getViewModel
+import org.koin.androidx.viewmodel.scope.BundleDefinition
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.scope.KoinScopeComponent
+import org.koin.java.KoinJavaComponent.getKoin
 
 /**
  * Get given dependency
@@ -74,7 +82,7 @@ inline fun FragmentItem<*>.commit(
             R.anim.popup_exit
         )
     }
-) : String? {
+) : String {
     val fragmentManager = fragmentActivity.supportFragmentManager
 
     val fragmentTag = tag()
@@ -166,4 +174,27 @@ inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
     lazyMode: LazyThreadSafetyMode = UNSAFE
 ) = lazy(lazyMode) {
     fragmentItem.fragmentByTagOrNew(this)
+}
+
+/**
+ * Resolve view models from within views
+ */
+inline fun <reified T : ViewModel> View.viewModel(
+    qualifier: Qualifier? = null,
+    noinline state: BundleDefinition? = null,
+    noinline owner: ViewModelOwnerDefinition = {
+        ViewModelOwner.from(
+            findViewTreeViewModelStoreOwner()!!,
+            findViewTreeSavedStateRegistryOwner()
+        )
+    },
+    noinline parameters: ParametersDefinition? = null,
+): Lazy<T> = lazy(UNSAFE) {
+    val koin = getKoin()
+    koin.getViewModel(
+        qualifier,
+        state,
+        owner,
+        parameters
+    )
 }

@@ -26,4 +26,4 @@ private val coreModule = module {
     }
 }
 
-val themesModule = listOf(coreModule)
+val themesModules = listOf(coreModule)

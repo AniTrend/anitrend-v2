@@ -25,6 +25,7 @@ import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.medialist.DeleteCustomMediaListInteractor
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.navigation.extensions.fromWorkerParameters
 import kotlinx.coroutines.flow.first
 
 class MediaListDeleteCustomListWorker(
@@ -33,9 +34,16 @@ class MediaListDeleteCustomListWorker(
     private val interactor: DeleteCustomMediaListInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val data by lazy(UNSAFE) {
-        val map = parameters.inputData.keyValueMap
-        MediaListTaskRouter.Param.DeleteCustomList.fromMap(map)
+    private val param by lazy(UNSAFE) {
+        val data: MediaListTaskRouter.Param.DeleteCustomList =
+            parameters.fromWorkerParameters(
+                MediaListTaskRouter.Param.DeleteCustomList
+            )
+
+        MediaListParam.DeleteCustomList(
+            customList = data.customList,
+            type = data.type
+        )
     }
 
     /**
@@ -50,11 +58,6 @@ class MediaListDeleteCustomListWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val param = MediaListParam.DeleteCustomList(
-            customList = data.customList,
-            type = data.type
-        )
-
         val dataState = interactor(param)
 
         val networkState = dataState.loadState.first { state ->

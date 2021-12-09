@@ -33,6 +33,9 @@ import timber.log.Timber
 /**
  * Abstract application based activity for anitrend, avoids further modification of the
  * support library, any feature additions should be added through extensions
+ *
+ * @property configurationHelper Configuration driver for this activity
+ * @property scope Dependency injection scope for this activity lifecycle
  */
 abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
 

@@ -25,6 +25,7 @@ import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.medialist.SaveMediaListEntriesInteractor
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.navigation.extensions.fromWorkerParameters
 import kotlinx.coroutines.flow.first
 
 class MediaListSaveEntriesWorker(
@@ -33,28 +34,30 @@ class MediaListSaveEntriesWorker(
     private val interactor: SaveMediaListEntriesInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val data by lazy(UNSAFE) {
-        val map = parameters.inputData.keyValueMap
-        MediaListTaskRouter.Param.SaveEntries.fromMap(map)
-    }
+    private val saveEntries by lazy(UNSAFE) {
+        val data: MediaListTaskRouter.Param.SaveEntries =
+            parameters.fromWorkerParameters(
+                MediaListTaskRouter.Param.SaveEntries
+            )
 
-    private fun saveEntries() = MediaListParam.SaveEntries(
-        status = data.status,
-        scoreFormat = data.scoreFormat,
-        score = data.score,
-        scoreRaw = data.scoreRaw,
-        progress = data.progress,
-        progressVolumes = data.progressVolumes,
-        repeat = data.repeat,
-        priority = data.priority,
-        private = data.private,
-        notes = data.notes,
-        hiddenFromStatusLists = data.hiddenFromStatusLists,
-        advancedScores = data.advancedScores,
-        startedAt = data.startedAt,
-        completedAt = data.completedAt,
-        ids = data.ids
-    )
+        MediaListParam.SaveEntries(
+            status = data.status,
+            scoreFormat = data.scoreFormat,
+            score = data.score,
+            scoreRaw = data.scoreRaw,
+            progress = data.progress,
+            progressVolumes = data.progressVolumes,
+            repeat = data.repeat,
+            priority = data.priority,
+            private = data.private,
+            notes = data.notes,
+            hiddenFromStatusLists = data.hiddenFromStatusLists,
+            advancedScores = data.advancedScores,
+            startedAt = data.startedAt,
+            completedAt = data.completedAt,
+            ids = data.ids
+        )
+    }
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -68,7 +71,7 @@ class MediaListSaveEntriesWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val dataState = interactor(saveEntries())
+        val dataState = interactor(saveEntries)
 
         val networkState = dataState.loadState.first { state ->
             state is LoadState.Success || state is LoadState.Error

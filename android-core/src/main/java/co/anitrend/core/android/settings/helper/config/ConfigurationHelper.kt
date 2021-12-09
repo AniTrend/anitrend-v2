@@ -28,15 +28,18 @@ import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 
 /**
- * Configuration helper for the application
+ * Configuration helper for screen controllers, which provides custom themes
+ * and locale contexts for all screens within AniTrend
+ *
+ * @param settings Configuration specific settings
+ * @param localeHelper Locale configurator
+ * @param themeHelper Theme configurator
  */
 internal class ConfigurationHelper(
     private val settings: IConfigurationSettings,
     private val localeHelper: ILocaleHelper,
     private val themeHelper: IThemeHelper
 ) : IConfigurationHelper {
-
-    override val moduleTag: String = ConfigurationHelper::class.java.simpleName
 
     @StyleRes
     override var themeOverride: Int? = null

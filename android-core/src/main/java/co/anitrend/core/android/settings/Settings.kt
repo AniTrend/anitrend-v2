@@ -21,7 +21,6 @@ import android.content.Context
 import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.arch.extension.settings.*
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.common.theme.IThemeSettings

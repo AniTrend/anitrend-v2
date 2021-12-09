@@ -62,7 +62,6 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         setTextColor(context.getCompatColor(R.color.white_1000))
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         setTypeface(typeface, Typeface.BOLD)
-        text = "83"
     }
     
     private val mediaFavouriteIndicator = AppCompatImageView(context).apply {
@@ -70,7 +69,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             param.gravity = Gravity.CENTER_VERTICAL
         }
         setImageDrawable(
-            this.context.getCompatDrawable(R.drawable.ic_favourite)
+            context.getCompatDrawable(R.drawable.ic_favourite)
         )
     }
     
@@ -79,7 +78,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             param.gravity = Gravity.CENTER_VERTICAL
         }
         setImageDrawable(
-            this.context.getCompatDrawable(R.drawable.ic_paused)
+            context.getCompatDrawable(R.drawable.ic_paused)
         )
     }
     
@@ -88,7 +87,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             param.gravity = Gravity.CENTER_VERTICAL
         }
         setImageDrawable(
-            this.context.getCompatDrawable(R.drawable.ic_note)
+            context.getCompatDrawable(R.drawable.ic_note)
         )
     }
 

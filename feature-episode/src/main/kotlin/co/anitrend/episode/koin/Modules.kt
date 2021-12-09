@@ -17,14 +17,13 @@
 
 package co.anitrend.episode.koin
 
-import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.common.episode.ui.adapter.EpisodePagedAdapter
 import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
-import co.anitrend.episode.component.sheet.EpisodeSheet
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
 import co.anitrend.episode.component.content.viewmodel.state.EpisodeContentState
+import co.anitrend.episode.component.sheet.EpisodeSheet
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
 import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
 import co.anitrend.episode.presenter.EpisodePresenter
@@ -76,8 +75,7 @@ private val presenterModule = module {
     factory {
         EpisodePresenter(
             context = get(),
-            settings = get(),
-            customTabs = get<CustomTabsIntent.Builder>().build(),
+            settings = get()
         )
     }
 }

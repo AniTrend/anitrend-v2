@@ -28,16 +28,13 @@ import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 
 internal class MediaPresenter(
     context: Context,
     settings: Settings,
     entity: IMedia
 ) : CorePresenter(context, settings) {
-
-    private val worker by lazy(UNSAFE) {
-        MediaListTaskRouter.forMediaListSaveEntryWorker()
-    }
 
     val controller by lazy(UNSAFE) {
         MediaProgressController(entity, settings)
@@ -64,22 +61,10 @@ internal class MediaPresenter(
     operator fun invoke(): Operation {
         val params = controller.createParams(
             dateHelper = koinOf()
-        ).toMap()
-
-        val inputData = Data.Builder()
-            .putAll(params)
-            .build()
-
-        val oneTimeRequest = OneTimeWorkRequest.Builder(worker)
-            .setInputData(inputData)
-            .build()
-
-        val work = WorkManager.getInstance(context).beginUniqueWork(
-            worker.simpleName,
-            ExistingWorkPolicy.KEEP,
-            oneTimeRequest
         )
 
-        return work.enqueue()
+        return MediaListTaskRouter.forMediaListSaveEntryWorker()
+            .createOneTimeUniqueWorker(context, params)
+            .enqueue()
     }
 }

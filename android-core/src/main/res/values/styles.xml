@@ -219,4 +219,10 @@
         <item name="popupTheme">@style/AppTheme.Material.PopupTheme</item>
     </style>
 
+    <style name="AppTheme.RatingBar.Small" parent="Theme.MaterialComponents">
+        <item name="ratingBarStyle">@style/Widget.AppCompat.RatingBar.Small</item>
+        <item name="colorControlNormal">@color/grey_50</item>
+        <item name="colorControlActivated">@color/white_1000</item>
+    </style>
+
 </resources>
