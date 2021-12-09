@@ -528,7 +528,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "cbf7bcad59"
+            private const val version = "0e5c3932cb"
             const val material = "com.github.wax911:material-components-android:$version"
             //private const val version = "1.4.0-beta01"
             //const val material = "com.google.android.material:material:$version"
