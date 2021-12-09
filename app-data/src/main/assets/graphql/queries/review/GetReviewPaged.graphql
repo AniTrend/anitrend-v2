@@ -4,7 +4,8 @@ query GetReviewPaged(
     $sort: [ReviewSort],
     $userId: Int,
     $page: Int!,
-    $perPage: Int!
+    $perPage: Int!,
+    $scoreFormat: ScoreFormat
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {

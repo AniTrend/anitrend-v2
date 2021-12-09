@@ -26,7 +26,7 @@ import co.anitrend.domain.user.entity.User
 sealed class Review : IReview {
 
     data class Core(
-        override val body: String,
+        override val description: String,
         override val createdAt: Long,
         override val mediaId: Long,
         override val mediaType: MediaType,
@@ -45,7 +45,7 @@ sealed class Review : IReview {
 
     data class Extended(
         val media: Media,
-        override val body: String,
+        override val description: String,
         override val createdAt: Long,
         override val mediaId: Long,
         override val mediaType: MediaType,

@@ -55,8 +55,9 @@ import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.relation.koin.sourceModules
 import co.anitrend.data.rank.koin.rankModules
+import co.anitrend.data.review.koin.reviewModules
 import co.anitrend.data.tag.koin.tagModules
-import co.anitrend.data.themes.koin.themesModule
+import co.anitrend.data.themes.koin.themesModules
 import co.anitrend.data.thexem.koin.theXemModules
 import co.anitrend.data.tmdb.koin.tmdbModules
 import co.anitrend.data.trakt.koin.traktModules
@@ -220,4 +221,5 @@ val dataModules = listOf(
         authModules + accountModules + userModules +
         mediaListModules + feedModules + jikanModules +
         linkModules + rankModules + traktModules + tmdbModules +
-        themesModule + theXemModules + customListModules + customScoreModules
+        themesModules + theXemModules + customListModules + customScoreModules +
+        reviewModules

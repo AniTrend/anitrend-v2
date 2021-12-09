@@ -101,6 +101,7 @@ internal object Modules {
         MediaList("feature-medialist"),
         MediaListEditor("feature-medialist-editor"),
         Review("feature-review"),
+        ReviewDiscover("feature-review-discover"),
         Forum("feature-forum"),
         Recommendation("feature-recommendation"),
         Settings("feature-settings"),

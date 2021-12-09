@@ -132,14 +132,9 @@ private val mapperModule = module {
         )
     }
     factory {
-        ReviewMapper.Delete(
-            localSource = store().reviewDao(),
-            converter = get()
-        )
-    }
-    factory {
         ReviewMapper.Paged(
             mediaMapper = get(),
+            userMapper = get(),
             localSource = store().reviewDao(),
             converter = get()
         )

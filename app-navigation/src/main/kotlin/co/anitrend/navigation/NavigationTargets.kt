@@ -540,6 +540,32 @@ object ReviewRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 }
 
+object ReviewDiscoverRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun fragment(): Class<out Fragment>
+    }
+
+    fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        val mediaId: Long? = null,
+        val userId: Long? = null,
+        val mediaType: MediaType? = null,
+        val sort: List<Sorting<ReviewSort>>? = null,
+        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "ReviewDiscoverRouter#Param"
+        }
+    }
+}
+
 object NotificationRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
@@ -929,4 +955,63 @@ object EpisodeTaskRouter : NavigationRouter() {
 
     fun forWorker() = provider.worker()
     fun forScheduler() = provider.scheduler()
+}
+
+object ReviewTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun reviewVoteEntryWorker(): Class<out ListenableWorker>
+        fun reviewSaveEntryWorker(): Class<out ListenableWorker>
+        fun reviewDeleteEntryWorker(): Class<out ListenableWorker>
+    }
+
+    fun forReviewRateWorker() = provider.reviewVoteEntryWorker()
+    fun forReviewSaveWorker() = provider.reviewSaveEntryWorker()
+    fun forReviewDeleteWorker() = provider.reviewDeleteEntryWorker()
+
+    sealed class Param : IParam {
+
+        @Parcelize
+        data class SaveEntry(
+            val id: Long? = null,
+            val mediaId: Long,
+            val body: String,
+            val summary: String,
+            val score: Int,
+            val private: Boolean
+        ) : Param() {
+            @IgnoredOnParcel
+            override val idKey = KEY
+
+            companion object : IParam.IKey {
+                override val KEY = "ReviewTaskRouter#SaveEntry"
+            }
+        }
+
+        @Parcelize
+        data class RateEntry(
+            val id: Long,
+            val rating: ReviewRating
+        ) : Param() {
+            @IgnoredOnParcel
+            override val idKey: String = KEY
+
+            companion object : IParam.IKey {
+                override val KEY = "ReviewTaskRouter#RateEntry"
+            }
+        }
+
+        @Parcelize
+        data class DeleteEntry(
+            val id: Long
+        ) : Param() {
+            @IgnoredOnParcel
+            override val idKey: String = KEY
+
+            companion object : IParam.IKey {
+                override val KEY = "ReviewTaskRouter#DeleteEntry"
+            }
+        }
+    }
 }

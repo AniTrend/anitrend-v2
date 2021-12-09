@@ -64,7 +64,7 @@ internal sealed class ReviewContainerModel {
         @Serializable
         data class Page(
             @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
-            @SerialName("review") val entries: List<ReviewModel.Extended> = emptyList()
+            @SerialName("reviews") val entries: List<ReviewModel.Extended> = emptyList()
         ) : IPageModel
     }
 }

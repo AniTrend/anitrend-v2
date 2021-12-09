@@ -18,12 +18,12 @@
 package co.anitrend.domain.review.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.common.entity.contract.ISynopsis
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.user.entity.User
 
-interface IReview : IEntity {
-    val body: String
+interface IReview : IEntity, ISynopsis {
     val createdAt: Long
     val mediaId: Long
     val mediaType: MediaType

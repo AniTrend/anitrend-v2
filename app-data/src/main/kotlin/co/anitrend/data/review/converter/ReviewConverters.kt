@@ -63,7 +63,7 @@ internal class ReviewEntityViewConverter(
         override fun transform(source: ReviewEntityView): Review =
             Review.Extended(
                 media = MediaEntityViewConverter().convertFrom(source.media),
-                body = source.review.body,
+                description = source.review.body,
                 createdAt = source.review.createdAt,
                 mediaId = source.review.mediaId,
                 mediaType = source.media.media.type,

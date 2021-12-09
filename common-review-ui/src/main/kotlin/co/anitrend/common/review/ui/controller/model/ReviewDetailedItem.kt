@@ -29,13 +29,15 @@ import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.domain.review.entity.Review
 import coil.request.Disposable
 import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ReviewDetailedItem(
-    private val entity: Review
+    private val entity: Review,
+    private val settings: Settings
 ) : RecyclerItemBinding<ReviewDetailedItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
@@ -59,19 +61,15 @@ internal class ReviewDetailedItem(
     ) {
         binding = ReviewDetailedItemBinding.bind(view)
         entity as Review.Extended
-        val radius = view.resources.getDimensionPixelSize(R.dimen.lg_margin).toFloat()
         disposable = requireBinding().reviewMediaBanner.using(
             entity.media.image.toMediaRequestImage(RequestImage.Media.ImageType.BANNER),
-            listOf(
-                RoundedCornersTransformation(
-                    topRight = radius,
-                    bottomRight = radius
-                )
-            )
         )
         requireBinding().reviewTextBody.text = entity.summary
-        requireBinding().reviewReadMore.setOnClickListener {
-            // TODO: Open review reader as bottom sheet?
+        requireBinding().reviewAvatarWidget.updateUsing(entity)
+        requireBinding().reviewRatingWidget.updateUsing(entity)
+        requireBinding().reviewVoteWidget.updateUsing(entity, settings)
+        requireBinding().root.setOnClickListener {
+            // TODO: Open review reader as a bottom sheet or as a full activity?
         }
     }
 
@@ -80,7 +78,7 @@ internal class ReviewDetailedItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        requireBinding().reviewReadMore.setOnClickListener(null)
+        requireBinding().root.setOnClickListener(null)
         disposable?.dispose()
         disposable = null
         super.unbind(view)

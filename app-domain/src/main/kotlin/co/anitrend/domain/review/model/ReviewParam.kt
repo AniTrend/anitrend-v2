@@ -19,6 +19,7 @@ package co.anitrend.domain.review.model
 
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.review.enums.ReviewSort
 
@@ -44,7 +45,8 @@ sealed class ReviewParam {
         val mediaId: Long? = null,
         val userId: Long? = null,
         val mediaType: MediaType? = null,
-        val sort: List<ISortWithOrder<ReviewSort>>? = null
+        val sort: List<ISortWithOrder<ReviewSort>>? = null,
+        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
     ) : ReviewParam()
 
 
@@ -52,11 +54,11 @@ sealed class ReviewParam {
      *
      * Rate a review
      *
-     * @param reviewId The id of the review to rate
+     * @param id The id of the review to rate
      * @param rating The rating to apply to the review
      */
     data class Rate(
-        val reviewId: Long,
+        val id: Long,
         val rating: ReviewRating
     ) : ReviewParam()
 
