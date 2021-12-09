@@ -24,6 +24,8 @@ import co.anitrend.data.review.datasource.local.ReviewLocalSource
 import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.review.model.container.ReviewContainerModel
 import co.anitrend.data.review.model.remote.ReviewModel
+import co.anitrend.data.user.mapper.UserMapper
+import co.anitrend.data.user.model.UserModel
 
 internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
 
@@ -59,6 +61,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
 
     class Paged(
         private val mediaMapper: MediaMapper.EmbedWithAiring,
+        private val userMapper: UserMapper.Embed,
         override val localSource: ReviewLocalSource,
         override val converter: ReviewModelConverter
     ) : ReviewMapper<ReviewContainerModel.Paged, List<ReviewEntity>>() {
@@ -74,6 +77,11 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
                     ReviewModel.Extended::media
                 )
             )
+            userMapper.onEmbedded(
+                source.page.entries.map {
+                    it.user as UserModel
+                }
+            )
             return converter.convertFrom(source.page.entries)
         }
 
@@ -82,6 +90,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          */
         override suspend fun persist(data: List<ReviewEntity>) {
             mediaMapper.persistEmbedded()
+            userMapper.persistEmbedded()
             localSource.upsert(data)
         }
     }

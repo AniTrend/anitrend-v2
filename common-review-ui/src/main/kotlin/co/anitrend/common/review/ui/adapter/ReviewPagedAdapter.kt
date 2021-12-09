@@ -38,16 +38,17 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.review.entity.Review
 
 class ReviewPagedAdapter(
-    private val viewMode: PreferredViewMode,
+    private val settings: Settings,
+    private val preferredViewMode: PreferredViewMode,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Review) -> IRecyclerItem = {
-        when (viewMode) {
-            PreferredViewMode.DETAILED -> ReviewDetailedItem(it)
+        when (preferredViewMode) {
+            PreferredViewMode.DETAILED -> ReviewDetailedItem(it, settings)
             PreferredViewMode.COMPACT -> ReviewCompactItem(it)
             else -> throw UnsupportedOperationException(
-                "${viewMode.name} is not supported by this adapter"
+                "${preferredViewMode.name} is not supported by this adapter"
             )
         }
     },
@@ -64,7 +65,8 @@ class ReviewPagedAdapter(
         viewType: Int,
         layoutInflater: LayoutInflater
     ) = when (viewType) {
-        PreferredViewMode.DETAILED.ordinal -> layoutInflater.createReviewDetailItemViewHolder(parent)
+        PreferredViewMode.DETAILED.ordinal ->
+            layoutInflater.createReviewDetailItemViewHolder(parent)
         else -> layoutInflater.createReviewCompatItemViewHolder(parent)
     }
 
@@ -81,7 +83,7 @@ class ReviewPagedAdapter(
      */
     override fun getItemViewType(position: Int): Int {
         return when (val viewType = super.getItemViewType(position)) {
-            ISupportAdapter.DEFAULT_VIEW_TYPE -> viewMode.ordinal
+            ISupportAdapter.DEFAULT_VIEW_TYPE -> preferredViewMode.ordinal
             else -> viewType
         }
     }

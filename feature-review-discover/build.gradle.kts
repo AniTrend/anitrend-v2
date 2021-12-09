@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -22,5 +22,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.markdown))
+    implementation(project(Libraries.AniTrend.CommonUi.review))
 }

@@ -45,7 +45,8 @@ internal sealed class ReviewQuery : IGraphPayload {
             "mediaId" to param.mediaId,
             "userId" to param.userId,
             "mediaType" to param.mediaType,
-            "sort" to param.sort
+            "sort" to param.sort,
+            "scoreFormat" to param.scoreFormat,
         )
     }
 }

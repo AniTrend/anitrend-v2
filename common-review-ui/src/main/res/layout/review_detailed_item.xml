@@ -26,66 +26,60 @@
     android:layout_margin="@dimen/lg_margin"
     style="@style/AppTheme.Material.MediaCard">
 
+    <co.anitrend.arch.ui.view.image.SupportImageView
+        android:id="@+id/reviewMediaBanner"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:aspectRatio=".56"
+        tools:src="@sample/banner" />
+
+    <co.anitrend.common.review.ui.widget.rating.ReviewRatingWidget
+        android:id="@+id/reviewRatingWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/lg_margin"
+        android:layout_gravity="start|top"/>
+
+    <co.anitrend.common.review.ui.widget.avatar.ReviewAvatarWidget
+        android:id="@+id/reviewAvatarWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/lg_margin"
+        android:layout_gravity="end|top" />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <co.anitrend.arch.ui.view.image.SupportImageView
-            android:id="@+id/reviewMediaBanner"
-            android:layout_width="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?selectableItemBackground"
-            android:layout_height="0dp"
-            app:aspectRatio=".37"
-            tools:scaleType="centerCrop"
-            tools:src="@sample/banner" />
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/size_8dp"
+        android:background="@drawable/gradient_shadow">
 
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/size_4dp" />
+            android:layout_height="@dimen/lg_margin" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewTextBody"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/white_1000"
+            style="@style/AppTheme.Material.TextBody.Secondary"
+            tools:text="@sample/review.json/body"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <co.anitrend.common.review.ui.widget.vote.ReviewVoteWidget
+            android:id="@+id/reviewVoteWidget"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/size_8dp">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/reviewTextBody"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="6"
-                tools:text="@sample/review.json/body"/>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/size_12dp" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/reviewReadMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/action_read_more"
-                    android:layout_gravity="end"
-                    style="@style/AppTheme.Material.UnElevatedButton"
-                    />
-
-                <co.anitrend.common.review.ui.widget.ReviewRatingWidget
-                    android:id="@+id/reviewRatingWidget"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start" />
-
-            </FrameLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            android:layout_gravity="end" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

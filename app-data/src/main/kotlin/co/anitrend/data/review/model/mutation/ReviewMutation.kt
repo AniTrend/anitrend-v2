@@ -42,7 +42,7 @@ internal sealed class ReviewMutation : IGraphPayload {
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
         override fun toMap() = mapOf(
-            "reviewId" to param.reviewId,
+            "id" to param.id,
             "rating" to param.rating
         )
     }

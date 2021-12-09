@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2021  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,12 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.review.discover.provider
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.content.Context
+import android.content.Intent
+import co.anitrend.review.discover.component.content.ReviewDiscoverContent
+import co.anitrend.review.discover.component.screen.ReviewDiscoverScreen
+import co.anitrend.navigation.ReviewDiscoverRouter
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.markdown))
+class FeatureProvider : ReviewDiscoverRouter.Provider {
+    override fun activity(context: Context?) =
+        Intent(context, ReviewDiscoverScreen::class.java)
+        
+    override fun fragment() = ReviewDiscoverContent::class.java
 }

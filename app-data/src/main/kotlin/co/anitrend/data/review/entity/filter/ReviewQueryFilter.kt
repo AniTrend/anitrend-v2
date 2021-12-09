@@ -58,7 +58,7 @@ internal sealed class ReviewQueryFilter<T> : FilterQueryBuilder<T>() {
             filter.mediaType?.also { mediaType ->
                 requireBuilder() whereAnd {
                     MediaEntitySchema.type.asColumn(mediaTable).equal(
-                        mediaType
+                        mediaType.toString()
                     )
                 }
             }

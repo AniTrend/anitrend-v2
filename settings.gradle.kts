@@ -32,6 +32,7 @@ include(
 	":feature-medialist",
 	":feature-medialist-editor",
     ":feature-review",
+    ":feature-review-discover",
     ":feature-forum",
     ":feature-recommendation",
     ":feature-settings",
