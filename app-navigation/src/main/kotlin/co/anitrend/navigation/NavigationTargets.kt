@@ -27,19 +27,17 @@ import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.entity.shared.FuzzyDate
-import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.review.enums.ReviewRating
+import co.anitrend.domain.review.enums.ReviewSort
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.navigation.model.sorting.Sorting
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
 import co.anitrend.navigation.work.WorkSchedulerController
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -806,8 +804,6 @@ object MediaListTaskRouter : NavigationRouter() {
 
     sealed class Param : IParam {
 
-        abstract fun toMap(): Map<String, Any?>
-
         @Parcelize
         data class SaveEntry(
             var id: Long? = null,
@@ -828,23 +824,11 @@ object MediaListTaskRouter : NavigationRouter() {
             var startedAt: @RawValue FuzzyDate? = null,
             var completedAt: @RawValue FuzzyDate? = null,
         ) : Param() {
-
             @IgnoredOnParcel
             override val idKey = KEY
 
-            override fun toMap() = mapOf(
-                KEY to Gson().toJson(this),
-            )
-
             companion object : IParam.IKey {
                 override val KEY = "MediaListTaskRouter#SaveEntry"
-
-                fun fromMap(map: Map<String, Any?>): SaveEntry {
-                    return Gson().fromJson(
-                        map[KEY] as String,
-                        object : TypeToken<SaveEntry>(){}.type
-                    )
-                }
             }
         }
 
@@ -870,19 +854,8 @@ object MediaListTaskRouter : NavigationRouter() {
             @IgnoredOnParcel
             override val idKey = KEY
 
-            override fun toMap() = mapOf(
-                KEY to Gson().toJson(this),
-            )
-
             companion object : IParam.IKey {
                 override val KEY = "MediaListTaskRouter#SaveEntries"
-
-                fun fromMap(map: Map<String, Any?>): SaveEntries {
-                    return Gson().fromJson(
-                        map[KEY] as String,
-                        object : TypeToken<SaveEntries>(){}.type
-                    )
-                }
             }
         }
 
@@ -890,20 +863,11 @@ object MediaListTaskRouter : NavigationRouter() {
         data class DeleteEntry(
             val id: Long
         ) : Param() {
-
             @IgnoredOnParcel
             override val idKey = KEY
 
-            override fun toMap() = mapOf(
-                "id" to id
-            )
-
             companion object : IParam.IKey {
                 override val KEY = "MediaListTaskRouter#DeleteEntry"
-
-                fun fromMap(map: Map<String, Any?>) = DeleteEntry(
-                    id = map["id"] as Long
-                )
             }
         }
 
@@ -916,18 +880,8 @@ object MediaListTaskRouter : NavigationRouter() {
             @IgnoredOnParcel
             override val idKey = KEY
 
-            override fun toMap() = mapOf(
-                "customList" to customList,
-                "type" to type
-            )
-
             companion object : IParam.IKey {
                 override val KEY = "MediaListTaskRouter#DeleteCustomList"
-
-                fun fromMap(map: Map<String, Any?>) = DeleteCustomList(
-                    customList = map["customList"] as String,
-                    type = map["type"] as MediaType
-                )
             }
         }
     }
