@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi
 import co.anitrend.arch.extension.ext.flowOfBroadcast
 import co.anitrend.core.android.controller.power.contract.IPowerController
 import co.anitrend.core.android.controller.power.contract.PowerSaverState
+import co.anitrend.data.settings.connectivity.IConnectivitySettings
 import co.anitrend.data.settings.power.IPowerSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -39,7 +40,7 @@ internal class AndroidPowerController(
     private val context: Context,
     private val powerManager: PowerManager?,
     private val connectivityManager: ConnectivityManager?,
-    private val connectivitySettings: co.anitrend.data.settings.connectivity.IConnectivitySettings,
+    private val connectivitySettings: IConnectivitySettings,
     private val powerSettings: IPowerSettings,
 ) : IPowerController {
 

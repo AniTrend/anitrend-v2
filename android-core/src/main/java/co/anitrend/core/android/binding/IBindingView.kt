@@ -19,9 +19,21 @@ package co.anitrend.core.android.binding
 
 import androidx.viewbinding.ViewBinding
 
+/**
+ * View binding contract for UI controllers
+ *
+ * @property binding The binding property that represents a view
+ */
 interface IBindingView<B: ViewBinding> {
+
     var binding: B?
 
+    /**
+     * Assures that the binding reference is null safe
+     *
+     * @return Non null reference of [binding]
+     * @throws IllegalArgumentException If [binding] is nullable
+     */
     @Throws(IllegalArgumentException::class)
     fun requireBinding(): B = requireNotNull(binding)
 }
