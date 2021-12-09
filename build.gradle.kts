@@ -39,17 +39,22 @@ allprojects {
 
     configurations.all {
         resolutionStrategy.eachDependency {
-            if (requested.group == "org.jetbrains.kotlin") {
-                when (requested.name) {
-                    "kotlin-reflect",
-                    "kotlin-stdlib",
-                    "kotlin-stdlib-common",
-                    "kotlin-stdlib-jdk8",
-                    "kotlin-stdlib-jdk7" -> useVersion("1.4.32")
+            when (requested.group) {
+                "org.jetbrains.kotlin" -> {
+                    when (requested.name) {
+                        "kotlin-reflect",
+                        "kotlin-stdlib",
+                        "kotlin-stdlib-common",
+                        "kotlin-stdlib-jdk8",
+                        "kotlin-stdlib-jdk7" -> useVersion("1.4.32")
+                    }
                 }
             }
             if (requested.group == "com.google.android.material") {
                 useTarget(co.anitrend.buildSrc.Libraries.Google.Material.material)
+            }
+            if (requested.group == "com.jakewharton.timber") {
+                useTarget(co.anitrend.buildSrc.Libraries.timber)
             }
         }
     }
