@@ -379,8 +379,8 @@ object Libraries {
         }
 
         object Retrofit {
-            private const val version = "0.11.0-beta02"
-            const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
+            private const val version = "0.11.0-beta03"
+            const val graphQL = "com.github.AniTrend:retrofit-graphql:${version}"
         }
 
         object Sync {
