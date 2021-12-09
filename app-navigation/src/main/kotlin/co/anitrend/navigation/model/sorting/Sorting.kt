@@ -22,7 +22,7 @@ import co.anitrend.domain.common.enums.contract.ISortable
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
 import kotlinx.parcelize.Parcelize
-import kotlinx.android.parcel.RawValue
+import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class Sorting<Sortable: ISortable>(
