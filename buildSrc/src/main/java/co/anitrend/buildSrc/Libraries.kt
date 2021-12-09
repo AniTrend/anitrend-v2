@@ -319,7 +319,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.3.0-rc07"
+            private const val version = "1.3.0"
             const val ui = "com.github.anitrend.support-arch:ui:${version}"
             const val ext = "com.github.anitrend.support-arch:extension:${version}"
             const val core = "com.github.anitrend.support-arch:core:${version}"
@@ -379,8 +379,8 @@ object Libraries {
         }
 
         object Retrofit {
-            private const val version = "0.11.0-beta02"
-            const val graphQL = "com.github.anitrend:retrofit-graphql:${version}"
+            private const val version = "0.11.0-beta03"
+            const val graphQL = "com.github.AniTrend:retrofit-graphql:${version}"
         }
 
         object Sync {
@@ -528,7 +528,7 @@ object Libraries {
         }
 
         object Material {
-            private const val version = "cbf7bcad59"
+            private const val version = "0e5c3932cb"
             const val material = "com.github.wax911:material-components-android:$version"
             //private const val version = "1.4.0-beta01"
             //const val material = "com.google.android.material:material:$version"
@@ -547,7 +547,7 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "1.4.30"
+            private const val version = "1.4.32"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 
@@ -590,21 +590,22 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.2.1"
-        const val core = "org.koin:koin-core:$version"
-        const val extension = "org.koin:koin-core-ext:$version"
-        const val test = "org.koin:koin-test:$version"
+        private const val version = "2.2.3"
+        const val core = "io.insert-koin:koin-core:$version"
+        const val extension = "io.insert-koin:koin-core-ext:$version"
+        const val test = "io.insert-koin:koin-test:$version"
 
         object AndroidX {
-            const val scope = "org.koin:koin-androidx-scope:$version"
-            const val fragment = "org.koin:koin-androidx-fragment:$version"
-            const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
-            const val workManager = "org.koin:koin-androidx-workmanager:$version"
-            const val compose = "org.koin:koin-androidx-compose:$version"
+            const val scope = "io.insert-koin:koin-androidx-scope:$version"
+            const val fragment = "io.insert-koin:koin-androidx-fragment:$version"
+            const val viewModel = "io.insert-koin:koin-androidx-viewmodel:$version"
+            const val workManager = "io.insert-koin:koin-androidx-workmanager:$version"
+            // Compose is only available in koin 3.X
+            const val compose = "io.insert-koin:koin-androidx-compose:$version"
         }
 
         object Gradle {
-            const val plugin = "org.koin:koin-gradle-plugin:$version"
+            const val plugin = "io.insert-koin:koin-gradle-plugin:$version"
         }
     }
     
