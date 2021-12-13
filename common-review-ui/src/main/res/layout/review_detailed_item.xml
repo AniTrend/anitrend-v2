@@ -75,8 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/lg_margin" />
 
-        <co.anitrend.common.review.ui.widget.vote.ReviewVoteWidget
-            android:id="@+id/reviewVoteWidget"
+        <co.anitrend.common.review.ui.widget.action.ReviewActionWidget
+            android:id="@+id/reviewActionWidget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end" />
