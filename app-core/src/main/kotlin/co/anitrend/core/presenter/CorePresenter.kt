@@ -29,6 +29,7 @@ import androidx.core.view.ViewCompat
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
@@ -38,6 +39,16 @@ abstract class CorePresenter(
     context: Context,
     settings: Settings
 ) : SupportPresenter<Settings>(context, settings) {
+
+    /**
+     * Checks the receiver is the current user
+     */
+    open fun isCurrentUser(userId: Long): Boolean {
+        val authUserId = settings.authenticatedUserId.value
+        if (authUserId == IAuthenticationSettings.INVALID_USER_ID)
+            return false
+        return authUserId == userId
+    }
 
     /**
      * Starts a view intent action given the [uri] as data
