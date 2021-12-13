@@ -17,6 +17,7 @@ include(
 	":app-data-settings",
     ":android-onboarding",
     ":android-splash",
+    ":android-deeplink",
     ":feature-auth",
     ":app-navigation",
     ":android-navigation",

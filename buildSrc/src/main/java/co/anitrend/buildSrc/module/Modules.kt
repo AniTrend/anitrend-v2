@@ -61,7 +61,8 @@ internal object Modules {
         Core("android-core"),
         Navigation("android-navigation"),
         OnBoarding("android-onboarding"),
-        Splash("android-splash")
+        Splash("android-splash"),
+        DeepLink("android-deeplink"),
     }
 
     enum class Common(override val id: String) : Module {

@@ -44,6 +44,8 @@ object Libraries {
 
     const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
 
+    const val deeplink = "com.hellofresh.android:deeplink:${Versions.deeplink}"
+
     object Repositories {
         const val jitPack = "https://www.jitpack.io"
         const val sonatypeReleases = "https://oss.sonatype.org/content/repositories/releases"

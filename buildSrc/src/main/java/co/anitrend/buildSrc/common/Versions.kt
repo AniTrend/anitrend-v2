@@ -69,4 +69,6 @@ object Versions {
     const val elements = "1.0.1"
 
     const val ktlint = "0.40.0"
+
+    const val deeplink = "0.3.1"
 }
