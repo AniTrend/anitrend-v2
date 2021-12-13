@@ -67,9 +67,10 @@ internal class ReviewDetailedItem(
         requireBinding().reviewTextBody.text = entity.summary
         requireBinding().reviewAvatarWidget.updateUsing(entity)
         requireBinding().reviewRatingWidget.updateUsing(entity)
-        requireBinding().reviewVoteWidget.updateUsing(entity, settings)
+        requireBinding().reviewActionWidget.updateUsing(entity, settings)
         requireBinding().root.setOnClickListener {
             // TODO: Open review reader as a bottom sheet or as a full activity?
+            // A full activity might be better to support things like deep linking
         }
     }
 
@@ -78,7 +79,8 @@ internal class ReviewDetailedItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
-        requireBinding().root.setOnClickListener(null)
+        binding?.root?.setOnClickListener(null)
+        binding?.reviewActionWidget?.onViewRecycled()
         disposable?.dispose()
         disposable = null
         super.unbind(view)
