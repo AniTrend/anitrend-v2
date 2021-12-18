@@ -549,7 +549,7 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "1.4.32"
+            private const val version = "1.6.0"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 
