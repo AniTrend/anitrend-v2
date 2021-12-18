@@ -46,7 +46,7 @@ allprojects {
                         "kotlin-stdlib",
                         "kotlin-stdlib-common",
                         "kotlin-stdlib-jdk8",
-                        "kotlin-stdlib-jdk7" -> useVersion("1.4.32")
+                        "kotlin-stdlib-jdk7" -> useVersion("1.6.10")
                     }
                 }
             }
