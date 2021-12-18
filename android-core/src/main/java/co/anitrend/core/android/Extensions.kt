@@ -17,100 +17,42 @@
 
 package co.anitrend.core.android
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.util.TypedValue
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.view.animation.Interpolator
-import androidx.annotation.AttrRes
-import androidx.annotation.StyleRes
-import androidx.core.content.res.use
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.domain.entities.RequestError
+import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import co.anitrend.navigation.model.common.IParam
 import org.koin.core.context.GlobalContext
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.Instant
 import java.util.*
 
 /**
  * Helper to resolve koin dependencies
+ *
+ * @param qualifier Help qualify a component
+ * @param parameters Help define a DefinitionParameters
+ *
+ * @return [T]
  */
-inline fun <reified T> koinOf(): T =
-    GlobalContext.get().get()
-
-/**
- * Retrieve a style from the current [android.content.res.Resources.Theme].
- */
-@StyleRes
-fun Context.themeStyle(@AttrRes attr: Int): Int {
-    val tv = TypedValue()
-    theme.resolveAttribute(attr, tv, true)
-    return tv.data
+inline fun <reified T> koinOf(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+): T {
+    val koin = GlobalContext.get()
+    return koin.get(qualifier, parameters)
 }
-
-fun Context.themeInterpolator(@AttrRes attr: Int): Interpolator {
-    return AnimationUtils.loadInterpolator(
-        this,
-        obtainStyledAttributes(intArrayOf(attr)).use {
-            it.getResourceId(0, android.R.interpolator.fast_out_slow_in)
-        }
-    )
-}
-
-/**
- * Pretty time reference as a singleton
- */
-val prettyTime by lazy {
-    koinOf<PrettyTime>()
-}
-
-/**
- * Creates a callback flow a [BroadcastReceiver] using the given [IntentFilter]
- *
- * @param intentFilter The intent to subscribe to
- *
- * @return [Flow] of [Intent]
- */
-fun Context.flowOfBroadcast(intentFilter: IntentFilter): Flow<Intent> = callbackFlow {
-    val receiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            offer(intent)
-        }
-    }
-    registerReceiver(receiver, intentFilter)
-    awaitClose {
-        unregisterReceiver(receiver)
-    }
-}
-
-/**
- * Helper value formatter
- *
- * @param digits Number of decimal places
- *
- * @author [Andrey Breslav](https://stackoverflow.com/a/23088000/1725347)
- */
-fun Double.format(digits: Int) = "%.${digits}f".format(this)
-
-/**
- * Helper value formatter for [Float] types
- *
- * @param digits Number of decimal places
- */
-fun Float.format(digits: Int) = "%.${digits}f".format(this)
 
 /**
  * Creates a string with locale applied from pretty time
  *
  * @return 2 hours from now, 3 hours ago .e.t.c
  */
-fun AiringSchedule.getPrettyTime(): String {
+fun AiringSchedule.asPrettyTime(): String {
+    val prettyTime = koinOf<PrettyTime>()
     return prettyTime.format(
         Date(airingAt * 1000)
     )
@@ -121,12 +63,23 @@ fun AiringSchedule.getPrettyTime(): String {
  *
  * @return 2 hours from now, 3 hours ago .e.t.c
  */
-fun Instant.getPrettyTime(): String {
+fun Instant.asPrettyTime(): String {
+    val prettyTime = koinOf<PrettyTime>()
     return prettyTime.format(Date(toEpochMilli()))
 }
 
-fun View.setMarginTop(marginTop: Int) {
-    val menuLayoutParams = this.layoutParams as ViewGroup.MarginLayoutParams
-    menuLayoutParams.setMargins(0, marginTop, 0, 0)
-    this.layoutParams = menuLayoutParams
+/**
+ * Displays an error message for missing parameters otherwise runs [block]
+ */
+inline fun ISupportStateLayout.assureParamNotMissing(param: IParam?, block: () -> Unit) {
+    if (param == null) {
+        this as ViewGroup
+        loadStateFlow.value = LoadState.Error(
+            RequestError(
+                topic = context.getString(R.string.app_controller_heading_missing_param),
+                description = context.getString(R.string.app_controller_message_missing_param),
+            )
+        )
+    }
+    else block()
 }

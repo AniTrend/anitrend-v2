@@ -1,0 +1,52 @@
+query GetFeedMediaPaged(
+    $page: Int,
+    $perPage: Int,
+    $createdAt: Int,
+    $createdAt_greater: Int,
+    $createdAt_lesser: Int,
+    $hasReplies: Boolean,
+    $hasRepliesOrTypeText: Boolean,
+    $id_in: [Int],
+    $id_not: Int,
+    $id_not_in: [Int],
+    $mediaId: Int,
+    $mediaId_in: [Int],
+    $mediaId_not: Int,
+    $mediaId_not_in: [Int],
+    $isFollowing: Boolean,
+    $sort: [ActivitySort],
+    $userId: Int,
+    $userId_in: [Int],
+    $userId_not: Int,
+    $userId_not_in: [Int]
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        activities(
+            createdAt: $createdAt,
+            createdAt_greater: $createdAt_greater,
+            createdAt_lesser: $createdAt_lesser,
+            hasReplies: $hasReplies,
+            hasRepliesOrTypeText: $hasRepliesOrTypeText,
+            id_in: $id_in,
+            id_not: $id_not,
+            id_not_in: $id_not_in,
+            mediaId: $mediaId,
+            mediaId_in: $mediaId_in,
+            mediaId_not: $mediaId_not,
+            mediaId_not_in: $mediaId_not_in,
+            isFollowing: $isFollowing,
+            sort: $sort,
+            type: MEDIA_LIST,
+            userId: $userId,
+            userId_in: $userId_in,
+            userId_not: $userId_not,
+            userId_not_in: $userId_not_in
+        ) {
+            ... FeedMedia
+            ... FeedText @include(if: $hasRepliesOrTypeText)
+        }
+    }
+}

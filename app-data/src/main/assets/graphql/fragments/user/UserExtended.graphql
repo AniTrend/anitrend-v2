@@ -1,16 +1,15 @@
 fragment UserExtended on User {
     ... UserCore
+    previousNames {
+        createdAt
+        name
+        updatedAt
+    }
     options {
-        airingNotifications
-        displayAdultContent
-        notificationOptions {
-            enabled
-            type
-        }
         profileColor
         titleLanguage
+        displayAdultContent
     }
-    unreadNotificationCount
     mediaListOptions {
         animeList {
             advancedScoring

@@ -61,28 +61,13 @@ private val viewModelModule = module {
 private val presenterModule = module {
     scope<AuthContent> {
         scoped {
-            val context = androidContext()
             AuthPresenter(
-                customTabs = CustomTabsIntent.Builder()
-                    .setStartAnimations(context, R.anim.enter_from_bottom, R.anim.exit_to_bottom)
-                    .setExitAnimations(context, android.R.anim.fade_in, android.R.anim.fade_out)
-                    .setColorSchemeParams(
-                        if (context.isEnvironmentNightMode()) CustomTabsIntent.COLOR_SCHEME_DARK
-                        else CustomTabsIntent.COLOR_SCHEME_LIGHT,
-                        CustomTabColorSchemeParams.Builder()
-                            .setToolbarColor(
-                                context.getColorFromAttr(R.attr.colorPrimary)
-                            )
-                            .setNavigationBarColor(
-                                context.getColorFromAttr(R.attr.colorPrimary)
-                            )
-                            .setSecondaryToolbarColor(
-                                context.getColorFromAttr(R.attr.colorSecondary)
-                            )
-                            .build()
-                    ).build(),
-                context = context,
-                settings = get()
+                context = androidContext(),
+                settings = get(),
+                clientId = getProperty("aniListClientId"),
+                customTabs = get<CustomTabsIntent.Builder>().build(),
+                shortcutManager = get(),
+                authenticationHelper = get()
             )
         }
     }

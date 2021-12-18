@@ -20,8 +20,10 @@ package co.anitrend.component.screen
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.R
@@ -30,20 +32,25 @@ import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.android.extensions.cascadeMenu
+import co.anitrend.core.android.extensions.onMenu
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.inject
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.databinding.MainScreenBinding
+import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.media.enums.MediaSort
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.*
-import co.anitrend.navigation.MediaRouter.Provider.Companion.forCarousel
-import co.anitrend.navigation.MediaRouter.Provider.Companion.forDiscover
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import co.anitrend.navigation.extensions.forFragment
+import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.model.sorting.Sorting
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -52,7 +59,7 @@ import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainScreen : AnitrendScreen<MainScreenBinding>() {
+class MainScreen : AniTrendScreen<MainScreenBinding>() {
 
     private val drawerFragmentItem by lazy(UNSAFE) {
         FragmentItem(
@@ -61,10 +68,10 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         )
     }
 
-    private val navigationDrawer: INavigationDrawer?
-        get() = supportFragmentManager.findFragmentByTag(
-            drawerFragmentItem.tag()
-        ) as? BottomDrawerContent
+    private val navigationDrawer: INavigationDrawer
+        get() = drawerFragmentItem.fragmentByTagOrNew(
+            this
+        ) as BottomDrawerContent
 
     private val viewModel by viewModel<MainScreenViewModel>(
         state = { intent.extras.orEmpty() }
@@ -79,43 +86,52 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     }
 
     private val changeSettingsMenuStateAction by lazy(UNSAFE) {
-        ChangeSettingsMenuStateAction { showSettings ->
-            // Toggle between the current destination's FAB menu and the menu which should
-            // be displayed when the BottomNavigationDrawer is open.
-            binding?.bottomAppBar?.replaceMenu(
-                if (showSettings) R.menu.drawer_menu
-                else R.menu.main_menu
-            )
+        ChangeSettingsMenuStateAction { showDrawerMenu ->
+            lifecycleScope.launch {
+                // Toggle between the current destination's FAB menu and the menu which should
+                // be displayed when the BottomNavigationDrawer is open.
+                navigationDrawer.toggleMenuVisibility(showDrawerMenu)
+                // add a delay to hide specific menu items from this controller
+                requireBinding().bottomAppBar.toggleVisibility(!showDrawerMenu) {
+                    it.itemId == R.id.action_search
+                }
+            }
         }
     }
 
     private suspend fun observeNavigationDrawer() {
-        navigationDrawer?.navigationFlow
-            ?.onEach(::onNavigationItemSelected)
-            ?.catch { throwable: Throwable ->
-                Timber.tag(moduleTag).e(
-                    throwable,
-                    "observeNavigationDrawer() -> Navigation drawer flow threw an uncaught exception"
-                )
-            }?.collect()
+        navigationDrawer.navigationFlow
+            .onEach(::onNavigationItemSelected)
+            .catch { throwable: Throwable ->
+                Timber.e(throwable, "Navigation drawer flow threw an uncaught exception")
+            }.collect()
     }
 
     /**
      * Replaces the current content with that in the selected fragment
      */
-    private fun attachSelectedNavigationItem(fragmentItem: FragmentItem?) {
+    private fun attachSelectedNavigationItem(fragmentItem: FragmentItem<Fragment>?) {
         currentFragmentTag = fragmentItem?.commit(
-            requireBinding().contentMain.contentFrame,
+            requireBinding().contentMain,
             this
         )
     }
 
     private fun setUpNavigationDrawer() {
         requireBinding().bottomAppBar.setNavigationOnClickListener {
-            navigationDrawer?.toggle()
+            navigationDrawer.toggleDrawer()
         }
         requireBinding().mainCoordinator.setOnClickListener {
-            navigationDrawer?.dismiss()
+            navigationDrawer.dismiss()
+        }
+        requireBinding().floatingShortcutButton.setOnClickListener { fab ->
+            fab.cascadeMenu().onMenu {
+                add("Account").setIcon(R.drawable.ic_account_add_24dp)
+                addSubMenu("Extras").also { subMenu ->
+                    subMenu.add("Discord").setIcon(R.drawable.ic_discord_24dp)
+                    subMenu.add("Support").setIcon(R.drawable.ic_patreon_24dp)
+                }
+            }.show()
         }
         navigateToUsing(viewModel.state.selectedItem)
     }
@@ -124,6 +140,17 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
         requireBinding().floatingShortcutButton.apply {
             setShowMotionSpecResource(R.animator.floating_action_show)
             setHideMotionSpecResource(R.animator.floating_action_hide)
+        }
+        inflateNavigationBottomDrawer()
+    }
+
+    private fun inflateNavigationBottomDrawer() {
+        supportFragmentManager.commit {
+            replace<BottomDrawerContent>(
+                R.id.bottomNavigation,
+                drawerFragmentItem.parameter,
+                drawerFragmentItem.tag()
+            )
         }
     }
 
@@ -135,14 +162,10 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed { setUpNavigationDrawer() }
-        lifecycleScope.launchWhenResumed { observeNavigationDrawer() }
-        supportFragmentManager.commit {
-            replace<BottomDrawerContent>(
-                R.id.bottomNavigation,
-                drawerFragmentItem.parameter,
-                drawerFragmentItem.tag()
-            )
+        lifecycleScope.launchWhenResumed {
+            navigationDrawer.setCheckedItem(viewModel.state.selectedItem)
+            setUpNavigationDrawer()
+            observeNavigationDrawer()
         }
         onUpdateUserInterface()
     }
@@ -158,27 +181,9 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
                 SearchRouter.startActivity(this)
                 return true
             }
-            R.id.action_about -> {
-                AboutRouter.startActivity(this)
-                return true
-            }
             R.id.action_settings -> {
                 SettingsRouter.startActivity(this)
                 return true
-            }
-            R.id.action_notifications -> {
-                NotificationRouter.startActivity(this)
-                return true
-            }
-            R.id.action_updates -> {
-                UpdaterRouter.startActivity(this)
-                return true
-            }
-            R.id.action_account -> {
-                if (presenter.settings.isAuthenticated.value)
-                    ProfileRouter.startActivity(this)
-                else
-                    AuthRouter.startActivity(this)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -225,15 +230,28 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      * @see getOnBackPressedDispatcher
      */
     override fun onBackPressed() {
-        ActivityCompat.finishAfterTransition(this)
+        if (navigationDrawer.isShowing()) {
+            navigationDrawer.dismiss()
+            return
+        }
+        if (!requireBinding().bottomAppBar.isScrolledUp) {
+            requireBinding().bottomAppBar.performShow()
+            return
+        }
+        if (viewModel.state.shouldExit)
+            ActivityCompat.finishAfterTransition(this)
+        else {
+            Toast.makeText(this, R.string.message_confirm_exit_app, Toast.LENGTH_LONG).show()
+            viewModel.state.shouldExit = true
+        }
     }
 
     /**
      * Dispatch onPause() to fragments.
      */
     override fun onPause() {
-        navigationDrawer?.removeOnStateChangedAction(showHideFabStateAction)
-        navigationDrawer?.removeOnStateChangedAction(changeSettingsMenuStateAction)
+        navigationDrawer.removeOnStateChangedAction(showHideFabStateAction)
+        navigationDrawer.removeOnStateChangedAction(changeSettingsMenuStateAction)
         super.onPause()
     }
 
@@ -244,14 +262,14 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
      */
     override fun onResume() {
         super.onResume()
-        navigationDrawer?.addOnStateChangedAction(showHideFabStateAction)
-        navigationDrawer?.addOnStateChangedAction(changeSettingsMenuStateAction)
-        navigationDrawer?.setCheckedItem(viewModel.state.selectedItem)
+        navigationDrawer.addOnStateChangedAction(showHideFabStateAction)
+        navigationDrawer.addOnStateChangedAction(changeSettingsMenuStateAction)
     }
 
     override fun onDestroy() {
         binding?.floatingShortcutButton?.setOnClickListener(null)
         binding?.bottomAppBar?.setNavigationOnClickListener(null)
+        binding?.mainCoordinator?.setOnClickListener(null)
         super.onDestroy()
     }
 
@@ -261,7 +279,7 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             if (menu.isCheckable) {
                 supportActionBar?.setTitle(viewModel.state.selectedTitle)
                 viewModel.state.selectedItem = menu.id
-                navigationDrawer?.dismiss()
+                navigationDrawer.dismiss()
             }
         }
     }
@@ -271,35 +289,80 @@ class MainScreen : AnitrendScreen<MainScreenBinding>() {
             R.id.navigation_home -> {
                 viewModel.state.selectedTitle = R.string.navigation_home
                 FragmentItem(
-                    fragment = MediaRouter.forCarousel()
+                    fragment = MediaCarouselRouter.forFragment()
                 )
             }
             R.id.navigation_discover -> {
-                viewModel.state.selectedTitle = R.string.navigation_discord
+                viewModel.state.selectedTitle = R.string.navigation_discover
                 FragmentItem(
-                    fragment = MediaRouter.forDiscover()
+                    fragment = MediaDiscoverRouter.forFragment(),
+                    parameter = MediaDiscoverRouter.Param(
+                        sort = listOf(
+                            Sorting(
+                                MediaSort.TRENDING,
+                                SortOrder.DESC
+                            )
+                        )
+                    ).asBundle()
                 )
             }
             R.id.navigation_social -> {
-                null
+                viewModel.state.selectedTitle = R.string.navigation_social
+                FragmentItem(
+                    fragment = FeedRouter.forFragment()
+                )
             }
             R.id.navigation_reviews -> {
-                null
+                viewModel.state.selectedTitle = R.string.navigation_review
+                FragmentItem(
+                    fragment = ReviewDiscoverRouter.forFragment()
+                )
             }
             R.id.navigation_suggestions -> {
-                null
+                viewModel.state.selectedTitle = R.string.navigation_suggestions
+                FragmentItem(
+                    fragment = SuggestionRouter.forFragment()
+                )
             }
             R.id.navigation_news -> {
                 viewModel.state.selectedTitle = R.string.navigation_news
-                null
+                FragmentItem(
+                    fragment = NewsRouter.forFragment()
+                )
             }
             R.id.navigation_forum -> {
-                viewModel.state.selectedTitle = R.string.navigation_news
-                null
+                viewModel.state.selectedTitle = R.string.navigation_forums
+                FragmentItem(
+                    fragment = ForumRouter.forFragment()
+                )
             }
             R.id.navigation_episodes -> {
                 viewModel.state.selectedTitle = R.string.navigation_episodes
-                null
+                FragmentItem(
+                    fragment = EpisodeRouter.forFragment()
+                )
+            }
+            R.id.navigation_anime_list -> {
+                viewModel.state.selectedTitle = R.string.navigation_anime_list
+                FragmentItem(
+                    fragment = MediaListRouter.forFragment(),
+                    parameter = MediaListRouter.Param(
+                        userId = presenter.settings.authenticatedUserId.value,
+                        type = MediaType.ANIME
+                    ).asBundle(),
+                    tag = MediaType.ANIME.name
+                )
+            }
+            R.id.navigation_manga_list -> {
+                viewModel.state.selectedTitle = R.string.navigation_manga_list
+                FragmentItem(
+                    fragment = MediaListRouter.forFragment(),
+                    parameter = MediaListRouter.Param(
+                        userId = presenter.settings.authenticatedUserId.value,
+                        type = MediaType.MANGA
+                    ).asBundle(),
+                    tag = MediaType.MANGA.name
+                )
             }
             R.id.navigation_donate -> {
                 presenter.redirectToPatreon()

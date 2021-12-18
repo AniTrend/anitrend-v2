@@ -17,27 +17,21 @@
 
 package co.anitrend.buildSrc.plugins.strategy
 
-import co.anitrend.buildSrc.Libraries
-import co.anitrend.buildSrc.common.*
-import co.anitrend.buildSrc.common.core
-import co.anitrend.buildSrc.common.data
-import co.anitrend.buildSrc.common.domain
-import co.anitrend.buildSrc.common.navigation
-import co.anitrend.buildSrc.plugins.extensions.implementation
-import co.anitrend.buildSrc.plugins.extensions.test
-import co.anitrend.buildSrc.plugins.extensions.androidTest
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import co.anitrend.buildSrc.module.Modules
+import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.Libraries
+import org.gradle.api.Project
 
-internal class DependencyStrategy(
-    private val module: String
-) {
+internal class DependencyStrategy(private val project: Project) {
+
     private fun DependencyHandler.applyDefaultDependencies() {
         implementation(Libraries.JetBrains.Kotlin.stdlib)
-        if (module != domain)
+        if (!project.isDomainModule())
             implementation(Libraries.timber)
 
         test(Libraries.junit)
-        test(Libraries.mockk)
+        test(Libraries.Mockk.mockk)
 
         /** Work around for crashing tests when startup. initializer is not found in *.test packages */
         androidTest(Libraries.AndroidX.StartUp.startUpRuntime)
@@ -49,7 +43,7 @@ internal class DependencyStrategy(
         androidTest(Libraries.AndroidX.Test.runner)
         androidTest(Libraries.AndroidX.Test.Espresso.core)
         androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
-        androidTest(Libraries.mockk)
+        androidTest(Libraries.Mockk.mockkAndroid)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
@@ -69,11 +63,10 @@ internal class DependencyStrategy(
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
-        implementation(Libraries.Koin.core)
+        androidTest(Libraries.Koin.test)
         implementation(Libraries.Koin.core)
         implementation(Libraries.Koin.extension)
-        androidTest(Libraries.Koin.test)
-        if (module != data || module != core || module != androidCore) {
+        if (project.hasKoinAndroidSupport()) {
             implementation(Libraries.Koin.AndroidX.scope)
             implementation(Libraries.Koin.AndroidX.fragment)
             implementation(Libraries.Koin.AndroidX.viewModel)
@@ -82,8 +75,8 @@ internal class DependencyStrategy(
     }
 
     private fun DependencyHandler.applyOtherDependencies() {
-        when (module) {
-            app -> {
+        when (project.name) {
+            Modules.App.Main.id -> {
                 implementation(Libraries.AniTrend.Arch.recycler)
                 implementation(Libraries.AniTrend.Arch.domain)
                 implementation(Libraries.AniTrend.Arch.theme)
@@ -92,7 +85,7 @@ internal class DependencyStrategy(
                 implementation(Libraries.AniTrend.Arch.ext)
                 implementation(Libraries.AniTrend.Arch.ui)
             }
-            core -> {
+            Modules.App.Core.id -> {
                 implementation(Libraries.AniTrend.Arch.recycler)
                 implementation(Libraries.AniTrend.Arch.domain)
                 implementation(Libraries.AniTrend.Arch.theme)
@@ -101,7 +94,7 @@ internal class DependencyStrategy(
                 implementation(Libraries.AniTrend.Arch.ext)
                 implementation(Libraries.AniTrend.Arch.ui)
             }
-            data -> {
+            Modules.App.Data.id -> {
                 implementation(Libraries.AniTrend.Arch.domain)
                 implementation(Libraries.AniTrend.Arch.data)
                 implementation(Libraries.AniTrend.Arch.ext)
@@ -111,7 +104,7 @@ internal class DependencyStrategy(
 
     fun applyDependenciesOn(handler: DependencyHandler) {
         handler.applyDefaultDependencies()
-        if (module != domain || module != navigation) {
+        if (!project.isDomainModule() || !project.isNavigationModule()) {
             handler.applyLifeCycleDependencies()
             handler.applyAndroidTestDependencies()
             handler.applyCoroutinesDependencies()

@@ -17,11 +17,12 @@
 
 package co.anitrend.search.component.screen
 
+import android.app.SearchManager
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.ui.commit
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.multisearch.model.Search
 import co.anitrend.search.databinding.SearchScreenBinding
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
 
-class SearchScreen : AnitrendScreen<SearchScreenBinding>() {
+class SearchScreen : AniTrendScreen<SearchScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,5 +73,37 @@ class SearchScreen : AnitrendScreen<SearchScreenBinding>() {
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(fragment = SearchContent::class.java)
             .commit(requireBinding().searchContent, this)
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Handle onNewIntent() to inform the fragment manager that the
+     * state is not saved.  If you are handling new intents and may be
+     * making changes to the fragment state, you want to be sure to call
+     * through to the super-class here first.  Otherwise, if your state
+     * is saved but the activity is not stopped, you could get an
+     * onNewIntent() call which happens before onResume() and trying to
+     * perform fragment operations at that point will throw IllegalStateException
+     * because the fragment manager thinks the state is still saved.
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        when (intent?.action) {
+            Intent.ACTION_SEARCH, GOOGLE_ACTION_SEARCH -> {
+                val query = intent.getStringExtra(SearchManager.QUERY)
+                if (query != null && query.isNotEmpty()) {
+                    // TODO: Add support in multi-search to search programmatically
+                    //requireBinding().multiSearch.addIfNotExists(query)
+                }
+            }
+        }
+    }
+
+    companion object {
+        /**
+         * Google specific search action, e.g. assistant or google search
+         */
+        const val GOOGLE_ACTION_SEARCH = "com.google.android.gms.actions.SEARCH_ACTION"
     }
 }

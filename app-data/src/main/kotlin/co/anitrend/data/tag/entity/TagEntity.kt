@@ -20,7 +20,8 @@ package co.anitrend.data.tag.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "tag",
@@ -29,9 +30,14 @@ import co.anitrend.data.shared.common.Identity
         Index(
             value = ["name"],
             unique = true
+        ),
+        Index(
+            value = ["category"],
+            unique = false
         )
     ]
 )
+@EntitySchema
 internal data class TagEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "description") val description: String?,

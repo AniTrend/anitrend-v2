@@ -23,17 +23,14 @@
     android:layout_height="match_parent"
     tools:context=".component.screen.SettingsScreen">
 
-    <include layout="@layout/content_main" />
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:hapticFeedbackEnabled="true"
-        android:backgroundTint="@color/primaryColor"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:fabAlignmentMode="end"
-        app:hideOnScroll="true"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior" />
+
+    <co.anitrend.core.android.widget.appbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/AppTheme.Material.BottomAppBar"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -19,15 +19,26 @@ package co.anitrend.domain.media.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.media.repository.MediaRepository
+import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.domain.media.repository.IMediaRepository
 
-abstract class MediaUseCase<State: UiState<*>>(
-    protected val repository: MediaRepository<State>
-) : IUseCase {
-    fun getPagedMedia(query: IGraphPayload) =
-        repository.getMediaPaged(query)
+sealed class MediaUseCase : IUseCase {
 
-    fun getPagedMediaByNetwork(query: IGraphPayload) =
-        repository.getMediaPagedByNetwork(query)
+    abstract class GetDetail<State: UiState<*>>(
+        protected val repository: IMediaRepository.Detail<State>
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Detail) = repository.getMedia(param)
+    }
+
+    abstract class GetPaged<State: UiState<*>>(
+        protected val repository: IMediaRepository.Paged<State>
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Find) = repository.getPaged(param)
+    }
+
+    abstract class GetByNetwork<State: UiState<*>>(
+        protected val repository: IMediaRepository.Network<State>
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Find) = repository.getPaged(param)
+    }
 }

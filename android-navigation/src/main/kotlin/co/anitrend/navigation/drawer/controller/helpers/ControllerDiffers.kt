@@ -27,7 +27,7 @@ internal object NavigationDiffUtil : DiffUtil.ItemCallback<Navigation>() {
     override fun areItemsTheSame(
         oldItem: Navigation,
         newItem: Navigation
-    ) = oldItem.id == newItem.id
+    ) = oldItem == newItem
 
     override fun areContentsTheSame(
         oldItem: Navigation,

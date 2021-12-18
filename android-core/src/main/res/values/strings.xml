@@ -25,4 +25,28 @@
     <string name="app_faq_page_link" translatable="false">https://anitrend.gitbook.io/project/faq</string>
     <string name="app_patreon_page_link" translatable="false">https://www.patreon.com/wax911</string>
     <string name="app_discord_page_link" translatable="false">https://discord.gg/2wzTqnF</string>
+
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_airing_schedule">Airing</string>
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_anime_list">Anime List</string>
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_manga_list">Manga List</string>
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_notifications">Notifications</string>
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_profile">Profile</string>
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_activity">Activity</string>
+    <!-- Shortcut label, this is what appears when you long press on the application icon -->
+    <string name="shortcut_label_search">Search</string>
+
+    <string name="app_controller_heading_missing_param">Missing argument</string>
+    <string name="app_controller_message_missing_param">Looks like no arguments were passed to this screen</string>
+
+
+    <!-- Reusable for filtering on various discover style screens. e.g anime, manga, users, studios, character and staff screens -->
+    <string name="action_filter">Filter</string>
+    <!-- Reusable for setting the list style on various discover style screens. e.g anime, manga, users, studios, character and staff screens -->
+    <string name="action_list_style">List style</string>
 </resources>

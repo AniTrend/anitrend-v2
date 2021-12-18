@@ -1,0 +1,16 @@
+mutation ToggleStaffFavourite($staffId: Int) {
+    ToggleFavourite(staffId: $staffId) {
+        staff {
+            edges {
+                favouriteOrder
+                node {
+                    ... StaffCore
+                }
+                id
+            }
+            pageInfo {
+                ... PageInfo
+            }
+        }
+    }
+}

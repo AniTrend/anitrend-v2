@@ -20,14 +20,14 @@ package co.anitrend.splash.component.screen
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.splash.component.content.SplashContent
 import co.anitrend.splash.databinding.ActivitySplashBinding
 import kotlinx.coroutines.launch
 
-class SplashScreen : AnitrendScreen<ActivitySplashBinding>() {
+class SplashScreen : AniTrendScreen<ActivitySplashBinding>() {
 
     override fun configureActivity() {
         super.configureActivity()

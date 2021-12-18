@@ -1,0 +1,5 @@
+query GetReview($id: Int!) {
+    Review(id: $id) {
+        ... ReviewExtended
+    }
+}

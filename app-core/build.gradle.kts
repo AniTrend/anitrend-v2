@@ -1,5 +1,3 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -17,21 +15,27 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import co.anitrend.buildSrc.Libraries
+
 plugins {
     id("co.anitrend.plugin")
 }
 
-dependencies {
+android {
+    buildFeatures {
+        viewBinding = true
+    }
+}
 
-    /** Material Dialogs */
-    implementation(Libraries.MaterialDialogs.core)
-    implementation(Libraries.MaterialDialogs.lifecycle)
-    implementation(Libraries.MaterialDialogs.bottomsheets)
+dependencies {
+    implementation(Libraries.AndroidX.Browser.browser)
+
+    implementation(Libraries.AniTrend.Emojify.emojify)
 
     implementation(Libraries.Square.OkHttp.logging)
 
+    implementation(Libraries.Google.FlexBox.flexBox)
+
     /** Timber Trees */
     implementation(Libraries.treessence)
-
-    implementation(Libraries.prettyTime)
 }

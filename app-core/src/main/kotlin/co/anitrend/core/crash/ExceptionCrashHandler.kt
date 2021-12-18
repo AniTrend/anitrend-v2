@@ -18,6 +18,7 @@
 package co.anitrend.core.crash
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import co.anitrend.core.BuildConfig
 import co.anitrend.core.crash.contract.IExceptionCrashHandler
@@ -28,12 +29,9 @@ internal class ExceptionCrashHandler(
     private val handler: Thread.UncaughtExceptionHandler?
 ) : IExceptionCrashHandler {
 
-    private fun showCrashActivity(thread: Thread, throwable: Throwable) {
-        Timber.tag(TAG).e(throwable, thread.name)
-        if (BuildConfig.DEBUG) {
-            // TODO: might add an activity to show the crash
-        }
-        handler?.uncaughtException(thread, throwable)
+    private fun handleUncaughtCrashException(thread: Thread, throwable: Throwable) {
+        Timber.i("Caught exception from thread: ${thread.name}")
+        Timber.e(throwable)
     }
 
     /**
@@ -41,19 +39,19 @@ internal class ExceptionCrashHandler(
      * @param throwable Exception that was unhandled
      */
     @SuppressLint("LogNotTimber")
-    override fun onException(thread: Thread, throwable: Throwable) {
+    override fun onException(thread: Thread?, throwable: Throwable?) {
+        if (thread == null) return
+        if (throwable == null) return
         try {
-            showCrashActivity(thread, throwable)
+            handleUncaughtCrashException(thread, throwable)
         } catch (e: Exception) {
             // Timber may not have been initialized, so will log into the android logger
-            Log.w(TAG, "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
-            Log.e(TAG, "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
+            Log.w("ExceptionCrashHandler", "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
+            Log.e("ExceptionCrashHandler", "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
         } finally {
-            //exitProcess(0)
+            // terminate process after intercepting crash
+            handler?.uncaughtException(thread, throwable)
+            exitProcess(0)
         }
-    }
-
-    companion object {
-        private val TAG = ExceptionCrashHandler::class.java.simpleName
     }
 }

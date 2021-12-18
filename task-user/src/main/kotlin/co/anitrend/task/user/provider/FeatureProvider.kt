@@ -20,15 +20,18 @@ package co.anitrend.task.user.provider
 import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.task.user.component.UserAccountSyncWorker
 import co.anitrend.task.user.component.UserFollowToggleWorker
-import co.anitrend.task.user.component.UserSendMessageWorker
 import co.anitrend.task.user.component.UserStatisticSyncWorker
+import co.anitrend.task.user.scheduler.UserAccountScheduler
+import co.anitrend.task.user.scheduler.UserStatisticScheduler
 
 internal class FeatureProvider : UserTaskRouter.Provider {
     override fun accountSyncWorker() = UserAccountSyncWorker::class.java
 
     override fun followToggleWorker() = UserFollowToggleWorker::class.java
 
-    override fun sendMessageWorker() = UserSendMessageWorker::class.java
-
     override fun statisticSyncWorker() = UserStatisticSyncWorker::class.java
+
+    override fun accountSyncScheduler() = UserAccountScheduler(accountSyncWorker())
+
+    override fun statisticSyncScheduler() = UserStatisticScheduler(statisticSyncWorker())
 }

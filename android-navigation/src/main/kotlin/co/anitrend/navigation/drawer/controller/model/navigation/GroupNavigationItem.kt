@@ -22,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.databinding.NavigationGroupItemBinding
@@ -31,7 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class GroupNavigationItem(
     private val entity: Navigation.Group
-) : RecyclerItemBinding<NavigationGroupItemBinding>(entity.id.toLong()) {
+) : RecyclerItemBinding<NavigationGroupItemBinding>(entity.hashCode().toLong()) {
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -47,21 +46,11 @@ class GroupNavigationItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = NavigationGroupItemBinding.bind(view)
         requireBinding().navGroupTitle.setText(entity.titleRes)
-        /*val icon = view.context.getCompatDrawable(entity.icon)
-        requireBinding().navGroupTitle.setCompoundDrawablesRelative(
-            icon, null, null, null
-        )
-        requireBinding().navGroupTitle.setOnClickListener {
-            stateFlow.value = DefaultClickableItem(
-                data = entity,
-                view = it
-            )
-        }*/
     }
 
     /**
@@ -78,6 +67,6 @@ class GroupNavigationItem(
             viewGroup: ViewGroup
         ) = NavigationGroupItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

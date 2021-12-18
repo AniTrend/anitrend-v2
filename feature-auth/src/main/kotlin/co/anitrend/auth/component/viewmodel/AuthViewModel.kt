@@ -62,7 +62,9 @@ class AuthViewModel(
                 message = uri.getQueryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY)
                     ?: context.getString(R.string.auth_error_default_message)
             )
-            Timber.tag(moduleTag).w(it)
+            Timber.w(it)
+        }.onSuccess {
+            state.authenticationFlow.value = Authentication.Success
         }
     }
 
@@ -75,9 +77,5 @@ class AuthViewModel(
     override fun onCleared() {
         state.onCleared()
         super.onCleared()
-    }
-
-    companion object {
-        private val moduleTag = AuthViewModel::class.java.simpleName
     }
 }

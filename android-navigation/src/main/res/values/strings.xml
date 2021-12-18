@@ -16,38 +16,63 @@
   -->
 
 <resources>
-    <!-- Navigation -->
+    <!-- Navigation drawer entry under the General category -->
     <string name="navigation_home">Home</string>
+    <!-- Navigation drawer entry under the General category -->
     <string name="navigation_social">Social</string>
+    <!-- Navigation drawer entry under the General category -->
     <string name="navigation_discover">Discover</string>
+    <!-- Navigation drawer entry under the General category -->
     <string name="navigation_review">Reviews</string>
+    <!-- Navigation drawer entry under the General category -->
     <string name="navigation_suggestions">Suggestions</string>
 
-    <!-- Manage -->
+    <!-- Navigation drawer entry under the Manage category -->
     <string name="navigation_anime_list">Anime List</string>
+    <!-- Navigation drawer entry under the Manage category -->
     <string name="navigation_manga_list">Manga List</string>
 
-    <!-- Catalogs -->
+    <!-- Navigation drawer entry under the Catalogs category -->
     <string name="navigation_news">News</string>
+    <!-- Navigation drawer entry under the Catalogs category -->
     <string name="navigation_forums">Forums</string>
+    <!-- Navigation drawer entry under the Catalogs category -->
     <string name="navigation_episodes">Episodes</string>
 
-    <!-- Support -->
-    <string name="navigation_donate">Donate</string>
+    <!-- Navigation item for opening support/donation page -->
+    <string name="navigation_support">Support</string>
+    <!-- Navigation item for opening discord page -->
     <string name="navigation_discord">Discord</string>
+    <!-- Navigation item for opening far page -->
     <string name="navigation_faq">FAQ</string>
 
+    <!-- Navigation category for navigation items that fall under the general category -->
     <string name="navigation_header_general">General</string>
+    <!-- Navigation category for navigation items that fall under the manage category, e.c.t anime list, manga list e.t.c -->
     <string name="navigation_header_manage">Manage</string>
+    <!-- Navigation category for navigation items that fall under the catalogs category -->
     <string name="navigation_header_catalogs">Catalogs</string>
+    <!-- Navigation category for navigation items that fall under the support category -->
     <string name="navigation_header_support">Support</string>
 
+
+    <!-- Label for adding a new account, this is for authentication purposes. We might want to support multiple accounts -->
     <string name="label_account_add_new">Add new account</string>
+    <!-- Label for using the app without authentication -->
     <string name="label_account_anonymous">Anonymous</string>
+    <!-- Label for signing out -->
     <string name="label_account_sign_out">Sign out</string>
 
 
+    <!-- Category for the current active account, e.g. user has multiple AL login accounts and this is to show which one is being used -->
     <string name="account_header_active">Active account</string>
+    <!-- Category for inactive accounts -->
     <string name="account_header_inactive">Inactive accounts</string>
-    <string name="account_header_other">Other options</string>
+    <!-- Category for other accounts accounts which may not be related to AL -->
+    <string name="account_header_other">Other accounts</string>
+
+    <!-- Menu action on the app bar to open notifications screen -->
+    <string name="action_notifications">Notifications</string>
+    <!-- Menu action on the app bar to open app updates screen -->
+    <string name="action_updates">Updates</string>
 </resources>

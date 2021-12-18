@@ -18,18 +18,26 @@
 package co.anitrend.onboarding.component.pager
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import co.anitrend.arch.ui.pager.SupportPageAdapter
-import co.anitrend.onboarding.model.OnBoarding
-import co.anitrend.onboarding.component.content.OnBoardingContent
+import co.anitrend.core.ui.fragmentByTagOrNew
+import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.navigation.OnBoardingRouter
+import co.anitrend.navigation.extensions.asBundle
 
 class OnBoardingPageAdapter(
-    private val onBoardingPages: List<OnBoarding>,
+    private val pages: List<OnBoardingRouter.Param>,
+    private val fragmentActivity: FragmentActivity,
     fragmentManager: FragmentManager
-) : SupportPageAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : SupportPageAdapter(fragmentManager) {
 
     init {
-        titles.addAll(onBoardingPages.map { it.title.toString() })
+        titles.addAll(
+            pages.map {
+                it.title.toString()
+            }
+        )
     }
 
     /**
@@ -38,8 +46,11 @@ class OnBoardingPageAdapter(
      * @param position
      */
     override fun getItem(position: Int): Fragment {
-        return OnBoardingContent.newInstance(
-            onBoardingPages[position]
+        val fragmentItem = FragmentItem(
+            fragment = OnBoardingRouter.forFragment(),
+            parameter = pages[position].asBundle()
         )
+
+        return fragmentItem.fragmentByTagOrNew(fragmentActivity)
     }
 }

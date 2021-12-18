@@ -1,5 +1,5 @@
 {
-  "name": "AniList GraphQL Schema",
+  "name": "AniTrend GraphQL Schema",
   "schemaPath": "schema.graphql",
   "extensions": {
     "endpoints": {

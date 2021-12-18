@@ -18,11 +18,12 @@
 package co.anitrend.data.media.model
 
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.arch.CountryCode
-import co.anitrend.data.arch.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.CountryCode
+import co.anitrend.data.common.model.date.FuzzyDateModel
+import co.anitrend.data.link.model.LinkModel
 import co.anitrend.data.media.model.contract.IMediaModel
 import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.rank.model.RankModel
 import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.domain.media.enums.*
 import kotlinx.serialization.SerialName
@@ -37,6 +38,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal sealed class MediaModel : IMediaModel {
 
+    abstract val rankings: List<RankModel>
+    abstract val externalLinks: List<LinkModel>
+
+    abstract val trailer: Trailer?
     abstract val title: Title?
     abstract val coverImage: CoverImage?
     abstract val tags: List<TagModel.Extended>?
@@ -45,6 +50,7 @@ internal sealed class MediaModel : IMediaModel {
     abstract val isLocked: Boolean
     abstract val isLicensed: Boolean
     abstract val isRecommendationBlocked: Boolean
+    abstract val isFavouriteBlocked: Boolean
 
     /** [MediaCover](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
      *
@@ -61,39 +67,6 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("large") val large: String? = null,
         @SerialName("medium") val medium: String? = null
     )
-
-    /** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
-     * An external link to another site related to the media
-     */
-    @Serializable
-    internal data class ExternalLink(
-        @SerialName("site") val site: String,
-        @SerialName("url") val url: String,
-        @SerialName("id") override val id: Long
-    ) : Identity
-
-    /**
-     * Genre.graphql as a single element
-     */
-    @Serializable
-    internal data class Genre(
-        @SerialName("genre") val genre: String
-    )
-
-    /** [MediaRank](https://anilist.github.io/ApiV2-GraphQL-Docs/mediarank.doc.html)
-     * The ranking of a media in a particular time span and format compared to other media
-     */
-    @Serializable
-    internal data class Rank(
-        @SerialName("allTime") val allTime: Boolean? = null,
-        @SerialName("context") val context: String,
-        @SerialName("format") val format: MediaFormat,
-        @SerialName("rank") val rank: Int,
-        @SerialName("season") val season: MediaSeason? = null,
-        @SerialName("type") val type: MediaRankType,
-        @SerialName("year") val year: Int? = null,
-        @SerialName("id") override val id: Long
-    ) : Identity
 
     /** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
      * The official titles of the media in various languages
@@ -118,6 +91,9 @@ internal sealed class MediaModel : IMediaModel {
 
     @Serializable
     internal data class Media(
+        @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
+        @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
+        @SerialName("trailer") override val trailer: Trailer? = null,
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
@@ -150,6 +126,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("volumes") override val volumes: Int?,
         @SerialName("isAdult") override val isAdult: Boolean?,
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long
@@ -158,6 +135,9 @@ internal sealed class MediaModel : IMediaModel {
     @Serializable
     internal data class Core(
         @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core?,
+        @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
+        @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
+        @SerialName("trailer") override val trailer: Trailer? = null,
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
@@ -190,6 +170,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("volumes") override val volumes: Int?,
         @SerialName("isAdult") override val isAdult: Boolean?,
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long
@@ -198,9 +179,9 @@ internal sealed class MediaModel : IMediaModel {
     @Serializable
     internal data class Extended(
         @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core?,
-        @SerialName("trailer") val trailer: Trailer? = null,
-        @SerialName("rankings") val rankings: List<Rank> = emptyList(),
-        @SerialName("externalLinks") val externalLinks: List<ExternalLink> = emptyList(),
+        @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
+        @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
+        @SerialName("trailer") override val trailer: Trailer? = null,
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
@@ -233,6 +214,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("volumes") override val volumes: Int?,
         @SerialName("isAdult") override val isAdult: Boolean?,
         @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long?,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core?,
         @SerialName("id") override val id: Long

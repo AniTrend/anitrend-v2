@@ -18,7 +18,7 @@
 package co.anitrend.component.action
 
 import android.view.View
-import co.anitrend.navigation.drawer.action.OnStateChangedAction
+import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -52,12 +52,10 @@ internal class ChangeSettingsMenuStateAction(
 class ShowHideFabStateAction(
     private val fab: FloatingActionButton
 ) : OnStateChangedAction {
-
     override fun onStateChanged(sheet: View, newState: Int) {
-        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+        if (newState == BottomSheetBehavior.STATE_HIDDEN)
             fab.show()
-        } else {
+        else
             fab.hide()
-        }
     }
 }

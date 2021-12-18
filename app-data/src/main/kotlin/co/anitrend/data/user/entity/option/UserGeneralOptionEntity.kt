@@ -18,7 +18,7 @@
 package co.anitrend.data.user.entity.option
 
 import androidx.room.*
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.enums.UserTitleLanguage

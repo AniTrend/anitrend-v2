@@ -1,0 +1,18 @@
+fragment FeedText on TextActivity {
+    createdAt
+    id
+    isLiked
+    isLocked
+    isSubscribed
+    likeCount
+    likes {
+        ... UserCore
+    }
+    replyCount
+    siteUrl
+    text
+    type
+    user {
+        ... UserCore
+    }
+}

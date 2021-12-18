@@ -20,11 +20,11 @@ package co.anitrend.data.airing.datasource.local
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.android.source.AbstractLocalSource
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class AiringLocalSource : ILocalSource<AiringScheduleEntity> {
+internal abstract class AiringLocalSource : AbstractLocalSource<AiringScheduleEntity>() {
 
     @Query("""
         select count(id) from airing_schedule

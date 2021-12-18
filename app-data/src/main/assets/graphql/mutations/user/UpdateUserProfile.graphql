@@ -1,0 +1,33 @@
+mutation UpdateUserProfile(
+    $about: String,
+    $airingNotifications: Boolean,
+    $animeListOptions: MediaListOptionsInput,
+    $displayAdultContent: Boolean,
+    $donatorBadge: String,
+    $mangaListOptions: MediaListOptionsInput,
+    $notificationOptions: [NotificationOptionInput],
+    $profileColor: String,
+    $rowOrder: String,
+    $scoreFormat: ScoreFormat,
+    $timezone: String,
+    $titleLanguage: UserTitleLanguage,
+    $staffNameLanguage: UserStaffNameLanguage
+) {
+    UpdateUser(
+        about: $about,
+        airingNotifications: $airingNotifications,
+        animeListOptions: $animeListOptions,
+        displayAdultContent: $displayAdultContent,
+        donatorBadge: $donatorBadge,
+        mangaListOptions: $mangaListOptions,
+        notificationOptions: $notificationOptions,
+        profileColor: $profileColor,
+        rowOrder: $rowOrder,
+        scoreFormat: $scoreFormat,
+        timezone: $timezone,
+        titleLanguage: $titleLanguage,
+        staffNameLanguage: $staffNameLanguage
+    ) {
+        ... UserExtended
+    }
+}

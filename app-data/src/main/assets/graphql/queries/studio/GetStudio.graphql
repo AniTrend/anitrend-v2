@@ -1,0 +1,5 @@
+query GetStudio($id: Int) {
+    Studio(id: $id) {
+        ... StudioCore
+    }
+}

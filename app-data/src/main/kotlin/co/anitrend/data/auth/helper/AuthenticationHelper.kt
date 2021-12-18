@@ -17,9 +17,14 @@
 
 package co.anitrend.data.auth.helper
 
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
+import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.account.model.AccountParam
 import okhttp3.Request
 import timber.log.Timber
 
@@ -27,44 +32,50 @@ import timber.log.Timber
  * Provides an api to handle authentication based processes
  */
 internal class AuthenticationHelper(
-    private val settings: IAuthenticationSettings,
-    private val localSource: AuthLocalSource
-) {
-
-    private val moduleTag = javaClass.simpleName
+    private val authSettings: IAuthenticationSettings,
+    private val userSettings: IUserSettings,
+    private val localSource: AuthLocalSource,
+    private val mediaListLocalSource: MediaListLocalSource,
+    private val cacheLocalSource: CacheLocalSource,
+) : IAuthenticationHelper {
 
     /**
-     * Handle invalid token state by either renewing it or un-authenticates
-     * the user locally if the token cannot be refreshed
+     * Invalidates any properties related to authentication state
      */
-    fun onInvalidToken() {
-        with (settings) {
-            localSource.clearByUserId(authenticatedUserId.value)
-            authenticatedUserId.value = INVALID_USER_ID
-            isAuthenticated.value = false
-        }
+    override suspend fun invalidateAuthenticationState() {
+        val setting = authSettings.authenticatedUserId
+        val param = AccountParam.SignOut(setting.value)
+
+        userSettings.invalidateSettings()
+        authSettings.invalidateAuthenticationSettings()
+
+        localSource.clearByUserId(param.userId)
+        mediaListLocalSource.clearByUserId(param.userId)
+        cacheLocalSource.clearByType(CacheRequest.MEDIA_LIST)
+        cacheLocalSource.clearByType(CacheRequest.USER)
     }
 
     /**
      * Facade to provide information on authentication status of the application,
      * on demand
      */
-    val isAuthenticated: Boolean
-        get() = settings.isAuthenticated.value
+    override val isAuthenticated: Boolean
+        get() = authSettings.isAuthenticated.value
 
-    operator fun invoke(requestBuilder: Request.Builder) {
+    /**
+     * Injects authorization properties into the ongoing request
+     *
+     * @param requestBuilder The current ongoing request builder
+     */
+    override operator fun invoke(requestBuilder: Request.Builder) {
         val entity = localSource.byUserId(
-            settings.authenticatedUserId.value
+            authSettings.authenticatedUserId.value
         )
         if (entity != null)
-            requestBuilder.addHeader(AUTHORIZATION, entity.accessToken)
+            requestBuilder.addHeader(IAuthenticationHelper.AUTHORIZATION, entity.accessToken)
         else
-            Timber.tag(moduleTag).w(
+            Timber.w(
                 "Settings indicates that user is authenticated, but no authentication token for the user can be found"
             )
-    }
-
-    companion object {
-        const val AUTHORIZATION = "Authorization"
     }
 }

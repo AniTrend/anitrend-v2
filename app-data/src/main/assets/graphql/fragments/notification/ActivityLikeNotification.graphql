@@ -1,0 +1,10 @@
+fragment ActivityLikeNotification on ActivityLikeNotification {
+    id
+    type
+    createdAt
+    context
+    activityId
+    user {
+        ... UserCore
+    }
+}

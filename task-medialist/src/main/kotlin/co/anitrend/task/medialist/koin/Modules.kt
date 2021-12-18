@@ -19,31 +19,58 @@ package co.anitrend.task.medialist.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MediaListTaskRouter
-import co.anitrend.task.medialist.component.MediaListCollectionWorker
-import co.anitrend.task.medialist.component.MediaListMutationWorker
-import co.anitrend.task.medialist.component.MediaListSyncWorker
+import co.anitrend.task.medialist.component.worker.MediaListDeleteCustomListWorker
+import co.anitrend.task.medialist.component.worker.MediaListDeleteEntryWorker
+import co.anitrend.task.medialist.component.worker.MediaListSaveEntriesWorker
+import co.anitrend.task.medialist.component.worker.MediaListSaveEntryWorker
+import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
+import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker
 import co.anitrend.task.medialist.provider.FeatureProvider
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
-
 private val workManagerModule = module {
-    worker {
-        MediaListCollectionWorker(
-            context = get(),
-            parameters = get()
+    worker { scope ->
+        MediaListSaveEntryWorker(
+            context = androidContext(),
+            parameters = scope.get(),
+            interactor = get()
         )
     }
-    worker {
-        MediaListMutationWorker(
-            context = get(),
-            parameters = get()
+    worker { scope ->
+        MediaListSaveEntriesWorker(
+            context = androidContext(),
+            parameters = scope.get(),
+            interactor = get()
         )
     }
-    worker {
-        MediaListSyncWorker(
-            context = get(),
-            parameters = get(),
+    worker { scope ->
+        MediaListDeleteEntryWorker(
+            context = androidContext(),
+            parameters = scope.get(),
+            interactor = get()
+        )
+    }
+    worker { scope ->
+        MediaListDeleteCustomListWorker(
+            context = androidContext(),
+            parameters = scope.get(),
+            interactor = get()
+        )
+    }
+    worker { scope ->
+        MediaListAnimeSyncWorker(
+            context = androidContext(),
+            parameters = scope.get(),
+            interactor = get(),
+            settings = get()
+        )
+    }
+    worker { scope ->
+        MediaListMangaSyncWorker(
+            context = androidContext(),
+            parameters = scope.get(),
             interactor = get(),
             settings = get()
         )

@@ -1,0 +1,22 @@
+fragment FeedMedia on ListActivity {
+    createdAt
+    id
+    isLiked
+    isLocked
+    isSubscribed
+    likeCount
+    likes {
+        ... UserCore
+    }
+    media {
+        ... MediaCore
+    }
+    progress
+    replyCount
+    siteUrl
+    status
+    type
+    user {
+        ... UserCore
+    }
+}

@@ -27,7 +27,7 @@ interface IMediaList : IEntity {
     val userId: Long
     val mediaId: Long
     val score: Float
-    val status: MediaListStatus?
+    val status: MediaListStatus
     val progress: MediaListProgress
     val privacy: MediaListPrivacy
 

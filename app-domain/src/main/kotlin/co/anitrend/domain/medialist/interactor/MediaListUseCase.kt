@@ -19,36 +19,64 @@ package co.anitrend.domain.medialist.interactor
 
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.medialist.repository.MediaListRepository
+import co.anitrend.domain.medialist.model.MediaListParam
+import co.anitrend.domain.medialist.repository.IMediaListRepository
 
 sealed class MediaListUseCase : IUseCase {
 
-    abstract class GetPaged<State: UiState<*>, Query: IGraphPayload>(
-        protected val repository: MediaListRepository.Paged<State>
+    abstract class Sync<State: UiState<*>>(
+        protected val repository: IMediaListRepository.Sync<State>
     ) : MediaListUseCase() {
-        operator fun invoke(query: Query): State =
-            repository.getMediaListPaged(query)
+        operator fun invoke(param: MediaListParam.Collection): State =
+            repository.sync(param)
     }
 
-    abstract class GetCollection<State: UiState<*>, Query: IGraphPayload>(
-        protected val repository: MediaListRepository.Collection<State>
+    abstract class GetEntry<State: UiState<*>>(
+        protected val repository: IMediaListRepository.Entry<State>
     ) : MediaListUseCase() {
-        operator fun invoke(query: Query): State =
-            repository.getMediaListCollection(query)
+        operator fun invoke(param: MediaListParam.Entry): State =
+            repository.getEntry(param)
     }
 
-    abstract class Save<State: UiState<*>, Mutation: IGraphPayload>(
-        protected val repository: MediaListRepository.Save<State>
+    abstract class GetPaged<State: UiState<*>>(
+        protected val repository: IMediaListRepository.Paged<State>
     ) : MediaListUseCase() {
-        operator fun invoke(mutation: Mutation): State =
-            repository.saveMediaList(mutation)
+        operator fun invoke(param: MediaListParam.Paged): State =
+            repository.getPaged(param)
     }
 
-    abstract class Delete<State: UiState<*>, Mutation: IGraphPayload>(
-        protected val repository: MediaListRepository.Delete<State>
+    abstract class GetCollection<State: UiState<*>>(
+        protected val repository: IMediaListRepository.Collection<State>
     ) : MediaListUseCase() {
-        operator fun invoke(mutation: Mutation): State =
-            repository.deleteMediaList(mutation)
+        operator fun invoke(param: MediaListParam.Collection): State =
+            repository.getCollection(param)
+    }
+
+    abstract class SaveEntry<State: UiState<*>>(
+        protected val repository: IMediaListRepository.SaveEntry<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.SaveEntry): State =
+            repository.saveEntry(param)
+    }
+
+    abstract class SaveEntries<State: UiState<*>>(
+        protected val repository: IMediaListRepository.SaveEntries<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.SaveEntries): State =
+            repository.saveEntries(param)
+    }
+
+    abstract class DeleteCustomList<State: UiState<*>>(
+        protected val repository: IMediaListRepository.DeleteCustomList<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.DeleteCustomList): State =
+            repository.deleteCustomList(param)
+    }
+
+    abstract class DeleteEntry<State: UiState<*>>(
+        protected val repository: IMediaListRepository.DeleteEntry<State>
+    ) : MediaListUseCase() {
+        operator fun invoke(param: MediaListParam.DeleteEntry): State =
+            repository.deleteEntry(param)
     }
 }

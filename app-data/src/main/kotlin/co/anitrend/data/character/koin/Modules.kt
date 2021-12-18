@@ -17,10 +17,25 @@
 
 package co.anitrend.data.character.koin
 
+import co.anitrend.data.character.converter.CharacterConverter
+import co.anitrend.data.character.converter.CharacterModelConverter
+import co.anitrend.data.character.converter.CharacterEntityConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
 
+}
+
+private val converterModule = module {
+    factory {
+        CharacterConverter()
+    }
+    factory {
+        CharacterModelConverter()
+    }
+    factory {
+        CharacterEntityConverter()
+    }
 }
 
 private val mapperModule = module {
@@ -37,6 +52,7 @@ private val repositoryModule = module {
 
 internal val characterModules = listOf(
     sourceModule,
+    converterModule,
     mapperModule,
     useCaseModule,
     repositoryModule

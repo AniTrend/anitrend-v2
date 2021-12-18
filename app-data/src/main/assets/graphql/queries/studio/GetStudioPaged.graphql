@@ -1,0 +1,27 @@
+query GetStudioPaged(
+    $page: Int,
+    $perPage: Int,
+    $id_in: [Int],
+    $id_not: Int,
+    $id_not_in: [Int],
+    $search: String,
+    $sort: [StudioSort]
+) {
+    Page(
+        page: $page,
+        perPage: $perPage
+    ) {
+        pageInfo {
+            ... PageInfo
+        }
+        studios(
+            id_in: $id_in
+            id_not: $id_not,
+            id_not_in: $id_not_in,
+            search: $search,
+            sort: $sort
+        ) {
+            ... StudioCore
+        }
+    }
+}

@@ -18,11 +18,10 @@
 package co.anitrend.account.component.screen
 
 import android.os.Bundle
-import co.anitrend.account.R
 import co.anitrend.account.databinding.AboutScreenBinding
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 
-class AccountScreen : AnitrendScreen<AboutScreenBinding>() {
+class AccountScreen : AniTrendScreen<AboutScreenBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during

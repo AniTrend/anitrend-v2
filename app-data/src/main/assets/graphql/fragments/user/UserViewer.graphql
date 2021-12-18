@@ -1,0 +1,14 @@
+fragment UserViewer on User {
+    ... UserExtended
+    options {
+        airingNotifications
+        displayAdultContent
+        notificationOptions {
+            enabled
+            type
+        }
+        timezone
+    }
+    isBlocked
+    unreadNotificationCount
+}

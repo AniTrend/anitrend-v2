@@ -17,17 +17,22 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.common.isDataModule
-import co.anitrend.buildSrc.common.isFeatureModule
-import co.anitrend.buildSrc.plugins.extensions.androidExtensionsExtension
-import co.anitrend.buildSrc.plugins.extensions.libraryExtension
-import com.android.build.gradle.internal.dsl.BuildType
+import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.extensions.isDataModule
+import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.isAndroidCoreModule
+import co.anitrend.buildSrc.extensions.matchesDataModule
+import co.anitrend.buildSrc.extensions.matchesFeatureModule
+import co.anitrend.buildSrc.extensions.libraryExtension
+import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.api.dsl.LibraryBuildType
+import com.android.build.api.dsl.LibraryDefaultConfig
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import java.util.*
 
-private fun Properties.applyToBuildConfigForBuild(buildType: BuildType) {
+private fun Properties.applyToBuildConfigFor(buildType: LibraryBuildType) {
     forEach { propEntry ->
         val key = propEntry.key as String
         val value = propEntry.value as String
@@ -36,16 +41,29 @@ private fun Properties.applyToBuildConfigForBuild(buildType: BuildType) {
     }
 }
 
-private fun NamedDomainObjectContainer<BuildType>.applyConfiguration(project: Project) {
+private fun NamedDomainObjectContainer<LibraryBuildType>.applyVersionProperties() {
+    asMap.forEach { buildTypeEntry ->
+        println("Adding version build configuration fields -> ${buildTypeEntry.key}")
+        val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
+    }
+}
+
+private fun NamedDomainObjectContainer<LibraryBuildType>.applyConfigurationProperties(project: Project) {
     asMap.forEach { buildTypeEntry ->
         println("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
+
+        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
 
         val secretsFile = project.file(".config/secrets.properties")
         if (secretsFile.exists())
             secretsFile.inputStream().use { fis ->
                 Properties().run {
-                    load(fis); applyToBuildConfigForBuild(buildType)
+                    load(fis); applyToBuildConfigFor(buildType)
                 }
             }
 
@@ -53,13 +71,13 @@ private fun NamedDomainObjectContainer<BuildType>.applyConfiguration(project: Pr
         if (configurationFile.exists())
             configurationFile.inputStream().use { fis ->
                 Properties().run {
-                    load(fis); applyToBuildConfigForBuild(buildType)
+                    load(fis); applyToBuildConfigFor(buildType)
                 }
             }
     }
 }
 
-private fun DefaultConfig.applyCompilerOptions(project: Project) {
+private fun LibraryDefaultConfig.applyRoomCompilerOptions(project: Project) {
     println("Adding java compiler options for room on module-> ${project.path}")
     javaCompileOptions {
         annotationProcessorOptions {
@@ -74,20 +92,47 @@ private fun DefaultConfig.applyCompilerOptions(project: Project) {
     }
 }
 
-internal fun Project.configureOptions() {
-    if (isDataModule()) {
-        libraryExtension().run {
-            defaultConfig {
-                applyCompilerOptions(this@configureOptions)
+internal fun Project.createSigningConfiguration(extension: BaseExtension) {
+    var properties: Properties? = null
+    val keyStoreFile = project.file(".config/keystore.properties")
+    if (keyStoreFile.exists())
+        keyStoreFile.inputStream().use { fis ->
+            Properties().run {
+                load(fis);
+                properties = this
             }
+        }
+    else println("${keyStoreFile.absolutePath} could not be found, automated releases may not be singed")
+    properties?.also {
+        extension.signingConfigs {
+            create("release") {
+                storeFile(file(it["STORE_FILE"] as String))
+                storePassword(it["STORE_PASSWORD"] as String)
+                keyAlias(it["STORE_KEY_ALIAS"] as String)
+                keyPassword(it["STORE_KEY_PASSWORD"] as String)
+            }
+        }
+    }
+}
+
+internal fun Project.configureOptions() {
+    if (isDataModule() || matchesDataModule()) {
+        libraryExtension().run {
+            if (isDataModule())
+                defaultConfig {
+                    applyRoomCompilerOptions(this@configureOptions)
+                }
             buildTypes {
-                applyConfiguration(this@configureOptions)
+                applyConfigurationProperties(this@configureOptions)
             }
         }
     }
 
-    if (!isFeatureModule()) return
-
-    println("Applying extension options for feature module -> ${project.path}")
-    androidExtensionsExtension().isExperimental = true
+    if (isCoreModule() || isAndroidCoreModule()) {
+        libraryExtension().run {
+            buildTypes {
+                applyVersionProperties()
+            }
+        }
+    }
 }

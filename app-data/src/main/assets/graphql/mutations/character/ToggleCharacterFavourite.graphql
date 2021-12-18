@@ -1,0 +1,16 @@
+mutation ToggleCharacterFavourite($characterId: Int) {
+    ToggleFavourite(characterId: $characterId) {
+        characters {
+            edges {
+                favouriteOrder
+                node {
+                    ... CharacterCore
+                }
+                id
+            }
+            pageInfo {
+                ... PageInfo
+            }
+        }
+    }
+}

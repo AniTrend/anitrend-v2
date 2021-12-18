@@ -17,10 +17,11 @@
 
 package co.anitrend.data.character.model.remote.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
+import co.anitrend.data.media.model.MediaModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,8 +29,23 @@ import kotlinx.serialization.Serializable
  * Character Connection
  */
 @Serializable
-internal data class CharacterConnection(
-    @SerialName("edges") override val edges: List<CharacterEdge>?,
-    @SerialName("nodes") override val nodes: List<CharacterModel.Core>?,
-    @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<CharacterEdge, CharacterModel>
+internal sealed class CharacterConnection : IEntityConnection {
+
+    @Serializable
+    data class Favourite(
+        @SerialName("edges") override val edges: List<CharacterEdge.Favourite>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : CharacterConnection(), IEntityConnection.IEdge<CharacterEdge>
+
+    @Serializable
+    data class Media(
+        @SerialName("nodes") override val edges: List<CharacterEdge.Media>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : CharacterConnection(), IEntityConnection.IEdge<CharacterEdge>
+
+    @Serializable
+    data class Staff(
+        @SerialName("edges") override val edges: List<CharacterEdge.Staff>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : CharacterConnection(), IEntityConnection.IEdge<CharacterEdge>
+}

@@ -17,3 +17,29 @@
 
 package co.anitrend.data.review
 
+import androidx.paging.PagedList
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.review.entity.ReviewEntity
+import co.anitrend.data.review.model.container.ReviewContainerModel
+import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.interactor.ReviewUseCase
+import co.anitrend.domain.review.repository.IReviewRepository
+
+internal typealias ReviewEntryController =  GraphQLController<ReviewContainerModel.Entry, ReviewEntity>
+internal typealias ReviewDeleteController =  GraphQLController<ReviewContainerModel.DeletedEntry, Boolean>
+internal typealias ReviewSaveController =  GraphQLController<ReviewContainerModel.SavedEntry, ReviewEntity>
+internal typealias ReviewRateController =  GraphQLController<ReviewContainerModel.RatedEntry, ReviewEntity>
+internal typealias ReviewPagedController =  GraphQLController<ReviewContainerModel.Paged, List<ReviewEntity>>
+
+internal typealias ReviewEntryRepository = IReviewRepository.Entry<DataState<Review>>
+internal typealias ReviewDeleteRepository = IReviewRepository.Delete<DataState<Boolean>>
+internal typealias ReviewSaveRepository = IReviewRepository.Save<DataState<Boolean>>
+internal typealias ReviewRateRepository = IReviewRepository.Rate<DataState<Boolean>>
+internal typealias ReviewPagedRepository = IReviewRepository.Paged<DataState<PagedList<Review>>>
+
+typealias GetReviewInteractor = ReviewUseCase.GetEntry<DataState<Review>>
+typealias DeleteReviewInteractor = ReviewUseCase.DeleteEntry<DataState<Boolean>>
+typealias SaveReviewInteractor = ReviewUseCase.SaveEntry<DataState<Boolean>>
+typealias RateReviewInteractor = ReviewUseCase.RateEntry<DataState<Boolean>>
+typealias GetReviewPagedInteractor = ReviewUseCase.GetPaged<DataState<PagedList<Review>>>

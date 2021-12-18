@@ -29,13 +29,24 @@ import co.anitrend.core.android.binding.IBindingView
 import kotlinx.coroutines.flow.MutableStateFlow
 
 abstract class RecyclerItemBinding<B : ViewBinding>(
-    override val id: Long,
-    override val supportsSelectionMode: Boolean = false
+    override val id: Long
 ) : IRecyclerItem, IBindingView<B> {
 
     override var binding: B? = null
 
-    override val decorator = object : ISelectionDecorator { }
+    /**
+     * Decorator that can be used to style this item when it is selected or unselected
+     */
+    override val decorator: ISelectionDecorator =
+        object : ISelectionDecorator {
+            // uses the default implementation of decorator
+        }
+
+    /**
+     * If selection mode can be used, this will allow automatic styling of elements based
+     * on selection state when the view item/s are drawn
+     */
+    override val supportsSelectionMode: Boolean = false
 
     /**
      * Called when the view needs to be recycled for reuse, clear any held references

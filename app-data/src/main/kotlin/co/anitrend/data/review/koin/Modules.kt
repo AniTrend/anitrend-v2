@@ -17,27 +17,200 @@
 
 package co.anitrend.data.review.koin
 
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
+import co.anitrend.data.medialist.converter.MediaListModelConverter
+import co.anitrend.data.review.*
+import co.anitrend.data.review.ReviewDeleteRepository
+import co.anitrend.data.review.ReviewPagedRepository
+import co.anitrend.data.review.ReviewRateRepository
+import co.anitrend.data.review.ReviewSaveRepository
+import co.anitrend.data.review.cache.ReviewCache
+import co.anitrend.data.review.converter.ReviewEntityViewConverter
+import co.anitrend.data.review.converter.ReviewModelConverter
+import co.anitrend.data.review.entity.filter.ReviewQueryFilter
+import co.anitrend.data.review.mapper.ReviewMapper
+import co.anitrend.data.review.repository.ReviewRepository
+import co.anitrend.data.review.source.ReviewSourceImpl
+import co.anitrend.data.review.source.contract.ReviewSource
+import co.anitrend.data.review.usecase.ReviewInteractor
 import org.koin.dsl.module
 
 private val sourceModule = module {
+    factory<ReviewSource.Entry> {
+        ReviewSourceImpl.Entry(
+            remoteSource = graphApi(),
+            localSource = store().reviewDao(),
+            controller = graphQLController(
+                mapper = get<ReviewMapper.Entry>()
+            ),
+            converter = get(),
+            filter = ReviewQueryFilter.Entry(),
+            clearDataHelper = get(),
+            cachePolicy = get<ReviewCache>(),
+            dispatcher = get(),
+        )
+    }
+    factory<ReviewSource.Save> {
+        ReviewSourceImpl.Save(
+            remoteSource = graphApi(),
+            controller = graphQLController(
+                mapper = get<ReviewMapper.Save>()
+            ),
+            dispatcher = get(),
+        )
+    }
+    factory<ReviewSource.Delete> {
+        ReviewSourceImpl.Delete(
+            remoteSource = graphApi(),
+            localSource = store().reviewDao(),
+            controller = graphQLController(
+                mapper = get<ReviewMapper.Delete>()
+            ),
+            clearDataHelper = get(),
+            dispatcher = get(),
+        )
+    }
+    factory<ReviewSource.Rate> {
+        ReviewSourceImpl.Rate(
+            remoteSource = graphApi(),
+            controller = graphQLController(
+                mapper = get<ReviewMapper.Rate>()
+            ),
+            dispatcher = get(),
+        )
+    }
+    factory<ReviewSource.Paged> {
+        ReviewSourceImpl.Paged(
+            remoteSource = graphApi(),
+            localSource = store().reviewDao(),
+            controller = graphQLController(
+                mapper = get<ReviewMapper.Paged>()
+            ),
+            filter = ReviewQueryFilter.Paged(),
+            converter = get(),
+            clearDataHelper = get(),
+            dispatcher = get(),
+        )
+    }
+}
 
+private val cacheModule = module {
+    factory {
+        ReviewCache(
+            localSource = store().cacheDao()
+        )
+    }
 }
 
 private val mapperModule = module {
+    factory {
+        ReviewMapper.Entry(
+            mediaMapper = get(),
+            localSource = store().reviewDao(),
+            converter = get()
+        )
+    }
+    factory {
+        ReviewMapper.Delete(
+            localSource = store().reviewDao(),
+            converter = get()
+        )
+    }
+    factory {
+        ReviewMapper.Save(
+            localSource = store().reviewDao(),
+            converter = get()
+        )
+    }
+    factory {
+        ReviewMapper.Rate(
+            localSource = store().reviewDao(),
+            converter = get()
+        )
+    }
+    factory {
+        ReviewMapper.Paged(
+            mediaMapper = get(),
+            userMapper = get(),
+            localSource = store().reviewDao(),
+            converter = get()
+        )
+    }
+}
 
+private val converterModule = module {
+    factory {
+        ReviewModelConverter()
+    }
+    factory {
+        ReviewEntityViewConverter()
+    }
 }
 
 private val useCaseModule = module {
-
+    factory<GetReviewInteractor> {
+        ReviewInteractor.Entry(
+            repository = get()
+        )
+    }
+    factory<DeleteReviewInteractor> {
+        ReviewInteractor.Delete(
+            repository = get()
+        )
+    }
+    factory<SaveReviewInteractor> {
+        ReviewInteractor.Save(
+            repository = get()
+        )
+    }
+    factory<RateReviewInteractor> {
+        ReviewInteractor.Rate(
+            repository = get()
+        )
+    }
+    factory<GetReviewPagedInteractor> {
+        ReviewInteractor.Paged(
+            repository = get()
+        )
+    }
 }
 
 private val repositoryModule = module {
-
+    factory<ReviewEntryRepository> {
+        ReviewRepository.Entry(
+            source = get()
+        )
+    }
+    factory<ReviewPagedRepository> {
+        ReviewRepository.Paged(
+            source = get()
+        )
+    }
+    factory<ReviewRateRepository> {
+        ReviewRepository.Rate(
+            source = get()
+        )
+    }
+    factory<ReviewSaveRepository> {
+        ReviewRepository.Save(
+            source = get()
+        )
+    }
+    factory<ReviewDeleteRepository> {
+        ReviewRepository.Delete(
+            source = get()
+        )
+    }
 }
 
 internal val reviewModules = listOf(
     sourceModule,
+    cacheModule,
     mapperModule,
+    converterModule,
     useCaseModule,
     repositoryModule
 )

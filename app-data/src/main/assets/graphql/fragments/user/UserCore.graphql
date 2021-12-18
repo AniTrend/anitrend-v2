@@ -13,4 +13,5 @@ fragment UserCore on User {
     donatorBadge
     siteUrl
     updatedAt
+    createdAt
 }

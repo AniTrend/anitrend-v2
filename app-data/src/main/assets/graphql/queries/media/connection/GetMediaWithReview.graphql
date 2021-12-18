@@ -1,0 +1,16 @@
+query GetMediaWithReview(
+    $page: Int!,
+    $perPage: Int!,
+    $sort: [ReviewSort],
+    $id: Int!
+) {
+    Media(id: $id) {
+        reviews(
+            page: $page,
+            perPage: $perPage,
+            sort: $sort
+        ) {
+            ... MediaReviewConnection
+        }
+    }
+}

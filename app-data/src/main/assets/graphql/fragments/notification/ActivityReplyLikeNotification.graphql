@@ -1,0 +1,10 @@
+fragment ActivityReplyLikeNotification on ActivityReplyLikeNotification {
+    id
+    type
+    createdAt
+    context
+    activityId
+    user {
+        ... UserCore
+    }
+}

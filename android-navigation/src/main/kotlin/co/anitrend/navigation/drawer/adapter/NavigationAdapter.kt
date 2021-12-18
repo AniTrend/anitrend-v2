@@ -20,7 +20,6 @@ package co.anitrend.navigation.drawer.adapter
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
@@ -40,16 +39,27 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation.Companion.toNav
 class NavigationAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override val mapper: (Navigation) -> IRecyclerItem = {
-        when (it) {
-            is Navigation.Menu -> MenuNavigationItem(it)
-            is Navigation.Group -> GroupNavigationItem(it)
-            is Navigation.Divider -> DividerNavigationItem(it)
+    override val mapper: (Navigation) -> IRecyclerItem = { navigation ->
+        when (navigation) {
+            is Navigation.Menu -> MenuNavigationItem(navigation)
+            is Navigation.Group -> GroupNavigationItem(navigation)
+            is Navigation.Divider -> DividerNavigationItem(navigation)
         }
     },
     override val customSupportAnimator: AbstractAnimator? = null,
     override val supportAction: ISupportSelectionMode<Long>? = null
-) : SupportListAdapter<Navigation>(NavigationDiffUtil) {
+) : SupportListAdapter<Navigation>(NavigationDiffUtil, true) {
+
+    /**
+     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
+     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
+     *
+     * The identifiable id of each item should unique, and if non exists
+     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
+     */
+    override fun getStableIdFor(item: Navigation?): Long {
+        return item?.hashCode()?.toLong() ?: super.getStableIdFor(item)
+    }
 
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.
@@ -85,16 +95,5 @@ class NavigationAdapter(
         Navigation.MENU -> layoutInflater.createNavMenuViewHolder(parent)
         Navigation.GROUP -> layoutInflater.createNavGroupViewHolder(parent)
         else -> layoutInflater.createNavDividerViewHolder(parent)
-    }
-
-    /**
-     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
-     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
-     *
-     * The identifiable id of each item should unique, and if non exists
-     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
-     */
-    override fun getStableIdFor(item: Navigation?): Long {
-        return item?.hashCode()?.toLong() ?: RecyclerView.NO_ID
     }
 }

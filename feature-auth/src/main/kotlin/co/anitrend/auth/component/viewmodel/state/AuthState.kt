@@ -17,15 +17,14 @@
 
 package co.anitrend.auth.component.viewmodel.state
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.auth.model.Authentication
-import co.anitrend.data.auth.action.AuthAction
 import co.anitrend.data.auth.AuthUserInteractor
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.CoroutineContext
@@ -40,20 +39,23 @@ class AuthState(
     val authenticationFlow =
         MutableStateFlow<Authentication>(Authentication.Idle)
 
-    private val useCaseResult = MutableLiveData<DataState<User?>>()
+    private val useCaseResult = MutableLiveData<DataState<User>>()
 
-    override val model: LiveData<User?> =
-        Transformations.switchMap(useCaseResult) { it.model.asLiveData(context) }
+    override val model = Transformations.switchMap(useCaseResult) {
+        it.model.asLiveData(context)
+    }
 
-    override val networkState =
-        Transformations.switchMap(useCaseResult) { it.networkState.asLiveData(context) }
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
+    }
 
-    override val refreshState =
-        Transformations.switchMap(useCaseResult) { it.refreshState.asLiveData(context) }
+    override val refreshState = Transformations.switchMap(useCaseResult) {
+        it.refreshState.asLiveData(context)
+    }
 
     operator fun invoke(authenticating: Authentication.Authenticating) {
         val result = useCase.getAuthenticatedUser(
-            AuthAction.Login(
+            AccountParam.SignIn(
                 accessToken = authenticating.accessToken,
                 tokenType = authenticating.tokenType,
                 expiresIn = authenticating.expiresIn

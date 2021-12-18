@@ -18,9 +18,10 @@
 package co.anitrend.data.character.model.remote
 
 import co.anitrend.data.character.model.contract.ICharacterModel
+import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.connection.MediaConnection
-import co.anitrend.data.shared.model.SharedImage
-import co.anitrend.data.shared.model.SharedName
+import co.anitrend.data.shared.model.SharedImageModel
+import co.anitrend.data.shared.model.SharedNameModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,28 +31,41 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal sealed class CharacterModel : ICharacterModel {
 
+    abstract val age: Int?
+    abstract val dateOfBirth: FuzzyDateModel?
+    abstract val bloodType: String?
+    abstract val gender: String?
+
     @Serializable
     internal data class Core(
+        @SerialName("age") override val age: Int?,
+        @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel?,
+        @SerialName("gender") override val gender: String?,
+        @SerialName("bloodType") override val bloodType: String?,
         @SerialName("description") override val description: String?,
         @SerialName("favourites") override val favourites: Int?,
-        @SerialName("image") override val image: SharedImage?,
+        @SerialName("image") override val image: SharedImageModel?,
         @SerialName("isFavourite") override val isFavourite: Boolean,
-        @SerialName("name") override val name: SharedName?,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
+        @SerialName("name") override val name: SharedNameModel?,
+        @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long,
     ) : CharacterModel()
 
     @Serializable
     internal data class Extended(
-        @SerialName("media") val media: MediaConnection?,
+        @SerialName("media") val media: MediaConnection.Character?,
+        @SerialName("age") override val age: Int?,
+        @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel?,
+        @SerialName("gender") override val gender: String?,
+        @SerialName("bloodType") override val bloodType: String?,
         @SerialName("description") override val description: String?,
         @SerialName("favourites") override val favourites: Int?,
-        @SerialName("image") override val image: SharedImage?,
+        @SerialName("image") override val image: SharedImageModel?,
         @SerialName("isFavourite") override val isFavourite: Boolean,
-        @SerialName("name") override val name: SharedName?,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("updatedAt") override val updatedAt: Long?,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
+        @SerialName("name") override val name: SharedNameModel?,
+        @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long,
     ) : CharacterModel()
 }

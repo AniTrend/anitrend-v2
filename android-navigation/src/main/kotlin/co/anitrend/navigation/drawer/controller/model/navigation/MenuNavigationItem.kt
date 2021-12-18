@@ -23,17 +23,15 @@ import android.view.ViewGroup
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.navigation.drawer.databinding.NavigationMenuItemBinding
+import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
-import timber.log.Timber
 
 class MenuNavigationItem(
     private val entity: Navigation.Menu
-) : RecyclerItemBinding<NavigationMenuItemBinding>(entity.id.toLong()) {
+) : RecyclerItemBinding<NavigationMenuItemBinding>(entity.hashCode().toLong()) {
 
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
@@ -49,7 +47,7 @@ class MenuNavigationItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = NavigationMenuItemBinding.bind(view)
@@ -60,10 +58,11 @@ class MenuNavigationItem(
             null, null, null
         )
         requireBinding().navMenuTitle.setOnClickListener {
-            stateFlow.value = DefaultClickableItem(
-                data = entity,
-                view = it
-            )
+            stateFlow.value =
+                ClickableItem.Data(
+                    data = entity,
+                    view = it
+                )
         }
     }
 
@@ -81,6 +80,6 @@ class MenuNavigationItem(
             viewGroup: ViewGroup
         ) = NavigationMenuItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

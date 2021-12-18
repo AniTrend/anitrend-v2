@@ -17,17 +17,16 @@
 
 package co.anitrend.data
 
+import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.airing.converters.AiringModelConverter
-import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
-import co.anitrend.data.arch.database.AniTrendStore
-import co.anitrend.data.arch.database.common.IAniTrendStore
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.media.converter.MediaModelConverter
-import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
-import kotlinx.serialization.json.Json
+import co.anitrend.data.android.database.AniTrendStore
+import co.anitrend.data.android.database.common.IAniTrendStore
+import co.anitrend.data.android.koin.dataModules
+import co.anitrend.data.genre.koin.genreModules
+import co.anitrend.data.media.koin.mediaModules
+import co.anitrend.data.tag.koin.tagModules
 import okhttp3.mockwebserver.MockWebServer
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -41,20 +40,15 @@ private val data = module {
     single {
         MockWebServer()
     }
-    single {
-        Json {
-            coerceInputValues = true
-            isLenient = true
-        }
-    }
 }
 
 private val store = module {
-    single {
-        AniTrendStore.create(
+    single(override = true) {
+        Room.inMemoryDatabaseBuilder(
             androidContext(),
-            emptyArray()
-        )
+            AniTrendStore::class.java,
+        ).allowMainThreadQueries()
+            .build()
     } binds IAniTrendStore.BINDINGS
 }
 
@@ -64,34 +58,7 @@ private val provider = module {
     }
 }
 
-private val mapper = module {
-    single {
-        AiringScheduleMapper(
-            localSource = db().airingScheduleDao(),
-            converter = get()
-        )
-    }
-    single {
-        MediaPagedCombinedMapper(
-            localSource = db().mediaDao(),
-            converter = get(),
-            airingConverter = get(),
-            airingLocalSource = db().airingScheduleDao(),
-            context = get<ISupportDispatcher>().io
-        )
-    }
-}
-
-private val converter = module {
-    factory {
-        MediaModelConverter()
-    }
-    factory {
-        AiringModelConverter()
-    }
-}
-
-internal val testModules = listOf(data, store, provider, mapper, converter)
+internal val testModules = listOf(data, store, provider) + mediaModules + genreModules + tagModules + dataModules
 
 internal fun initializeKoin() = startKoin {
     androidContext(

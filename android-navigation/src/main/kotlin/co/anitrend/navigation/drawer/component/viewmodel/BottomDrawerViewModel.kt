@@ -41,7 +41,6 @@ internal class BottomDrawerViewModel(
      */
     override fun onCleared() {
         super.onCleared()
-        navigationState.onCleared()
         accountState.onCleared()
     }
 }

@@ -19,12 +19,29 @@ package co.anitrend.data.airing.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import co.anitrend.data.shared.common.Identity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.core.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "airing_schedule",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
+    indices = [
+        Index(value = ["media_id"])
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = MediaEntity::class,
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+            childColumns = ["media_id"],
+            parentColumns = ["id"]
+        )
+    ]
 )
+@EntitySchema
 internal data class AiringScheduleEntity(
     @ColumnInfo(name ="airing_at") val airingAt: Long,
     @ColumnInfo(name ="episode") val episode: Int,

@@ -17,8 +17,8 @@
 
 package co.anitrend.data.mediatrend.model.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.mediatrend.model.MediaTrendModel
 import co.anitrend.data.mediatrend.model.edge.MediaTrendEdge
 
@@ -29,4 +29,5 @@ internal data class MediaTrendConnection(
     override val edges: List<MediaTrendEdge>?,
     override val nodes: List<MediaTrendModel.Core>?,
     override val pageInfo: PageInfo?
-) : IEntityConnection<MediaTrendEdge, MediaTrendModel>
+) : IEntityConnection, IEntityConnection.IEdge<MediaTrendEdge>,
+    IEntityConnection.INode<MediaTrendModel>

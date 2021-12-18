@@ -20,9 +20,9 @@ package co.anitrend.data.carousel.datasource.local
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.arch.CountryCode
-import co.anitrend.data.arch.FuzzyDateLike
-import co.anitrend.data.arch.database.dao.ILocalSource
+import co.anitrend.data.common.CountryCode
+import co.anitrend.data.common.FuzzyDateLike
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.domain.media.enums.MediaSeason
@@ -30,7 +30,7 @@ import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
+internal abstract class CarouselLocalStore : AbstractLocalSource<MediaEntity>() {
 
     @Query("""
         select count(id) from media
@@ -95,7 +95,7 @@ internal abstract class CarouselLocalStore : ILocalSource<MediaEntity> {
         pageSize: Int,
         season: MediaSeason,
         seasonYear: FuzzyDateLike
-    ): Flow<List<MediaEntityView.WithMediaList>>
+    ): Flow<List<MediaEntityView.Core>>
 
     @Query("""
         select * from media

@@ -20,8 +20,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="co.anitrend.media">
 
-
     <application>
+        <activity android:name=".component.screen.MediaScreen" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

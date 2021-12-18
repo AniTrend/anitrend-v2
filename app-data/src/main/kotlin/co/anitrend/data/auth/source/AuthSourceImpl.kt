@@ -20,20 +20,23 @@ package co.anitrend.data.auth.source
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.account.action.AccountAction
-import co.anitrend.data.arch.helper.data.contract.IClearDataHelper
-import co.anitrend.data.auth.action.AuthAction
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.auth.AuthController
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
 import co.anitrend.data.auth.datasource.remote.AuthRemoteSource
 import co.anitrend.data.auth.entity.AuthEntity
+import co.anitrend.data.auth.helper.AuthenticationHelper
+import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.auth.AuthController
 import co.anitrend.data.auth.source.contract.AuthSource
+import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.settings.IUserSettings
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.account.model.AccountParam
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -46,14 +49,14 @@ internal class AuthSourceImpl(
     private val localSource: AuthLocalSource,
     private val clearDataHelper: IClearDataHelper,
     private val controller: AuthController,
-    private val userSettings: IUserSettings,
     private val settings: IAuthenticationSettings,
     private val converter: UserEntityConverter,
-    userLocalSource: UserLocalSource,
-    dispatcher: ISupportDispatcher
-) : AuthSource(dispatcher) {
+    private val userLocalSource: UserLocalSource,
+    private val authenticationHelper: IAuthenticationHelper,
+    override val dispatcher: ISupportDispatcher
+) : AuthSource() {
 
-    private val userIdFlow = MutableStateFlow<Long?>(null)
+    private val userIdFlow = MutableSharedFlow<Long?>()
 
     override val observable = flow {
         userIdFlow
@@ -72,39 +75,34 @@ internal class AuthSourceImpl(
         emit(converter.convertFrom(entities))
     }
 
-    private suspend fun persistChanges(query: AuthAction.Login, user: UserEntity) {
+    private suspend fun persistChanges(action: AccountAction.SignIn, user: UserEntity) {
         withContext(dispatcher.io) {
-            localSource.upsert(AuthEntity(
-                id = 0,
-                userId = user.id,
-                expiresOn = query.expiresAtTime,
-                tokenType = query.tokenType,
-                accessToken = query.accessToken
-            ))
+            localSource.upsert(
+                AuthEntity(
+                    userId = user.id,
+                    expiresOn = action.expiresAtTime,
+                    tokenType = action.param.tokenType,
+                    accessToken = action.param.accessToken
+                )
+            )
 
             settings.authenticatedUserId.value = user.id
             settings.isAuthenticated.value = true
-            userIdFlow.value = user.id
+            userIdFlow.emit(user.id)
         }
     }
 
-    override fun signOut(query: IGraphPayload) {
-        val params = query as AccountAction.SignOut
+    override fun signOut(param: AccountParam.SignOut) {
         launch (dispatcher.io) {
-            userSettings.scoreFormat.value = IUserSettings.DEFAULT_SCORE_FORMAT
-            userSettings.titleLanguage.value = IUserSettings.DEFAULT_TITLE_LANGUAGE
-
-            settings.isAuthenticated.value = false
-            settings.authenticatedUserId.value = IAuthenticationSettings.INVALID_USER_ID
-            localSource.clearByUserId(params.userId)
-            userIdFlow.value = IAuthenticationSettings.INVALID_USER_ID
+            authenticationHelper.invalidateAuthenticationState()
+            userIdFlow.emit(IAuthenticationSettings.INVALID_USER_ID)
         }
     }
 
-    override suspend fun getAuthorizedUser(query: AuthAction.Login, callback: RequestCallback) {
+    override suspend fun getAuthorizedUser(param: AccountAction.SignIn, callback: RequestCallback) {
         val deferred = async {
             remoteSource.getAuthenticatedUser(
-                query.accessTokenBearer,
+                param.accessTokenBearer,
                 QueryContainerBuilder()
             )
         }
@@ -112,7 +110,7 @@ internal class AuthSourceImpl(
         val user = controller(deferred, callback)
 
         if (user != null)
-            persistChanges(query, user)
+            persistChanges(param, user)
     }
 
     /**

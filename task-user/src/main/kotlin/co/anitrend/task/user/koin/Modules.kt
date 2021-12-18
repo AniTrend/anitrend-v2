@@ -21,36 +21,31 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.task.user.component.UserAccountSyncWorker
 import co.anitrend.task.user.component.UserFollowToggleWorker
-import co.anitrend.task.user.component.UserSendMessageWorker
 import co.anitrend.task.user.component.UserStatisticSyncWorker
 import co.anitrend.task.user.provider.FeatureProvider
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 private val workManagerModule = module {
-    worker {
+    worker { params ->
         UserFollowToggleWorker(
-            context = get(),
-            parameters = get()
+            context = androidContext(),
+            parameters = params.get(),
+            toggleFollow = get()
         )
     }
-    worker {
-        UserSendMessageWorker(
-            context = get(),
-            parameters = get()
-        )
-    }
-    worker {
+    worker { params ->
         UserStatisticSyncWorker(
-            context = get(),
-            parameters = get()
+            context = androidContext(),
+            parameters = params.get(),
         )
     }
-    worker {
+    worker { params ->
         UserAccountSyncWorker(
-            context = get(),
-            parameters = get(),
-            userInteractor = get()
+            context = androidContext(),
+            parameters = params.get(),
+            getAuthenticated = get()
         )
     }
 }

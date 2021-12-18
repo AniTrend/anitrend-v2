@@ -32,18 +32,17 @@ import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.media.enums.*
-import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.base.IMediaList
-import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.tag.entity.Tag
 
 sealed class Media : IMedia {
 
+    abstract val externalLinks: Collection<IMediaExternalLink>
+    abstract val rankings: Collection<IMediaRank>
+    abstract val trailer: IMediaTrailer?
     abstract val sourceId: IMediaSourceId
     abstract val countryCode: CharSequence?
-    abstract val description: CharSequence?
-    abstract val favouritesCount: Long
-    abstract val genres: Collection<Genre>
+    abstract val genres: Collection<Genre.Extended>
     abstract val twitterTag: CharSequence?
     abstract val isLicensed: Boolean?
     abstract val isLocked: Boolean?
@@ -59,7 +58,10 @@ sealed class Media : IMedia {
      *
      * @param type A [MediaType] enum
      */
-    sealed class Category(val type: MediaType) {
+    sealed class Category(
+        val type: MediaType,
+        val total: Int
+        ) {
 
         /**
          * Japanese Anime
@@ -71,12 +73,16 @@ sealed class Media : IMedia {
         data class Anime(
             val episodes: Int,
             val duration: Int,
-            val schedule: AiringSchedule?
-        ) : Category(MediaType.ANIME) {
+            val broadcast: String?,
+            val premiered: String?,
+            val schedule: AiringSchedule?,
+        ) : Category(MediaType.ANIME, episodes) {
             companion object {
                 fun empty() = Anime(
                     0,
                     0,
+                    broadcast = null,
+                    premiered = null,
                     null
                 )
             }
@@ -91,7 +97,7 @@ sealed class Media : IMedia {
         data class Manga(
             val chapters: Int,
             val volumes: Int
-        ) : Category(MediaType.MANGA) {
+        ) : Category(MediaType.MANGA, chapters) {
             companion object {
                 fun empty() = Manga(
                     0,
@@ -102,11 +108,14 @@ sealed class Media : IMedia {
     }
 
     data class Core(
+        override val externalLinks: Collection<IMediaExternalLink>,
+        override val rankings: Collection<IMediaRank>,
         override val title: IMediaTitle,
         override val image: IMediaCover,
         override val category: Category,
         override val isAdult: Boolean?,
         override val isFavourite: Boolean,
+        override val isFavouriteBlocked: Boolean,
         override val format: MediaFormat?,
         override val season: MediaSeason?,
         override val status: MediaStatus?,
@@ -119,8 +128,8 @@ sealed class Media : IMedia {
         override val sourceId: IMediaSourceId,
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
-        override val favouritesCount: Long,
-        override val genres: Collection<Genre>,
+        override val favourites: Int,
+        override val genres: Collection<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
@@ -128,14 +137,16 @@ sealed class Media : IMedia {
         override val siteUrl: CharSequence?,
         override val source: MediaSource?,
         override val synonyms: Collection<CharSequence>,
-        override val tags: Collection<Tag>
+        override val tags: Collection<Tag>,
+        override val trailer: IMediaTrailer?
     ) : Media() {
         companion object {
             fun empty() = Core(
                 sourceId = MediaSourceId.empty(),
                 countryCode = null,
                 description = null,
-                favouritesCount = 0,
+                favourites = 0,
+                isFavouriteBlocked = false,
                 genres = emptyList(),
                 twitterTag = null,
                 isLicensed = null,
@@ -158,20 +169,29 @@ sealed class Media : IMedia {
                 isAdult = null,
                 isFavourite = false,
                 id = INVALID_ID,
-                mediaList = null
+                mediaList = null,
+                trailer = null,
+                externalLinks = emptyList(),
+                rankings = emptyList()
             )
         }
     }
 
     data class Extended(
-        val externalLinks: Collection<IMediaExternalLink>,
-        val rankings: Collection<IMediaRank>,
-        val trailer: IMediaTrailer?,
+        val background: String?,
+        val ageRating: String?,
+        val extraInfo: String?,
+        val openingThemes: Collection<String>,
+        val endingThemes: Collection<String>,
+        override val externalLinks: Collection<IMediaExternalLink>,
+        override val rankings: Collection<IMediaRank>,
+        override val trailer: IMediaTrailer?,
         override val title: IMediaTitle,
         override val image: IMediaCover,
         override val category: Category,
         override val isAdult: Boolean?,
         override val isFavourite: Boolean,
+        override val isFavouriteBlocked: Boolean,
         override val format: MediaFormat?,
         override val season: MediaSeason?,
         override val status: MediaStatus?,
@@ -184,8 +204,8 @@ sealed class Media : IMedia {
         override val sourceId: IMediaSourceId,
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
-        override val favouritesCount: Long,
-        override val genres: Collection<Genre>,
+        override val favourites: Int,
+        override val genres: Collection<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
@@ -197,11 +217,17 @@ sealed class Media : IMedia {
     ) : Media() {
         companion object {
             fun empty() = Extended(
+                background = null,
+                ageRating = null,
+                extraInfo = null,
+                openingThemes = emptyList(),
+                endingThemes = emptyList(),
                 sourceId = MediaSourceId.empty(),
                 countryCode = null,
                 description = null,
                 externalLinks = emptyList(),
-                favouritesCount = 0,
+                favourites = 0,
+                isFavouriteBlocked = false,
                 genres = emptyList(),
                 twitterTag = null,
                 isLicensed = null,

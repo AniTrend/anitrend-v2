@@ -17,24 +17,16 @@
 
 package co.anitrend.data.favourite.model.contract
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.character.model.remote.CharacterModel
-import co.anitrend.data.character.model.remote.edge.CharacterEdge
-import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.media.model.edge.MediaEdge
-import co.anitrend.data.staff.model.remote.StaffModel
-import co.anitrend.data.staff.model.remote.edge.StaffEdge
-import co.anitrend.data.studio.model.remote.StudioModel
-import co.anitrend.data.studio.model.remote.edge.StudioEdge
+import co.anitrend.data.common.entity.IEntityConnection
 
 
 /** [Favourites](https://anilist.github.io/ApiV2-GraphQL-Docs/favourites.doc.html)
  * User's favourite anime, manga, characters, staff & studios
  */
 internal interface IFavouriteModel {
-    val anime: IEntityConnection<MediaEdge, MediaModel>?
-    val characters: IEntityConnection<CharacterEdge, CharacterModel>?
-    val manga: IEntityConnection<MediaEdge, MediaModel>?
-    val staff: IEntityConnection<StaffEdge, StaffModel>?
-    val studios: IEntityConnection<StudioEdge, StudioModel>?
+    val anime: IEntityConnection?
+    val characters: IEntityConnection?
+    val manga: IEntityConnection?
+    val staff: IEntityConnection?
+    val studios: IEntityConnection?
 }

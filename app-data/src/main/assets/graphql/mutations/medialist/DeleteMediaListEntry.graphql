@@ -1,0 +1,5 @@
+mutation DeleteMediaListItem($id: Int) {
+    DeleteMediaListEntry(id: $id) {
+        deleted
+    }
+}

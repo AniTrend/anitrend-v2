@@ -1,4 +1,15 @@
 fragment StaffCore on Staff {
+    age
+    dateOfBirth {
+        ... FuzzyDate
+    }
+    dateOfDeath {
+        ... FuzzyDate
+    }
+    gender
+    homeTown
+    primaryOccupations
+    yearsActive
     description
     favourites
     image {
@@ -6,12 +17,13 @@ fragment StaffCore on Staff {
         medium
     }
     isFavourite
-    language
+    languageV2
     name {
         alternative
         first
         full
         last
+        middle
         native
     }
     siteUrl

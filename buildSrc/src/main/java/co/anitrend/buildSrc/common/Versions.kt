@@ -22,7 +22,7 @@ object Versions {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 27
+    private const val candidate = 38
 
     private const val channel = "alpha"
 
@@ -34,29 +34,41 @@ object Versions {
       * **RR**_X.Y.Z_
       * > **RR** reserved for build flavours and **X.Y.Z** follow the [versionName] convention
       */
-    const val versionCode = major.times(10_000) +
-             minor.times(1000) +
-             patch.times(100) +
+    const val versionCode = major.times(100_000) +
+             minor.times(10_000) +
+             patch.times(1_000) +
              candidate.times(10)
 
     /**
      * Naming schema: X.Y.Z-variant##
      * > **X**(Major).**Y**(Minor).**Z**(Patch)
      */
-    const val versionName = "$major.$minor.$patch-$channel$candidate"
+    val versionName = if (candidate > 0)
+        "$major.$minor.$patch-$channel$candidate"
+    else
+        "$major.$minor.$patch"
+    const val junit = "4.13.2"
 
-    const val mockk = "1.10.5"
-    const val junit = "4.13.1"
-
-    const val timber = "4.7.1"
-    const val threeTenBp = "1.3.0"
+    const val timber = "5.0.1"
+    const val threeTenBp = "1.3.1"
 
     const val debugDB = "1.0.6"
-    const val treesSence = "0.3.2"
+    const val treesSence = "1.0.4"
 
     const val liquidSwipe = "1.3"
 
-    const val prettyTime = "5.0.0.Final"
+    const val prettyTime = "4.0.4.Final"
     const val scalingImageView = "3.10.0"
     const val serializationConverter = "0.8.0"
+
+    const val jsoup = "1.13.1"
+
+    const val tmdb = "2.3.1"
+    const val trakt = "6.9.0"
+
+    const val elements = "1.0.1"
+
+    const val ktlint = "0.40.0"
+
+    const val deeplink = "0.3.1"
 }

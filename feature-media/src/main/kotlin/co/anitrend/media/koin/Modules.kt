@@ -17,59 +17,33 @@
 
 package co.anitrend.media.koin
 
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.common.media.ui.adapter.MediaCarouselAdapter
-import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.media.component.carousel.content.CarouselContent
-import co.anitrend.media.component.carousel.viewmodel.CarouselViewModel
-import co.anitrend.media.component.carousel.viewmodel.state.CarouselState
-import co.anitrend.media.component.discover.ui.DiscoverContent
-import co.anitrend.media.component.discover.viewmodel.DiscoverViewModel
-import co.anitrend.media.component.discover.viewmodel.state.DiscoverState
+import co.anitrend.media.component.content.MediaContent
+import co.anitrend.media.component.screen.MediaScreen
+import co.anitrend.media.component.viewmodel.MediaViewModel
+import co.anitrend.media.component.viewmodel.state.MediaState
 import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.navigation.MediaRouter
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val fragmentModule = module {
-    fragment {
-        DiscoverContent(
-            stateConfig = get(),
-            supportViewAdapter = MediaPagedAdapter(
-                settings = get(),
-                resources = androidContext().resources,
-                stateConfiguration = get()
+    scope<MediaScreen> {
+        fragment {
+            MediaContent(
+                stateLayoutConfig = get()
             )
-        )
-    }
-    fragment {
-        CarouselContent(
-            dateHelper = get(),
-            stateConfig = get(),
-            supportViewAdapter = MediaCarouselAdapter(
-                viewPool = RecyclerView.RecycledViewPool(),
-                resources = androidContext().resources,
-                stateConfiguration = get()
-            )
-        )
+        }
     }
 }
 
 private val viewModelModule = module {
     viewModel {
-        DiscoverViewModel(
-            state = DiscoverState(
-                useCase = get()
-            )
-        )
-    }
-    viewModel {
-        CarouselViewModel(
-            state = CarouselState(
-                useCase = get()
+        MediaViewModel(
+            state = MediaState(
+                useCase = get(),
+                settings = get()
             )
         )
     }

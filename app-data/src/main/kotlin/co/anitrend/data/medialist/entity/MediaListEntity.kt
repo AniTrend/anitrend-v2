@@ -19,21 +19,19 @@ package co.anitrend.data.medialist.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import co.anitrend.data.arch.FuzzyDateInt
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.common.FuzzyDateInt
+import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "media_list",
     primaryKeys = ["id"]
 )
+@EntitySchema
 internal data class MediaListEntity(
     @ColumnInfo(name = "media_type") val mediaType: MediaType,
-    @ColumnInfo(name = "advanced_scores") val advancedScores: List<AdvancedScore>,
-    @ColumnInfo(name = "custom_lists") val customLists: List<CustomList>,
     @ColumnInfo(name = "completed_at") val completedAt: FuzzyDateInt?,
     @ColumnInfo(name = "created_at") val createdAt: Long?,
     @ColumnInfo(name = "hidden_from_status") val hiddenFromStatus: Boolean,
@@ -46,21 +44,9 @@ internal data class MediaListEntity(
     @ColumnInfo(name = "repeat_count") val repeatCount: Int,
     @ColumnInfo(name = "score") val score: Float,
     @ColumnInfo(name = "started_at") val startedAt: FuzzyDateInt?,
-    @ColumnInfo(name = "status") val status: MediaListStatus,
+    @ColumnInfo(name = "list_status") val status: MediaListStatus,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "user_id") val userId: Long,
+    @ColumnInfo(name = "user_name") val userName: String,
     @ColumnInfo(name = "id") override val id: Long
-) : Identity {
-
-    @Serializable
-    internal data class CustomList(
-        @SerialName("name") val name: String,
-        @SerialName("enabled") val enabled: Boolean
-    )
-
-    @Serializable
-    internal data class AdvancedScore(
-        @SerialName("name") val name: String,
-        @SerialName("score") val score: Float
-    )
-}
+) : Identity

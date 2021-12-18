@@ -20,22 +20,29 @@ package co.anitrend.data.user.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import co.anitrend.data.shared.common.Identity
+import androidx.room.Index
+import co.anitrend.data.core.common.Identity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "user",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
+    indices = [
+        Index(value = ["user_name"], unique = true),
+    ],
 )
+@EntitySchema
 internal data class UserEntity(
     @Embedded(prefix = "user_") val about: About,
     @Embedded(prefix = "user_") val status: Status?,
     @Embedded(prefix = "cover_") val coverImage: CoverImage,
     @ColumnInfo(name = "unread_notifications") val unreadNotification: Int?,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
+    @ColumnInfo(name = "created_at") val createdAt: Long?,
     @ColumnInfo(name = "id") override val id: Long
 ) : Identity {
 
-    internal data class About(
+    data class About(
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "bio") val bio: String?,
         @ColumnInfo(name = "site_url") val siteUrl: String,
@@ -43,13 +50,13 @@ internal data class UserEntity(
         @ColumnInfo(name = "donator_badge") val donatorBadge: String?,
     )
 
-    internal data class Status(
+    data class Status(
         @ColumnInfo(name = "is_following") val isFollowing: Boolean? = null,
         @ColumnInfo(name = "is_follower") val isFollower: Boolean? = null,
         @ColumnInfo(name = "is_blocked") val isBlocked: Boolean = false,
     )
 
-    internal data class CoverImage(
+    data class CoverImage(
         @ColumnInfo(name = "large") val large: String? = null,
         @ColumnInfo(name = "medium") val medium: String? = null,
         @ColumnInfo(name = "banner") val banner: String? = null

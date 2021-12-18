@@ -17,14 +17,15 @@
 
 package co.anitrend.data.model.query
 
-import co.anitrend.data.arch.common.model.date.FuzzyDateModel
-import co.anitrend.data.arch.common.model.paging.query.PageQuery
-import co.anitrend.data.arch.extension.toFuzzyDateInt
+import co.anitrend.data.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.model.paging.query.PageQuery
+import co.anitrend.data.common.extension.toFuzzyDateInt
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.media.model.MediaParam
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -55,19 +56,21 @@ class QueryMappingTest {
 
     @Test
     fun `mapping of media query has correct keys and values`() {
-        val mediaQuery = MediaQuery(
-            type = MediaType.ANIME,
-            endDate = FuzzyDateModel.empty().copy(
-                year = 2018,
-                month = 5
-            ).toFuzzyDateInt(),
-            season = MediaSeason.FALL,
-            format_in = MediaFormat.values().asList(),
-            onList = true,
-            status_in = listOf(
-                MediaStatus.FINISHED,
-                MediaStatus.NOT_YET_RELEASED
-            )
+        val mediaQuery = MediaQuery.Find(
+            MediaParam.Find() builder {
+                type = MediaType.ANIME
+                endDate = FuzzyDateModel.empty().copy(
+                    year = 2018,
+                    month = 5
+                ).toFuzzyDateInt()
+                season = MediaSeason.FALL
+                format_in = MediaFormat.values().asList()
+                onList = true
+                status_in = listOf(
+                    MediaStatus.FINISHED,
+                    MediaStatus.NOT_YET_RELEASED
+                )
+            }
         )
 
         val mappedQuery = mediaQuery.toMap()

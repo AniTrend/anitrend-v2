@@ -17,8 +17,8 @@
 
 package co.anitrend.core.coil.fetch
 
-import co.anitrend.core.android.controller.contract.IPowerController
 import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import coil.bitmap.BitmapPool
 import coil.decode.DataSource
@@ -27,28 +27,11 @@ import coil.fetch.FetchResult
 import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.size.Size
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import timber.log.Timber
 
-class RequestImageFetcher(
-    private val client: OkHttpClient,
+internal class RequestImageFetcher(
+    private val client: CoilRequestClient,
     private val mapper: RequestImageMapper
 ) : Fetcher<RequestImage<*>> {
-
-    private fun fetchDataSourceUsing(httpUrl: HttpUrl) = runCatching {
-        val request = Request.Builder()
-            .get().url(httpUrl).build()
-        val call = client.newCall(request)
-
-        @Suppress("BlockingMethodInNonBlockingContext")
-        val response = call.execute()
-        response.body?.source()
-    }.getOrElse {
-        Timber.tag(moduleTag).i(it)
-        null
-    }
 
     /**
      * Load the [data] into memory. Perform any necessary fetching operations.
@@ -65,11 +48,10 @@ class RequestImageFetcher(
         options: Options
     ): FetchResult {
         val url = mapper.map(data)
-        // TODO: will probably crash on a network error, unless coil handles exceptions internally
-        val source = fetchDataSourceUsing(url)!!
+        val result = client.fetch(url)
         return SourceResult(
-            source = source,
-            mimeType = "image/*",
+            source = result.source,
+            mimeType = result.contentType,
             dataSource = DataSource.NETWORK
         )
     }
@@ -83,9 +65,5 @@ class RequestImageFetcher(
      */
     override fun key(data: RequestImage<*>): String {
         return mapper.getImageUrlUsing(data)
-    }
-
-    companion object {
-        private val moduleTag = RequestImageFetcher::class.java.simpleName
     }
 }

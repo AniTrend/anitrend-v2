@@ -17,77 +17,100 @@
 
 package co.anitrend.data.tag.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
-import co.anitrend.data.tag.mapper.MediaTagResponseMapper
-import co.anitrend.data.tag.repository.MediaTagRepository
-import co.anitrend.data.tag.source.MediaTagSourceImpl
-import co.anitrend.data.tag.source.contract.MediaTagSource
-import co.anitrend.data.tag.usecase.MediaTagUseCaseImpl
-import co.anitrend.data.tag.MediaTagInteractor
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.tag.TagInteractor
+import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.cache.TagCache
+import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.data.tag.converter.TagEntityConverter
+import co.anitrend.data.tag.converter.TagModelConverter
+import co.anitrend.data.tag.entity.filter.TagQueryFilter
+import co.anitrend.data.tag.mapper.TagMapper
+import co.anitrend.data.tag.repository.TagRepository
+import co.anitrend.data.tag.source.TagSourceImpl
+import co.anitrend.data.tag.source.contract.TagSource
+import co.anitrend.data.tag.usecase.TagUseCaseImpl
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory<MediaTagSource> {
-        MediaTagSourceImpl(
-            localSource = db().mediaTagDao(),
-            remoteSource = api(EndpointType.GRAPH_QL),
+    factory<TagSource> {
+        TagSourceImpl(
+            localSource = store().tagDao(),
+            remoteSource = graphApi(),
             controller = graphQLController(
-                mapper = get<MediaTagResponseMapper>()
+                mapper = get<TagMapper.Core>()
             ),
             cachePolicy = get<TagCache>(),
             clearDataHelper = get(),
+            filter = get(),
             converter = get(),
-            dispatcher = get()
+            dispatcher = get(),
         )
+    }
+}
+
+private val filterModule = module {
+    factory {
+        TagQueryFilter()
     }
 }
 
 private val cacheModule = module {
     factory {
         TagCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
 
 private val converterModule = module {
     factory {
+        TagConverter()
+    }
+    factory {
         TagEntityConverter()
+    }
+    factory {
+        TagModelConverter()
     }
 }
 
 private val mapperModule = module {
     factory {
-        MediaTagResponseMapper(
-            localSource = db().mediaTagDao()
+        TagMapper.Core(
+            localSource = store().tagDao(),
+            converter = get()
+        )
+    }
+    factory {
+        TagMapper.Embed(
+            localSource = store().tagConnectionDao()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<MediaTagInteractor> {
-        MediaTagUseCaseImpl(
+    factory<TagInteractor> {
+        TagUseCaseImpl(
             repository = get()
         )
     }
 }
 
 private val repositoryModule = module {
-    factory {
-        MediaTagRepository(
+    factory<TagListRepository> {
+        TagRepository(
             source = get()
         )
     }
 }
 
-internal val mediaTagModules = listOf(
+internal val tagModules = listOf(
     sourceModule,
+    filterModule,
     cacheModule,
     converterModule,
     mapperModule,

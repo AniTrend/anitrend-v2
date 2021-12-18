@@ -21,14 +21,15 @@ import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.auth.source.contract.AuthSource
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.auth.repository.AuthRepository
-import co.anitrend.domain.common.graph.IGraphPayload
 import co.anitrend.domain.user.entity.User
 
 internal class AuthRepositoryImpl(
     private val source: AuthSource
-) : SupportRepository(source), AuthRepository<DataState<User?>>{
+) : SupportRepository(source), AuthRepository<DataState<User>>{
 
-    override fun getAuthenticatedUser(query: IGraphPayload) =
-        source create source(query)
+    override fun getAuthenticatedUser(
+        param: AccountParam.SignIn
+    ) = source create source(param)
 }

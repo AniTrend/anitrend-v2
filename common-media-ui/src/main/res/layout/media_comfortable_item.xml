@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mediaCardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/lg_margin"
+    tools:layout_width="@dimen/media_image_comfortable"
+    style="@style/AppTheme.Material.MediaCard">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <co.anitrend.arch.ui.view.image.SupportImageView
+            android:id="@+id/mediaImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:aspectRatio="1.5"
+            tools:src="@sample/poster"
+            tools:scaleType="centerCrop"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <co.anitrend.common.media.ui.widget.status.MediaStatusWidget
+                android:id="@+id/mediaStatusWidget"
+                android:layout_gravity="center_vertical"
+                android:layout_width="@dimen/lg_margin"
+                android:layout_height="@dimen/lg_margin"
+                android:layout_marginEnd="@dimen/sm_margin"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mediaTitle"
+                android:padding="@dimen/md_margin"
+                android:textAppearance="?attr/textAppearanceBody2"
+                style="@style/AppTheme.DoubleLineText"
+                tools:text="@sample/series.json/title/userPreferred" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
+            android:id="@+id/mediaSubTitleWidget"
+            android:padding="@dimen/md_margin"
+            style="@style/AppTheme.DoubleLineText"
+            android:textAppearance="?attr/textAppearanceCaption" />
+
+        <co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
+            android:id="@+id/mediaScheduleTitleWidget"
+            android:padding="@dimen/md_margin"
+            style="@style/AppTheme.SingleLineText"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <co.anitrend.common.media.ui.widget.rating.MediaRatingWidget
+        android:id="@+id/mediaRatingWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="@dimen/lg_margin"/>
+
+</com.google.android.material.card.MaterialCardView>

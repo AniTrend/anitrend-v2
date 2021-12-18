@@ -18,12 +18,14 @@
 package co.anitrend.data.tag
 
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.model.remote.TagContainerModel
 import co.anitrend.domain.tag.entity.Tag
-import co.anitrend.domain.tag.interactor.MediaTagUseCase
+import co.anitrend.domain.tag.interactor.TagUseCase
+import co.anitrend.domain.tag.repository.ITagRepository
 
-internal typealias MediaTagController = GraphQLController<TagContainerModel, List<TagEntity>>
+internal typealias TagController = GraphQLController<TagContainerModel, List<TagEntity>>
+internal typealias TagListRepository = ITagRepository<DataState<List<Tag>>>
 
-typealias MediaTagInteractor = MediaTagUseCase<DataState<List<Tag>>>
+typealias TagInteractor = TagUseCase<DataState<List<Tag>>>

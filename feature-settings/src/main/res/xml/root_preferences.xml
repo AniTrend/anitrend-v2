@@ -37,7 +37,7 @@
             app:title="@string/preference_title_refresh_behavior_config"
             app:summary="@string/preference_summary_refresh_behavior_config"
             app:icon="@drawable/ic_layers_clear_24dp"
-            app:defaultValue="true"
+            app:defaultValue="false"
             app:key="@string/settings_clear_on_swipe_refresh" />
 
         <!-- TODO: Add preference fragment to change what kind of data to display, exclude things like hentai or ecchi -->

@@ -21,7 +21,7 @@
     android:layout_height="wrap_content">
 
     <View
-        android:layout_width="@dimen/nav_header_height"
+        android:layout_width="@dimen/design_bottom_sheet_nav_divider_width"
         android:layout_height="@dimen/xs_margin"
         android:background="@color/colorOnBackground"/>
 

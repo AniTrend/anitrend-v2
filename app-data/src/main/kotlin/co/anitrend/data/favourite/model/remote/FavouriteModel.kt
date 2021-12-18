@@ -20,8 +20,8 @@ package co.anitrend.data.favourite.model.remote
 import co.anitrend.data.character.model.remote.connection.CharacterConnection
 import co.anitrend.data.favourite.model.contract.IFavouriteModel
 import co.anitrend.data.media.model.connection.MediaConnection
-import co.anitrend.data.staff.model.remote.connection.StaffConnection
-import co.anitrend.data.studio.model.remote.connection.StudioConnection
+import co.anitrend.data.staff.model.connection.StaffConnection
+import co.anitrend.data.studio.model.connection.StudioConnection
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,9 +30,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class FavouriteModel(
-    @SerialName("anime") override val anime: MediaConnection?,
-    @SerialName("characters") override val characters: CharacterConnection?,
-    @SerialName("manga") override val manga: MediaConnection?,
-    @SerialName("staff") override val staff: StaffConnection?,
-    @SerialName("studios") override val studios: StudioConnection?
+    @SerialName("anime") override val anime: MediaConnection.Favourite?,
+    @SerialName("characters") override val characters: CharacterConnection.Favourite?,
+    @SerialName("manga") override val manga: MediaConnection.Favourite?,
+    @SerialName("staff") override val staff: StaffConnection.Favourite?,
+    @SerialName("studios") override val studios: StudioConnection.Favourite?
 ) : IFavouriteModel

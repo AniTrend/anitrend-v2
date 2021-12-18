@@ -1,0 +1,16 @@
+query GetMediaWithAiring(
+    $id: Int!,
+    $notYetAired: Boolean,
+    $page: Int!,
+    $perPage: Int!
+) {
+    Media(id: $id) {
+        airingSchedule(
+            notYetAired: $notYetAired,
+            page: $page,
+            perPage: $perPage,
+        ) {
+            ... MediaAiringConnetion
+        }
+    }
+}

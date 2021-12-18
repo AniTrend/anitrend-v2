@@ -34,8 +34,6 @@ class DynamicFeatureModuleHelper(
     private val unloadOnDestroy: Boolean = false
 ) : SupportLifecycle {
 
-    override val moduleTag: String = javaClass.simpleName
-
     /**
      * Triggered when the lifecycleOwner reaches it's onCreate state
      *
@@ -43,8 +41,8 @@ class DynamicFeatureModuleHelper(
      */
     override fun onCreate() {
         super.onCreate()
-        Timber.tag(moduleTag).v(
-            "Attempting to load dynamic feature modules: ${modules.size}"
+        Timber.v(
+            "Loading dynamic feature modules: ${modules.size}"
         )
         loadModules()
     }
@@ -57,7 +55,7 @@ class DynamicFeatureModuleHelper(
     override fun onDestroy() {
         super.onDestroy()
         if (unloadOnDestroy) {
-            Timber.tag(moduleTag).v(
+            Timber.v(
                 "Unloading ${modules.size} feature modules from global context"
             )
             unloadModules()

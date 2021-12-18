@@ -1,0 +1,15 @@
+mutation SaveThreadComment(
+    $comment: String,
+    $id: Int,
+    $parentCommentId: Int,
+    $threadId: Int
+) {
+    SaveThreadComment(
+        comment: $comment,
+        id: $id,
+        parentCommentId: $parentCommentId,
+        threadId: $threadId,
+    ) {
+        ... GetForumCommentPaged
+    }
+}

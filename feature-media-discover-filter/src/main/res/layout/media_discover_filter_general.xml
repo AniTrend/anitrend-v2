@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2021  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/xl_margin">
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/excludeAdultContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/label_discover_filter_hide_adult_content_title"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_on_list_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_on_list_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/on_list_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/onListChipInclude"
+                android:text="@string/label_discover_filter_choice_show_on_list_title"
+                style="@style/AppTheme.Material.Chip.Choice" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/onListChipExclude"
+                android:text="@string/label_discover_filter_choice_hide_on_list_title"
+                style="@style/AppTheme.Material.Chip.Choice" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_media_type_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_media_type_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/mediaTypeChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="false"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_season_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_season_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/seasonChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="true"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_gravity="start|center_vertical"
+                android:text="@string/label_discover_filter_year_title"
+                style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/yearRangeToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/label_discover_filter_year_title_by_range"/>
+
+        </FrameLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/yearRangeSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:minSeparation="@dimen/lg_margin"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_country_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_country_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/countryChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="true"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_format_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_format_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/formatChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="false"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_status_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_status_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/statusChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="false"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_source_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_source_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/sourceChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="false"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/xl_margin" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/label_discover_filter_streaming_title"
+            style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/md_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_discover_filter_streaming_sub_title"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/streamingChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="false"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.core.widget.NestedScrollView>

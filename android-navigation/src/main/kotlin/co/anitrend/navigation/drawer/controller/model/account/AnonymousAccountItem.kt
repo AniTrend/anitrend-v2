@@ -51,7 +51,7 @@ class AnonymousAccountItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = AccountAnonymousItemBinding.bind(view)
@@ -77,6 +77,6 @@ class AnonymousAccountItem(
             viewGroup: ViewGroup
         ) = AccountAnonymousItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

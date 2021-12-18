@@ -20,14 +20,16 @@ package co.anitrend.task.tag.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.data.tag.MediaTagInteractor
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.data.tag.TagInteractor
+import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.tag.model.TagParam
 import kotlinx.coroutines.flow.first
 
 class TagWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: MediaTagInteractor
+    private val interactor: TagInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -42,13 +44,15 @@ class TagWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val dataState = interactor.getMediaTags()
+        val dataState = interactor.getMediaTags(
+            TagParam(SortOrder.DESC)
+        )
 
-        val networkState = dataState.networkState.first { state ->
-            state is NetworkState.Success || state is NetworkState.Error
+        val networkState = dataState.loadState.first { state ->
+            state is LoadState.Success || state is LoadState.Error
         }
 
-        return if (networkState is NetworkState.Success)
+        return if (networkState is LoadState.Success)
             Result.success()
         else Result.failure()
     }

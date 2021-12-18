@@ -18,11 +18,12 @@
 package co.anitrend.navigation.drawer.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.core.settings.Settings
+import co.anitrend.core.android.settings.Settings
 import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
+import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
@@ -31,11 +32,8 @@ import co.anitrend.navigation.drawer.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
-
-private val coreModule = module {
-	
-}
 
 private val presenterModule = module {
 	scope<BottomDrawerContent> {
@@ -75,7 +73,7 @@ private val fragmentModule = module {
 				stateConfiguration = get()
 			),
 		)
-	}
+	} bind INavigationDrawer::class
 }
 
 private val featureModule = module {
@@ -85,5 +83,5 @@ private val featureModule = module {
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-	listOf(coreModule, presenterModule, viewModelModule, fragmentModule, featureModule)
+	listOf(presenterModule, viewModelModule, fragmentModule, featureModule)
 ) 

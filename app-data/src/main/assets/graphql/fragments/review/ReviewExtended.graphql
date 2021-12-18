@@ -1,0 +1,6 @@
+fragment ReviewExtended on Review {
+    ... ReviewCore
+    media {
+        ... MediaExtended
+    }
+}

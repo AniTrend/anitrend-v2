@@ -17,8 +17,8 @@
 
 package co.anitrend.data.review.model.remote.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.review.model.remote.ReviewModel
 import co.anitrend.data.review.model.remote.edge.ReviewEdge
 import kotlinx.serialization.SerialName
@@ -32,4 +32,4 @@ internal data class ReviewConnection(
     @SerialName("edges") override val edges: List<ReviewEdge>?,
     @SerialName("nodes") override val nodes: List<ReviewModel.Core>?,
     @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<ReviewEdge, ReviewModel>
+) : IEntityConnection, IEntityConnection.IEdge<ReviewEdge>, IEntityConnection.INode<ReviewModel>

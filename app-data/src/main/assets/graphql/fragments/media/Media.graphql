@@ -12,7 +12,7 @@ fragment Media on Media {
     format
     season
     status(version: 2)
-    source
+    source(version: 3)
     meanScore
     description
     averageScore
@@ -47,5 +47,20 @@ fragment Media on Media {
     updatedAt
     nextAiringEpisode {
         ... AiringScheduleCore
+    }
+    rankings {
+        id
+        allTime
+        context
+        format
+        rank
+        season
+        type
+        year
+    }
+    externalLinks {
+        id
+        site
+        url
     }
 }

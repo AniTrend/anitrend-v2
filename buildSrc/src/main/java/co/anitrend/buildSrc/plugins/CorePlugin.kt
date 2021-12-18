@@ -21,6 +21,7 @@ import co.anitrend.buildSrc.plugins.components.configureAndroid
 import co.anitrend.buildSrc.plugins.components.configureDependencies
 import co.anitrend.buildSrc.plugins.components.configureOptions
 import co.anitrend.buildSrc.plugins.components.configurePlugins
+import co.anitrend.buildSrc.plugins.components.configureAdditionalPlugins
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -55,10 +56,11 @@ open class CorePlugin : Plugin<Project> {
      */
     override fun apply(target: Project) {
         target.configurePlugins()
-        target.availableExtensions()
-        target.availableComponents()
         target.configureAndroid()
         target.configureOptions()
         target.configureDependencies()
+        target.configureAdditionalPlugins()
+        target.availableComponents()
+        target.availableExtensions()
     }
 }

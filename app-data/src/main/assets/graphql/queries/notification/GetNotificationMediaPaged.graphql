@@ -1,0 +1,25 @@
+query GetNotificationMediaPaged(
+    $page: Int,
+    $perPage: Int
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        notifications(
+            type_in: [
+                AIRING,
+                RELATED_MEDIA_ADDITION,
+                MEDIA_DATA_CHANGE,
+                MEDIA_DELETION,
+                MEDIA_MERGE
+            ]
+        ) {
+            ... AiringNotification
+            ... RelatedMediaAdditionNotification
+            ... MediaDataChangeNotification
+            ... MediaDeletionNotification
+            ... MediaMergeNotification
+        }
+    }
+}

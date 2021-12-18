@@ -18,9 +18,9 @@
 package co.anitrend.domain.account.repository
 
 import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.common.graph.IGraphPayload
+import co.anitrend.domain.account.model.AccountParam
 
 interface AccountRepository<State: UiState<*>> {
     fun getAccountUsers(): State
-    fun signOut(query: IGraphPayload)
+    fun signOut(param: AccountParam.SignOut)
 }

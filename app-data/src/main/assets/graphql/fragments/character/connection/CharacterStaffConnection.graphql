@@ -1,0 +1,19 @@
+fragment CharacterStaffConnection on MediaConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        characterRole
+        voiceActorRoles(sort: $sort, language: $language) {
+            dubGroup
+            roleNotes
+            voiceActor {
+                ... StaffCore
+            }
+        }
+        node {
+            ... MediaCore
+        }
+    }
+}

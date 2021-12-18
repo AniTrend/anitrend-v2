@@ -17,10 +17,25 @@
 
 package co.anitrend.data.staff.koin
 
+import co.anitrend.data.staff.converter.StaffConverter
+import co.anitrend.data.staff.converter.StaffEntityConverter
+import co.anitrend.data.staff.converter.StaffModelConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {
 
+}
+
+private val converterModule = module {
+    factory {
+        StaffConverter()
+    }
+    factory {
+        StaffModelConverter()
+    }
+    factory {
+        StaffEntityConverter()
+    }
 }
 
 private val mapperModule = module {
@@ -37,6 +52,7 @@ private val repositoryModule = module {
 
 internal val staffModules = listOf(
     sourceModule,
+    converterModule,
     mapperModule,
     useCaseModule,
     repositoryModule

@@ -33,7 +33,7 @@
             android:id="@+id/multiSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:searchIcon="@drawable/ic_search_24dp"
+            app:searchIcon="@drawable/ic_search"
             app:searchRemoveIcon="@drawable/ic_close_10dp"
             app:searchSelectionIndicator="@drawable/ic_search_indicator_line"
             app:searchTextAppearance="@style/SearchTextAppearance" />
@@ -42,19 +42,13 @@
             android:id="@+id/searchContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <co.anitrend.core.android.widget.appbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:hapticFeedbackEnabled="true"
-        android:backgroundTint="@color/primaryColor"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:fabAlignmentMode="end"
-        app:hideOnScroll="true"/>
+        style="@style/AppTheme.Material.BottomAppBar"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

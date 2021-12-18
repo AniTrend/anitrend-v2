@@ -19,7 +19,7 @@ package co.anitrend.data.notification.model.remote
 
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.notification.model.contract.INotificationModel
-import co.anitrend.data.user.model.remote.UserModel
+import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.notification.enums.NotificationType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

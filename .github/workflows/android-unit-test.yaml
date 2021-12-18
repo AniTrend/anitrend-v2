@@ -1,0 +1,19 @@
+name: Android unit test task
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Configure properties
+      run: |
+        chmod +x ./scripts/configuration.sh
+        ./scripts/configuration.sh
+    - name: Gradle test
+      run: ./gradlew test --stacktrace

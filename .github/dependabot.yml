@@ -1,7 +1,7 @@
 version: 2
 updates:
 - package-ecosystem: gradle
-  directory: "/gradle"
+  directory: "/buildSrc"
   schedule:
     interval: weekly
     time: "03:00"
@@ -10,5 +10,3 @@ updates:
   target-branch: develop
   reviewers:
   - wax911
-  labels:
-  - enhancement

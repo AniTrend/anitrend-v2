@@ -1,0 +1,6 @@
+fragment ForumExtended on Thread {
+    ... ForumCore
+    mediaCategories {
+        ... Media
+    }
+}

@@ -46,7 +46,7 @@ class GroupAccountItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = AccountGroupItemBinding.bind(view)
@@ -58,6 +58,6 @@ class GroupAccountItem(
             viewGroup: ViewGroup
         ) = AccountGroupItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it.root) }
+        ).let { SupportViewHolder(it) }
     }
 }

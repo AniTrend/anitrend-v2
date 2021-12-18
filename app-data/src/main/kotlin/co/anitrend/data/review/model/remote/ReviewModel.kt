@@ -19,7 +19,7 @@ package co.anitrend.data.review.model.remote
 
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.review.model.contract.IReviewModel
-import co.anitrend.data.user.model.remote.UserModel
+import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
 import kotlinx.serialization.SerialName
@@ -52,7 +52,7 @@ internal sealed class ReviewModel : IReviewModel {
 
     @Serializable
     internal data class Extended(
-        @SerialName("media") val media: MediaModel.Core?,
+        @SerialName("media") val media: MediaModel.Core,
         @SerialName("body") override val body: String?,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("mediaId") override val mediaId: Long,

@@ -23,14 +23,25 @@
     <string name="label_chapter_singular">Chapter</string>
     <string name="label_chapter_plural">Chapters</string>
 
+    <plurals name="label_number_of_episodes">
+        <item quantity="one">%d Episode</item>
+        <item quantity="other">%d Episodes</item>
+    </plurals>
+
+    <plurals name="label_number_of_chapters">
+        <item quantity="one">%d Chapter</item>
+        <item quantity="other">%d Chapters</item>
+    </plurals>
+
+
     <!-- Ep 5 • 3 days from now -->
     <string name="label_episode_airing_in_time" translatable="false">Ep %d • %s</string>
 
     <!-- Airs October 21st -->
     <string name="label_episode_airing_on_date">Airs %s</string>
 
-    <!-- Carousel see all button -->
-    <string name="label_carousel_see_all">See All</string>
+    <!-- Carousel see more button -->
+    <string name="label_carousel_see_more">More</string>
 
 
     <string name="label_carousel_airing_anime">Airing Soon</string>

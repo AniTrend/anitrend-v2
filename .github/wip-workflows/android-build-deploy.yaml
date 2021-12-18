@@ -1,0 +1,39 @@
+name: Android build and deploy task
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  actions: read|write
+  repository-projects: read|write
+
+jobs:
+  build:
+    name: Build APK
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: set up pre-deploy configurations
+        run: |
+          chmod +x ./scripts/pre-deploy.sh
+          ./scripts/pre-deploy.sh
+      - name: Fetch tags
+        run: git fetch --tags --force
+      - name: build release APKs
+        run: ./gradlew test assembleRelease
+      - uses: ericcornelissen/git-tag-annotation-action@v1
+        id: tag_data
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          title: "${{ steps.tag_data.outputs.git-tag-annotation }}"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          files: |
+            app/build/outputs/apk/**/release/*.apk

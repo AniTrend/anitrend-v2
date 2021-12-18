@@ -1,0 +1,20 @@
+fragment MediaCharacterConnection on CharacterConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        role
+        name
+        voiceActorRoles(sort: [RELEVANCE], language: JAPANESE) {
+            dubGroup
+            roleNotes
+            voiceActor {
+                ... StaffCore
+            }
+        }
+        node {
+            ... CharacterCore
+        }
+    }
+}

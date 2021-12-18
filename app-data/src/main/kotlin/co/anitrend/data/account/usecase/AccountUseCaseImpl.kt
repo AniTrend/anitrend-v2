@@ -18,11 +18,8 @@
 package co.anitrend.data.account.usecase
 
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.account.AccountInteractor
 import co.anitrend.data.account.repository.AccountRepositoryImpl
-import co.anitrend.domain.account.interactor.AccountUseCase
-import co.anitrend.domain.user.entity.User
 
 internal class AccountUseCaseImpl(
     repository: AccountRepositoryImpl

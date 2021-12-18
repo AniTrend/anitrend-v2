@@ -18,15 +18,13 @@
 package co.anitrend.settings.component.screen
 
 import android.os.Bundle
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.ui.commit
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.settings.R
 import co.anitrend.settings.databinding.SettingsActivityBinding
 import co.anitrend.settings.component.content.SettingsContent
 
-class SettingsScreen : AnitrendScreen<SettingsActivityBinding>() {
+class SettingsScreen : AniTrendScreen<SettingsActivityBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +43,9 @@ class SettingsScreen : AnitrendScreen<SettingsActivityBinding>() {
         onUpdateUserInterface()
     }
 
-    /**
-     * Handles the updating, binding, creation or state change, depending on the context of views.
-     *
-     * **N.B.** Where this is called is up to the developer
-     */
     private fun onUpdateUserInterface() {
         currentFragmentTag = FragmentItem(
             fragment = SettingsContent::class.java
-        ).commit(R.id.contentFrame, this)
+        ).commit(requireBinding().contentFrame, this)
     }
 }

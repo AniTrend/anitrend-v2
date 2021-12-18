@@ -17,35 +17,99 @@
 
 package co.anitrend.data.media.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.airing.model.AiringScheduleModel
+import co.anitrend.data.common.entity.IEntityEdge
 import co.anitrend.data.character.model.remote.CharacterModel
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.staff.model.remote.StaffModel
+import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.enums.MediaRelation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
- * Media connection edge
- *
- * @property characterRole The characters role in the media
- * @property characters The characters in the media voiced by the parent actor
- * @property favouriteOrder The order the media should be displayed from the users favourites
- * @property isMainStudio If the studio is the main animation studio of the media (For Studio->MediaConnection field only)
- * @property relationType The type of relation to the parent model
- * @property staffRole The role of the staff member in the production of the media
- * @property voiceActors The voice actors of the character
- */
 @Serializable
-internal data class MediaEdge(
-    @SerialName("characterRole") val characterRole: CharacterRole?,
-    @SerialName("characters") val characters: List<CharacterModel.Core>?,
-    @SerialName("favouriteOrder") val favouriteOrder: Int?,
-    @SerialName("isMainStudio") val isMainStudio: Boolean,
-    @SerialName("relationType") val relationType: MediaRelation?,
-    @SerialName("staffRole") val staffRole: String?,
-    @SerialName("voiceActors") val voiceActors: List<StaffModel.Core>?,
-    @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: MediaModel.Core?
-) : IEntityEdge<MediaModel>
+internal sealed class MediaEdge {
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     */
+    @Serializable
+    data class Airing(
+        @SerialName("node") override val node: AiringScheduleModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaEdge(), IEntityEdge<AiringScheduleModel>, Identity
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     */
+    @Serializable
+    data class Recommendation(
+        @SerialName("node") override val node: MediaModel.Core?
+    ) : MediaEdge(), IEntityEdge<MediaModel>
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     *
+     * @param mediaRelation The type of relation to the parent model
+     */
+    @Serializable
+    data class Relation(
+        @SerialName("relationType") val mediaRelation: MediaRelation?,
+        @SerialName("node") override val node: MediaModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     *
+     * @param isMainStudio If the studio is the main animation studio of the media (For Studio->MediaConnection field only)
+     */
+    @Serializable
+    data class Studio(
+        @SerialName("isMainStudio") val isMainStudio: Boolean,
+        @SerialName("node") override val node: MediaModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     *
+     * @param favouriteOrder The order the media should be displayed from the users favourites
+     */
+    @Serializable
+    data class Favourite(
+        @SerialName("favouriteOrder") val favouriteOrder: Int?,
+        @SerialName("node") override val node: MediaModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     *
+     * @param characterRole The characters role in the media
+     * @param name Media specific role name
+     * @param voiceActorRoles The voice actors of the character with role date
+     */
+    @Serializable
+    data class Character(
+        @SerialName("role") val characterRole: CharacterRole?,
+        @SerialName("name") val name: String?,
+        @SerialName("voiceActorRoles") val voiceActorRoles: List<StaffModel.ActorRole>?,
+        @SerialName("node") override val node: CharacterModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaEdge(), IEntityEdge<CharacterModel>, Identity
+
+    /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
+     * Media connection edge
+     *
+     * @param staffRole The role of the staff member in the production of the media
+     * @param voiceActors The voice actors of the character
+     */
+    @Serializable
+    data class Staff(
+        @SerialName("role") val staffRole: String?,
+        @SerialName("node") override val node: MediaModel.Core?,
+        @SerialName("id") override val id: Long
+    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+}

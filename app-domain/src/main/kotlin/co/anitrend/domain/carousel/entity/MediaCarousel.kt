@@ -27,7 +27,12 @@ data class MediaCarousel(
     val mediaItems: List<Media>
 ): IEntity {
 
-    override val id: Long = hashCode().toLong()
+    override val id: Long
+        get() {
+            var result = mediaType.hashCode()
+            result = 31 * result + carouselType.hashCode()
+            return result.toLong()
+        }
 
     enum class CarouselType {
         AIRING_SOON,
@@ -53,7 +58,9 @@ data class MediaCarousel(
      */
     override fun equals(other: Any?): Boolean {
         return when (other) {
-            is MediaCarousel -> other.id == id
+            is MediaCarousel -> other.id == id &&
+                    other.carouselType == carouselType &&
+                    other.mediaType == mediaType
             else -> super.equals(other)
         }
     }

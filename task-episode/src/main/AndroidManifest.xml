@@ -16,4 +16,21 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.anitrend.task.episode" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.anitrend.task.episode">
+
+    <application>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="co.anitrend.task.episode.initializer.FeatureInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="co.anitrend.task.episode.initializer.WorkSchedulerInitializer"
+                android:value="androidx.startup" />
+        </provider>
+    </application>
+</manifest>

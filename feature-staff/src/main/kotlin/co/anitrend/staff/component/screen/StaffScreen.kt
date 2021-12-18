@@ -18,10 +18,10 @@
 package co.anitrend.staff.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.staff.databinding.StaffScreenBinding
 
-class StaffScreen : AnitrendScreen<StaffScreenBinding>() {
+class StaffScreen : AniTrendScreen<StaffScreenBinding>() {
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

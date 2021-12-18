@@ -1,0 +1,8 @@
+fragment MediaDeletionNotification on MediaDeletionNotification {
+    id
+    type
+    createdAt
+    context
+    deletedMediaTitle
+    reason
+}

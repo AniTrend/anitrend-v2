@@ -1,0 +1,23 @@
+query GetReviewPaged(
+    $mediaId: Int,
+    $mediaType: MediaType,
+    $sort: [ReviewSort],
+    $userId: Int,
+    $page: Int!,
+    $perPage: Int!,
+    $scoreFormat: ScoreFormat
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        reviews(
+            mediaId: $mediaId,
+            mediaType: $mediaType,
+            sort: $sort,
+            userId: $userId
+        ) {
+            ... ReviewExtended
+        }
+    }
+}
