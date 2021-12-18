@@ -30,6 +30,8 @@
     <string name="app_deep_link_host_staff" translatable="false">staff</string>
     <string name="app_deep_link_host_search" translatable="false">search</string>
     <string name="app_deep_link_host_review" translatable="false">review</string>
+    <string name="app_deep_link_host_news" translatable="false">news</string>
+    <string name="app_deep_link_host_episodes" translatable="false">episodes</string>
     <string name="app_deep_link_host_updates" translatable="false">update</string>
     <string name="app_deep_link_host_about" translatable="false">about</string>
 </resources>
