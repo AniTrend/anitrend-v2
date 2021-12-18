@@ -57,6 +57,31 @@ object NavigationDrawerRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    enum class Destination(val requiresAuth: Boolean) {
+        HOME(false),
+        DISCOVER(false),
+        SOCIAL(false),
+        REVIEWS(false),
+        SUGGESTIONS(false),
+        ANIME_LIST(true),
+        MANGA_LIST(true),
+        NEWS(false),
+        FORUMS(false),
+        EPISODES(false)
+    }
+
+    @Parcelize
+    data class Param(
+        val destination: Destination
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY: String = "NavigationDrawerRouter#Param"
+        }
+    }
 }
 
 object SplashRouter : NavigationRouter() {
