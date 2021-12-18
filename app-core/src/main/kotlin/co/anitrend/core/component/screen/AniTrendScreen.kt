@@ -26,7 +26,7 @@ import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.core.ui.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
-import org.koin.androidx.scope.activityScope
+import org.koin.androidx.scope.activityRetainedScope
 import org.koin.core.scope.KoinScopeComponent
 import timber.log.Timber
 
@@ -41,7 +41,7 @@ abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
 
     protected val configurationHelper by inject<IConfigurationHelper>()
 
-    override val scope by lazy(UNSAFE) { activityScope() }
+    override val scope by lazy(UNSAFE) { activityRetainedScope() }
 
     override var binding: B? = null
 
@@ -50,11 +50,11 @@ abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
      */
     override fun configureActivity() {
         runCatching {
-            getKoin().logger.debug("Open activity scope: $scope")
+            Timber.v("Setting up fragment factory using scope: $scope")
             setupKoinFragmentFactory(scope)
         }.onFailure {
             setupKoinFragmentFactory()
-            Timber.v(it, "Defaulting to scope-less based fragment factory")
+            Timber.v(it, "Reverting to scope-less based fragment factory")
         }
         configurationHelper.onCreate(this)
     }

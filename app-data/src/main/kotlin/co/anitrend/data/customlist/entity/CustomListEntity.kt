@@ -47,7 +47,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             value = [
                 "media_list_id",
                 "list_name",
-                "user_id"
+                "user_id",
+                "user_name",
             ],
             unique = true
         )
@@ -59,5 +60,6 @@ internal data class CustomListEntity(
     @ColumnInfo(name = "list_name") val listName: String,
     @ColumnInfo(name = "media_list_id") val mediaListId: Long,
     @ColumnInfo(name = "user_id") val userId: Long,
+    @ColumnInfo(name = "user_name") val userName: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
 ) : Identity

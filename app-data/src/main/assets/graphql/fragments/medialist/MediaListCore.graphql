@@ -22,6 +22,8 @@ fragment MediaListCore on MediaList {
     }
     status
     updatedAt
-    userId
+    user {
+        ... UserCore
+    }
     id
 }

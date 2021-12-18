@@ -13,6 +13,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/android-core" />
+            <option value="$PROJECT_DIR$/android-deeplink" />
             <option value="$PROJECT_DIR$/android-navigation" />
             <option value="$PROJECT_DIR$/android-onboarding" />
             <option value="$PROJECT_DIR$/android-splash" />

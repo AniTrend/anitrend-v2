@@ -1,11 +1,13 @@
 query GetMediaListEntry(
     $scoreFormat: ScoreFormat!,
     $mediaId: Int!,
-    $userId: Int!
+    $userId: Int,
+    $userName: String,
 ) {
     MediaList(
         mediaId: $mediaId,
-        userId: $userId
+        userId: $userId,
+        userName: $userName
     ) {
         ... MediaListExtended
     }

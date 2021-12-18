@@ -53,7 +53,8 @@ internal class MediaListModelConverter(
                 startedAt = source.startedAt?.toFuzzyDateInt(),
                 status = source.status ?: MediaListStatus.PLANNING,
                 updatedAt = source.updatedAt,
-                userId = source.userId,
+                userId = source.user.id,
+                userName = source.user.name,
                 id = source.id
             )
             is MediaListModel.Core -> MediaListEntity(
@@ -72,7 +73,8 @@ internal class MediaListModelConverter(
                 startedAt = source.startedAt?.toFuzzyDateInt(),
                 status = source.status ?: MediaListStatus.PLANNING,
                 updatedAt = source.updatedAt,
-                userId = source.userId,
+                userId = source.user.id,
+                userName = source.user.name,
                 id = source.id
             )
         }

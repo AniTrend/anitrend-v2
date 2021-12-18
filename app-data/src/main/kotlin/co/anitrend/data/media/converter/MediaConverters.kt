@@ -81,7 +81,7 @@ internal class MediaConverter(
                             enabled = custom.enabled
                         )
                     }.orEmpty(),
-                    userId = it.userId,
+                    userId = it.user.id,
                     priority = it.priority,
                     createdOn = it.createdAt,
                     startedOn = it.startedAt.asFuzzyDate(),

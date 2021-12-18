@@ -55,6 +55,7 @@ internal sealed class MediaListQuery : IGraphPayload {
             "scoreFormat" to param.scoreFormat,
             "type" to param.type,
             "userId" to param.userId,
+            "userName" to param.userName,
             "completedAt" to param.completedAt,
             "completedAt_greater" to param.completedAt_greater,
             "completedAt_lesser" to param.completedAt_lesser,
@@ -101,7 +102,8 @@ internal sealed class MediaListQuery : IGraphPayload {
             "status_not" to param.status_not,
             "status_not_in" to param.status_not_in,
             "type" to param.type,
-            "userId" to param.userId
+            "userId" to param.userId,
+            "userName" to param.userName
         )
     }
 }

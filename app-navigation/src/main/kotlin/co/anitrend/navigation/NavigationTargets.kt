@@ -27,10 +27,12 @@ import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.recommendation.enums.RecommendationSort
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.review.enums.ReviewSort
 import co.anitrend.navigation.model.common.IParam
@@ -57,6 +59,31 @@ object NavigationDrawerRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    enum class Destination(val requiresAuth: Boolean) {
+        HOME(false),
+        DISCOVER(false),
+        SOCIAL(false),
+        REVIEWS(false),
+        SUGGESTIONS(false),
+        ANIME_LIST(true),
+        MANGA_LIST(true),
+        NEWS(false),
+        FORUMS(false),
+        EPISODES(false)
+    }
+
+    @Parcelize
+    data class Param(
+        val destination: Destination
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY: String = "NavigationDrawerRouter#Param"
+        }
+    }
 }
 
 object SplashRouter : NavigationRouter() {
@@ -96,6 +123,23 @@ object SearchRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val query: String? = null,
+        val genres: List<String>? = null,
+        val year: Int? = null,
+        val season: MediaSeason? = null,
+        val format: MediaFormat? = null,
+        val status: MediaStatus? = null,
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY: String = "SearchRouter#Param"
+        }
+    }
 }
 
 object SettingsRouter : NavigationRouter() {
@@ -420,7 +464,8 @@ object CharacterRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -449,6 +494,24 @@ object CharacterDiscoverRouter : NavigationRouter() {
     }
 }
 
+object StudioRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class Param(
+        val id: Long,
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "StudioRouter#Param"
+        }
+    }
+}
+
 object StaffRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
@@ -456,7 +519,8 @@ object StaffRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -474,7 +538,8 @@ object StaffDiscoverRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -560,6 +625,36 @@ object ReviewDiscoverRouter : NavigationRouter() {
 
         companion object : IParam.IKey {
             override val KEY = "ReviewDiscoverRouter#Param"
+        }
+    }
+}
+
+object RecommendationDiscoverRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun fragment(): Class<out Fragment>
+    }
+
+    fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        val id: Int? = null,
+        val mediaId: Int? = null,
+        val mediaRecommendationId: Int? = null,
+        val onList: Boolean? = null,
+        val rating: Int? = null,
+        val ratingGreatThan: Int? = null,
+        val ratingLessThan: Int? = null,
+        val sort: List<Sorting<RecommendationSort>>? = null,
+        val userId: Int? = null
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "RecommendationDiscoverRouter#Param"
         }
     }
 }
@@ -663,7 +758,8 @@ object MediaListRouter : NavigationRouter() {
         val compareWithAuthList: Boolean? = null,
         val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
         val type: MediaType,
-        val userId: Long,
+        val userId: Long? = null,
+        val userName: String? = null,
         val completedAt: DateInt? = null,
         val completedAt_greater: DateInt? = null,
         val completedAt_lesser: DateInt? = null,

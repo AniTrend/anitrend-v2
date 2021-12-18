@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "f1a8590c0f7bb51302be783950353900",
+    "identityHash": "9911a5a0950d6a3d71161c13787e5199",
     "entities": [
       {
         "tableName": "cache_log",
@@ -1191,7 +1191,7 @@
       },
       {
         "tableName": "media_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `list_status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `list_status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "mediaType",
@@ -1287,6 +1287,12 @@
             "fieldPath": "userId",
             "columnName": "user_id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -2628,7 +2634,7 @@
       },
       {
         "tableName": "custom_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`enabled` INTEGER NOT NULL, `list_name` TEXT NOT NULL, `media_list_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_list_id`) REFERENCES `media_list`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`enabled` INTEGER NOT NULL, `list_name` TEXT NOT NULL, `media_list_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_list_id`) REFERENCES `media_list`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "enabled",
@@ -2655,6 +2661,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
@@ -2669,14 +2681,15 @@
         },
         "indices": [
           {
-            "name": "index_custom_list_media_list_id_list_name_user_id",
+            "name": "index_custom_list_media_list_id_list_name_user_id_user_name",
             "unique": true,
             "columnNames": [
               "media_list_id",
               "list_name",
-              "user_id"
+              "user_id",
+              "user_name"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_list_media_list_id_list_name_user_id` ON `${TABLE_NAME}` (`media_list_id`, `list_name`, `user_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_list_media_list_id_list_name_user_id_user_name` ON `${TABLE_NAME}` (`media_list_id`, `list_name`, `user_id`, `user_name`)"
           }
         ],
         "foreignKeys": [
@@ -2706,7 +2719,7 @@
       },
       {
         "tableName": "custom_score",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`score` REAL NOT NULL, `score_name` TEXT NOT NULL, `media_list_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_list_id`) REFERENCES `media_list`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`score` REAL NOT NULL, `score_name` TEXT NOT NULL, `media_list_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_list_id`) REFERENCES `media_list`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "score",
@@ -2733,6 +2746,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
@@ -2747,14 +2766,15 @@
         },
         "indices": [
           {
-            "name": "index_custom_score_media_list_id_score_name_user_id",
+            "name": "index_custom_score_media_list_id_score_name_user_id_user_name",
             "unique": true,
             "columnNames": [
               "media_list_id",
               "score_name",
-              "user_id"
+              "user_id",
+              "user_name"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_score_media_list_id_score_name_user_id` ON `${TABLE_NAME}` (`media_list_id`, `score_name`, `user_id`)"
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_score_media_list_id_score_name_user_id_user_name` ON `${TABLE_NAME}` (`media_list_id`, `score_name`, `user_id`, `user_name`)"
           }
         ],
         "foreignKeys": [
@@ -2764,6 +2784,17 @@
             "onUpdate": "CASCADE",
             "columns": [
               "media_list_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
             ],
             "referencedColumns": [
               "id"
@@ -2973,7 +3004,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f1a8590c0f7bb51302be783950353900')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9911a5a0950d6a3d71161c13787e5199')"
     ]
   }
 }

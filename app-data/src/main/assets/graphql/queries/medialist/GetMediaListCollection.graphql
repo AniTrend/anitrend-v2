@@ -18,7 +18,8 @@ query GetMediaListCollection(
     $status_not: MediaListStatus,
     $status_not_in: [MediaListStatus],
     $type: MediaType,
-    $userId: Int!,
+    $userId: Int,
+    $userName: String,
     $scoreFormat: ScoreFormat!
 ) {
     MediaListCollection(
@@ -41,7 +42,8 @@ query GetMediaListCollection(
         status_not: $status_not,
         status_not_in: $status_not_in,
         type: $type,
-        userId: $userId
+        userId: $userId,
+        userName: $userName
     ) {
         hasNextChunk
         lists {
