@@ -20,6 +20,7 @@ package co.anitrend.data.medialist.model
 import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.medialist.model.contract.IMediaListModel
+import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import kotlinx.serialization.SerialName
@@ -58,7 +59,7 @@ internal sealed class MediaListModel : IMediaListModel {
         @SerialName("startedAt") override val startedAt: FuzzyDateModel?,
         @SerialName("status") override val status: MediaListStatus?,
         @SerialName("updatedAt") override val updatedAt: Long?,
-        @SerialName("userId") override val userId: Long,
+        @SerialName("user") override val user: UserModel.Core,
         @SerialName("id") override val id: Long,
     ) : MediaListModel()
 
@@ -84,7 +85,7 @@ internal sealed class MediaListModel : IMediaListModel {
         @SerialName("startedAt") override val startedAt: FuzzyDateModel?,
         @SerialName("status") override val status: MediaListStatus?,
         @SerialName("updatedAt") override val updatedAt: Long?,
-        @SerialName("userId") override val userId: Long,
+        @SerialName("user") override val user: UserModel.Core,
         @SerialName("id") override val id: Long
     ) : MediaListModel()
 }

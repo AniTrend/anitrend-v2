@@ -53,7 +53,8 @@ class UserState(
 
     operator fun invoke(param: MediaListRouter.Param) {
         val query = UserParam.Profile(
-            id = param.userId
+            id = param.userId,
+            name = param.userName
         )
         val result = interactor(query)
 

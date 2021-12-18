@@ -87,6 +87,17 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
     """)
     abstract fun userByNameFlow(userName: String): Flow<UserEntity?>
 
+    @Query(
+        """
+        select * from user
+        where user_name = :userName
+    """
+    )
+    @Transaction
+    abstract fun userByNameWithOptionsFlow(
+        userName: String
+    ): Flow<UserEntityView.WithOptions?>
+
     @Query("""
         select * from user
         where id = :id

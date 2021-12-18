@@ -37,7 +37,8 @@ internal class CustomScoreMapper(
                 score = it.score,
                 scoreName = it.scoreName,
                 mediaListId = it.mediaListId,
-                userId = it.userId
+                userId = it.userId,
+                userName = it.userName
             )
         }
 
@@ -55,6 +56,7 @@ internal class CustomScoreMapper(
         val scoreName: String,
         val mediaListId: Long,
         val userId: Long,
+        val userName: String,
     )
 
     companion object {
@@ -64,7 +66,8 @@ internal class CustomScoreMapper(
                     score = it.value,
                     scoreName = it.key,
                     mediaListId = source.id,
-                    userId = source.userId
+                    userId = source.user.id,
+                    userName = source.user.name
                 )
             }.orEmpty()
 
