@@ -34,9 +34,9 @@ object Versions {
       * **RR**_X.Y.Z_
       * > **RR** reserved for build flavours and **X.Y.Z** follow the [versionName] convention
       */
-    const val versionCode = major.times(10_000) +
-             minor.times(1000) +
-             patch.times(100) +
+    const val versionCode = major.times(100_000) +
+             minor.times(10_000) +
+             patch.times(1_000) +
              candidate.times(10)
 
     /**
