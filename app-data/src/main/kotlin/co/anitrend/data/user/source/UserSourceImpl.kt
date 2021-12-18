@@ -99,7 +99,13 @@ internal class UserSourceImpl {
     ) : UserSource.Authenticated() {
 
         override fun observable(): Flow<User> {
-            return localSource.userByIdFlow(query.param.id)
+            val result = if (query.param.id != null)
+                localSource.userByIdFlow(requireNotNull(query.param.id))
+            else
+                localSource.userByNameFlow(requireNotNull(query.param.name))
+
+
+            return result
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -126,7 +132,10 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearById(query.param.id)
+                if (query.param.id != null)
+                    localSource.clearById(requireNotNull(query.param.id))
+                else
+                    localSource.clearByUserName(requireNotNull(query.param.name))
             }
         }
     }
@@ -192,7 +201,12 @@ internal class UserSourceImpl {
     ) : UserSource.Profile() {
 
         override fun observable(): Flow<User> {
-            return localSource.userByIdWithOptionsFlow(query.param.id)
+            val result = if (query.param.id != null)
+                localSource.userByIdWithOptionsFlow(requireNotNull(query.param.id))
+            else
+                localSource.userByNameWithOptionsFlow(requireNotNull(query.param.name))
+
+            return result
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -219,7 +233,10 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearById(query.param.id)
+                if (query.param.id != null)
+                    localSource.clearById(requireNotNull(query.param.id))
+                else
+                    localSource.clearByUserName(requireNotNull(query.param.name))
             }
         }
     }

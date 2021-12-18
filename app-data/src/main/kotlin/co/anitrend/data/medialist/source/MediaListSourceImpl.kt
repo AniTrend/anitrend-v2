@@ -172,9 +172,14 @@ internal class MediaListSourceImpl {
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
-                localSource.clearByUserId(
-                    query.param.userId
-                )
+                if (query.param.userId != null)
+                    localSource.clearByUserId(
+                        requireNotNull(query.param.userId)
+                    )
+                else if (query.param.userName != null)
+                    localSource.clearByUserName(
+                        requireNotNull(query.param.userName)
+                    )
             }
         }
     }
@@ -223,7 +228,14 @@ internal class MediaListSourceImpl {
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
-                localSource.clearByUserId(query.param.userId)
+                if (query.param.userId != null)
+                    localSource.clearByUserId(
+                        requireNotNull(query.param.userId)
+                    )
+                else if (query.param.userName != null)
+                    localSource.clearByUserName(
+                        requireNotNull(query.param.userName)
+                    )
             }
         }
     }

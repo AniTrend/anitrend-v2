@@ -68,7 +68,10 @@ internal sealed class UserCache : CacheStorePolicy() {
 
         class Identity(
             val param: UserParam.Profile,
-            override val id: Long = param.id,
+            override val id: Long = when {
+                param.id != null -> requireNotNull(param.id)
+                else -> requireNotNull(param.name?.toHashId())
+            },
             override val key: String = "user_profile",
             override val expiresAt: Instant = instantInPast(minutes = 5)
         ) : CacheIdentity

@@ -57,6 +57,31 @@ object NavigationDrawerRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    enum class Destination(val requiresAuth: Boolean) {
+        HOME(false),
+        DISCOVER(false),
+        SOCIAL(false),
+        REVIEWS(false),
+        SUGGESTIONS(false),
+        ANIME_LIST(true),
+        MANGA_LIST(true),
+        NEWS(false),
+        FORUMS(false),
+        EPISODES(false)
+    }
+
+    @Parcelize
+    data class Param(
+        val destination: Destination
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY: String = "NavigationDrawerRouter#Param"
+        }
+    }
 }
 
 object SplashRouter : NavigationRouter() {
@@ -420,7 +445,8 @@ object CharacterRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -456,7 +482,8 @@ object StaffRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -474,7 +501,8 @@ object StaffDiscoverRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -663,7 +691,8 @@ object MediaListRouter : NavigationRouter() {
         val compareWithAuthList: Boolean? = null,
         val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
         val type: MediaType,
-        val userId: Long,
+        val userId: Long? = null,
+        val userName: String? = null,
         val completedAt: DateInt? = null,
         val completedAt_greater: DateInt? = null,
         val completedAt_lesser: DateInt? = null,

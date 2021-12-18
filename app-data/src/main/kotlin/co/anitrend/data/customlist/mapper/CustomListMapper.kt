@@ -40,7 +40,8 @@ internal class CustomListMapper(
                 enabled = it.enabled,
                 listName = it.listName,
                 mediaListId = it.mediaListId,
-                userId = it.userId
+                userId = it.userId,
+                userName = it.userName
             )
         }
 
@@ -56,7 +57,8 @@ internal class CustomListMapper(
         val enabled: Boolean,
         val listName: String,
         val mediaListId: Long,
-        val userId: Long
+        val userId: Long,
+        val userName: String,
     )
 
     companion object {
@@ -66,7 +68,8 @@ internal class CustomListMapper(
                     enabled = it.enabled,
                     listName = it.name,
                     mediaListId = source.id,
-                    userId = source.userId
+                    userId = source.user.id,
+                    userName = source.user.name
                 )
             }.orEmpty()
 

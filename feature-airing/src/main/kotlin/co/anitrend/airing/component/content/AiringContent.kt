@@ -131,8 +131,10 @@ class AiringContent(
         viewModelState().model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
-        viewModel.filter.observe(viewLifecycleOwner) {
-            viewModelState().invoke(it)
+        listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
+            viewModel.filter.observe(viewLifecycleOwner) {
+                viewModelState().invoke(it)
+            }
         }
     }
 
