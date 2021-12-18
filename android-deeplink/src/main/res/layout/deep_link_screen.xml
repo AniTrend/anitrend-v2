@@ -15,17 +15,10 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.google.android.material.circularreveal.CircularRevealFrameLayout
+<co.anitrend.arch.ui.view.widget.SupportStateLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stateLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:layout_width="@dimen/size_65dp"
-        android:layout_height="@dimen/size_65dp"
-        android:indeterminate="true"
-        android:layout_gravity="center" />
-
-</com.google.android.material.circularreveal.CircularRevealFrameLayout>
+    android:layout_height="match_parent"/>

@@ -15,12 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.deeplink.exception
 
-plugins {
-    id("co.anitrend.plugin")
-}
+sealed class DeepLinkException : Throwable() {
+    data class MissingIntentData(
+        override val message: String =
+            "The data for this launching intent cannot be null"
+    ) : DeepLinkException()
 
-dependencies {
-    implementation(Libraries.deeplink)
+    data class InvalidScreenIntent(
+        override val message: String =
+            "A target screen for this handler cannot be null"
+    ) : DeepLinkException()
 }

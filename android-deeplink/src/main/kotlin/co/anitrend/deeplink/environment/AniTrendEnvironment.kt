@@ -15,8 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.deeplink.provider
+package co.anitrend.deeplink.environment
 
-class FeatureProvider {
+import android.content.Context
+import com.hellofresh.deeplink.Environment
 
-}
+data class AniTrendEnvironment(
+    override val context: Context,
+    override val isAuthenticated: Boolean,
+    val userId: Long
+) : Environment

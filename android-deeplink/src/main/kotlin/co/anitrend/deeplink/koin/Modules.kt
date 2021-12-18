@@ -17,17 +17,65 @@
 
 package co.anitrend.deeplink.koin
 
+import android.content.Intent
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.deeplink.provider.FeatureProvider
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.deeplink.environment.AniTrendEnvironment
+import co.anitrend.deeplink.component.route.*
+import co.anitrend.deeplink.component.screen.DeepLinkScreen
+import com.hellofresh.deeplink.DeepLinkParser
+import com.hellofresh.deeplink.Environment
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
+private val coreModule = module {
+    factory<Environment> {
+        val settings = get<IAuthenticationSettings>()
+        AniTrendEnvironment(
+            context = androidContext(),
+            isAuthenticated = settings.isAuthenticated.value,
+            userId = settings.authenticatedUserId.value
+        )
+    }
+}
 
-private val featureModule = module {
-    factory {
-        FeatureProvider()
+private val routerModule = module {
+    scope<DeepLinkScreen> {
+        factory {
+            DeepLinkParser.of<Intent?>(get())
+                // AniList specific routes
+                .addRoute(MainRoute)
+                .addRoute(ActivityRoute)
+                .addRoute(ForumRoute)
+                .addRoute(ReviewRoute)
+                .addRoute(NewsRoute)
+                .addRoute(EpisodesRoute)
+                .addRoute(ForumDiscoverRoute)
+                .addRoute(RecommendationRoute)
+                .addRoute(CharacterRoute)
+                .addRoute(StudioRoute)
+                .addRoute(StaffRoute)
+                .addRoute(MediaRoute)
+                .addRoute(SearchRoute)
+                .addRoute(MediaListRoute)
+                .addRoute(UserRoute)
+                .addRoute(UserStatsRoute)
+                .addRoute(UserFavouritesRoute)
+                .addRoute(UserReviewRoute)
+                // AniTrend specific routes
+                .addRoute(DiscoverRoute)
+                .addRoute(SocialRoute)
+                .addRoute(SuggestionsRoute)
+                .addRoute(SettingsRoute)
+                .addRoute(ProfileRoute)
+                .addRoute(UpdatesRoute)
+                .addRoute(AboutRoute)
+                .addFallbackAction(FallbackAction)
+                .build()
+        }
     }
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(featureModule)
+    listOf(coreModule, routerModule)
 )
