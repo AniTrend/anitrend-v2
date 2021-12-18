@@ -64,6 +64,7 @@ class MediaListState(
             scoreFormat = settings.scoreFormat.value,
             type = param.type,
             userId = param.userId,
+            userName = param.userName,
             completedAt = param.completedAt,
             completedAt_greater = param.completedAt_greater,
             completedAt_lesser = param.completedAt_lesser,

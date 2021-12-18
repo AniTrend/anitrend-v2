@@ -420,7 +420,8 @@ object CharacterRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -456,7 +457,8 @@ object StaffRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -474,7 +476,8 @@ object StaffDiscoverRouter : NavigationRouter() {
 
     @Parcelize
     data class Param(
-        val id: Long
+        val id: Long?,
+        val name: String?
     ) : IParam {
         @IgnoredOnParcel
         override val idKey = KEY
@@ -663,7 +666,8 @@ object MediaListRouter : NavigationRouter() {
         val compareWithAuthList: Boolean? = null,
         val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
         val type: MediaType,
-        val userId: Long,
+        val userId: Long? = null,
+        val userName: String? = null,
         val completedAt: DateInt? = null,
         val completedAt_greater: DateInt? = null,
         val completedAt_lesser: DateInt? = null,

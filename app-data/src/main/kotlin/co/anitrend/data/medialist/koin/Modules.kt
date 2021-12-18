@@ -160,6 +160,7 @@ private val mapperModule = module {
     }
     factory {
         MediaListMapper.Entry(
+            userMapper = get(),
             mediaMapper = get(),
             customListMapper = get(),
             customScoreMapper = get(),
@@ -169,6 +170,7 @@ private val mapperModule = module {
     }
     factory {
         MediaListMapper.SaveEntry(
+            userMapper = get(),
             mediaMapper = get(),
             customListMapper = get(),
             customScoreMapper = get(),
@@ -178,6 +180,7 @@ private val mapperModule = module {
     }
     factory {
         MediaListMapper.SaveEntries(
+            userMapper = get(),
             mediaMapper = get(),
             customListMapper = get(),
             customScoreMapper = get(),
@@ -187,6 +190,7 @@ private val mapperModule = module {
     }
     factory {
         MediaListMapper.Paged(
+            userMapper = get(),
             mediaMapper = get(),
             customListMapper = get(),
             customScoreMapper = get(),
@@ -206,6 +210,7 @@ private val mapperModule = module {
     }
     factory {
         MediaListMapper.Embed(
+            userMapper = get(),
             customListMapper = get(),
             customScoreMapper = get(),
             localSource = store().mediaListDao(),
@@ -214,6 +219,7 @@ private val mapperModule = module {
     }
     factory {
         MediaListMapper.EmbedWithMedia(
+            userMapper = get(),
             mediaMapper = get(),
             localSource = store().mediaListDao(),
             converter = get()

@@ -47,7 +47,8 @@ internal sealed class UserQuery : IGraphPayload {
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
         override fun toMap() = mapOf(
-            "id" to param.id
+            "id" to param.id,
+            "name" to param.name,
         )
     }
 

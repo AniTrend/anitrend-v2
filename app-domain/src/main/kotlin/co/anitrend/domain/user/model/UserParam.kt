@@ -44,7 +44,8 @@ sealed class UserParam {
      * @param id Filter by the user id
      */
     data class Profile(
-        val id: Long
+        val id: Long? = null,
+        val name: String? = null
     ) : UserParam()
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)

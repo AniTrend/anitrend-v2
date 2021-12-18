@@ -118,7 +118,12 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
                 MediaListEntitySchema.mediaId.asColumn(mediaListTable)
             )
         ) whereAnd {
-            MediaListEntitySchema.userId.asColumn(mediaListTable).equal(filter.userId)
+            if (filter.userId != null)
+                MediaListEntitySchema.userId.asColumn(mediaListTable)
+                    .equal(requireNotNull(filter.userId))
+            else
+                MediaListEntitySchema.userName.asColumn(mediaListTable)
+                    .equal(requireNotNull(filter.userName))
         }
 
         selection(filter)
@@ -141,7 +146,14 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
                 } whereAnd {
                     CustomListEntitySchema.listName.asColumn(customListTable) equal listName
                 } whereAnd {
-                    CustomListEntitySchema.userId.asColumn(customListTable) equal filter.userId
+                    if (filter.userId != null)
+                        CustomListEntitySchema.userId.asColumn(
+                            customListTable
+                        ) equal requireNotNull(filter.userId)
+                    else
+                        CustomListEntitySchema.userName.asColumn(
+                            customListTable
+                        ) equal requireNotNull(filter.userName)
                 } whereAnd {
                     CustomListEntitySchema.enabled.asColumn(customListTable) equal true
                 }

@@ -63,6 +63,12 @@ internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEnti
 
     @Query("""
         delete from media_list
+        where user_name = :userName
+        """)
+    abstract suspend fun clearByUserName(userName: String)
+
+    @Query("""
+        delete from media_list
         where user_id = :userId and media_id = :mediaId
         """)
     abstract suspend fun clearByMediaId(mediaId: Long, userId: Long)

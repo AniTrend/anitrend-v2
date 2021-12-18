@@ -47,5 +47,6 @@ internal data class MediaListEntity(
     @ColumnInfo(name = "list_status") val status: MediaListStatus,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "user_id") val userId: Long,
+    @ColumnInfo(name = "user_name") val userName: String,
     @ColumnInfo(name = "id") override val id: Long
 ) : Identity
