@@ -472,14 +472,14 @@ object Libraries {
     }
 
     object Dropbox {
-        private const val version = "4.0.2-KT15"
+        private const val version = "4.0.4-KT15"
         const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
     object Google {
 
         object Accompanist {
-            private const val version = "0.21.2-beta"
+            private const val version = "0.22.0-rc"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
