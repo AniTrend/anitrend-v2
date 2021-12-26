@@ -39,9 +39,11 @@
 		
 		
 		<activity
-			android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" />
+			android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+			android:exported="true" />
 		<activity
-			android:name="com.google.android.gms.oss.licenses.OssLicensesActivity" />
+			android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+			android:exported="true" />
 		
     </application>
 

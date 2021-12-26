@@ -21,7 +21,8 @@
 		  package="co.anitrend.airing">
 
     <application>
-        <activity android:name=".component.screen.AiringScreen" />
+        <activity android:name=".component.screen.AiringScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

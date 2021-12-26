@@ -21,7 +21,8 @@
     package="co.anitrend.profile">
 
     <application>
-        <activity android:name=".component.screen.ProfileScreen" />
+        <activity android:name=".component.screen.ProfileScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

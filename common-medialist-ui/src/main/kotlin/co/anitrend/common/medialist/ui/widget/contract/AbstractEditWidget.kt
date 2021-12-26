@@ -37,9 +37,12 @@ import co.anitrend.core.android.extensions.dp
 import com.airbnb.paris.extensions.style
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import timber.log.Timber
 
 abstract class AbstractEditWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -156,7 +159,9 @@ abstract class AbstractEditWidget @JvmOverloads constructor(
                 if (s != null) {
                     val text = s.toString()
                     onCurrentTextChanged(text)
-                    sendBlocking(text)
+                    trySendBlocking(text).onFailure {
+                        Timber.w(it, "Failed to emmit text changes")
+                    }
                 }
             }
 

@@ -20,7 +20,8 @@
     package="co.anitrend.onboarding">
 
     <application>
-        <activity android:name=".component.screen.OnBoardingScreen"/>
+        <activity android:name=".component.screen.OnBoardingScreen"
+            android:exported="true"/>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

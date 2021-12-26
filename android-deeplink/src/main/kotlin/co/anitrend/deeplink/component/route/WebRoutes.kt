@@ -190,7 +190,7 @@ internal object MediaRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val mediaType = uri.pathSegments().first()
-            .toUpperCase(Locale.ROOT)
+            .uppercase()
 
         val payload = MediaRouter.Param(
             id = requireNotNull(params["id"]).toLong(),

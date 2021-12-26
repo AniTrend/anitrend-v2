@@ -47,7 +47,9 @@ import io.noties.markwon.editor.MarkwonEditorTextWatcher
 import io.wax911.emojify.EmojiManager
 import io.wax911.emojify.parser.parseToHtmlHexadecimal
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
@@ -105,7 +107,9 @@ class MarkDownInputWidget @JvmOverloads constructor(
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
                     val text = s.toString()
-                    sendBlocking(text)
+                    trySendBlocking(text).onFailure {
+                        Timber.w(it, "Failed to emmit text changes")
+                    }
                 }
             }
         }
@@ -247,7 +251,7 @@ class MarkDownInputWidget @JvmOverloads constructor(
      * default implementation
      */
     override fun onCommitContent(
-        inputContentInfo: InputContentInfoCompat?,
+        inputContentInfo: InputContentInfoCompat,
         flags: Int,
         opts: Bundle?
     ): Boolean {
@@ -255,15 +259,15 @@ class MarkDownInputWidget @JvmOverloads constructor(
             if (
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1 &&
                 flags and InputConnectionCompat.INPUT_CONTENT_GRANT_READ_URI_PERMISSION != 0
-            ) inputContentInfo?.requestPermission()
+            ) inputContentInfo.requestPermission()
 
-            val linkUri = inputContentInfo?.linkUri
+            val linkUri = inputContentInfo.linkUri
             if (linkUri != null) {
                 text?.insert(selectionStart, linkUri.toString())
                 inputContentInfo.releasePermission()
                 return true
             }
-            inputContentInfo?.releasePermission()
+            inputContentInfo.releasePermission()
         }.onFailure {
             Timber.w(it)
         }

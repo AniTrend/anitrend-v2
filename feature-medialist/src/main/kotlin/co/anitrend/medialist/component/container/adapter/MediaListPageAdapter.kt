@@ -76,7 +76,7 @@ internal class MediaListPageAdapter(
             parameter = param?.copy(
                 customListName = customListName
             )?.asBundle(),
-            tag = customListName.toUpperCase(Locale.ROOT)
+            tag = customListName.uppercase()
         ).fragmentByTagOrNew(fragmentActivity)
     }
 }

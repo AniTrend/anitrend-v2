@@ -21,7 +21,8 @@
 		  package="co.anitrend.media.discover">
 
     <application>
-		<activity android:name=".component.screen.MediaDiscoverScreen" />
+		<activity android:name=".component.screen.MediaDiscoverScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

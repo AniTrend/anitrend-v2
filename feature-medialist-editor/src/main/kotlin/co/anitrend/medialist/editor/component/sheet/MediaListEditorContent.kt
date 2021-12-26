@@ -17,6 +17,7 @@
 
 package co.anitrend.medialist.editor.component.sheet
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,20 +25,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
+import co.anitrend.arch.extension.ext.attachComponent
+import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.toMediaRequestImage
-import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
-import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.editor.R
+import co.anitrend.medialist.editor.component.sheet.controller.MediaListEditorController
 import co.anitrend.medialist.editor.component.sheet.viewmodel.MediaListEditorViewModel
 import co.anitrend.medialist.editor.databinding.MediaListEditorContentBinding
 import co.anitrend.navigation.MediaListEditorRouter
-import coil.request.Disposable
-import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
@@ -46,11 +43,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MediaListEditorContent(
+    private val controller: MediaListEditorController,
     private val stateConfig: StateLayoutConfig,
     override val inflateLayout: Int = R.layout.media_list_editor_content
 ) : AniTrendBottomSheet<MediaListEditorContentBinding>() {
-
-    private val disposables = mutableListOf<Disposable>()
 
     private val viewModel by viewModel<MediaListEditorViewModel>()
 
@@ -60,27 +56,6 @@ class MediaListEditorContent(
         requireBinding().stateLayout.assureParamNotMissing(param) {
             viewModelState().invoke(requireNotNull(param))
         }
-    }
-
-    private fun onPostModelChange(media: Media) {
-        disposables.add(
-            requireBinding().mediaListBanner.using(
-                media.image.toMediaRequestImage(RequestImage.Media.ImageType.BANNER),
-                listOf(
-                    RoundedCornersTransformation(topLeft = 6f.dp, topRight = 6f.dp),
-                )
-            )
-        )
-        disposables.add(
-            requireBinding().mediaListPoster.using(
-                media.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
-                listOf(RoundedCornersTransformation(6f.dp))
-            )
-        )
-        requireBinding().mediaStatusWidget.setBackgroundUsing(media.status)
-        requireBinding().mediaTitle.text = media.title.userPreferred
-        requireBinding().mediaSubTitleWidget.setUpSubTitle(media)
-        requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(media)
     }
 
     /**
@@ -119,7 +94,9 @@ class MediaListEditorContent(
      */
     override fun setUpViewModelObserver() {
         viewModelState().model.observe(viewLifecycleOwner) {
-            onPostModelChange(it)
+            controller.onPostModelChange(it, requireBinding(), lifecycleScope) {
+                dismiss()
+            }
         }
         viewModelState().loadState.observe(viewLifecycleOwner) {
             if (viewModelState().model.value == null) {
@@ -178,14 +155,14 @@ class MediaListEditorContent(
         requireBinding().stateLayout.stateConfigFlow.value = stateConfig
     }
 
-    /**
-     * Called when the fragment is no longer in use. This is called
-     * after [onStop] and before [onDetach].
-     */
-    override fun onDestroy() {
-        disposables.forEach(Disposable::dispose)
-        disposables.clear()
-        super.onDestroy()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        attachComponent(controller)
+    }
+
+    override fun onDetach() {
+        detachComponent(controller)
+        super.onDetach()
     }
 
     /**

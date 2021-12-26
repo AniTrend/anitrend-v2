@@ -57,7 +57,7 @@ internal class JikanSourceImpl(
     }
 
     private suspend fun getMediaInfo() = runCatching {
-        val mediaType = query.type.name.toLowerCase(Locale.ROOT)
+        val mediaType = query.type.name.uppercase()
         val deferred = async {
             remoteSource.getExtraInfo(query.id, mediaType)
         }

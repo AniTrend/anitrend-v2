@@ -21,7 +21,8 @@
     package="co.anitrend.feed" >
 
     <application>
-        <activity android:name=".component.screen.FeedScreen" />
+        <activity android:name=".component.screen.FeedScreen"
+            android:exported="true" />
         
         <provider
             android:name="androidx.startup.InitializationProvider"

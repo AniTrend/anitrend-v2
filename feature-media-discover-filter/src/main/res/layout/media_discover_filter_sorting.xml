@@ -32,39 +32,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="start|center_vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <com.google.android.material.textview.MaterialTextView
+                android:text="@string/label_discover_filter_sort_title"
+                style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/md_margin" />
+
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="start|center_vertical">
+                android:text="@string/label_discover_filter_sort_sub_title"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:text="@string/label_discover_filter_sort_title"
-                    style="@style/AppTheme.Material.TextHeadLine.Secondary"/>
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/md_margin" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_discover_filter_sort_sub_title"/>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/sort_by_ascending"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:text="@string/label_discover_filter_sort_order_switch"/>
-
-        </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <Space
             android:layout_width="wrap_content"

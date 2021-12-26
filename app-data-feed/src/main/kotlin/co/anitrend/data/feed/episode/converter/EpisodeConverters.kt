@@ -72,7 +72,7 @@ internal class EpisodeModelConverter(
                 val segments = it.replace(" ", "").split('-')
                 val language = segments.first()
                 val country = segments.last()
-                "${language}${country.toUpperCase(Locale.ROOT)}"
+                "${language}${country.uppercase()}"
             }.orEmpty()
         }
 
