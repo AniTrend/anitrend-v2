@@ -63,7 +63,7 @@ object Versions {
 
     const val jsoup = "1.14.3"
 
-    const val tmdb = "2.5.0"
+    const val tmdb = "2.6.0"
     const val trakt = "6.10.0"
 
     const val elements = "1.0.1"
