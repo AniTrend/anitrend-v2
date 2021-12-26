@@ -21,7 +21,8 @@
     package="co.anitrend.media">
 
     <application>
-        <activity android:name=".component.screen.MediaScreen" />
+        <activity android:name=".component.screen.MediaScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

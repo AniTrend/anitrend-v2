@@ -1,7 +1,7 @@
 # [ :biohazard: W.I.P v2.0 :biohazard: ] AniTrend v2.0
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30a8f983c55541cbb504671ecc32786c)](https://www.codacy.com/app/wax911/anitrend-v2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wax911/anitrend-v2&amp;utm_campaign=Badge_Grade) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_shield)
-&nbsp; [![Build Status](https://travis-ci.org/AniTrend/anitrend-v2.svg?branch=master)](https://travis-ci.org/AniTrend/anitrend-v2)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/744e6e9f58f642d6b0dd7bb628f4871e)](https://www.codacy.com/gh/AniTrend/anitrend-v2/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AniTrend/anitrend-v2&amp;utm_campaign=Badge_Grade) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fanitrend-v2?ref=badge_shield)
+&nbsp; [![Android unit test task](https://github.com/AniTrend/anitrend-v2/actions/workflows/android-unit-test.yaml/badge.svg?branch=develop)](https://github.com/AniTrend/anitrend-v2/actions/workflows/android-unit-test.yaml)
 
 Discover anime or manga with AniTrend which is a free [AniList](https://anilist.co) android client written in kotlin. This is a temporary repository for anitrend v2.0 and no external pull requests (outside the project team members will be accepted at the current time)
 
@@ -53,7 +53,7 @@ Development documentation for AniTrend is still a work in progress so for the ti
 #### Core
 
 - [Android KTX](https://developer.android.com/kotlin/ktx.html/)
-- [Data Binding](https://developer.android.com/topic/libraries/data-binding/)
+- [View Binding](https://developer.android.com/topic/libraries/view-binding/)
 - [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html/)
 - [Kotlin](https://kotlinlang.org/)
 - [Material Components](https://material.io/develop/android/docs/getting-started/)
@@ -70,7 +70,7 @@ Development documentation for AniTrend is still a work in progress so for the ti
 
 #### Networking
 
-- [Glide](https://bumptech.github.io/glide/)
+- [Coil](https://coil-kt.github.io/coil/)
 - [Retrofit](https://square.github.io/retrofit/)
 
 #### Dependency Injection
@@ -94,7 +94,6 @@ Development documentation for AniTrend is still a work in progress so for the ti
 - [Gson](https://github.com/google/gson/)
 - [Flex Box](https://github.com/google/flexbox-layout/)
 - [Material Dialogs](https://github.com/afollestad/material-dialogs/)
-- [Smart Tab Layout](https://github.com/ogaclejapan/SmartTabLayout/)
 - [Material Tap Target Prompt](https://sjwall.github.io/MaterialTapTargetPrompt/)
 
 > **N.B** 

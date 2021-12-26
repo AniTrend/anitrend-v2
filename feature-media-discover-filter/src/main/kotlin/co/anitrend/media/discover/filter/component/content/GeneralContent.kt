@@ -99,7 +99,7 @@ internal class GeneralContent(
         MediaCountry.values().forEach {
             requireBinding().countryChipGroup.addView(
                 requireContext().createChipChoice {
-                    text = it.name.toLowerCase(Locale.ROOT).capitalizeWords()
+                    text = it.name.lowercase().capitalizeWords()
                     isChecked = param.countryOfOrigin == it.alias
                 }
             )

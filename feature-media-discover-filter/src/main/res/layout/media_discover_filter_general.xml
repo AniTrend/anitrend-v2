@@ -187,8 +187,7 @@
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/yearRangeSlider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:minSeparation="@dimen/lg_margin"/>
+            android:layout_height="wrap_content"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

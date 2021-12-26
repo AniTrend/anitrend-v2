@@ -22,7 +22,8 @@
 
     <application>
         <activity android:name=".component.screen.SearchScreen"
-            android:label="@string/title_activity_search_screen">
+            android:label="@string/title_activity_search_screen"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

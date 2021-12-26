@@ -55,6 +55,7 @@ abstract class AbstractNetworkClient<in Input, out Output> {
         // The response failed, so lets see if we should retry again
         if (!shouldRetry(this)) {
             Timber.w(this, "Specific request is not allowed to retry on this exception")
+            throw this
         }
 
         if (attempt == maxAttempts) {

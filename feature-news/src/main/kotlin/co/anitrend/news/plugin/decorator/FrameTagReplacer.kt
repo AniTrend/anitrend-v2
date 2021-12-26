@@ -29,7 +29,7 @@ internal class FrameTagReplacer private constructor() : HtmlEmptyTagReplacement(
      */
     @SuppressLint("DefaultLocale")
     override fun replace(tag: HtmlTag): String? {
-        return when (tag.name().toLowerCase()) {
+        return when (tag.name().lowercase()) {
             in handlingTags -> frameReplacement
             else -> super.replace(tag)
         }

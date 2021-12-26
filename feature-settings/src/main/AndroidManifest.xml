@@ -7,7 +7,8 @@
     <application>
         <activity
             android:name=".component.screen.SettingsScreen"
-            android:label="@string/title_activity_settings_screen" />
+            android:label="@string/title_activity_settings_screen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

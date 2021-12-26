@@ -21,7 +21,8 @@
     package="co.anitrend.news">
 
     <application>
-        <activity android:name=".component.screen.NewsScreen" />
+        <activity android:name=".component.screen.NewsScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -40,7 +40,7 @@ val Project.gitSha: String
     get() = runCommand("git rev-parse --short=8 HEAD")
 
 val Project.gitCommitCount: String
-    get() = runCommand("git rev-list count HEAD")
+    get() = runCommand("git rev-list --count HEAD")
 
 val Project.gitBranch: String
     get() = runCommand("git rev-parse --abbrev-ref HEAD")

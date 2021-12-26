@@ -21,7 +21,8 @@
     package="co.anitrend.notification" >
 
     <application>
-        <activity android:name=".component.screen.NotificationScreen" />
+        <activity android:name=".component.screen.NotificationScreen"
+            android:exported="true" />
         
         <provider
             android:name="androidx.startup.InitializationProvider"

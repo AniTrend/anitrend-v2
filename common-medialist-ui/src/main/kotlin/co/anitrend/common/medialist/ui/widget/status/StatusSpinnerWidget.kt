@@ -28,9 +28,12 @@ import co.anitrend.common.medialist.ui.widget.status.adapter.StatusIconAdapter
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import com.airbnb.paris.extensions.style
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import timber.log.Timber
 
 class StatusSpinnerWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -65,7 +68,9 @@ class StatusSpinnerWidget @JvmOverloads constructor(
                 position: Int,
                 id: Long
             ) {
-                sendBlocking(currentSelection())
+                trySendBlocking(currentSelection()).onFailure {
+                    Timber.w(it, "Failed to offer current selection to $view")
+                }
             }
 
             /**

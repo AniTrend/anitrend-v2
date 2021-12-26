@@ -19,6 +19,7 @@
     package="co.anitrend.character" >
 
     <application>
-        <activity android:name=".component.screen.CharacterScreen" />
+        <activity android:name=".component.screen.CharacterScreen"
+            android:exported="true" />
     </application>
 </manifest>

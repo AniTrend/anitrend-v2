@@ -34,11 +34,11 @@ repositories {
     }
 }
 
-val kotlinVersion = "1.4.32"
-val buildToolsVersion = "7.0.2"
+val buildToolsVersion = "7.0.4"
+val kotlinVersion = "1.5.31"
 val dokkaVersion = "1.6.0"
-val manesVersion = "0.33.0"
-val spotlessVersion = "5.12.1"
+val manesVersion = "0.36.0"
+val spotlessVersion = "6.0.5"
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */

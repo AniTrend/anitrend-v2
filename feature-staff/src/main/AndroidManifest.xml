@@ -19,6 +19,7 @@
     package="co.anitrend.staff" >
 
     <application>
-        <activity android:name=".component.screen.StaffScreen" />
+        <activity android:name=".component.screen.StaffScreen"
+            android:exported="true" />
     </application>
 </manifest>
