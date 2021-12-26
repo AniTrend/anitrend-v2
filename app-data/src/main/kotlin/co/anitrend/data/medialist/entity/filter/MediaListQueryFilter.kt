@@ -101,7 +101,7 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
                         sort.order
                     )
                 else -> {
-                    val qualifier = sort.sortable.name.toLowerCase(Locale.ROOT)
+                    val qualifier = sort.sortable.name.lowercase()
                     requireBuilder().orderBy(qualifier.asColumn(mediaListTable), sort.order)
                 }
             }

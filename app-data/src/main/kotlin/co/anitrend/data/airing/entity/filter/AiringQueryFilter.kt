@@ -174,7 +174,7 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
                         AiringScheduleEntitySchema.timeUntilAiring.asColumn(airingTable), sort.order
                     )
                     else -> {
-                        val qualifier = sort.sortable.name.toLowerCase(Locale.ROOT)
+                        val qualifier = sort.sortable.name.lowercase()
                         requireBuilder().orderBy(qualifier.asColumn(airingTable), sort.order)
                     }
                 }
