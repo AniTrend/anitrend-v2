@@ -518,7 +518,7 @@ object Libraries {
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.8.0"
+                    private const val version = "2.8.1"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
