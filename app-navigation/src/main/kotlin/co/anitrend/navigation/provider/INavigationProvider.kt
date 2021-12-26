@@ -19,12 +19,10 @@ package co.anitrend.navigation.provider
 
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
 
 /**
  * Provider for navigation components
  */
 interface INavigationProvider {
     fun activity(context: Context?): Intent? = null
-    fun fragment(): Class<out Fragment>? = null
 }

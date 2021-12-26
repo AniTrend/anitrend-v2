@@ -17,46 +17,76 @@
 
 package co.anitrend.data.media.koin
 
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.*
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.media.mapper.paged.MediaPagedCombinedMapper
-import co.anitrend.data.media.mapper.paged.MediaPagedNetworkMapper
-import co.anitrend.data.media.repository.MediaRepositoryImpl
-import co.anitrend.data.media.source.paged.combined.MediaPagedSourceImpl
-import co.anitrend.data.media.source.paged.combined.contract.MediaPagedSource
-import co.anitrend.data.media.source.paged.network.factory.MediaPagedNetworkSourceFactory
-import co.anitrend.data.media.MediaInteractor
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.media.*
+import co.anitrend.data.media.cache.MediaCache
+import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
-import co.anitrend.data.media.usecase.MediaUseCaseImpl
+import co.anitrend.data.media.entity.filter.MediaQueryFilter
+import co.anitrend.data.media.mapper.MediaMapper
+import co.anitrend.data.media.repository.MediaRepository
+import co.anitrend.data.media.source.MediaSourceImpl
+import co.anitrend.data.media.source.contract.MediaSource
+import co.anitrend.data.media.source.factory.MediaSourceFactory
+import co.anitrend.data.media.usecase.MediaInteractor
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory {
-        MediaPagedNetworkSourceFactory(
-            remoteSource = api(EndpointType.GRAPH_QL),
+    factory<MediaSource.Detail> {
+        MediaSourceImpl.Detail(
+            remoteSource = graphApi(),
+            localSource = store().mediaDao(),
             controller = graphQLController(
-                mapper = get<MediaPagedNetworkMapper>()
+                mapper = get<MediaMapper.Detail>()
             ),
-            sortOrderSettings = get(),
+            converter = get(),
+            clearDataHelper = get(),
+            jikanSource = get(),
+            moeSource = get(),
+            cachePolicy = get<MediaCache>(),
             dispatcher = get()
         )
     }
-    factory<MediaPagedSource> {
-        MediaPagedSourceImpl(
-            remoteSource = api(EndpointType.GRAPH_QL),
-            localSource = db().mediaDao(),
+    factory<MediaSource.Paged> {
+        MediaSourceImpl.Paged(
+            remoteSource = graphApi(),
+            localSource = store().mediaDao(),
             carouselSource = get(),
-            clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<MediaPagedCombinedMapper>()
+                mapper = get<MediaMapper.Paged>()
             ),
-            sortOrderSettings = get(),
+            clearDataHelper = get(),
             converter = get(),
+            filter = get(),
             dispatcher = get()
+        )
+    }
+    factory {
+        MediaSourceFactory.Network(
+            remoteSource = graphApi(),
+            controller = graphQLController(
+                mapper = get<MediaMapper.Network>()
+            ),
+            dispatcher = get()
+        )
+    }
+}
+
+private val filterModule = module {
+    factory {
+        MediaQueryFilter.Paged(
+            authentication = get()
+        )
+    }
+}
+
+private val cacheModule = module {
+    factory {
+        MediaCache(
+            localSource = store().cacheDao()
         )
     }
 }
@@ -68,42 +98,116 @@ private val converterModule = module {
     factory {
         MediaEntityViewConverter()
     }
+    factory {
+        MediaConverter()
+    }
 }
 
 private val mapperModule = module {
     factory {
-        MediaPagedCombinedMapper(
-            localSource = db().mediaDao(),
-            converter = get(),
-            airingConverter = get(),
-            airingLocalSource = db().airingScheduleDao(),
-            context = get<ISupportDispatcher>().io
+        MediaMapper.Detail(
+            mediaListMapper = get(),
+            genreMapper = get(),
+            tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
+            airingMapper = get(),
+            localSource = store().mediaDao(),
+            converter = get()
         )
     }
     factory {
-        MediaPagedNetworkMapper()
+        MediaMapper.Paged(
+            mediaListMapper = get(),
+            genreMapper = get(),
+            tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
+            airingMapper = get(),
+            localSource = store().mediaDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.Network(
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.Embed(
+            genreMapper = get(),
+            tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
+            localSource = store().mediaDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.EmbedWithAiring(
+            airingMapper = get(),
+            genreMapper = get(),
+            tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
+            localSource = store().mediaDao(),
+            converter = get()
+        )
+    }
+    factory {
+        MediaMapper.EmbedWithMediaList(
+            mediaListMapper = get(),
+            airingMapper = get(),
+            genreMapper = get(),
+            tagMapper = get(),
+            linkMapper = get(),
+            rankMapper = get(),
+            localSource = store().mediaDao(),
+            converter = get()
+        )
     }
 }
 
 private val useCaseModule = module {
-    factory<MediaInteractor> {
-        MediaUseCaseImpl(
+    factory<GetDetailMediaInteractor> {
+        MediaInteractor.Detail(
+            repository = get()
+        )
+    }
+    factory<GetPagedMediaInteractor> {
+        MediaInteractor.Paged(
+            repository = get()
+        )
+    }
+    factory<GetNetworkMediaInteractor> {
+        MediaInteractor.Network(
             repository = get()
         )
     }
 }
 
 private val repositoryModule = module {
-    factory {
-        MediaRepositoryImpl(
-            source = get(),
-            sourceFactory = get()
+    factory<MediaDetailRepository> {
+        MediaRepository.Detail(
+            source = get()
+        )
+    }
+    factory<MediaPagedRepository> {
+        MediaRepository.Paged(
+            source = get()
+        )
+    }
+    factory<MediaNetworkRepository> {
+        MediaRepository.Network(
+            source = get()
         )
     }
 }
 
 internal val mediaModules = listOf(
     sourceModule,
+    filterModule,
+    cacheModule,
     converterModule,
     mapperModule,
     useCaseModule,

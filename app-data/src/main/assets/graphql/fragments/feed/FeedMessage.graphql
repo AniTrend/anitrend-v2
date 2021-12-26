@@ -1,0 +1,22 @@
+fragment FeedMessage on MessageActivity {
+    createdAt
+    id
+    isLiked
+    isLocked
+    isPrivate
+    isSubscribed
+    likeCount
+    likes {
+        ... UserCore
+    }
+    message
+    messenger {
+        ... UserCore
+    }
+    recipient {
+        ... UserCore
+    }
+    replyCount
+    siteUrl
+    type
+}

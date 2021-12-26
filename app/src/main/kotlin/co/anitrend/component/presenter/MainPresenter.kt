@@ -22,14 +22,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.transition.TransitionManager
 import android.view.View
-import android.view.ViewGroup
 import co.anitrend.R
-import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.extension.ext.visible
 import co.anitrend.core.android.components.action.FloatingActionMenu
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
-import co.anitrend.data.arch.AniTrendExperimentalFeature
+import co.anitrend.core.android.settings.Settings
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
@@ -39,7 +35,6 @@ internal class MainPresenter(
     settings: Settings
 ) : CorePresenter(context, settings) {
 
-    @AniTrendExperimentalFeature
     private fun createContainerTransform(start: View, end: View): MaterialContainerTransform {
         val containerTransform = MaterialContainerTransform()
         with (containerTransform) {
@@ -52,7 +47,6 @@ internal class MainPresenter(
         return containerTransform
     }
 
-    @AniTrendExperimentalFeature
     fun startActionMenuTransformation(
         floatingActionButton: FloatingActionButton,
         actionMenu: FloatingActionMenu,

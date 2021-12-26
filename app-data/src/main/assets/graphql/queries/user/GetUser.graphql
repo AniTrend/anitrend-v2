@@ -1,0 +1,8 @@
+query GetUser(
+    $id: Int,
+    $name: String
+) {
+    User(id: $id, name: $name) {
+        ... UserCore
+    }
+}

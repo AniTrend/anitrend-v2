@@ -18,16 +18,16 @@
 package co.anitrend.data.user.datasource.local
 
 import androidx.paging.DataSource
-import androidx.room.*
-import co.anitrend.data.arch.database.dao.ILocalSource
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
-import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.view.UserEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class UserLocalSource : ILocalSource<UserEntity> {
+internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
 
     /**
      * Count the number of entities
@@ -45,12 +45,23 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         """)
     abstract override suspend fun clear()
 
-
     @Query("""
         delete from user
         where id = :id
         """)
     abstract suspend fun clearById(id: Long)
+
+    @Query("""
+        delete from user
+        where user_name = :userName
+        """)
+    abstract suspend fun clearByUserName(userName: String)
+
+    @Query("""
+        delete from user
+        where user_name match :userName
+        """)
+    abstract suspend fun clearByMatch(userName: String)
 
     @Query("""
         select * from user
@@ -68,16 +79,42 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         select * from user
         where id = :id
     """)
+    abstract fun userByIdFlow(id: Long): Flow<UserEntity?>
+
+    @Query("""
+        select * from user
+        where user_name = :userName
+    """)
+    abstract fun userByNameFlow(userName: String): Flow<UserEntity?>
+
+    @Query(
+        """
+        select * from user
+        where user_name = :userName
+    """
+    )
     @Transaction
-    abstract suspend fun userByIdWithOptions(
-        id: Long
-    ): UserEntityView.WithOptions?
+    abstract fun userByNameWithOptionsFlow(
+        userName: String
+    ): Flow<UserEntityView.WithOptions?>
 
     @Query("""
         select * from user
         where id = :id
     """)
-    abstract fun userByIdFlow(id: Long): Flow<UserEntity?>
+    @Transaction
+    abstract fun userByIdWithOptionsFlow(
+        id: Long
+    ): Flow<UserEntityView.WithOptions?>
+
+    @Query("""
+        select * from user
+        where id = :id
+    """)
+    @Transaction
+    abstract fun userByIdWithStatisticFlow(
+        id: Long
+    ): Flow<UserEntityView.WithStatistic?>
 
     @Query("""
         select * from user
@@ -95,21 +132,17 @@ internal abstract class UserLocalSource : ILocalSource<UserEntity> {
         follower: Boolean = true
     ): DataSource.Factory<Int, UserEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsert(attribute: UserGeneralOptionEntity)
+    @Query("""
+        select * from user
+    """)
+    abstract fun entryFactory(
+    ): DataSource.Factory<Int, UserEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsert(attribute: UserMediaOptionEntity)
-
-    suspend fun upsertWithOptions(
-        userEntity: UserEntity,
-        userGeneralOptionEntity: UserGeneralOptionEntity?,
-        userMediaOptionEntity: UserMediaOptionEntity?
-    ) {
-        upsert(userEntity)
-        if (userGeneralOptionEntity != null)
-            upsert(userGeneralOptionEntity)
-        if (userMediaOptionEntity != null)
-            upsert(userMediaOptionEntity)
-    }
+    @Query("""
+        select * from user
+        where user_name match :searchTerm
+    """)
+    abstract fun entrySearchFactory(
+        searchTerm: String
+    ): DataSource.Factory<Int, UserEntity>
 }

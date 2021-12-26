@@ -20,12 +20,27 @@ package co.anitrend.task.user.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.data.user.ToggleFollowInteractor
+import co.anitrend.domain.user.model.UserParam
+import kotlinx.coroutines.flow.first
 
 /** Worker for toggling following state */
 class UserFollowToggleWorker(
     context: Context,
     parameters: WorkerParameters,
+    private val toggleFollow: ToggleFollowInteractor
 ) : SupportCoroutineWorker(context, parameters) {
+
+    private val param by lazy(UNSAFE) {
+        UserParam.ToggleFollow(
+            parameters.inputData.getLong(
+                UserParam.ToggleFollow::userId.name,
+                -1
+            )
+        )
+    }
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -39,6 +54,14 @@ class UserFollowToggleWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        TODO("Not yet implemented")
+        val dataState = toggleFollow(param)
+
+        val networkState = dataState.loadState.first { state ->
+            state is LoadState.Success || state is LoadState.Error
+        }
+
+        return if (networkState is LoadState.Success)
+            Result.success()
+        else Result.failure()
     }
 }

@@ -17,47 +17,25 @@
 
 package co.anitrend.data.recommendation.model.query
 
-import co.anitrend.domain.common.graph.IGraphPayload
-import co.anitrend.domain.recommendation.enums.RecommendationSort
-import kotlinx.android.parcel.Parcelize
+import co.anitrend.data.common.model.graph.IGraphPayload
+import co.anitrend.domain.recommendation.model.RecommendationParam
 
-/** [Recommendation query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
- *
- * @param id Filter by recommendation id
- * @param mediaId Filter by media id
- * @param mediaRecommendationId Filter by media recommendation id
- * @param onList Filter by the media on the authenticated user's lists
- * @param rating Filter by total rating of the recommendation
- * @param rating_greater Filter by total rating of the recommendation
- * @param rating_lesser Filter by total rating of the recommendation
- * @param sort The order the results will be returned in
- * @param userId Filter by user who created the recommendation
- */
-@Parcelize
-data class RecommendationQuery(
-    val id: Int? = null,
-    val mediaId: Int? = null,
-    val mediaRecommendationId: Int? = null,
-    val onList: Boolean? = null,
-    val rating: Int? = null,
-    val rating_greater: Int? = null,
-    val rating_lesser: Int? = null,
-    val sort: List<RecommendationSort>? = null,
-    val userId: Int? = null
+internal data class RecommendationQuery(
+    val param: RecommendationParam.Find
 ) : IGraphPayload {
 
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
     override fun toMap() = mapOf(
-        "id" to id,
-        "mediaId" to mediaId,
-        "mediaRecommendationId" to mediaRecommendationId,
-        "onList" to onList,
-        "rating" to rating,
-        "rating_greater" to rating_greater,
-        "rating_lesser" to rating_lesser,
-        "sort" to sort,
-        "userId" to userId
+        "id" to param.id,
+        "mediaId" to param.mediaId,
+        "mediaRecommendationId" to param.mediaRecommendationId,
+        "onList" to param.onList,
+        "rating" to param.rating,
+        "rating_greater" to param.rating_greater,
+        "rating_lesser" to param.rating_lesser,
+        "sort" to param.sort,
+        "userId" to param.userId
     )
 }

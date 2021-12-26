@@ -1,5 +1,0 @@
-query MediaTagCollection {
-  MediaTagCollection {
-    ... Tag
-  }
-}

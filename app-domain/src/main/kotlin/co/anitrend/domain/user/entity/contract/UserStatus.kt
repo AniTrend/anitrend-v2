@@ -35,7 +35,9 @@ data class UserStatus(
     val isFollowing: Boolean?,
     val isFollower: Boolean?,
     val isBlocked: Boolean?,
-    val pageUrl: CharSequence?
+    val pageUrl: CharSequence?,
+    val createdAt: Long?,
+    val updatedAt: Long?,
 ) {
     companion object {
         fun empty() = UserStatus(
@@ -45,7 +47,9 @@ data class UserStatus(
             isFollowing = null,
             isFollower = null,
             isBlocked = null,
-            pageUrl = null
+            pageUrl = null,
+            createdAt = null,
+            updatedAt = null,
         )
     }
 }

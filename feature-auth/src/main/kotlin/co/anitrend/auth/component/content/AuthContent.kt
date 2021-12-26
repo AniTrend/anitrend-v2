@@ -21,7 +21,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.AuthViewModel
@@ -30,6 +30,7 @@ import co.anitrend.auth.presenter.AuthPresenter
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
@@ -42,12 +43,12 @@ class AuthContent(
 
     private val viewModel by sharedViewModel<AuthViewModel>()
 
-    private val restNetworkStateOnBackPress =
+    private val resetNetworkStateOnBackPress =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val stateFlow = binding?.stateLayout?.networkMutableStateFlow
-                if (stateFlow?.value is NetworkState.Loading || stateFlow?.value is NetworkState.Error)
-                    stateFlow.value = NetworkState.Idle
+                val stateFlow = binding?.stateLayout?.loadStateFlow
+                if (stateFlow?.value is LoadState.Loading || stateFlow?.value is LoadState.Error)
+                    stateFlow.value = LoadState.Idle()
                 else
                     activity?.finish()
             }
@@ -60,17 +61,18 @@ class AuthContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        super.initializeComponents(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, restNetworkStateOnBackPress
+            this, resetNetworkStateOnBackPress
         )
         lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionStateFlow.filterNotNull()
+            requireBinding().stateLayout.interactionFlow
                 .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
                 .onEach {
                     viewModelState().retry()
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(cause)
+                    Timber.e(cause)
                 }
                 .collect()
         }
@@ -84,7 +86,7 @@ class AuthContent(
                     )
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).e(cause)
+                    Timber.e(cause)
                 }
                 .collect()
         }
@@ -95,13 +97,16 @@ class AuthContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().networkState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.networkMutableStateFlow.value = it
+        viewModelState().loadState.observe(viewLifecycleOwner) {
+            requireBinding().stateLayout.loadStateFlow.value = it
         }
-        viewModelState().model.observe(viewLifecycleOwner) {
-            // TODO: Show a custom toast to inform the user that they have been logged in
-            if (it != null)
+        viewModelState().model.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
+                presenter.scheduleAuthenticationBasedTasks()
                 activity?.finish()
+            } else {
+                // TODO: Inform the user auth was successful but account could not be fetched
+            }
         }
     }
 
@@ -110,7 +115,9 @@ class AuthContent(
         binding = AuthContentBinding.bind(view)
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
         requireBinding().anonymousControls.anonymousAccount.setOnClickListener {
-            presenter.useAnonymousAccount(requireActivity())
+            lifecycleScope.launch {
+                presenter.useAnonymousAccount(requireActivity())
+            }
         }
         requireBinding().authorizationControls.authorizationIssues.setOnClickListener {
             presenter.authorizationIssues(requireActivity())

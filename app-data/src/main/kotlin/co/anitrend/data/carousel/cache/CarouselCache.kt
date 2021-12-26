@@ -17,10 +17,10 @@
 
 package co.anitrend.data.carousel.cache
 
-import co.anitrend.data.cache.datasource.CacheLocalSource
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.model.CacheRequest
-import co.anitrend.data.cache.repository.CacheStorePolicy
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.cache.repository.CacheStorePolicy
 import org.threeten.bp.Instant
 
 internal class CarouselCache(
@@ -32,9 +32,9 @@ internal class CarouselCache(
      * Check if a resource with a given [entityId] is permitted to refresh
      */
     override suspend fun shouldRefresh(
-        entityId: Long,
+        identity: CacheIdentity,
         expiresAfter: Instant
-    ) = isRequestBefore(entityId, expiresAfter)
+    ): Boolean = isRequestBefore(identity, expiresAfter)
 
     enum class Identifier(
         override val id: Long,

@@ -21,8 +21,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.collection.LruCache
+import androidx.core.os.bundleOf
+import androidx.work.*
 import co.anitrend.navigation.model.NavPayload
+import co.anitrend.navigation.model.common.IParam
 import co.anitrend.navigation.router.NavigationRouter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import timber.log.Timber
 
 private val classCache = object : LruCache<String, Class<*>>(8) {
@@ -42,9 +47,7 @@ private val classCache = object : LruCache<String, Class<*>>(8) {
      * key.
      */
     override fun create(key: String): Class<*>? {
-        Timber.tag("classCache").v(
-            "Creating new navigation target class reference for key: $key"
-        )
+        Timber.v("Creating new navigation target class reference for key: $key")
         return Class.forName(key)
     }
 }
@@ -70,14 +73,22 @@ internal fun String.loadIntentOrNull(packageName: String): Intent? =
     }.getOrNull()
 
 /**
- * Build fragment class from the navigation component
- */
-fun NavigationRouter.forFragment() = provider.fragment()
-
-/**
  * Builds an activity intent from the navigation component
  */
-fun NavigationRouter.forActivity(context: Context) = provider.activity(context)
+fun NavigationRouter.forActivity(
+    context: Context,
+    navPayload: NavPayload? = null,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+): Intent? {
+    val intent = provider.activity(context)
+    intent?.flags = flags
+    intent?.action = action
+    navPayload?.also {
+        intent?.putExtra(it.key, it.param)
+    }
+    return intent
+}
 
 /**
  * Builds an activity intent and starts it
@@ -90,37 +101,82 @@ fun NavigationRouter.startActivity(
     options: Bundle? = null
 ) {
     runCatching {
-        val intent = provider.activity(context)
-        intent?.flags = flags
-        intent?.action = action
-        navPayload?.also {
-            intent?.putExtra(it.key, it.parcel)
-        }
-        context?.startActivity(intent, options)
+        val intent = forActivity(
+            requireNotNull(context),
+            navPayload,
+            flags,
+            action
+        )
+        context.startActivity(intent, options)
     }.onFailure {
         Timber.tag(moduleTag).e(it)
     }
 }
 
 /**
- * Builds an activity intent and starts it
+ * Constructs bundles from [IParam] sub types
+ *
+ * @return [Bundle]
  */
-fun NavigationRouter.start(
-    context: Context?,
-    bundle: Bundle? = null,
-    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
-    action: String = Intent.ACTION_VIEW,
-    options: Bundle? = null
-) {
-    runCatching {
-        val intent = provider.activity(context)
-        intent?.flags = flags
-        intent?.action = action
-        bundle?.also {
-            intent?.putExtras(it)
-        }
-        context?.startActivity(intent, options)
-    }.onFailure {
-        Timber.tag(moduleTag).e(it)
-    }
+fun IParam.asBundle() =
+    bundleOf(idKey to this)
+
+
+/**
+ * Constructs nav payload from [IParam] sub types
+ *
+ * @return [NavPayload]
+ */
+fun IParam.asNavPayload() = NavPayload(idKey, this)
+
+
+/**
+ * [Data.Builder] creator from [IParam] objects, this typically applies to tasks modules
+ *
+ * @see IParam
+ */
+fun <T : IParam> T.toDataBuilder(): Data.Builder {
+    val map = mapOf(
+        idKey to Gson().toJson(this)
+    )
+    return Data.Builder().putAll(map)
+}
+
+/**
+ * Object creator of type [IParam] that uses [WorkerParameters] to retrieve data
+ *
+ * @param contract The key from [IParam.IKey]
+ *
+ * @see IParam
+ */
+inline fun <reified T: IParam> WorkerParameters.fromWorkerParameters(contract: IParam.IKey): T {
+    val map = inputData.keyValueMap
+    return Gson().fromJson(
+        map[contract.KEY] as String,
+        object : TypeToken<T>(){}.type
+    )
+}
+
+/**
+ * Creates a [OneTimeWorkRequest] for this worker
+ *
+ * @param context Any valid application context
+ * @param params Parameters for this worker
+ *
+ * @return [WorkContinuation]
+ */
+fun Class<out ListenableWorker>.createOneTimeUniqueWorker(
+    context: Context,
+    params: IParam
+): WorkContinuation {
+    val oneTimeRequest = OneTimeWorkRequest.Builder(this)
+        .setInputData(params.toDataBuilder().build())
+        .build()
+
+    return WorkManager.getInstance(context)
+        .beginUniqueWork(
+            simpleName,
+            ExistingWorkPolicy.KEEP,
+            oneTimeRequest
+    )
 }

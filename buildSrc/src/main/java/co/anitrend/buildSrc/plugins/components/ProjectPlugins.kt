@@ -17,25 +17,58 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.common.app
-import co.anitrend.buildSrc.common.data
-import co.anitrend.buildSrc.common.core
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginContainer
+import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.hasKaptSupport
+import co.anitrend.buildSrc.extensions.baseExtension
+import co.anitrend.buildSrc.extensions.hasKotlinAndroidExtensionSupport
 
-private fun addAndroidPlugin(name: String, pluginContainer: PluginContainer) {
-    if (name == app) pluginContainer.apply("com.android.application")
+private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer) {
+    if (project.isAppModule()) pluginContainer.apply("com.android.application")
     else pluginContainer.apply("com.android.library")
 }
 
-private fun addAnnotationProcessor(name: String, pluginContainer: PluginContainer) {
-    if (name == data || name == app || name == core)
+private fun addKotlinAndroidPlugin(pluginContainer: PluginContainer) {
+    pluginContainer.apply("kotlin-android")
+    pluginContainer.apply("com.diffplug.spotless")
+}
+
+private fun addAnnotationProcessor(project: Project, pluginContainer: PluginContainer) {
+    if (project.hasKaptSupport())
         pluginContainer.apply("kotlin-kapt")
 }
 
+private fun addKotlinAndroidExtensions(project: Project, pluginContainer: PluginContainer) {
+    if (project.hasKotlinAndroidExtensionSupport())
+        pluginContainer.apply("kotlin-parcelize")
+}
+
 internal fun Project.configurePlugins() {
-    addAndroidPlugin(project.name, plugins)
-    plugins.apply("kotlin-android")
-    plugins.apply("kotlin-android-extensions")
-    addAnnotationProcessor(project.name, plugins)
+    addAndroidPlugin(project, plugins)
+    addKotlinAndroidPlugin(plugins)
+    addKotlinAndroidExtensions(project, plugins)
+    addAnnotationProcessor(project, plugins)
+}
+
+internal fun Project.configureAdditionalPlugins() {
+    /*if (isAppModule()) {
+        println("Applying additional google plugins")
+        if (file("google-services.json").exists()) {
+            plugins.apply("com.google.gms.google-services")
+            plugins.apply("com.google.firebase.crashlytics")
+        } else println("google-services.json cannot be found and will not be using any of the google plugins")
+    }*/
+    if (isAppModule()) {
+        baseExtension().variantFilter {
+            println("VariantFilter { defaultConfig: ${defaultConfig.name}, buildType: ${buildType.name}, flavors: [${flavors.joinToString { it.name }}], name: $name }")
+            if (flavors.isNotEmpty() && flavors.first().name == "google") {
+                println("Applying additional google plugins on -> variant: $name | type: ${buildType.name}")
+                if (file("google-services.json").exists()) {
+                    plugins.apply("com.google.gms.google-services")
+                    plugins.apply("com.google.firebase.crashlytics")
+                } else println("google-services.json cannot be found and will not be using any of the google plugins")
+            }
+        }
+    }
 }

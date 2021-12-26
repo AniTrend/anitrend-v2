@@ -20,7 +20,7 @@
 
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#6e000000" />
+            <solid android:color="@color/bubble_color" />
             <corners android:radius="50dp" />
             <padding android:bottom="@dimen/lg_margin" android:left="@dimen/xl_margin" android:right="@dimen/xl_margin" android:top="@dimen/lg_margin" />
         </shape>
@@ -28,7 +28,7 @@
 
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#6e000000"/>
+            <solid android:color="@color/bubble_color"/>
             <corners android:radius="50dp" />
             <padding android:bottom="@dimen/lg_margin" android:left="@dimen/xl_margin" android:right="@dimen/xl_margin" android:top="@dimen/lg_margin" />
         </shape>

@@ -32,8 +32,8 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xl"
-        android:layout_marginEnd="@dimen/spacing_xl"
+        android:layout_marginStart="@dimen/size_48dp"
+        android:layout_marginEnd="@dimen/size_48dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="@string/auth_label_alternative_account"

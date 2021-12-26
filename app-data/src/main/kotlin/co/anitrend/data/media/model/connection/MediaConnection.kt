@@ -17,10 +17,11 @@
 
 package co.anitrend.data.media.model.connection
 
-import co.anitrend.data.arch.common.entity.IEntityConnection
-import co.anitrend.data.arch.common.model.paging.info.PageInfo
+import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.media.model.edge.MediaEdge
+import co.anitrend.data.review.model.remote.ReviewModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,8 +29,53 @@ import kotlinx.serialization.Serializable
  * Media connection
  */
 @Serializable
-internal data class MediaConnection(
-    @SerialName("edges") override val edges: List<MediaEdge>?,
-    @SerialName("nodes") override val nodes: List<MediaModel.Core>?,
-    @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection<MediaEdge, MediaModel>
+internal sealed class MediaConnection : IEntityConnection {
+
+    @Serializable
+    data class Airing(
+        @SerialName("edges") override val edges: List<MediaEdge.Airing>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+
+    @Serializable
+    data class Review(
+        @SerialName("nodes") override val nodes: List<ReviewModel.Core>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.INode<ReviewModel>
+
+    @Serializable
+    data class Recommendation(
+        @SerialName("edges") override val edges: List<MediaEdge.Recommendation>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+
+    @Serializable
+    data class Relation(
+        @SerialName("edges") override val edges: List<MediaEdge.Relation>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+
+    @Serializable
+    data class Studio(
+        @SerialName("edges") override val edges: List<MediaEdge.Studio>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+
+    @Serializable
+    data class Favourite(
+        @SerialName("edges") override val edges: List<MediaEdge.Favourite>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+
+    @Serializable
+    data class Character(
+        @SerialName("edges") override val edges: List<MediaEdge.Character>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+
+    @Serializable
+    data class Staff(
+        @SerialName("edges") override val edges: List<MediaEdge.Staff>?,
+        @SerialName("pageInfo") override val pageInfo: PageInfo?
+    ) : MediaConnection(), IEntityConnection.IEdge<MediaEdge>
+}

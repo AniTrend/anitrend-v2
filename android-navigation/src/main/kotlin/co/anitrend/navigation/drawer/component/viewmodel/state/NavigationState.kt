@@ -20,15 +20,13 @@ package co.anitrend.navigation.drawer.component.viewmodel.state
 import androidx.annotation.IdRes
 import androidx.lifecycle.*
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.arch.extension.ext.replaceWith
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -37,37 +35,25 @@ import kotlin.properties.Delegates
 
 internal class NavigationState(
     settings: IAuthenticationSettings
-) : ISupportViewModelState<List<Navigation>>, ISupportCoroutine by Main() {
+) : ISupportViewModelState<List<Navigation>> {
 
     var context by Delegates.notNull<CoroutineContext>()
-
-    private val moduleTag: String = javaClass.simpleName
 
     private val navigationItems by lazy(UNSAFE) {
         val initialState = createNavigationItems(settings.isAuthenticated.value)
         MutableStateFlow(initialState)
     }
 
-    override val model: LiveData<List<Navigation>?> by lazy(UNSAFE) {
+    override val model by lazy(UNSAFE) {
         navigationItems.asLiveData(context)
     }
 
-    override val networkState: LiveData<NetworkState> = liveData {
-        emit(NetworkState.Loading)
+    override val loadState = liveData<LoadState> {
+        emit(LoadState.Loading())
     }
 
-    override val refreshState: LiveData<NetworkState> = liveData {
-        emit(NetworkState.Loading)
-    }
-
-    init {
-        launch {
-            settings.isAuthenticated.flow.onEach { authenticated ->
-                invoke(authenticated)
-            }.catch { cause ->
-                Timber.tag(moduleTag).w(cause)
-            }.collect()
-        }
+    override val refreshState = liveData<LoadState> {
+        emit(LoadState.Loading())
     }
 
     private fun createNavigationItems(authenticated: Boolean): List<Navigation> {
@@ -148,7 +134,7 @@ internal class NavigationState(
             Navigation.Menu(
                 id = R.id.navigation_donate,
                 icon = R.drawable.ic_patreon_24dp,
-                titleRes = R.string.navigation_donate,
+                titleRes = R.string.navigation_support,
                 isCheckable = false
             ),
             Navigation.Menu(
@@ -174,16 +160,15 @@ internal class NavigationState(
         return navigationItems
     }
 
-    operator fun invoke(authenticated: Boolean) {
-        val snapshot = navigationItems.value.toMutableList()
-        val checked = snapshot
-            .filterIsInstance<Navigation.Menu>()
-            .firstOrNull(Navigation.Menu::isChecked)
-
-        snapshot.replaceWith(createNavigationItems(authenticated))
+    suspend fun onAuthenticationStateChanged(isAuthenticated: Boolean) {
+        val snapshot = mutableListOf<Navigation>()
+        snapshot.addAll(navigationItems.value)
+        val checked = snapshot.firstOrNull { nav ->
+            nav is Navigation.Menu && nav.isChecked
+        }
 
         if (checked != null && !setNavigationMenuItemChecked(checked.id))
-            navigationItems.value = snapshot
+            navigationItems.emit(createNavigationItems(isAuthenticated))
     }
 
     /**
@@ -191,9 +176,10 @@ internal class NavigationState(
      *
      * @return true if the currently selected item has changed.
      */
-    fun setNavigationMenuItemChecked(@IdRes id: Int): Boolean {
+    suspend fun setNavigationMenuItemChecked(@IdRes id: Int): Boolean {
         var updated = false
-        val snapshot = navigationItems.value
+        val snapshot = mutableListOf<Navigation>()
+        snapshot.addAll(navigationItems.value)
         snapshot.filterIsInstance<Navigation.Menu>()
             .onEach {
                 val shouldCheck = it.id == id
@@ -202,7 +188,7 @@ internal class NavigationState(
                 it.isChecked = shouldCheck
             }
         if (updated)
-            navigationItems.value = snapshot
+            navigationItems.emit(snapshot)
         return updated
     }
 
@@ -214,20 +200,20 @@ internal class NavigationState(
      * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
      */
     override fun onCleared() {
-        cancelAllChildren()
+        throw UnsupportedOperationException("$this does not support clear operation")
     }
 
     /**
      * Triggers use case to perform refresh operation
      */
     override suspend fun refresh() {
-        throw UnsupportedOperationException("$moduleTag does not support refresh operation")
+        throw UnsupportedOperationException("$this does not support refresh operation")
     }
 
     /**
      * Triggers use case to perform a retry operation
      */
     override suspend fun retry() {
-        throw UnsupportedOperationException("$moduleTag does not support retry operation")
+        throw UnsupportedOperationException("$this does not support retry operation")
     }
 }

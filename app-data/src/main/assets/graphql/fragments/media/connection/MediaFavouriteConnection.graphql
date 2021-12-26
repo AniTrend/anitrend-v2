@@ -1,0 +1,12 @@
+fragment MediaFavouriteConnection on MediaConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        favouriteOrder
+        node {
+            ... MediaCore
+        }
+    }
+}

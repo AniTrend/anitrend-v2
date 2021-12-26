@@ -18,10 +18,12 @@
 package co.anitrend.about.component.screen
 
 import android.os.Bundle
-import co.anitrend.about.databinding.AboutScreenBinding
-import co.anitrend.core.component.screen.AnitrendScreen
+import androidx.viewbinding.ViewBinding
+import androidx.activity.compose.setContent
+import co.anitrend.about.component.content.AboutContent
+import co.anitrend.core.component.screen.AniTrendScreen
 
-class AboutScreen : AnitrendScreen<AboutScreenBinding>() {
+class AboutScreen : AniTrendScreen<ViewBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during
@@ -30,12 +32,17 @@ class AboutScreen : AnitrendScreen<AboutScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
+        updateUserInterface()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = AboutScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AboutContent()
+        }
+    }
+
+    private fun updateUserInterface() {
+
     }
 }

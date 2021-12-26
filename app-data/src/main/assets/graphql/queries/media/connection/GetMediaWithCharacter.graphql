@@ -1,0 +1,13 @@
+query GetMediaWithCharacter(
+    $page: Int!,
+    $perPage: Int!,
+    $id: Int!,
+    $role: CharacterRole,
+    $sort: [CharacterSort]
+) {
+    Media(id: $id) {
+        characters(page: $page, perPage: $perPage, sort: $sort, role: $role) {
+            ... MediaCharacterConnection
+        }
+    }
+}

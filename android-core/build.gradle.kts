@@ -1,4 +1,3 @@
-import co.anitrend.buildSrc.Libraries
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -16,11 +15,26 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import co.anitrend.buildSrc.Libraries
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
     id("co.anitrend.plugin")
 }
 
+tasks.withType(KotlinCompile::class.java) {
+    kotlinOptions {
+        freeCompilerArgs = listOf(
+            "-Xopt-in=kotlinx.coroutines.FlowPreview",
+            "-Xopt-in=coil.annotation.ExperimentalCoilApi",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        )
+    }
+}
+
 dependencies {
+    implementation(Libraries.AirBnB.Paris.paris)
     implementation(Libraries.AniTrend.Arch.recycler)
+    implementation(Libraries.Google.FlexBox.flexBox)
     implementation(Libraries.prettyTime)
 }

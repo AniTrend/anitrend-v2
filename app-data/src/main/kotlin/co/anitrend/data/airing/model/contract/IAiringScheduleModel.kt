@@ -17,7 +17,7 @@
 
 package co.anitrend.data.airing.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 
 /** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
  * Media Airing Schedule

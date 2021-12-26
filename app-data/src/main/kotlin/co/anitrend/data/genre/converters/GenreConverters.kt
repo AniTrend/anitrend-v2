@@ -20,46 +20,67 @@ package co.anitrend.data.genre.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.genre.entity.GenreEntity
+import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.domain.genre.entity.Genre
+import io.wax911.emojify.manager.IEmojiManager
 
 internal class GenreEntityConverter(
-    override val fromType: (GenreEntity) -> Genre = { from().transform(it) },
-    override val toType: (Genre) -> GenreEntity = { to().transform(it) }
+    override val fromType: (GenreEntity) -> Genre = ::transform,
+    override val toType: (Genre) -> GenreEntity = { throw NotImplementedError() }
 ) : SupportConverter<GenreEntity, Genre>() {
-
-    companion object {
-        private fun from() =
-            object : ISupportTransformer<GenreEntity, Genre> {
-                override fun transform(source: GenreEntity) = Genre(
-                    name = source.genre
-                )
-            }
-
-        private fun to() =
-            object : ISupportTransformer<Genre, GenreEntity> {
-                override fun transform(source: Genre) = GenreEntity(
-                    genre = source.name
-                )
-            }
+    private companion object : ISupportTransformer<GenreEntity, Genre> {
+        override fun transform(source: GenreEntity) = Genre.Core(
+            name = source.genre,
+            emoji = source.emoji,
+            id = source.id
+        )
     }
 }
 
 internal class GenreModelConverter(
-    override val fromType: (String) -> GenreEntity = { from().transform(it) },
-    override val toType: (GenreEntity) -> String = { to().transform(it) }
-) : SupportConverter<String, GenreEntity>() {
+    emojiManager: IEmojiManager,
+    override val fromType: (GenreCollection.GenreModel) -> GenreEntity = { transform(it, emojiManager) },
+    override val toType: (GenreEntity) -> GenreCollection.GenreModel = { throw NotImplementedError() }
+) : SupportConverter<GenreCollection.GenreModel, GenreEntity>() {
 
-    companion object {
-        private fun from() =
-            object : ISupportTransformer<String, GenreEntity> {
-                override fun transform(source: String): GenreEntity = GenreEntity(
-                    genre = source
-                )
-            }
+    private companion object {
 
-        private fun to() =
-            object : ISupportTransformer<GenreEntity, String> {
-                override fun transform(source: GenreEntity): String = source.genre
+        fun IEmojiManager.withAlias(alias: String): String {
+            val emoji = getForAlias(alias)
+            return emoji?.emoji.orEmpty()
+        }
+
+        fun IEmojiManager.getEmojiFor(genre: String): String {
+            return when (genre) {
+                "Action" -> withAlias("cowboy")
+                "Adventure" -> withAlias("rocket")
+                "Comedy" -> withAlias("rofl")
+                "Drama" -> withAlias("speak_no_evil")
+                "Ecchi" -> withAlias("smirk")
+                "Fantasy" -> withAlias("art")
+                "Hentai" -> withAlias("eggplant")
+                "Horror" -> withAlias("scream")
+                "Mahou Shoujo" -> withAlias("woman_mage")
+                "Mecha" -> withAlias("robot_face")
+                "Music" -> withAlias("saxophone")
+                "Mystery" -> withAlias("detective")
+                "Psychological" -> withAlias("weary")
+                "Romance" -> withAlias("couplekiss")
+                "Sci-Fi" -> withAlias("space_invader")
+                "Slice of Life" -> withAlias("couple")
+                "Sports" -> withAlias("basketball")
+                "Supernatural" -> withAlias("ghost")
+                "Thriller" -> withAlias("dagger")
+                else -> withAlias("question")
             }
+        }
+
+        fun transform(source: GenreCollection.GenreModel, emojiManager: IEmojiManager) = GenreEntity(
+            id = source.id,
+            genre = source.genre,
+            emoji = emojiManager.getEmojiFor(
+                source.genre
+            )
+        )
     }
 }

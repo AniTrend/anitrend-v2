@@ -1,0 +1,12 @@
+fragment MediaStudioConnection on StudioConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        isMain
+        node {
+            ... StudioCore
+        }
+    }
+}

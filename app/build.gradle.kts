@@ -25,8 +25,6 @@ dependencies {
 
     /** Material Design */
     implementation(Libraries.Google.Material.material)
-    implementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
-    implementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
 
     implementation(Libraries.AniTrend.Emojify.emojify)
 
@@ -35,10 +33,5 @@ dependencies {
 
     /** debugImplementation because debug-db should only run in debug builds */
     debugImplementation(Libraries.debugDb)
-}
-
-if (file("google-services.json").exists()) {
-    plugins.apply("com.google.gms.google-services")
-    plugins.apply("com.google.firebase.crashlytics")
 }
 

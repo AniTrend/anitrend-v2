@@ -17,8 +17,9 @@
 
 package co.anitrend.data.medialist.model.contract
 
-import co.anitrend.data.arch.common.model.date.contract.IFuzzyDateModel
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.common.model.date.contract.IFuzzyDateModel
+import co.anitrend.data.core.common.Identity
+import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 /** [MediaList](https://anilist.github.io/ApiV2-GraphQL-Docs/medialist.doc.html)
@@ -40,7 +41,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @property startedAt When the entry was started by the user
  * @property status The watching/reading status
  * @property updatedAt When the entry data was last updated
- * @property userId The id of the user owner of the list entry
+ * @property user The owner of the list entry
  */
 internal interface IMediaListModel : Identity {
     val advancedScores: Map<String, Float>?
@@ -59,7 +60,7 @@ internal interface IMediaListModel : Identity {
     val startedAt: IFuzzyDateModel?
     val status: MediaListStatus?
     val updatedAt: Long?
-    val userId: Long
+    val user: IUserModel
 
     interface ICustomList {
         val name: String

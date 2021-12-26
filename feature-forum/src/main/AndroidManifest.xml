@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (C) 2019  AniTrend
+  ~ Copyright (C) 2021  AniTrend
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU General Public License as published by
@@ -16,4 +16,22 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.anitrend.forum" />
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="co.anitrend.forum" >
+
+    <application>
+        <activity android:name=".component.screen.ForumScreen"
+            android:exported="true" />
+        
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data android:name="co.anitrend.forum.initializer.FeatureInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
+    </application>
+</manifest>

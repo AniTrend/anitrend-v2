@@ -33,7 +33,7 @@ import androidx.room.PrimaryKey
 )
 internal data class AuthEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") val id: Long,
+    @ColumnInfo(name = "id") val id: Long = 0,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "expires_on") val expiresOn: Long,
     @ColumnInfo(name = "token_type") val tokenType: String,

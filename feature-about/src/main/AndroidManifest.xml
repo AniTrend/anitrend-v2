@@ -22,7 +22,7 @@
 
     <application>
         <activity android:name=".component.screen.AboutScreen"
-            android:label="@string/title_activity_about_screen" />
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

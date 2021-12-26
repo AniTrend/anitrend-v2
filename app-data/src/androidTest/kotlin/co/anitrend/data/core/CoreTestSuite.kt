@@ -19,7 +19,7 @@ package co.anitrend.data.core
 
 import android.content.ContentResolver
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.arch.database.common.IAniTrendStore
+import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.decodeFromString
@@ -44,7 +44,7 @@ internal open class CoreTestSuite : KoinTest {
     private val koin: KoinApplication by lazy { initializeKoin() }
 
     protected val json by inject<Json>()
-    protected val server = MockWebServer()
+    protected val server by inject<MockWebServer>()
     protected val store by inject<IAniTrendStore>()
     protected val dispatchers by inject<ISupportDispatcher>()
     protected val contentResolver by inject<ContentResolver>()

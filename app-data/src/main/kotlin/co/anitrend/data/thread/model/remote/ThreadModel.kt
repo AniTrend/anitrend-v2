@@ -18,9 +18,9 @@
 package co.anitrend.data.thread.model.remote
 
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.thread.model.contract.IThreadModel
-import co.anitrend.data.user.model.remote.UserModel
+import co.anitrend.data.user.model.UserModel
 
 /** [Thread](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/thread.doc.html)
  * Forum Thread

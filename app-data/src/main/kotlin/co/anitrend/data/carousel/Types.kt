@@ -18,15 +18,15 @@
 package co.anitrend.data.carousel
 
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.interactor.MediaCarouselUseCase
-import co.anitrend.domain.carousel.repository.MediaCarouselRepository
+import co.anitrend.domain.carousel.repository.IMediaCarouselRepository
 
-internal typealias CarouselController = GraphQLController<CarouselModel, List<MediaEntity>>
+internal typealias MediaCarouselListController = GraphQLController<CarouselModel, List<MediaEntity>>
 
-internal typealias CarouselRepository = MediaCarouselRepository<DataState<List<MediaCarousel>?>>
+internal typealias MediaCarouselListRepository = IMediaCarouselRepository<DataState<List<MediaCarousel>>>
 
-typealias CarouselInteractor = MediaCarouselUseCase<DataState<List<MediaCarousel>?>>
+typealias GetCarouselInteractor = MediaCarouselUseCase<DataState<List<MediaCarousel>>>

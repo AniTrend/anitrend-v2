@@ -21,14 +21,15 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.TagTaskRouter
 import co.anitrend.task.tag.component.TagWorker
 import co.anitrend.task.tag.provider.FeatureProvider
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 private val workManagerModule = module {
-    worker {
+    worker { params ->
         TagWorker(
-            context = get(),
-            parameters = get(),
+            context = androidContext(),
+            parameters = params.get(),
             interactor = get()
         )
     }

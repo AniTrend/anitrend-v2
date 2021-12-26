@@ -17,10 +17,10 @@
 
 package co.anitrend.data.tag.cache
 
-import co.anitrend.data.cache.datasource.CacheLocalSource
-import co.anitrend.data.cache.model.CacheIdentity
-import co.anitrend.data.cache.model.CacheRequest
-import co.anitrend.data.cache.repository.CacheStorePolicy
+import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.cache.repository.CacheStorePolicy
 import org.threeten.bp.Instant
 
 internal class TagCache(
@@ -29,15 +29,15 @@ internal class TagCache(
 ) : CacheStorePolicy() {
 
     /**
-     * Check if a resource with a given [entityId] is permitted to refresh
+     * Check if a resource with a given [identity] is permitted to refresh
      *
-     * @param entityId Unique identifier for the cache item
+     * @param identity Unique identifier for the cache item
      * @param expiresAfter defaults to 2 hours
      */
     override suspend fun shouldRefresh(
-        entityId: Long,
+        identity: CacheIdentity,
         expiresAfter: Instant
-    ) = isRequestBefore(entityId, expiresAfter)
+    ): Boolean = isRequestBefore(identity, expiresAfter)
 
     enum class Identity(
         override val id: Long,

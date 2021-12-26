@@ -19,7 +19,6 @@ package co.anitrend.data.airing.model
 
 import co.anitrend.data.airing.model.contract.IAiringScheduleModel
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.shared.common.Identity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

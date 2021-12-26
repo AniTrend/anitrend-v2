@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="tag_system_window_inset_top" type="id"/>
     <item name="tag_view_top_snapshot" type="id"/>
 
     <item name="navigation_home" type="id"/>

@@ -1,8 +1,0 @@
-query User(
-    $id: Int,
-    $name: String
-) {
-    User(id: $id, name: $name) {
-        ... UserCore
-    }
-}

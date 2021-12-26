@@ -17,6 +17,7 @@
 
 package co.anitrend.core.koin.helper
 
+import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
@@ -34,17 +35,15 @@ class DynamicFeatureModuleHelper(
     private val unloadOnDestroy: Boolean = false
 ) : SupportLifecycle {
 
-    override val moduleTag: String = javaClass.simpleName
-
     /**
      * Triggered when the lifecycleOwner reaches it's onCreate state
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    override fun onCreate() {
-        super.onCreate()
-        Timber.tag(moduleTag).v(
-            "Attempting to load dynamic feature modules: ${modules.size}"
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        Timber.v(
+            "Loading dynamic feature modules: ${modules.size}"
         )
         loadModules()
     }
@@ -54,10 +53,10 @@ class DynamicFeatureModuleHelper(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         if (unloadOnDestroy) {
-            Timber.tag(moduleTag).v(
+            Timber.v(
                 "Unloading ${modules.size} feature modules from global context"
             )
             unloadModules()

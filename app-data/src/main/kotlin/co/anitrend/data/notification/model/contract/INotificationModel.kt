@@ -17,7 +17,7 @@
 
 package co.anitrend.data.notification.model.contract
 
-import co.anitrend.data.shared.common.Identity
+import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.notification.enums.NotificationType
 
 /** [Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationunion.doc.html)

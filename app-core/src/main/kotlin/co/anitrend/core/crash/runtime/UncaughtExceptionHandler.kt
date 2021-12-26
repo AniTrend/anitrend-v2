@@ -17,14 +17,19 @@
 
 package co.anitrend.core.crash.runtime
 
+import co.anitrend.core.crash.ExceptionCrashHandler
 import co.anitrend.core.crash.contract.IExceptionCrashHandler
 
 /**
  * An uncaught exception handler for the application
  */
-internal class UncaughtExceptionHandler(
-    private val exceptionHandler: IExceptionCrashHandler
-) : Thread.UncaughtExceptionHandler {
+internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
+
+    private val originalHandler: Thread.UncaughtExceptionHandler? =
+        Thread.getDefaultUncaughtExceptionHandler()
+
+    private val exceptionHandler: IExceptionCrashHandler =
+        ExceptionCrashHandler(originalHandler)
 
     /**
      * Method invoked when the given thread terminates due to the given uncaught exception.
@@ -34,7 +39,7 @@ internal class UncaughtExceptionHandler(
      * @param thread the thread
      * @param throwable the exception
      */
-    override fun uncaughtException(thread: Thread, throwable: Throwable) {
+    override fun uncaughtException(thread: Thread?, throwable: Throwable?) {
         exceptionHandler.onException(thread, throwable)
     }
 }

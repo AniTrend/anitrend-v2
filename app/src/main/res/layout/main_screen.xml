@@ -25,31 +25,28 @@
     android:layout_height="match_parent"
     tools:context=".component.screen.MainScreen">
 
-    <include android:id="@+id/contentMain" layout="@layout/content_main" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/contentMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior"
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <co.anitrend.core.android.widget.appbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:hapticFeedbackEnabled="true"
-        android:backgroundTint="@color/primaryColor"
-        app:hideOnScroll="true"
+        style="@style/AppTheme.Material.BottomAppBar"
         app:fabAlignmentMode="end"
         app:navigationIcon="@drawable/ic_menu_open_24dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingShortcutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:tint="@color/white_1000"
+        style="@style/AppTheme.Material.FloatingActionButton"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="@color/anitrendColorAccent"
-        app:srcCompat="@drawable/ic_explore_24dp"/>
+        app:srcCompat="@drawable/ic_explore_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

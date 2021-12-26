@@ -24,13 +24,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/listPreferredItemHeight"
-    android:paddingHorizontal="@dimen/spacing_md"
+    android:paddingHorizontal="@dimen/size_32dp"
     android:background="?attr/selectableItemBackground">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/accountProfileImage"
-        android:layout_width="@dimen/spacing_sm"
-        android:layout_height="@dimen/spacing_sm"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
         android:scaleType="centerCrop"
         android:layout_gravity="start|center_vertical"
         tools:src="@tools:sample/avatars"/>
@@ -40,9 +40,9 @@
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="?attr/listPreferredItemHeightSmall"
-        android:drawablePadding="@dimen/design_navigation_icon_padding"
-        android:paddingStart="@dimen/spacing_md"
-        android:paddingEnd="@dimen/spacing_md"
+        android:drawablePadding="@dimen/size_32dp"
+        android:paddingStart="@dimen/size_32dp"
+        android:paddingEnd="@dimen/size_32dp"
         android:gravity="start|center_vertical"
         android:layout_gravity="start|center_vertical"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"

@@ -1,0 +1,5 @@
+query GetFeedMedia($id: Int!) {
+    Activity(id: $id, type: MEDIA_LIST) {
+        ... FeedMedia
+    }
+}

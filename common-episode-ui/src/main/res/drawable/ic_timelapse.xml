@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (C) 2021  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector android:autoMirrored="true" android:height="19dp"
+    android:tint="@color/white_1000" android:viewportHeight="24"
+    android:viewportWidth="24" android:width="19dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillAlpha="0.3"
+        android:fillColor="@android:color/white"
+        android:pathData="M12,3.99c-4.42,0 -8,3.58 -8,8s3.58,8 8,8 8,-3.58 8,-8 -3.58,-8 -8,-8zM16.25,16.23c-2.35,2.34 -6.15,2.34 -8.49,0L12,11.99v-6c1.54,0 3.07,0.59 4.24,1.76 2.35,2.34 2.35,6.14 0.01,8.48z" android:strokeAlpha="0.3"/>
+    <path android:fillColor="@android:color/white" android:pathData="M16.24,7.75c-1.17,-1.17 -2.7,-1.76 -4.24,-1.76v6l-4.24,4.24c2.34,2.34 6.14,2.34 8.49,0 2.34,-2.34 2.34,-6.14 -0.01,-8.48zM12,1.99c-5.52,0 -10,4.48 -10,10s4.48,10 10,10 10,-4.48 10,-10 -4.48,-10 -10,-10zM12,19.99c-4.42,0 -8,-3.58 -8,-8s3.58,-8 8,-8 8,3.58 8,8 -3.58,8 -8,8z"/>
+</vector>

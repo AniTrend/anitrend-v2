@@ -17,7 +17,8 @@
 
 package co.anitrend.data.mediatrend.model.edge
 
-import co.anitrend.data.arch.common.entity.IEntityEdge
+import co.anitrend.data.common.entity.IEntityEdge
+import co.anitrend.data.core.common.Identity
 import co.anitrend.data.mediatrend.model.MediaTrendModel
 
 /** [MediaTrendEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrendedge.doc.html)
@@ -28,4 +29,4 @@ import co.anitrend.data.mediatrend.model.MediaTrendModel
 internal data class MediaTrendEdge(
     override val id: Long,
     override val node: MediaTrendModel.Core?
-) : IEntityEdge<MediaTrendModel>
+) : IEntityEdge<MediaTrendModel>, Identity

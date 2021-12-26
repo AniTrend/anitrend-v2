@@ -19,14 +19,21 @@ package co.anitrend.data.media
 
 import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.arch.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.model.page.MediaPageModel
+import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.interactor.MediaUseCase
+import co.anitrend.domain.media.repository.IMediaRepository
 
+internal typealias MediaDetailController = GraphQLController<MediaModelContainer.Detail, MediaEntity>
+internal typealias MediaPagedController = GraphQLController<MediaModelContainer.Paged, List<MediaEntity>>
+internal typealias MediaNetworkController = GraphQLController<MediaModelContainer.Paged, List<Media>>
 
-internal typealias MediaPagedCombinedController = GraphQLController<MediaPageModel, List<MediaEntity>>
-internal typealias MediaPagedNetworkController = GraphQLController<MediaPageModel, List<Media>>
+internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
+internal typealias MediaPagedRepository = IMediaRepository.Paged<DataState<PagedList<Media>>>
+internal typealias MediaNetworkRepository = IMediaRepository.Network<DataState<PagedList<Media>>>
 
-typealias MediaInteractor = MediaUseCase<DataState<PagedList<Media>>>
+typealias GetDetailMediaInteractor = MediaUseCase.GetDetail<DataState<Media>>
+typealias GetPagedMediaInteractor = MediaUseCase.GetPaged<DataState<PagedList<Media>>>
+typealias GetNetworkMediaInteractor = MediaUseCase.GetByNetwork<DataState<PagedList<Media>>>

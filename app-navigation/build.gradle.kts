@@ -29,4 +29,5 @@ dependencies {
     testImplementation(Libraries.Koin.test)
 
     implementation(Libraries.AndroidX.Work.runtimeKtx)
+    implementation(Libraries.Google.Gson.gson)
 }

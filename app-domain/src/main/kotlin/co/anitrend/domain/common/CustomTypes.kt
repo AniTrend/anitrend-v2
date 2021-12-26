@@ -23,3 +23,27 @@ package co.anitrend.domain.common
  * - #AARRGGBB
  */
 typealias HexColor = CharSequence
+
+/**
+ * 8 digit long date integer (YYYYMMDD).
+ * Unknown dates represented by 0.
+ *
+ * > 2016: 20160000
+ * > May 1976: 19760500
+ */
+typealias DateInt = CharSequence
+
+/**
+ * A query filter type for a fuzzy date,
+ * instead of return YYYYMMDD any unset fields
+ * are replaced by %
+ *
+ * > 2019: 2019%
+ * > May 2011: 201105%
+ */
+typealias DateLike = CharSequence
+
+/**
+ * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) Two-letter country codes
+ */
+internal typealias CountryCode = CharSequence

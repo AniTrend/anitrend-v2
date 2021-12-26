@@ -1,0 +1,25 @@
+query GetNotificationFeedPaged(
+    $page: Int,
+    $perPage: Int
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        notifications(
+            type_in: [
+                ACTIVITY_LIKE,
+                ACTIVITY_MENTION,
+                ACTIVITY_REPLY,
+                ACTIVITY_REPLY_LIKE,
+                ACTIVITY_REPLY_SUBSCRIBED
+            ]
+        ) {
+            ... ActivityLikeNotification
+            ... ActivityMentionNotification
+            ... ActivityReplyLikeNotification
+            ... ActivityReplyNotification
+            ... ActivityReplySubscribedNotification
+        }
+    }
+}

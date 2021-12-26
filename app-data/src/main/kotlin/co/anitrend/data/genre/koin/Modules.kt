@@ -17,41 +17,50 @@
 
 package co.anitrend.data.genre.koin
 
-import co.anitrend.data.api.contract.EndpointType
-import co.anitrend.data.arch.extension.api
-import co.anitrend.data.arch.extension.db
-import co.anitrend.data.arch.extension.graphQLController
-import co.anitrend.data.cache.repository.contract.ICacheStorePolicy
-import co.anitrend.data.genre.MediaGenreInteractor
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.genre.GenreInteractor
+import co.anitrend.data.genre.GenreListRepository
 import co.anitrend.data.genre.cache.GenreCache
 import co.anitrend.data.genre.converters.GenreEntityConverter
-import co.anitrend.data.genre.mapper.MediaGenreResponseMapper
-import co.anitrend.data.genre.repository.MediaGenreRepository
-import co.anitrend.data.genre.source.MediaGenreSourceImpl
-import co.anitrend.data.genre.source.contract.MediaGenreSource
-import co.anitrend.data.genre.usecase.MediaGenreUseCaseImpl
+import co.anitrend.data.genre.converters.GenreModelConverter
+import co.anitrend.data.genre.entity.filter.GenreQueryFilter
+import co.anitrend.data.genre.mapper.GenreMapper
+import co.anitrend.data.genre.repository.GenreRepository
+import co.anitrend.data.genre.source.GenreSourceImpl
+import co.anitrend.data.genre.source.contract.GenreSource
+import co.anitrend.data.genre.usecase.GenreUseCaseImpl
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory<MediaGenreSource> {
-        MediaGenreSourceImpl(
-            localSource = db().mediaGenreDao(),
-            remoteSource = api(EndpointType.GRAPH_QL),
+    factory<GenreSource> {
+        GenreSourceImpl(
+            localSource = store().genreDao(),
+            remoteSource = graphApi(),
             controller = graphQLController(
-                mapper = get<MediaGenreResponseMapper>()
+                mapper = get<GenreMapper.Core>()
             ),
             cachePolicy = get<GenreCache>(),
             clearDataHelper = get(),
+            filter = get(),
             converter = get(),
             dispatcher = get()
         )
     }
 }
 
+private val filterModule = module {
+    factory {
+        GenreQueryFilter()
+    }
+}
+
 private val cacheModule = module {
     factory {
         GenreCache(
-            localSource = db().cacheDao()
+            localSource = store().cacheDao()
         )
     }
 }
@@ -60,34 +69,46 @@ private val converterModule = module {
     factory {
         GenreEntityConverter()
     }
+    factory {
+        GenreModelConverter(
+            emojiManager = get()
+        )
+    }
 }
 
 private val mapperModule = module {
     factory {
-        MediaGenreResponseMapper(
-            localSource = db().mediaGenreDao()
+        GenreMapper.Core(
+            localSource = store().genreDao(),
+            converter = get()
+        )
+    }
+    factory {
+        GenreMapper.Embed(
+            localSource = store().genreConnectionDao()
         )
     }
 }
 
 private val useCaseModule = module {
-    factory<MediaGenreInteractor> {
-        MediaGenreUseCaseImpl(
+    factory<GenreInteractor> {
+        GenreUseCaseImpl(
             repository = get()
         )
     }
 }
 
 private val repositoryModule = module {
-    factory {
-        MediaGenreRepository(
+    factory<GenreListRepository> {
+        GenreRepository(
             source = get()
         )
     }
 }
 
-internal val mediaGenreModules = listOf(
+internal val genreModules = listOf(
     converterModule,
+    filterModule,
     cacheModule,
     sourceModule,
     mapperModule,

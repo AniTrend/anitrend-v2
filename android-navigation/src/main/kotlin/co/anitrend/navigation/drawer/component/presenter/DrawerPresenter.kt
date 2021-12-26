@@ -19,28 +19,33 @@ package co.anitrend.navigation.drawer.component.presenter
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.view.WindowInsets
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.recycler.common.DefaultClickableItem
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
-import co.anitrend.core.android.helpers.image.model.CoverRequestImage
+import co.anitrend.core.android.components.edgetreatment.SemiCircleCutout
+import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
+import co.anitrend.core.android.extensions.dp
+import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
+import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.extensions.onRevokeAuthentication
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.core.settings.Settings
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.R
-import co.anitrend.navigation.drawer.action.*
-import co.anitrend.navigation.drawer.callback.BottomNavigationDrawerCallback
+import co.anitrend.navigation.drawer.action.AlphaSlideAction
+import co.anitrend.navigation.drawer.action.ForegroundSheetTransformSlideAction
+import co.anitrend.navigation.drawer.action.ScrollToTopStateAction
+import co.anitrend.navigation.drawer.action.VisibilityStateAction
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
-import co.anitrend.navigation.drawer.shape.SemiCircleEdgeCutoutTreatment
-import co.anitrend.navigation.extensions.start
+import co.anitrend.navigation.extensions.startActivity
 import coil.transform.CircleCropTransformation
 import com.google.android.material.shape.MaterialShapeDrawable
 
@@ -50,7 +55,7 @@ internal class DrawerPresenter(
 ) : CorePresenter(context, settings) {
 
     fun createForegroundShape(
-        container: LinearLayoutCompat
+        container: ViewGroup
     ): MaterialShapeDrawable {
         val shapeDrawable = MaterialShapeDrawable(
             container.context, null, R.attr.bottomSheetStyle,0
@@ -60,18 +65,16 @@ internal class DrawerPresenter(
             fillColor = ColorStateList.valueOf(
                 container.context.getColorFromAttr(R.attr.colorPrimary)
             )
-            elevation = context.resources.getDimension(R.dimen.xl_margin)
+            elevation = 16f.dp
             shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_NEVER
             initializeElevationOverlay(context)
             shapeAppearanceModel = shapeAppearanceModel.toBuilder()
                 .setTopEdge(
-                    SemiCircleEdgeCutoutTreatment(
-                        context.resources.getDimension(R.dimen.lg_margin),
-                        context.resources.getDimension(R.dimen.spacing_sm),
-                        0F,
-                        context.resources.getDimension(
-                            R.dimen.navigation_drawer_profile_image_size_padded
-                        )
+                    SemiCircleCutout(
+                        8f.dp,
+                        24f.dp,
+                        0f.dp,
+                        32f.dp
                     )
                 ).build()
         }
@@ -91,7 +94,7 @@ internal class DrawerPresenter(
                 else
                     container.context.getCompatColor(R.color.anitrendDrawerSelector)
             )
-            elevation = context.resources.getDimension(R.dimen.lg_margin)
+            elevation = 8f.dp
 
             initializeElevationOverlay(context)
         }
@@ -99,21 +102,9 @@ internal class DrawerPresenter(
         return shapeDrawable
     }
 
-    fun applyWindowInsetsListener(container: LinearLayoutCompat) {
-        container.setOnApplyWindowInsetsListener { view, windowInsets ->
-            // Record the window's top inset so it can be applied when the bottom sheet is slide up
-            // to meet the top edge of the screen.
-            view.setTag(
-                R.id.tag_system_window_inset_top,
-                windowInsets.getInsets(WindowInsets.Type.systemBars())
-            )
-            windowInsets
-        }
-    }
-
     fun applyStateAndSlideActions(
         binding: BottomNavigationDrawerBinding,
-        callback: BottomNavigationDrawerCallback,
+        callback: SheetBehaviourCallback,
         foregroundShapeDrawable: MaterialShapeDrawable
     ) {
         // Scrim view transforms
@@ -136,7 +127,7 @@ internal class DrawerPresenter(
     fun applyProfilePicture(imageView: AppCompatImageView, model: Account?) {
         when (model) {
             is Account.Authenticated -> imageView.using(
-                CoverRequestImage(model.coverImage),
+                model.coverImage.toRequestImage(),
                 listOf(CircleCropTransformation())
             )
             is Account.Anonymous -> imageView.using(
@@ -147,19 +138,18 @@ internal class DrawerPresenter(
     }
 
     fun onAuthenticatedItemClicked(
-        clickable: DefaultClickableItem<Account>,
+        clickable: ClickableItem.Data<Account>,
         viewModel: BottomDrawerViewModel
     ) {
         when (clickable.view.id) {
             R.id.accountContainer -> {
-                if (clickable.data!!.isActiveUser)
-                    ProfileRouter.start(clickable.view.context)
+                if (clickable.data.isActiveUser)
+                    ProfileRouter.startActivity(clickable.view.context)
                 else { /* TODO: Switch account to the selected one */ }
             }
             R.id.accountSignOut -> {
-                viewModel.accountState.signOut(
-                    clickable.data!!
-                )
+                viewModel.accountState.signOut(clickable.data)
+                context.onRevokeAuthentication()
             }
         }
     }

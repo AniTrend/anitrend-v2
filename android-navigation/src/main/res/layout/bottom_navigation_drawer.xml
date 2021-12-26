@@ -35,6 +35,8 @@
         android:id="@+id/sheetBackgroundContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/bottom_sheet_margin"
+        android:layout_marginEnd="@dimen/bottom_sheet_margin"
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_hideable="true"
         app:behavior_skipCollapsed="true"
@@ -44,20 +46,21 @@
             android:id="@+id/accountRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/spacing_sm"
-            android:paddingBottom="@dimen/spacing_sm"
+            android:paddingTop="@dimen/size_24dp"
+            android:paddingBottom="@dimen/size_24dp"
             app:paddingBottomSystemWindowInsets="true"
             android:nestedScrollingEnabled="false"
             android:alpha="0.0"
             android:clipToPadding="false"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="@integer/single_list_size" />
+            app:spanCount="@integer/single_list_size"
+            tools:listitem="@layout/account_authenticated_item"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profileImageView"
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
+            android:layout_width="@dimen/avatar_xx"
+            android:layout_height="@dimen/avatar_xx"
             android:padding="@dimen/lg_margin"
             android:layout_gravity="center|top"
             tools:src="@mipmap/ic_launcher"
@@ -71,7 +74,7 @@
             android:orientation="vertical"
             android:layout_marginTop="@dimen/design_bottom_app_status_bar_height"
             android:paddingTop="@dimen/design_bottom_app_status_bar_height"
-            android:paddingBottom="@dimen/spacing_md">
+            android:paddingBottom="@dimen/size_32dp">
 
             <co.anitrend.arch.recycler.SupportRecyclerView
                 android:id="@+id/navigationRecyclerView"

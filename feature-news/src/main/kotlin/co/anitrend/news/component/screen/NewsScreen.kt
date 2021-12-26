@@ -18,10 +18,64 @@
 package co.anitrend.news.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AnitrendScreen
+import android.text.util.Linkify
+import android.view.Menu
+import android.view.MenuItem
+import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.android.koin.MarkdownFlavour
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.extensions.stackTrace
+import co.anitrend.core.ui.inject
+import co.anitrend.navigation.NewsRouter
+import co.anitrend.news.R
+import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
 import co.anitrend.news.databinding.NewsScreenBinding
+import co.anitrend.news.presenter.NewsPresenter
+import io.noties.markwon.Markwon
+import me.saket.bettermovementmethod.BetterLinkMovementMethod
+import org.koin.core.qualifier.named
+import timber.log.Timber
 
-class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
+class NewsScreen : AniTrendScreen<NewsScreenBinding>() {
+
+    private val presenter by inject<NewsPresenter>()
+
+    private val viewModel by inject<NewsScreenViewModel>()
+
+    private val markwon by inject<Markwon>(
+        named(MarkdownFlavour.STANDARD)
+    )
+
+    private val param: NewsRouter.Param? by extra(NewsRouter.Param.KEY)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = NewsScreenBinding.inflate(layoutInflater)
+        setContentView(requireBinding().root)
+        setSupportActionBar(requireBinding().bottomAppBar)
+        setUpViewModelObserver()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.news_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_open_in_browser -> {
+                runCatching {
+                    presenter.handleViewIntent(
+                        requireBinding().root,
+                        requireNotNull(param?.link)
+                    )
+                }.stackTrace()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -29,12 +83,35 @@ class NewsScreen : AnitrendScreen<NewsScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        requireBinding().shareAction.setOnClickListener {
+            val shareCompat = param?.let { entity ->
+                presenter.createShareContent(entity, this)
+            }?.createChooserIntent()
 
+            runCatching {
+                startActivity(shareCompat)
+            }.onFailure { throwable ->
+                Timber.w(throwable)
+            }
+        }
+        BetterLinkMovementMethod.linkify(Linkify.ALL, this)
+            .setOnLinkClickListener { view, url ->
+                runCatching {
+                    presenter.handleViewIntent(view, url)
+                }.stackTrace()
+                true
+            }
+        onFetchDataInitialize()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = NewsScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+    private fun setUpViewModelObserver() {
+        val content = requireBinding().newsContent.newsContentTextView
+        viewModel.model.observe(this) {
+            markwon.setMarkdown(content, it)
+        }
+    }
+
+    private fun onFetchDataInitialize() {
+        viewModel(requireNotNull(param))
     }
 }

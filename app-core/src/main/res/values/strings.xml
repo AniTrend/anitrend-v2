@@ -21,14 +21,26 @@
     <string name="action_about">About</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+    <string name="action_read_more">Read More</string>
 
+    <!-- A label that will be shown at the end of a list when there are no more items to show (paging) -->
+    <string name="label_text_end_of_list">No more entries to display</string>
+    <!-- A label that is shown along with a loading spinner -->
     <string name="label_text_loading">Loading, please wait..</string>
+    <!-- A default label for retrying failed operations -->
     <string name="label_text_action_retry">Reload</string>
 
     <!-- Place holder text for when something is not available -->
     <string name="label_place_holder_to_be_announced">TBA</string>
 
+    <!-- A default label for various use-cases -->
+    <string name="label_text_action_ok">OK</string>
+
+    <!-- A default authentication requirement message -->
+    <string name="label_text_authentication_required">Authentication required to access feature.</string>
+
     <string name="error_message_no_connection_title">No active connection</string>
     <string name="error_message_no_connection_message">Please make sure you have an working internet connection</string>
+
     <string name="error_message_unrecoverable">Unrecoverable error occurred</string>
 </resources>

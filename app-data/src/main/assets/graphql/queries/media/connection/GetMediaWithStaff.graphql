@@ -1,0 +1,12 @@
+query GetMediaWithStaff(
+    $page: Int!,
+    $perPage: Int!,
+    $id: Int!,
+    $sort: [StaffSort]
+) {
+    Media(id: $id) {
+        staff(page: $page, perPage: $perPage, sort: $sort) {
+            ... MediaStaffConnection
+        }
+    }
+}

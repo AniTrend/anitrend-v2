@@ -19,6 +19,7 @@
     package="co.anitrend.studio" >
 
     <application>
-        <activity android:name=".component.screen.StudioScreen" />
+        <activity android:name=".component.screen.StudioScreen"
+            android:exported="true" />
     </application>
 </manifest>

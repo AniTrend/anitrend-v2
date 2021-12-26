@@ -1,0 +1,9 @@
+query GetAnimeFavourites($id: Int!) {
+    User(id: $id) {
+        favourites {
+            anime {
+                ... MediaFavouriteConnection
+            }
+        }
+    }
+}

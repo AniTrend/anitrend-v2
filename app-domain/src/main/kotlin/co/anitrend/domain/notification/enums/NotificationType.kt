@@ -39,6 +39,12 @@ enum class NotificationType(override val alias: CharSequence) : IAliasable {
     AIRING("Airing"),
     /** A user has followed you */
     FOLLOWING("Following"),
+    /** An anime or manga has had a data change that affects how a user may track it in their lists */
+    MEDIA_DATA_CHANGE("Media data change"),
+    /** An anime or manga on the user's list has been deleted from the site */
+    MEDIA_DELETION("Media deletion"),
+    /** Anime or manga entries on the user's list have been merged into a single entry */
+    MEDIA_MERGE("Media merge"),
     /** A new anime or manga has been added to the site where its related media is on the user's list */
     RELATED_MEDIA_ADDITION("Related media addition"),
     /** A user has liked your forum comment */

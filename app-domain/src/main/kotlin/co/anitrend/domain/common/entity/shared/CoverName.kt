@@ -23,9 +23,12 @@ import co.anitrend.domain.common.entity.contract.IEntityName
  * Name attributes for various models such as characters and staff/actors
  */
 data class CoverName(
-    override val alternative: List<String>?,
+    override val middle: String?,
+    override val alternativeSpoiler: List<String>,
+    override val alternative: List<String>,
     override val first: String?,
     override val full: String?,
     override val last: String?,
-    override val native: String?
+    override val native: String?,
+    override val userPreferred: String?
 ) : IEntityName

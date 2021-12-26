@@ -18,10 +18,10 @@
 package co.anitrend.studio.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AnitrendScreen
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.studio.databinding.StudioScreenBinding
 
-class StudioScreen : AnitrendScreen<StudioScreenBinding>() {
+class StudioScreen : AniTrendScreen<StudioScreenBinding>() {
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

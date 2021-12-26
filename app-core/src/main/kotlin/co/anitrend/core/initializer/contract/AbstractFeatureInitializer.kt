@@ -18,12 +18,11 @@
 package co.anitrend.core.initializer.contract
 
 import androidx.startup.Initializer
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.coroutine.extension.Main
-import co.anitrend.core.initializer.InjectorInitializer
+import co.anitrend.core.initializer.injector.InjectorInitializer
+import co.anitrend.core.initializer.migration.MigrationInitializer
 
 /**
- * Contract for feature initializer that runs after [InjectorInitializer]
+ * Contract for feature initializer that runs after [MigrationInitializer]
  */
 abstract class AbstractFeatureInitializer<T> : Initializer<T> {
 

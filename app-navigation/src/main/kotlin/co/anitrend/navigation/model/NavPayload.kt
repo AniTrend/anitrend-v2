@@ -17,12 +17,12 @@
 
 package co.anitrend.navigation.model
 
-import android.os.Parcelable
+import co.anitrend.navigation.model.common.IParam
 
 /**
  * Payload model
  */
 data class NavPayload(
     val key: String,
-    val parcel: Parcelable
+    val param: IParam
 )

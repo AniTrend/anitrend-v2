@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2020  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="label_discover_filter_genre_title">Filter by genres</string>
+    <string name="label_discover_filter_genre_sub_title">Select one or more genres</string>
+
+    <string name="label_discover_filter_tag_title">Filter by tags</string>
+    <string name="label_discover_filter_tag_sub_title">Select one or more tags</string>
+
+    <string name="label_discover_filter_media_type_title">Filter by media type</string>
+    <string name="label_discover_filter_media_type_sub_title">Select a media type to show</string>
+
+    <string name="label_discover_filter_season_title">Filter by season</string>
+    <string name="label_discover_filter_season_sub_title">Select a season to filter by</string>
+
+    <string name="label_discover_filter_year_title">Filter by year</string>
+    <string name="label_discover_filter_year_title_by_range">Use range</string>
+
+    <string name="label_discover_filter_status_title">Filter by status</string>
+    <string name="label_discover_filter_status_sub_title">Select a status to filter by</string>
+
+    <string name="label_discover_filter_format_title">Filter by format</string>
+    <string name="label_discover_filter_format_sub_title">Select a format to filter by</string>
+
+    <string name="label_discover_filter_country_title">Filter by country</string>
+    <string name="label_discover_filter_country_sub_title">Select a country to filter by</string>
+
+    <string name="label_discover_filter_source_title">Filter by source</string>
+    <string name="label_discover_filter_source_sub_title">Select a source type to filter by</string>
+
+    <string name="label_discover_filter_streaming_title">Filter by streaming</string>
+    <string name="label_discover_filter_streaming_sub_title">Select a streaming provider to filter by</string>
+
+    <string name="label_discover_filter_on_list_title">Filter by on list</string>
+    <string name="label_discover_filter_on_list_sub_title">Include or exclude items on your list</string>
+
+    <string name="label_discover_filter_sort_title">Sort by</string>
+    <string name="label_discover_filter_sort_sub_title">Sort by what criteria</string>
+    <string name="label_discover_filter_sort_order_switch">Ascending</string>
+
+    <string name="label_discover_filter_hide_adult_content_title">Exclude adult content</string>
+
+    <string name="label_discover_filter_choice_show_on_list_title">Include on my list</string>
+    <string name="label_discover_filter_choice_hide_on_list_title">Exclude on my list</string>
+</resources>

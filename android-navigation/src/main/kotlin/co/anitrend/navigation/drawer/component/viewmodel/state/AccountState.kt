@@ -25,13 +25,12 @@ import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
-import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.account.AccountInteractor
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.account.Account
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -43,13 +42,11 @@ import kotlin.properties.Delegates
 internal class AccountState(
     settings: IAuthenticationSettings,
     private val useCase: AccountInteractor
-) : ISupportViewModelState<List<Account>>, ISupportCoroutine by Main() {
+) : ISupportViewModelState<List<Account>> {
 
     var context by Delegates.notNull<CoroutineContext>()
 
-    private val moduleTag: String = javaClass.simpleName
-
-    private val useCaseResult = MutableLiveData<DataState<List<User>?>>()
+    private val useCaseResult = MutableLiveData<DataState<List<User>>>()
 
     override val model = Transformations.switchMap(useCaseResult) { dataState ->
             dataState.model.asLiveData(context).map { users ->
@@ -128,22 +125,12 @@ internal class AccountState(
             }
         }
 
-    override val networkState = Transformations.switchMap(useCaseResult) {
-        it.networkState.asLiveData()
+    override val loadState = Transformations.switchMap(useCaseResult) {
+        it.loadState.asLiveData(context)
     }
 
     override val refreshState = Transformations.switchMap(useCaseResult) {
-        it.refreshState.asLiveData()
-    }
-
-    init {
-        launch {
-            settings.isAuthenticated.flow.onEach {
-                invoke()
-            }.catch { cause ->
-                Timber.tag(moduleTag).w(cause)
-            }.collect()
-        }
+        it.refreshState.asLiveData(context)
     }
 
     operator fun invoke() {
@@ -153,7 +140,7 @@ internal class AccountState(
 
     fun signOut(account: Account) {
         useCase.signOut(
-            AccountAction.SignOut(
+            AccountParam.SignOut(
                 userId = account.id
             )
         )
@@ -168,7 +155,6 @@ internal class AccountState(
      */
     override fun onCleared() {
         useCase.onCleared()
-        cancelAllChildren()
     }
 
     /**

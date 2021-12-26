@@ -17,25 +17,52 @@
 
 package co.anitrend.data.airing.koin
 
+import co.anitrend.data.airing.AiringSchedulePagedRepository
+import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
+import co.anitrend.data.airing.cache.AiringCache
 import co.anitrend.data.airing.converters.AiringConverter
 import co.anitrend.data.airing.converters.AiringEntityConverter
 import co.anitrend.data.airing.converters.AiringModelConverter
-import co.anitrend.data.airing.mapper.detail.AiringScheduleMapper
-import co.anitrend.data.airing.mapper.paged.AiringSchedulePagedMapper
-import co.anitrend.data.arch.extension.db
+import co.anitrend.data.airing.entity.filter.AiringQueryFilter
+import co.anitrend.data.airing.mapper.AiringMapper
+import co.anitrend.data.airing.repository.AiringScheduleRepository
+import co.anitrend.data.airing.source.AiringScheduleSourceImpl
+import co.anitrend.data.airing.source.contract.AiringScheduleSource
+import co.anitrend.data.airing.usecase.AiringScheduleInteractor
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
-private val mapperModule = module {
-    factory {
-        AiringScheduleMapper(
-            localSource = db().airingScheduleDao(),
-            converter = get()
+private val sourceModule = module {
+    factory<AiringScheduleSource.Paged> {
+        AiringScheduleSourceImpl.Paged(
+            remoteSource = graphApi(),
+            localSource = store().airingScheduleDao(),
+            mediaLocalSource = store().mediaDao(),
+            controller = graphQLController(
+                mapper = get<AiringMapper.Paged>()
+            ),
+            converter = get(),
+            clearDataHelper = get(),
+            filter = get(),
+            dispatcher = get(),
         )
     }
+}
+
+private val filterModule = module {
     factory {
-        AiringSchedulePagedMapper(
-            localSource = db().airingScheduleDao(),
-            converter = get()
+        AiringQueryFilter.Paged(
+            authentication = get()
+        )
+    }
+}
+
+private val cacheModule = module {
+    factory {
+        AiringCache(
+            localSource = store().cacheDao()
         )
     }
 }
@@ -52,6 +79,50 @@ private val converterModule = module {
     }
 }
 
+private val mapperModule = module {
+    factory {
+        AiringMapper.Airing(
+            localSource = store().airingScheduleDao(),
+            converter = get()
+        )
+    }
+    factory {
+        AiringMapper.Paged(
+            mediaMapper = get(),
+            localSource = store().airingScheduleDao(),
+            converter = get()
+        )
+    }
+    factory {
+        AiringMapper.Embed(
+            localSource = store().airingScheduleDao(),
+            converter = get()
+        )
+    }
+}
+
+private val useCaseModule = module {
+    factory<GetPagedAiringScheduleInteractor>{
+        AiringScheduleInteractor.Paged(
+            repository = get()
+        )
+    }
+}
+
+private val repositoryModule = module {
+    factory<AiringSchedulePagedRepository> {
+        AiringScheduleRepository.Paged(
+            source = get()
+        )
+    }
+}
+
 internal val airingModules = listOf(
-    mapperModule, converterModule
+    sourceModule,
+    filterModule,
+    cacheModule,
+    converterModule,
+    mapperModule,
+    useCaseModule,
+    repositoryModule
 )

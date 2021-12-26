@@ -18,14 +18,31 @@
 package co.anitrend.task.medialist.provider
 
 import co.anitrend.navigation.MediaListTaskRouter
-import co.anitrend.task.medialist.component.MediaListCollectionWorker
-import co.anitrend.task.medialist.component.MediaListMutationWorker
-import co.anitrend.task.medialist.component.MediaListSyncWorker
+import co.anitrend.task.medialist.component.worker.MediaListDeleteCustomListWorker
+import co.anitrend.task.medialist.component.worker.MediaListDeleteEntryWorker
+import co.anitrend.task.medialist.component.worker.MediaListSaveEntriesWorker
+import co.anitrend.task.medialist.component.worker.MediaListSaveEntryWorker
+import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
+import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker
+import co.anitrend.task.medialist.scheduler.AnimeSyncScheduler
+import co.anitrend.task.medialist.scheduler.MangaSyncScheduler
 
 internal class FeatureProvider : MediaListTaskRouter.Provider {
-    override fun mediaListCollectionWorker() = MediaListCollectionWorker::class.java
 
-    override fun mediaListMutationWorker() = MediaListMutationWorker::class.java
+    override fun mediaListSaveEntryWorker() = MediaListSaveEntryWorker::class.java
+    override fun mediaListSaveEntriesWorker() = MediaListSaveEntriesWorker::class.java
+    override fun mediaListDeleteEntryWorker() = MediaListDeleteEntryWorker::class.java
+    override fun mediaListDeleteCustomListWorker() = MediaListDeleteCustomListWorker::class.java
 
-    override fun mediaListSyncWorker() = MediaListSyncWorker::class.java
+    override fun animeSyncWorker() = MediaListAnimeSyncWorker::class.java
+
+    override fun mangaSyncWorker() = MediaListMangaSyncWorker::class.java
+
+    override fun animeSyncScheduler() = AnimeSyncScheduler(
+        worker = animeSyncWorker()
+    )
+
+    override fun mangaSyncScheduler() = MangaSyncScheduler(
+        worker = mangaSyncWorker()
+    )
 }

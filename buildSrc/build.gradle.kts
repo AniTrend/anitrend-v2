@@ -15,8 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import java.net.URI
-
 plugins {
     `kotlin-dsl`
 }
@@ -26,20 +24,21 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = URI("https://jitpack.io")
+        setUrl("https://www.jitpack.io")
     }
     maven {
-        url = URI("http://oss.sonatype.org/content/repositories/snapshots")
+        setUrl("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+    maven {
+        setUrl("https://plugins.gradle.org/m2/")
     }
 }
 
-kotlinDslPluginOptions {
-	experimentalWarning.set(false)
-}
-
-val kotlinVersion = "1.4.21"
-val buildToolsVersion = "4.1.1"
-val manesVersion = "0.33.0"
+val buildToolsVersion = "7.0.4"
+val kotlinVersion = "1.5.31"
+val dokkaVersion = "1.5.31"
+val manesVersion = "0.36.0"
+val spotlessVersion = "6.0.5"
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
@@ -48,8 +47,14 @@ dependencies {
     /** Depend on the kotlin plugin, since we want to access it in our plugin */
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
+    /* Depend on the dokka plugin, since we want to access it in our plugin */
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
+
     /** Dependency management */
     implementation("com.github.ben-manes:gradle-versions-plugin:$manesVersion")
+
+    /** Spotless */
+    implementation("com.diffplug.spotless:spotless-plugin-gradle:$spotlessVersion")
 
     /* Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())

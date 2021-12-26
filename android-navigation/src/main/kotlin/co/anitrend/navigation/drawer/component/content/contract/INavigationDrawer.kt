@@ -18,8 +18,8 @@
 package co.anitrend.navigation.drawer.component.content.contract
 
 import androidx.annotation.IdRes
-import co.anitrend.navigation.drawer.action.OnSlideAction
-import co.anitrend.navigation.drawer.action.OnStateChangedAction
+import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
+import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.Flow
 
@@ -27,7 +27,8 @@ interface INavigationDrawer {
 
     val navigationFlow: Flow<Navigation.Menu>
 
-    fun toggle()
+    fun isShowing(): Boolean
+    fun toggleDrawer()
     fun show()
     fun dismiss()
 
@@ -37,4 +38,5 @@ interface INavigationDrawer {
     fun removeOnStateChangedAction(action: OnStateChangedAction)
 
     fun setCheckedItem(@IdRes selectedItem: Int)
+    fun toggleMenuVisibility(showDrawerMenu: Boolean)
 }

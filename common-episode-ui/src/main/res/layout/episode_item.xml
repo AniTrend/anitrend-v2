@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/AppTheme.Material.MaterialCard">
+
+    <co.anitrend.arch.ui.view.image.SupportImageView
+        android:id="@+id/episodeThumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:aspectRatio=".57"
+        tools:scaleType="centerCrop"
+        tools:src="@sample/poster" />
+
+    <FrameLayout
+        android:layout_gravity="top|start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/episode_inner_widget_top_margin"
+        android:layout_margin="@dimen/lg_margin"
+        android:background="@drawable/bubble_background">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/episodeSeriesTitle"
+            android:textColor="@color/white_1000"
+            android:layout_width="wrap_content"
+            style="@style/AppTheme.SingleLineText"
+            android:maxWidth="@dimen/episode_series_name_max_width"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="@sample/episode.json/series_name"/>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_gravity="top|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/episode_inner_widget_top_margin"
+        android:layout_margin="@dimen/lg_margin"
+        android:background="@drawable/bubble_background">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/episodeDuration"
+            android:textColor="@color/white_1000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="@sample/episode.json/duration"/>
+
+        <Space
+            android:layout_width="@dimen/md_margin"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/ic_timelapse"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <co.anitrend.common.episode.ui.widget.summary.EpisodeSummaryWidget
+        android:id="@+id/episodeSummary"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textColor="@color/white_1000"
+        android:paddingStart="@dimen/xl_margin"
+        android:paddingEnd="@dimen/xl_margin"
+        android:paddingTop="@dimen/lg_margin"
+        android:paddingBottom="@dimen/lg_margin"
+        style="@style/AppTheme.SingleLineText"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:background="@drawable/gradient_shadow"
+        />
+
+</com.google.android.material.card.MaterialCardView>

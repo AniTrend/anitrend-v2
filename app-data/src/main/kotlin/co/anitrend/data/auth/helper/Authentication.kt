@@ -32,22 +32,13 @@ enum class AuthenticationType(val type: String) {
     CODE("code")
 }
 
-val AUTHENTICATION_URI: Uri =
-    Uri.Builder()
-        .scheme("https")
-        .authority(BuildConfig.apiAuthUrl)
-        .appendPath("authorize")
-        .appendQueryParameter("client_id", BuildConfig.clientId)
-        .appendQueryParameter("response_type", "token")
-        .build()
-
 /**
  * @param authenticationType Authentication method
  *
  * @return [Uri] of authentication provider
  */
-fun authenticationUri(authenticationType: AuthenticationType): Uri {
+fun authenticationUri(authenticationType: AuthenticationType, clientId: String): Uri {
     return Uri.parse(
-        "https://${BuildConfig.apiAuthUrl}/authorize?client_id=${BuildConfig.clientId}&response_type=${authenticationType.type}"
+        "https://${BuildConfig.aniListAuth}/authorize?client_id=$clientId&response_type=${authenticationType.type}"
     )
 }

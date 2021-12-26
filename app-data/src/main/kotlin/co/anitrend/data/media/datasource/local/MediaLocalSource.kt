@@ -20,14 +20,18 @@ package co.anitrend.data.media.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
-import co.anitrend.data.arch.database.dao.ILocalSource
+import androidx.sqlite.db.SupportSQLiteQuery
+import co.anitrend.data.airing.entity.AiringScheduleEntity
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
+import co.anitrend.data.medialist.entity.MediaListEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
+internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
 
     /**
      * Count the number of entities
@@ -46,29 +50,23 @@ internal abstract class MediaLocalSource : ILocalSource<MediaEntity> {
     abstract override suspend fun clear()
 
     @Query("""
+        delete from media
+        where id = :id
+        """)
+    abstract suspend fun clearById(id: Long)
+
+    @Query("""
         select * from media
         where id = :id
     """)
     @Transaction
-    abstract suspend fun mediaById(id: Long): MediaEntityView.WithMediaList?
+    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.Extended?>
 
-    @Query("""
-        select * from media
-        where id = :id
-    """)
     @Transaction
-    abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.WithMediaList?>
+    @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
+    abstract fun rawFlow(query: SupportSQLiteQuery): Flow<MediaEntityView.Core?>
 
-    @Query("""
-        select * from media
-    """)
     @Transaction
-    abstract fun allMediaFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
-
-    @Query("""
-        select * from media
-        order by popularity desc
-    """)
-    @Transaction
-    abstract fun popularityDescFactory(): DataSource.Factory<Int, MediaEntityView.WithMediaList>
+    @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
+    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
 }

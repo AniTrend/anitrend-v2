@@ -19,7 +19,7 @@ package co.anitrend
 
 import androidx.startup.AppInitializer
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.core.initializer.InjectorInitializer
+import co.anitrend.core.initializer.injector.InjectorInitializer
 import org.koin.core.context.stopKoin
 
 class App : AniTrendApplication() {

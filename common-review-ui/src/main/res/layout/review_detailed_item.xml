@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sharedCardContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/lg_margin"
+    style="@style/AppTheme.Material.MediaCard">
+
+    <co.anitrend.arch.ui.view.image.SupportImageView
+        android:id="@+id/reviewMediaBanner"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:aspectRatio=".56"
+        tools:src="@sample/banner" />
+
+    <co.anitrend.common.review.ui.widget.rating.ReviewRatingWidget
+        android:id="@+id/reviewRatingWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/lg_margin"
+        android:layout_gravity="start|top"/>
+
+    <co.anitrend.common.review.ui.widget.avatar.ReviewAvatarWidget
+        android:id="@+id/reviewAvatarWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/lg_margin"
+        android:layout_gravity="end|top" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/size_8dp"
+        android:background="@drawable/gradient_shadow">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewTextBody"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/white_1000"
+            style="@style/AppTheme.Material.TextBody.Secondary"
+            tools:text="@sample/review.json/body"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <co.anitrend.common.review.ui.widget.action.ReviewActionWidget
+            android:id="@+id/reviewActionWidget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.google.android.material.card.MaterialCardView>

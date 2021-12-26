@@ -20,16 +20,18 @@ package co.anitrend.data.medialist.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
-import co.anitrend.data.arch.database.dao.ILocalSource
+import androidx.sqlite.db.SupportSQLiteQuery
+import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
+import co.anitrend.data.user.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
+internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEntity>() {
 
     /**
      * Count the number of entities
@@ -49,40 +51,29 @@ internal abstract class MediaListLocalSource : ILocalSource<MediaListEntity> {
 
     @Query("""
         delete from media_list
+        where id = :id and user_id = :userId 
+        """)
+    abstract suspend fun clearById(id: Long, userId: Long)
+
+    @Query("""
+        delete from media_list
         where user_id = :userId
         """)
     abstract suspend fun clearByUserId(userId: Long)
 
-    @Transaction
     @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where ml.id = :id and u.id = :userId
-    """)
-    abstract fun byIdFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
-
-    @Transaction
-    @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where ml.media_id = :mediaId and u.id = :userId
-    """)
-    abstract fun byMediaIdFlow(mediaId: Long, userId: Long): Flow<MediaListEntityView.WithMedia?>
-
+        delete from media_list
+        where user_name = :userName
+        """)
+    abstract suspend fun clearByUserName(userName: String)
 
     @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where ml.id = :id and u.id = :userId
-    """)
-    @Transaction
-    abstract fun byIdCoreFlow(id: Long, userId: Long): Flow<MediaListEntityView.Core?>
+        delete from media_list
+        where user_id = :userId and media_id = :mediaId
+        """)
+    abstract suspend fun clearByMediaId(mediaId: Long, userId: Long)
 
-    @Query("""
-        select ml.* from media_list ml
-        join user u on u.id = ml.user_id
-        where u.id = :userId
-    """)
     @Transaction
-    abstract fun entryFactory(userId: Long): DataSource.Factory<Int, MediaListEntityView.WithMedia>
+    @RawQuery(observedEntities = [MediaListEntity::class, MediaEntity::class, UserEntity::class])
+    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaListEntityView.WithMedia>
 }

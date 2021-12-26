@@ -17,6 +17,6 @@
   -->
 
 <resources>
-    <string name="auth_deep_link_host" translatable="false">auth</string>
-    <string name="auth_deep_link_path" translatable="false">/oauth/v2/callback</string>
+    <string name="auth_deep_link_path_anilist" translatable="false">/oauth/v2/anilist</string>
+    <string name="auth_deep_link_path_trakt" translatable="false">/oauth/v2/trakt</string>
 </resources>

@@ -20,12 +20,16 @@ package co.anitrend.data.user.entity.view
 import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 internal sealed class UserEntityView {
     abstract val user: UserEntity
+    abstract val generalOption: UserGeneralOptionEntity
+    abstract val mediaListOption: UserMediaOptionEntity
+    abstract val previousNames: List<UserPreviousNameEntity>
 
     internal data class WithOptions(
         @Embedded override val user: UserEntity,
@@ -33,12 +37,17 @@ internal sealed class UserEntityView {
             parentColumn = "id",
             entityColumn = "user_id"
         )
-        val generalOption: UserGeneralOptionEntity,
+        override val generalOption: UserGeneralOptionEntity,
         @Relation(
             parentColumn = "id",
             entityColumn = "user_id"
         )
-        val mediaListOption: UserMediaOptionEntity
+        override val mediaListOption: UserMediaOptionEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val previousNames: List<UserPreviousNameEntity>,
     ) : UserEntityView()
 
     internal data class WithStatistic(
@@ -47,6 +56,21 @@ internal sealed class UserEntityView {
             parentColumn = "id",
             entityColumn = "user_id"
         )
-        val statistic: UserWithStatisticEntity
+        val statistic: UserWithStatisticEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val generalOption: UserGeneralOptionEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val mediaListOption: UserMediaOptionEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val previousNames: List<UserPreviousNameEntity>,
     ) : UserEntityView()
 }
