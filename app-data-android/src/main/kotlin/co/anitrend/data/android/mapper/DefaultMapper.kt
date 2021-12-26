@@ -51,11 +51,11 @@ abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
      */
     protected fun <T> checkValidity(data: T?): OutCome<T> {
         if (data == null) {
-            Timber.tag(moduleTag).v("Data is null")
+            Timber.v("Data is null")
             return OutCome.Fail(emptyList())
         }
         if (data is Collection<*> && data.isEmpty()) {
-            Timber.tag(moduleTag).v("Data is empty")
+            Timber.v("Data is empty")
             return OutCome.Fail(emptyList())
         }
         return OutCome.Pass(data)
@@ -66,7 +66,7 @@ abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
      */
     protected fun handleException(exceptions: List<Throwable>) {
         exceptions.forEach {
-            Timber.tag(moduleTag).w(it)
+            Timber.w(it)
         }
     }
 

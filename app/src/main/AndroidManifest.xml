@@ -50,6 +50,7 @@
         tools:targetApi="q">
 
         <activity android:name=".component.screen.MainScreen"
+            android:exported="true"
             android:launchMode="singleTop"/>
 
         <provider
@@ -72,16 +73,11 @@
             <!-- Disable automatic startup for emojify -->
             <meta-data android:name="io.wax911.emojify.initializer.EmojiInitializer"
                 tools:node="remove" />
+            <meta-data android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
         </provider>
 
-        <!--
-        Disable default work manager initializer
-        https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration
-        -->
-        <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove" />
     </application>
 
 </manifest>

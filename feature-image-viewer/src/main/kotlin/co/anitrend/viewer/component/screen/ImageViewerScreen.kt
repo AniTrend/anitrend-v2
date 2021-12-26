@@ -57,7 +57,11 @@ class ImageViewerScreen : AniTrendScreen<ImageViewerScreenBinding>() {
         if (isAllowed)
             viewModel.downloadImage(param?.imageSrc)
         else
-            Toast.makeText(this, R.string.warning_permission_for_storage_not_granted, Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                R.string.warning_permission_for_storage_not_granted,
+                Toast.LENGTH_LONG
+            ).show()
     }
 
     private var disposable: Disposable? = null

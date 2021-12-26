@@ -21,7 +21,8 @@
     package="co.anitrend.medialist.editor" >
 
     <application>
-        <activity android:name=".component.screen.MediaListEditorScreen" />
+        <activity android:name=".component.screen.MediaListEditorScreen"
+            android:exported="true" />
         
         <provider
             android:name="androidx.startup.InitializationProvider"

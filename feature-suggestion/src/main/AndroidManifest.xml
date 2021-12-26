@@ -21,7 +21,8 @@
     package="co.anitrend.suggestion" >
 
     <application>
-        <activity android:name=".component.screen.SuggestionScreen" />
+        <activity android:name=".component.screen.SuggestionScreen"
+            android:exported="true" />
         
         <provider
             android:name="androidx.startup.InitializationProvider"

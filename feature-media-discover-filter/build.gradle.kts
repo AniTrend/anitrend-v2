@@ -22,6 +22,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(Libraries.AniTrend.CommonUi.shared))
     implementation(project(Libraries.AniTrend.CommonUi.genre))
     implementation(project(Libraries.AniTrend.CommonUi.tag))
     implementation(Libraries.Google.FlexBox.flexBox)

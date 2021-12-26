@@ -17,6 +17,4 @@
 
 <resources>
 
-    <string name="action_media_list_delete">Delete</string>
-    <string name="action_media_list_save">Save</string>
 </resources>

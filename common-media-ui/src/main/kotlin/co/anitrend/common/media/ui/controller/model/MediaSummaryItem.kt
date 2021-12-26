@@ -22,6 +22,8 @@ import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -112,10 +114,11 @@ internal class MediaSummaryItem(
      * to objects, stop any asynchronous work, e.t.c
      */
     override fun unbind(view: View) {
+        val lifecycleOwner = view.context as LifecycleOwner
         binding?.mediaCardContainer?.setOnLongClickListener(null)
         binding?.mediaCardContainer?.setOnClickListener(null)
-        binding?.mediaGenresRecycler?.onDestroy()
-        genreListAdapter?.onPause()
+        binding?.mediaGenresRecycler?.onDestroy(lifecycleOwner)
+        genreListAdapter?.onPause(lifecycleOwner)
         disposable?.dispose()
         disposable = null
         super.unbind(view)

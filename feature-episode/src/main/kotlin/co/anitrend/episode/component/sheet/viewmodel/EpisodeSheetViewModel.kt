@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.anitrend.arch.extension.ext.empty
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.episode.R
 import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
@@ -42,7 +43,7 @@ class EpisodeSheetViewModel(
             val description = episode.description
             val content = if (description.isNullOrBlank())
                 context.getString(R.string.label_episode_has_no_summary, episode.about.episodeTitle)
-            else episode.description
+            else episode.description ?: String.empty()
 
             val document = Jsoup.parse(content)
             model.postValue(document.html())

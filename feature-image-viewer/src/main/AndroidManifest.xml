@@ -28,7 +28,8 @@
             <meta-data  android:name="co.anitrend.viewer.initializer.FeatureInitializer"
                 android:value="androidx.startup" />
         </provider>
-        <activity android:name=".component.screen.ImageViewerScreen" />
+        <activity android:name=".component.screen.ImageViewerScreen"
+            android:exported="true" />
     </application>
 
 </manifest>

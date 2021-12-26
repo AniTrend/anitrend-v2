@@ -22,7 +22,8 @@
 
 
     <application>
-        <activity android:name=".component.screen.MediaListScreen" />
+        <activity android:name=".component.screen.MediaListScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

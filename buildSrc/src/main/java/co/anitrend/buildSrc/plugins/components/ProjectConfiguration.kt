@@ -183,7 +183,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     tasks.withType(KotlinCompile::class.java) {
         val compilerArgumentOptions = mutableListOf(
-            "-Xuse-experimental=kotlin.Experimental",
+            "-Xopt-in=kotlin.Experimental",
             "-Xopt-in=kotlin.ExperimentalStdlibApi",
             "-Xopt-in=kotlin.Experimental"
         )

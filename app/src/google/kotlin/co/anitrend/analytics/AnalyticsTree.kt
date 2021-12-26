@@ -125,7 +125,7 @@ class AnalyticsTree(
      * @param t Accompanying exceptions. May be `null`, but then `message` will not be.
      */
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if (priority < Log.INFO)
+        if (priority < Log.DEBUG)
             return
 
         runCatching {

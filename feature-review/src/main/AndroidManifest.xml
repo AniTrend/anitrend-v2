@@ -21,7 +21,8 @@
     package="co.anitrend.review" >
 
     <application>
-        <activity android:name=".component.screen.ReviewScreen" />
+        <activity android:name=".component.screen.ReviewScreen"
+            android:exported="true" />
         
         <provider
             android:name="androidx.startup.InitializationProvider"

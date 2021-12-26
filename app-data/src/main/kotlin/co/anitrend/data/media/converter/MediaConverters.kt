@@ -560,11 +560,11 @@ internal class MediaEntityViewConverter(
                 siteUrl = media.siteUrl,
                 source = media.source ?: jikan?.source?.let {
                     runCatching {
-                        MediaSource.valueOf(it.toUpperCase(Locale.ROOT))
+                        MediaSource.valueOf(it.uppercase())
                     }.getOrNull()
                 } ?: jikan?.type?.let {
                     runCatching {
-                        MediaSource.valueOf(it.toUpperCase(Locale.ROOT))
+                        MediaSource.valueOf(it.uppercase())
                     }.getOrNull()
                 },
                 synonyms = media.synonyms.let {
