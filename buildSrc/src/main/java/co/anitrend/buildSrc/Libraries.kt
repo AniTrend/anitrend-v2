@@ -462,7 +462,7 @@ object Libraries {
 
     object Devrieze {
         object XmlUtil {
-            private const val version = "0.83.0"
+            private const val version = "0.84.0-RC1"
 
             object Android {
                 const val core = "io.github.pdvrieze.xmlutil:core-android:$version"
