@@ -83,7 +83,7 @@ object Libraries {
         }
 
         object Collection {
-            private const val version = "1.2.0-beta01"
+            private const val version = "1.2.0"
             const val collection = "androidx.collection:collection:$version"
             const val collectionKtx = "androidx.collection:collection-ktx:$version"
         }
