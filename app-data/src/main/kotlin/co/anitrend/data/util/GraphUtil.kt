@@ -84,7 +84,7 @@ internal object GraphUtil {
      * @param shrink flag which allows or prevents minification
      */
     @AniTrendExperimentalFeature
-    internal fun String.minify(shrink: Boolean): String? {
+    internal fun String.minify(shrink: Boolean): String {
         return if (shrink) replace(
             "\n\n", " "
         ).replace(
