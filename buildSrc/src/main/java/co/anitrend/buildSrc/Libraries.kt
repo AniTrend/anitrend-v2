@@ -78,12 +78,12 @@ object Libraries {
         }
 
         object Browser {
-            private const val version = "1.4.0-rc01"
+            private const val version = "1.4.0"
             const val browser = "androidx.browser:browser:$version"
         }
 
         object Collection {
-            private const val version = "1.2.0-beta01"
+            private const val version = "1.2.0"
             const val collection = "androidx.collection:collection:$version"
             const val collectionKtx = "androidx.collection:collection-ktx:$version"
         }
@@ -132,7 +132,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.1.1"
+            private const val version = "2.1.2"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
 
@@ -154,7 +154,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.4.0-beta01"
+            private const val version = "1.4.0"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -268,7 +268,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.4.0-beta01"
+            private const val version = "2.4.0"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
@@ -310,7 +310,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.7.0"
+            private const val version = "2.7.1"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val multiProcess = "androidx.work:work-multiprocess:$version"
             const val runtime = "androidx.work:work-runtime:$version"
@@ -401,7 +401,7 @@ object Libraries {
     object AirBnB {
 
         object Lottie {
-            private const val version = "4.2.0"
+            private const val version = "4.2.2"
             const val lottie = "com.airbnb.android:lottie:$version"
         }
 
@@ -462,7 +462,7 @@ object Libraries {
 
     object Devrieze {
         object XmlUtil {
-            private const val version = "0.83.0"
+            private const val version = "0.84.0-RC1"
 
             object Android {
                 const val core = "io.github.pdvrieze.xmlutil:core-android:$version"
@@ -472,14 +472,14 @@ object Libraries {
     }
 
     object Dropbox {
-        private const val version = "4.0.2-KT15"
+        private const val version = "4.0.4-KT15"
         const val store = "com.dropbox.mobile.store:store4:$version"
     }
 
     object Google {
 
         object Accompanist {
-            private const val version = "0.21.2-beta"
+            private const val version = "0.22.0-rc"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
@@ -508,17 +508,17 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "20.0.0"
+                private const val version = "20.0.2"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "18.2.4"
+                private const val version = "18.2.6"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.8.0"
+                    private const val version = "2.8.1"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -640,7 +640,7 @@ object Libraries {
     }
 
     object Mockk {
-        const val version = "1.12.0"
+        const val version = "1.12.1"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }

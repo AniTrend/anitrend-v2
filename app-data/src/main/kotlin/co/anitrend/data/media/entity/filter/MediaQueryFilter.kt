@@ -528,7 +528,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
                             .orderBy(MediaEntitySchema.titleRomaji.asColumn(mediaTable), sort.order)
                     }
                     else -> {
-                        val qualifier = sort.sortable.name.toLowerCase(Locale.ROOT)
+                        val qualifier = sort.sortable.name.lowercase()
                         requireBuilder().orderBy(qualifier.asColumn(mediaTable), sort.order)
                     }
                 }
