@@ -25,8 +25,9 @@ import co.anitrend.core.BuildConfig
 import co.anitrend.core.initializer.injector.factory.WorkManagerFactory
 import co.anitrend.core.initializer.injector.logger.KoinLogger
 import org.koin.core.KoinApplication
-import org.koin.core.KoinExperimentalAPI
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.logger.Level
+import org.koin.fileProperties
 
 
 private fun KoinApplication.createWorkManagerFactory() {

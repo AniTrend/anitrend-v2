@@ -26,12 +26,10 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.recycler.SupportRecyclerView
-import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
 import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
 import co.anitrend.core.R
@@ -43,7 +41,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.scope.fragmentScope
-import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
 
 abstract class AniTrendListContent<M>(
@@ -51,7 +49,7 @@ abstract class AniTrendListContent<M>(
     override val listPresenter: SupportListPresenter<M> = AniTrendListContentPresenter()
 ) : SupportFragmentList<M>(), KoinScopeComponent {
 
-    override val scope by lazy(UNSAFE) { fragmentScope() }
+    override val scope by fragmentScope()
 
     /**
      * Sets the adapter for the recycler view
@@ -84,9 +82,8 @@ abstract class AniTrendListContent<M>(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
             koinOf<ISupportConnectivity>().connectivityStateFlow
-                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
                 .onEach { state ->
                     Timber.v("Connectivity state changed: $state")
                     if (state == ConnectivityState.Connected) viewModelState()?.retry()

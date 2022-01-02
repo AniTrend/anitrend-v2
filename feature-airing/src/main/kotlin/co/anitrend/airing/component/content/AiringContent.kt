@@ -32,7 +32,7 @@ import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.flow.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class AiringContent(
     private val settings: ICustomizationSettings,
@@ -41,7 +41,7 @@ class AiringContent(
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
-    private val viewModel by viewModel<AiringViewModel>(
+    private val viewModel by stateViewModel<AiringViewModel>(
         state = { arguments.orEmpty() }
     )
 

@@ -23,11 +23,6 @@ plugins {
 dependencies {
     implementation(project(":app-domain"))
 
-    implementation(Libraries.Koin.core)
-    implementation(Libraries.Koin.extension)
-    implementation(Libraries.Koin.AndroidX.fragment)
-    testImplementation(Libraries.Koin.test)
-
     implementation(Libraries.AndroidX.Work.runtimeKtx)
     implementation(Libraries.Google.Gson.gson)
 }

@@ -56,7 +56,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.fragment.android.replace
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import timber.log.Timber
 
 class MainScreen : AniTrendScreen<MainScreenBinding>() {
@@ -73,7 +73,7 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
             this
         ) as BottomDrawerContent
 
-    private val viewModel by viewModel<MainScreenViewModel>(
+    private val viewModel by stateViewModel<MainScreenViewModel>(
         state = { intent.extras.orEmpty() }
     )
 

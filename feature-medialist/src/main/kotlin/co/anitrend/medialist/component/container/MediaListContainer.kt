@@ -27,6 +27,7 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.extensions.orEmpty
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.user.entity.User
@@ -35,7 +36,6 @@ import co.anitrend.medialist.component.container.adapter.MediaListPageAdapter
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.databinding.MediaListContainerBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListContainer(
     private val stateConfig: StateLayoutConfig,
@@ -43,7 +43,7 @@ class MediaListContainer(
     override val inflateLayout: Int = R.layout.media_list_container
 ) : AniTrendContent<MediaListContainerBinding>() {
 
-    private val viewModel by viewModel<UserViewModel>(
+    private val viewModel by stateViewModel<UserViewModel>(
         state = { arguments.orEmpty() }
     )
 
