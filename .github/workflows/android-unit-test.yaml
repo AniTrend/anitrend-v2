@@ -8,12 +8,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 11
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: 11
+        distribution: 'adopt'
     - name: Configure properties
       run: |
-        chmod +x ./scripts/configuration.sh
-        ./scripts/configuration.sh
+        chmod +x .github/scripts/configuration.sh
+        ./.github/scripts/configuration.sh
     - name: Gradle test
       run: ./gradlew test --stacktrace

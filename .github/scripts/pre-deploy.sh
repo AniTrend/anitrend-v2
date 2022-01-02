@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # Copyright (C) 2021  AniTrend
 #
@@ -15,20 +17,13 @@
 #     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-#!/bin/bash
-
 function create_directories {
     mkdir -p ./app-core/src/main/resources/org/koin/core/
     cd ./app-core/src/main/resources/org/koin/core/
 }
 
-function create_files {
-    touch koin.properties
-    echo "aniListClientId=\"aniListClientId\"" >> koin.properties
-    echo "aniListClientSecret=\"aniListClientSecret\"" >> koin.properties
-    echo "traktClientId=\"traktClientId\"" >> koin.properties
-    echo "traktClientSecret=\"traktClientSecret\"" >> koin.properties
-    echo "tmdbClientSecret=\"tmdbClientSecret\"" >> koin.properties
+function  create_files {
+    # Access github secrets to create files
 }
 
 create_directories
