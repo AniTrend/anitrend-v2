@@ -22,19 +22,25 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.R
+import co.anitrend.core.android.extensions.fragmentManager
+import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.model.FragmentItem
 import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ViewModelOwnerDefinition
 import org.koin.androidx.viewmodel.koin.getViewModel
 import org.koin.androidx.viewmodel.scope.BundleDefinition
+import org.koin.androidx.viewmodel.scope.emptyState
+import org.koin.androidx.viewmodel.scope.getViewModel
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
-import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.component.KoinScopeComponent
 import org.koin.java.KoinJavaComponent.getKoin
 
 /**
@@ -67,14 +73,20 @@ inline fun <reified T : Any> KoinScopeComponent.inject(
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
  * a new instance is created.
  *
- * @return tag of the fragment
+ * @param contentFrame Resource Id of the view to inflate the fragment into
+ * @param context Any lifecycle driver context
+ * @param fragmentTransaction Optional transaction to run while committing fragment
+ *
+ * @return [String] tag of the fragment
  *
  * @see androidx.fragment.app.commit
+ *
+ * @throws NotImplementedError if [context] cannot resolve [FragmentManager]
  */
 inline fun FragmentItem<*>.commit(
     @IdRes contentFrame: Int,
-    fragmentActivity: FragmentActivity,
-    action: FragmentTransaction.() -> Unit = {
+    context: Context,
+    fragmentTransaction: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
             R.anim.enter_from_bottom,
             R.anim.exit_to_bottom,
@@ -83,13 +95,12 @@ inline fun FragmentItem<*>.commit(
         )
     }
 ) : String {
-    val fragmentManager = fragmentActivity.supportFragmentManager
-
     val fragmentTag = tag()
+    val fragmentManager = context.fragmentManager()
     val backStack = fragmentManager.findFragmentByTag(fragmentTag)
 
     fragmentManager.commit {
-        action()
+        fragmentTransaction()
         backStack?.let {
             replace(contentFrame, it, fragmentTag)
         } ?: replace(contentFrame, fragment, parameter, fragmentTag)
@@ -107,7 +118,7 @@ inline fun FragmentItem<*>.commit(
  */
 inline fun <T: Fragment> FragmentItem<T>.commit(
     contentFrame: View,
-    fragmentActivity: FragmentActivity,
+    context: Context,
     action: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
             R.anim.enter_from_bottom,
@@ -116,7 +127,7 @@ inline fun <T: Fragment> FragmentItem<T>.commit(
             R.anim.popup_exit
         )
     }
-) = commit(contentFrame.id, fragmentActivity, action)
+) = commit(contentFrame.id, context, action)
 
 /**
  * Uses fragment factory to instantiate a fragment class definition
@@ -135,31 +146,20 @@ inline fun <reified T : Fragment> FragmentActivity.createFragment(
 }
 
 /**
- * Retrieves or creates a new fragment using the given [tag]
+ * Retrieves or creates a new fragment using the given [FragmentItem]
  *
  * @param activity Calling activity
- * @param tag Tag to identity the fragment
+ *
+ * @see runIfActivityContext
  */
 inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
     activity: FragmentActivity
 ): T {
-    val fragment = activity.supportFragmentManager.findFragmentByTag(tag()) as? T ?:
-    activity.createFragment(fragment)
+    val fragmentManager = activity.supportFragmentManager
+    val fragment = fragmentManager.findFragmentByTag(tag()) as? T
+        ?: activity.createFragment(fragment)
     fragment.arguments = parameter
     return fragment
-}
-
-/**
- * Retrieves or creates a new fragment using the underlying
- * [FragmentActivity] from the given [context]
- *
- * @param context Context
- */
-inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
-    context: Context
-): T {
-    val fragmentActivity = context as FragmentActivity
-    return fragmentByTagOrNew(fragmentActivity)
 }
 
 /**
@@ -181,20 +181,29 @@ inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
  */
 inline fun <reified T : ViewModel> View.viewModel(
     qualifier: Qualifier? = null,
-    noinline state: BundleDefinition? = null,
     noinline owner: ViewModelOwnerDefinition = {
         ViewModelOwner.from(
             findViewTreeViewModelStoreOwner()!!,
             findViewTreeSavedStateRegistryOwner()
         )
     },
-    noinline parameters: ParametersDefinition? = null,
+    noinline state: BundleDefinition = emptyState(),
+    noinline parameters: ParametersDefinition? = null
 ): Lazy<T> = lazy(UNSAFE) {
-    val koin = getKoin()
-    koin.getViewModel(
-        qualifier,
-        state,
-        owner,
-        parameters
-    )
+    if (context is KoinScopeComponent) {
+        val scopeComponent = context as KoinScopeComponent
+        scopeComponent.scope.getViewModel(
+            qualifier,
+            owner,
+            T::class,
+            state,
+            parameters
+        )
+    } else {
+        getKoin().getViewModel(
+            qualifier,
+            owner,
+            parameters
+        )
+    }
 }

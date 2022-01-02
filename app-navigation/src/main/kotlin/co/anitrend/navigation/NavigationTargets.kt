@@ -27,7 +27,6 @@ import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.entity.shared.FuzzyDate
-import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus

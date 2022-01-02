@@ -23,6 +23,7 @@ import co.anitrend.arch.extension.ext.snackBar
 import co.anitrend.common.media.ui.R
 import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.domain.media.entity.Media
@@ -46,20 +47,22 @@ internal fun View.openMediaListSheetFor(
     entity: Media,
     settings: Settings
 ): Boolean {
-    if (settings.isAuthenticated.value) {
-        val fragmentItem = FragmentItem(
-            fragment = MediaListEditorRouter.forSheet(),
-            parameter = MediaListEditorRouter.Param(
-                mediaId = entity.id,
-                mediaType = entity.category.type,
-                scoreFormat = settings.scoreFormat.value
-            ).asBundle()
-        )
-        val dialog = fragmentItem.fragmentByTagOrNew(context) as DialogFragment
-        dialog.show(context.fragmentManager(), fragmentItem.tag())
-    } else
-        snackBar(
-            text = resources.getString(R.string.label_text_authentication_required)
-        ).show()
+    runIfActivityContext {
+        if (settings.isAuthenticated.value) {
+            val fragmentItem = FragmentItem(
+                fragment = MediaListEditorRouter.forSheet(),
+                parameter = MediaListEditorRouter.Param(
+                    mediaId = entity.id,
+                    mediaType = entity.category.type,
+                    scoreFormat = settings.scoreFormat.value
+                ).asBundle()
+            )
+            val dialog = fragmentItem.fragmentByTagOrNew(this) as DialogFragment
+            dialog.show(fragmentManager(), fragmentItem.tag())
+        } else
+            snackBar(
+                text = resources.getString(R.string.label_text_authentication_required)
+            ).show()
+    }
     return true
 }

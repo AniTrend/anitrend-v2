@@ -20,9 +20,10 @@ package co.anitrend.navigation
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import org.junit.Before
 import org.junit.runner.RunWith
+import org.koin.test.KoinTest
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-internal class NavigationTargetsTest {
+internal class NavigationTargetsTest : KoinTest {
 
     @Before
     fun setUp() {

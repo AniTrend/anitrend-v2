@@ -29,6 +29,7 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.media.ui.controller.extensions.startMediaScreenFor
 import co.anitrend.common.media.ui.databinding.MediaCompactItemBinding
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
@@ -36,6 +37,7 @@ import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
+import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaCompactItem(
@@ -64,7 +66,15 @@ internal class MediaCompactItem(
     ) {
         binding = MediaCompactItemBinding.bind(view)
         disposable = requireBinding().mediaImage.using(
-            entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER)
+            entity.image.toMediaRequestImage(
+                RequestImage.Media.ImageType.POSTER
+            ),
+            listOf(
+                RoundedCornersTransformation(
+                    bottomLeft = 8f.dp,
+                    bottomRight = 8f.dp,
+                )
+            )
         )
         requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)

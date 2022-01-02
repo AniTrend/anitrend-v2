@@ -21,12 +21,14 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import kotlin.jvm.Throws
 
 /**
  * Resolve [FragmentManager] from any context
  *
  * @throws NotImplementedError when a context type cannot be handled
  */
+@Throws(NotImplementedError::class)
 fun Context.fragmentManager() = when (this) {
     is FragmentActivity -> supportFragmentManager
     is ContextWrapper -> (baseContext as FragmentActivity).supportFragmentManager

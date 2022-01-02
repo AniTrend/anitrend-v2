@@ -27,10 +27,8 @@ fun String.toHashId(): Long {
     val hash = hashCode()
     if (hash < 0) {
         val id = (hash and 0x7fffffff).toLong()
-        Timber.v("Hash id generated -> $id")
         return id
     }
-    Timber.v("Hash id default -> $hash")
     return hash.toLong()
 }
 
