@@ -67,7 +67,7 @@ fun Project.hasComposeSupport() = isAppModule() || matchesFeatureModule() || mat
  * Module that support [Libraries.Koin.AndroidX] dependencies
  */
 fun Project.hasKoinAndroidSupport() = 
-    name != Modules.App.Data.id || name != Modules.App.Core.id
+    name != Modules.App.Data.id || name != Modules.App.Core.id || name != Modules.App.Navigation.id
 /**
  * Module that support the kotlin annotation processor plugin
  */
