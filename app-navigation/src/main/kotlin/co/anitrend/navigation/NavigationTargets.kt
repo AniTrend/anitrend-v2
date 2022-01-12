@@ -851,6 +851,30 @@ object TagTaskRouter : NavigationRouter() {
     fun forScheduler() = provider.scheduler()
 }
 
+object AccountTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun signOutWorker(): Class<out ListenableWorker>
+        fun signInWorker(): Class<out ListenableWorker>
+    }
+
+    fun forSignOutWorker() = provider.signOutWorker()
+    fun forSignInWorker() = provider.signInWorker()
+
+    @Parcelize
+    data class Param(
+        val id: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "AccountTaskRouter#Param"
+        }
+    }
+}
+
 object UserTaskRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
