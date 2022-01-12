@@ -39,8 +39,6 @@ dependencies {
     implementation(Libraries.AniTrend.Sync.plugin)
     implementation(Libraries.CashApp.Copper.copper)
 
-    implementation(Libraries.Dropbox.store)
-
     implementation(Libraries.tmdb) {
         exclude(group = "org.threeten", module = "threetenbp")
     }

@@ -17,10 +17,7 @@
 
 package co.anitrend.auth.koin
 
-import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
-import co.anitrend.arch.extension.ext.getColorFromAttr
-import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.auth.component.content.AuthContent
 import co.anitrend.auth.component.screen.AuthScreen
@@ -65,9 +62,7 @@ private val presenterModule = module {
                 context = androidContext(),
                 settings = get(),
                 clientId = getProperty("aniListClientId"),
-                customTabs = get<CustomTabsIntent.Builder>().build(),
-                shortcutManager = get(),
-                authenticationHelper = get()
+                customTabs = get<CustomTabsIntent.Builder>().build()
             )
         }
     }

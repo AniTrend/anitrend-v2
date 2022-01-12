@@ -34,4 +34,7 @@ abstract class AccountUseCase<State: UiState<*>>(
 
     fun signOut(param: AccountParam.SignOut) =
         repository.signOut(param)
+
+    fun signIn(param: AccountParam.Activate) =
+        repository.signIn(param)
 }

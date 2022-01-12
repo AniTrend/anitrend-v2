@@ -35,4 +35,8 @@ internal class AccountRepositoryImpl(
     override fun signOut(param: AccountParam.SignOut) {
         source.signOut(param)
     }
+
+    override fun signIn(param: AccountParam.Activate) {
+        source.signIn(param)
+    }
 }

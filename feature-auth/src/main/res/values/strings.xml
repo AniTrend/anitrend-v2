@@ -30,4 +30,6 @@
 
     <string name="auth_error_default_title">Authentication failed</string>
     <string name="auth_error_default_message">AniTrend was unable to get a response from AniList. No detailed error was provided, please try again.</string>
+
+    <string name="auth_failed_message">Authentication succeeded but could not fetch your user account</string>
 </resources>
