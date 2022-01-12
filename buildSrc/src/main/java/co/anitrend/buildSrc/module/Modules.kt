@@ -130,7 +130,8 @@ internal object Modules {
         Studio("task-studio"),
         Genre("task-genre"),
         Tag("task-tag"),
-        Updater("task-updater")
+        Updater("task-updater"),
+        Account("task-account"),
     }
 }
 
