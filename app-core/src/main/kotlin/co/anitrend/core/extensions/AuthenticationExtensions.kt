@@ -22,9 +22,9 @@ import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.UserTaskRouter
 
 /**
- * Authentication based worker scheduler
+ * Fires off worker schedules that should run when a user is signed in
  */
-fun Context.onAuthenticated() {
+fun Context.scheduleAuthenticationWorkers() {
     UserTaskRouter.forAccountSyncScheduler().schedule(this)
     UserTaskRouter.forStatisticSyncScheduler().schedule(this)
     MediaListTaskRouter.forAnimeScheduler().schedule(this)
@@ -32,9 +32,9 @@ fun Context.onAuthenticated() {
 }
 
 /**
- * Authentication based scheduler cancellation
+ * Fires off worker schedules that should cancel scheduled workers
  */
-fun Context.onRevokeAuthentication() {
+fun Context.cancelAuthenticationWorkers() {
     UserTaskRouter.forAccountSyncScheduler().cancel(this)
     UserTaskRouter.forStatisticSyncScheduler().cancel(this)
     MediaListTaskRouter.forAnimeScheduler().cancel(this)
