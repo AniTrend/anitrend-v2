@@ -55,7 +55,8 @@ private val viewModelModule = module {
 				useCase = get()
 			),
 			navigationState = NavigationState(
-				settings = settings
+				settings = settings,
+				savedStateHandle = get()
 			)
 		)
 	}
