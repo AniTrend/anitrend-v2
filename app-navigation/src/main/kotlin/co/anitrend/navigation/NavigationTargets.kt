@@ -27,7 +27,6 @@ import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.entity.shared.FuzzyDate
-import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.media.enums.*
 import co.anitrend.domain.medialist.enums.MediaListSort
 import co.anitrend.domain.medialist.enums.MediaListStatus
@@ -850,6 +849,30 @@ object TagTaskRouter : NavigationRouter() {
 
     fun forWorker() = provider.worker()
     fun forScheduler() = provider.scheduler()
+}
+
+object AccountTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun signOutWorker(): Class<out ListenableWorker>
+        fun signInWorker(): Class<out ListenableWorker>
+    }
+
+    fun forSignOutWorker() = provider.signOutWorker()
+    fun forSignInWorker() = provider.signInWorker()
+
+    @Parcelize
+    data class Param(
+        val id: Long
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "AccountTaskRouter#Param"
+        }
+    }
 }
 
 object UserTaskRouter : NavigationRouter() {

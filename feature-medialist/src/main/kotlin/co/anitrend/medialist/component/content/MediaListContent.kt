@@ -31,7 +31,7 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.R
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
 import kotlinx.coroutines.flow.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MediaListContent(
     private val settings: ICustomizationSettings,
@@ -39,7 +39,7 @@ class MediaListContent(
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
-    private val viewModel by viewModel<MediaListViewModel>(
+    private val viewModel by stateViewModel<MediaListViewModel>(
         state = { arguments.orEmpty() }
     )
 

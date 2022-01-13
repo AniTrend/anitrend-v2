@@ -60,7 +60,10 @@ class AuthorizeAccountItem(
         binding = AccountAnonymousItemBinding.bind(view)
         requireBinding().accountUserName.setText(entity.titleRes)
         disposable = requireBinding().accountProfileImage.load(
-            view.context.getCompatDrawable(R.drawable.ic_account_add_24dp, R.color.primaryTextColor)
+            view.context.getCompatDrawable(
+                R.drawable.ic_account_add_24dp,
+                R.color.primaryTextColor
+            )
         )
         requireBinding().accountContainer.setOnClickListener {
             AuthRouter.startActivity(it.context)

@@ -99,6 +99,14 @@ internal class AuthSourceImpl(
         }
     }
 
+    override fun signIn(param: AccountParam.Activate) {
+        launch(dispatcher.io) {
+            settings.authenticatedUserId.value = param.userId
+            settings.isAuthenticated.value = true
+            userIdFlow.emit(param.userId)
+        }
+    }
+
     override suspend fun getAuthorizedUser(param: AccountAction.SignIn, callback: RequestCallback) {
         val deferred = async {
             remoteSource.getAuthenticatedUser(

@@ -37,7 +37,7 @@ import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewM
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
 import kotlinx.coroutines.flow.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
@@ -46,7 +46,7 @@ class MediaDiscoverContent(
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
-    private val viewModel by viewModel<MediaDiscoverViewModel>(
+    private val viewModel by stateViewModel<MediaDiscoverViewModel>(
         state = { arguments.orEmpty() }
     )
 

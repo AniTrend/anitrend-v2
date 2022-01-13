@@ -26,7 +26,7 @@ import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.review.discover.R
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.review.entity.Review
@@ -38,7 +38,7 @@ class ReviewDiscoverContent(
     override val defaultSpanSize: Int = R.integer.column_x1
 ) : AniTrendListContent<Review>() {
 
-    private val viewModel by viewModel<ReviewDiscoverViewModel>(
+    private val viewModel by stateViewModel<ReviewDiscoverViewModel>(
         state = { arguments.orEmpty() }
     )
 

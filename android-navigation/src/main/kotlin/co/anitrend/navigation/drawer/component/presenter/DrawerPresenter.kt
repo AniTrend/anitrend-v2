@@ -22,11 +22,9 @@ import android.content.res.ColorStateList
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.components.edgetreatment.SemiCircleCutout
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
@@ -34,20 +32,17 @@ import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.core.extensions.onRevokeAuthentication
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.AlphaSlideAction
 import co.anitrend.navigation.drawer.action.ForegroundSheetTransformSlideAction
 import co.anitrend.navigation.drawer.action.ScrollToTopStateAction
 import co.anitrend.navigation.drawer.action.VisibilityStateAction
-import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.account.Account
-import co.anitrend.navigation.extensions.startActivity
 import coil.transform.CircleCropTransformation
 import com.google.android.material.shape.MaterialShapeDrawable
+import timber.log.Timber
 
 internal class DrawerPresenter(
     context: Context,
@@ -133,24 +128,7 @@ internal class DrawerPresenter(
             is Account.Anonymous -> imageView.using(
                 imageView.context.getCompatDrawable(model.imageRes)
             )
-            else -> {}
-        }
-    }
-
-    fun onAuthenticatedItemClicked(
-        clickable: ClickableItem.Data<Account>,
-        viewModel: BottomDrawerViewModel
-    ) {
-        when (clickable.view.id) {
-            R.id.accountContainer -> {
-                if (clickable.data.isActiveUser)
-                    ProfileRouter.startActivity(clickable.view.context)
-                else { /* TODO: Switch account to the selected one */ }
-            }
-            R.id.accountSignOut -> {
-                viewModel.accountState.signOut(clickable.data)
-                context.onRevokeAuthentication()
-            }
+            else -> Timber.v("No authenticated account found")
         }
     }
 }

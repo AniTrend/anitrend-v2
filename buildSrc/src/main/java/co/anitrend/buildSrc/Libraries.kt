@@ -592,22 +592,23 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "2.2.3"
+        private const val version = "3.1.4"
+        const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
-        const val extension = "io.insert-koin:koin-core-ext:$version"
-        const val test = "io.insert-koin:koin-test:$version"
 
         object AndroidX {
-            const val scope = "io.insert-koin:koin-androidx-scope:$version"
-            const val fragment = "io.insert-koin:koin-androidx-fragment:$version"
-            const val viewModel = "io.insert-koin:koin-androidx-viewmodel:$version"
-            const val workManager = "io.insert-koin:koin-androidx-workmanager:$version"
-            // Compose is only available in koin 3.X
             const val compose = "io.insert-koin:koin-androidx-compose:$version"
+            const val navigation = "io.insert-koin:koin-androidx-navigation:$version"
+            const val workManager = "io.insert-koin:koin-androidx-workmanager:$version"
         }
 
         object Gradle {
             const val plugin = "io.insert-koin:koin-gradle-plugin:$version"
+        }
+
+        object Test {
+            const val test = "io.insert-koin:koin-test:$version"
+            const val testJUnit4 = "io.insert-koin:koin-test-junit4:$version"
         }
     }
     

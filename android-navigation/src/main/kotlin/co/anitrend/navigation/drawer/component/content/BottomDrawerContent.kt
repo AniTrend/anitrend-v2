@@ -38,6 +38,7 @@ import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
 import co.anitrend.core.android.extensions.applySystemBarsWindowInsetsListener
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.UpdaterRouter
@@ -57,6 +58,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.math.abs
@@ -70,7 +72,9 @@ class BottomDrawerContent(
 
     private val presenter by inject<DrawerPresenter>()
 
-    private val viewModel by viewModel<BottomDrawerViewModel>()
+    private val viewModel by stateViewModel<BottomDrawerViewModel>(
+        state = { arguments.orEmpty() }
+    )
 
     private val behavior: BottomSheetBehavior<FrameLayout> by lazy(UNSAFE) {
         BottomSheetBehavior.from(requireBinding().sheetBackgroundContainer)
@@ -112,7 +116,7 @@ class BottomDrawerContent(
     // for both calling progress updates and state updates.
     private var sandwichProgress: Float = 0F
         set(value) {
-            if (field != value)  {
+            if (field != value) {
                 onSandwichProgressChanged(value)
                 val newState = when(value) {
                     0F -> SandwichState.CLOSED
@@ -194,15 +198,17 @@ class BottomDrawerContent(
         // the account list.
         when (state) {
             SandwichState.OPEN -> {
-                binding?.run {
+                with (requireBinding()) {
                     sheetForegroundContainer.gone()
                     profileImageView.isClickable = false
+                    profileImageView.isFocusable = false
                 }
             }
             else -> {
-                binding?.run {
+                with (requireBinding()) {
                     sheetForegroundContainer.visible()
                     profileImageView.isClickable = true
+                    profileImageView.isFocusable = true
                 }
             }
         }
@@ -228,23 +234,7 @@ class BottomDrawerContent(
                         cause,
                         "navigationAdapter.clickableStateFlow threw an uncaught exception"
                     )
-                }
-                .collect()
-        }
-        lifecycleScope.launchWhenResumed {
-            accountAdapter.clickableFlow
-                .filterIsInstance<ClickableItem.Data<Account>>()
-                .onEach { clickable ->
-                    when (clickable.data) {
-                        is Account.Authenticated -> presenter.onAuthenticatedItemClicked(clickable, viewModel)
-                        else -> { }
-                    }
-                }.catch { cause: Throwable ->
-                    Timber.e(
-                        cause, "accountAdapter.clickStateFlow threw an uncaught exception"
-                    )
-                }
-                .collect()
+                }.collect()
         }
         lifecycleScope.launchWhenResumed {
             presenter.settings.isAuthenticated.flow
@@ -252,11 +242,8 @@ class BottomDrawerContent(
                     viewModel.accountState()
                     viewModel.navigationState.onAuthenticationStateChanged(it)
                 }.catch { cause: Throwable ->
-                    Timber.e(
-                        cause, "accountAdapter.clickStateFlow threw an uncaught exception"
-                    )
-                }
-                .collect()
+                    Timber.e(cause)
+                }.collect()
         }
     }
 
@@ -386,9 +373,7 @@ class BottomDrawerContent(
         bottomSheetCallback.removeOnStateChangedAction(action)
     }
 
-    override fun setCheckedItem(
-        @IdRes selectedItem: Int
-    ) {
+    override fun setCheckedItem(@IdRes selectedItem: Int) {
         lifecycleScope.launch {
             viewModel.navigationState.setNavigationMenuItemChecked(selectedItem)
         }

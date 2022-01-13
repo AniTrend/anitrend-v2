@@ -20,14 +20,13 @@ package co.anitrend.core.component.screen
 import android.content.Context
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.core.ui.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityRetainedScope
-import org.koin.core.scope.KoinScopeComponent
+import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
 
 /**
@@ -41,7 +40,7 @@ abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
 
     protected val configurationHelper by inject<IConfigurationHelper>()
 
-    override val scope by lazy(UNSAFE) { activityRetainedScope() }
+    override val scope by activityRetainedScope()
 
     override var binding: B? = null
 

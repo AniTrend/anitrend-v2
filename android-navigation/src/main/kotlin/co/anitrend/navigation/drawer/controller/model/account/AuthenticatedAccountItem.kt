@@ -28,14 +28,18 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.navigation.AccountTaskRouter
+import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.databinding.AccountAuthenticatedItemBinding
 import co.anitrend.navigation.drawer.model.account.Account
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
+import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
 import coil.transform.CircleCropTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class AuthenticatedAccountItem(
-    private val entity: Account.Authenticated
+    private val entity: Account.Authenticated,
 ) : RecyclerItemBinding<AccountAuthenticatedItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
@@ -66,22 +70,25 @@ class AuthenticatedAccountItem(
         if (entity.isActiveUser) {
             requireBinding().accountSignOut.visible()
             requireBinding().accountSignOut.setOnClickListener {
-                stateFlow.value =
-                    ClickableItem.Data(
-                        data = entity,
-                        view =  it
-                    )
+                val params = AccountTaskRouter.Param(id = entity.id)
+                AccountTaskRouter.forSignOutWorker()
+                    .createOneTimeUniqueWorker(it.context, params)
+                    .enqueue()
             }
         }
         else
             requireBinding().accountSignOut.gone()
 
         requireBinding().accountContainer.setOnClickListener {
-            stateFlow.value =
-                ClickableItem.Data(
-                    data = entity,
-                    view =  it
-                )
+            if (entity.isActiveUser) {
+                ProfileRouter.startActivity(it.context)
+            }
+            else {
+                val params = AccountTaskRouter.Param(id = entity.id)
+                AccountTaskRouter.forSignInWorker()
+                    .createOneTimeUniqueWorker(it.context, params)
+                    .enqueue()
+            }
         }
     }
 

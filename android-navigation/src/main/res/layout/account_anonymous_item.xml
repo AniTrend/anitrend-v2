@@ -24,6 +24,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?attr/listPreferredItemHeight"
+    android:clickable="true"
+    android:focusable="true"
     android:paddingHorizontal="@dimen/size_32dp"
     android:background="?attr/selectableItemBackground">
 

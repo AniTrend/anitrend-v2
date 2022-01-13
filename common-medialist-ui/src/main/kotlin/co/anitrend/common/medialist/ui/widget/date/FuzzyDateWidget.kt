@@ -38,7 +38,6 @@ import co.anitrend.domain.common.entity.shared.FuzzyDate.Companion.orEmpty
 import com.airbnb.paris.extensions.style
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.flow.Flow
-import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

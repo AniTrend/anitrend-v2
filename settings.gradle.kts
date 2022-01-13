@@ -79,5 +79,6 @@ include(
     ":task-studio",
     ":task-genre",
     ":task-tag",
-    ":task-updater"
+    ":task-updater",
+	":task-account"
 )

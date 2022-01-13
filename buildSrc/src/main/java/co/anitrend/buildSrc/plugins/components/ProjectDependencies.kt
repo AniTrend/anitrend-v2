@@ -353,8 +353,8 @@ private fun Project.applyComposeDependencies() {
     //dependencies.implementation(Libraries.AndroidX.Paging.Compose.pagingCompose)
 
     dependencies.implementation(Libraries.Google.Material.Compose.themeAdapter)
-    // TODO: Migrate to koin v3.X
-    // dependencies.implementation(Libraries.Koin.AndroidX.compose)
+    dependencies.implementation(Libraries.Google.Material.Compose.themeAdapter)
+    dependencies.implementation(Libraries.Koin.AndroidX.compose)
 
     dependencies.implementation(Libraries.Google.Accompanist.pagerIndicators)
     dependencies.implementation(Libraries.Google.Accompanist.appCompatTheme)
