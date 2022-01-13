@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.account.interactor
+package co.anitrend.task.account.provider
 
-import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.account.model.AccountParam
-import co.anitrend.domain.account.repository.AccountRepository
+import co.anitrend.navigation.AccountTaskRouter
+import co.anitrend.task.account.component.AccountSignOutWorker
+import co.anitrend.task.account.component.AccountSignInWorker
 
-abstract class AccountUseCase<State: UiState<*>>(
-    protected val repository: AccountRepository<State>
-) : IUseCase {
-
-    /**
-     * @return Authenticated users or null
-     */
-    fun getAuthorizedAccounts() =
-        repository.getAccountUsers()
-
-    fun signOut(param: AccountParam.SignOut) =
-        repository.signOut(param)
-
-    fun signIn(param: AccountParam.Activate) =
-        repository.signIn(param)
+class FeatureProvider : AccountTaskRouter.Provider {
+    override fun signOutWorker() = AccountSignOutWorker::class.java
+    override fun signInWorker() = AccountSignInWorker::class.java
 }

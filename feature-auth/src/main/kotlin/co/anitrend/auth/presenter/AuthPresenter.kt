@@ -22,45 +22,21 @@ import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.FragmentActivity
-import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.domain.entities.RequestError
-import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.auth.R
-import co.anitrend.auth.component.viewmodel.state.AuthState
-import co.anitrend.auth.model.Authentication
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.core.android.shortcut.contract.IShortcutController
-import co.anitrend.core.android.shortcut.model.Shortcut
-import co.anitrend.core.extensions.onAuthenticated
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.auth.helper.AuthenticationType
 import co.anitrend.data.auth.helper.authenticationUri
-import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
-import co.anitrend.navigation.MediaListTaskRouter
-import co.anitrend.navigation.UserTaskRouter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import co.anitrend.navigation.AccountTaskRouter
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import timber.log.Timber
 
 class AuthPresenter(
     context: Context,
     settings: Settings,
     private val clientId: String,
-    private val customTabs: CustomTabsIntent,
-    private val shortcutManager: IShortcutController,
-    private val authenticationHelper: IAuthenticationHelper
+    private val customTabs: CustomTabsIntent
 ) : CorePresenter(context, settings) {
-
-    suspend fun useAnonymousAccount(activity: FragmentActivity) {
-        MediaListTaskRouter.forAnimeScheduler().cancel(context)
-        MediaListTaskRouter.forMangaScheduler().cancel(context)
-        UserTaskRouter.forAccountSyncScheduler().cancel(context)
-        UserTaskRouter.forStatisticSyncScheduler().cancel(context)
-        withContext(Dispatchers.IO) {
-            authenticationHelper.invalidateAuthenticationState()
-        }
-        activity.finish()
-    }
 
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
@@ -73,7 +49,7 @@ class AuthPresenter(
         }
     }
 
-    fun authorizeWithAniList(activity: FragmentActivity, viewModelState: AuthState) {
+    fun authorizeWithAniList(activity: FragmentActivity) {
         runCatching {
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN, clientId))
@@ -81,45 +57,23 @@ class AuthPresenter(
             Timber.w(it, "Unable to open custom tabs")
             startViewIntent(authenticationUri(AuthenticationType.TOKEN, clientId))
         }
-
-        viewModelState.authenticationFlow.value = Authentication.Pending
     }
 
-    fun onStateChange(authentication: Authentication, state: AuthState, stateLayout: SupportStateLayout) {
-        when (authentication) {
-            is Authentication.Authenticating -> {
-                stateLayout.loadStateFlow.value = LoadState.Loading()
-                state(authentication)
-            }
-            is Authentication.Error -> stateLayout.loadStateFlow.value =
-                LoadState.Error(
-                    RequestError(
-                        topic = authentication.title,
-                        description = authentication.message
-                    )
+    fun runSignOutWorker() {
+        AccountTaskRouter.forSignOutWorker()
+            .createOneTimeUniqueWorker(
+                context,
+                AccountTaskRouter.Param(
+                    settings.authenticatedUserId.value
                 )
-            is Authentication.Success -> {
-                runCatching {
-                    shortcutManager.createShortcuts(
-                        Shortcut.AnimeList(),
-                        Shortcut.MangaList(),
-                        Shortcut.Notification(),
-                        Shortcut.Profile()
-                    )
-                }.onFailure { cause: Throwable ->
-                    Timber.w(cause)
-                }
-            }
-            else -> {
-                /** ignored */
-            }
-        }
+            ).enqueue()
     }
 
-    /**
-     * Starts tasks that rely on a valid authentication state
-     */
-    fun scheduleAuthenticationBasedTasks() {
-        context.onAuthenticated()
+    fun runSignInWorker(id: Long) {
+        AccountTaskRouter.forSignInWorker()
+            .createOneTimeUniqueWorker(
+                context,
+                AccountTaskRouter.Param(id)
+            ).enqueue()
     }
 }

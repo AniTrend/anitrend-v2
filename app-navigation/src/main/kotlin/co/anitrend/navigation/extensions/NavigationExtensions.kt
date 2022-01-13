@@ -165,9 +165,9 @@ inline fun <reified T: IParam> WorkerParameters.fromWorkerParameters(contract: I
  *
  * @return [WorkContinuation]
  */
-fun Class<out ListenableWorker>.createOneTimeUniqueWorker(
+fun <T: IParam> Class<out ListenableWorker>.createOneTimeUniqueWorker(
     context: Context,
-    params: IParam
+    params: T
 ): WorkContinuation {
     val oneTimeRequest = OneTimeWorkRequest.Builder(this)
         .setInputData(params.toDataBuilder().build())

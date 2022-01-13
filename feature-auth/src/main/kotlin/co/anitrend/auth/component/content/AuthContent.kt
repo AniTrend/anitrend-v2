@@ -22,15 +22,21 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.databinding.AuthContentBinding
+import co.anitrend.auth.model.Authentication
 import co.anitrend.auth.presenter.AuthPresenter
+import co.anitrend.core.android.extensions.observeOnce
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
@@ -79,16 +85,27 @@ class AuthContent(
         lifecycleScope.launchWhenResumed {
             viewModel.state.authenticationFlow
                 .onEach { state ->
-                    presenter.onStateChange(
-                        state,
-                        viewModelState(),
-                        requireBinding().stateLayout,
-                    )
-                }
-                .catch { cause: Throwable ->
+                    when (state) {
+                        is Authentication.Authenticating -> {
+                            requireBinding().stateLayout.loadStateFlow.value = LoadState.Loading()
+                            viewModelState().invoke(state)
+                        }
+                        is Authentication.Error -> {
+                            requireBinding().stateLayout.loadStateFlow.value =
+                                LoadState.Error(
+                                    RequestError(
+                                        topic = state.title,
+                                        description = state.message
+                                    )
+                                )
+                        }
+                        else -> {
+                            Timber.v("Authentication flow state changed: $state")
+                        }
+                    }
+                }.catch { cause: Throwable ->
                     Timber.e(cause)
-                }
-                .collect()
+                }.collect()
         }
     }
 
@@ -100,12 +117,19 @@ class AuthContent(
         viewModelState().loadState.observe(viewLifecycleOwner) {
             requireBinding().stateLayout.loadStateFlow.value = it
         }
-        viewModelState().model.observe(viewLifecycleOwner) { user ->
+        viewModelState().model.observeOnce(viewLifecycleOwner) { user ->
             if (user != null) {
-                presenter.scheduleAuthenticationBasedTasks()
+                presenter.runSignInWorker(user.id)
                 activity?.finish()
             } else {
-                // TODO: Inform the user auth was successful but account could not be fetched
+                Snackbar.make(
+                    requireView(),
+                    R.string.auth_failed_message,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(R.string.label_text_action_ok) {
+                    presenter.runSignOutWorker()
+                    activity?.finish()
+                }.show()
             }
         }
     }
@@ -115,15 +139,14 @@ class AuthContent(
         binding = AuthContentBinding.bind(view)
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
         requireBinding().anonymousControls.anonymousAccount.setOnClickListener {
-            lifecycleScope.launch {
-                presenter.useAnonymousAccount(requireActivity())
-            }
+            presenter.runSignOutWorker()
+            activity?.finish()
         }
         requireBinding().authorizationControls.authorizationIssues.setOnClickListener {
             presenter.authorizationIssues(requireActivity())
         }
         requireBinding().authorizationControls.authorizationUseAniList.setOnClickListener {
-            presenter.authorizeWithAniList(requireActivity(), viewModelState())
+            presenter.authorizeWithAniList(requireActivity())
         }
     }
 

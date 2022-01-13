@@ -19,6 +19,7 @@ package co.anitrend.auth.component.viewmodel
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.net.UriCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.auth.R
@@ -36,8 +37,10 @@ class AuthViewModel(
     }
 
     fun onIntentData(context: Context, data: Uri?) {
-        if (data == null)
+        if (data == null) {
+            Timber.d("No new intent data available, skipping checks")
             return
+        }
 
         // APP_URL/callback#access_token=TOKEN_HERE&token_type=TOKEN_TYPE&expires_in=EXPIRES_IN_HERE
         // Why are we even using fragments :not_like:
@@ -63,8 +66,6 @@ class AuthViewModel(
                     ?: context.getString(R.string.auth_error_default_message)
             )
             Timber.w(it)
-        }.onSuccess {
-            state.authenticationFlow.value = Authentication.Success
         }
     }
 

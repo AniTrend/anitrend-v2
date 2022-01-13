@@ -28,4 +28,8 @@ sealed class AccountParam {
     data class SignOut(
         val userId: Long
     ) : AccountParam()
+
+    data class Activate(
+        val userId: Long
+    ) : AccountParam()
 }

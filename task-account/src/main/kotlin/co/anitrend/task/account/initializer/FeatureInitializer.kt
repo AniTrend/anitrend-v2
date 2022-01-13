@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.account.interactor
+package co.anitrend.task.account.initializer
 
-import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.account.model.AccountParam
-import co.anitrend.domain.account.repository.AccountRepository
+import android.content.Context
+import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.task.account.koin.moduleHelper
 
-abstract class AccountUseCase<State: UiState<*>>(
-    protected val repository: AccountRepository<State>
-) : IUseCase {
-
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
     /**
-     * @return Authenticated users or null
+     * Initializes and a component given the application [Context]
+     *
+     * @param context The application context.
      */
-    fun getAuthorizedAccounts() =
-        repository.getAccountUsers()
-
-    fun signOut(param: AccountParam.SignOut) =
-        repository.signOut(param)
-
-    fun signIn(param: AccountParam.Activate) =
-        repository.signIn(param)
+    override fun create(context: Context) {
+        moduleHelper.loadModules()
+    }
 }

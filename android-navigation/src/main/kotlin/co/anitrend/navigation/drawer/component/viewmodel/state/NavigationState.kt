@@ -34,7 +34,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 internal class NavigationState(
-    settings: IAuthenticationSettings
+    settings: IAuthenticationSettings,
+    private val savedStateHandle: SavedStateHandle
 ) : ISupportViewModelState<List<Navigation>> {
 
     var context by Delegates.notNull<CoroutineContext>()
@@ -161,14 +162,13 @@ internal class NavigationState(
     }
 
     suspend fun onAuthenticationStateChanged(isAuthenticated: Boolean) {
-        val snapshot = mutableListOf<Navigation>()
-        snapshot.addAll(navigationItems.value)
-        val checked = snapshot.firstOrNull { nav ->
-            nav is Navigation.Menu && nav.isChecked
-        }
-
-        if (checked != null && !setNavigationMenuItemChecked(checked.id))
-            navigationItems.emit(createNavigationItems(isAuthenticated))
+        val checkedId: Int? = savedStateHandle[CHECKED_ITEM_ID]
+        navigationItems.emit(createNavigationItems(isAuthenticated))
+        if (checkedId != null) {
+            Timber.v("Updating check menu item")
+            setNavigationMenuItemChecked(checkedId)
+        } else
+            Timber.v("There is no last checked item")
     }
 
     /**
@@ -187,8 +187,10 @@ internal class NavigationState(
                     updated = true
                 it.isChecked = shouldCheck
             }
+        savedStateHandle[CHECKED_ITEM_ID] = id
         if (updated)
             navigationItems.emit(snapshot)
+
         return updated
     }
 
@@ -215,5 +217,9 @@ internal class NavigationState(
      */
     override suspend fun retry() {
         throw UnsupportedOperationException("$this does not support retry operation")
+    }
+
+    private companion object {
+        const val CHECKED_ITEM_ID = "menu_checked_id"
     }
 }

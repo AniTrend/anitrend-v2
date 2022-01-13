@@ -15,26 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.account.interactor
+import co.anitrend.buildSrc.Libraries
 
-import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.domain.state.UiState
-import co.anitrend.domain.account.model.AccountParam
-import co.anitrend.domain.account.repository.AccountRepository
+plugins {
+    id("co.anitrend.plugin")
+}
 
-abstract class AccountUseCase<State: UiState<*>>(
-    protected val repository: AccountRepository<State>
-) : IUseCase {
+dependencies {
 
-    /**
-     * @return Authenticated users or null
-     */
-    fun getAuthorizedAccounts() =
-        repository.getAccountUsers()
-
-    fun signOut(param: AccountParam.SignOut) =
-        repository.signOut(param)
-
-    fun signIn(param: AccountParam.Activate) =
-        repository.signIn(param)
 }

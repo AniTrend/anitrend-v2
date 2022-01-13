@@ -32,6 +32,8 @@ internal abstract class AuthSource : SupportCoreDataSource() {
 
     abstract fun signOut(param: AccountParam.SignOut)
 
+    abstract fun signIn(param: AccountParam.Activate)
+
     protected abstract suspend fun getAuthorizedUser(
         param: AccountAction.SignIn,
         callback: RequestCallback
