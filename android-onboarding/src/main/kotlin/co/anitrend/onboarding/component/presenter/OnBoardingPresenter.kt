@@ -19,8 +19,6 @@ package co.anitrend.onboarding.component.presenter
 
 import android.content.Context
 import androidx.core.text.buildSpannedString
-import co.anitrend.core.android.shortcut.contract.IShortcutController
-import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.navigation.MainRouter
@@ -30,8 +28,7 @@ import co.anitrend.onboarding.R
 
 class OnBoardingPresenter(
     context: Context,
-    settings: Settings,
-    private val controller: IShortcutController
+    settings: Settings
 ) : CorePresenter(context, settings) {
 
     val onBoardingItems = listOf(
@@ -125,10 +122,6 @@ class OnBoardingPresenter(
 
     fun onBoardingExperienceCompleted() {
         settings.isNewInstallation.value = false
-        controller.createShortcuts(
-            Shortcut.AiringSchedule(),
-            Shortcut.Search()
-        )
         MainRouter.startActivity(context)
     }
 }

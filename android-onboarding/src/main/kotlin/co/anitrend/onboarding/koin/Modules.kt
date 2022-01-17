@@ -32,8 +32,7 @@ private val presenterModule = module {
         scoped {
             OnBoardingPresenter(
                 context = androidContext(),
-                settings = get(),
-                controller = get()
+                settings = get()
             )
         }
     }
