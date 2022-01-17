@@ -72,14 +72,14 @@ internal class ScoreEditController(
     override fun maximumFormatted(): CharSequence {
         return when (scoreFormat) {
             ScoreFormat.POINT_10_DECIMAL -> "/ %.1f".format(model.maximum)
-            else -> "/ %d".format(model.maximum)
+            else -> "/ %d".format(model.maximum.toInt())
         }
     }
 
     override fun currentFormatted(): CharSequence {
         return when (scoreFormat) {
             ScoreFormat.POINT_10_DECIMAL -> "%.1f".format(model.current)
-            else -> "%d".format(model.current)
+            else -> "%d".format(model.current.toInt())
         }
     }
 
