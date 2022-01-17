@@ -25,6 +25,7 @@
 
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/secondaryLightColor</item>
+        <item name="colorControlActivated">@color/primaryTextColor</item>
 
         <item name="bottomAppBarStyle">@style/AppTheme.Material.BottomAppBar</item>
         <item name="materialCalendarTheme">@style/AppTheme.Overlay.DatePicker</item>
