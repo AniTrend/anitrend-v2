@@ -160,6 +160,13 @@ object Libraries {
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
         }
 
+        object Glance {
+            private const val version = "1.0.0-alpha01"
+            const val glance = "androidx.glance:glance:$version"
+            const val widget = "androidx.glance:glance-appwidget:$version"
+            const val proto = "androidx.glance:glance-appwidget-proto:$version"
+        }
+
         object Lifecycle {
             private const val version = "2.4.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
