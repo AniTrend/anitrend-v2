@@ -17,9 +17,12 @@
 
 package co.anitrend.core.android.shortcut.contract
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import co.anitrend.core.android.shortcut.model.Shortcut
 import kotlin.jvm.Throws
 
+@RequiresApi(Build.VERSION_CODES.N_MR1)
 interface IShortcutController {
 
     /**
@@ -30,6 +33,7 @@ interface IShortcutController {
      * is exceeded, or when trying to update immutable shortcuts.
      * @throws IllegalStateException when the user is locked.
      */
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     fun createShortcuts(vararg shortcuts: Shortcut): Boolean
 
@@ -40,6 +44,7 @@ interface IShortcutController {
      * @throws IllegalArgumentException If trying to enable immutable shortcuts.
      * @throws IllegalStateException when the user is locked.
      */
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     fun enableShortcuts(vararg shortcuts: Shortcut)
 
@@ -50,6 +55,7 @@ interface IShortcutController {
      * @throws IllegalArgumentException If trying to enable immutable shortcuts.
      * @throws IllegalStateException when the user is locked.
      */
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Throws(IllegalArgumentException::class, IllegalStateException::class)
     fun disableShortcuts(vararg shortcuts: Shortcut)
 
@@ -60,6 +66,7 @@ interface IShortcutController {
      *
      * @throws IllegalStateException when the user is locked.
      */
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Throws(IllegalStateException::class)
     fun reportShortcutUsage(shortcut: Shortcut)
 
@@ -68,6 +75,7 @@ interface IShortcutController {
      *
      * @throws IllegalStateException when the user is locked.
      */
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     @Throws(IllegalStateException::class)
     fun removeAllDynamicShortcuts()
 }
