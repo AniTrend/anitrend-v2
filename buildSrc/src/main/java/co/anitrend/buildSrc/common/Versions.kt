@@ -34,10 +34,10 @@ object Versions {
       * **RR**_X.Y.Z_
       * > **RR** reserved for build flavours and **X.Y.Z** follow the [versionName] convention
       */
-    const val versionCode = major.times(100_000) +
-             minor.times(10_000) +
+    const val versionCode = major.times(1_000_000_000) +
+             minor.times(1_000_000) +
              patch.times(1_000) +
-             candidate.times(10)
+             candidate
 
     /**
      * Naming schema: X.Y.Z-variant##
@@ -47,6 +47,7 @@ object Versions {
         "$major.$minor.$patch-$channel$candidate"
     else
         "$major.$minor.$patch"
+
     const val junit = "4.13.2"
 
     const val timber = "5.0.1"
