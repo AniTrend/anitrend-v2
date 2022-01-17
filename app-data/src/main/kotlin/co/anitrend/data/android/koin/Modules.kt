@@ -205,7 +205,10 @@ private val interceptorModules = module {
             .addInterceptor(
                 HttpLoggingInterceptor(
                     logger = OkHttpLogger()
-                ).apply { level = interceptorLogLevel }
+                ).apply {
+                    level = interceptorLogLevel
+                    redactHeader("Authorization")
+                }
             )
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
