@@ -17,41 +17,17 @@
 
 package co.anitrend.review.discover.component.content.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.anitrend.arch.extension.ext.extra
-import co.anitrend.data.user.settings.IUserSettings
-import co.anitrend.domain.common.sort.order.SortOrder
-import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.review.enums.ReviewSort
-import co.anitrend.navigation.ReviewDiscoverRouter
-import co.anitrend.navigation.model.sorting.Sorting
 import co.anitrend.review.discover.component.content.viewmodel.state.ReviewDiscoverState
 
 class ReviewDiscoverViewModel(
-    val state: ReviewDiscoverState,
-    settings: IUserSettings,
-    savedStateHandle: SavedStateHandle,
+    val state: ReviewDiscoverState
 ) : ViewModel() {
 
     init {
         state.context = viewModelScope.coroutineContext
     }
-
-    val default by savedStateHandle.extra(
-        ReviewDiscoverRouter.Param.KEY,
-        ReviewDiscoverRouter.Param(
-            mediaType = MediaType.ANIME,
-            sort = listOf(
-                Sorting(
-                    sortable = ReviewSort.CREATED_AT,
-                    order = SortOrder.DESC
-                )
-            ),
-            scoreFormat = settings.scoreFormat.value
-        )
-    )
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.

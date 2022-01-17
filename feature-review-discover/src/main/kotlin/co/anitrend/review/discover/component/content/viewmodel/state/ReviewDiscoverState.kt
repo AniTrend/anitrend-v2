@@ -18,6 +18,7 @@
 package co.anitrend.review.discover.component.content.viewmodel.state
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
@@ -25,16 +26,39 @@ import kotlin.properties.Delegates
 import kotlin.coroutines.CoroutineContext
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.arch.extension.ext.extra
 import co.anitrend.data.review.GetReviewPagedInteractor
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.enums.ReviewSort
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.model.sorting.Sorting
 
 class ReviewDiscoverState(
-    private val interactor: GetReviewPagedInteractor
+    private val interactor: GetReviewPagedInteractor,
+    private val settings: IUserSettings,
+    private val savedStateHandle: SavedStateHandle,
 ): ISupportViewModelState<PagedList<Review>> {
 
     var context by Delegates.notNull<CoroutineContext>()
+
+    val default by savedStateHandle.extra(
+        ReviewDiscoverRouter.Param.KEY,
+        ReviewDiscoverRouter.Param(
+            mediaType = MediaType.ANIME,
+            sort = listOf(
+                Sorting(
+                    sortable = ReviewSort.CREATED_AT,
+                    order = SortOrder.DESC
+                )
+            ),
+            scoreFormat = settings.scoreFormat.value
+        )
+    )
+
     private val useCaseResult = MutableLiveData<DataState<PagedList<Review>>>()
 
     override val model = Transformations.switchMap(useCaseResult) {

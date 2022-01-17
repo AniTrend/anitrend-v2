@@ -42,8 +42,8 @@ import com.google.android.material.textview.MaterialTextView
  */
 class LoadingTextButton @JvmOverloads constructor(
     context: Context,
+    attrs: AttributeSet? = null,
     icon: Int? = null,
-    attrs: AttributeSet? = null
 ) : ViewFlipper(context, attrs), CustomView {
 
     private val indicator = CircularProgressIndicator(context).apply {

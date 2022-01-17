@@ -93,8 +93,8 @@ class ReviewDiscoverContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
-            viewModelState().invoke(viewModel.default)
+        listPresenter.stateLayout.assureParamNotMissing(viewModelState().default) {
+            viewModelState().invoke(viewModelState().default)
         }
     }
 
