@@ -17,4 +17,12 @@
 
 <resources>
 
+    <string name="media_list_editor_hint_enter_your_notes">Enter your notes</string>
+    <string name="media_list_editor_label_end_date">End Date</string>
+    <string name="media_list_editor_label_start_date">Start Date</string>
+    <string name="media_list_editor_label_repeat_count">Repeat Count</string>
+    <string name="media_list_editor_label_progress_volumes">Progress Volumes</string>
+    <string name="media_list_editor_label_progress">Progress</string>
+    <string name="media_list_editor_label_score">Score</string>
+    <string name="media_list_editor_label_status">Status</string>
 </resources>
