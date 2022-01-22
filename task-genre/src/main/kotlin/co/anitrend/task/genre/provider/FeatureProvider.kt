@@ -18,7 +18,6 @@
 package co.anitrend.task.genre.provider
 
 import co.anitrend.core.android.koinOf
-import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.GenreTaskRouter
 import co.anitrend.navigation.work.WorkSchedulerController
 import co.anitrend.task.genre.component.GenreWorker

@@ -18,7 +18,6 @@
 package co.anitrend.task.medialist.provider
 
 import co.anitrend.core.android.koinOf
-import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.task.medialist.component.worker.MediaListDeleteCustomListWorker
 import co.anitrend.task.medialist.component.worker.MediaListDeleteEntryWorker

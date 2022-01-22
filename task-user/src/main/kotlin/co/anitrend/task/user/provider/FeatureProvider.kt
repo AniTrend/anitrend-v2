@@ -18,7 +18,6 @@
 package co.anitrend.task.user.provider
 
 import co.anitrend.core.android.koinOf
-import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.task.user.component.UserAccountSyncWorker
 import co.anitrend.task.user.component.UserFollowToggleWorker
