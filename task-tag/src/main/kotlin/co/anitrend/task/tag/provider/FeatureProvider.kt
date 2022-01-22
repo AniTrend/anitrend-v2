@@ -17,6 +17,8 @@
 
 package co.anitrend.task.tag.provider
 
+import co.anitrend.core.android.koinOf
+import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.TagTaskRouter
 import co.anitrend.navigation.work.WorkSchedulerController
 import co.anitrend.task.tag.component.TagWorker
@@ -24,5 +26,10 @@ import co.anitrend.task.tag.scheduler.TagScheduler
 
 internal class FeatureProvider : TagTaskRouter.Provider {
     override fun worker() = TagWorker::class.java
-    override fun scheduler() = TagScheduler(worker())
+
+    override fun scheduler() =
+        TagScheduler(
+            worker = worker(),
+            settings = koinOf()
+        )
 }

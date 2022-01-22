@@ -17,6 +17,8 @@
 
 package co.anitrend.task.medialist.provider
 
+import co.anitrend.core.android.koinOf
+import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.task.medialist.component.worker.MediaListDeleteCustomListWorker
 import co.anitrend.task.medialist.component.worker.MediaListDeleteEntryWorker
@@ -38,11 +40,15 @@ internal class FeatureProvider : MediaListTaskRouter.Provider {
 
     override fun mangaSyncWorker() = MediaListMangaSyncWorker::class.java
 
-    override fun animeSyncScheduler() = AnimeSyncScheduler(
-        worker = animeSyncWorker()
-    )
+    override fun animeSyncScheduler() =
+        AnimeSyncScheduler(
+            worker = animeSyncWorker(),
+            settings = koinOf()
+        )
 
-    override fun mangaSyncScheduler() = MangaSyncScheduler(
-        worker = mangaSyncWorker()
-    )
+    override fun mangaSyncScheduler() =
+        MangaSyncScheduler(
+            worker = mangaSyncWorker(),
+            settings = koinOf()
+        )
 }
