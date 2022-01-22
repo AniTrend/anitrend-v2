@@ -160,8 +160,15 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
         preference = this
     )
 
-    override val syncInterval = IntSetting(
-        key = R.string.settings_sync_interval,
+    override val metaSyncInterval = IntSetting(
+        key = R.string.settings_sync_meta_interval,
+        default = ISyncSettings.MINIMUM_INTERVAL,
+        resources = context.resources,
+        preference = this
+    )
+
+    override val listSyncInterval = IntSetting(
+        key = R.string.settings_sync_list_interval,
         default = ISyncSettings.MINIMUM_INTERVAL,
         resources = context.resources,
         preference = this
