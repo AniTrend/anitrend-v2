@@ -19,11 +19,13 @@ package co.anitrend.task.tag.scheduler
 
 import android.content.Context
 import androidx.work.*
+import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.work.WorkSchedulerController
 import java.util.concurrent.TimeUnit
 
 class TagScheduler(
-    override val worker: Class<out ListenableWorker>
+    override val worker: Class<out ListenableWorker>,
+    private val settings: ISyncSettings
 ) : WorkSchedulerController() {
 
     /**
@@ -35,8 +37,10 @@ class TagScheduler(
             .setRequiresBatteryNotLow(true)
             .build()
 
+        val repeatInterval = settings.metaSyncInterval.value.toLong()
+
         val workRequest = PeriodicWorkRequest.Builder(
-            worker, 1, TimeUnit.HOURS
+            worker, repeatInterval, TimeUnit.SECONDS
         ).setConstraints(
             constrains
         ).build()

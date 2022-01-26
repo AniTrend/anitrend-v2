@@ -23,29 +23,37 @@ import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.Settings
 
 internal object Migrations {
-    private val FROM_20290_TO_20300 = object : Migration(20290, 20300) {
+    private val FROM_v2_0_0_28_TO_v2_0_0_30 = object : Migration(20290, 20300) {
         override fun invoke(context: Context, settings: Settings) {
             settings.clearDataOnSwipeRefresh.value = false
         }
     }
 
-    private val FROM_20310_TO_20320 = object : Migration(20310, 20320) {
+    private val FROM_v2_0_0_31_TO_v2_0_0_32 = object : Migration(20310, 20320) {
         override fun invoke(context: Context, settings: Settings) {
             val key = context.getString(R.string.settings_view_mode_preferred)
             settings.edit(commit = true) { remove(key) }
         }
     }
 
-    private val FROM_20320_TO_20330 = object : Migration(20320, 20330) {
+    private val FROM_v2_0_0_32_TO_v2_0_0_33 = object : Migration(20320, 20330) {
         override fun invoke(context: Context, settings: Settings) {
             // remove old preference which is no longer tracked
             settings.edit(commit = true) { remove("_isSortOrderDescending") }
         }
     }
+
+    private val FROM_v2_0_0_33_TO_v2_0_0_39 = object : Migration(20330, 2_000_000_039) {
+        override fun invoke(context: Context, settings: Settings) {
+            // remove old preference which is no longer tracked
+            settings.edit(commit = true) { remove("_syncInterval") }
+        }
+    }
     
     val ALL = listOf(
-        FROM_20290_TO_20300,
-        FROM_20310_TO_20320,
-        FROM_20320_TO_20330
+        FROM_v2_0_0_28_TO_v2_0_0_30,
+        FROM_v2_0_0_31_TO_v2_0_0_32,
+        FROM_v2_0_0_32_TO_v2_0_0_33,
+        FROM_v2_0_0_33_TO_v2_0_0_39
     )
 }

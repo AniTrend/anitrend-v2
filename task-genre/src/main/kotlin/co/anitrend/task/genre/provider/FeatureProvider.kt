@@ -17,6 +17,7 @@
 
 package co.anitrend.task.genre.provider
 
+import co.anitrend.core.android.koinOf
 import co.anitrend.navigation.GenreTaskRouter
 import co.anitrend.navigation.work.WorkSchedulerController
 import co.anitrend.task.genre.component.GenreWorker
@@ -24,5 +25,10 @@ import co.anitrend.task.genre.scheduler.GenreScheduler
 
 internal class FeatureProvider : GenreTaskRouter.Provider {
     override fun worker() = GenreWorker::class.java
-    override fun scheduler() = GenreScheduler(worker())
+
+    override fun scheduler() =
+        GenreScheduler(
+            worker = worker(),
+            settings = koinOf()
+        )
 }

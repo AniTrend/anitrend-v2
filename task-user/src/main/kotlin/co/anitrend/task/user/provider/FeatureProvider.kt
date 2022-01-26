@@ -17,6 +17,7 @@
 
 package co.anitrend.task.user.provider
 
+import co.anitrend.core.android.koinOf
 import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.task.user.component.UserAccountSyncWorker
 import co.anitrend.task.user.component.UserFollowToggleWorker
@@ -31,7 +32,15 @@ internal class FeatureProvider : UserTaskRouter.Provider {
 
     override fun statisticSyncWorker() = UserStatisticSyncWorker::class.java
 
-    override fun accountSyncScheduler() = UserAccountScheduler(accountSyncWorker())
+    override fun accountSyncScheduler() =
+        UserAccountScheduler(
+            worker = accountSyncWorker(),
+            settings = koinOf()
+        )
 
-    override fun statisticSyncScheduler() = UserStatisticScheduler(statisticSyncWorker())
+    override fun statisticSyncScheduler() =
+        UserStatisticScheduler(
+            worker = statisticSyncWorker(),
+            settings = koinOf()
+        )
 }
