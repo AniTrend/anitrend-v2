@@ -26,7 +26,11 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
         target("**/*.kt")
         targetExclude("$buildDir/**/*.kt", "bin/**/*.kt")
         ktlint(Versions.ktlint).userData(
-            mapOf("android" to "true")
+            mapOf(
+                "android" to "true",
+                "max_line_length" to "150",
+                "no-wildcard-imports" to "true"
+            )
         )
         // android studio is currently handling this
         // licenseHeaderFile(rootProject.file("spotless/copyright.kt"))

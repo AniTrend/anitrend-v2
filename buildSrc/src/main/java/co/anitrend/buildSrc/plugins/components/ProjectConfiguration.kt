@@ -18,7 +18,7 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.Libraries
-import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.common.Configuration
 import co.anitrend.buildSrc.extensions.isAppModule
 import co.anitrend.buildSrc.extensions.isCoreModule
 import co.anitrend.buildSrc.extensions.hasComposeSupport
@@ -92,12 +92,12 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
 }
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(Versions.compileSdk)
+    compileSdkVersion(Configuration.compileSdk)
     defaultConfig {
-        minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
-        versionCode = Versions.versionCode
-        versionName = Versions.versionName
+        minSdk = Configuration.minSdk
+        targetSdk = Configuration.targetSdk
+        versionCode = Configuration.versionCode
+        versionName = Configuration.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applyAdditionalConfiguration(project)
     }
@@ -137,19 +137,19 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     packagingOptions {
-        excludes.add("META-INF/NOTICE.txt")
-        excludes.add("META-INF/LICENSE")
-        excludes.add("META-INF/LICENSE.txt")
+        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("META-INF/LICENSE")
+        resources.excludes.add("META-INF/LICENSE.txt")
         // Exclude potential duplicate kotlin_module files
-        excludes.add("META-INF/*kotlin_module")
+        resources.excludes.add("META-INF/*kotlin_module")
         // Exclude consumer proguard files
-        excludes.add("META-INF/proguard/*")
+        resources.excludes.add("META-INF/proguard/*")
         // Exclude AndroidX version files
-        excludes.add("META-INF/*.version")
+        resources.excludes.add("META-INF/*.version")
         // Exclude the Firebase/Fabric/other random properties files
-        excludes.add("META-INF/*.properties")
-        excludes.add("/*.properties")
-        excludes.add("fabric/*.properties")
+        resources.excludes.add("META-INF/*.properties")
+        resources.excludes.add("/*.properties")
+        resources.excludes.add("fabric/*.properties")
     }
 
     sourceSets {
