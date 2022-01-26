@@ -21,7 +21,6 @@ plugins {
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
     maven {
         setUrl("https://www.jitpack.io")
@@ -34,7 +33,7 @@ repositories {
     }
 }
 
-val buildToolsVersion = "7.0.4"
+val buildToolsVersion = "7.1.0"
 val kotlinVersion = "1.5.31"
 val dokkaVersion = "1.5.31"
 val manesVersion = "0.36.0"
