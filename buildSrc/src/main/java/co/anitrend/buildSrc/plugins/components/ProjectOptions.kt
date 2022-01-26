@@ -17,15 +17,13 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.common.Configuration
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isCoreModule
 import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
-import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.libraryExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
 import org.gradle.api.NamedDomainObjectContainer
@@ -46,8 +44,8 @@ private fun NamedDomainObjectContainer<LibraryBuildType>.applyVersionProperties(
         println("Adding version build configuration fields -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
 
-        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
-        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
+        buildType.buildConfigField("String", "versionName", "\"${Configuration.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Configuration.versionCode.toString())
     }
 }
 
@@ -56,8 +54,8 @@ private fun NamedDomainObjectContainer<LibraryBuildType>.applyConfigurationPrope
         println("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
 
-        buildType.buildConfigField("String", "versionName", "\"${Versions.versionName}\"")
-        buildType.buildConfigField("int", "versionCode", Versions.versionCode.toString())
+        buildType.buildConfigField("String", "versionName", "\"${Configuration.versionName}\"")
+        buildType.buildConfigField("int", "versionCode", Configuration.versionCode.toString())
 
         val secretsFile = project.file(".config/secrets.properties")
         if (secretsFile.exists())

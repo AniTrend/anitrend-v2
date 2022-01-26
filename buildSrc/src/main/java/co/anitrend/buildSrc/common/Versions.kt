@@ -19,35 +19,6 @@ package co.anitrend.buildSrc.common
 
 object Versions {
 
-    private const val major = 2
-    private const val minor = 0
-    private const val patch = 0
-    private const val candidate = 39
-
-    private const val channel = "alpha"
-
-    const val compileSdk = 31
-    const val targetSdk = 31
-    const val minSdk = 21
-
-     /**
-      * **RR**_X.Y.Z_
-      * > **RR** reserved for build flavours and **X.Y.Z** follow the [versionName] convention
-      */
-    const val versionCode = major.times(1_000_000_000) +
-             minor.times(1_000_000) +
-             patch.times(1_000) +
-             candidate
-
-    /**
-     * Naming schema: X.Y.Z-variant##
-     * > **X**(Major).**Y**(Minor).**Z**(Patch)
-     */
-    val versionName = if (candidate > 0)
-        "$major.$minor.$patch-$channel$candidate"
-    else
-        "$major.$minor.$patch"
-
     const val junit = "4.13.2"
 
     const val timber = "5.0.1"
@@ -69,7 +40,7 @@ object Versions {
 
     const val elements = "1.0.1"
 
-    const val ktlint = "0.40.0"
+    const val ktlint = "0.43.2"
 
     const val deeplink = "0.3.1"
 }
