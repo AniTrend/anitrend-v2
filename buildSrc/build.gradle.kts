@@ -33,7 +33,7 @@ repositories {
     }
 }
 
-val buildToolsVersion = "7.1.0"
+val buildToolsVersion = "7.1.1"
 val kotlinVersion = "1.5.31"
 val dokkaVersion = "1.5.31"
 val manesVersion = "0.36.0"
