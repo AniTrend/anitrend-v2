@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:Suppress("FunctionName")
+
 package co.anitrend.media.component.compose
 
 import androidx.compose.foundation.layout.*
@@ -105,5 +107,6 @@ private fun BottomSheetComponent(scope: CoroutineScope, state: MediaState) {
 fun MediaDetailComponent(state: MediaState) {
     AniTrendTheme {
         val scope = rememberCoroutineScope()
+        BottomSheetComponent(scope, state)
     }
 }

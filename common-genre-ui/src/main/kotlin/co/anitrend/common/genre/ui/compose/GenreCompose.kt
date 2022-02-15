@@ -17,15 +17,19 @@
 
 package co.anitrend.common.genre.ui.compose
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.common.genre.databinding.GenreItemBinding
+import co.anitrend.core.android.views.text.TextDrawable
 import co.anitrend.domain.genre.entity.Genre
 
 @Composable
@@ -34,8 +38,10 @@ private fun GenreItem(genre: Genre) {
         factory = {
             val binding = GenreItemBinding.inflate(it.getLayoutInflater())
             binding.genre.text = genre.name
+            binding.genre.chipIcon = TextDrawable(it, genre.emoji)
             binding.root
-        }
+        },
+        modifier = Modifier
     )
 }
 
@@ -47,6 +53,7 @@ fun GenresListComponent(
     LazyVerticalGrid(
         cells = GridCells.Adaptive(88.dp),
         modifier = modifier,
+        contentPadding = PaddingValues(8.dp),
         content = {
             items(genres) { genre ->
                 GenreItem(genre)
