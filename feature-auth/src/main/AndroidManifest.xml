@@ -43,28 +43,8 @@
         </provider>
 
         <activity android:name=".component.screen.AuthScreen"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_auth"
-                    android:path="@string/auth_deep_link_path_anilist"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_auth"
-                    android:path="@string/auth_deep_link_path_trakt"/>
-            </intent-filter>
-        </activity>
+            android:launchMode="singleInstance"
+            android:exported="true" />
     </application>
 
 </manifest>

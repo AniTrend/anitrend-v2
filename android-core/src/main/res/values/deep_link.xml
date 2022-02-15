@@ -34,4 +34,6 @@
     <string name="app_deep_link_host_episodes" translatable="false">episodes</string>
     <string name="app_deep_link_host_updates" translatable="false">update</string>
     <string name="app_deep_link_host_about" translatable="false">about</string>
+    <string name="auth_deep_link_path_anilist" translatable="false">/oauth/v2/anilist</string>
+    <string name="auth_deep_link_path_trakt" translatable="false">/oauth/v2/trakt</string>
 </resources>
