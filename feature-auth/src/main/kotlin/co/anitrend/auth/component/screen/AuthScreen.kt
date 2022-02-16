@@ -20,6 +20,7 @@ package co.anitrend.auth.component.screen
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.extra
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.databinding.AuthScreenBinding
 import co.anitrend.core.component.screen.AniTrendScreen
@@ -32,6 +33,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
+
+    private fun checkIntentData() {
+        val key = AuthRouter.Param.KEY
+        val authRouterParam by extra<AuthRouter.Param>(key)
+        viewModel.onIntentData(
+            applicationContext,
+            authRouterParam
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +60,7 @@ class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
             onUpdateUserInterface()
         }
         lifecycleScope.launchWhenResumed {
-            viewModel.onIntentData(
-                applicationContext,
-                intent?.data
-            )
+            checkIntentData()
         }
     }
 
@@ -71,10 +78,8 @@ class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        viewModel.onIntentData(
-            applicationContext,
-            intent?.data
-        )
+        setIntent(intent)
+        checkIntentData()
     }
 
     private fun onUpdateUserInterface() {

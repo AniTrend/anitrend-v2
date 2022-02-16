@@ -18,14 +18,12 @@
 package co.anitrend.auth.component.viewmodel
 
 import android.content.Context
-import android.net.Uri
-import androidx.core.net.UriCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.model.Authentication
-import co.anitrend.data.auth.helper.*
+import co.anitrend.navigation.AuthRouter
 import timber.log.Timber
 
 class AuthViewModel(
@@ -36,36 +34,25 @@ class AuthViewModel(
         state.context = viewModelScope.coroutineContext
     }
 
-    fun onIntentData(context: Context, data: Uri?) {
-        if (data == null) {
-            Timber.d("No new intent data available, skipping checks")
+    fun onIntentData(context: Context, param: AuthRouter.Param?) {
+        if (param == null) {
+            Timber.d("AuthRouter.Param is null, no new intent data available. Skipping checks")
             return
         }
 
-        // APP_URL/callback#access_token=TOKEN_HERE&token_type=TOKEN_TYPE&expires_in=EXPIRES_IN_HERE
-        // Why are we even using fragments :not_like:
-        val uri = Uri.parse(data.toString().replaceFirst('#', '?'))
-
         runCatching {
             state.authenticationFlow.value = Authentication.Authenticating(
-                requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $uri"
-                },
-                requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $uri"
-                },
-                requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $uri"
-                }.toLong()
+                requireNotNull(param.accessToken),
+                requireNotNull(param.tokenType),
+                requireNotNull(param.expiresIn)
             )
         }.onFailure {
             state.authenticationFlow.value = Authentication.Error(
-                title = uri.getQueryParameter(CALLBACK_QUERY_ERROR_KEY)
+                title = param.errorTitle
                     ?: context.getString(R.string.auth_error_default_title),
-                message = uri.getQueryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY)
+                message = param.errorDescription
                     ?: context.getString(R.string.auth_error_default_message)
             )
-            Timber.w(it)
         }
     }
 

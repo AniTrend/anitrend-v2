@@ -19,6 +19,7 @@ package co.anitrend.deeplink.component.route
 
 import android.content.Intent
 import androidx.core.text.isDigitsOnly
+import co.anitrend.deeplink.component.route.contract.Route
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
@@ -30,7 +31,6 @@ import com.hellofresh.deeplink.Action
 import com.hellofresh.deeplink.DeepLinkUri
 import com.hellofresh.deeplink.Environment
 import timber.log.Timber
-import java.util.*
 
 internal object MainRoute : Route("home") {
     override fun run(
