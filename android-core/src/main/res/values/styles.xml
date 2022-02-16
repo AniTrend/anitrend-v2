@@ -176,6 +176,15 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
+    <style name="AppTheme.Material.TextInputLayout.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">?colorAccent</item>
+        <item name="hintTextColor">?colorOnSurface</item>
+    </style>
+
+    <style name="AppTheme.Material.TextInputLayout.Filled" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextColor">?colorOnSurface</item>
+    </style>
+
     <style name="AppTheme.Material.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
@@ -208,7 +217,7 @@
         <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
         <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>
         <!-- Customize text field of the text input mode. -->
-        <!--<item name="textInputStyle">@style/AppTheme.Material.TextInputLayout</item>-->
+        <item name="textInputStyle">@style/AppTheme.Material.TextInputLayout.Outlined</item>
     </style>
 
     <style name="AppTheme.Material.PopupTheme" parent="SupportTheme.PopupTheme">

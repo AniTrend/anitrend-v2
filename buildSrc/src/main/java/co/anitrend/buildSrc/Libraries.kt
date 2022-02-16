@@ -54,7 +54,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "7.0.4"
+            private const val version = "7.1.0"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -158,6 +158,13 @@ object Libraries {
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
+        }
+
+        object Glance {
+            private const val version = "1.0.0-alpha01"
+            const val glance = "androidx.glance:glance:$version"
+            const val widget = "androidx.glance:glance-appwidget:$version"
+            const val proto = "androidx.glance:glance-appwidget-proto:$version"
         }
 
         object Lifecycle {
@@ -321,7 +328,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.4.0-alpha02"
+            private const val version = "1.4.0-alpha03"
             const val ui = "com.github.anitrend.support-arch:ui:${version}"
             const val ext = "com.github.anitrend.support-arch:extension:${version}"
             const val core = "com.github.anitrend.support-arch:core:${version}"

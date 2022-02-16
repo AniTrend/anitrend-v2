@@ -44,13 +44,13 @@ internal class ReviewActionWidget @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
 
-    private val upVote = LoadingTextButton(context, R.drawable.ic_thumb_up)
+    private val upVote = LoadingTextButton(context, icon = R.drawable.ic_thumb_up)
 
-    private val downVote = LoadingTextButton(context, R.drawable.ic_thumb_down)
+    private val downVote = LoadingTextButton(context, icon = R.drawable.ic_thumb_down)
 
-    private val delete = LoadingTextButton(context, R.drawable.ic_delete)
+    private val delete = LoadingTextButton(context, icon = R.drawable.ic_delete)
 
-    private val edit = LoadingTextButton(context, R.drawable.ic_edit)
+    private val edit = LoadingTextButton(context, icon = R.drawable.ic_edit)
 
     init { onInit(context, attrs, defStyleAttr) }
 

@@ -20,7 +20,8 @@ package co.anitrend.data.settings.sync
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
 interface ISyncSettings {
-    val syncInterval: AbstractSetting<Int>
+    val metaSyncInterval: AbstractSetting<Int>
+    val listSyncInterval: AbstractSetting<Int>
 
     companion object {
         /**

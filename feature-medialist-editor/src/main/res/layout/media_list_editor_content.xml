@@ -148,7 +148,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="Status" />
+                    android:text="@string/media_list_editor_label_status" />
 
                 <co.anitrend.common.medialist.ui.widget.status.StatusSpinnerWidget
                     android:id="@+id/mediaListStatusSpinner"
@@ -166,7 +166,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="Score" />
+                    android:text="@string/media_list_editor_label_score" />
 
                 <co.anitrend.common.medialist.ui.widget.score.ScoreEditWidget
                     android:id="@+id/mediaListScore"
@@ -181,7 +181,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="Progress" />
+                    android:text="@string/media_list_editor_label_progress" />
 
                 <co.anitrend.common.medialist.ui.widget.progress.ProgressEditWidget
                     android:id="@+id/mediaListProgress"
@@ -197,7 +197,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="Progress Volumes" />
+                    android:text="@string/media_list_editor_label_progress_volumes" />
 
                 <co.anitrend.common.medialist.ui.widget.progress.ProgressEditWidget
                     android:id="@+id/mediaListProgressVolumes"
@@ -212,7 +212,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="Repeat Count" />
+                    android:text="@string/media_list_editor_label_repeat_count" />
 
                 <co.anitrend.common.medialist.ui.widget.counter.CounterEditWidget
                     android:id="@+id/mediaListRepeated"
@@ -227,7 +227,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="Start Date" />
+                    android:text="@string/media_list_editor_label_start_date" />
 
                 <co.anitrend.common.medialist.ui.widget.date.FuzzyDateWidget
                     android:id="@+id/mediaListFuzzyDateStart"
@@ -242,7 +242,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="End Date" />
+                    android:text="@string/media_list_editor_label_end_date" />
 
                 <co.anitrend.common.medialist.ui.widget.date.FuzzyDateWidget
                     android:id="@+id/mediaListFuzzyDateEnd"
@@ -254,13 +254,14 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/lg_margin">
+                    android:layout_margin="@dimen/lg_margin"
+                    style="@style/AppTheme.Material.TextInputLayout.Outlined">
 
                     <co.anitrend.common.editor.ui.widget.MarkDownInputWidget
                         android:id="@+id/mediaListNotes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter your notes" />
+                        android:hint="@string/media_list_editor_hint_enter_your_notes" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -32,12 +32,12 @@ import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.medialist.editor.databinding.MediaListEditorContentBinding
 import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import coil.request.Disposable
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.properties.Delegates
 
 class MediaListEditorController(
     private val settings: IUserSettings
@@ -55,7 +56,7 @@ class MediaListEditorController(
 
     private var disposable: Disposable? = null
 
-    private var param: MediaListTaskRouter.Param.SaveEntry? = null
+    private var param by Delegates.notNull<MediaListTaskRouter.Param.SaveEntry>()
 
     private fun initializeParams(media: Media) {
         param = MediaListTaskRouter.Param.SaveEntry(
@@ -239,55 +240,32 @@ class MediaListEditorController(
         media: Media,
         binding: MediaListEditorContentBinding,
         lifecycleScope: LifecycleCoroutineScope,
-        onSaveCallback: () -> Unit
+        onActionCompletedCallback: () -> Unit
     ) {
         initializeParams(media)
         bindModel(media, binding)
         observeChanges(binding, lifecycleScope)
 
+        if (param.id == null)
+            binding.mediaListActionDelete.gone()
+        else
+            binding.mediaListActionDelete.visible()
+
         binding.mediaListActionDelete.setOnClickListener {
-            // TODO: Setup some form of deferrable with a time out
-            var undoing = false
-            val snackbar = it.snackBar(
-                text = "Deleting in 5 seconds",
-                duration = Snackbar.LENGTH_INDEFINITE,
-                actionText = "Undo"
-            ) { snackBar ->
-                undoing = true
-                snackBar.dismiss()
-            }
-
-            snackbar.addCallback(
-                object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                    /**
-                     * Called when the given [BaseTransientBottomBar] has been dismissed, either through a
-                     * time-out, having been manually dismissed, or an action being clicked.
-                     *
-                     * @param transientBottomBar The transient bottom bar which has been dismissed.
-                     * @param event The event which caused the dismissal. One of either:
-                     * [.DISMISS_EVENT_SWIPE], [.DISMISS_EVENT_ACTION], [.DISMISS_EVENT_TIMEOUT],
-                     * [.DISMISS_EVENT_MANUAL] or [.DISMISS_EVENT_CONSECUTIVE].
-                     * @see BaseTransientBottomBar.dismiss
-                     */
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        super.onDismissed(transientBottomBar, event)
-                        if (!undoing) {
-                            // TODO: Launch delete action
-                        }
-                    }
-                }
-            )
-            snackbar.show()
-
-            lifecycleScope.launch {
-                delay(5000)
-                snackbar.dismiss()
-            }
+            MediaListTaskRouter.forMediaListDeleteEntryWorker()
+                .createOneTimeUniqueWorker(
+                    it.context,
+                    MediaListTaskRouter.Param.DeleteEntry(
+                        requireNotNull(param.id)
+                    )
+                ).enqueue()
         }
 
         binding.mediaListActionSave.setOnClickListener {
-            // TODO: Call save medialist worker and supply params
-            onSaveCallback()
+            MediaListTaskRouter.forMediaListSaveEntryWorker()
+                .createOneTimeUniqueWorker(it.context, param)
+                .enqueue()
+            onActionCompletedCallback()
         }
     }
 

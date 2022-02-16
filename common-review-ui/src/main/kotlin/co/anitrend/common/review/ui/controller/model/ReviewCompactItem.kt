@@ -17,6 +17,7 @@
 
 package co.anitrend.common.review.ui.controller.model
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.common.review.R
 import co.anitrend.common.review.databinding.ReviewCompactItemBinding
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.review.entity.Review
@@ -65,6 +67,19 @@ internal class ReviewCompactItem(
         disposable = null
         super.unbind(view)
     }
+
+    /**
+     * Provides a preferred span size for the item, defaulted to [R.integer.single_list_size]
+     *
+     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
+     * @param position position of the current item
+     * @param resources optionally useful for dynamic size check with different configurations
+     */
+    override fun getSpanSize(
+        spanCount: Int,
+        position: Int,
+        resources: Resources
+    ) = resources.getInteger(R.integer.column_x1)
 
     companion object {
         internal fun LayoutInflater.createReviewCompatItemViewHolder(

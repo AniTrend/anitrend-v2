@@ -124,14 +124,8 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
         requireBinding().mainCoordinator.setOnClickListener {
             navigationDrawer.dismiss()
         }
-        requireBinding().floatingShortcutButton.setOnClickListener { fab ->
-            fab.cascadeMenu().onMenu {
-                add("Account").setIcon(R.drawable.ic_account_add_24dp)
-                addSubMenu("Extras").also { subMenu ->
-                    subMenu.add("Discord").setIcon(R.drawable.ic_discord_24dp)
-                    subMenu.add("Support").setIcon(R.drawable.ic_patreon_24dp)
-                }
-            }.show()
+        requireBinding().floatingShortcutButton.setOnClickListener {
+
         }
         navigateToUsing(viewModel.state.selectedItem)
     }

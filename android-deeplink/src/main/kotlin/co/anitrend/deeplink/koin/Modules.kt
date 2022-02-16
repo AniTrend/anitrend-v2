@@ -20,9 +20,9 @@ package co.anitrend.deeplink.koin
 import android.content.Intent
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.deeplink.environment.AniTrendEnvironment
 import co.anitrend.deeplink.component.route.*
 import co.anitrend.deeplink.component.screen.DeepLinkScreen
+import co.anitrend.deeplink.environment.AniTrendEnvironment
 import com.hellofresh.deeplink.DeepLinkParser
 import com.hellofresh.deeplink.Environment
 import org.koin.android.ext.koin.androidContext
@@ -42,7 +42,8 @@ private val coreModule = module {
 private val routerModule = module {
     scope<DeepLinkScreen> {
         factory {
-            DeepLinkParser.of<Intent?>(get())
+            val environment = get<Environment>()
+            DeepLinkParser.of<Intent?>(environment)
                 // AniList specific routes
                 .addRoute(MainRoute)
                 .addRoute(ActivityRoute)
@@ -70,6 +71,7 @@ private val routerModule = module {
                 .addRoute(ProfileRoute)
                 .addRoute(UpdatesRoute)
                 .addRoute(AboutRoute)
+                .addRoute(OAuthRoute)
                 .addFallbackAction(FallbackAction)
                 .build()
         }

@@ -18,11 +18,31 @@
 package co.anitrend.onboarding.initializer
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
+import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.shortcut.contract.IShortcutController
+import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 import co.anitrend.onboarding.koin.moduleHelper
+import timber.log.Timber
 
 class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
+
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
+    private fun setUpShortcuts() {
+        runCatching {
+            val controller = koinOf<IShortcutController>()
+            controller.createShortcuts(
+                Shortcut.AiringSchedule(),
+                Shortcut.Search()
+            )
+        }.onFailure {
+            Timber.w(it)
+        }
+    }
 
     /**
      * Initializes and a component given the application [Context]
@@ -31,5 +51,11 @@ class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
      */
     override fun create(context: Context) {
         moduleHelper.loadModules()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            val settings = koinOf<ISupportPreference>()
+            if (settings.isNewInstallation.value) {
+                setUpShortcuts()
+            }
+        }
     }
 }

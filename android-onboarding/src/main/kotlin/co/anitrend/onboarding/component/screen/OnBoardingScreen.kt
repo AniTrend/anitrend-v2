@@ -18,6 +18,7 @@
 package co.anitrend.onboarding.component.screen
 
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.core.component.screen.AniTrendScreen
@@ -65,7 +66,7 @@ class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
                 positionOffsetPixels: Int
             ) {
                 //TODO: Updating motion layout progress seems to mess up the view pager
-                launch {
+                lifecycleScope.launch {
                     val newProgress = (position + positionOffset) / presenter.pages
                     binding?.motionLayout?.progress = newProgress
                 }

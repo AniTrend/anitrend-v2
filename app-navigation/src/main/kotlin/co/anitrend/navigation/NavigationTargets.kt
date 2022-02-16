@@ -228,6 +228,22 @@ object AuthRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class Param(
+        val accessToken: String? = null,
+        val tokenType: String? = null,
+        val expiresIn: Long? = null,
+        val errorTitle: String? = null,
+        val errorDescription: String? = null
+    ) : IParam {
+        @IgnoredOnParcel
+        override val idKey = KEY
+
+        companion object : IParam.IKey {
+            override val KEY = "AuthRouter#Param"
+        }
+    }
 }
 
 object MediaRouter : NavigationRouter() {

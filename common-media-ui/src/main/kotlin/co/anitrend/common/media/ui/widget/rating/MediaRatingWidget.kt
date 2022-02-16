@@ -113,25 +113,25 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         when (scoreFormat) {
             ScoreFormat.POINT_100 -> {
                 if (mediaList.isValid())
-                   mediaAverageScore.text = mediaList!!.score.toInt().toString()
+                   mediaAverageScore.text = requireNotNull(mediaList).score.toInt().toString()
                 else
                    mediaAverageScore.text = mediaScoreDefault
             }
             ScoreFormat.POINT_10 -> {
                 if (mediaList.isValid())
-                   mediaAverageScore.text = mediaList!!.score.toInt().toString()
+                   mediaAverageScore.text = requireNotNull(mediaList).score.toInt().toString()
                 else
                    mediaAverageScore.text = (meanScore / 10f).toString()
             }
             ScoreFormat.POINT_5 -> {
                 if (mediaList.isValid())
-                   mediaAverageScore.text = mediaList!!.score.toInt().toString()
+                   mediaAverageScore.text = requireNotNull(mediaList).score.toInt().toString()
                 else
                    mediaAverageScore.text = mediaScoreDefault
             }
             ScoreFormat.POINT_10_DECIMAL -> {
                 if (mediaList.isValid())
-                   mediaAverageScore.text = mediaList!!.score.format(1)
+                   mediaAverageScore.text = requireNotNull(mediaList).score.format(1)
                 else {
                     val scoreFormatted = (meanScore / 10f)
                     mediaAverageScore.text = scoreFormatted.format(1)
@@ -144,7 +144,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                 val faceSad = context.getCompatDrawable(R.drawable.ic_face_sad)
                 if (mediaList.isValid())
                    mediaAverageScore.setCompoundDrawablesWithIntrinsicBounds(
-                        when (mediaList!!.score) {
+                        when (requireNotNull(mediaList).score) {
                         1f -> faceSad
                         2f -> faceNeutral
                         3f -> faceHappy
@@ -175,13 +175,13 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             context.getCompatDrawable(R.drawable.ic_note, tintColor)
         )
 
-        if (!media.mediaList!!.privacy.notes.isNullOrBlank())
+        if (!media.mediaList?.privacy?.notes.isNullOrBlank())
             mediaListNotesIndicator.visible()
         else
            mediaListNotesIndicator.gone()
 
        mediaListStatusIndicator.visible()
-        when (media.mediaList!!.status) {
+        when (media.mediaList?.status) {
             MediaListStatus.COMPLETED -> mediaListStatusIndicator.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_completed, tintColor)
             )
@@ -251,7 +251,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             )
             setFavouriteStatus(true, R.color.white_1000)
             setListStatus(media, R.color.white_1000)
-            mediaAverageScore.text = media.mediaList!!.score.format(1)
+            mediaAverageScore.text = media.mediaList?.score?.format(1)
             background = context.getCompatDrawable(R.drawable.bubble_background)
         }
 

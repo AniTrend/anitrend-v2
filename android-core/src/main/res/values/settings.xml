@@ -42,5 +42,6 @@
     <string name="settings_user_score_format" translatable="false">_scoreFormat</string>
 
     <string name="settings_cache_usage_ratio" translatable="false">_cacheUsageRatio</string>
-    <string name="settings_sync_interval" translatable="false">_syncInterval</string>
+    <string name="settings_sync_meta_interval" translatable="false">_syncMetaInterval</string>
+    <string name="settings_sync_list_interval" translatable="false">_syncListInterval</string>
 </resources>

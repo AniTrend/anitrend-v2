@@ -46,13 +46,13 @@ private val fragmentModule = module {
 }
 
 private val viewModelModule = module {
-    viewModel { scope ->
+    viewModel {
         ReviewDiscoverViewModel(
             state = ReviewDiscoverState(
-                interactor = get()
-            ),
-            savedStateHandle = scope.get(),
-            settings = get()
+                interactor = get(),
+                savedStateHandle = get(),
+                settings = get()
+            )
         )
     }
 }

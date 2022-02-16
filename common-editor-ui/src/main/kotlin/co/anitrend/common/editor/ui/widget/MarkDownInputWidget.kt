@@ -162,17 +162,19 @@ class MarkDownInputWidget @JvmOverloads constructor(
      */
     override fun onViewRecycled() {
         super.onViewRecycled()
-        removeTextChangedListener(
-            markwonEditorTextWatcher
-        )
+        if (!isInEditMode)
+            removeTextChangedListener(
+                markwonEditorTextWatcher
+            )
         customSelectionActionModeCallback = null
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        addTextChangedListener(
-            markwonEditorTextWatcher
-        )
+        if (!isInEditMode)
+            addTextChangedListener(
+                markwonEditorTextWatcher
+            )
         customSelectionActionModeCallback = this
     }
 

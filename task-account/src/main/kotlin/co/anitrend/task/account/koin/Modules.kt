@@ -31,16 +31,14 @@ private val workManagerModule = module {
         AccountSignOutWorker(
             context = androidContext(),
             parameters = scope.get(),
-            interactor = get(),
-            shortcutManager = get()
+            interactor = get()
         )
     }
     worker { scope ->
         AccountSignInWorker(
             context = androidContext(),
             parameters = scope.get(),
-            interactor = get(),
-            shortcutManager = get()
+            interactor = get()
         )
     }
 }

@@ -18,9 +18,12 @@
 package co.anitrend.task.account.component
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.extensions.cancelAuthenticationWorkers
@@ -33,8 +36,7 @@ import timber.log.Timber
 class AccountSignOutWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: AccountInteractor,
-    private val shortcutManager: IShortcutController
+    private val interactor: AccountInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
     private val param by lazy(UNSAFE) {
@@ -48,8 +50,10 @@ class AccountSignOutWorker(
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
     private fun removeShortcuts() {
         runCatching {
+            val shortcutManager = koinOf<IShortcutController>()
             shortcutManager.removeAllDynamicShortcuts()
             shortcutManager.createShortcuts(
                 Shortcut.AiringSchedule(),
@@ -72,7 +76,9 @@ class AccountSignOutWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        removeShortcuts()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            removeShortcuts()
+        }
         interactor.signOut(param)
         applicationContext.cancelAuthenticationWorkers()
         return Result.success()

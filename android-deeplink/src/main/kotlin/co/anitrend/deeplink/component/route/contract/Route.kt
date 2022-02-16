@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.deeplink.component.route
+package co.anitrend.deeplink.component.route.contract
 
 import android.content.Intent
 import com.hellofresh.deeplink.BaseRoute
