@@ -17,14 +17,15 @@
 #     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-function create_directories {
-    mkdir -p ./app-core/src/main/resources/org/koin/core/
-    cd ./app-core/src/main/resources/org/koin/core/
-}
-
 function  create_files {
-    # Access github secrets to create files
+    echo "$KEYSTORE" > anitrend-keystore.asc
+    gpg -d --passphrase "$KEYSTORE_PASSPHRASE" --batch anitrend-keystore.asc > app/anitrend-keystore.jks
+    echo "$KEYSTORE_PROPERTIES" > keystore.properties.asc
+    gpg -d --passphrase "$KEYSTORE_PROPERTIES_PASSPHRASE" --batch keystore.properties.asc > app/.config/keystore.properties
+    echo "$KOIN_PROPERTIES" > koin.properties.asc
+    gpg -d --passphrase "$KOIN_PROPERTIES_PASSPHRASE" --batch koin.properties.asc > app-core/src/main/resources/org/koin/core/koin.properties
+    echo "$GOOGLE_SERVICES" > google-services.json.asc
+    gpg -d --passphrase "$GOOGLE_SERVICES_PASSPHRASE" --batch google-services.json.asc > app/google-services.json
 }
 
-create_directories
 create_files

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright (C) 2021  AniTrend
+# Copyright (C) 2022  AniTrend
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -17,19 +17,15 @@
 #     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-function create_directories {
-    mkdir -p ./app-core/src/main/resources/org/koin/core/
-    cd ./app-core/src/main/resources/org/koin/core/
+cd ./app-core/src/main/resources/org/koin/core/ || {
+  echo "Unable to change to created directory"; exit 1;
 }
 
-function create_files {
-    touch koin.properties
-    echo "aniListClientId=\"aniListClientId\"" >> koin.properties
-    echo "aniListClientSecret=\"aniListClientSecret\"" >> koin.properties
-    echo "traktClientId=\"traktClientId\"" >> koin.properties
-    echo "traktClientSecret=\"traktClientSecret\"" >> koin.properties
-    echo "tmdbClientSecret=\"tmdbClientSecret\"" >> koin.properties
-}
-
-create_directories
-create_files
+touch koin.properties
+{
+  echo "aniListClientId=\"aniListClientId\""
+  echo "aniListClientSecret=\"aniListClientSecret\""
+  echo "traktClientId=\"traktClientId\""
+  echo "traktClientSecret=\"traktClientSecret\""
+  echo "tmdbClientSecret=\"tmdbClientSecret\""
+} >> koin.properties
