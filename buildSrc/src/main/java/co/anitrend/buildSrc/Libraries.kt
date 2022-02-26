@@ -259,7 +259,7 @@ object Libraries {
         }
 
         object Preference {
-            private const val version = "1.1.1"
+            private const val version = "1.2.0"
             const val preference = "androidx.preference:preference:$version"
             const val preferenceKtx = "androidx.preference:preference-ktx:$version"
         }
