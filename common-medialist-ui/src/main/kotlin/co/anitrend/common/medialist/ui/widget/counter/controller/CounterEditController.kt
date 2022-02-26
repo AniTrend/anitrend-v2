@@ -26,7 +26,9 @@ internal class CounterEditController(
 ) : AbstractEditController() {
 
     private fun Int.isWithBounds(): Boolean {
-        return this > -1 && this <= model.maximum
+        if (model.maximum > 0)
+            return this > -1 && this <= model.maximum
+        return this > -1
     }
 
     fun incrementCount() {
