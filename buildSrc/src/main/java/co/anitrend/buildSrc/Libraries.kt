@@ -154,7 +154,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.4.0"
+            private const val version = "1.4.1"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
