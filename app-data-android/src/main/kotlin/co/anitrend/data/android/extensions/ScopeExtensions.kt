@@ -17,9 +17,16 @@
 
 package co.anitrend.data.android.extensions
 
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.cache.datasource.ICacheStore
+import co.anitrend.data.android.controller.core.DefaultController
+import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.controller.strategy.policy.OfflineStrategy
 import co.anitrend.data.android.controller.strategy.policy.OnlineStrategy
+import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.network.default.DefaultNetworkClient
+import co.anitrend.data.android.network.graphql.GraphNetworkClient
 import org.koin.core.scope.Scope
 
 /**
@@ -41,3 +48,37 @@ fun <T> Scope.offline() =
 
 fun Scope.cacheLocalSource() =
     get<ICacheStore>().cacheDao()
+
+
+/**
+ * Extension to help us create a controller
+ */
+fun <S, D> Scope.graphQLController(
+    mapper: DefaultMapper<S, D>,
+    strategy: ControllerStrategy<D> = online(),
+    dispatcher: ISupportDispatcher = get()
+) = GraphQLController(
+    mapper = mapper,
+    strategy = strategy,
+    dispatcher = dispatcher.io,
+    client = GraphNetworkClient(
+        gson = get(),
+        dispatcher = dispatcher.io
+    )
+)
+
+/**
+ * Extension to help us create a controller
+ */
+fun <S, D> Scope.defaultController(
+    mapper: DefaultMapper<S, D>,
+    strategy: ControllerStrategy<D> = online(),
+    dispatcher: ISupportDispatcher = get()
+) = DefaultController(
+    mapper = mapper,
+    strategy = strategy,
+    dispatcher = dispatcher.io,
+    client =  DefaultNetworkClient(
+        dispatcher = dispatcher.io
+    )
+)
