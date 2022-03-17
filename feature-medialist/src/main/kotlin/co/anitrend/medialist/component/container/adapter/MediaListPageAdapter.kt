@@ -17,6 +17,7 @@
 
 package co.anitrend.medialist.component.container.adapter
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -25,6 +26,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.medialist.component.content.MediaListContent
 import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.extensions.asBundle
@@ -32,20 +34,27 @@ import java.util.*
 
 internal class MediaListPageAdapter(
     private val param: MediaListRouter.Param?,
-    private val statusTitles: Array<MediaListStatus>,
-    private val customListTitles: List<CharSequence>,
+    private val mediaListInfo: List<MediaListInfo>,
     private val fragmentActivity: FragmentActivity,
     fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
+    lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
+
+    private fun createBundleFor(mediaListInfo: MediaListInfo): Bundle? {
+        val param = if (!mediaListInfo.isCustomList)
+            param?.copy(status = MediaListStatus.valueOf(mediaListInfo.name))
+        else
+            param?.copy(customListName = mediaListInfo.name)
+
+        return param?.asBundle()
+    }
 
     /**
      * Returns the total number of items in the data set held by the adapter.
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount(): Int =
-        statusTitles.size + customListTitles.size
+    override fun getItemCount(): Int = mediaListInfo.size
 
     /**
      * Provide a new Fragment associated with the specified position.
@@ -61,22 +70,14 @@ internal class MediaListPageAdapter(
      * @see ViewPager2.setOffscreenPageLimit
      */
     override fun createFragment(position: Int): Fragment {
-        if (position < statusTitles.size)
-            return FragmentItem(
-                fragment = MediaListContent::class.java,
-                parameter = param?.copy(
-                    status = statusTitles[position]
-                )?.asBundle(),
-                tag = statusTitles[position].name
-            ).fragmentByTagOrNew(fragmentActivity)
+        val mediaInfo = mediaListInfo[position]
 
-        val customListName = customListTitles[position - statusTitles.size].toString()
-        return FragmentItem(
+        val fragmentItem = FragmentItem(
             fragment = MediaListContent::class.java,
-            parameter = param?.copy(
-                customListName = customListName
-            )?.asBundle(),
-            tag = customListName.uppercase()
-        ).fragmentByTagOrNew(fragmentActivity)
+            parameter = createBundleFor(mediaInfo),
+            tag = mediaInfo.name
+        )
+
+        return fragmentItem.fragmentByTagOrNew(fragmentActivity)
     }
 }
