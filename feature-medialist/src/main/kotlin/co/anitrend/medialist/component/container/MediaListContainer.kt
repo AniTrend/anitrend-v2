@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.size
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
@@ -49,7 +48,7 @@ class MediaListContainer(
     )
 
     private fun updateViewPagerState(mediaListInfo: List<MediaListInfo>) {
-        if (requireBinding().viewPager.size != mediaListInfo.size) {
+        if (requireBinding().viewPager.adapter?.itemCount != mediaListInfo.size) {
             requireBinding().viewPager.adapter = MediaListPageAdapter(
                 param = viewModel.param,
                 mediaListInfo = mediaListInfo,
