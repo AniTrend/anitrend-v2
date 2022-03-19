@@ -19,6 +19,7 @@ package co.anitrend.domain.user.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.common.extension.INVALID_ID
+import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.domain.user.entity.attribute.option.UserMediaListOption
 import co.anitrend.domain.user.entity.attribute.option.UserProfileOption
 import co.anitrend.domain.user.entity.attribute.statistic.UserMediaStatisticType
@@ -61,6 +62,7 @@ sealed class User : IEntity {
         val previousNames: List<PreviousName>,
         val listOption: UserMediaListOption,
         val profileOption: UserProfileOption,
+        val mediaListInfo: List<MediaListInfo>,
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,
@@ -73,6 +75,7 @@ sealed class User : IEntity {
         val listOption: UserMediaListOption,
         val profileOption: UserProfileOption,
         val statistics: UserMediaStatisticType,
+        val mediaListStats: List<MediaListInfo>,
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,

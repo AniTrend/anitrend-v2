@@ -19,8 +19,8 @@ package co.anitrend.data.media.datasource.local
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import app.cash.turbine.test
-import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.core.CoreTestSuite
+import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
@@ -31,8 +31,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.get
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
-import kotlin.time.seconds
 
 @ExperimentalTime
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -69,8 +69,8 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
-        entityFlow.test(timeout = 15.seconds) {
-            val entity = expectItem()
+        entityFlow.test(timeout = Duration.seconds(15)) {
+            val entity = expectMostRecentItem()
             // for some reason tests clear the native field
             assertEquals(title, entity?.media?.title)
 
@@ -91,8 +91,8 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
-        entityFlow.test(timeout = 15.seconds) {
-            val entity = expectItem()
+        entityFlow.test(timeout = Duration.seconds(15)) {
+            val entity = expectMostRecentItem()
             // for some reason tests clear the native field
             assertEquals(title, entity?.media?.title)
 

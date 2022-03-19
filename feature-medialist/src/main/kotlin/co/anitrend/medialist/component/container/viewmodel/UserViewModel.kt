@@ -17,11 +17,9 @@
 
 package co.anitrend.medialist.component.container.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.domain.user.entity.User
 import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.navigation.MediaListRouter
 import kotlinx.coroutines.flow.collect
@@ -37,13 +35,18 @@ class UserViewModel(
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaListRouter.Param>(
                 MediaListRouter.Param.KEY
-            ).asFlow().collect { param ->
-                state(param)
-            }
+            ).asFlow().collect(state::invoke)
         }
     }
 
     val param: MediaListRouter.Param? by savedStateHandle.extra(MediaListRouter.Param.KEY)
+
+    val tabConfigurationListInfo = Transformations.map(state.model) {
+        val user = it as User.Extended
+        user.mediaListInfo.filter { mediaListInfo ->
+            mediaListInfo.mediaType == requireNotNull(param?.type)
+        }
+    }
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.
