@@ -94,7 +94,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 3
+        const val DATABASE_SCHEMA_VERSION = 4
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(
