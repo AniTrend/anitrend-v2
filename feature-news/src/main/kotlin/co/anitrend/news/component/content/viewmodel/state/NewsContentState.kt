@@ -21,19 +21,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.feed.news.NewsPagedInteractor
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class NewsContentState(
     private val useCase: NewsPagedInteractor
-) : ISupportViewModelState<PagedList<News>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<PagedList<News>>() {
 
     private val useCaseResult = MutableLiveData<DataState<PagedList<News>>>()
 

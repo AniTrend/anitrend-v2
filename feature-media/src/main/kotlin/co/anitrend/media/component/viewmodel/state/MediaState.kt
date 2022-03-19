@@ -20,22 +20,18 @@ package co.anitrend.media.component.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.MediaRouter
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class MediaState(
     private val useCase: GetDetailMediaInteractor,
     private val settings: IUserSettings
-) : ISupportViewModelState<Media> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<Media>() {
 
     private val useCaseResult = MutableLiveData<DataState<Media>>()
 

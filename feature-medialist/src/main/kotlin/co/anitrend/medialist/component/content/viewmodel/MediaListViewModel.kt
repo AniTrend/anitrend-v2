@@ -20,15 +20,14 @@ package co.anitrend.medialist.component.content.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.extensions.hook
 import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
-import co.anitrend.navigation.AiringRouter
 import co.anitrend.navigation.MediaListRouter
 
 class MediaListViewModel(
     val state: MediaListState,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val param: MediaListRouter.Param? by savedStateHandle.extra(MediaListRouter.Param.KEY)
@@ -36,7 +35,7 @@ class MediaListViewModel(
     val filter = MutableLiveData(param)
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

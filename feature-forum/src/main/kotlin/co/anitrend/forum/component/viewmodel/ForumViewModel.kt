@@ -18,7 +18,7 @@
 package co.anitrend.forum.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.forum.component.viewmodel.state.ForumState
 
 class ForumViewModel(
@@ -26,7 +26,7 @@ class ForumViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

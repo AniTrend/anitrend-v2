@@ -18,7 +18,7 @@
 package co.anitrend.notification.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.notification.component.viewmodel.state.NotificationState
 
 class NotificationViewModel(
@@ -26,7 +26,7 @@ class NotificationViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

@@ -19,10 +19,10 @@ package co.anitrend.auth.component.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.model.Authentication
+import co.anitrend.core.extensions.hook
 import co.anitrend.navigation.AuthRouter
 import timber.log.Timber
 
@@ -31,7 +31,7 @@ class AuthViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     fun onIntentData(context: Context, param: AuthRouter.Param?) {

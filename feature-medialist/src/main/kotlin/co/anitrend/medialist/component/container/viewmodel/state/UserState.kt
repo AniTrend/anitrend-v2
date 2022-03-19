@@ -20,22 +20,16 @@ package co.anitrend.medialist.component.container.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.arch.extension.ext.empty
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.user.GetProfileInteractor
-import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.model.UserParam
 import co.anitrend.navigation.MediaListRouter
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class UserState(
     private val interactor: GetProfileInteractor
-) : ISupportViewModelState<User> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<User>() {
 
     private val useCaseResult = MutableLiveData<DataState<User>>()
 

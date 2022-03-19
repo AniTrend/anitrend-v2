@@ -18,13 +18,13 @@
 package co.anitrend.media.discover.filter.component.viewmodel.genre
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.media.discover.filter.component.viewmodel.genre.state.GenreViewModelState
 
 class GenreViewModel(val state: GenreViewModelState) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

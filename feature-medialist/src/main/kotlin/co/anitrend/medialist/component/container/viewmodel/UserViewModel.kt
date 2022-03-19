@@ -19,6 +19,7 @@ package co.anitrend.medialist.component.container.viewmodel
 
 import androidx.lifecycle.*
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.extensions.hook
 import co.anitrend.domain.user.entity.User
 import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.navigation.MediaListRouter
@@ -31,7 +32,7 @@ class UserViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaListRouter.Param>(
                 MediaListRouter.Param.KEY

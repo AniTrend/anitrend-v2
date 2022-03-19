@@ -18,7 +18,7 @@
 package co.anitrend.episode.component.content.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.episode.component.content.viewmodel.state.EpisodeContentState
 
 class EpisodeContentViewModel(
@@ -26,7 +26,7 @@ class EpisodeContentViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

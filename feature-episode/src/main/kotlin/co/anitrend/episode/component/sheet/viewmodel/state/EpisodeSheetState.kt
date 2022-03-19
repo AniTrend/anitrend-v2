@@ -20,19 +20,15 @@ package co.anitrend.episode.component.sheet.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.feed.episode.EpisodeDetailInteractor
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class EpisodeSheetState(
     private val useCase: EpisodeDetailInteractor
-) : ISupportViewModelState<Episode> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<Episode>() {
 
     private val useCaseResult = MutableLiveData<DataState<Episode>>()
 

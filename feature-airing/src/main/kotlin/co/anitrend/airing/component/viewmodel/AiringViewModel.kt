@@ -20,14 +20,14 @@ package co.anitrend.airing.component.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import co.anitrend.airing.component.viewmodel.state.AiringState
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.extensions.hook
 import co.anitrend.navigation.AiringRouter
 
 class AiringViewModel(
     val state: AiringState,
-    private val stateHandle: SavedStateHandle
+    stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val param: AiringRouter.Param? by stateHandle.extra(AiringRouter.Param.KEY)
@@ -35,7 +35,7 @@ class AiringViewModel(
     val filter = MutableLiveData<AiringRouter.Param>(param)
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

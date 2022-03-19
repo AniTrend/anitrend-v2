@@ -18,7 +18,7 @@
 package co.anitrend.media.carousel.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
 
 class CarouselViewModel(
@@ -26,7 +26,7 @@ class CarouselViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

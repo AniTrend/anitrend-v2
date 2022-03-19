@@ -20,19 +20,15 @@ package co.anitrend.media.discover.filter.component.viewmodel.tag.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class TagViewModelState(
     private val interactor: TagInteractor
-) : ISupportViewModelState<List<Tag>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<List<Tag>>() {
 
     private val useCaseResult = MutableLiveData<DataState<List<Tag>>>()
 

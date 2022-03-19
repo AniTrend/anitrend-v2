@@ -22,11 +22,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import kotlin.properties.Delegates
-import kotlin.coroutines.CoroutineContext
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.review.GetReviewPagedInteractor
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.sort.order.SortOrder
@@ -39,11 +37,9 @@ import co.anitrend.navigation.model.sorting.Sorting
 
 class ReviewDiscoverState(
     private val interactor: GetReviewPagedInteractor,
-    private val settings: IUserSettings,
-    private val savedStateHandle: SavedStateHandle,
-): ISupportViewModelState<PagedList<Review>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+    settings: IUserSettings,
+    savedStateHandle: SavedStateHandle,
+): AniTrendViewModelState<PagedList<Review>>() {
 
     val default by savedStateHandle.extra(
         ReviewDiscoverRouter.Param.KEY,
