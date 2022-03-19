@@ -44,7 +44,7 @@ internal data class MediaListCountView(
         from custom_list
         inner join media_list on media_list.id = custom_list.media_list_id
         where custom_list.enabled = 1
-        group by custom_list.user_id, media_list.media_type
+        group by custom_list.user_id, media_list.media_type, custom_list.list_name
     """,
     viewName = "custom_list_count"
 )
