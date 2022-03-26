@@ -45,8 +45,8 @@ private val sourceModule = module {
             dispatcher = get()
         )
     }
-    factory<UserSource.Authenticated> {
-        UserSourceImpl.Authenticated(
+    factory<UserSource.Viewer> {
+        UserSourceImpl.Viewer(
             remoteSource = graphApi(),
             localSource = store().userDao(),
             clearDataHelper = get(),
@@ -201,6 +201,11 @@ private val mapperModule = module {
     factory {
         UserMapper.PreviousNameEmbed(
             localSource = store().userPreviousNameDao()
+        )
+    }
+    factory {
+        UserMapper.NotificationEmbed(
+            localSource = store().userNotificationDao()
         )
     }
 }

@@ -62,6 +62,7 @@ import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.fts.UserFtsEntity
 import co.anitrend.data.user.entity.name.UserPreviousNameEntity
+import co.anitrend.data.user.entity.notification.UserNotificationEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
@@ -80,7 +81,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         JikanEntity::class, JikanStudioEntity::class, JikanLicensorEntity::class,
         JikanProducerEntity::class, JikanAuthorEntity::class,
         CustomListEntity::class, CustomScoreEntity::class,
-        UserPreviousNameEntity::class, ReviewEntity::class
+        UserPreviousNameEntity::class, ReviewEntity::class,
+        UserNotificationEntity::class
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,

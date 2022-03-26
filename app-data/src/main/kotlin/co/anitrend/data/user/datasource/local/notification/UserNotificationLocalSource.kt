@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,27 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.android.cache.model
+package co.anitrend.data.user.datasource.local.notification
 
-enum class CacheRequest(val alias: String) {
-    CAROUSEL("carousel"),
-    AIRING("airing"),
-    CHARACTER("character"),
-    STAFF("staff"),
-    STUDIO("studio"),
-    GENRE("genre"),
-    MEDIA("media"),
-    MEDIA_LIST("media_list"),
-    SOURCE("source"),
-    TAG("tag"),
-    USER("user"),
-    VIEWER("viewer"),
-    REVIEW("review"),
-    USER_ID("user_id"),
-    STATISTIC("statistic"),
-    NEWS("news"),
-    EPISODE("episode"),
-    MOE("moe"),
-    JIKAN("jikan"),
-    XEM("the_xem"),
+import androidx.room.Dao
+import androidx.room.Query
+import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.user.entity.notification.UserNotificationEntity
+
+@Dao
+internal abstract class UserNotificationLocalSource : AbstractLocalSource<UserNotificationEntity>() {
+
+    @Query("""
+            select count(id) from user_notification
+        """)
+    abstract override suspend fun count(): Int
+
+    @Query("""
+        delete from user_notification
+        """)
+    abstract override suspend fun clear()
 }

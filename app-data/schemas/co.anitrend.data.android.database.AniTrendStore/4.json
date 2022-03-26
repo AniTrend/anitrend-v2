@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "30cdeedc96259da2d0e019a757fea6f9",
+    "identityHash": "8fa2acf3df732955219fe4956b4d204f",
     "entities": [
       {
         "tableName": "cache_log",
@@ -797,14 +797,8 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unread_notifications` INTEGER, `updated_at` INTEGER, `created_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`updated_at` INTEGER, `created_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
         "fields": [
-          {
-            "fieldPath": "unreadNotification",
-            "columnName": "unread_notifications",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
           {
             "fieldPath": "updatedAt",
             "columnName": "updated_at",
@@ -3023,6 +3017,60 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "user_notification",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `unread_notifications` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unreadNotifications",
+            "columnName": "unread_notifications",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_notification_user_id",
+            "unique": true,
+            "columnNames": [
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_notification_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [
@@ -3037,7 +3085,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '30cdeedc96259da2d0e019a757fea6f9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8fa2acf3df732955219fe4956b4d204f')"
     ]
   }
 }
