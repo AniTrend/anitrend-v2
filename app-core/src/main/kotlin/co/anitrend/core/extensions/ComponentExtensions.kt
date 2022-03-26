@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.settings.power
+package co.anitrend.core.extensions
 
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
+import android.content.ComponentCallbacks
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
+import coil.ImageLoader
+import org.koin.android.ext.android.get
 
-interface IPowerSettings {
-    val isPowerSaverOn: AbstractSetting<Boolean>
-    val isBatteryOptimizationOn: AbstractSetting<Boolean>
-}
+internal fun ComponentCallbacks.themeHelper() = get<IThemeHelper>()
+
+internal fun ComponentCallbacks.imageLoader() = get<ImageLoader>()
+
+internal fun ComponentCallbacks.analytics() = get<ISupportAnalytics>()

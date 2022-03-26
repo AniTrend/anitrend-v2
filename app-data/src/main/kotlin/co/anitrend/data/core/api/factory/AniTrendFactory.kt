@@ -46,7 +46,7 @@ internal class GraphApiFactory : IEndpointFactory {
             GraphClientInterceptor(authenticatorHelper)
         ).authenticator(
             GraphAuthenticator(authenticatorHelper)
-        )
+        ).cookieJar(scope.get())
         return builder.build()
     }
 }

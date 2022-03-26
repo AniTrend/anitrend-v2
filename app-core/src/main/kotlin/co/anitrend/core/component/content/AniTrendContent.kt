@@ -18,20 +18,17 @@
 package co.anitrend.core.component.content
 
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.koinOf
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
@@ -69,7 +66,7 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(),
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
+    override fun viewModelState(): AniTrendViewModelState<*>? = null
 
     /**
      * Called when the fragment is no longer in use. This is called

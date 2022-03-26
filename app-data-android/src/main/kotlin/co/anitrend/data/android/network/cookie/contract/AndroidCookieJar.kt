@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.settings.power
+package co.anitrend.data.android.network.cookie.contract
 
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
+import android.webkit.CookieManager
+import okhttp3.CookieJar
 
-interface IPowerSettings {
-    val isPowerSaverOn: AbstractSetting<Boolean>
-    val isBatteryOptimizationOn: AbstractSetting<Boolean>
+abstract class AndroidCookieJar : CookieJar {
+    protected abstract val cookieManager: CookieManager
+
+    abstract fun purge()
 }

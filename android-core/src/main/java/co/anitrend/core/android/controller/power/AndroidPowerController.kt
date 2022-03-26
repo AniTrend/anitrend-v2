@@ -18,11 +18,14 @@
 package co.anitrend.core.android.controller.power
 
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import co.anitrend.arch.extension.ext.flowOfBroadcast
 import co.anitrend.core.android.controller.power.contract.IPowerController
 import co.anitrend.core.android.controller.power.contract.PowerSaverState
@@ -32,6 +35,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
+import timber.log.Timber
 
 /**
  * Android platform power management controller
@@ -83,6 +87,23 @@ internal class AndroidPowerController(
             PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
         }
         else -> PowerSaverState.Disabled
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun disableBatteryOptimization() {
+        val packageUri = "package:${context.packageName}"
+        val ignoresOptimization = powerManager?.isIgnoringBatteryOptimizations(packageUri)
+        if (ignoresOptimization == true) {
+            runCatching {
+                val intent = Intent().apply {
+                    action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                    data = packageUri.toUri()
+                }
+                context.startActivity(intent)
+            }.onFailure {
+                Timber.w(it)
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

@@ -19,10 +19,10 @@ package co.anitrend.core.component.screen
 
 import android.content.Context
 import androidx.viewbinding.ViewBinding
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.core.ui.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityRetainedScope
@@ -76,7 +76,7 @@ abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeCom
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
+    override fun viewModelState(): AniTrendViewModelState<*>? = null
 
     override fun onDestroy() {
         super.onDestroy()

@@ -25,21 +25,19 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ActionProvider
 import androidx.core.view.setPadding
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getDrawableAttr
 import co.anitrend.core.android.R
 import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.extensions.lifecycleScope
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import kotlinx.coroutines.flow.collect
-import timber.log.Timber
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
+class StyleActionProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
 
     private val actionImageView = AppCompatImageView(context).apply {
         background = context.getDrawableAttr(
@@ -61,9 +59,7 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
         setPadding(10.dp)
     }
 
-    private val settings by lazy(UNSAFE) {
-        koinOf<ICustomizationSettings>()
-    }
+    private val settings by inject<ICustomizationSettings>()
 
     private val viewModes = PreferredViewMode.values()
 
@@ -95,16 +91,11 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context) {
      * @param forItem Optional menu item to create view for
      */
     override fun createWidget(forItem: MenuItem?): View {
-        if (context is LifecycleOwner) {
-            val owner = context as LifecycleOwner
-            owner.lifecycleScope.launchWhenResumed {
-                iconForSetting(settings.preferredViewMode.value)
-                container.addView(actionImageView)
-                settings.preferredViewMode.flow.collect {
-                    iconForSetting(it)
-                }
-            }
-        } else Timber.e("$context is not a lifecycle owner")
+        context.lifecycleScope()?.launchWhenResumed {
+            iconForSetting(settings.preferredViewMode.value)
+            container.addView(actionImageView)
+            settings.preferredViewMode.flow.collect(::iconForSetting)
+        }
         return container
     }
 
