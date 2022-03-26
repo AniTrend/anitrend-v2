@@ -18,13 +18,13 @@
 package co.anitrend.media.discover.filter.component.viewmodel.tag
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.media.discover.filter.component.viewmodel.tag.state.TagViewModelState
 
 class TagViewModel(val state: TagViewModelState): ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

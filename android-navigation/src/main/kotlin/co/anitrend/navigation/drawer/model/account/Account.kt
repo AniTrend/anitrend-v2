@@ -21,7 +21,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import co.anitrend.domain.common.entity.contract.ICoverImage
-import co.anitrend.navigation.drawer.model.navigation.Navigation
 
 sealed class Account {
     abstract val id: Long

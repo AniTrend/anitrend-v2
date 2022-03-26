@@ -23,7 +23,6 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.android.R
-import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.color.asDrawable
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.domain.common.entity.contract.ICoverImage

@@ -20,21 +20,17 @@ package co.anitrend.auth.component.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.auth.model.Authentication
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class AuthState(
     private val useCase: AuthUserInteractor
-) : ISupportViewModelState<User> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<User>() {
 
     val authenticationFlow =
         MutableStateFlow<Authentication>(Authentication.Idle)

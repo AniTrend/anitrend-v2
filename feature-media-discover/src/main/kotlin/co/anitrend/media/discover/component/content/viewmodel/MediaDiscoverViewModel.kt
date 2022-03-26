@@ -19,6 +19,7 @@ package co.anitrend.media.discover.component.content.viewmodel
 
 import androidx.lifecycle.*
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.extensions.hook
 import co.anitrend.media.discover.component.content.viewmodel.state.MediaDiscoverState
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
@@ -31,7 +32,7 @@ class MediaDiscoverViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaDiscoverRouter.Param>(
                 MediaDiscoverFilterRouter.Action.KEY

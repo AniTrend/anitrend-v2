@@ -21,19 +21,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.feed.episode.EpisodePagedInteractor
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class EpisodeContentState(
     private val useCase: EpisodePagedInteractor
-) : ISupportViewModelState<PagedList<Episode>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<PagedList<Episode>>() {
 
     private val useCaseResult = MutableLiveData<DataState<PagedList<Episode>>>()
 

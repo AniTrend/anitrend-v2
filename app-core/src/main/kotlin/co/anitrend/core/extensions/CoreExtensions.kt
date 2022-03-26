@@ -21,7 +21,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.anitrend.core.AniTrendApplication
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import timber.log.Timber
 
 /**
@@ -68,3 +71,11 @@ inline fun Context.runIfActivityContext(
 inline fun <T : View> T.runIfActivityContext(
     block: FragmentActivity.() -> Unit
 ) = context.runIfActivityContext(block)
+
+/**
+ * Hooks [ViewModel.viewModelScope] context to [states]
+ */
+fun ViewModel.hook(vararg states: AniTrendViewModelState<*>) {
+    val coroutineContext = viewModelScope.coroutineContext
+    states.forEach { it.context = coroutineContext }
+}

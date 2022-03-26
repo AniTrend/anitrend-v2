@@ -21,22 +21,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.MediaDiscoverRouter
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 data class MediaDiscoverState(
     private val pagedInteractor: GetPagedMediaInteractor,
     private val networkInteractor: GetNetworkMediaInteractor
-) : ISupportViewModelState<PagedList<Media>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<PagedList<Media>>() {
 
     private val useCaseResult = MutableLiveData<DataState<PagedList<Media>>>()
 

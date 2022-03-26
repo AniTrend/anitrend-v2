@@ -18,27 +18,22 @@
 package co.anitrend.navigation.drawer.component.viewmodel.state
 
 import androidx.annotation.IdRes
-import androidx.lifecycle.*
-import co.anitrend.arch.core.model.ISupportViewModelState
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.liveData
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 internal class NavigationState(
     settings: IAuthenticationSettings,
     private val savedStateHandle: SavedStateHandle
-) : ISupportViewModelState<List<Navigation>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<List<Navigation>>() {
 
     private val navigationItems by lazy(UNSAFE) {
         val initialState = createNavigationItems(settings.isAuthenticated.value)

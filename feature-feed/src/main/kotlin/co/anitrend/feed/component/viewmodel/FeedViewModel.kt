@@ -18,7 +18,7 @@
 package co.anitrend.feed.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.feed.component.viewmodel.state.FeedState
 
 class FeedViewModel(
@@ -26,7 +26,7 @@ class FeedViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

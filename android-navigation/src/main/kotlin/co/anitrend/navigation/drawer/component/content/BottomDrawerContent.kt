@@ -25,8 +25,6 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
@@ -50,7 +48,6 @@ import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawe
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
 import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
-import co.anitrend.navigation.drawer.model.account.Account
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.drawer.model.state.SandwichState
 import co.anitrend.navigation.extensions.startActivity
@@ -59,7 +56,6 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -250,10 +246,9 @@ class BottomDrawerContent(
     override fun setUpViewModelObserver() {
         viewModel.accountState.model.observe(viewLifecycleOwner) {
             accountAdapter.submitList(it)
-            presenter.applyProfilePicture(
-                requireBinding().profileImageView,
-                it?.singleOrNull(Account::isActiveUser)
-            )
+        }
+        viewModel.userAccount.observe(viewLifecycleOwner) { account ->
+            presenter.applyProfilePicture(requireBinding().profileImageView, account)
         }
         viewModel.navigationState.model.observe(viewLifecycleOwner) {
             navigationAdapter.submitList(it)

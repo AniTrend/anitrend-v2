@@ -20,19 +20,15 @@ package co.anitrend.media.carousel.component.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.carousel.GetCarouselInteractor
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 data class CarouselState(
     private val useCase: GetCarouselInteractor
-) : ISupportViewModelState<List<MediaCarousel>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<List<MediaCarousel>>() {
 
     private val useCaseResult = MutableLiveData<DataState<List<MediaCarousel>>>()
 

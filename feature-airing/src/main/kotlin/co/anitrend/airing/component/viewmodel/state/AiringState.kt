@@ -21,23 +21,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
-import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.AiringRouter
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class AiringState(
     private val interactor: GetPagedAiringScheduleInteractor
-) : ISupportViewModelState<PagedList<Media>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<PagedList<Media>>() {
 
     private val useCaseResult = MutableLiveData<DataState<PagedList<Media>>>()
 
