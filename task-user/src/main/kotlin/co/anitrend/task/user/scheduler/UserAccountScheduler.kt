@@ -37,7 +37,7 @@ class UserAccountScheduler(
             .setRequiresBatteryNotLow(true)
             .build()
 
-        val repeatInterval = settings.metaSyncInterval.value.toLong()
+        val repeatInterval = settings.userSyncInterval.value.toLong()
 
         val workRequest = PeriodicWorkRequest.Builder(
             worker, repeatInterval, TimeUnit.SECONDS
