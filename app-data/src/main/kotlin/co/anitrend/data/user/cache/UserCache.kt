@@ -47,7 +47,29 @@ internal sealed class UserCache : CacheStorePolicy() {
             val param: UserParam.Identifier,
             override val id: Long = param.name.toHashId(),
             override val key: String = "user_id",
-            override val expiresAt: Instant = instantInPast(minutes = 15)
+            override val expiresAt: Instant = instantInPast(minutes = 5)
+        ) : CacheIdentity
+    }
+
+    class Viewer(
+        override val localSource: CacheLocalSource,
+        override val request: CacheRequest = CacheRequest.VIEWER
+    ) : UserCache() {
+        /**
+         * Check if a resource with a given [identity] is permitted to refresh
+         *
+         * @param identity Unique identifier for the cache item
+         * @param expiresAfter Expiry time fro the cached [identity]
+         */
+        override suspend fun shouldRefresh(
+            identity: CacheIdentity,
+            expiresAfter: Instant
+        ): Boolean = isRequestBefore(identity, expiresAfter)
+
+        class Identity(
+            override val id: Long,
+            override val key: String = "viewer",
+            override val expiresAt: Instant = instantInPast(minutes = 5)
         ) : CacheIdentity
     }
 

@@ -21,11 +21,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
@@ -36,10 +33,10 @@ import co.anitrend.core.R
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.component.adapter.AniTrendLoadStateAdapter
 import co.anitrend.core.component.content.list.presenter.AniTrendListContentPresenter
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
@@ -130,5 +127,5 @@ abstract class AniTrendListContent<M>(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState(): ISupportViewModelState<*>? = null
+    override fun viewModelState(): AniTrendViewModelState<*>? = null
 }

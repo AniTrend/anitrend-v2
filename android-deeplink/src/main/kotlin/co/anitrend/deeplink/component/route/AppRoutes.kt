@@ -192,8 +192,7 @@ internal object OAuthRoute : Route(
         val payload = deepLinkUri.getAuthRouterParam().asNavPayload()
         return AuthRouter.forActivity(
             env.context,
-            payload,
-            0
+            payload
         )
     }
 }

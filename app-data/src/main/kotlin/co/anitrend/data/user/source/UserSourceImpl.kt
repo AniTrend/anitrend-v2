@@ -22,15 +22,11 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
-import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.common.extension.from
-import co.anitrend.data.user.UserAuthController
-import co.anitrend.data.user.UserController
-import co.anitrend.data.user.UserPagedController
-import co.anitrend.data.user.UserProfileController
-import co.anitrend.data.user.UserProfileStatisticController
+import co.anitrend.data.user.*
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
@@ -55,7 +51,11 @@ internal class UserSourceImpl {
     ) : UserSource.Identifier() {
 
         override fun observable(): Flow<User> {
-            return localSource.userByNameFlow(query.param.name)
+            val source = query.param.id?.let {
+                localSource.userByIdFlow(it)
+            } ?: localSource.userByNameFlow(query.param.name)
+
+            return source
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -87,25 +87,21 @@ internal class UserSourceImpl {
         }
     }
 
-    class Authenticated(
+    class Viewer(
         private val remoteSource: UserRemoteSource,
         private val localSource: UserLocalSource,
         private val clearDataHelper: IClearDataHelper,
         private val controller: UserAuthController,
-        private val converter: UserEntityConverter,
+        private val converter: UserViewEntityConverter,
         override val settings: IAuthenticationSettings,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher
-    ) : UserSource.Authenticated() {
+    ) : UserSource.Viewer() {
 
         override fun observable(): Flow<User> {
-            val result = if (query.param.id != null)
-                localSource.userByIdFlow(requireNotNull(query.param.id))
-            else
-                localSource.userByNameFlow(requireNotNull(query.param.name))
+            val userId = query.param.id
 
-
-            return result
+            return localSource.userAuthenticated(userId)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -132,10 +128,7 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                if (query.param.id != null)
-                    localSource.clearById(requireNotNull(query.param.id))
-                else
-                    localSource.clearByUserName(requireNotNull(query.param.name))
+                localSource.clearById(requireNotNull(query.param.id))
             }
         }
     }
@@ -294,8 +287,7 @@ internal class UserSourceImpl {
     ) : UserSource.ToggleFollow() {
 
         override fun observable(): Flow<User> {
-            val userId = requireNotNull(query.param.userId)
-            return localSource.userByIdFlow(userId)
+            return localSource.userByIdFlow(query.param.userId)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)

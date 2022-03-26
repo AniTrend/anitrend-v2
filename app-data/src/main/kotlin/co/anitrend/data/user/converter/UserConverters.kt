@@ -72,7 +72,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = null,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -95,7 +94,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = 0,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -118,7 +116,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = source.unreadNotificationCount,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -141,7 +138,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = null,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -266,7 +262,7 @@ internal class UserViewEntityConverter(
         @VisibleForTesting
         fun UserMediaOptionEntity.MediaOption.listStatus(
             mediaType: MediaType,
-            userEntityView: UserEntityView
+            userEntityView: UserEntityView.WithExtended
         ): List<MediaListInfo> {
 
             val mediaListInfoList = MediaListStatus.values().map {
@@ -296,7 +292,6 @@ internal class UserViewEntityConverter(
 
         override fun transform(source: UserEntityView) = when (source) {
             is UserEntityView.WithOptions -> User.Extended(
-                unreadNotifications = source.user.unreadNotification ?: 0,
                 listOption = UserMediaListOption(
                     scoreFormat = source.mediaListOption.scoreFormat,
                     rowOrder = source.mediaListOption.rowOrder,
@@ -357,7 +352,6 @@ internal class UserViewEntityConverter(
                 id = source.user.id
             )
             is UserEntityView.WithStatistic -> User.WithStats(
-                unreadNotifications = source.user.unreadNotification ?: 0,
                 listOption = UserMediaListOption(
                     scoreFormat = source.mediaListOption.scoreFormat,
                     rowOrder = source.mediaListOption.rowOrder,
@@ -669,6 +663,28 @@ internal class UserViewEntityConverter(
                     source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
                 id = source.user.id
             )
+            is UserEntityView.Authenticated -> User.Authenticated(
+                unreadNotifications = source.notification.unreadNotifications,
+                name = source.user.about.name,
+                avatar = UserImage(
+                    large = source.user.coverImage.large,
+                    medium = source.user.coverImage.medium,
+                    banner = source.user.coverImage.banner
+                ),
+                status = UserStatus(
+                    about = source.user.about.bio,
+                    donationBadge = source.user.about.donatorBadge,
+                    donationTier = source.user.about.donatorTier,
+                    isFollowing = source.user.status?.isFollowing,
+                    isFollower = source.user.status?.isFollower,
+                    isBlocked = source.user.status?.isBlocked,
+                    pageUrl = source.user.about.siteUrl,
+                    createdAt = source.user.createdAt,
+                    updatedAt = source.user.updatedAt,
+                ),
+                id = source.user.id
+            )
+            else -> throw NotImplementedError("Instance of $source is not supported")
         }
     }
 }

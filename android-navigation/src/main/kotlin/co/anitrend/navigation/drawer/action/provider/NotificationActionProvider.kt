@@ -25,26 +25,32 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ActionProvider
 import androidx.core.view.setPadding
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.*
 import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.extensions.lifecycleScope
+import co.anitrend.core.android.extensions.requireLifecycleOwner
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
+import co.anitrend.core.ui.sharedViewModel
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.NotificationRouter
 import co.anitrend.navigation.drawer.R
+import co.anitrend.navigation.drawer.action.provider.viewmodel.NotificationProviderViewModel
 import co.anitrend.navigation.extensions.startActivity
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import kotlinx.coroutines.flow.collect
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import timber.log.Timber
 
-class NotificationActionProvider(context: Context) : AbstractActionProvider(context) {
+class NotificationActionProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
+
+    private val viewModel by sharedViewModel<NotificationProviderViewModel>()
 
     private val notificationBadge = BadgeDrawable.create(context).apply {
-        horizontalOffset = (-16).dp
-        verticalOffset = 14.dp
+        badgeGravity = BadgeDrawable.TOP_END
+        maxCharacterCount = 2
     }
 
     private val actionImageView = AppCompatImageView(context).apply {
@@ -74,9 +80,7 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
         }
     }
 
-    private val settings by lazy(UNSAFE) {
-        koinOf<IAuthenticationSettings>()
-    }
+    private val settings by inject<IAuthenticationSettings>()
 
     private fun toggleVisibility(forItem: MenuItem?, shouldShow: Boolean) {
         forItem?.isVisible = shouldShow
@@ -99,18 +103,29 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
     @com.google.android.material.badge.ExperimentalBadgeUtils
     override fun createWidget(forItem: MenuItem?): View {
         setUpVisibility(forItem)
-        if (context is LifecycleOwner) {
-            val owner = context as LifecycleOwner
-            owner.lifecycleScope.launchWhenResumed {
-                container.addView(actionImageView)
-                settings.isAuthenticated.flow.collect {
-                    toggleVisibility(forItem, it)
-                }
+        context.lifecycleScope()?.launchWhenResumed {
+            container.addView(actionImageView)
+            settings.isAuthenticated.flow.collect {
+                toggleVisibility(forItem, it)
+                viewModel.fetchUser()
             }
-        } else Timber.e("$context is not a lifecycle owner")
-        BadgeUtils.attachBadgeDrawable(
-            notificationBadge, actionImageView, container
-        )
+        }
+
+        viewModel.state.model.observe(context.requireLifecycleOwner()) {
+            Timber.v("Notification change event triggered")
+            val user = it as User.Authenticated
+            val unread = user.unreadNotifications
+            if (unread > 0) {
+                notificationBadge.number = unread
+                BadgeUtils.attachBadgeDrawable(
+                    notificationBadge, actionImageView, container
+                )
+            } else {
+                BadgeUtils.detachBadgeDrawable(
+                    notificationBadge, actionImageView
+                )
+            }
+        }
         return container
     }
 }

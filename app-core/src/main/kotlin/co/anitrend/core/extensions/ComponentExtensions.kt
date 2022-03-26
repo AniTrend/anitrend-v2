@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,27 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.android.cache.model
+package co.anitrend.core.extensions
 
-enum class CacheRequest(val alias: String) {
-    CAROUSEL("carousel"),
-    AIRING("airing"),
-    CHARACTER("character"),
-    STAFF("staff"),
-    STUDIO("studio"),
-    GENRE("genre"),
-    MEDIA("media"),
-    MEDIA_LIST("media_list"),
-    SOURCE("source"),
-    TAG("tag"),
-    USER("user"),
-    VIEWER("viewer"),
-    REVIEW("review"),
-    USER_ID("user_id"),
-    STATISTIC("statistic"),
-    NEWS("news"),
-    EPISODE("episode"),
-    MOE("moe"),
-    JIKAN("jikan"),
-    XEM("the_xem"),
-}
+import android.content.ComponentCallbacks
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
+import coil.ImageLoader
+import org.koin.android.ext.android.get
+
+internal fun ComponentCallbacks.themeHelper() = get<IThemeHelper>()
+
+internal fun ComponentCallbacks.imageLoader() = get<ImageLoader>()
+
+internal fun ComponentCallbacks.analytics() = get<ISupportAnalytics>()

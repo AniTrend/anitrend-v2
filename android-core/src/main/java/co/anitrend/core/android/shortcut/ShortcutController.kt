@@ -17,17 +17,20 @@
 
 package co.anitrend.core.android.shortcut
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
+import androidx.annotation.RequiresApi
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.navigation.extensions.forActivity
 import timber.log.Timber
 
+@SuppressLint("NewApi")
 internal class ShortcutController(
     private val context: Context,
     private val shortcutManager: ShortcutManager?

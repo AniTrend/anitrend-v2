@@ -62,7 +62,7 @@ internal class UserSource {
         }
     }
 
-    abstract class Authenticated : SupportCoreDataSource() {
+    abstract class Viewer : SupportCoreDataSource() {
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -70,11 +70,11 @@ internal class UserSource {
 
         protected abstract val cachePolicy: ICacheStorePolicy
 
-        protected val query: UserQuery.Profile
+        protected val query: UserQuery.Viewer
             get() {
                 val userId = settings.authenticatedUserId.value
-                return UserQuery.Profile(
-                    UserParam.Profile(userId)
+                return UserQuery.Viewer(
+                    UserParam.Viewer(userId)
                 )
             }
 
@@ -86,7 +86,7 @@ internal class UserSource {
             require(query.isUserIdValid()) {
                 "User id for supplied query is invalid"
             }
-            cacheIdentity = UserCache.Profile.Identity(query.param)
+            cacheIdentity = UserCache.Viewer.Identity(query.param.id)
             cachePolicy(
                 scope = scope,
                 requestHelper = requestHelper,

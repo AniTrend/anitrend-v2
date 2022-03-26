@@ -17,8 +17,8 @@
 
 package co.anitrend.data.user.model.query
 
-import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.user.model.UserParam
 
 internal sealed class UserQuery : IGraphPayload {
@@ -81,5 +81,18 @@ internal sealed class UserQuery : IGraphPayload {
         )
     }
 
+    data class Viewer(
+        val param: UserParam.Viewer
+    ) : UserQuery() {
 
+        fun isUserIdValid() =
+            param.id != IAuthenticationSettings.INVALID_USER_ID
+
+        /**
+         * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+         */
+        override fun toMap() = mapOf(
+            "id" to param.id
+        )
+    }
 }

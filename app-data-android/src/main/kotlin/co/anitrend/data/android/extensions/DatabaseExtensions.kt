@@ -20,7 +20,6 @@ package co.anitrend.data.android.extensions
 import androidx.room.RoomDatabase
 import co.anitrend.data.core.extensions.koinOf
 import timber.log.Timber
-import kotlin.jvm.Throws
 
 @Throws(Exception::class)
 @Deprecated(

@@ -22,7 +22,7 @@ object Configuration {
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
-    private const val candidate = 39
+    private const val candidate = 40
 
     private const val channel = "alpha"
 
