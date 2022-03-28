@@ -27,7 +27,6 @@ import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import co.anitrend.arch.extension.ext.SYNCHRONIZED
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.R
 import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
@@ -69,8 +68,9 @@ inline fun <reified T : Any> KoinScopeComponent.get(
  */
 inline fun <reified T : Any> KoinScopeComponent.inject(
     qualifier: Qualifier? = null,
+    lazyMode: LazyThreadSafetyMode = SYNCHRONIZED,
     noinline parameters: ParametersDefinition? = null
-) = lazy(UNSAFE) { get<T>(qualifier, parameters) }
+) = lazy(lazyMode) { get<T>(qualifier, parameters) }
 
 /**
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
@@ -175,7 +175,7 @@ inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
  */
 inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
     fragmentItem: FragmentItem<T>,
-    lazyMode: LazyThreadSafetyMode = UNSAFE
+    lazyMode: LazyThreadSafetyMode = SYNCHRONIZED
 ) = lazy(lazyMode) {
     fragmentItem.fragmentByTagOrNew(this)
 }
@@ -193,7 +193,7 @@ inline fun <reified T : ViewModel> ViewGroup.viewModel(
     },
     noinline state: BundleDefinition = emptyState(),
     noinline parameters: ParametersDefinition? = null
-): Lazy<T> = lazy(UNSAFE) {
+): Lazy<T> = lazy(SYNCHRONIZED) {
     if (context is KoinScopeComponent) {
         val scopeComponent = context as KoinScopeComponent
         scopeComponent.scope.getViewModel(
