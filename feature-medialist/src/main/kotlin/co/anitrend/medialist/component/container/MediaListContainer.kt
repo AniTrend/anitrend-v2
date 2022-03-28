@@ -53,7 +53,7 @@ class MediaListContainer(
                 param = viewModel.param,
                 mediaListInfo = mediaListInfo,
                 fragmentActivity = requireActivity(),
-                fragmentManager = parentFragmentManager,
+                fragmentManager = childFragmentManager,
                 lifecycle = lifecycle
             )
         }
@@ -97,7 +97,10 @@ class MediaListContainer(
                 requireBinding().viewPager,
                 true,
                 true,
-                MediaListTabConfiguration(it)
+                MediaListTabConfiguration(
+                    context = requireContext(),
+                    mediaListInfo = it
+                )
             )
 
             updateViewPagerState(it)

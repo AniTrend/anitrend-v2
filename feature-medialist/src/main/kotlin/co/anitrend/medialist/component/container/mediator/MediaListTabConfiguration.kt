@@ -17,11 +17,15 @@
 
 package co.anitrend.medialist.component.container.mediator
 
+import android.content.Context
+import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.domain.user.entity.attribute.MediaListInfo
+import co.anitrend.medialist.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 internal class MediaListTabConfiguration(
+    private val context: Context,
     private val mediaListInfo: List<MediaListInfo>
 ) : TabLayoutMediator.TabConfigurationStrategy {
 
@@ -35,7 +39,12 @@ internal class MediaListTabConfiguration(
      */
     override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
         val mediaInfo = mediaListInfo[position]
-        tab.orCreateBadge.number = mediaInfo.count
+        tab.orCreateBadge.apply {
+            backgroundColor = context.getColorFromAttr(
+                R.attr.colorAccent, R.color.colorAccent
+            )
+            number = mediaInfo.count
+        }
         tab.text = mediaInfo.name
     }
 }
