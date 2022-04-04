@@ -40,6 +40,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Configure properties
+      run: |
+        chmod +x .github/scripts/pre-config.sh
+        chmod +x .github/scripts/staging-config.sh
+        ./.github/scripts/pre-config.sh
+        ./.github/scripts/staging-config.sh
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
@@ -63,8 +70,8 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       ./.github/scripts/configuration.sh
-       gradlew assembleDebug
+        chmod +x gradlew
+        ./gradlew assembleGithubDebug --stacktrace
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1

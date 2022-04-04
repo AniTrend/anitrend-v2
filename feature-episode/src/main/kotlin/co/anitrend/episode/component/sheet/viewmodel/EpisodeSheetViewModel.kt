@@ -22,6 +22,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.empty
+import co.anitrend.core.extensions.hook
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.episode.R
 import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
@@ -33,7 +34,7 @@ class EpisodeSheetViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     val model = MutableLiveData<String>()

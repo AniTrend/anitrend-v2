@@ -54,7 +54,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "7.1.0"
+            private const val version = "7.1.2"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -132,7 +132,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.1.2"
+            private const val version = "2.1.3"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
 
@@ -154,7 +154,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.4.0"
+            private const val version = "1.4.1"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -259,7 +259,7 @@ object Libraries {
         }
 
         object Preference {
-            private const val version = "1.1.1"
+            private const val version = "1.2.0"
             const val preference = "androidx.preference:preference:$version"
             const val preferenceKtx = "androidx.preference:preference-ktx:$version"
         }
@@ -469,7 +469,7 @@ object Libraries {
 
     object Devrieze {
         object XmlUtil {
-            private const val version = "0.84.0-RC1"
+            private const val version = "0.84.0"
 
             object Android {
                 const val core = "io.github.pdvrieze.xmlutil:core-android:$version"
@@ -486,7 +486,7 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.22.0-rc"
+            private const val version = "0.23.0"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
@@ -496,7 +496,7 @@ object Libraries {
         }
 
         object Gson {
-            private const val version = "2.8.9"
+            private const val version = "2.9.0"
             const val gson = "com.google.code.gson:gson:$version"
         }
 
@@ -515,13 +515,13 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "20.0.2"
+                private const val version = "20.1.0"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "18.2.6"
+                private const val version = "18.2.8"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
@@ -599,7 +599,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "3.1.4"
+        private const val version = "3.1.5"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
 
@@ -648,7 +648,7 @@ object Libraries {
     }
 
     object Mockk {
-        const val version = "1.12.1"
+        const val version = "1.12.2"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
@@ -689,7 +689,7 @@ object Libraries {
     object Square {
 
         object LeakCanary {
-            private const val version = "2.7"
+            private const val version = "2.8.1"
             const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
         }
 

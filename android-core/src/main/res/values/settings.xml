@@ -37,6 +37,7 @@
     <string name="settings_view_mode_preferred" translatable="false">_viewMode</string>
     <string name="settings_data_saver" translatable="false">_dataSaver</string>
     <string name="settings_power_saver" translatable="false">_powerSaver</string>
+    <string name="settings_battery_optimization" translatable="false">_batteryOptimization</string>
 
     <string name="settings_user_title_language" translatable="false">_titleLanguage</string>
     <string name="settings_user_score_format" translatable="false">_scoreFormat</string>
@@ -44,4 +45,5 @@
     <string name="settings_cache_usage_ratio" translatable="false">_cacheUsageRatio</string>
     <string name="settings_sync_meta_interval" translatable="false">_syncMetaInterval</string>
     <string name="settings_sync_list_interval" translatable="false">_syncListInterval</string>
+    <string name="settings_sync_user_interval" translatable="false">_syncUserInterval</string>
 </resources>

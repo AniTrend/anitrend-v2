@@ -18,7 +18,7 @@
 package co.anitrend.suggestion.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.suggestion.component.viewmodel.state.SuggestionState
 
 class SuggestionViewModel(
@@ -26,7 +26,7 @@ class SuggestionViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

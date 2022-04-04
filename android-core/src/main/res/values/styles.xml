@@ -44,8 +44,8 @@
     </style>
 
     <style name="AppTheme.Material.TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
-        <item name="tabMode">fixed</item>
-        <item name="tabGravity">fill</item>
+        <item name="tabMode">auto</item>
+        <item name="tabGravity">center</item>
         <item name="tabInlineLabel">true</item>
         <item name="tabIndicatorFullWidth">false</item>
         <item name="tabIndicatorColor">?colorOnSurface</item>

@@ -24,13 +24,12 @@ import app.cash.copper.flow.mapToList
 import app.cash.copper.flow.observeQuery
 import app.cash.turbine.test
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
-import kotlin.time.seconds
 
 @ExperimentalTime
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -72,8 +71,8 @@ internal class NewsRemoteSourceTest {
                 """.trimIndent()
             }
 
-        newsFlow.test(timeout = 15.seconds) {
-            val news = expectItem()
+        newsFlow.test(timeout = Duration.seconds(15)) {
+            val news = awaitItem()
             Assert.assertTrue(news.isNotEmpty())
             Assert.assertEquals(15, news.size)
         }

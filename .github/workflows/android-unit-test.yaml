@@ -14,7 +14,9 @@ jobs:
         distribution: 'adopt'
     - name: Configure properties
       run: |
-        chmod +x .github/scripts/configuration.sh
-        ./.github/scripts/configuration.sh
+        chmod +x .github/scripts/pre-config.sh
+        chmod +x .github/scripts/staging-config.sh
+        ./.github/scripts/pre-config.sh
+        ./.github/scripts/staging-config.sh
     - name: Gradle test
       run: ./gradlew test --stacktrace

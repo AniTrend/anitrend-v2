@@ -19,17 +19,34 @@ package co.anitrend.data.user.entity.view
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import co.anitrend.data.medialist.entity.view.CustomListCountView
+import co.anitrend.data.medialist.entity.view.MediaListCountView
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.name.UserPreviousNameEntity
+import co.anitrend.data.user.entity.notification.UserNotificationEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 internal sealed class UserEntityView {
     abstract val user: UserEntity
-    abstract val generalOption: UserGeneralOptionEntity
-    abstract val mediaListOption: UserMediaOptionEntity
-    abstract val previousNames: List<UserPreviousNameEntity>
+
+    internal abstract class WithExtended : UserEntityView() {
+        abstract val generalOption: UserGeneralOptionEntity
+        abstract val mediaListOption: UserMediaOptionEntity
+        abstract val previousNames: List<UserPreviousNameEntity>
+        abstract val mediaListCount: List<MediaListCountView>
+        abstract val customListCount: List<CustomListCountView>
+    }
+
+    internal data class Authenticated(
+        @Embedded override val user: UserEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        val notification: UserNotificationEntity,
+    ) : UserEntityView()
 
     internal data class WithOptions(
         @Embedded override val user: UserEntity,
@@ -48,7 +65,17 @@ internal sealed class UserEntityView {
             entityColumn = "user_id"
         )
         override val previousNames: List<UserPreviousNameEntity>,
-    ) : UserEntityView()
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val mediaListCount: List<MediaListCountView>,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val customListCount: List<CustomListCountView>,
+    ) : WithExtended()
 
     internal data class WithStatistic(
         @Embedded override val user: UserEntity,
@@ -72,5 +99,15 @@ internal sealed class UserEntityView {
             entityColumn = "user_id"
         )
         override val previousNames: List<UserPreviousNameEntity>,
-    ) : UserEntityView()
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val mediaListCount: List<MediaListCountView>,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id"
+        )
+        override val customListCount: List<CustomListCountView>,
+    ) : WithExtended()
 }

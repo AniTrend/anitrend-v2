@@ -20,18 +20,17 @@ package co.anitrend.airing.component.content
 import android.view.MenuItem
 import androidx.annotation.IntegerRes
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.data.settings.customize.ICustomizationSettings
-import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.core.android.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class AiringContent(
@@ -108,18 +107,10 @@ class AiringContent(
             viewModelState().invoke(requireNotNull(viewModel.param))
         }
         lifecycleScope.launchWhenResumed {
-            settings.preferredViewMode.flow.collect {
-                val layoutManger = listPresenter.recyclerView.layoutManager
-                if (layoutManger is StaggeredGridLayoutManager) {
-                    val currentSpanCount = layoutManger.spanCount
-                    val newSpanCount = resources.getInteger(
-                        getSpanSizeByPreference(it)
-                    )
-                    if (currentSpanCount != newSpanCount)
-                        layoutManger.spanCount = newSpanCount
-                    else supportViewAdapter.notifyDataSetNeedsRefreshing()
-                }
-            }
+            settings.preferredViewMode.flowUpdating(
+                listPresenter.recyclerView,
+                ::getSpanSizeByPreference
+            )
         }
     }
 

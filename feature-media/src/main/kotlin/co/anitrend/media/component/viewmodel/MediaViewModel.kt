@@ -18,7 +18,7 @@
 package co.anitrend.media.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.media.component.viewmodel.state.MediaState
 
 class MediaViewModel(
@@ -26,7 +26,7 @@ class MediaViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

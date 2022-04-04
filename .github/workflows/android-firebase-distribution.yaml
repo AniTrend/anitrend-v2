@@ -5,6 +5,10 @@ on:
     branches:
       - 'release/*'
 
+permissions:
+  actions: write
+  repository-projects: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,15 +30,19 @@ jobs:
           distribution: 'adopt'
       - name: set up pre-deploy configurations
         run: |
-          chmod +x ./scripts/.github/pre-deploy.sh
+          chmod +x .github/scripts/pre-config.sh
+          chmod +x .github/scripts/pre-deploy.sh
+          ./.github/scripts/pre-config.sh
           ./.github/scripts/pre-deploy.sh
       - name: build release
-        run: ./gradlew test assembleRelease
+        run: |
+          chmod +x gradlew
+          ./gradlew test assembleRelease
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
         with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
+          # appId: ${{ secrets.FIREBASE_APP_ID }}
+          # token: ${{ secrets.FIREBASE_TOKEN }}
           serviceCredentialsFile: app/google-services.json
           file: app/build/outputs/apk/release/app-release-google.apk
           groups: early-access-supporters

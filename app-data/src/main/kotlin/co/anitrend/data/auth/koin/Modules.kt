@@ -52,6 +52,7 @@ private val mapperModule = module {
             settings = get(),
             generalOptionMapper = get(),
             mediaOptionMapper = get(),
+            notificationMapper = get(),
             localSource = store().userDao(),
             converter = get(),
         )

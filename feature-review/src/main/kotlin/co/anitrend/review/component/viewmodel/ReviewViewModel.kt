@@ -18,7 +18,7 @@
 package co.anitrend.review.component.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.review.component.viewmodel.state.ReviewState
 
 class ReviewViewModel(
@@ -26,7 +26,7 @@ class ReviewViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

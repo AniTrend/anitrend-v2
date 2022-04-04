@@ -18,7 +18,7 @@
 package co.anitrend.medialist.editor.component.sheet.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 
 class MediaListEditorViewModel(
@@ -26,7 +26,7 @@ class MediaListEditorViewModel(
 ) : ViewModel() {
 
     init {
-        state.context = viewModelScope.coroutineContext
+        hook(state)
     }
 
     /**

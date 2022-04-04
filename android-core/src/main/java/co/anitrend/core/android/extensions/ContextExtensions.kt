@@ -21,7 +21,10 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import kotlin.jvm.Throws
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import timber.log.Timber
 
 /**
  * Resolve [FragmentManager] from any context
@@ -33,4 +36,27 @@ fun Context.fragmentManager() = when (this) {
     is FragmentActivity -> supportFragmentManager
     is ContextWrapper -> (baseContext as FragmentActivity).supportFragmentManager
     else -> throw NotImplementedError("This type of context: $this is not handled/supported")
+}
+
+fun Context.lifecycleOwner(): LifecycleOwner? {
+    return when (val context = this) {
+        is LifecycleOwner -> context
+        else -> {
+            Timber.w("$context is not a lifecycle owner")
+            null
+        }
+    }
+}
+
+fun Context.lifecycleScope(): LifecycleCoroutineScope? {
+    val lifecycleOwner = lifecycleOwner()
+    return lifecycleOwner?.lifecycleScope
+}
+
+@Throws(IllegalArgumentException::class)
+fun Context.requireLifecycleOwner(): LifecycleOwner {
+    return when (val context = this) {
+        is LifecycleOwner -> context
+        else -> throw IllegalArgumentException("$context is not a lifecycle owner")
+    }
 }

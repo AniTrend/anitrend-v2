@@ -20,19 +20,13 @@ package co.anitrend.notification.component.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import kotlin.properties.Delegates
-import kotlin.coroutines.CoroutineContext
-import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.domain.notification.entity.Notification
+import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 
 class NotificationState(
     private val interactor: IUseCase
-): ISupportViewModelState<Any> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+): AniTrendViewModelState<Any>() {
 
     private val useCaseResult = MutableLiveData<DataState<Any>>()
 

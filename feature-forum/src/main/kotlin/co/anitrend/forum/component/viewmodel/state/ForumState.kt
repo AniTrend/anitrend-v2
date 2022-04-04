@@ -20,18 +20,14 @@ package co.anitrend.forum.component.viewmodel.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import kotlin.properties.Delegates
-import kotlin.coroutines.CoroutineContext
-import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.arch.domain.common.IUseCase
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 
 class ForumState(
     private val interactor: IUseCase
-): ISupportViewModelState<Any> {
+): AniTrendViewModelState<Any>() {
 
-    var context by Delegates.notNull<CoroutineContext>()
     private val useCaseResult = MutableLiveData<DataState<Any>>()
 
     override val model = Transformations.switchMap(useCaseResult) {

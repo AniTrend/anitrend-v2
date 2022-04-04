@@ -20,19 +20,15 @@ package co.anitrend.media.discover.filter.component.viewmodel.genre.state
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.genre.GenreInteractor
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.genre.model.GenreParam
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 class GenreViewModelState(
     private val interactor: GenreInteractor
-) : ISupportViewModelState<List<Genre>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<List<Genre>>() {
 
     private val useCaseResult = MutableLiveData<DataState<List<Genre>>>()
 

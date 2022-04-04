@@ -43,7 +43,7 @@ internal sealed class UserRepository(
     }
 
     class Authenticated(
-        private val source: UserSource.Authenticated
+        private val source: UserSource.Viewer
     ) : UserRepository(source), UserAuthenticatedRepository {
         override fun getProfile() = source create source()
     }

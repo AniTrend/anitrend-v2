@@ -20,30 +20,31 @@
 package co.anitrend.data.android.koin
 
 import android.net.ConnectivityManager
+import android.webkit.CookieManager
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.data.BuildConfig
 import co.anitrend.data.account.koin.accountModules
-import co.anitrend.data.status.model.StatusModel
 import co.anitrend.data.airing.koin.airingModules
 import co.anitrend.data.airing.model.AiringScheduleModel
-import co.anitrend.data.core.api.converter.AniTrendConverterFactory
-import co.anitrend.data.core.api.converter.request.AniRequestConverter
-import co.anitrend.data.android.database.AniTrendStore
-import co.anitrend.data.android.database.common.IAniTrendStore
-import co.anitrend.data.core.extensions.store
 import co.anitrend.data.android.cleaner.ClearDataHelper
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.database.AniTrendStore
+import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.logger.GraphLogger
 import co.anitrend.data.android.logger.OkHttpLogger
+import co.anitrend.data.android.network.cookie.ApplicationCookieJar
 import co.anitrend.data.auth.helper.AuthenticationHelper
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
+import co.anitrend.data.core.api.converter.AniTrendConverterFactory
+import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.GraphApiFactory
 import co.anitrend.data.core.device.DeviceInfo
 import co.anitrend.data.core.device.IDeviceInfo
+import co.anitrend.data.core.extensions.store
 import co.anitrend.data.customlist.koin.customListModules
 import co.anitrend.data.customscore.koin.customScoreModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
@@ -53,9 +54,10 @@ import co.anitrend.data.jikan.koin.jikanModules
 import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
-import co.anitrend.data.relation.koin.sourceModules
 import co.anitrend.data.rank.koin.rankModules
+import co.anitrend.data.relation.koin.sourceModules
 import co.anitrend.data.review.koin.reviewModules
+import co.anitrend.data.status.model.StatusModel
 import co.anitrend.data.tag.koin.tagModules
 import co.anitrend.data.themes.koin.themesModules
 import co.anitrend.data.thexem.koin.theXemModules
@@ -74,6 +76,7 @@ import io.github.wax911.library.logger.contract.ILogger
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
+import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -178,6 +181,12 @@ private val networkModule = module {
             .addConverterFactory(
                 get<AniTrendConverterFactory>()
             )
+    }
+
+    factory<CookieJar> {
+        ApplicationCookieJar(
+            cookieManager = CookieManager.getInstance()
+        )
     }
 }
 

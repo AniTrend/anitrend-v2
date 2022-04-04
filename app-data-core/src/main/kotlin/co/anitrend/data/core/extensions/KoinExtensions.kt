@@ -23,11 +23,11 @@ import co.anitrend.data.core.api.provider.RetrofitProvider
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.core.context.GlobalContext
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.scope.Scope
+import org.koin.mp.KoinPlatformTools
 
 /**
  * Helper to resolve koin dependencies
@@ -41,7 +41,8 @@ inline fun <reified T> koinOf(
     qualifier: Qualifier? = null,
     noinline parameters: ParametersDefinition? = null
 ): T {
-    val koin = GlobalContext.get()
+    val context = KoinPlatformTools.defaultContext()
+    val koin = context.get()
     return koin.get(qualifier, parameters)
 }
 

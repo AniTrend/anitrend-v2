@@ -18,25 +18,25 @@
 package co.anitrend.core.android.settings
 
 import android.content.Context
-import co.anitrend.arch.extension.preference.*
+import co.anitrend.arch.extension.preference.SupportPreference
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.arch.extension.settings.*
 import co.anitrend.core.android.R
+import co.anitrend.core.android.settings.common.IConfigurationSettings
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.common.theme.IThemeSettings
-import co.anitrend.core.android.settings.common.IConfigurationSettings
-import co.anitrend.data.settings.connectivity.IConnectivitySettings
-import co.anitrend.data.settings.customize.ICustomizationSettings
-import co.anitrend.data.settings.power.IPowerSettings
-import co.anitrend.data.settings.privacy.IPrivacySettings
-import co.anitrend.data.settings.sort.ISortOrderSettings
 import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
-import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
-import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
+import co.anitrend.data.settings.cache.ICacheSettings
+import co.anitrend.data.settings.connectivity.IConnectivitySettings
+import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.data.settings.power.IPowerSettings
+import co.anitrend.data.settings.privacy.IPrivacySettings
+import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
+import co.anitrend.data.settings.sort.ISortOrderSettings
 import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.sort.order.SortOrder
@@ -139,6 +139,14 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
         preference = this
     )
 
+    override val isBatteryOptimizationOn = BooleanSetting(
+        key = R.string.settings_battery_optimization,
+        default = false,
+        resources = context.resources,
+        preference = this
+    )
+
+
     override val titleLanguage = EnumSetting(
         key = R.string.settings_user_title_language,
         default = UserTitleLanguage.ROMAJI,
@@ -170,6 +178,13 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
     override val listSyncInterval = IntSetting(
         key = R.string.settings_sync_list_interval,
         default = ISyncSettings.MINIMUM_INTERVAL,
+        resources = context.resources,
+        preference = this
+    )
+
+    override val userSyncInterval = IntSetting(
+        key = R.string.settings_sync_user_interval,
+        default = 300,
         resources = context.resources,
         preference = this
     )

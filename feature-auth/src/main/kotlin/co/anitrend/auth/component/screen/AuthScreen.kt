@@ -27,6 +27,8 @@ import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AuthRouter
+import co.anitrend.navigation.MainRouter
+import co.anitrend.navigation.extensions.forActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -80,6 +82,23 @@ class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
         super.onNewIntent(intent)
         setIntent(intent)
         checkIntentData()
+    }
+
+    /**
+     * Obtain an [Intent] that will launch an explicit target activity specified by
+     * this activity's logical parent. The logical parent is named in the application's manifest
+     * by the [parentActivityName][android.R.attr.parentActivityName] attribute.
+     * Activity subclasses may override this method to modify the Intent returned by
+     * super.getParentActivityIntent() or to implement a different mechanism of retrieving
+     * the parent intent entirely.
+     *
+     * @return a new Intent targeting the defined parent of this activity or null if
+     * there is no valid parent.
+     */
+    override fun getParentActivityIntent(): Intent? {
+        return MainRouter.forActivity(
+            context = applicationContext
+        )
     }
 
     private fun onUpdateUserInterface() {

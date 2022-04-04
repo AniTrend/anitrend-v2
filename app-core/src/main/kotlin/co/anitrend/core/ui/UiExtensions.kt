@@ -19,28 +19,30 @@ package co.anitrend.core.ui
 
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
-import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.arch.extension.ext.SYNCHRONIZED
 import co.anitrend.core.R
 import co.anitrend.core.android.extensions.fragmentManager
+import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.model.FragmentItem
 import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ViewModelOwnerDefinition
+import org.koin.androidx.viewmodel.ext.android.getStateViewModel
 import org.koin.androidx.viewmodel.koin.getViewModel
 import org.koin.androidx.viewmodel.scope.BundleDefinition
 import org.koin.androidx.viewmodel.scope.emptyState
 import org.koin.androidx.viewmodel.scope.getViewModel
+import org.koin.core.component.KoinScopeComponent
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
-import org.koin.core.component.KoinScopeComponent
 import org.koin.java.KoinJavaComponent.getKoin
 
 /**
@@ -66,8 +68,9 @@ inline fun <reified T : Any> KoinScopeComponent.get(
  */
 inline fun <reified T : Any> KoinScopeComponent.inject(
     qualifier: Qualifier? = null,
+    lazyMode: LazyThreadSafetyMode = SYNCHRONIZED,
     noinline parameters: ParametersDefinition? = null
-) = lazy(UNSAFE) { get<T>(qualifier, parameters) }
+) = lazy(lazyMode) { get<T>(qualifier, parameters) }
 
 /**
  * Checks for existing fragment in [FragmentManager], if one exists that is used otherwise
@@ -155,8 +158,9 @@ inline fun <reified T : Fragment> FragmentActivity.createFragment(
 inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
     activity: FragmentActivity
 ): T {
+    val fragmentTag = tag()
     val fragmentManager = activity.supportFragmentManager
-    val fragment = fragmentManager.findFragmentByTag(tag()) as? T
+    val fragment = fragmentManager.findFragmentByTag(fragmentTag) as? T
         ?: activity.createFragment(fragment)
     fragment.arguments = parameter
     return fragment
@@ -171,7 +175,7 @@ inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
  */
 inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
     fragmentItem: FragmentItem<T>,
-    lazyMode: LazyThreadSafetyMode = UNSAFE
+    lazyMode: LazyThreadSafetyMode = SYNCHRONIZED
 ) = lazy(lazyMode) {
     fragmentItem.fragmentByTagOrNew(this)
 }
@@ -179,7 +183,7 @@ inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
 /**
  * Resolve view models from within views
  */
-inline fun <reified T : ViewModel> View.viewModel(
+inline fun <reified T : ViewModel> ViewGroup.viewModel(
     qualifier: Qualifier? = null,
     noinline owner: ViewModelOwnerDefinition = {
         ViewModelOwner.from(
@@ -189,7 +193,7 @@ inline fun <reified T : ViewModel> View.viewModel(
     },
     noinline state: BundleDefinition = emptyState(),
     noinline parameters: ParametersDefinition? = null
-): Lazy<T> = lazy(UNSAFE) {
+): Lazy<T> = lazy(SYNCHRONIZED) {
     if (context is KoinScopeComponent) {
         val scopeComponent = context as KoinScopeComponent
         scopeComponent.scope.getViewModel(
@@ -205,5 +209,42 @@ inline fun <reified T : ViewModel> View.viewModel(
             owner,
             parameters
         )
+    }
+}
+
+/**
+ * Resolve view models from within action providers
+ */
+inline fun <reified T : ViewModel> AbstractActionProvider.sharedViewModel(
+    qualifier: Qualifier? = null,
+    noinline owner: ViewModelOwnerDefinition = {
+        val parent = context as FragmentActivity
+        ViewModelOwner.from(parent, parent)
+    },
+    noinline state: BundleDefinition = emptyState(),
+    noinline parameters: ParametersDefinition? = null
+): Lazy<T> = lazy(SYNCHRONIZED) {
+    when (context) {
+        is KoinScopeComponent -> {
+            val scopeComponent = context as KoinScopeComponent
+            scopeComponent.scope.getViewModel(
+                qualifier,
+                owner,
+                T::class,
+                state,
+                parameters
+            )
+        }
+        is SavedStateRegistryOwner -> {
+            val savedStateRegistryOwner = context as SavedStateRegistryOwner
+            savedStateRegistryOwner.getStateViewModel(qualifier, state, parameters)
+        }
+        else -> {
+            getKoin().getViewModel(
+                qualifier,
+                owner,
+                parameters
+            )
+        }
     }
 }

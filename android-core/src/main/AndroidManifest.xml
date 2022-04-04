@@ -19,6 +19,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="co.anitrend.core.android">
 
+    <uses-permission-sdk-23 android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
     <queries>
         <!--
         Show custom text selection actions.

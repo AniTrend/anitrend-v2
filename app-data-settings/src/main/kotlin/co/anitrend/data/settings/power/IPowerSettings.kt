@@ -21,4 +21,5 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
 interface IPowerSettings {
     val isPowerSaverOn: AbstractSetting<Boolean>
+    val isBatteryOptimizationOn: AbstractSetting<Boolean>
 }

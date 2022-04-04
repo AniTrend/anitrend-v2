@@ -21,22 +21,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
-import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
+import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.account.AccountInteractor
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.account.Account
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 internal class AccountState(
     settings: IAuthenticationSettings,
     private val useCase: AccountInteractor
-) : ISupportViewModelState<List<Account>> {
-
-    var context by Delegates.notNull<CoroutineContext>()
+) : AniTrendViewModelState<List<Account>>() {
 
     private val useCaseResult = MutableLiveData<DataState<List<User>>>()
 

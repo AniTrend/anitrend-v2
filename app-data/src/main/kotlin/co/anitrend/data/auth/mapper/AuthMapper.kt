@@ -29,6 +29,7 @@ internal class AuthMapper(
     private val settings: IUserSettings,
     private val generalOptionMapper: UserMapper.GeneralOptionEmbed,
     private val mediaOptionMapper: UserMapper.MediaOptionEmbed,
+    private val notificationMapper: UserMapper.NotificationEmbed,
     private val localSource: UserLocalSource,
     private val converter: UserModelConverter
 ) : DefaultMapper<UserModelContainer.Viewer, UserEntity>() {
@@ -40,6 +41,7 @@ internal class AuthMapper(
         localSource.upsert(data)
         generalOptionMapper.persistEmbedded(settings)
         mediaOptionMapper.persistEmbedded(settings)
+        notificationMapper.persistEmbedded()
     }
 
     /**
@@ -53,6 +55,11 @@ internal class AuthMapper(
     ): UserEntity {
         generalOptionMapper.onEmbedded(source.user)
         mediaOptionMapper.onEmbedded(source.user)
+        notificationMapper.onEmbedded(
+            UserMapper.NotificationEmbed.asItem(
+                source.user
+            )
+        )
         return converter.convertFrom(source.user)
     }
 }

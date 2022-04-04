@@ -17,26 +17,26 @@
 
 package co.anitrend.data.user.converter
 
+import androidx.annotation.VisibleForTesting
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.medialist.entity.view.CustomListCountView
+import co.anitrend.data.medialist.entity.view.MediaListCountView
 import co.anitrend.data.staff.converter.StaffConverter
 import co.anitrend.data.studio.converter.StudioConverter
 import co.anitrend.data.tag.converter.TagConverter
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.entity.view.UserEntityView
 import co.anitrend.data.user.model.UserModel
-import co.anitrend.domain.common.entity.shared.CoverImage
-import co.anitrend.domain.common.entity.shared.CoverName
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
-import co.anitrend.domain.staff.entity.Staff
-import co.anitrend.domain.studio.entity.Studio
-import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.domain.user.entity.attribute.option.UserMediaListOption
 import co.anitrend.domain.user.entity.attribute.option.UserMediaListTypeOptions
 import co.anitrend.domain.user.entity.attribute.option.UserNotificationOption
@@ -72,7 +72,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = null,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -95,7 +94,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = 0,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -118,7 +116,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = source.unreadNotificationCount,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -141,7 +138,6 @@ internal class UserModelConverter(
                     medium = source.avatar?.medium,
                     banner = source.bannerImage
                 ),
-                unreadNotification = null,
                 updatedAt = source.updatedAt,
                 createdAt = source.createdAt,
                 id = source.id
@@ -262,9 +258,40 @@ internal class UserViewEntityConverter(
     override val toType: (User) -> UserEntityView = { throw NotImplementedError() }
 ) : SupportConverter<UserEntityView, User>() {
     private companion object : ISupportTransformer<UserEntityView, User> {
+
+        @VisibleForTesting
+        fun UserMediaOptionEntity.MediaOption.listStatus(
+            mediaType: MediaType,
+            userEntityView: UserEntityView.WithExtended
+        ): List<MediaListInfo> {
+
+            val mediaListInfoList = MediaListStatus.values().map {
+                MediaListInfo(
+                    isCustomList = false,
+                    mediaType = mediaType,
+                    name = it.name,
+                    count = userEntityView.mediaListCount.filter { countView ->
+                        countView.mediaType == mediaType && countView.listStatus == it
+                    }.sumOf(MediaListCountView::listCount)
+                )
+            }
+
+            val customListInfoList = customLists.map {
+                MediaListInfo(
+                    isCustomList = true,
+                    mediaType = mediaType,
+                    name = it,
+                    count = userEntityView.customListCount.filter { countView ->
+                        countView.mediaType == mediaType && countView.customListName == it
+                    }.sumOf(CustomListCountView::listCount)
+                )
+            }
+
+            return mediaListInfoList + customListInfoList
+        }
+
         override fun transform(source: UserEntityView) = when (source) {
             is UserEntityView.WithOptions -> User.Extended(
-                unreadNotifications = source.user.unreadNotification ?: 0,
                 listOption = UserMediaListOption(
                     scoreFormat = source.mediaListOption.scoreFormat,
                     rowOrder = source.mediaListOption.rowOrder,
@@ -319,10 +346,12 @@ internal class UserViewEntityConverter(
                     createdAt = source.user.createdAt,
                     updatedAt = source.user.updatedAt,
                 ),
+                mediaListInfo =
+                    source.mediaListOption.anime.listStatus(MediaType.ANIME, source) +
+                    source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
                 id = source.user.id
             )
             is UserEntityView.WithStatistic -> User.WithStats(
-                unreadNotifications = source.user.unreadNotification ?: 0,
                 listOption = UserMediaListOption(
                     scoreFormat = source.mediaListOption.scoreFormat,
                     rowOrder = source.mediaListOption.rowOrder,
@@ -629,8 +658,33 @@ internal class UserViewEntityConverter(
                     createdAt = source.user.createdAt,
                     updatedAt = source.user.updatedAt,
                 ),
+                mediaListStats =
+                    source.mediaListOption.anime.listStatus(MediaType.ANIME, source) +
+                    source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
                 id = source.user.id
             )
+            is UserEntityView.Authenticated -> User.Authenticated(
+                unreadNotifications = source.notification.unreadNotifications,
+                name = source.user.about.name,
+                avatar = UserImage(
+                    large = source.user.coverImage.large,
+                    medium = source.user.coverImage.medium,
+                    banner = source.user.coverImage.banner
+                ),
+                status = UserStatus(
+                    about = source.user.about.bio,
+                    donationBadge = source.user.about.donatorBadge,
+                    donationTier = source.user.about.donatorTier,
+                    isFollowing = source.user.status?.isFollowing,
+                    isFollower = source.user.status?.isFollower,
+                    isBlocked = source.user.status?.isBlocked,
+                    pageUrl = source.user.about.siteUrl,
+                    createdAt = source.user.createdAt,
+                    updatedAt = source.user.updatedAt,
+                ),
+                id = source.user.id
+            )
+            else -> throw NotImplementedError("Instance of $source is not supported")
         }
     }
 }

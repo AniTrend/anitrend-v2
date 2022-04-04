@@ -6,8 +6,8 @@ on:
       - '*'
 
 permissions:
-  actions: read|write
-  repository-projects: read|write
+  actions: write
+  repository-projects: write
 
 jobs:
   build:
@@ -17,8 +17,8 @@ jobs:
       KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
       KEYSTORE_PROPERTIES: ${{ secrets.KEYSTORE_PROPERTIES }}
       KEYSTORE_PROPERTIES_PASSPHRASE: ${{ secrets.KEYSTORE_PROPERTIES_PASSPHRASE }}
-      SECRETS_PROPERTIES: ${{ secrets.SECRETS_PROPERTIES }}
-      SECRETS_PROPERTIES_PASSPHRASE: ${{ secrets.SECRETS_PROPERTIES_PASSPHRASE }}
+      KOIN_PROPERTIES: ${{ secrets.KOIN_PROPERTIES }}
+      KOIN_PROPERTIES_PASSPHRASE: ${{ secrets.KOIN_PROPERTIES_PASSPHRASE }}
       GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
       GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
     steps:
@@ -30,7 +30,9 @@ jobs:
           distribution: 'adopt'
       - name: set up pre-deploy configurations
         run: |
-          chmod +x ./.github/scripts/pre-deploy.sh
+          chmod +x .github/scripts/pre-config.sh
+          chmod +x .github/scripts/pre-deploy.sh
+          ./.github/scripts/pre-config.sh
           ./.github/scripts/pre-deploy.sh
       - name: Fetch tags
         run: git fetch --tags --force

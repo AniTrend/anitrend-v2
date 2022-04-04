@@ -17,10 +17,12 @@
 
 package co.anitrend.navigation.drawer.component.viewmodel
 
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import co.anitrend.core.extensions.hook
 import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
 import co.anitrend.navigation.drawer.component.viewmodel.state.NavigationState
+import co.anitrend.navigation.drawer.model.account.Account
 
 internal class BottomDrawerViewModel(
     val navigationState: NavigationState,
@@ -28,8 +30,11 @@ internal class BottomDrawerViewModel(
 ) : ViewModel() {
 
     init {
-        accountState.context = viewModelScope.coroutineContext
-        navigationState.context = viewModelScope.coroutineContext
+        hook(accountState, navigationState)
+    }
+
+    val userAccount = Transformations.map(accountState.model) {
+        it?.singleOrNull(Account::isActiveUser)
     }
 
     /**

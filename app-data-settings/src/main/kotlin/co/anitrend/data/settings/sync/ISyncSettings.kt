@@ -22,6 +22,7 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
 interface ISyncSettings {
     val metaSyncInterval: AbstractSetting<Int>
     val listSyncInterval: AbstractSetting<Int>
+    val userSyncInterval: AbstractSetting<Int>
 
     companion object {
         /**

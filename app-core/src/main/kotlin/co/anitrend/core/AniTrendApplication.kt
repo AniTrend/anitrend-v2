@@ -18,13 +18,12 @@
 package co.anitrend.core
 
 import android.app.Application
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
-import co.anitrend.core.crash.ExceptionCrashHandler
 import co.anitrend.core.crash.runtime.UncaughtExceptionHandler
-import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
+import co.anitrend.core.extensions.analytics
+import co.anitrend.core.extensions.imageLoader
+import co.anitrend.core.extensions.themeHelper
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import org.koin.android.ext.android.get
 import timber.log.Timber
 
 abstract class AniTrendApplication : Application(), ImageLoaderFactory {
@@ -46,8 +45,10 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
      * Timber logging tree depending on the build type we plant the appropriate tree
      */
     protected open fun plantAnalyticsTree() {
-        if (!BuildConfig.DEBUG)
-            Timber.plant(get<ISupportAnalytics>() as Timber.Tree)
+        if (!BuildConfig.DEBUG) {
+            val loggingTree = analytics() as Timber.Tree
+            Timber.plant(loggingTree)
+        }
     }
 
     /**
@@ -55,7 +56,7 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
      */
     protected open fun applyNightMode() {
         // apply application theme on application instance
-        get<IThemeHelper>().applyDynamicNightModeFromTheme()
+        themeHelper().applyDynamicNightModeFromTheme()
     }
 
     private fun createUncaughtExceptionHandler() {
@@ -74,5 +75,5 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
     /**
      * Return a new [ImageLoader].
      */
-    override fun newImageLoader() = get<ImageLoader>()
+    override fun newImageLoader() = imageLoader()
 }

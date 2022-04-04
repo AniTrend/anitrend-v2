@@ -28,6 +28,7 @@ import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
 import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.name.UserPreviousNameEntity
+import co.anitrend.data.user.entity.notification.UserNotificationEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
@@ -227,6 +228,45 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
                 source.flatMap { user ->
                     asItem(user)
                 }
+        }
+    }
+
+    class NotificationEmbed(
+        override val localSource: AbstractLocalSource<UserNotificationEntity>
+    ) : EmbedMapper<NotificationEmbed.Item, UserNotificationEntity>() {
+
+        override val converter = object : SupportConverter<Item, UserNotificationEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> UserNotificationEntity = {
+                UserNotificationEntity(
+                    userId = it.userId,
+                    unreadNotifications = it.unreadNotifications
+                )
+            }
+
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (UserNotificationEntity) -> Item
+                get() = throw NotImplementedError()
+
+        }
+
+        data class Item(
+            val userId: Long,
+            val unreadNotifications: Int
+        )
+
+
+        companion object {
+            fun asItem(source: UserModel.Viewer) = Item(
+                userId = source.id,
+                unreadNotifications = source.unreadNotificationCount ?: 0
+            )
         }
     }
 }

@@ -27,15 +27,15 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.extensions.orEmpty
-import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.enums.MediaListStatus
-import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.medialist.R
 import co.anitrend.medialist.component.container.adapter.MediaListPageAdapter
+import co.anitrend.medialist.component.container.mediator.MediaListTabConfiguration
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.databinding.MediaListContainerBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import timber.log.Timber
 
 class MediaListContainer(
     private val stateConfig: StateLayoutConfig,
@@ -47,36 +47,16 @@ class MediaListContainer(
         state = { arguments.orEmpty() }
     )
 
-    private fun setUpViewPager(statusList: Array<MediaListStatus>, customLists: List<CharSequence>) {
-        if (requireBinding().viewPager.adapter == null) {
+    private fun updateViewPagerState(mediaListInfo: List<MediaListInfo>) {
+        if (requireBinding().viewPager.adapter?.itemCount != mediaListInfo.size) {
             requireBinding().viewPager.adapter = MediaListPageAdapter(
                 param = viewModel.param,
-                statusTitles = statusList,
-                customListTitles = customLists,
+                mediaListInfo = mediaListInfo,
                 fragmentActivity = requireActivity(),
-                fragmentManager = parentFragmentManager,
+                fragmentManager = childFragmentManager,
                 lifecycle = lifecycle
             )
-
-            val titles = statusList.map(MediaListStatus::alias) + customLists
-
-            TabLayoutMediator(
-                requireBinding().materialTabsLayout,
-                requireBinding().viewPager
-            ) { tab, index ->
-                tab.text = titles[index]
-            }.attach()
         }
-    }
-
-    private fun updateUI(user: User.Extended) {
-        val listOption = user.listOption
-        val customLists = when (viewModel.param?.type) {
-            MediaType.ANIME -> listOption.animeList.customLists
-            MediaType.MANGA -> listOption.mangaList.customLists
-            null -> emptyList()
-        }.toList()
-        setUpViewPager(MediaListStatus.values(), customLists)
     }
 
     /**
@@ -111,8 +91,23 @@ class MediaListContainer(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
-            updateUI(it as User.Extended)
+        viewModel.tabConfigurationListInfo.observe(viewLifecycleOwner) {
+            val tabLayoutMediator = TabLayoutMediator(
+                requireBinding().materialTabsLayout,
+                requireBinding().viewPager,
+                true,
+                true,
+                MediaListTabConfiguration(
+                    context = requireContext(),
+                    mediaListInfo = it
+                )
+            )
+
+            updateViewPagerState(it)
+
+            runCatching {
+                tabLayoutMediator.attach()
+            }.onFailure(Timber::e)
         }
         viewModelState().refreshState.observe(viewLifecycleOwner) {
             requireBinding().stateLayout.loadStateFlow.value = it
@@ -186,7 +181,7 @@ class MediaListContainer(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //requireBinding().viewPager.offscreenPageLimit = 4
+        requireBinding().viewPager.offscreenPageLimit = 3
         requireBinding().stateLayout.stateConfigFlow.value = stateConfig
     }
 

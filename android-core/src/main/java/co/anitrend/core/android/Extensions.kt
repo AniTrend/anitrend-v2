@@ -23,9 +23,9 @@ import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.navigation.model.common.IParam
-import org.koin.core.context.GlobalContext
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
+import org.koin.mp.KoinPlatformTools
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.Instant
 import java.util.*
@@ -42,7 +42,8 @@ inline fun <reified T> koinOf(
     qualifier: Qualifier? = null,
     noinline parameters: ParametersDefinition? = null
 ): T {
-    val koin = GlobalContext.get()
+    val context = KoinPlatformTools.defaultContext()
+    val koin = context.get()
     return koin.get(qualifier, parameters)
 }
 

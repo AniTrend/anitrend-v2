@@ -134,6 +134,16 @@ sealed class UserParam {
      * @param userId The id of the user to un/follow
      */
     data class ToggleFollow(
-        val userId: Long? = null
+        val userId: Long
+    ) : UserParam()
+
+    /** [Viewer query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
+     *
+     * Toggle the un/following of a user
+     *
+     * @param id The id of the user
+     */
+    data class Viewer(
+        val id: Long
     ) : UserParam()
 }

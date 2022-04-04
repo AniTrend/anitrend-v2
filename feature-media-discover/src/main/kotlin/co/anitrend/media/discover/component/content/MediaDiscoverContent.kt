@@ -21,22 +21,21 @@ import android.view.MenuItem
 import androidx.annotation.IntegerRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.data.settings.customize.ICustomizationSettings
-import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.core.android.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MediaDiscoverContent(
@@ -113,18 +112,10 @@ class MediaDiscoverContent(
             )
         }
         lifecycleScope.launchWhenResumed {
-            settings.preferredViewMode.flow.collect {
-                val layoutManger = listPresenter.recyclerView.layoutManager
-                if (layoutManger is StaggeredGridLayoutManager) {
-                    val currentSpanCount = layoutManger.spanCount
-                    val newSpanCount = resources.getInteger(
-                        getSpanSizeByPreference(it)
-                    )
-                    if (currentSpanCount != newSpanCount)
-                        layoutManger.spanCount = newSpanCount
-                    else supportViewAdapter.notifyDataSetNeedsRefreshing()
-                }
-            }
+            settings.preferredViewMode.flowUpdating(
+                listPresenter.recyclerView,
+                ::getSpanSizeByPreference
+            )
         }
     }
 

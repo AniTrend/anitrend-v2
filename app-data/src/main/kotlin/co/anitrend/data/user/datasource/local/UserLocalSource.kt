@@ -90,6 +90,17 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
     @Query(
         """
         select * from user
+        where id = :userId
+    """
+    )
+    @Transaction
+    abstract fun userAuthenticated(
+        userId: Long
+    ): Flow<UserEntityView.Authenticated?>
+
+    @Query(
+        """
+        select * from user
         where user_name = :userName
     """
     )

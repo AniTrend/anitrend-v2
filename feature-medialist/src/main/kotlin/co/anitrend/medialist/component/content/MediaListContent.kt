@@ -17,12 +17,14 @@
 
 package co.anitrend.medialist.component.content
 
+import android.os.Bundle
+import android.view.View
 import androidx.annotation.IntegerRes
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.core.android.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.data.settings.customize.ICustomizationSettings
@@ -30,7 +32,6 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.R
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MediaListContent(
@@ -58,6 +59,26 @@ class MediaListContent(
     }
 
     /**
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view. This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created. The fragment's view hierarchy
+     * is not however attached to its parent at this point.
+     *
+     * @param view The View returned by [.onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launchWhenResumed {
+            settings.preferredViewMode.flowUpdating(
+                listPresenter.recyclerView,
+                ::getSpanSizeByPreference
+            )
+        }
+    }
+
+    /**
      * Stub to trigger the loading of data, by default this is only called
      * when [supportViewAdapter] has no data in its underlying source.
      *
@@ -68,20 +89,6 @@ class MediaListContent(
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
             viewModelState().invoke(requireNotNull(viewModel.param))
-        }
-        lifecycleScope.launchWhenResumed {
-            settings.preferredViewMode.flow.collect {
-                val layoutManger = listPresenter.recyclerView.layoutManager
-                if (layoutManger is StaggeredGridLayoutManager) {
-                    val currentSpanCount = layoutManger.spanCount
-                    val newSpanCount = resources.getInteger(
-                        getSpanSizeByPreference(it)
-                    )
-                    if (currentSpanCount != newSpanCount)
-                        layoutManger.spanCount = newSpanCount
-                    else supportViewAdapter.notifyDataSetNeedsRefreshing()
-                }
-            }
         }
     }
 

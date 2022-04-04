@@ -24,7 +24,7 @@
 	<dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 
 	<dimen name="design_bottom_sheet_nav_divider_width">120dp</dimen>
-	<dimen name="design_tab_layout_min_width">40dp</dimen>
+	<dimen name="design_tab_layout_min_width">145dp</dimen>
 
 	<dimen name="nav_item_selector_margin">100dp</dimen>
     <dimen name="text_drawable_margin">3dp</dimen>
