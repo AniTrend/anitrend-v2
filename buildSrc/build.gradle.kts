@@ -35,7 +35,7 @@ repositories {
 
 val buildToolsVersion = "7.1.3"
 val kotlinVersion = "1.5.31"
-val dokkaVersion = "1.5.31"
+val dokkaVersion = "1.6.20"
 val manesVersion = "0.36.0"
 val spotlessVersion = "6.4.2"
 
