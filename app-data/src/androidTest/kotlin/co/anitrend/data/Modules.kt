@@ -17,8 +17,8 @@
 
 package co.anitrend.data
 
+import android.content.Context
 import androidx.room.Room
-import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.database.AniTrendStore
@@ -43,7 +43,7 @@ private val data = module {
 }
 
 private val store = module {
-    single(override = true) {
+    single {
         Room.inMemoryDatabaseBuilder(
             androidContext(),
             AniTrendStore::class.java,
@@ -60,9 +60,8 @@ private val provider = module {
 
 internal val testModules = listOf(data, store, provider) + mediaModules + genreModules + tagModules + dataModules
 
-internal fun initializeKoin() = startKoin {
-    androidContext(
-        InstrumentationRegistry.getInstrumentation().context
-    )
+internal fun initializeKoin(context: Context) = startKoin {
+    androidContext(context)
+    allowOverride(true)
     modules(testModules)
 }
