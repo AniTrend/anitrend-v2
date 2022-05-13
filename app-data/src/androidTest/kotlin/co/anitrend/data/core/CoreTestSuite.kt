@@ -18,6 +18,7 @@
 package co.anitrend.data.core
 
 import android.content.ContentResolver
+import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
@@ -41,7 +42,10 @@ import java.io.InputStreamReader
 internal open class CoreTestSuite : KoinTest {
 
     private val source = CoreTestSuite::class.java
-    private val koin: KoinApplication by lazy { initializeKoin() }
+    private val koin: KoinApplication by lazy {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        initializeKoin(context)
+    }
 
     protected val json by inject<Json>()
     protected val server by inject<MockWebServer>()

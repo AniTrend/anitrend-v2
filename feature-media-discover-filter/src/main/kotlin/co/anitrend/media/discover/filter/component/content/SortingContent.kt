@@ -21,12 +21,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
+import co.anitrend.common.shared.ui.extension.createMaterialSortChip
 import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterSortingBinding
-import co.anitrend.common.shared.ui.extension.createMaterialSortChip
 import co.anitrend.navigation.MediaDiscoverRouter
 import kotlinx.coroutines.launch
 
@@ -38,10 +37,6 @@ internal class SortingContent(
         MediaDiscoverRouter.Param.KEY,
         MediaDiscoverRouter.Param()
     )
-
-    private fun bindModelToViews() {
-        
-    }
 
 
     private fun initializeViewsWithOptions() {
@@ -96,7 +91,6 @@ internal class SortingContent(
         binding = MediaDiscoverFilterSortingBinding.bind(view)
         lifecycleScope.launch {
             initializeViewsWithOptions()
-            bindModelToViews()
         }
     }
 }
