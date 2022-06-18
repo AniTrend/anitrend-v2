@@ -25,16 +25,21 @@ import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.core.android.helpers.date.AniTrendDateHelper
 import co.anitrend.core.android.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
+import com.maxkeppeler.sheets.calendar.CalendarSheet
+import com.maxkeppeler.sheets.calendar.SelectionMode
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.threeten.bp.Instant
 
 class AiringContent(
     private val settings: ICustomizationSettings,
+    private val dateHelper: AniTrendDateHelper,
     override val inflateMenu: Int = R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Media>
@@ -79,15 +84,21 @@ class AiringContent(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
-                /*CalendarSheet().show(requireContext()) {
-                    title("Select date range")
-                    onPositive { dateStart: Calendar, dateEnd: Calendar? ->
-                        if (dateEnd == null)
-                            viewModel.filter.value?.airingAt = Instant.ofEpochMilli(
+                CalendarSheet().show(requireContext()) {
+                    title(R.string.label_calendar_airing_select_date)
+                    selectionMode(SelectionMode.DATE)
+                    viewModel.filter.value?.airingAt_greater?.let {
+                        setSelectedDate(dateHelper.convertToCalendar(it.toLong()))
+                    }
+                    onPositive { dateStart, _ ->
+                        val model = viewModel.filter.value?.copy(
+                            airingAt_greater = Instant.ofEpochMilli(
                                 dateStart.timeInMillis
                             ).epochSecond.toInt()
+                        )
+                        viewModel.filter.postValue(model)
                     }
-                }*/
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
