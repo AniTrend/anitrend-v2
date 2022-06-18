@@ -383,6 +383,11 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
      */
     sealed class Action : IParam {
 
+        /**
+         * @return true if this current action impl has not been changed
+         */
+        abstract fun isDefault(): Boolean
+
         companion object {
             const val KEY = "MediaDiscoverFilterRouter#Action"
         }
@@ -395,9 +400,11 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             @IgnoredOnParcel
             override val idKey = KEY
 
-            fun isDefault(): Boolean {
-                return sort.isNullOrEmpty()
-            }
+            /**
+             * @return true if this current action impl has not been changed
+             */
+            override fun isDefault() =
+                sort.isNullOrEmpty()
 
             companion object : IParam.IKey {
                 override val KEY = "Sort"
@@ -412,9 +419,11 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             @IgnoredOnParcel
             override val idKey = KEY
 
-            fun isDefault(): Boolean {
-                return id == null
-            }
+            /**
+             * @return true if this current action impl has not been changed
+             */
+            override fun isDefault() =
+                id == null
 
             companion object : IParam.IKey {
                 override val KEY = "General"
@@ -430,7 +439,11 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             @IgnoredOnParcel
             override val idKey = KEY
 
-            fun isDefault() = genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
+            /**
+             * @return true if this current action impl has not been changed
+             */
+            override fun isDefault() =
+                genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
 
             companion object : IParam.IKey {
                 override val KEY = "Genre"
@@ -448,12 +461,14 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             @IgnoredOnParcel
             override val idKey = KEY
 
-            fun isDefault(): Boolean {
-                return tagCategory_in.isNullOrEmpty() &&
+            /**
+             * @return true if this current action impl has not been changed
+             */
+            override fun isDefault() =
+                tagCategory_in.isNullOrEmpty() &&
                         tagCategory_not_in.isNullOrEmpty() &&
                         tag_in.isNullOrEmpty() &&
                         tag_not_in.isNullOrEmpty()
-            }
 
             companion object : IParam.IKey {
                 override val KEY = "Tag"

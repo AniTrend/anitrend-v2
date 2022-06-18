@@ -102,6 +102,7 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
      */
     @com.google.android.material.badge.ExperimentalBadgeUtils
     override fun createWidget(forItem: MenuItem?): View {
+        viewModel.fetchUser()
         setUpVisibility(forItem)
         context.lifecycleScope()?.launchWhenResumed {
             container.addView(actionImageView)

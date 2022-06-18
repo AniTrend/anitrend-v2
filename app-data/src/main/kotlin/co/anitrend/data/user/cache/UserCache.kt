@@ -45,7 +45,9 @@ internal sealed class UserCache : CacheStorePolicy() {
 
         class Identity(
             val param: UserParam.Identifier,
-            override val id: Long = param.name.toHashId(),
+            override val id: Long = param.let {
+                it.id ?: requireNotNull(it.name).toHashId()
+            },
             override val key: String = "user_id",
             override val expiresAt: Instant = instantInPast(minutes = 5)
         ) : CacheIdentity
@@ -118,7 +120,7 @@ internal sealed class UserCache : CacheStorePolicy() {
             val param: UserParam.Statistic,
             override val id: Long = param.id,
             override val key: String = "user_profile_statistic",
-            override val expiresAt: Instant = instantInPast(hours = 6)
+            override val expiresAt: Instant = instantInPast(hours = 1)
         ) : CacheIdentity
     }
 }

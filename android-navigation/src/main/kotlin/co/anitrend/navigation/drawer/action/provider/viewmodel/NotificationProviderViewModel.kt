@@ -33,9 +33,7 @@ internal class NotificationProviderViewModel(
 
     fun fetchUser() {
         runCatching(state::invoke)
-            .onFailure {
-                Timber.w(it)
-            }
+            .onFailure(Timber::w)
     }
 
     /**

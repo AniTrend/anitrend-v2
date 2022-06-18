@@ -62,7 +62,7 @@ inline fun Context.runIfActivityContext(
     if (this is FragmentActivity)
         block(this)
     else
-        Timber.w("View context is not type of Fragment activity")
+        Timber.w("$this context is not type of Fragment activity")
 }
 
 /**

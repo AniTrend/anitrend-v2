@@ -23,4 +23,5 @@ plugins {
 
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.review))
+    implementation(Libraries.Sheets.core)
 }

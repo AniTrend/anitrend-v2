@@ -32,6 +32,7 @@ import co.anitrend.navigation.AccountTaskRouter
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.drawer.databinding.AccountAuthenticatedItemBinding
 import co.anitrend.navigation.drawer.model.account.Account
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
@@ -81,7 +82,12 @@ class AuthenticatedAccountItem(
 
         requireBinding().accountContainer.setOnClickListener {
             if (entity.isActiveUser) {
-                ProfileRouter.startActivity(it.context)
+                ProfileRouter.startActivity(
+                    context = it.context,
+                    navPayload = ProfileRouter.Param(
+                        userId = entity.id
+                    ).asNavPayload()
+                )
             }
             else {
                 val params = AccountTaskRouter.Param(id = entity.id)

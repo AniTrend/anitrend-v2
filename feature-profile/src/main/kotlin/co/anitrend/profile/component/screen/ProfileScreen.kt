@@ -44,7 +44,9 @@ class ProfileScreen : AniTrendScreen<ProfileScreenBinding>() {
     }
 
     private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(fragment = ProfileContent::class.java)
-            .commit(requireBinding().profileContent, this)
+        currentFragmentTag = FragmentItem(
+            fragment = ProfileContent::class.java,
+            parameter = intent.extras
+        ).commit(requireBinding().profileContent, this)
     }
 }

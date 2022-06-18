@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.profile.component.viewmodel
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import androidx.lifecycle.ViewModel
+import co.anitrend.core.extensions.hook
+import co.anitrend.profile.component.viewmodel.state.ProfileState
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.media))
-    implementation(Libraries.Sheets.core)
+class ProfileViewModel(val state: ProfileState) : ViewModel() {
+
+    init {
+        hook(state)
+    }
+
+    /**
+     * This method will be called when this ViewModel is no longer used and will be destroyed.
+     *
+     * It is useful when ViewModel observes some data and you need to clear this subscription to
+     * prevent a leak of this ViewModel.
+     */
+    override fun onCleared() {
+        state.onCleared()
+        super.onCleared()
+    }
 }
