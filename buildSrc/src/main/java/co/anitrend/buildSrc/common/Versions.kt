@@ -22,7 +22,7 @@ object Versions {
     const val junit = "4.13.2"
 
     const val timber = "5.0.1"
-    const val threeTenBp = "1.3.1"
+    const val threeTenBp = "1.4.0"
 
     const val debugDB = "1.0.6"
     const val treesSence = "1.0.5"
@@ -33,9 +33,9 @@ object Versions {
     const val scalingImageView = "3.10.0"
     const val serializationConverter = "0.8.0"
 
-    const val jsoup = "1.14.3"
+    const val jsoup = "1.15.1"
 
-    const val tmdb = "2.6.0"
+    const val tmdb = "2.7.0"
     const val trakt = "6.10.0"
 
     const val elements = "1.0.1"
