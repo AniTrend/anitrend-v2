@@ -556,12 +556,12 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "1.5.31"
+            private const val version = "1.6.21"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 
         object Kotlin {
-            internal const val version = "1.5.31"
+            internal const val version = Versions.kotlin
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -580,7 +580,7 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.5.2"
+                private const val version = "1.6.2"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"

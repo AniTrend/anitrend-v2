@@ -43,4 +43,6 @@ object Versions {
     const val ktlint = "0.43.2"
 
     const val deeplink = "0.3.1"
+
+    const val kotlin = "1.6.21"
 }
