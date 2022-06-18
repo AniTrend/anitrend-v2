@@ -24,6 +24,7 @@ import co.anitrend.data.BuildConfig
 /**
  * Device information holder
  *
+ *
  * Thanks `danielceinos/Cooper`
  */
 class DeviceInfo(context: Context) : IDeviceInfo {
@@ -31,11 +32,7 @@ class DeviceInfo(context: Context) : IDeviceInfo {
     override val model: String = Build.MODEL
     override val sdkVersion: Int = Build.VERSION.SDK_INT
     override val releaseVersion: String = Build.VERSION.RELEASE
-    override val userAgent: String
-
-    init {
-        userAgent = createUserAgent(context)
-    }
+    override val userAgent: String = createUserAgent(context)
 
     private fun createUserAgent(context: Context): String {
         val applicationInfo = context.applicationInfo

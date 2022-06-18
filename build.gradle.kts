@@ -1,5 +1,6 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import co.anitrend.buildSrc.resolver.handleConflicts
+import co.anitrend.buildSrc.resolver.handleDependencySelection
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("com.github.ben-manes.versions")
@@ -60,14 +61,7 @@ tasks.named(
     resolutionStrategy {
         componentSelection {
             all {
-                val reject = listOf("preview", "m")
-                    .map { qualifier ->
-                        val pattern = "(?i).*[.-]$qualifier[.\\d-]*"
-                        Regex(pattern, RegexOption.IGNORE_CASE)
-                    }
-                    .any { it.matches(candidate.version) }
-                if (reject)
-                    reject("Preview releases not wanted")
+                handleDependencySelection()
             }
         }
     }

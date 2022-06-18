@@ -21,9 +21,9 @@ import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate.from
 import org.threeten.bp.LocalTime
-import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
@@ -136,5 +136,12 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
             month = segments[1].toInt(),
             day = segments[2].toInt()
         )
+    }
+
+    fun convertToCalendar(epochSecond: Long): Calendar {
+        val timeInstant = Instant.ofEpochSecond(epochSecond).toEpochMilli()
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(timeInstant)
+        return calendar
     }
 }
