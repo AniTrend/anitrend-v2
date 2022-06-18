@@ -17,8 +17,9 @@
 
 package co.anitrend.buildSrc.resolver
 
-import org.gradle.api.artifacts.Configuration
 import co.anitrend.buildSrc.Libraries
+import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
+import org.gradle.api.artifacts.Configuration
 
 fun Configuration.handleConflicts() {
     resolutionStrategy.eachDependency {
@@ -43,4 +44,15 @@ fun Configuration.handleConflicts() {
             useTarget(Libraries.timber)
         }
     }
+}
+
+fun ComponentSelectionWithCurrent.handleDependencySelection() {
+    val reject = listOf("preview", "m", "rc", "alpha", "beta")
+        .map { qualifier ->
+            val pattern = "(?i).*[.-]$qualifier[.\\d-]*"
+            Regex(pattern, RegexOption.IGNORE_CASE)
+        }
+        .any { it.matches(candidate.version) }
+    if (reject)
+        reject("$candidate version does not fit acceptance criteria")
 }

@@ -25,7 +25,6 @@ import co.anitrend.airing.provider.FeatureProvider
 import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.AiringRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
@@ -37,6 +36,7 @@ private val fragmentModule = module {
         val settings = get<Settings>()
         AiringContent(
             settings = settings,
+            dateHelper = get(),
             stateConfig = get(),
             supportViewAdapter = MediaPagedAdapter(
                 settings = settings,

@@ -20,7 +20,6 @@ package co.anitrend.medialist.editor.component.sheet.controller
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.extension.ext.snackBar
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.common.medialist.ui.widget.counter.model.CounterEditModel
@@ -40,9 +39,6 @@ import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import coil.request.Disposable
 import coil.transform.RoundedCornersTransformation
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -161,14 +157,14 @@ class MediaListEditorController(
             binding.mediaListStatusSpinner
                 .selectionChangeFlow
                 .onEach {
-                    param?.status = it
+                    param.status = it
                 }.collect()
         }
         lifecycleScope.launch {
             binding.mediaListScore
                 .currentEditableFlow
                 .onEach {
-                    param?.score = it.toFloat()
+                    param.score = it.toFloat()
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)
@@ -178,7 +174,7 @@ class MediaListEditorController(
             binding.mediaListProgress
                 .currentEditableFlow
                 .onEach {
-                    param?.progress = it.toInt()
+                    param.progress = it.toInt()
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)
@@ -188,7 +184,7 @@ class MediaListEditorController(
             binding.mediaListProgressVolumes
                 .currentEditableFlow
                 .onEach {
-                    param?.progressVolumes = it.toInt()
+                    param.progressVolumes = it.toInt()
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)
@@ -198,7 +194,7 @@ class MediaListEditorController(
             binding.mediaListRepeated
                 .currentEditableFlow
                 .onEach {
-                    param?.repeat = it.toInt()
+                    param.repeat = it.toInt()
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)
@@ -208,7 +204,7 @@ class MediaListEditorController(
             binding.mediaListFuzzyDateStart
                 .dateChangeFlow
                 .onEach {
-                    param?.startedAt = it
+                    param.startedAt = it
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)
@@ -218,7 +214,7 @@ class MediaListEditorController(
             binding.mediaListFuzzyDateEnd
                 .dateChangeFlow
                 .onEach {
-                    param?.completedAt = it
+                    param.completedAt = it
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)
@@ -228,7 +224,7 @@ class MediaListEditorController(
             binding.mediaListNotes
                 .editableFlow
                 .onEach {
-                    param?.notes = it
+                    param.notes = it
                 }
                 .catch { cause: Throwable ->
                     Timber.e(cause)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.common.shared.ui.view.chip.controller.contract
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import co.anitrend.common.shared.ui.view.chip.enums.CheckedState
+import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.navigation.model.sorting.Sorting
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.media))
-    implementation(Libraries.Sheets.core)
+interface IMaterialSortChipController {
+    fun currentState(): CheckedState
+    fun asSortOrder(): SortOrder
+    fun isCheckedState(): Boolean
+    fun updateSortOrder(sorting: Sorting<*>)
+    fun toggleCheckedState(): CheckedState
 }

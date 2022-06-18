@@ -55,7 +55,7 @@ private val sourceModule = module {
             ),
             converter = get(),
             settings = get(),
-            cachePolicy = get<UserCache.Profile>(),
+            cachePolicy = get<UserCache.Viewer>(),
             dispatcher = get()
         )
     }
@@ -123,6 +123,11 @@ private val sourceModule = module {
 }
 
 private val cacheModule = module {
+    factory {
+        UserCache.Viewer(
+            localSource = store().cacheDao()
+        )
+    }
     factory {
         UserCache.Identifier(
             localSource = store().cacheDao()

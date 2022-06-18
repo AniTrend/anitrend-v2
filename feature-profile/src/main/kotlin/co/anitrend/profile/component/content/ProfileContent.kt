@@ -19,13 +19,37 @@ package co.anitrend.profile.component.content
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
+import co.anitrend.arch.extension.ext.argument
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.navigation.ProfileRouter
 import co.anitrend.profile.R
+import co.anitrend.profile.component.viewmodel.ProfileViewModel
 import co.anitrend.profile.databinding.ProfileContentBinding
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class ProfileContent(
+    private val stateLayoutConfig: StateLayoutConfig,
     override val inflateLayout: Int = R.layout.profile_content
 ) : AniTrendContent<ProfileContentBinding>() {
+
+    private val viewModel by viewModel<ProfileViewModel>()
+
+    private val param: ProfileRouter.Param? by argument(ProfileRouter.Param.KEY)
+
+    private fun onFetchDataInitialize() {
+        requireBinding().stateLayout.assureParamNotMissing(param) {
+            viewModelState().invoke(requireNotNull(param))
+        }
+    }
 
     /**
      * Additional initialization to be done in this method, this method will be called in
@@ -35,6 +59,20 @@ class ProfileContent(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
+        lifecycleScope.launchWhenResumed {
+            requireBinding().stateLayout.interactionFlow
+                .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                .onEach {
+                    viewModelState().retry()
+                }
+                .catch { cause: Throwable ->
+                    Timber.e(cause)
+                }
+                .collect()
+        }
+        lifecycleScope.launchWhenStarted {
+            onFetchDataInitialize()
+        }
     }
 
     /**
@@ -42,7 +80,16 @@ class ProfileContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
+        viewModelState().model.observe(viewLifecycleOwner) {
+            requireBinding().composeView.setContent {
+                AniTrendTheme {
 
+                }
+            }
+        }
+        viewModelState().loadState.observe(viewLifecycleOwner) {
+            requireBinding().stateLayout.loadStateFlow.value = it
+        }
     }
 
     /**
@@ -59,5 +106,11 @@ class ProfileContent(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ProfileContentBinding.bind(view)
+        requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
     }
+
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
 }

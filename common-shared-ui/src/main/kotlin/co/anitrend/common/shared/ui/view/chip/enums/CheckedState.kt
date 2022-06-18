@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.common.shared.ui.view.chip.enums
 
-plugins {
-    id("co.anitrend.plugin")
-}
-
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.media))
-    implementation(Libraries.Sheets.core)
+enum class CheckedState {
+    NONE,
+    ASC,
+    DESC
 }

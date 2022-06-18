@@ -19,10 +19,13 @@ package co.anitrend.common.shared.ui.view.chip
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.shared.R
+import co.anitrend.common.shared.ui.view.chip.controller.MaterialSortChipController
+import co.anitrend.common.shared.ui.view.chip.controller.contract.IMaterialSortChipController
+import co.anitrend.common.shared.ui.view.chip.enums.CheckedState
 import co.anitrend.domain.common.enums.contract.ISortable
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.navigation.model.sorting.Sorting
@@ -35,16 +38,14 @@ class MaterialSortChip @JvmOverloads constructor(
     defStyleAttr: Int = com.google.android.material.R.attr.chipStyle
 ) : Chip(context, attrs, defStyleAttr), CustomView {
 
-    private var checkedState: CheckedState
+    private val controller: IMaterialSortChipController by lazy(UNSAFE) {
+        MaterialSortChipController()
+    }
 
     val sortOrder: SortOrder
-        get() = when (checkedState) {
-            CheckedState.ASC -> SortOrder.ASC
-            else -> SortOrder.DESC
-        }
+        get() = controller.asSortOrder()
 
     init {
-        checkedState = CheckedState.NONE
         onInit(context, attrs, defStyleAttr)
     }
 
@@ -55,46 +56,26 @@ class MaterialSortChip @JvmOverloads constructor(
      * @see ISortable
      */
     fun <T : ISortable> updateSortOrder(sorting: Sorting<T>) {
-        checkedState = when (sorting.order) {
-            SortOrder.ASC -> CheckedState.ASC
-            SortOrder.DESC -> CheckedState.DESC
-        }
+        controller.updateSortOrder(sorting)
         isChecked = true
     }
 
     private fun updateCheckedIconOn(checked: Boolean) {
-        if (checked) {
-            when (checkedState) {
-                CheckedState.NONE -> {
-                    checkedState = CheckedState.DESC
-                    checkedIcon = context.getCompatDrawable(
-                        R.drawable.ic_arrow_down
+        checkedIcon = if (checked) {
+            when (controller.toggleCheckedState()) {
+                CheckedState.NONE -> null
+                CheckedState.ASC ->
+                    context.getCompatDrawable(
+                        R.drawable.ic_arrow_up,
+                        R.color.white_1000
                     )
-                }
-                CheckedState.ASC -> {
-                    checkedState = CheckedState.NONE
-                    checkedIcon = context.getCompatDrawable(
-                        R.drawable.ic_arrow_down
+                CheckedState.DESC ->
+                    context.getCompatDrawable(
+                        R.drawable.ic_arrow_down,
+                        R.color.white_1000
                     )
-                }
-                CheckedState.DESC -> {
-                    checkedState = CheckedState.ASC
-                    checkedIcon = context.getCompatDrawable(
-                        R.drawable.ic_arrow_up
-                    )
-                }
             }
-        } else {
-            checkedIcon = null
-        }
-    }
-
-    private fun onClickedAction(view: View) {
-        isChecked = when (checkedState) {
-            CheckedState.NONE -> false
-            CheckedState.DESC -> true
-            CheckedState.ASC -> true
-        }
+        } else null
     }
 
     override fun setChecked(checked: Boolean) {
@@ -114,8 +95,8 @@ class MaterialSortChip @JvmOverloads constructor(
         setChipBackgroundColorResource(
             R.color.selector_chip_background
         )
-        setOnCheckedChangeListener { buttonView, isChecked ->
-            onClickedAction(buttonView)
+        setOnCheckedChangeListener { _, _ ->
+            isChecked = controller.isCheckedState()
         }
         isCheckable = true
     }
@@ -140,11 +121,5 @@ class MaterialSortChip @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         onViewRecycled()
         super.onDetachedFromWindow()
-    }
-
-    enum class CheckedState {
-        NONE,
-        ASC,
-        DESC
     }
 }
