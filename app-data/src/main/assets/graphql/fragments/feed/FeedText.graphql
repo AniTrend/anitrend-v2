@@ -3,6 +3,7 @@ fragment FeedText on TextActivity {
     id
     isLiked
     isLocked
+    isPinned
     isSubscribed
     likeCount
     likes {

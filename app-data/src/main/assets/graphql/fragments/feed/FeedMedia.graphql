@@ -3,6 +3,7 @@ fragment FeedMedia on ListActivity {
     id
     isLiked
     isLocked
+    isPinned
     isSubscribed
     likeCount
     likes {

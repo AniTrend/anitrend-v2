@@ -65,6 +65,13 @@ internal sealed class LinkMapper : DefaultMapper<List<LinkModel>, List<LinkEntit
              */
             override val fromType: (Item) -> LinkEntity = {
                 LinkEntity(
+                    color = it.link.color,
+                    icon = it.link.icon,
+                    isDisabled = it.link.isDisabled,
+                    language = it.link.language,
+                    notes = it.link.notes,
+                    siteId = it.link.siteId,
+                    linkType = it.link.linkType,
                     mediaId = it.mediaId,
                     site = it.link.site,
                     url = it.link.url,

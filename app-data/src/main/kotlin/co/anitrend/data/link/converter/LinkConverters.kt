@@ -29,6 +29,13 @@ internal class LinkModelConverter(
     private companion object : ISupportTransformer<LinkModel, LinkEntity> {
         override fun transform(source: LinkModel) = LinkEntity(
             mediaId = 0,
+            color = source.color,
+            icon = source.icon,
+            isDisabled = source.isDisabled,
+            language = source.language,
+            notes = source.notes,
+            siteId = source.siteId,
+            linkType = source.linkType,
             site = source.site,
             url = source.url,
             id = source.id

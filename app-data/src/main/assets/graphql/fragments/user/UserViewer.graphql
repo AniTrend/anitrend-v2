@@ -3,9 +3,14 @@ fragment UserViewer on User {
     options {
         airingNotifications
         displayAdultContent
+        restrictMessagesToFollowing
         notificationOptions {
             enabled
             type
+        }
+        disabledListActivity {
+            type
+            disabled
         }
         timezone
     }

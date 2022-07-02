@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.domain.status.enums
+package co.anitrend.domain.media.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
-import co.anitrend.domain.common.enums.contract.ISortable
 
-/**
- * Activity sort enums
- */
-enum class StatusSort(override val alias: CharSequence) : IAliasable, ISortable {
-    ID("Id"),
-    PINNED("Pinned")
+enum class ExternalLinkType(override val alias: CharSequence) : IAliasable {
+    INFO("Info"),
+    SOCIAL("Social"),
+    STREAMING("Streaming"),
 }

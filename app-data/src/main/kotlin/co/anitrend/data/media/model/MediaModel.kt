@@ -50,6 +50,7 @@ internal sealed class MediaModel : IMediaModel {
     abstract val isLocked: Boolean
     abstract val isLicensed: Boolean
     abstract val isRecommendationBlocked: Boolean
+    abstract val isReviewBlocked: Boolean
     abstract val isFavouriteBlocked: Boolean
 
     /** [MediaCover](https://anilist.github.io/ApiV2-GraphQL-Docs/mediacoverimage.doc.html)
@@ -97,6 +98,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
+        @SerialName("isReviewBlocked") override val isReviewBlocked: Boolean = false,
         @SerialName("title") override val title: Title?,
         @SerialName("coverImage") override val coverImage: CoverImage?,
         @SerialName("tags") override val tags: List<TagModel.Extended> = emptyList(),
@@ -141,6 +143,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
+        @SerialName("isReviewBlocked") override val isReviewBlocked: Boolean = false,
         @SerialName("title") override val title: Title?,
         @SerialName("coverImage") override val coverImage: CoverImage?,
         @SerialName("tags") override val tags: List<TagModel.Extended> = emptyList(),
@@ -185,6 +188,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isLocked") override val isLocked: Boolean = false,
         @SerialName("isLicensed") override val isLicensed: Boolean = false,
         @SerialName("isRecommendationBlocked") override val isRecommendationBlocked: Boolean = false,
+        @SerialName("isReviewBlocked") override val isReviewBlocked: Boolean = false,
         @SerialName("title") override val title: Title?,
         @SerialName("coverImage") override val coverImage: CoverImage?,
         @SerialName("tags") override val tags: List<TagModel.Extended> = emptyList(),

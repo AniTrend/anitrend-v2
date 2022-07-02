@@ -62,5 +62,12 @@ fragment Media on Media {
         id
         site
         url
+        color
+        icon
+        isDisabled
+        language
+        notes
+        siteId
+        type
     }
 }

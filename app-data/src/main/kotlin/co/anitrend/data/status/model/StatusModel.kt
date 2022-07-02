@@ -17,8 +17,8 @@
 
 package co.anitrend.data.status.model
 
-import co.anitrend.data.status.model.contract.IStatusModel
 import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.status.model.contract.IStatusModel
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.status.enums.StatusType
 import kotlinx.serialization.SerialName
@@ -40,6 +40,7 @@ internal sealed class StatusModel : IStatusModel {
         @SerialName("media") val media: MediaModel.Core?,
         @SerialName("status") val status: String?,
         @SerialName("isLocked") val isLocked: Boolean,
+        @SerialName("isPinned") val isPinned: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
         @SerialName("progress") val progress: String?,
         @SerialName("user") val user: UserModel.Core?,
@@ -104,6 +105,7 @@ internal sealed class StatusModel : IStatusModel {
     @Serializable
     internal data class Text(
         @SerialName("isLocked") val isLocked: Boolean,
+        @SerialName("isPinned") val isPinned: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
         @SerialName("text") val text: String?,
         @SerialName("user") val user: UserModel.Core?,

@@ -18,14 +18,26 @@
 package co.anitrend.data.link.model
 
 import co.anitrend.data.core.common.Identity
+import co.anitrend.domain.media.enums.ExternalLinkType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
- * An external link to another site related to the media
+ * An external link to another site related to the media or staff member
+ *
+ * @param icon The icon image url of the site. Not available for all links. Transparent PNG 64x64
+ * @param language Language the site content is in. See Staff language field for values.
+ * @param url The url of the external link or base url of link source
  */
 @Serializable
 data class LinkModel(
+    @SerialName("color") val color: String?,
+    @SerialName("icon") val icon: String?,
+    @SerialName("isDisabled") val isDisabled: Boolean?,
+    @SerialName("language") val language: String?,
+    @SerialName("notes") val notes: String?,
+    @SerialName("siteId") val siteId: Int?,
+    @SerialName("type") val linkType: ExternalLinkType?,
     @SerialName("site") val site: String,
     @SerialName("url") val url: String,
     @SerialName("id") override val id: Long
