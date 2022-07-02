@@ -80,6 +80,8 @@ internal sealed class MediaQuery : IGraphPayload {
             "id_not_in" to param.id_not_in,
             "isAdult" to param.isAdult,
             "licensedBy" to param.licensedBy?.alias,
+            "licensedById" to param.licensedBy?.alias,
+            "licensedById_in" to param.licensedBy?.alias,
             "licensedBy_in" to param.licensedBy_in?.map(MediaLicensor::alias),
             "minimumTagRank" to param.minimumTagRank,
             "onList" to param.onList,
