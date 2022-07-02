@@ -36,5 +36,17 @@ enum class StaffLanguage(override val alias: CharSequence) : IAliasable {
     CHINESE("Chinese"),
     ARABIC("Arabic"),
     FILIPINO("Filipino"),
-    CATALAN("Catalan")
+    CATALAN("Catalan"),
+    FINNISH("Finnish"),
+    TURKISH("Turkish"),
+    DUTCH("Dutch"),
+    SWEDISH("Swedish"),
+    THAI("Thai"),
+    TAGALOG("Tagalog"),
+    MALAYSIAN("Malaysian"),
+    INDONESIAN("Indonesian"),
+    VIETNAMESE("Vietnamese"),
+    NEPALI("Nepali"),
+    HINDI("Hindi"),
+    URDU("Urdu")
 }
