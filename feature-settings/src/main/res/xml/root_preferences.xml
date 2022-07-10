@@ -29,6 +29,20 @@
         app:fragment=""/>
 
     <PreferenceCategory
+        app:title="@string/preference_group_title_developer_settings"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true">
+
+        <SwitchPreference
+            app:title="@string/preference_title_heap_dump"
+            app:summary="@string/preference_summary_heap"
+            app:icon="@drawable/ic_memory_24dp"
+            app:defaultValue="false"
+            app:key="@string/settings_auto_heap_dump" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/preference_group_title_application_behavior"
         app:iconSpaceReserved="false"
         app:allowDividerAbove="true">

@@ -46,4 +46,6 @@
     <string name="settings_sync_meta_interval" translatable="false">_syncMetaInterval</string>
     <string name="settings_sync_list_interval" translatable="false">_syncListInterval</string>
     <string name="settings_sync_user_interval" translatable="false">_syncUserInterval</string>
+
+    <string name="settings_auto_heap_dump" translatable="false">_autoHeapDump</string>
 </resources>
