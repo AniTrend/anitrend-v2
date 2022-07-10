@@ -33,6 +33,7 @@ import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.data.settings.connectivity.IConnectivitySettings
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.data.settings.developer.IDeveloperSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
@@ -46,7 +47,7 @@ import co.anitrend.domain.user.enums.UserTitleLanguage
 class Settings(context: Context) : SupportPreference(context), IConfigurationSettings,
     IPrivacySettings, IAuthenticationSettings, ISortOrderSettings, IRefreshBehaviourSettings,
     ICustomizationSettings, IPowerSettings, IConnectivitySettings, IUserSettings, ICacheSettings,
-    ISyncSettings {
+    ISyncSettings, IDeveloperSettings {
 
     override val locale = EnumSetting(
         key = R.string.settings_configuration_locale,
@@ -189,6 +190,13 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
         preference = this
     )
 
+    override val automaticHeapDump = BooleanSetting(
+        key = R.string.settings_auto_heap_dump,
+        default = false,
+        resources = context.resources,
+        preference = this
+    )
+
     companion object {
         /**
          * Binding types for [Settings]
@@ -200,7 +208,7 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
             ISortOrderSettings::class, IRefreshBehaviourSettings::class,
             ICustomizationSettings::class, IPowerSettings::class,
             IConnectivitySettings::class, IUserSettings::class,
-            ICacheSettings::class, ISyncSettings::class
+            ICacheSettings::class, ISyncSettings::class, IDeveloperSettings::class
         )
     }
 }
