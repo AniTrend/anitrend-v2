@@ -19,9 +19,10 @@ package co.anitrend.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.initializer.injector.InjectorInitializer
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
+import co.anitrend.core.initializer.injector.InjectorInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.initializer.extensions.configureApplication
 import co.anitrend.koin.appModules
 
 class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
@@ -33,6 +34,7 @@ class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
      */
     override fun create(context: Context) {
         appModules.loadModules()
+        context.configureApplication()
     }
 
     /**

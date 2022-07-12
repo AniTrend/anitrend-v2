@@ -23,6 +23,7 @@
     <string name="preference_category_title_user_interface">User Experience</string>
     <string name="preference_category_title_updates_and_storage">Updates &amp; Storage</string>
     <string name="preference_category_title_notifications_and_sync_settings">Notifications &amp; Sync</string>
+    <string name="preference_group_title_developer_settings">Developer Settings</string>
 
     <!-- Preference Titles -->
     <string name="preference_title_accounts">Accounts</string>
@@ -36,6 +37,7 @@
     <string name="preference_title_sync">Synchronization</string>
     <string name="preference_title_notifications">Notifications</string>
     <string name="preference_title_storage">Storage</string>
+    <string name="preference_title_heap_dump">Auto Heap Dump</string>
 
     <!-- Preference Summaries -->
     <string name="preference_summary_accounts">Access information about your accounts</string>
@@ -49,6 +51,7 @@
     <string name="preference_summary_sync">Configure how data sync\'d between services</string>
     <string name="preference_summary_updates">Configure how and which updates to receive</string>
     <string name="preference_summary_storage">Configure how the app should use storage space</string>
+    <string name="preference_summary_heap">Dump heap automatically when leak is detected</string>
 
 
     <!-- Preference Entries Title -->
