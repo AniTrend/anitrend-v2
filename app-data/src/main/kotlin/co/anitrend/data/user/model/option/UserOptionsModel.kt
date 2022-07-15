@@ -40,11 +40,11 @@ internal sealed class UserOptionsModel {
 
     @Serializable
     data class Core(
-        @SerialName("disabledListActivity") override val disabledListActivity: List<ListActivityOption>?,
-        @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean?,
-        @SerialName("displayAdultContent") override val displayAdultContent: Boolean?,
-        @SerialName("profileColor") override val profileColor: String?,
-        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage?,
+        @SerialName("disabledListActivity") override val disabledListActivity: List<ListActivityOption>? = null,
+        @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean? = null,
+        @SerialName("displayAdultContent") override val displayAdultContent: Boolean? = null,
+        @SerialName("profileColor") override val profileColor: String? = null,
+        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage? = null,
     ) : UserOptionsModel()
 
     /**
@@ -54,14 +54,14 @@ internal sealed class UserOptionsModel {
      */
     @Serializable
     data class Viewer(
-        @SerialName("disabledListActivity") override val disabledListActivity: List<ListActivityOption>?,
-        @SerialName("airingNotifications") val airingNotifications: Boolean?,
-        @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>?,
-        @SerialName("timezone") val timeZone: String?,
-        @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean?,
-        @SerialName("displayAdultContent") override val displayAdultContent: Boolean?,
-        @SerialName("profileColor") override val profileColor: String?,
-        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage?,
+        @SerialName("disabledListActivity") override val disabledListActivity: List<ListActivityOption>? = null,
+        @SerialName("airingNotifications") val airingNotifications: Boolean? = null,
+        @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>? = null,
+        @SerialName("timezone") val timeZone: String? = null,
+        @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean? = null,
+        @SerialName("displayAdultContent") override val displayAdultContent: Boolean? = null,
+        @SerialName("profileColor") override val profileColor: String? = null,
+        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage? = null,
     ) : UserOptionsModel()
 
     /**

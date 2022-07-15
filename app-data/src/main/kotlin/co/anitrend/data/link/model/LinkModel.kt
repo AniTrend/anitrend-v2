@@ -31,13 +31,13 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class LinkModel(
-    @SerialName("color") val color: String?,
-    @SerialName("icon") val icon: String?,
-    @SerialName("isDisabled") val isDisabled: Boolean?,
-    @SerialName("language") val language: String?,
-    @SerialName("notes") val notes: String?,
-    @SerialName("siteId") val siteId: Int?,
-    @SerialName("type") val linkType: ExternalLinkType?,
+    @SerialName("color") val color: String? = null,
+    @SerialName("icon") val icon: String? = null,
+    @SerialName("isDisabled") val isDisabled: Boolean? = null,
+    @SerialName("language") val language: String? = null,
+    @SerialName("notes") val notes: String? = null,
+    @SerialName("siteId") val siteId: Int? = null,
+    @SerialName("type") val linkType: ExternalLinkType? = null,
     @SerialName("site") val site: String,
     @SerialName("url") val url: String,
     @SerialName("id") override val id: Long
