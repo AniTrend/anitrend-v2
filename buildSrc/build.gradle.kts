@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+
 plugins {
     `kotlin-dsl`
 }
@@ -33,9 +35,20 @@ repositories {
     }
 }
 
+tasks.withType(KotlinJvmCompile::class.java) {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
 val buildToolsVersion = "7.2.1"
-val kotlinVersion = "1.5.31"
-val dokkaVersion = "1.5.31"
+val kotlinVersion = "1.6.21"
+val dokkaVersion = "1.6.21"
 val manesVersion = "0.38.0"
 val spotlessVersion = "6.8.0"
 

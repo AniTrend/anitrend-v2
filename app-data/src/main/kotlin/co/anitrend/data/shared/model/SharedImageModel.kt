@@ -28,6 +28,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class SharedImageModel(
-    @SerialName("large") val large: String?,
-    @SerialName("medium") val medium: String?
+    @SerialName("large") val large: String? = null,
+    @SerialName("medium") val medium: String? = null
 )

@@ -42,25 +42,25 @@ internal sealed class NotificationModel : INotificationModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("activityId") override val activityId: Int?,
-        @SerialName("user") override val user: UserModel.Core?,
-        @SerialName("media") override val media: MediaModel.Core?,
-        @SerialName("contexts") override val contexts: List<String>?,
-        @SerialName("context") override val context: String?,
-        @SerialName("createdAt") override val createdAt: Long?,
-        @SerialName("type") override val type: NotificationType?,
+        @SerialName("activityId") override val activityId: Int? = null,
+        @SerialName("user") override val user: UserModel.Core? = null,
+        @SerialName("media") override val media: MediaModel.Core? = null,
+        @SerialName("contexts") override val contexts: List<String>? = null,
+        @SerialName("context") override val context: String? = null,
+        @SerialName("createdAt") override val createdAt: Long? = null,
+        @SerialName("type") override val type: NotificationType? = null,
         @SerialName("id") override val id: Long,
     ) : NotificationModel()
 
     @Serializable
     internal data class Extended(
-        @SerialName("activityId") override val activityId: Int?,
-        @SerialName("user") override val user: UserModel.Core?,
-        @SerialName("media") override val media: MediaModel.Core?,
-        @SerialName("contexts") override val contexts: List<String>?,
-        @SerialName("context") override val context: String?,
-        @SerialName("createdAt") override val createdAt: Long?,
-        @SerialName("type") override val type: NotificationType?,
+        @SerialName("activityId") override val activityId: Int? = null,
+        @SerialName("user") override val user: UserModel.Core? = null,
+        @SerialName("media") override val media: MediaModel.Core? = null,
+        @SerialName("contexts") override val contexts: List<String>? = null,
+        @SerialName("context") override val context: String? = null,
+        @SerialName("createdAt") override val createdAt: Long? = null,
+        @SerialName("type") override val type: NotificationType? = null,
         @SerialName("id") override val id: Long,
     ) : NotificationModel()
 }

@@ -35,7 +35,7 @@ internal sealed class CharacterEdge {
      */
     @Serializable
     data class Favourite(
-        @SerialName("favouriteOrder") val favouriteOrder: Int?
+        @SerialName("favouriteOrder") val favouriteOrder: Int? = null
     ) : CharacterEdge()
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
@@ -46,8 +46,8 @@ internal sealed class CharacterEdge {
      */
     @Serializable
     data class Media(
-        @SerialName("characterRole") val characterRole: CharacterRole?,
-        @SerialName("media") val media: List<MediaModel.Core>?,
+        @SerialName("characterRole") val characterRole: CharacterRole? = null,
+        @SerialName("media") val media: List<MediaModel.Core>? = null,
         @SerialName("id") override val id: Long
     ) : CharacterEdge(), Identity
 
@@ -58,9 +58,9 @@ internal sealed class CharacterEdge {
      */
     @Serializable
     data class Staff(
-        @SerialName("characterRole") val characterRole: CharacterRole?,
-        @SerialName("voiceActorRoles") val voiceActorRoles: List<StaffModel.ActorRole>?,
-        @SerialName("node") override val node: MediaModel.Core?,
+        @SerialName("characterRole") val characterRole: CharacterRole? = null,
+        @SerialName("voiceActorRoles") val voiceActorRoles: List<StaffModel.ActorRole>? = null,
+        @SerialName("node") override val node: MediaModel.Core? = null,
         @SerialName("id") override val id: Long
     ) : CharacterEdge(), IEntityEdge<MediaModel>, Identity
 }

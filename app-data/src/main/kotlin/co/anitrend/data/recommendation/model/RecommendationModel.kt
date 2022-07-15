@@ -29,11 +29,11 @@ internal sealed class RecommendationModel : IRecommendationModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("rating") override val rating: Int?,
-        @SerialName("user") override val user: UserModel.Core?,
-        @SerialName("media") override val media: MediaModel.Core?,
-        @SerialName("userRating") override val userRating: RecommendationRating?,
-        @SerialName("mediaRecommendation") override val mediaRecommendation: MediaModel.Core?,
+        @SerialName("rating") override val rating: Int? = null,
+        @SerialName("user") override val user: UserModel.Core? = null,
+        @SerialName("media") override val media: MediaModel.Core? = null,
+        @SerialName("userRating") override val userRating: RecommendationRating? = null,
+        @SerialName("mediaRecommendation") override val mediaRecommendation: MediaModel.Core? = null,
         @SerialName("id") override val id: Long
     ) : RecommendationModel()
 }

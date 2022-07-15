@@ -32,10 +32,10 @@ internal sealed class StudioModel : IStudioModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("favourites") override val favourites: Int?,
+        @SerialName("favourites") override val favourites: Int? = null,
         @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
         @SerialName("isFavourite") override val isFavourite: Boolean,
-        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean?,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean? = null,
         @SerialName("name") override val name: String,
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long
@@ -46,11 +46,11 @@ internal sealed class StudioModel : IStudioModel {
      */
     @Serializable
     internal data class Extended(
-        @SerialName("media") val mediaConnection: MediaConnection?,
-        @SerialName("favourites") override val favourites: Int?,
+        @SerialName("media") val mediaConnection: MediaConnection? = null,
+        @SerialName("favourites") override val favourites: Int? = null,
         @SerialName("isAnimationStudio") override val isAnimationStudio: Boolean,
         @SerialName("isFavourite") override val isFavourite: Boolean,
-        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean?,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean? = null,
         @SerialName("name") override val name: String,
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("id") override val id: Long

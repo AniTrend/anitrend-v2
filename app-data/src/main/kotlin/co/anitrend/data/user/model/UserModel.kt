@@ -41,7 +41,7 @@ internal sealed class UserModel : IUserModel {
     internal data class MediaListOptions(
         @SerialName("scoreFormat") val scoreFormat: ScoreFormat,
         @SerialName("rowOrder") val rowOrder: String,
-        @SerialName("animeList") val animeList: MediaListTypeOptions?,
+        @SerialName("animeList") val animeList: MediaListTypeOptions? = null,
         @SerialName("mangaList") val mangaList: MediaListTypeOptions?
     )
 
@@ -56,10 +56,10 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal data class MediaListTypeOptions(
-        @SerialName("sectionOrder") val sectionOrder: List<String>?,
+        @SerialName("sectionOrder") val sectionOrder: List<String>? = null,
         @SerialName("splitCompletedSectionByFormat") val splitCompletedSectionByFormat: Boolean,
-        @SerialName("customLists") val customLists: List<String>?,
-        @SerialName("advancedScoring") val advancedScoring: List<String>?,
+        @SerialName("customLists") val customLists: List<String>? = null,
+        @SerialName("advancedScoring") val advancedScoring: List<String>? = null,
         @SerialName("advancedScoringEnabled") val advancedScoringEnabled: Boolean
     )
 
@@ -88,18 +88,18 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal data class Core(
-        @SerialName("isFollowing") val isFollowing: Boolean?,
-        @SerialName("isFollower") val isFollower: Boolean?,
+        @SerialName("isFollowing") val isFollowing: Boolean? = null,
+        @SerialName("isFollower") val isFollower: Boolean? = null,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImageModel?,
-        @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isBlocked") override val isBlocked: Boolean?,
-        @SerialName("about") override val about: String?,
-        @SerialName("donatorTier") override val donatorTier: Int?,
-        @SerialName("donatorBadge") override val donatorBadge: String?,
+        @SerialName("avatar") override val avatar: SharedImageModel? = null,
+        @SerialName("bannerImage") override val bannerImage: String? = null,
+        @SerialName("isBlocked") override val isBlocked: Boolean? = null,
+        @SerialName("about") override val about: String? = null,
+        @SerialName("donatorTier") override val donatorTier: Int? = null,
+        @SerialName("donatorBadge") override val donatorBadge: String? = null,
         @SerialName("siteUrl") override val siteUrl: String,
-        @SerialName("updatedAt") override val updatedAt: Long?,
-        @SerialName("createdAt") override val createdAt: Long?,
+        @SerialName("updatedAt") override val updatedAt: Long? = null,
+        @SerialName("createdAt") override val createdAt: Long? = null,
         @SerialName("id") override val id: Long
     ) : UserModel()
 
@@ -120,21 +120,21 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal data class Extended(
-        @SerialName("isFollowing") val isFollowing: Boolean?,
-        @SerialName("isFollower") val isFollower: Boolean?,
+        @SerialName("isFollowing") val isFollowing: Boolean? = null,
+        @SerialName("isFollower") val isFollower: Boolean? = null,
         @SerialName("previousNames") override val previousNames: List<UserPreviousName> = emptyList(),
-        @SerialName("options") override val options: UserOptionsModel.Core?,
-        @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
+        @SerialName("options") override val options: UserOptionsModel.Core? = null,
+        @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions? = null,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImageModel?,
-        @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isBlocked") override val isBlocked: Boolean?,
-        @SerialName("about") override val about: String?,
-        @SerialName("donatorTier") override val donatorTier: Int?,
-        @SerialName("donatorBadge") override val donatorBadge: String?,
+        @SerialName("avatar") override val avatar: SharedImageModel? = null,
+        @SerialName("bannerImage") override val bannerImage: String? = null,
+        @SerialName("isBlocked") override val isBlocked: Boolean? = null,
+        @SerialName("about") override val about: String? = null,
+        @SerialName("donatorTier") override val donatorTier: Int? = null,
+        @SerialName("donatorBadge") override val donatorBadge: String? = null,
         @SerialName("siteUrl") override val siteUrl: String,
-        @SerialName("updatedAt") override val updatedAt: Long?,
-        @SerialName("createdAt") override val createdAt: Long?,
+        @SerialName("updatedAt") override val updatedAt: Long? = null,
+        @SerialName("createdAt") override val createdAt: Long? = null,
         @SerialName("id") override val id: Long
     ) : WithOptions()
 
@@ -145,40 +145,40 @@ internal sealed class UserModel : IUserModel {
      */
     @Serializable
     internal data class Viewer(
-        @SerialName("isFollower") val isFollower: Boolean?,
-        @SerialName("isFollowing") val isFollowing: Boolean?,
+        @SerialName("isFollower") val isFollower: Boolean? = null,
+        @SerialName("isFollowing") val isFollowing: Boolean? = null,
         @SerialName("previousNames") override val previousNames: List<UserPreviousName> = emptyList(),
-        @SerialName("unreadNotificationCount") val unreadNotificationCount: Int?,
-        @SerialName("options") override val options: UserOptionsModel.Viewer?,
-        @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions?,
+        @SerialName("unreadNotificationCount") val unreadNotificationCount: Int? = null,
+        @SerialName("options") override val options: UserOptionsModel.Viewer? = null,
+        @SerialName("mediaListOptions") override val mediaListOptions: MediaListOptions? = null,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImageModel?,
-        @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isBlocked") override val isBlocked: Boolean?,
-        @SerialName("about") override val about: String?,
-        @SerialName("donatorTier") override val donatorTier: Int?,
-        @SerialName("donatorBadge") override val donatorBadge: String?,
+        @SerialName("avatar") override val avatar: SharedImageModel? = null,
+        @SerialName("bannerImage") override val bannerImage: String? = null,
+        @SerialName("isBlocked") override val isBlocked: Boolean? = null,
+        @SerialName("about") override val about: String? = null,
+        @SerialName("donatorTier") override val donatorTier: Int? = null,
+        @SerialName("donatorBadge") override val donatorBadge: String? = null,
         @SerialName("siteUrl") override val siteUrl: String,
-        @SerialName("updatedAt") override val updatedAt: Long?,
-        @SerialName("createdAt") override val createdAt: Long?,
+        @SerialName("updatedAt") override val updatedAt: Long? = null,
+        @SerialName("createdAt") override val createdAt: Long? = null,
         @SerialName("id") override val id: Long
     ) : WithOptions()
 
     @Serializable
     internal data class WithStatistic(
-        @SerialName("isFollowing") val isFollowing: Boolean?,
-        @SerialName("isFollower") val isFollower: Boolean?,
-        @SerialName("statistics") val statistics: Statistic?,
+        @SerialName("isFollowing") val isFollowing: Boolean? = null,
+        @SerialName("isFollower") val isFollower: Boolean? = null,
+        @SerialName("statistics") val statistics: Statistic? = null,
         @SerialName("name") override val name: String,
-        @SerialName("avatar") override val avatar: SharedImageModel?,
-        @SerialName("bannerImage") override val bannerImage: String?,
-        @SerialName("isBlocked") override val isBlocked: Boolean?,
-        @SerialName("about") override val about: String?,
-        @SerialName("donatorTier") override val donatorTier: Int?,
-        @SerialName("donatorBadge") override val donatorBadge: String?,
+        @SerialName("avatar") override val avatar: SharedImageModel? = null,
+        @SerialName("bannerImage") override val bannerImage: String? = null,
+        @SerialName("isBlocked") override val isBlocked: Boolean? = null,
+        @SerialName("about") override val about: String? = null,
+        @SerialName("donatorTier") override val donatorTier: Int? = null,
+        @SerialName("donatorBadge") override val donatorBadge: String? = null,
         @SerialName("siteUrl") override val siteUrl: String,
-        @SerialName("updatedAt") override val updatedAt: Long?,
-        @SerialName("createdAt") override val createdAt: Long?,
+        @SerialName("updatedAt") override val updatedAt: Long? = null,
+        @SerialName("createdAt") override val createdAt: Long? = null,
         @SerialName("id") override val id: Long
     ) : UserModel() {
 

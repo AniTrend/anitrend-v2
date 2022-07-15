@@ -18,14 +18,10 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.common.Configuration
-import co.anitrend.buildSrc.extensions.isDataModule
-import co.anitrend.buildSrc.extensions.isCoreModule
-import co.anitrend.buildSrc.extensions.isAndroidCoreModule
-import co.anitrend.buildSrc.extensions.matchesDataModule
-import co.anitrend.buildSrc.extensions.libraryExtension
-import com.android.build.gradle.BaseExtension
+import co.anitrend.buildSrc.extensions.*
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import java.util.*
@@ -96,7 +92,7 @@ internal fun Project.createSigningConfiguration(extension: BaseExtension) {
     if (keyStoreFile.exists())
         keyStoreFile.inputStream().use { fis ->
             Properties().run {
-                load(fis);
+                load(fis)
                 properties = this
             }
         }
