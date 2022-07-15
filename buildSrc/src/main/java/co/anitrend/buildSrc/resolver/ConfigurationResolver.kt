@@ -18,6 +18,7 @@
 package co.anitrend.buildSrc.resolver
 
 import co.anitrend.buildSrc.Libraries
+import co.anitrend.buildSrc.common.Versions
 import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
 import org.gradle.api.artifacts.Configuration
 
@@ -30,7 +31,7 @@ fun Configuration.handleConflicts() {
                     "kotlin-stdlib",
                     "kotlin-stdlib-common",
                     "kotlin-stdlib-jdk8",
-                    "kotlin-stdlib-jdk7" -> useVersion("1.5.31")
+                    "kotlin-stdlib-jdk7" -> useVersion(Versions.kotlin)
                 }
             }
         }
@@ -42,6 +43,9 @@ fun Configuration.handleConflicts() {
         }
         if (requested.group == "com.jakewharton.timber") {
             useTarget(Libraries.timber)
+        }
+        if (requested.group == "androidx.startup") {
+            useTarget(Libraries.AndroidX.StartUp.startUpRuntime)
         }
     }
 }

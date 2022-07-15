@@ -19,6 +19,7 @@ package co.anitrend.initializer.extensions
 
 import android.content.Context
 
+/*
 internal fun Context.configureApplication() {
 
-}
+}*/

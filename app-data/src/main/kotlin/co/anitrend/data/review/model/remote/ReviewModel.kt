@@ -33,40 +33,40 @@ internal sealed class ReviewModel : IReviewModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("body") override val body: String?,
+        @SerialName("body") override val body: String? = null,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("mediaId") override val mediaId: Long,
-        @SerialName("mediaType") override val mediaType: MediaType?,
-        @SerialName("private") override val private: Boolean?,
-        @SerialName("rating") override val rating: Int?,
-        @SerialName("ratingAmount") override val ratingAmount: Int?,
-        @SerialName("score") override val score: Int?,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("summary") override val summary: String?,
+        @SerialName("mediaType") override val mediaType: MediaType? = null,
+        @SerialName("private") override val private: Boolean? = null,
+        @SerialName("rating") override val rating: Int? = null,
+        @SerialName("ratingAmount") override val ratingAmount: Int? = null,
+        @SerialName("score") override val score: Int? = null,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("summary") override val summary: String? = null,
         @SerialName("updatedAt") override val updatedAt: Long,
-        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("user") override val user: UserModel.Core? = null,
         @SerialName("userId") override val userId: Long,
-        @SerialName("userRating") override val userRating: ReviewRating?,
+        @SerialName("userRating") override val userRating: ReviewRating? = null,
         @SerialName("id") override val id: Long
     ) : ReviewModel()
 
     @Serializable
     internal data class Extended(
         @SerialName("media") val media: MediaModel.Core,
-        @SerialName("body") override val body: String?,
+        @SerialName("body") override val body: String? = null,
         @SerialName("createdAt") override val createdAt: Long,
         @SerialName("mediaId") override val mediaId: Long,
-        @SerialName("mediaType") override val mediaType: MediaType?,
-        @SerialName("private") override val private: Boolean?,
-        @SerialName("rating") override val rating: Int?,
-        @SerialName("ratingAmount") override val ratingAmount: Int?,
-        @SerialName("score") override val score: Int?,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("summary") override val summary: String?,
+        @SerialName("mediaType") override val mediaType: MediaType? = null,
+        @SerialName("private") override val private: Boolean? = null,
+        @SerialName("rating") override val rating: Int? = null,
+        @SerialName("ratingAmount") override val ratingAmount: Int? = null,
+        @SerialName("score") override val score: Int? = null,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("summary") override val summary: String? = null,
         @SerialName("updatedAt") override val updatedAt: Long,
-        @SerialName("user") override val user: UserModel.Core?,
+        @SerialName("user") override val user: UserModel.Core? = null,
         @SerialName("userId") override val userId: Long,
-        @SerialName("userRating") override val userRating: ReviewRating?,
+        @SerialName("userRating") override val userRating: ReviewRating? = null,
         @SerialName("id") override val id: Long
     ) : ReviewModel()
 }

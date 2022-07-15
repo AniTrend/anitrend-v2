@@ -18,8 +18,8 @@
 package co.anitrend.buildSrc.extensions
 
 import org.gradle.api.artifacts.*
-import org.gradle.kotlin.dsl.exclude
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.exclude
 
 private enum class DependencyType(val configurationName: String) {
     API("api"),

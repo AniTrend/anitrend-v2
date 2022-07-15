@@ -27,20 +27,20 @@ internal sealed class CarouselModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("AllTimePopular") val allTimePopular: MediaModelContainer.Paged.Page?,
-        @SerialName("TrendingRightNow") val trendingRightNow: MediaModelContainer.Paged.Page?,
+        @SerialName("AllTimePopular") val allTimePopular: MediaModelContainer.Paged.Page? = null,
+        @SerialName("TrendingRightNow") val trendingRightNow: MediaModelContainer.Paged.Page? = null,
         @SerialName("RecentlyAdded") val recentlyAdded: MediaModelContainer.Paged.Page?
     ) : CarouselModel()
 
     @Serializable
     internal data class Anime(
-        @SerialName("AiringSoon") val airingSoon: AiringScheduleModelContainer.Paged.Page?,
-        @SerialName("PopularThisSeason") val popularThisSeason: MediaModelContainer.Paged.Page?,
-        @SerialName("AnticipatedNexSeason") val anticipatedNexSeason: MediaModelContainer.Paged.Page?
+        @SerialName("AiringSoon") val airingSoon: AiringScheduleModelContainer.Paged.Page? = null,
+        @SerialName("PopularThisSeason") val popularThisSeason: MediaModelContainer.Paged.Page? = null,
+        @SerialName("AnticipatedNexSeason") val anticipatedNexSeason: MediaModelContainer.Paged.Page? = null
     ) : CarouselModel()
 
     @Serializable
     internal data class Manga(
-        @SerialName("PopularManhwa") val popularManhwa: MediaModelContainer.Paged.Page?
+        @SerialName("PopularManhwa") val popularManhwa: MediaModelContainer.Paged.Page? = null
     ) : CarouselModel()
 }

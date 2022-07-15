@@ -18,8 +18,8 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.Libraries
-import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
 import org.gradle.api.Project
 
@@ -101,6 +101,11 @@ private fun Project.applyAppModuleDependencies() {
 
     dependencies.googleImplementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
     dependencies.googleImplementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
+
+    /** debugImplementation because LeakCanary should only run in debug builds. */
+    dependencies.debugImplementation(Libraries.Square.LeakCanary.leakCanary)
+    /** debugImplementation because debug-db should only run in debug builds */
+    dependencies.debugImplementation(Libraries.debugDb)
 }
 
 private fun Project.applyAppModuleGroupDependencies() {
