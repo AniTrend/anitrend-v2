@@ -92,6 +92,7 @@ internal sealed class MediaModel : IMediaModel {
 
     @Serializable
     internal data class Media(
+        @SerialName("isReviewBlocked") override val isReviewBlocked: Boolean,
         @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
         @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
         @SerialName("trailer") override val trailer: Trailer? = null,
@@ -135,6 +136,7 @@ internal sealed class MediaModel : IMediaModel {
 
     @Serializable
     internal data class Core(
+        @SerialName("isReviewBlocked") override val isReviewBlocked: Boolean,
         @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core? = null,
         @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
         @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),
@@ -179,6 +181,7 @@ internal sealed class MediaModel : IMediaModel {
 
     @Serializable
     internal data class Extended(
+        @SerialName("isReviewBlocked") override val isReviewBlocked: Boolean,
         @SerialName("mediaListEntry") val mediaListEntry: MediaListModel.Core? = null,
         @SerialName("rankings") override val rankings: List<RankModel> = emptyList(),
         @SerialName("externalLinks") override val externalLinks: List<LinkModel> = emptyList(),

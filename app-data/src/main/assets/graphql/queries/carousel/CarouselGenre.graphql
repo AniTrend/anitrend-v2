@@ -1,0 +1,17 @@
+query CarouselGenre(
+    $page: Int = 1,
+    $perPage: Int = 30,
+    $genres_in: [String],
+    $sort: [MediaSort] = [SCORE_DESC]
+) {
+    Genres: Page(page: $page, perPage: $perPage) {
+        media(genre_in: $genres_in, sort: $sort) {
+            title {
+                userPreferred
+            }
+            genres
+            averageScore
+            meanScore
+        }
+    }
+}
