@@ -43,6 +43,7 @@ fragment Media on Media {
     isLocked
     isLicensed
     isFavourite
+    isReviewBlocked
     isRecommendationBlocked
     updatedAt
     nextAiringEpisode {
