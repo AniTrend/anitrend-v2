@@ -47,7 +47,7 @@ java {
 }
 
 val buildToolsVersion = "7.2.1"
-val kotlinVersion = "1.6.21"
+val kotlinVersion = "1.7.10"
 val dokkaVersion = "1.6.21"
 val manesVersion = "0.38.0"
 val spotlessVersion = "6.8.0"
