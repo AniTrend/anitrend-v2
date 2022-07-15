@@ -19,16 +19,15 @@ package co.anitrend.buildSrc.extensions
 
 import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.module.Modules
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryPlugin
-import com.android.build.gradle.TestPlugin
-import com.android.build.gradle.DynamicFeaturePlugin
-import com.diffplug.gradle.spotless.SpotlessExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.android.build.gradle.api.AndroidBasePlugin
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.DynamicFeaturePlugin
+import com.android.build.gradle.LibraryPlugin
+import com.android.build.gradle.TestPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Project
 import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.ExtraPropertiesExtension
@@ -126,7 +125,7 @@ internal fun Project.libraryAndroidComponents() =
 
 internal fun Project.containsAndroidPlugin(): Boolean {
     return project.plugins.toList().any { plugin ->
-        plugin is AndroidBasePlugin
+        plugin is BaseAppModuleExtension
     }
 }
 
@@ -146,4 +145,14 @@ internal fun Project.containsTestPlugin(): Boolean {
     return project.plugins.toList().any { plugin ->
         plugin is TestPlugin
     }
+}
+
+internal fun Project.runIfAppModule(body: BaseAppModuleExtension.() -> Unit) {
+    if (containsAndroidPlugin())
+        body(baseAppExtension())
+}
+
+internal fun Project.runIfLibraryModule(body: LibraryExtension.() -> Unit) {
+    if (containsLibraryPlugin())
+        body(libraryExtension())
 }

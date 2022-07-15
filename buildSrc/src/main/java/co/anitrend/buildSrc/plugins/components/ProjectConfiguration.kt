@@ -19,21 +19,11 @@ package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.common.Configuration
-import co.anitrend.buildSrc.extensions.isAppModule
-import co.anitrend.buildSrc.extensions.isCoreModule
-import co.anitrend.buildSrc.extensions.hasComposeSupport
-import co.anitrend.buildSrc.extensions.isNavigationModule
-import co.anitrend.buildSrc.extensions.hasCoroutineSupport
-import co.anitrend.buildSrc.extensions.matchesAppModule
-import co.anitrend.buildSrc.extensions.matchesTaskModule
-import co.anitrend.buildSrc.extensions.baseAppExtension
-import co.anitrend.buildSrc.extensions.baseExtension
-import co.anitrend.buildSrc.extensions.libraryExtension
+import co.anitrend.buildSrc.extensions.*
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
@@ -183,25 +173,25 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     tasks.withType(KotlinCompile::class.java) {
         val compilerArgumentOptions = mutableListOf(
-            "-Xopt-in=kotlin.Experimental",
-            "-Xopt-in=kotlin.ExperimentalStdlibApi",
-            "-Xopt-in=kotlin.Experimental"
+            "-opt-in=kotlin.Experimental",
+            "-opt-in=kotlin.ExperimentalStdlibApi",
+            "-opt-in=kotlin.Experimental"
         )
 
         if (hasCoroutineSupport()) {
-            compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-            compilerArgumentOptions.add("-Xopt-in=kotlinx.coroutines.FlowPreview")
+            compilerArgumentOptions.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+            compilerArgumentOptions.add("-opt-in=kotlinx.coroutines.FlowPreview")
         }
 
         if (hasComposeSupport()) {
-            compilerArgumentOptions.add("-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi")
-            compilerArgumentOptions.add("-Xopt-in=androidx.compose.material.ExperimentalMaterialApi")
+            compilerArgumentOptions.add("-opt-in=androidx.compose.foundation.ExperimentalFoundationApi")
+            compilerArgumentOptions.add("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
         }
 
         if (isAppModule() || isCoreModule() || isNavigationModule()) {
             compilerArgumentOptions.apply {
-                add("-Xopt-in=org.koin.core.component.KoinApiExtension")
-                add("-Xopt-in=org.koin.core.KoinExperimentalAPI")
+                add("-opt-in=org.koin.core.component.KoinApiExtension")
+                add("-opt-in=org.koin.core.KoinExperimentalAPI")
             }
         }
 		

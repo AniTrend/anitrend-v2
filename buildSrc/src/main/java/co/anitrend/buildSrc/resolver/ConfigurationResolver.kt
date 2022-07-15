@@ -44,6 +44,9 @@ fun Configuration.handleConflicts() {
         if (requested.group == "com.jakewharton.timber") {
             useTarget(Libraries.timber)
         }
+        if (requested.group == "androidx.startup") {
+            useTarget(Libraries.AndroidX.StartUp.startUpRuntime)
+        }
     }
 }
 
