@@ -34,12 +34,12 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class SharedNameModel(
-    @SerialName("alternative") val alternative: List<String>?,
-    @SerialName("alternativeSpoiler") val alternativeSpoiler: List<String>?,
-    @SerialName("first") val first: String?,
-    @SerialName("full") val full: String?,
-    @SerialName("last") val last: String?,
-    @SerialName("middle") val middle: String?,
-    @SerialName("native") val native: String?,
-    @SerialName("userPreferred") val userPreferred: String?
+    @SerialName("alternative") val alternative: List<String>? = null,
+    @SerialName("alternativeSpoiler") val alternativeSpoiler: List<String>? = null,
+    @SerialName("first") val first: String? = null,
+    @SerialName("full") val full: String? = null,
+    @SerialName("last") val last: String? = null,
+    @SerialName("middle") val middle: String? = null,
+    @SerialName("native") val native: String? = null,
+    @SerialName("userPreferred") val userPreferred: String? = null
 )

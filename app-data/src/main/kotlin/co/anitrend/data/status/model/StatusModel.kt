@@ -17,8 +17,8 @@
 
 package co.anitrend.data.status.model
 
-import co.anitrend.data.status.model.contract.IStatusModel
 import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.status.model.contract.IStatusModel
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.status.enums.StatusType
 import kotlinx.serialization.SerialName
@@ -37,18 +37,18 @@ internal sealed class StatusModel : IStatusModel {
      */
     @Serializable
     internal data class Progress(
-        @SerialName("media") val media: MediaModel.Core?,
-        @SerialName("status") val status: String?,
+        @SerialName("media") val media: MediaModel.Core? = null,
+        @SerialName("status") val status: String? = null,
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
-        @SerialName("progress") val progress: String?,
-        @SerialName("user") val user: UserModel.Core?,
+        @SerialName("progress") val progress: String? = null,
+        @SerialName("user") val user: UserModel.Core? = null,
         @SerialName("createdAt") override val createdAt: Long,
-        @SerialName("isLiked") override val isLiked: Boolean?,
+        @SerialName("isLiked") override val isLiked: Boolean? = null,
         @SerialName("likeCount") override val likeCount: Int,
         @SerialName("replyCount") override val replyCount: Int,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("type") override val type: StatusType?,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("type") override val type: StatusType? = null,
         @SerialName("id") override val id: Long
     ) : StatusModel()
 
@@ -62,17 +62,17 @@ internal sealed class StatusModel : IStatusModel {
      */
     @Serializable
     internal data class Message(
-        @SerialName("recipient") val recipient : UserModel.Core?,
+        @SerialName("recipient") val recipient : UserModel.Core? = null,
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
-        @SerialName("message") val message: String?,
-        @SerialName("messenger") val messenger: UserModel.Core?,
+        @SerialName("message") val message: String? = null,
+        @SerialName("messenger") val messenger: UserModel.Core? = null,
         @SerialName("createdAt") override val createdAt: Long,
-        @SerialName("isLiked") override val isLiked: Boolean?,
+        @SerialName("isLiked") override val isLiked: Boolean? = null,
         @SerialName("likeCount") override val likeCount: Int,
         @SerialName("replyCount") override val replyCount: Int,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("type") override val type: StatusType?,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("type") override val type: StatusType? = null,
         @SerialName("id") override val id: Long
     ) : StatusModel()
 
@@ -83,15 +83,15 @@ internal sealed class StatusModel : IStatusModel {
      */
     @Serializable
     internal data class Reply(
-        @SerialName("activityId") val activityId: Long?,
-        @SerialName("text") val text: String?,
-        @SerialName("user") val user: UserModel.Core?,
+        @SerialName("activityId") val activityId: Long? = null,
+        @SerialName("text") val text: String? = null,
+        @SerialName("user") val user: UserModel.Core? = null,
         @SerialName("createdAt") override val createdAt: Long,
-        @SerialName("isLiked") override val isLiked: Boolean?,
+        @SerialName("isLiked") override val isLiked: Boolean? = null,
         @SerialName("likeCount") override val likeCount: Int,
         @SerialName("replyCount") override val replyCount: Int,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("type") override val type: StatusType?,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("type") override val type: StatusType? = null,
         @SerialName("id") override val id: Long
     ) : StatusModel()
 
@@ -105,14 +105,14 @@ internal sealed class StatusModel : IStatusModel {
     internal data class Text(
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
-        @SerialName("text") val text: String?,
-        @SerialName("user") val user: UserModel.Core?,
+        @SerialName("text") val text: String? = null,
+        @SerialName("user") val user: UserModel.Core? = null,
         @SerialName("createdAt") override val createdAt: Long,
-        @SerialName("isLiked") override val isLiked: Boolean?,
+        @SerialName("isLiked") override val isLiked: Boolean? = null,
         @SerialName("likeCount") override val likeCount: Int,
         @SerialName("replyCount") override val replyCount: Int,
-        @SerialName("siteUrl") override val siteUrl: String?,
-        @SerialName("type") override val type: StatusType?,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("type") override val type: StatusType? = null,
         @SerialName("id") override val id: Long
     ) : StatusModel()
 }

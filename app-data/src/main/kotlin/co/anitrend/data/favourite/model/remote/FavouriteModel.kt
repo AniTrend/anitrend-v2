@@ -30,9 +30,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal data class FavouriteModel(
-    @SerialName("anime") override val anime: MediaConnection.Favourite?,
-    @SerialName("characters") override val characters: CharacterConnection.Favourite?,
-    @SerialName("manga") override val manga: MediaConnection.Favourite?,
-    @SerialName("staff") override val staff: StaffConnection.Favourite?,
-    @SerialName("studios") override val studios: StudioConnection.Favourite?
+    @SerialName("anime") override val anime: MediaConnection.Favourite? = null,
+    @SerialName("characters") override val characters: CharacterConnection.Favourite? = null,
+    @SerialName("manga") override val manga: MediaConnection.Favourite? = null,
+    @SerialName("staff") override val staff: StaffConnection.Favourite? = null,
+    @SerialName("studios") override val studios: StudioConnection.Favourite? = null
 ) : IFavouriteModel
