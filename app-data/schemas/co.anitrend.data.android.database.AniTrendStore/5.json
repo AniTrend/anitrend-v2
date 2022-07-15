@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "0224ad9a989f7fa8bce759bada6b651b",
+    "version": 5,
+    "identityHash": "888af5b5dad13d5d48f69f9b416442cb",
     "entities": [
       {
         "tableName": "cache_log",
@@ -46,13 +46,14 @@
             "columnNames": [
               "cache_item_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_cache_log_cache_item_id` ON `${TABLE_NAME}` (`cache_item_id`)"
           }
         ],
         "foreignKeys": []
       },
       {
-        "tableName": "moe",
+        "tableName": "relation",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`anilist` INTEGER NOT NULL, `anidb` INTEGER, `kitsu` INTEGER, `mal` INTEGER, PRIMARY KEY(`anilist`))",
         "fields": [
           {
@@ -137,6 +138,7 @@
             "columnNames": [
               "access_token"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_auth_access_token` ON `${TABLE_NAME}` (`access_token`)"
           }
         ],
@@ -196,6 +198,7 @@
             "columnNames": [
               "name"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tag_name` ON `${TABLE_NAME}` (`name`)"
           },
           {
@@ -204,6 +207,7 @@
             "columnNames": [
               "category"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_category` ON `${TABLE_NAME}` (`category`)"
           }
         ],
@@ -211,7 +215,7 @@
       },
       {
         "tableName": "tag_connection",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rank` INTEGER NOT NULL, `is_media_spoiler` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `tag_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`tag_id`) REFERENCES `tag`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rank` INTEGER NOT NULL, `is_media_spoiler` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `tag_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`tag_id`) REFERENCES `tag`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "rank",
@@ -252,20 +256,14 @@
         },
         "indices": [
           {
-            "name": "index_tag_connection_tag_id",
-            "unique": false,
+            "name": "index_tag_connection_tag_id_media_id",
+            "unique": true,
             "columnNames": [
-              "tag_id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_tag_id` ON `${TABLE_NAME}` (`tag_id`)"
-          },
-          {
-            "name": "index_tag_connection_media_id",
-            "unique": false,
-            "columnNames": [
+              "tag_id",
               "media_id"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tag_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_tag_connection_tag_id_media_id` ON `${TABLE_NAME}` (`tag_id`, `media_id`)"
           }
         ],
         "foreignKeys": [
@@ -324,19 +322,21 @@
         },
         "indices": [
           {
-            "name": "index_genre_genre",
+            "name": "index_genre_genre_emoji",
             "unique": true,
             "columnNames": [
-              "genre"
+              "genre",
+              "emoji"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_genre` ON `${TABLE_NAME}` (`genre`)"
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_genre_emoji` ON `${TABLE_NAME}` (`genre`, `emoji`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "genre_connection",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(`genre`) REFERENCES `genre`(`genre`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `genre_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`genre_id`) REFERENCES `genre`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "mediaId",
@@ -345,9 +345,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "genre",
-            "columnName": "genre",
-            "affinity": "TEXT",
+            "fieldPath": "genreId",
+            "columnName": "genre_id",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -365,20 +365,14 @@
         },
         "indices": [
           {
-            "name": "index_genre_connection_media_id",
-            "unique": false,
+            "name": "index_genre_connection_genre_id_media_id",
+            "unique": true,
             "columnNames": [
+              "genre_id",
               "media_id"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_media_id` ON `${TABLE_NAME}` (`media_id`)"
-          },
-          {
-            "name": "index_genre_connection_genre",
-            "unique": false,
-            "columnNames": [
-              "genre"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_genre_connection_genre` ON `${TABLE_NAME}` (`genre`)"
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_genre_connection_genre_id_media_id` ON `${TABLE_NAME}` (`genre_id`, `media_id`)"
           }
         ],
         "foreignKeys": [
@@ -398,17 +392,17 @@
             "onDelete": "CASCADE",
             "onUpdate": "CASCADE",
             "columns": [
-              "genre"
+              "genre_id"
             ],
             "referencedColumns": [
-              "genre"
+              "id"
             ]
           }
         ]
       },
       {
         "tableName": "media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_licensed` INTEGER, `is_recommendation_blocked` INTEGER NOT NULL, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `mal_id` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`next_airing_id` INTEGER, `average_score` INTEGER, `chapters` INTEGER, `country_of_origin` TEXT, `description` TEXT, `duration` INTEGER, `end_date` TEXT, `episodes` INTEGER, `favourites` INTEGER NOT NULL, `media_format` TEXT, `hash_tag` TEXT, `is_adult` INTEGER, `is_favourite` INTEGER NOT NULL, `is_favourite_blocked` INTEGER NOT NULL, `is_licensed` INTEGER, `is_recommendation_blocked` INTEGER NOT NULL, `is_review_blocked` INTEGER NOT NULL, `is_locked` INTEGER, `mean_score` INTEGER, `popularity` INTEGER, `season` TEXT, `site_url` TEXT, `source` TEXT, `start_date` TEXT, `status` TEXT, `synonyms` TEXT NOT NULL, `trending` INTEGER, `media_type` TEXT NOT NULL, `updated_at` INTEGER, `volumes` INTEGER, `mal_id` INTEGER, `id` INTEGER NOT NULL, `cover_color` TEXT, `cover_extra_large` TEXT, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, `title_romaji` TEXT, `title_english` TEXT, `title_original` TEXT, `title_user_preferred` TEXT, `trailer_id` TEXT, `trailer_site` TEXT, `trailer_thumbnail` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "nextAiringId",
@@ -489,6 +483,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "isFavouriteBlocked",
+            "columnName": "is_favourite_blocked",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "isLicensed",
             "columnName": "is_licensed",
             "affinity": "INTEGER",
@@ -497,6 +497,12 @@
           {
             "fieldPath": "isRecommendationBlocked",
             "columnName": "is_recommendation_blocked",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isReviewBlocked",
+            "columnName": "is_review_blocked",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -676,6 +682,7 @@
             "columnNames": [
               "mal_id"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_media_mal_id` ON `${TABLE_NAME}` (`mal_id`)"
           }
         ],
@@ -730,7 +737,7 @@
       },
       {
         "tableName": "airing_schedule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`airing_at` INTEGER NOT NULL, `episode` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `time_until_airing` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`airing_at` INTEGER NOT NULL, `episode` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `time_until_airing` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "airingAt",
@@ -776,6 +783,7 @@
             "columnNames": [
               "media_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_airing_schedule_media_id` ON `${TABLE_NAME}` (`media_id`)"
           }
         ],
@@ -795,17 +803,17 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unread_notifications` INTEGER, `updated_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`updated_at` INTEGER, `created_at` INTEGER, `id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `user_bio` TEXT, `user_site_url` TEXT NOT NULL, `user_donator_tier` INTEGER, `user_donator_badge` TEXT, `user_is_following` INTEGER, `user_is_follower` INTEGER, `user_is_blocked` INTEGER, `cover_large` TEXT, `cover_medium` TEXT, `cover_banner` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "unreadNotification",
-            "columnName": "unread_notifications",
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "updatedAt",
-            "columnName": "updated_at",
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -888,7 +896,17 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_user_user_name",
+            "unique": true,
+            "columnNames": [
+              "user_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_user_name` ON `${TABLE_NAME}` (`user_name`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -928,7 +946,7 @@
       },
       {
         "tableName": "user_general_option",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `airing_notifications` INTEGER NOT NULL, `display_adult_content` INTEGER NOT NULL, `notification_option` TEXT NOT NULL, `title_language` TEXT NOT NULL, `profile_color` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `airing_notifications` INTEGER NOT NULL, `display_adult_content` INTEGER NOT NULL, `notification_option` TEXT NOT NULL, `title_language` TEXT NOT NULL, `profile_color` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -986,6 +1004,7 @@
             "columnNames": [
               "user_id"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_general_option_user_id` ON `${TABLE_NAME}` (`user_id`)"
           }
         ],
@@ -1005,7 +1024,7 @@
       },
       {
         "tableName": "user_media_option",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `score_format` TEXT NOT NULL, `list_row_order` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anime_custom_lists` TEXT NOT NULL, `anime_section_order` TEXT NOT NULL, `anime_advanced_scoring` TEXT NOT NULL, `anime_advanced_scoring_enabled` INTEGER NOT NULL, `anime_split_completed_section_by_format` INTEGER NOT NULL, `manga_custom_lists` TEXT NOT NULL, `manga_section_order` TEXT NOT NULL, `manga_advanced_scoring` TEXT NOT NULL, `manga_advanced_scoring_enabled` INTEGER NOT NULL, `manga_split_completed_section_by_format` INTEGER NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `score_format` TEXT NOT NULL, `list_row_order` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `anime_custom_lists` TEXT NOT NULL, `anime_section_order` TEXT NOT NULL, `anime_advanced_scoring` TEXT NOT NULL, `anime_advanced_scoring_enabled` INTEGER NOT NULL, `anime_split_completed_section_by_format` INTEGER NOT NULL, `manga_custom_lists` TEXT NOT NULL, `manga_section_order` TEXT NOT NULL, `manga_advanced_scoring` TEXT NOT NULL, `manga_advanced_scoring_enabled` INTEGER NOT NULL, `manga_split_completed_section_by_format` INTEGER NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -1105,6 +1124,7 @@
             "columnNames": [
               "user_id"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_media_option_user_id` ON `${TABLE_NAME}` (`user_id`)"
           }
         ],
@@ -1124,7 +1144,7 @@
       },
       {
         "tableName": "user_statistic",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `statistic_anime` TEXT, `statistic_manga` TEXT, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `statistic_anime` TEXT, `statistic_manga` TEXT, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -1164,6 +1184,7 @@
             "columnNames": [
               "user_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_user_statistic_user_id` ON `${TABLE_NAME}` (`user_id`)"
           }
         ],
@@ -1183,23 +1204,11 @@
       },
       {
         "tableName": "media_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `advanced_scores` TEXT NOT NULL, `custom_lists` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_type` TEXT NOT NULL, `completed_at` TEXT, `created_at` INTEGER, `hidden_from_status` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `notes` TEXT, `priority` INTEGER, `hidden` INTEGER NOT NULL, `progress` INTEGER NOT NULL, `progress_volumes` INTEGER NOT NULL, `repeat_count` INTEGER NOT NULL, `score` REAL NOT NULL, `started_at` TEXT, `list_status` TEXT NOT NULL, `updated_at` INTEGER, `user_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "mediaType",
             "columnName": "media_type",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "advancedScores",
-            "columnName": "advanced_scores",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "customLists",
-            "columnName": "custom_lists",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -1277,7 +1286,7 @@
           },
           {
             "fieldPath": "status",
-            "columnName": "status",
+            "columnName": "list_status",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -1291,6 +1300,12 @@
             "fieldPath": "userId",
             "columnName": "user_id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -1595,8 +1610,32 @@
       },
       {
         "tableName": "character",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`age` INTEGER, `date_of_birth` TEXT, `gender` TEXT, `blood_type` TEXT, `description` TEXT, `favourites` INTEGER NOT NULL, `isFavourite` INTEGER NOT NULL, `isFavouriteBlocked` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_alternative_spoiler` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_middle` TEXT, `name_original` TEXT, `name_user_preferred` TEXT, PRIMARY KEY(`id`))",
         "fields": [
+          {
+            "fieldPath": "age",
+            "columnName": "age",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateOfBirth",
+            "columnName": "date_of_birth",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "gender",
+            "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "bloodType",
+            "columnName": "blood_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
           {
             "fieldPath": "description",
             "columnName": "description",
@@ -1616,16 +1655,16 @@
             "notNull": true
           },
           {
+            "fieldPath": "isFavouriteBlocked",
+            "columnName": "isFavouriteBlocked",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "siteUrl",
             "columnName": "site_url",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "updatedAt",
-            "columnName": "updated_at",
-            "affinity": "INTEGER",
-            "notNull": false
           },
           {
             "fieldPath": "id",
@@ -1652,6 +1691,12 @@
             "notNull": false
           },
           {
+            "fieldPath": "name.alternativeSpoiler",
+            "columnName": "name_alternative_spoiler",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "name.first",
             "columnName": "name_first",
             "affinity": "TEXT",
@@ -1670,8 +1715,20 @@
             "notNull": false
           },
           {
+            "fieldPath": "name.middle",
+            "columnName": "name_middle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "name.original",
             "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.userPreferred",
+            "columnName": "name_user_preferred",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -1746,7 +1803,7 @@
       },
       {
         "tableName": "studio",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`favourites` INTEGER NOT NULL, `is_animation_studio` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `name` TEXT NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`favourites` INTEGER NOT NULL, `is_animation_studio` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `is_favourite_blocked` INTEGER NOT NULL, `name` TEXT NOT NULL, `site_url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "favourites",
@@ -1763,6 +1820,12 @@
           {
             "fieldPath": "isFavourite",
             "columnName": "is_favourite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavouriteBlocked",
+            "columnName": "is_favourite_blocked",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -1831,7 +1894,7 @@
       },
       {
         "tableName": "staff",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`description` TEXT, `favourites` INTEGER NOT NULL, `is_favourite` INTEGER NOT NULL, `language` TEXT, `site_url` TEXT NOT NULL, `updated_at` INTEGER, `id` INTEGER NOT NULL, `attribute_age` INTEGER, `attribute_date_of_birth` TEXT, `attribute_date_of_death` TEXT, `attribute_gender` TEXT, `attribute_blood_type` TEXT, `attribute_home_town` TEXT, `attribute_primary_occupations` TEXT, `attribute_year_active_start` INTEGER, `attribute_year_active_end` INTEGER, `image_large` TEXT, `image_medium` TEXT, `name_alternative` TEXT, `name_first` TEXT, `name_full` TEXT, `name_last` TEXT, `name_original` TEXT, `name_user_preferred` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "description",
@@ -1876,6 +1939,60 @@
             "notNull": true
           },
           {
+            "fieldPath": "attribute.age",
+            "columnName": "attribute_age",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.dateOfBirth",
+            "columnName": "attribute_date_of_birth",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.dateOfDeath",
+            "columnName": "attribute_date_of_death",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.gender",
+            "columnName": "attribute_gender",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.bloodType",
+            "columnName": "attribute_blood_type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.homeTown",
+            "columnName": "attribute_home_town",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.primaryOccupations",
+            "columnName": "attribute_primary_occupations",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.yearActiveStart",
+            "columnName": "attribute_year_active_start",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attribute.yearActiveEnd",
+            "columnName": "attribute_year_active_end",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
             "fieldPath": "image.large",
             "columnName": "image_large",
             "affinity": "TEXT",
@@ -1914,6 +2031,12 @@
           {
             "fieldPath": "name.original",
             "columnName": "name_original",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name.userPreferred",
+            "columnName": "name_user_preferred",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -1988,13 +2111,55 @@
       },
       {
         "tableName": "link",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `site` TEXT NOT NULL, `url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `color` TEXT, `icon` TEXT, `is_disabled` INTEGER, `language` TEXT, `notes` TEXT, `site_id` INTEGER, `link_type` TEXT, `site` TEXT NOT NULL, `url` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "mediaId",
             "columnName": "media_id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isDisabled",
+            "columnName": "is_disabled",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "siteId",
+            "columnName": "site_id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "linkType",
+            "columnName": "link_type",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "site",
@@ -2028,6 +2193,7 @@
             "columnNames": [
               "media_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_link_media_id` ON `${TABLE_NAME}` (`media_id`)"
           }
         ],
@@ -2047,7 +2213,7 @@
       },
       {
         "tableName": "rank",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `all_time` INTEGER, `context` TEXT NOT NULL, `format` TEXT NOT NULL, `rank` INTEGER NOT NULL, `season` TEXT, `type` TEXT NOT NULL, `year` INTEGER, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `all_time` INTEGER, `context` TEXT NOT NULL, `format` TEXT NOT NULL, `rank` INTEGER NOT NULL, `season` TEXT, `type` TEXT NOT NULL, `year` INTEGER, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "mediaId",
@@ -2117,6 +2283,7 @@
             "columnNames": [
               "media_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_rank_media_id` ON `${TABLE_NAME}` (`media_id`)"
           }
         ],
@@ -2288,7 +2455,7 @@
       },
       {
         "tableName": "jikan_studio",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "jikanId",
@@ -2328,6 +2495,7 @@
             "columnNames": [
               "jikan_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_studio_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
           }
         ],
@@ -2347,7 +2515,7 @@
       },
       {
         "tableName": "jikan_licensor",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "jikanId",
@@ -2387,6 +2555,7 @@
             "columnNames": [
               "jikan_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_licensor_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
           }
         ],
@@ -2406,7 +2575,7 @@
       },
       {
         "tableName": "jikan_producer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "jikanId",
@@ -2446,6 +2615,7 @@
             "columnNames": [
               "jikan_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_producer_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
           }
         ],
@@ -2465,7 +2635,7 @@
       },
       {
         "tableName": "jikan_author",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`jikan_id` INTEGER NOT NULL, `type` TEXT, `name` TEXT, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`jikan_id`) REFERENCES `jikan`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "jikanId",
@@ -2505,6 +2675,7 @@
             "columnNames": [
               "jikan_id"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_jikan_author_jikan_id` ON `${TABLE_NAME}` (`jikan_id`)"
           }
         ],
@@ -2521,21 +2692,448 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "custom_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`enabled` INTEGER NOT NULL, `list_name` TEXT NOT NULL, `media_list_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_list_id`) REFERENCES `media_list`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "enabled",
+            "columnName": "enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "listName",
+            "columnName": "list_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaListId",
+            "columnName": "media_list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_custom_list_media_list_id_list_name_user_id_user_name",
+            "unique": true,
+            "columnNames": [
+              "media_list_id",
+              "list_name",
+              "user_id",
+              "user_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_list_media_list_id_list_name_user_id_user_name` ON `${TABLE_NAME}` (`media_list_id`, `list_name`, `user_id`, `user_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media_list",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_list_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "custom_score",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`score` REAL NOT NULL, `score_name` TEXT NOT NULL, `media_list_id` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `user_name` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`media_list_id`) REFERENCES `media_list`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "score",
+            "columnName": "score",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scoreName",
+            "columnName": "score_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaListId",
+            "columnName": "media_list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "user_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_custom_score_media_list_id_score_name_user_id_user_name",
+            "unique": true,
+            "columnNames": [
+              "media_list_id",
+              "score_name",
+              "user_id",
+              "user_name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_custom_score_media_list_id_score_name_user_id_user_name` ON `${TABLE_NAME}` (`media_list_id`, `score_name`, `user_id`, `user_name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media_list",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_list_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "user_previous_name",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `name` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_previous_name_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_previous_name_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "review",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`body` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `media_id` INTEGER NOT NULL, `is_private` INTEGER NOT NULL, `rating` INTEGER NOT NULL, `rating_amount` INTEGER NOT NULL, `score` INTEGER NOT NULL, `site_url` TEXT NOT NULL, `summary` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, `user_id` INTEGER NOT NULL, `user_rating` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "body",
+            "columnName": "body",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "media_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isPrivate",
+            "columnName": "is_private",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ratingAmount",
+            "columnName": "rating_amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "score",
+            "columnName": "score",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "siteUrl",
+            "columnName": "site_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "summary",
+            "columnName": "summary",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userRating",
+            "columnName": "user_rating",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_review_media_id_user_id",
+            "unique": false,
+            "columnNames": [
+              "media_id",
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_media_id_user_id` ON `${TABLE_NAME}` (`media_id`, `user_id`)"
+          },
+          {
+            "name": "index_review_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "media",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "media_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "user",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "user_notification",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `unread_notifications` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unreadNotifications",
+            "columnName": "unread_notifications",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_user_notification_user_id",
+            "unique": true,
+            "columnNames": [
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_notification_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "user",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [
       {
-        "viewName": "view_tag_extended",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select t.*, c.is_media_spoiler, c.rank, c.media_id \n            from tag t\n            inner join tag_connection c \n            on t.id = c.tag_id"
+        "viewName": "media_list_count",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select count(media_list.id) as list_count, media_list.media_type, media_list.list_status, media_list.user_id\n        from media_list\n        group by media_list.user_id, media_list.media_type, media_list.list_status"
       },
       {
-        "viewName": "view_genre_extended",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select g.*, c.media_id \n            from genre g\n            inner join genre_connection c\n            on g.genre = c.genre"
+        "viewName": "custom_list_count",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select count(custom_list.id) as list_count, media_list.media_type, custom_list.user_id, custom_list.list_name\n        from custom_list\n        inner join media_list on media_list.id = custom_list.media_list_id\n        where custom_list.enabled = 1\n        group by custom_list.user_id, media_list.media_type, custom_list.list_name"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0224ad9a989f7fa8bce759bada6b651b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '888af5b5dad13d5d48f69f9b416442cb')"
     ]
   }
 }

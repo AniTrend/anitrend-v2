@@ -58,6 +58,7 @@ internal data class MediaEntity(
     @ColumnInfo(name = "is_favourite_blocked") val isFavouriteBlocked: Boolean,
     @ColumnInfo(name = "is_licensed") val isLicensed: Boolean?,
     @ColumnInfo(name = "is_recommendation_blocked") val isRecommendationBlocked: Boolean,
+    @ColumnInfo(name = "is_review_blocked") val isReviewBlocked: Boolean,
     @ColumnInfo(name = "is_locked") val isLocked: Boolean?,
     @ColumnInfo(name = "mean_score") val meanScore: Int?,
     @ColumnInfo(name = "popularity") val popularity: Int?,

@@ -27,11 +27,5 @@ dependencies {
     implementation(Libraries.Google.Material.material)
 
     implementation(Libraries.AniTrend.Emojify.emojify)
-
-    /** debugImplementation because LeakCanary should only run in debug builds. */
-    debugImplementation(Libraries.Square.LeakCanary.leakCanary)
-
-    /** debugImplementation because debug-db should only run in debug builds */
-    debugImplementation(Libraries.debugDb)
 }
 

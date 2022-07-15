@@ -17,7 +17,16 @@
 
 package co.anitrend.domain.media.entity.attribute.link
 
+import co.anitrend.domain.media.enums.ExternalLinkType
+
 data class MediaExternalLink(
+    override val color: CharSequence?,
+    override val icon: CharSequence?,
+    override val isDisabled: Boolean?,
+    override val language: CharSequence?,
+    override val notes: CharSequence?,
+    override val siteId: Int?,
+    override val linkType: ExternalLinkType?,
     override val site: CharSequence,
     override val url: CharSequence,
     override val id: Long

@@ -44,7 +44,6 @@ import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
-import java.util.*
 
 internal class MediaConverter(
     override val fromType: (MediaModel) -> Media = ::transform,
@@ -118,6 +117,13 @@ internal class MediaConverter(
                 description = source.description,
                 externalLinks = source.externalLinks.map {
                     MediaExternalLink(
+                        color = it.color,
+                        icon = it.icon,
+                        isDisabled = it.isDisabled,
+                        language = it.language,
+                        notes = it.notes,
+                        siteId = it.siteId,
+                        linkType = it.linkType,
                         site = it.site,
                         url = it.url,
                         id = it.id,
@@ -134,6 +140,7 @@ internal class MediaConverter(
                 },
                 twitterTag = source.hashTag,
                 isRecommendationBlocked = false,
+                isReviewBlocked = false,
                 rankings = source.rankings.map {
                     MediaRank(
                         allTime = it.allTime,
@@ -227,6 +234,13 @@ internal class MediaConverter(
                 description = source.description,
                 externalLinks = source.externalLinks.map {
                     MediaExternalLink(
+                        color = it.color,
+                        icon = it.icon,
+                        isDisabled = it.isDisabled,
+                        language = it.language,
+                        notes = it.notes,
+                        siteId = it.siteId,
+                        linkType = it.linkType,
                         site = it.site,
                         url = it.url,
                         id = it.id,
@@ -243,6 +257,7 @@ internal class MediaConverter(
                 },
                 twitterTag = source.hashTag,
                 isRecommendationBlocked = false,
+                isReviewBlocked = false,
                 rankings = source.rankings.map {
                     MediaRank(
                         allTime = it.allTime,
@@ -341,6 +356,13 @@ internal class MediaConverter(
                 description = source.description,
                 externalLinks = source.externalLinks.map {
                     MediaExternalLink(
+                        color = it.color,
+                        icon = it.icon,
+                        isDisabled = it.isDisabled,
+                        language = it.language,
+                        notes = it.notes,
+                        siteId = it.siteId,
+                        linkType = it.linkType,
                         site = it.site,
                         url = it.url,
                         id = it.id,
@@ -359,6 +381,7 @@ internal class MediaConverter(
                 isLicensed = source.isLicensed,
                 isLocked = source.isLocked,
                 isRecommendationBlocked = false,
+                isReviewBlocked = false,
                 rankings = source.rankings.map {
                     MediaRank(
                         allTime = it.allTime,
@@ -485,6 +508,7 @@ internal class MediaModelConverter(
             isFavouriteBlocked = source.isFavouriteBlocked,
             isLicensed = source.isLicensed,
             isRecommendationBlocked = source.isRecommendationBlocked,
+            isReviewBlocked = source.isReviewBlocked,
             isLocked = source.isLocked,
             meanScore = source.meanScore,
             popularity = source.popularity,
@@ -527,6 +551,13 @@ internal class MediaEntityViewConverter(
                 description = media.description ?: jikan?.synopsis,
                 externalLinks = links.map {
                     MediaExternalLink(
+                        color = it.color,
+                        icon = it.icon,
+                        isDisabled = it.isDisabled,
+                        language = it.language,
+                        notes = it.notes,
+                        siteId = it.siteId,
+                        linkType = it.linkType,
                         site = it.site,
                         url = it.url,
                         id = it.id
@@ -545,6 +576,7 @@ internal class MediaEntityViewConverter(
                 isLicensed = media.isLicensed,
                 isLocked = media.isLocked,
                 isRecommendationBlocked = media.isRecommendationBlocked,
+                isReviewBlocked = media.isReviewBlocked,
                 rankings = ranks.map {
                     MediaRank(
                         allTime = it.allTime,
@@ -568,9 +600,7 @@ internal class MediaEntityViewConverter(
                     }.getOrNull()
                 },
                 synonyms = media.synonyms.let {
-                    if (it.isEmpty())
-                        jikan?.title?.synonyms.orEmpty()
-                    else it
+                    it.ifEmpty { jikan?.title?.synonyms.orEmpty() }
                 },
                 tags = tags.map {
                     Tag.Extended(
@@ -660,6 +690,7 @@ internal class MediaEntityViewConverter(
                     isLicensed = media.isLicensed,
                     isLocked = media.isLocked,
                     isRecommendationBlocked = media.isRecommendationBlocked,
+                    isReviewBlocked = media.isReviewBlocked,
                     rankings = media.rankings,
                     siteUrl = media.siteUrl,
                     source = media.source,

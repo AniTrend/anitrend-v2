@@ -36,6 +36,8 @@ query GetMediaPaged(
     $id_not_in: [Int],
     $isAdult: Boolean,
     $licensedBy: String,
+    $licensedById: Int,
+    $licensedById_in: [Int],
     $licensedBy_in: [String],
     $minimumTagRank: Int,
     $onList: Boolean,
@@ -109,6 +111,8 @@ query GetMediaPaged(
             id_not_in: $id_not_in,
             isAdult: $isAdult,
             licensedBy: $licensedBy,
+            licensedById: $licensedById
+            licensedById_in: $licensedById_in
             licensedBy_in: $licensedBy_in,
             minimumTagRank: $minimumTagRank,
             onList: $onList,

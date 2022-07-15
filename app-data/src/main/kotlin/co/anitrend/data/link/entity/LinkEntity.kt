@@ -21,8 +21,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.core.common.Identity
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.domain.media.enums.ExternalLinkType
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
@@ -42,6 +43,13 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 @EntitySchema
 internal data class LinkEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
+    @ColumnInfo(name = "color") val color: String?,
+    @ColumnInfo(name = "icon") val icon: String?,
+    @ColumnInfo(name = "is_disabled") val isDisabled: Boolean?,
+    @ColumnInfo(name = "language") val language: String?,
+    @ColumnInfo(name = "notes") val notes: String?,
+    @ColumnInfo(name = "site_id") val siteId: Int?,
+    @ColumnInfo(name = "link_type") val linkType: ExternalLinkType?,
     @ColumnInfo(name = "site") val site: String,
     @ColumnInfo(name = "url") val url: String,
     @ColumnInfo(name = "id") override val id: Long

@@ -18,6 +18,7 @@
 package co.anitrend.domain.media.entity.attribute.link
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.media.enums.ExternalLinkType
 
 
 /** [MediaExternalLink](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaexternallink.doc.html)
@@ -27,6 +28,13 @@ import co.anitrend.domain.common.entity.contract.IEntity
  * @property url The url of the external link
  */
 interface IMediaExternalLink : IEntity {
+    val color: CharSequence?
+    val icon: CharSequence?
+    val isDisabled: Boolean?
+    val language: CharSequence?
+    val notes: CharSequence?
+    val siteId: Int?
+    val linkType: ExternalLinkType?
     val site: CharSequence
     val url: CharSequence
 }

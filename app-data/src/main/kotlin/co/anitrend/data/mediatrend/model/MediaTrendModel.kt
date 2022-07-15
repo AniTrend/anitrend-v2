@@ -30,12 +30,12 @@ internal sealed class MediaTrendModel : IMediaTrendModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("averageScore") override val averageScore: Int?,
+        @SerialName("averageScore") override val averageScore: Int? = null,
         @SerialName("date") override val date: Long,
-        @SerialName("episode") override val episode: Int?,
-        @SerialName("inProgress") override val inProgress: Int?,
+        @SerialName("episode") override val episode: Int? = null,
+        @SerialName("inProgress") override val inProgress: Int? = null,
         @SerialName("mediaId") override val mediaId: Long,
-        @SerialName("popularity") override val popularity: Int?,
+        @SerialName("popularity") override val popularity: Int? = null,
         @SerialName("releasing") override val releasing: Boolean,
         @SerialName("trending") override val trending: Int
     ) : MediaTrendModel()
@@ -43,12 +43,12 @@ internal sealed class MediaTrendModel : IMediaTrendModel {
     @Serializable
     internal data class Extended(
         @SerialName("media") val media: MediaModel.Core,
-        @SerialName("averageScore") override val averageScore: Int?,
+        @SerialName("averageScore") override val averageScore: Int? = null,
         @SerialName("date") override val date: Long,
-        @SerialName("episode") override val episode: Int?,
-        @SerialName("inProgress") override val inProgress: Int?,
+        @SerialName("episode") override val episode: Int? = null,
+        @SerialName("inProgress") override val inProgress: Int? = null,
         @SerialName("mediaId") override val mediaId: Long,
-        @SerialName("popularity") override val popularity: Int?,
+        @SerialName("popularity") override val popularity: Int? = null,
         @SerialName("releasing") override val releasing: Boolean,
         @SerialName("trending") override val trending: Int
     ) : MediaTrendModel()

@@ -15,10 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer.extensions
+package co.anitrend.domain.media.enums
 
-import android.content.Context
+import co.anitrend.domain.common.enums.contract.IAliasable
 
-internal fun Context.configureApplication() {
-
+enum class ExternalLinkType(override val alias: CharSequence) : IAliasable {
+    INFO("Info"),
+    SOCIAL("Social"),
+    STREAMING("Streaming"),
 }

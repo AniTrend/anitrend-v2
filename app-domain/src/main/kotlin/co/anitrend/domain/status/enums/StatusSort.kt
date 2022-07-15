@@ -24,5 +24,6 @@ import co.anitrend.domain.common.enums.contract.ISortable
  * Activity sort enums
  */
 enum class StatusSort(override val alias: CharSequence) : IAliasable, ISortable {
-    ID("Id")
+    ID("Id"),
+    PINNED("Pinned")
 }

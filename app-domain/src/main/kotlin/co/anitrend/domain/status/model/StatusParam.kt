@@ -17,11 +17,21 @@
 
 package co.anitrend.domain.status.model
 
+import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.status.enums.StatusSort
 import co.anitrend.domain.status.enums.StatusType
-import co.anitrend.domain.common.DateInt
 
 sealed class StatusParam {
+
+    /** [ToggleActivityPin mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
+     *
+     * @param id Toggle activity id to be pinned
+     * @param pinned If the activity should be pinned or unpinned
+     */
+    data class TogglePin(
+        val id: Int,
+        val pinned: Boolean
+    )
 
     /** [SaveTextActivity mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *

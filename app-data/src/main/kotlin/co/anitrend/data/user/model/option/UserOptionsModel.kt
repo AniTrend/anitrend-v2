@@ -17,6 +17,7 @@
 
 package co.anitrend.data.user.model.option
 
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.enums.UserTitleLanguage
 import kotlinx.serialization.SerialName
@@ -31,15 +32,19 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class UserOptionsModel {
+    abstract val disabledListActivity: List<ListActivityOption>?
+    abstract val restrictMessagesToFollowing: Boolean?
     abstract val displayAdultContent: Boolean?
     abstract val profileColor: String?
     abstract val titleLanguage: UserTitleLanguage?
 
     @Serializable
     data class Core(
-        @SerialName("displayAdultContent") override val displayAdultContent: Boolean?,
-        @SerialName("profileColor") override val profileColor: String?,
-        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage?,
+        @SerialName("disabledListActivity") override val disabledListActivity: List<ListActivityOption>? = null,
+        @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean? = null,
+        @SerialName("displayAdultContent") override val displayAdultContent: Boolean? = null,
+        @SerialName("profileColor") override val profileColor: String? = null,
+        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage? = null,
     ) : UserOptionsModel()
 
     /**
@@ -49,12 +54,14 @@ internal sealed class UserOptionsModel {
      */
     @Serializable
     data class Viewer(
-        @SerialName("airingNotifications") val airingNotifications: Boolean?,
-        @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>?,
-        @SerialName("timezone") val timeZone: String?,
-        @SerialName("displayAdultContent") override val displayAdultContent: Boolean?,
-        @SerialName("profileColor") override val profileColor: String?,
-        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage?,
+        @SerialName("disabledListActivity") override val disabledListActivity: List<ListActivityOption>? = null,
+        @SerialName("airingNotifications") val airingNotifications: Boolean? = null,
+        @SerialName("notificationOptions") val notificationOptions: List<NotificationOptions>? = null,
+        @SerialName("timezone") val timeZone: String? = null,
+        @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean? = null,
+        @SerialName("displayAdultContent") override val displayAdultContent: Boolean? = null,
+        @SerialName("profileColor") override val profileColor: String? = null,
+        @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage? = null,
     ) : UserOptionsModel()
 
     /**
@@ -65,5 +72,15 @@ internal sealed class UserOptionsModel {
     internal data class NotificationOptions(
         @SerialName("enabled") val enabled: Boolean,
         @SerialName("type") val notificationType: NotificationType
+    )
+
+    /**
+     * @param enabled Whether this type of media list is enabled
+     * @param statusType The type of media list status
+     */
+    @Serializable
+    internal data class ListActivityOption(
+        @SerialName("disabled") val disabled: Boolean,
+        @SerialName("type") val mediaListStatusType: MediaListStatus
     )
 }

@@ -102,6 +102,8 @@ sealed class MediaParam {
      * @param sort The order the results will be returned in
      * @param countryOfOrigin Filter by the media's country of origin
      * @param licensedBy Filter media by sites with a online streaming or reading license
+     * @param licensedById Filter media by sites id with a online streaming or reading license
+     * @param licensedById_in Filter media by sites id with a online streaming or reading license
      * @param licensedBy_in Filter media by sites with a online streaming or reading license
      * @param minimumTagRank Only apply the tags filter argument to tags above this rank. Default: 18
      * @param source Filter by the source type of the media
@@ -143,6 +145,8 @@ sealed class MediaParam {
         var id_not_in: List<Long>? = null,
         var isAdult: Boolean? = null,
         var licensedBy: MediaLicensor? = null,
+        var licensedById: Int? = null,
+        var licensedById_in: List<Int>? = null,
         var licensedBy_in: List<MediaLicensor>? = null,
         var minimumTagRank: Int? = null,
         var onList: Boolean? = null,

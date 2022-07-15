@@ -47,6 +47,7 @@ sealed class Media : IMedia {
     abstract val isLicensed: Boolean?
     abstract val isLocked: Boolean?
     abstract val isRecommendationBlocked: Boolean
+    abstract val isReviewBlocked: Boolean
     abstract val siteUrl: CharSequence?
     abstract val source: MediaSource?
     abstract val synonyms: Collection<CharSequence>
@@ -134,6 +135,7 @@ sealed class Media : IMedia {
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
         override val isRecommendationBlocked: Boolean,
+        override val isReviewBlocked: Boolean,
         override val siteUrl: CharSequence?,
         override val source: MediaSource?,
         override val synonyms: Collection<CharSequence>,
@@ -152,6 +154,7 @@ sealed class Media : IMedia {
                 isLicensed = null,
                 isLocked = null,
                 isRecommendationBlocked = false,
+                isReviewBlocked = false,
                 siteUrl = null,
                 source = null,
                 synonyms = emptyList(),
@@ -210,6 +213,7 @@ sealed class Media : IMedia {
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
         override val isRecommendationBlocked: Boolean,
+        override val isReviewBlocked: Boolean,
         override val siteUrl: CharSequence?,
         override val source: MediaSource?,
         override val synonyms: Collection<CharSequence>,
@@ -233,6 +237,7 @@ sealed class Media : IMedia {
                 isLicensed = null,
                 isLocked = null,
                 isRecommendationBlocked = false,
+                isReviewBlocked = false,
                 rankings = emptyList(),
                 siteUrl = null,
                 source = null,

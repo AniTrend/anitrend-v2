@@ -47,29 +47,29 @@ internal sealed class StaffModel : IStaffModel {
      */
     @Serializable
     internal data class ActorRole(
-        @SerialName("dubGroup") val dubGroup: String?,
-        @SerialName("roleNotes") val roleNotes: String?,
+        @SerialName("dubGroup") val dubGroup: String? = null,
+        @SerialName("roleNotes") val roleNotes: String? = null,
         @SerialName("voiceActor") val voiceActor: Core
     )
 
     @Serializable
     internal data class Core(
-        @SerialName("age") override val age: Int?,
-        @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel?,
-        @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel?,
-        @SerialName("gender") override val gender: String?,
-        @SerialName("homeTown") override val homeTown: String?,
-        @SerialName("bloodType") override val bloodType: String?,
-        @SerialName("primaryOccupations") override val primaryOccupations: List<String>?,
+        @SerialName("age") override val age: Int? = null,
+        @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
+        @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel? = null,
+        @SerialName("gender") override val gender: String? = null,
+        @SerialName("homeTown") override val homeTown: String? = null,
+        @SerialName("bloodType") override val bloodType: String? = null,
+        @SerialName("primaryOccupations") override val primaryOccupations: List<String>? = null,
         @SerialName("yearsActive") override val yearsActive: List<Int>,
-        @SerialName("description") override val description: String?,
+        @SerialName("description") override val description: String? = null,
         @SerialName("favourites") override val favourites: Int,
-        @SerialName("image") override val image: SharedImageModel?,
+        @SerialName("image") override val image: SharedImageModel? = null,
         @SerialName("isFavourite") override val isFavourite: Boolean,
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
-        @SerialName("languageV2") override val language: StaffLanguage?,
-        @SerialName("name") override val name: SharedNameModel?,
-        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("languageV2") override val language: StaffLanguage? = null,
+        @SerialName("name") override val name: SharedNameModel? = null,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
         @SerialName("id") override val id: Long
     ) : StaffModel()
 
@@ -79,24 +79,24 @@ internal sealed class StaffModel : IStaffModel {
      */
     @Serializable
     internal data class Extended(
-        @SerialName("character") val character: CharacterConnection?,
-        @SerialName("staffMedia") val staffMedia: MediaConnection?,
-        @SerialName("age") override val age: Int?,
-        @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel?,
-        @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel?,
-        @SerialName("gender") override val gender: String?,
-        @SerialName("homeTown") override val homeTown: String?,
-        @SerialName("bloodType") override val bloodType: String?,
-        @SerialName("primaryOccupations") override val primaryOccupations: List<String>?,
+        @SerialName("character") val character: CharacterConnection? = null,
+        @SerialName("staffMedia") val staffMedia: MediaConnection? = null,
+        @SerialName("age") override val age: Int? = null,
+        @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
+        @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel? = null,
+        @SerialName("gender") override val gender: String? = null,
+        @SerialName("homeTown") override val homeTown: String? = null,
+        @SerialName("bloodType") override val bloodType: String? = null,
+        @SerialName("primaryOccupations") override val primaryOccupations: List<String>? = null,
         @SerialName("yearsActive") override val yearsActive: List<Int>,
-        @SerialName("description") override val description: String?,
+        @SerialName("description") override val description: String? = null,
         @SerialName("favourites") override val favourites: Int,
-        @SerialName("image") override val image: SharedImageModel?,
+        @SerialName("image") override val image: SharedImageModel? = null,
         @SerialName("isFavourite") override val isFavourite: Boolean,
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
-        @SerialName("languageV2") override val language: StaffLanguage?,
-        @SerialName("name") override val name: SharedNameModel?,
-        @SerialName("siteUrl") override val siteUrl: String?,
+        @SerialName("languageV2") override val language: StaffLanguage? = null,
+        @SerialName("name") override val name: SharedNameModel? = null,
+        @SerialName("siteUrl") override val siteUrl: String? = null,
         @SerialName("id") override val id: Long
     ) : StaffModel()
 }

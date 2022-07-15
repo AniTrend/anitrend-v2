@@ -38,7 +38,7 @@ class DeviceInfo(context: Context) : IDeviceInfo {
         val applicationInfo = context.applicationInfo
 
         val applicationName = when (val applicationLabelResource = applicationInfo.labelRes) {
-            0 -> applicationInfo.nonLocalizedLabel.toString()
+            0x0 -> applicationInfo.nonLocalizedLabel.toString()
             else -> context.getString(applicationLabelResource)
         }
 

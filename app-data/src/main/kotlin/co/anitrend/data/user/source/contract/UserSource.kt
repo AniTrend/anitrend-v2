@@ -83,16 +83,18 @@ internal class UserSource {
         protected abstract suspend fun getProfile(callback: RequestCallback): Boolean
 
         operator fun invoke(): Flow<User> {
-            require(query.isUserIdValid()) {
-                "User id for supplied query is invalid"
+            if (settings.isAuthenticated.value) {
+                require(query.isUserIdValid()) {
+                    "User id for supplied query is invalid"
+                }
+                cacheIdentity = UserCache.Viewer.Identity(query.param.id)
+                cachePolicy(
+                    scope = scope,
+                    requestHelper = requestHelper,
+                    cacheIdentity = cacheIdentity,
+                    block = ::getProfile
+                )
             }
-            cacheIdentity = UserCache.Viewer.Identity(query.param.id)
-            cachePolicy(
-                scope = scope,
-                requestHelper = requestHelper,
-                cacheIdentity = cacheIdentity,
-                block = ::getProfile
-            )
             return observable()
         }
     }

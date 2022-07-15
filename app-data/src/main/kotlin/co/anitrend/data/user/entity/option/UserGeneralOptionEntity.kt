@@ -20,6 +20,7 @@ package co.anitrend.data.user.entity.option
 import androidx.room.*
 import co.anitrend.data.core.common.Identity
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.enums.UserTitleLanguage
 import kotlinx.serialization.SerialName
@@ -57,5 +58,11 @@ internal data class UserGeneralOptionEntity(
     data class NotificationOption(
         @SerialName("enabled") val enabled: Boolean,
         @SerialName("notification_type") val notificationType: NotificationType
+    )
+
+    @Serializable
+    internal data class ListActivityOption(
+        @SerialName("disabled") val disabled: Boolean,
+        @SerialName("media_list_status_type") val statusType: MediaListStatus
     )
 }

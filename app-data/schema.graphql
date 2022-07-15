@@ -264,7 +264,7 @@ type Character {
     name: CharacterName
     "The url for the character page on the AniList website"
     siteUrl: String
-    updatedAt: Int @deprecated(reason : "No data available")
+    updatedAt: Int @deprecated(reason: "No data available")
 }
 
 type CharacterConnection {
@@ -665,9 +665,13 @@ type InternalPage {
         isAdult: Boolean,
         "If the media is officially licensed or a self-published doujin release"
         isLicensed: Boolean,
-        "Filter media by sites with a online streaming or reading license"
+        "Filter media by sites name with a online streaming or reading license"
         licensedBy: String,
-        "Filter media by sites with a online streaming or reading license"
+        "Filter media by sites id with a online streaming or reading license"
+        licensedById: Int,
+        "Filter media by sites id with a online streaming or reading license"
+        licensedById_in: [Int],
+        "Filter media by sites name with a online streaming or reading license"
         licensedBy_in: [String],
         "Only apply the tags filter argument to tags above this rank. Default: 18"
         minimumTagRank: Int,
@@ -999,6 +1003,8 @@ type ListActivity {
     isLiked: Boolean
     "If the activity is locked and can receive replies"
     isLocked: Boolean
+    "If the activity is pinned to the top of the users activity feed"
+    isPinned: Boolean
     "If the currently authenticated user is subscribed to the activity"
     isSubscribed: Boolean
     "The amount of likes the activity has"
@@ -1023,6 +1029,11 @@ type ListActivity {
     user: User
     "The user id of the activity's creator"
     userId: Int
+}
+
+type ListActivityOption {
+    disabled: Boolean
+    type: MediaListStatus
 }
 
 "User's list score statistics"
@@ -1100,6 +1111,8 @@ type Media {
     isLocked: Boolean
     "If the media is blocked from being recommended to/from"
     isRecommendationBlocked: Boolean
+    "If the media is blocked from being reviewed"
+    isReviewBlocked: Boolean
     "Mean score of all the user's scores of the media"
     meanScore: Int
     "The authenticated user's media list entry for the media"
@@ -1292,14 +1305,24 @@ type MediaEdge {
     voiceActors(language: StaffLanguage, sort: [StaffSort]): [Staff]
 }
 
-"An external link to another site related to the media"
+"An external link to another site related to the media or staff member"
 type MediaExternalLink {
+    color: String
+    "The icon image url of the site. Not available for all links. Transparent PNG 64x64"
+    icon: String
     "The id of the external link"
     id: Int!
-    "The site location of the external link"
+    isDisabled: Boolean
+    "Language the site content is in. See Staff language field for values."
+    language: String
+    notes: String
+    "The links website site name"
     site: String!
-    "The url of the external link"
-    url: String!
+    "The links website site id"
+    siteId: Int
+    type: ExternalLinkType
+    "The url of the external link or base url of link source"
+    url: String
 }
 
 "List of anime or manga"
@@ -1353,13 +1376,13 @@ type MediaList {
 "List of anime or manga"
 type MediaListCollection {
     "A map of media list entry arrays grouped by custom lists"
-    customLists(asArray: Boolean): [[MediaList]] @deprecated(reason : "Not GraphQL spec compliant, use lists field instead.")
+    customLists(asArray: Boolean): [[MediaList]] @deprecated(reason: "Not GraphQL spec compliant, use lists field instead.")
     "If there is another chunk"
     hasNextChunk: Boolean
     "Grouped media list entries"
     lists: [MediaListGroup]
     "A map of media list entry arrays grouped by status"
-    statusLists(asArray: Boolean): [[MediaList]] @deprecated(reason : "Not GraphQL spec compliant, use lists field instead.")
+    statusLists(asArray: Boolean): [[MediaList]] @deprecated(reason: "Not GraphQL spec compliant, use lists field instead.")
     "The owner of the list"
     user: User
 }
@@ -1385,10 +1408,10 @@ type MediaListOptions {
     "The score format the user is using for media lists"
     scoreFormat: ScoreFormat
     "The list theme options for both lists"
-    sharedTheme: Json @deprecated(reason : "No longer used")
+    sharedTheme: Json @deprecated(reason: "No longer used")
     "If the shared theme should be used instead of the individual list themes"
-    sharedThemeEnabled: Boolean @deprecated(reason : "No longer used")
-    useLegacyLists: Boolean @deprecated(reason : "No longer used")
+    sharedThemeEnabled: Boolean @deprecated(reason: "No longer used")
+    useLegacyLists: Boolean @deprecated(reason: "No longer used")
 }
 
 "A user's list options for anime or manga lists"
@@ -1404,7 +1427,7 @@ type MediaListTypeOptions {
     "If the completed sections of the list should be separated by format"
     splitCompletedSectionByFormat: Boolean
     "The list theme options"
-    theme: Json @deprecated(reason : "This field has not yet been fully implemented and may change without warning")
+    theme: Json @deprecated(reason: "This field has not yet been fully implemented and may change without warning")
 }
 
 "Notification for when a media entry is merged into another for a user who had it on their list"
@@ -1449,7 +1472,7 @@ type MediaRank {
 
 "A media's statistics"
 type MediaStats {
-    airingProgression: [AiringProgression] @deprecated(reason : "Replaced by MediaTrends")
+    airingProgression: [AiringProgression] @deprecated(reason: "Replaced by MediaTrends")
     scoreDistribution: [ScoreDistribution]
     statusDistribution: [StatusDistribution]
 }
@@ -1473,7 +1496,7 @@ type MediaSubmission {
     changes: [String]
     characters: [MediaSubmissionComparison]
     createdAt: Int
-    externalLinks: [MediaExternalLink]
+    externalLinks: [MediaSubmissionComparison]
     "The id of the submission"
     id: Int!
     "Whether the submission is locked"
@@ -1495,6 +1518,7 @@ type MediaSubmission {
 "Media submission with comparison to current data"
 type MediaSubmissionComparison {
     character: MediaCharacter
+    externalLink: MediaExternalLink
     staff: StaffEdge
     studio: StudioEdge
     submission: MediaSubmissionEdge
@@ -1506,6 +1530,7 @@ type MediaSubmissionEdge {
     characterRole: CharacterRole
     characterSubmission: Character
     dubGroup: String
+    externalLink: MediaExternalLink
     "The id of the direct submission"
     id: Int
     isMain: Boolean
@@ -1826,6 +1851,13 @@ type Mutation {
         "The id of thread the comment belongs to"
         threadId: Int
     ): ThreadComment
+    "Toggle activity to be pinned to the top of the user's activity feed"
+    ToggleActivityPin(
+        "Toggle activity id to be pinned"
+        id: Int,
+        "If the activity should be pinned or unpinned"
+        pinned: Boolean
+    ): ActivityUnion
     "Toggle the subscription of an activity item"
     ToggleActivitySubscription(
         "The id of the activity to un/subscribe"
@@ -1941,6 +1973,7 @@ type Mutation {
         airingNotifications: Boolean,
         "The user's anime list options"
         animeListOptions: MediaListOptionsInput,
+        disabledListActivity: [ListActivityOptionInput],
         "If the user should see media marked as adult-only"
         displayAdultContent: Boolean,
         "Profile highlight color"
@@ -1951,6 +1984,8 @@ type Mutation {
         notificationOptions: [NotificationOptionInput],
         "Profile highlight color"
         profileColor: String,
+        "Only allow messages from other users the user follows"
+        restrictMessagesToFollowing: Boolean,
         "The user's default list order"
         rowOrder: String,
         "The user's list scoring system"
@@ -2181,9 +2216,13 @@ type Page {
         isAdult: Boolean,
         "If the media is officially licensed or a self-published doujin release"
         isLicensed: Boolean,
-        "Filter media by sites with a online streaming or reading license"
+        "Filter media by sites name with a online streaming or reading license"
         licensedBy: String,
-        "Filter media by sites with a online streaming or reading license"
+        "Filter media by sites id with a online streaming or reading license"
+        licensedById: Int,
+        "Filter media by sites id with a online streaming or reading license"
+        licensedById_in: [Int],
+        "Filter media by sites name with a online streaming or reading license"
         licensedBy_in: [String],
         "Only apply the tags filter argument to tags above this rank. Default: 18"
         minimumTagRank: Int,
@@ -2475,7 +2514,7 @@ type PageInfo {
     lastPage: Int
     "The count on a page"
     perPage: Int
-    "The total number of items"
+    "The total number of items. Note: This value is not guaranteed to be accurate, do not rely on this for logic"
     total: Int
 }
 
@@ -2609,6 +2648,13 @@ type Query {
         "The order the results will be returned in"
         sort: [CharacterSort]
     ): Character
+    "ExternalLinkSource collection query"
+    ExternalLinkSourceCollection(
+        "Filter by the link id"
+        id: Int,
+        mediaType: ExternalLinkMediaType,
+        type: ExternalLinkType
+    ): [MediaExternalLink]
     "Follow query"
     Follower(
         "The order the results will be returned in"
@@ -2709,9 +2755,13 @@ type Query {
         isAdult: Boolean,
         "If the media is officially licensed or a self-published doujin release"
         isLicensed: Boolean,
-        "Filter media by sites with a online streaming or reading license"
+        "Filter media by sites name with a online streaming or reading license"
         licensedBy: String,
-        "Filter media by sites with a online streaming or reading license"
+        "Filter media by sites id with a online streaming or reading license"
+        licensedById: Int,
+        "Filter media by sites id with a online streaming or reading license"
+        licensedById_in: [Int],
+        "Filter media by sites name with a online streaming or reading license"
         licensedBy_in: [String],
         "Only apply the tags filter argument to tags above this rank. Default: 18"
         minimumTagRank: Int,
@@ -3177,6 +3227,8 @@ type RevisionHistory {
     character: Character
     "When the mod feed entry was created"
     createdAt: Int
+    "The external link source the mod feed entry references"
+    externalLink: MediaExternalLink
     "The id of the media"
     id: Int!
     "The media the mod feed entry references"
@@ -3314,8 +3366,8 @@ type Staff {
     "If the staff member is blocked from being added to favourites"
     isFavouriteBlocked: Boolean!
     "The primary language the staff member dub's in"
-    language: StaffLanguage @deprecated(reason : "Replaced with languageV2")
-    "The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan"
+    language: StaffLanguage @deprecated(reason: "Replaced with languageV2")
+    "The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan, Finnish, Turkish, Dutch, Swedish, Thai, Tagalog, Malaysian, Indonesian, Vietnamese, Nepali, Hindi, Urdu"
     languageV2: String
     "Notes for site moderators"
     modNotes: String
@@ -3343,7 +3395,7 @@ type Staff {
     submissionStatus: Int
     "Submitter for the submission"
     submitter: User
-    updatedAt: Int @deprecated(reason : "No data available")
+    updatedAt: Int @deprecated(reason: "No data available")
     "[startYear, endYear] (If the 2nd value is not present staff is still active)"
     yearsActive: [Int]
 }
@@ -3514,6 +3566,8 @@ type TextActivity {
     isLiked: Boolean
     "If the activity is locked and can receive replies"
     isLocked: Boolean
+    "If the activity is pinned to the top of the users activity feed"
+    isPinned: Boolean
     "If the currently authenticated user is subscribed to the activity"
     isSubscribed: Boolean
     "The amount of likes the activity has"
@@ -3779,7 +3833,7 @@ type User {
     "The user's moderator roles if they are a site moderator"
     moderatorRoles: [ModRole]
     "If the user is a moderator or data moderator"
-    moderatorStatus: String @deprecated(reason : "Deprecated. Replaced with moderatorRoles field.")
+    moderatorStatus: String @deprecated(reason: "Deprecated. Replaced with moderatorRoles field.")
     "The name of the user"
     name: String!
     "The user's general options"
@@ -3791,7 +3845,7 @@ type User {
     "The users anime & manga list statistics"
     statistics: UserStatisticTypes
     "The user's statistics"
-    stats: UserStats @deprecated(reason : "Deprecated. Replaced with statistics field.")
+    stats: UserStats @deprecated(reason: "Deprecated. Replaced with statistics field.")
     "The number of unread notifications the user has"
     unreadNotificationCount: Int
     "When the user's data was last updated"
@@ -3868,12 +3922,16 @@ type UserOptions {
     activityMergeTime: Int
     "Whether the user receives notifications when a show they are watching aires"
     airingNotifications: Boolean
+    "The list activity types the user has disabled from being created from list updates"
+    disabledListActivity: [ListActivityOption]
     "Whether the user has enabled viewing of 18+ content"
     displayAdultContent: Boolean
     "Notification options"
     notificationOptions: [NotificationOption]
     "Profile highlight color (blue, purple, pink, orange, red, green, gray)"
     profileColor: String
+    "Whether the user only allow messages from users they follow"
+    restrictMessagesToFollowing: Boolean
     "The language the user wants to see staff and character names in"
     staffNameLanguage: UserStaffNameLanguage
     "The user's timezone offset (Auth user only)"
@@ -4026,6 +4084,7 @@ type YearStats {
 enum ActivitySort {
     ID
     ID_DESC
+    PINNED
 }
 
 "Activity type enum."
@@ -4075,6 +4134,18 @@ enum CharacterSort {
     ROLE
     ROLE_DESC
     SEARCH_MATCH
+}
+
+enum ExternalLinkMediaType {
+    ANIME
+    MANGA
+    STAFF
+}
+
+enum ExternalLinkType {
+    INFO
+    SOCIAL
+    STREAMING
 }
 
 "Types that can be liked"
@@ -4609,6 +4680,14 @@ enum UserTitleLanguage {
     ROMAJI_STYLISED
 }
 
+"ISO 3166-1 alpha-2 country code"
+scalar CountryCode
+
+"8 digit long date integer (YYYYMMDD). Unknown dates represented by 0. E.g. 2016: 20160000, May 1976: 19760500"
+scalar FuzzyDateInt
+
+scalar Json
+
 input AiringScheduleInput {
     airingAt: Int
     episode: Int
@@ -4644,6 +4723,11 @@ input FuzzyDateInput {
     month: Int
     "Numeric Year (2017)"
     year: Int
+}
+
+input ListActivityOptionInput {
+    disabled: Boolean
+    type: MediaListStatus
 }
 
 "An external link to another site related to the media"
@@ -4703,12 +4787,3 @@ input StaffNameInput {
     "The person's full name in their native language"
     native: String
 }
-
-
-scalar Json
-
-"ISO 3166-1 alpha-2 country code"
-scalar CountryCode
-
-"8 digit long date integer (YYYYMMDD). Unknown dates represented by 0. E.g. 2016: 20160000, May 1976: 19760500"
-scalar FuzzyDateInt

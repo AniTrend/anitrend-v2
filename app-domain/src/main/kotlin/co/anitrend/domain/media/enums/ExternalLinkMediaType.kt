@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+package co.anitrend.domain.media.enums
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import co.anitrend.domain.common.enums.contract.IAliasable
 
-tasks.withType(KotlinCompile::class.java) {
-    kotlinOptions {
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=coil.annotation.ExperimentalCoilApi",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-        )
-    }
-}
-
-dependencies {
-    implementation(Libraries.AirBnB.Paris.paris)
-    implementation(Libraries.AniTrend.Arch.recycler)
-    implementation(Libraries.Google.FlexBox.flexBox)
-    implementation(Libraries.prettyTime)
+enum class ExternalLinkMediaType(override val alias: CharSequence) : IAliasable {
+    ANIME("Anime"),
+    MANGA("Manga"),
+    STAFF("Staff"),
 }
