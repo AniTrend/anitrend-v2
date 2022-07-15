@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+
 plugins {
     `kotlin-dsl`
 }
@@ -31,6 +33,17 @@ repositories {
     maven {
         setUrl("https://plugins.gradle.org/m2/")
     }
+}
+
+tasks.withType(KotlinJvmCompile::class.java) {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 val buildToolsVersion = "7.2.1"
