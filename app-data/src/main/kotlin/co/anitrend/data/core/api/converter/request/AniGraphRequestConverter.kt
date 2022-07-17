@@ -40,7 +40,7 @@ internal class AniRequestConverter(
      *
      * @param containerBuilder The constructed builder method of your query with variables
      */
-    @AniTrendExperimentalFeature
+    @OptIn(AniTrendExperimentalFeature::class)
     override fun convert(containerBuilder: QueryContainerBuilder): RequestBody {
         // we need structured line numbers if we're in the debug env otherwise we can minify queries
         val query = graphProcessor.getQuery(methodAnnotations)?.minify(!BuildConfig.DEBUG)
