@@ -35,10 +35,10 @@ private fun GenreItem(
     genre: Genre
 ) {
     AndroidView(
-        factory = {
-            val binding = GenreItemBinding.inflate(it.getLayoutInflater())
+        factory = { context ->
+            val binding = GenreItemBinding.inflate(context.getLayoutInflater())
             binding.genre.text = genre.name
-            binding.genre.chipIcon = TextDrawable(it, genre.emoji)
+            binding.genre.chipIcon = TextDrawable(context, genre.emoji)
             binding.root
         },
         modifier = modifier
@@ -57,6 +57,7 @@ fun GenresListComponent(
     ) {
         items(genres.size) { index ->
             GenreItem(
+                modifier = Modifier,
                 genre = genres[index]
             )
         }

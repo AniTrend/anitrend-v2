@@ -21,10 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import co.anitrend.domain.genre.entity.Genre
 
-@Preview
-@Composable
-fun GenresListComponentPreview() {
-    val genres = listOf(
+private fun genreListPreviewData() =
+    listOf(
         "Adventure",
         "Action",
         "Adventure",
@@ -52,5 +50,10 @@ fun GenresListComponentPreview() {
             it.hashCode().toLong()
         )
     }
-    GenresListComponent(genres)
+
+@Suppress("FunctionName")
+@Preview
+@Composable
+private fun GenresListComponentPreview() {
+    GenresListComponent(genres = genreListPreviewData())
 }
