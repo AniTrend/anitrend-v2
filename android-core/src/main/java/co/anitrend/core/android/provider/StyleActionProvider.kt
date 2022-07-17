@@ -33,7 +33,6 @@ import co.anitrend.core.android.extensions.lifecycleScope
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
-import kotlinx.coroutines.flow.collect
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -112,7 +111,7 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
      * @param forItem MenuItem to create the action view for
      * @return the new action view
      */
-    override fun onCreateActionView(forItem: MenuItem?) = createWidget(forItem)
+    override fun onCreateActionView(forItem: MenuItem) = createWidget(forItem)
 
     /**
      * Factory method for creating new action views.

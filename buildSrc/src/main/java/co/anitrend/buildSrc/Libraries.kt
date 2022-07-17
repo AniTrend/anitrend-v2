@@ -62,7 +62,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.4.0"
+            private const val version = "1.5.0"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
 
@@ -120,7 +120,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.7.0"
+            private const val version = "1.8.0"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -132,7 +132,7 @@ object Libraries {
         }
 
         object ConstraintLayout {
-            private const val version = "2.1.3"
+            private const val version = "2.1.4"
             const val constraintLayout = "androidx.constraintlayout:constraintlayout:$version"
             const val constraintLayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
 
@@ -154,7 +154,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.4.1"
+            private const val version = "1.5.0"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -168,7 +168,7 @@ object Libraries {
         }
 
         object Lifecycle {
-            private const val version = "2.4.1"
+            private const val version = "2.5.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -176,7 +176,7 @@ object Libraries {
             const val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:$version"
 
             object Compose {
-                private const val version = "2.4.1"
+                private const val version = "2.5.0"
                 const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
             }
         }
@@ -298,19 +298,19 @@ object Libraries {
         }
 
         object Test {
-            private const val version = "1.3.0"
+            private const val version = "1.4.0"
             const val core = "androidx.test:core:$version"
             const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
             const val rules = "androidx.test:rules:$version"
 
             object Espresso {
-                private const val version = "3.3.0"
+                private const val version = "3.4.0"
                 const val core = "androidx.test.espresso:espresso-core:$version"
             }
 
             object Extension {
-                private const val version = "1.1.2"
+                private const val version = "1.1.3"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
@@ -486,7 +486,7 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.23.0"
+            private const val version = "0.23.1"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
@@ -515,7 +515,7 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "21.0.0"
+                private const val version = "21.1.0"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
@@ -525,7 +525,7 @@ object Libraries {
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.9.0"
+                    private const val version = "2.9.1"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
@@ -549,7 +549,7 @@ object Libraries {
         }
 
         object Services {
-            private const val version = "4.3.10"
+            private const val version = "4.3.13"
             const val googleServices = "com.google.gms:google-services:$version"
         }
     }
@@ -580,7 +580,7 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.6.2"
+                private const val version = "1.6.4"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -702,7 +702,7 @@ object Libraries {
         }
 
         object OkHttp {
-            private const val version = "4.9.2"
+            private const val version = "4.10.0"
             const val okhttp = "com.squareup.okhttp3:okhttp:$version"
             const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
             const val mockServer = "com.squareup.okhttp3:mockwebserver:$version"
