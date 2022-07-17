@@ -43,7 +43,7 @@ abstract class AbstractActionProvider(context: Context) : ActionProvider(context
      * @param forItem MenuItem to create the action view for
      * @return the new action view
      */
-    override fun onCreateActionView(forItem: MenuItem?) = createWidget(forItem)
+    override fun onCreateActionView(forItem: MenuItem) = createWidget(forItem)
 
     /**
      * Factory method for creating new action views.
