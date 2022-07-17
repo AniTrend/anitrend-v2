@@ -62,7 +62,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.4.0"
+            private const val version = "1.5.0"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
 
