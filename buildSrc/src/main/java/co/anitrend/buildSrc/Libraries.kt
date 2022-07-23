@@ -62,7 +62,7 @@ object Libraries {
     object AndroidX {
 
         object Activity {
-            private const val version = "1.5.0"
+            private const val version = "1.6.0-alpha05"
             const val activity = "androidx.activity:activity:$version"
             const val activityKtx = "androidx.activity:activity-ktx:$version"
 
@@ -72,7 +72,7 @@ object Libraries {
         }
 
         object AppCompat {
-            private const val version = "1.3.0-alpha01"
+            private const val version = "1.6.0-alpha05"
             const val appcompat = "androidx.appcompat:appcompat:$version"
             const val appcompatResources = "androidx.appcompat:appcompat-resources:$version"
         }
@@ -149,8 +149,11 @@ object Libraries {
         }
 
         object Emoji {
-            private const val version = "1.1.0-rc01"
-            const val appCompat = "androidx.emoji:emoji-appcompat:$version"
+            private const val version = "1.1.0"
+            const val emoji = "androidx.emoji2.emoji2:emoji2:$version"
+            const val bundled = "androidx.emoji2.emoji2:emoji2-bundled:$version"
+            const val views = "androidx.emoji2.emoji2:emoji2-views:$version"
+            const val viewsHelper = "androidx.emoji2.emoji2:emoji2-views-helper:$version"
         }
 
         object Fragment {
@@ -599,7 +602,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "3.1.5"
+        private const val version = "3.1.6"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
 
