@@ -599,7 +599,7 @@ object Libraries {
     }
 
     object Koin {
-        private const val version = "3.1.5"
+        private const val version = "3.1.6"
         const val android = "io.insert-koin:koin-android:$version"
         const val core = "io.insert-koin:koin-core:$version"
 
