@@ -81,6 +81,14 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
     }
 }
 
+private fun Project.configureLint() = baseAppExtension().run {
+    lint {
+        abortOnError = false
+        ignoreWarnings = false
+        ignoreTestSources = true
+    }
+}
+
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
     compileSdkVersion(Configuration.compileSdk)
     defaultConfig {
@@ -93,6 +101,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     if (isAppModule()) {
+        project.configureLint()
         project.configureBuildFlavours()
         project.createSigningConfiguration(this)
     }
@@ -152,12 +161,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
-    }
-
-    lintOptions {
-        isAbortOnError = false
-        isIgnoreWarnings = false
-        isIgnoreTestSources = true
     }
 
     compileOptions {
