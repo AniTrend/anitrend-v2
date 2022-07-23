@@ -149,8 +149,11 @@ object Libraries {
         }
 
         object Emoji {
-            private const val version = "1.1.0-rc01"
-            const val appCompat = "androidx.emoji:emoji-appcompat:$version"
+            private const val version = "1.1.0"
+            const val emoji = "androidx.emoji2.emoji2:emoji2:$version"
+            const val bundled = "androidx.emoji2.emoji2:emoji2-bundled:$version"
+            const val views = "androidx.emoji2.emoji2:emoji2-views:$version"
+            const val viewsHelper = "androidx.emoji2.emoji2:emoji2-views-helper:$version"
         }
 
         object Fragment {
