@@ -18,6 +18,7 @@
 package co.anitrend.navigation.drawer.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.core.koin.scope.AppScope
 import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.drawer.action.provider.viewmodel.NotificationProviderViewModel
 import co.anitrend.navigation.drawer.action.provider.viewmodel.state.AuthenticatedUserState
@@ -75,18 +76,20 @@ private val viewModelModule = module {
 }
 
 private val fragmentModule = module {
-	fragment {
-		BottomDrawerContent(
-			navigationAdapter = NavigationAdapter(
-				resources = androidContext().resources,
-				stateConfiguration = get()
-			),
-			accountAdapter = AccountAdapter(
-				resources = androidContext().resources,
-				stateConfiguration = get()
-			),
-		)
-	} bind INavigationDrawer::class
+	scope(AppScope.BOTTOM_NAV_DRAWER.qualifier) {
+		fragment {
+			BottomDrawerContent(
+				navigationAdapter = NavigationAdapter(
+					resources = androidContext().resources,
+					stateConfiguration = get()
+				),
+				accountAdapter = AccountAdapter(
+					resources = androidContext().resources,
+					stateConfiguration = get()
+				),
+			)
+		} bind INavigationDrawer::class
+	}
 }
 
 private val featureModule = module {

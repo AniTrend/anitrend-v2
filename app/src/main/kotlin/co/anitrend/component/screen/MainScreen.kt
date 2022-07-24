@@ -34,7 +34,9 @@ import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.extensions.invoke
 import co.anitrend.core.extensions.orEmpty
+import co.anitrend.core.koin.scope.AppScope
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.inject
@@ -152,6 +154,14 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
                 drawerFragmentItem.tag()
             )
         }
+    }
+
+    /**
+     * Can be used to configure custom theme styling as desired
+     */
+    override fun configureActivity() {
+        scope.linkTo(AppScope.BOTTOM_NAV_DRAWER())
+        super.configureActivity()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
