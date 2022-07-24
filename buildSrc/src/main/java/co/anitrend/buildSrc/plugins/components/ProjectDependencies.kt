@@ -250,6 +250,7 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
     dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
     dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
+    dependencies.implementation(Libraries.AndroidX.AppCompat.appcompat)
     dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
     dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
     dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
