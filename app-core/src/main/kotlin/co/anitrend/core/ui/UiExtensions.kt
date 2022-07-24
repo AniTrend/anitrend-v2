@@ -20,11 +20,11 @@ package co.anitrend.core.ui
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import co.anitrend.arch.extension.ext.SYNCHRONIZED
 import co.anitrend.core.R
@@ -35,15 +35,10 @@ import co.anitrend.core.ui.model.FragmentItem
 import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ViewModelOwnerDefinition
-import org.koin.androidx.viewmodel.ext.android.getStateViewModel
-import org.koin.androidx.viewmodel.koin.getViewModel
-import org.koin.androidx.viewmodel.scope.BundleDefinition
-import org.koin.androidx.viewmodel.scope.emptyState
-import org.koin.androidx.viewmodel.scope.getViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
-import org.koin.java.KoinJavaComponent.getKoin
 
 /**
  * Get given dependency
@@ -143,7 +138,9 @@ inline fun <reified T : Fragment> FragmentActivity.createFragment(
     val qualifier = classDefinition.name
     val factory = supportFragmentManager.fragmentFactory
     require(factory is KoinFragmentFactory) {
-        "Fragment factory for $this is $factory instead of KoinFragmentFactory"
+        """Fragment factory for $this is $factory instead of KoinFragmentFactory.
+            |Did you forget to call setupKoinFragmentFactory before onCreate?
+        """.trimMargin()
     }
     return factory.instantiate(classLoader, qualifier) as T
 }
@@ -187,28 +184,21 @@ inline fun <reified T : ViewModel> ViewGroup.viewModel(
     qualifier: Qualifier? = null,
     noinline owner: ViewModelOwnerDefinition = {
         ViewModelOwner.from(
-            findViewTreeViewModelStoreOwner()!!,
+            requireNotNull(findViewTreeViewModelStoreOwner()),
             findViewTreeSavedStateRegistryOwner()
         )
     },
-    noinline state: BundleDefinition = emptyState(),
     noinline parameters: ParametersDefinition? = null
 ): Lazy<T> = lazy(SYNCHRONIZED) {
-    if (context is KoinScopeComponent) {
-        val scopeComponent = context as KoinScopeComponent
-        scopeComponent.scope.getViewModel(
-            qualifier,
-            owner,
-            T::class,
-            state,
-            parameters
-        )
-    } else {
-        getKoin().getViewModel(
-            qualifier,
-            owner,
-            parameters
-        )
+    when (val component = context) {
+        is ComponentActivity -> {
+            component.getViewModel(
+                qualifier,
+                owner,
+                parameters
+            )
+        }
+        else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
     }
 }
 
@@ -221,30 +211,16 @@ inline fun <reified T : ViewModel> AbstractActionProvider.sharedViewModel(
         val parent = context as FragmentActivity
         ViewModelOwner.from(parent, parent)
     },
-    noinline state: BundleDefinition = emptyState(),
     noinline parameters: ParametersDefinition? = null
 ): Lazy<T> = lazy(SYNCHRONIZED) {
-    when (context) {
-        is KoinScopeComponent -> {
-            val scopeComponent = context as KoinScopeComponent
-            scopeComponent.scope.getViewModel(
-                qualifier,
-                owner,
-                T::class,
-                state,
-                parameters
-            )
-        }
-        is SavedStateRegistryOwner -> {
-            val savedStateRegistryOwner = context as SavedStateRegistryOwner
-            savedStateRegistryOwner.getStateViewModel(qualifier, state, parameters)
-        }
-        else -> {
-            getKoin().getViewModel(
+    when (val component = context) {
+        is ComponentActivity -> {
+            component.getViewModel(
                 qualifier,
                 owner,
                 parameters
             )
         }
+        else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
     }
 }
