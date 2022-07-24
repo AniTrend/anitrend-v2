@@ -18,9 +18,7 @@
 package co.anitrend.core.crash
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
-import co.anitrend.core.BuildConfig
 import co.anitrend.core.crash.contract.IExceptionCrashHandler
 import timber.log.Timber
 import kotlin.system.exitProcess
@@ -39,9 +37,7 @@ internal class ExceptionCrashHandler(
      * @param throwable Exception that was unhandled
      */
     @SuppressLint("LogNotTimber")
-    override fun onException(thread: Thread?, throwable: Throwable?) {
-        if (thread == null) return
-        if (throwable == null) return
+    override fun onException(thread: Thread, throwable: Throwable) {
         try {
             handleUncaughtCrashException(thread, throwable)
         } catch (e: Exception) {
