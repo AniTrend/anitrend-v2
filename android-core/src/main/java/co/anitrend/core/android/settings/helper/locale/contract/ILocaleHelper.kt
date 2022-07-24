@@ -18,6 +18,7 @@
 package co.anitrend.core.android.settings.helper.locale.contract
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import java.util.*
 
 interface ILocaleHelper {
@@ -26,6 +27,13 @@ interface ILocaleHelper {
      * Current application locale
      */
     val locale: Locale
+
+    /**
+     * Applies locale to [AppCompatDelegate]
+     *
+     * @see AppCompatDelegate.setApplicationLocales
+     */
+    fun applyLocale()
 
     /**
      * Applies locale to context configuration

@@ -19,6 +19,8 @@ package co.anitrend.core.android.settings.helper.locale
 
 import android.content.Context
 import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.helper.locale.contract.ILocaleHelper
 import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
@@ -35,6 +37,16 @@ internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelp
                 return Locale.getDefault()
             return getPersonalizedLocale()
         }
+
+    /**
+     * Applies locale to [AppCompatDelegate]
+     *
+     * @see AppCompatDelegate.setApplicationLocales
+     */
+    override fun applyLocale() {
+        val localeList = LocaleListCompat.create(locale)
+        AppCompatDelegate.setApplicationLocales(localeList)
+    }
 
     /**
      * Applies locale to context configuration

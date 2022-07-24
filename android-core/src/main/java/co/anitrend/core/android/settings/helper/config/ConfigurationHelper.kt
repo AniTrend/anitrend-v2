@@ -22,10 +22,10 @@ import androidx.annotation.StyleRes
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.android.settings.common.IConfigurationSettings
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.core.android.settings.helper.locale.contract.ILocaleHelper
-import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
+import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
+import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
 
 /**
  * Configuration helper for screen controllers, which provides custom themes
@@ -51,7 +51,8 @@ internal class ConfigurationHelper(
     /**
      * Creates a new context with configuration
      */
-    override fun attachContext(context: Context?) = localeHelper.applyLocale(context)
+    override fun attachContext(context: Context?) =
+        localeHelper.applyLocale(context)
 
     /**
      * Applies configuration upon the create state of the current activity
@@ -74,6 +75,9 @@ internal class ConfigurationHelper(
             //activity.recreate()
             activity.resetActivity()
             themeHelper.applyDynamicNightModeFromTheme()
+        }
+        if (applicationLocale != settings.locale.value) {
+            localeHelper.applyLocale()
         }
     }
 
