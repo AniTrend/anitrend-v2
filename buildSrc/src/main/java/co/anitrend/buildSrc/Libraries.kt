@@ -554,6 +554,11 @@ object Libraries {
         object Services {
             private const val version = "4.3.13"
             const val googleServices = "com.google.gms:google-services:$version"
+
+            object OOS {
+                private const val version = "17.0.0"
+                const val licenses = "com.google.android.gms:play-services-oss-licenses:$version"
+            }
         }
     }
 
