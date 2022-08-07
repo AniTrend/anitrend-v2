@@ -27,5 +27,7 @@ dependencies {
     implementation(Libraries.Google.Material.material)
 
     implementation(Libraries.AniTrend.Emojify.emojify)
+
+    googleImplementation(Libraries.Google.Firebase.Messaging.messaging)
 }
 
