@@ -29,5 +29,6 @@ dependencies {
     implementation(Libraries.AniTrend.Emojify.emojify)
 
     googleImplementation(Libraries.Google.Services.OOS.licenses)
+    googleImplementation(Libraries.Google.Firebase.Messaging.messaging)
 }
 
