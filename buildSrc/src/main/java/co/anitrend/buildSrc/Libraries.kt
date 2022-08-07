@@ -532,6 +532,11 @@ object Libraries {
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
+
+            object Messaging {
+                private const val version = "23.0.6"
+                const val messaging = "com.google.firebase:firebase-messaging-ktx:$version"
+            }
         }
 
         object FlexBox {
@@ -651,7 +656,7 @@ object Libraries {
     }
 
     object Mockk {
-        const val version = "1.12.4"
+        private const val version = "1.12.4"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
