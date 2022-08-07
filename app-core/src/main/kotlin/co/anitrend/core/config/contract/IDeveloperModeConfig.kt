@@ -15,11 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer.extensions
+package co.anitrend.core.config.contract
 
-import android.content.Context
+import android.content.Intent
 
-/*
-internal fun Context.configureApplication() {
-
-}*/
+interface IDeveloperModeConfig {
+    fun initialize()
+    fun forceHeapDump()
+    fun leakDumpIntent(): Intent?
+}

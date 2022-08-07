@@ -48,4 +48,5 @@
     <string name="settings_sync_user_interval" translatable="false">_syncUserInterval</string>
 
     <string name="settings_auto_heap_dump" translatable="false">_autoHeapDump</string>
+    <string name="settings_show_leak_launcher" translatable="false">_showLeakLauncher</string>
 </resources>
