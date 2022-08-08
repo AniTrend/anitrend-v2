@@ -18,6 +18,7 @@
 package co.anitrend.common.markdown.ui.extension
 
 import co.anitrend.common.markdown.ui.plugin.span.image.AbstractImageSpan
+import io.noties.markwon.core.CoreProps
 
 
 /**
@@ -50,7 +51,7 @@ fun AbstractImageSpan.onImage(): ArrayList<Any?>? {
             .spansFactory()
             .get(org.commonmark.node.Link::class.java)
 
-        io.noties.markwon.core.CoreProps.LINK_DESTINATION.set(renderProps, destination)
+        CoreProps.LINK_DESTINATION.set(renderProps, destination)
         spans.add(linkSpanFactory?.getSpans(configuration, renderProps))
     }
 
