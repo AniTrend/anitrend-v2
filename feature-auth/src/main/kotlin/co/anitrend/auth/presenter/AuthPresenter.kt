@@ -60,20 +60,18 @@ class AuthPresenter(
     }
 
     fun runSignOutWorker() {
+        val param = AccountTaskRouter.Param(
+            settings.authenticatedUserId.value
+        )
         AccountTaskRouter.forSignOutWorker()
-            .createOneTimeUniqueWorker(
-                context,
-                AccountTaskRouter.Param(
-                    settings.authenticatedUserId.value
-                )
-            ).enqueue()
+            .createOneTimeUniqueWorker(context, param)
+            .enqueue()
     }
 
     fun runSignInWorker(id: Long) {
+        val param = AccountTaskRouter.Param(id)
         AccountTaskRouter.forSignInWorker()
-            .createOneTimeUniqueWorker(
-                context,
-                AccountTaskRouter.Param(id)
-            ).enqueue()
+            .createOneTimeUniqueWorker(context, param)
+            .enqueue()
     }
 }

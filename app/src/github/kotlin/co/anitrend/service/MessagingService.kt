@@ -17,5 +17,13 @@
 
 package co.anitrend.service
 
-class MessagingService {
+import android.content.Intent
+import android.os.IBinder
+import co.anitrend.core.service.AniTrendLifecycleService
+
+class MessagingService : AniTrendLifecycleService() {
+
+    override fun onBind(intent: Intent): IBinder? {
+        return super.onBind(intent)
+    }
 }

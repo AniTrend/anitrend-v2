@@ -24,7 +24,7 @@ plugins {
 
 tasks.withType(KotlinCompile::class.java) {
 	kotlinOptions {
-		freeCompilerArgs = listOf("-Xopt-in=coil.annotation.ExperimentalCoilApi")
+		freeCompilerArgs = listOf("-opt-in=coil.annotation.ExperimentalCoilApi")
 	}
 }
 
