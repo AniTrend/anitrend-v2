@@ -26,8 +26,8 @@ plugins {
 tasks.withType(KotlinCompile::class.java) {
     kotlinOptions {
         freeCompilerArgs = listOf(
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-Xopt-in=kotlin.RequiresOptIn"
+            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-opt-in=kotlin.RequiresOptIn"
         )
     }
 }
