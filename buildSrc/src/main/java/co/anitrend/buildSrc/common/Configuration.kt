@@ -19,6 +19,10 @@ package co.anitrend.buildSrc.common
 
 object Configuration {
 
+    private fun Int.toVersion(): String {
+        return if (this < 9) "0$this" else "$this"
+    }
+
     private const val major = 2
     private const val minor = 0
     private const val patch = 0
@@ -44,7 +48,7 @@ object Configuration {
      * > **X**(Major).**Y**(Minor).**Z**(Patch)
      */
     val versionName = if (candidate > 0)
-        "$major.$minor.$patch-$channel$candidate"
+        "$major.$minor.$patch-$channel${candidate.toVersion()}"
     else
         "$major.$minor.$patch"
 }
