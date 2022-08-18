@@ -331,7 +331,7 @@ object Libraries {
     object AniTrend {
 
         object Arch {
-            private const val version = "1.4.0-alpha03"
+            private const val version = "1.4.1-alpha01"
             const val ui = "com.github.anitrend.support-arch:ui:${version}"
             const val ext = "com.github.anitrend.support-arch:extension:${version}"
             const val core = "com.github.anitrend.support-arch:core:${version}"
@@ -559,6 +559,11 @@ object Libraries {
         object Services {
             private const val version = "4.3.13"
             const val googleServices = "com.google.gms:google-services:$version"
+
+            object OOS {
+                private const val version = "17.0.0"
+                const val licenses = "com.google.android.gms:play-services-oss-licenses:$version"
+            }
         }
     }
 
