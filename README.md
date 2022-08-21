@@ -25,14 +25,16 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 Development documentation for AniTrend is still a work in progress so for the time being on the essentials are available and can be found over at: __[anitrend.gitbook.io](https://anitrend.gitbook.io/project/)__
 
+## Sponsors
+
+> Big thanks to **[POEditor](https://poeditor.com)** for supportings the open source movement! AniTrend was approved for a free localization project. 
+
 ## Tools
 
 - **[POEditor](https://poeditor.com/join/project/dicYaYCroE)** for translating translating resource to multiple languages
 - **[TravisCI](https://travis-ci.org/AniTrend/anitrend-v2)** continuous integration service to build and test
 - **[Codacy](https://app.codacy.com/project/AniTrend/anitrend-v2)** automated code reviews and monitors code quality over time
 - **[FOSSA](https://https://app.fossa.com)** Open source dependency management for enterprise teams
-
-> Big thanks to **[POEditor](https://poeditor.com)** for supportings the open source movement! AniTrend was approved for a free localization project. 
 
 ## Contributors
 
