@@ -684,7 +684,7 @@ object Libraries {
     }
 
     object Sheets {
-        private const val version = "2.2.8"
+        private const val version = "2.2.9"
 
         const val calendar = "com.maxkeppeler.sheets:calendar:$version"
         const val core = "com.maxkeppeler.sheets:core:$version"
