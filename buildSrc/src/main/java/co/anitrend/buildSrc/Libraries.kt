@@ -346,7 +346,7 @@ object Libraries {
         }
 
         object Emojify {
-            private const val version = "1.6.0-beta01"
+            private const val version = "1.7.0"
             const val emojify = "com.github.anitrend:android-emojify:$version"
         }
 
