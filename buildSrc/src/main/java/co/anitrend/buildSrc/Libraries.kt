@@ -89,7 +89,7 @@ object Libraries {
         }
 
         object Compose {
-            internal const val version = "1.2.0-beta03"
+            internal const val version = "1.2.1"
 
             object Compiler {
                 internal const val version = "1.3.0"
