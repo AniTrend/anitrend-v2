@@ -726,7 +726,7 @@ object Libraries {
         }
 
         object KotlinPoet {
-            private const val version = "1.11.0"
+            private const val version = "1.12.0"
             const val kotlinPoet = "com.squareup:kotlinpoet:$version"
         }
     }
