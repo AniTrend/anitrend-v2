@@ -27,7 +27,6 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.view.updatePadding
 import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
@@ -200,6 +199,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             MediaListStatus.REPEATING -> mediaListStatusIndicator.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_repeat, tintColor)
             )
+            else -> throw NotImplementedError("`${media.mediaList?.status}` is not catered for")
         }
     }
 
