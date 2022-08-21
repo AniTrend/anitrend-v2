@@ -538,7 +538,7 @@ object Libraries {
             }
 
             object Messaging {
-                private const val version = "23.0.6"
+                private const val version = "23.0.7"
                 const val messaging = "com.google.firebase:firebase-messaging-ktx:$version"
             }
         }
