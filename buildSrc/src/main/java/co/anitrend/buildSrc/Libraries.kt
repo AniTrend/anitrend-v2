@@ -493,7 +493,7 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.23.1"
+            private const val version = "0.25.1"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
