@@ -207,7 +207,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     if (project.hasComposeSupport()) {
         composeOptions {
-            kotlinCompilerExtensionVersion = Libraries.AndroidX.Compose.version
+            kotlinCompilerExtensionVersion = Libraries.AndroidX.Compose.Compiler.version
         }
     }
 }
