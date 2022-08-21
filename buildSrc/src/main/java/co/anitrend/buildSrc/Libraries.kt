@@ -436,7 +436,7 @@ object Libraries {
     }
 
     object Blitz {
-        private const val version = "1.0.9"
+        private const val version = "1.0.10"
         const val blitz = "com.github.perfomer:blitz:$version"
     }
 
