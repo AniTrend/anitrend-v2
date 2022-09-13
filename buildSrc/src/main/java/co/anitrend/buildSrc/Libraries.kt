@@ -54,7 +54,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "7.2.1"
+            private const val version = "7.2.2"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -89,7 +89,11 @@ object Libraries {
         }
 
         object Compose {
-            internal const val version = "1.2.0-beta03"
+            internal const val version = "1.2.1"
+
+            object Compiler {
+                internal const val version = "1.3.0"
+            }
 
             object Foundation {
                 const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -157,7 +161,7 @@ object Libraries {
         }
 
         object Fragment {
-            private const val version = "1.5.0"
+            private const val version = "1.5.2"
             const val fragment = "androidx.fragment:fragment:$version"
             const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
             const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
@@ -171,7 +175,7 @@ object Libraries {
         }
 
         object Lifecycle {
-            private const val version = "2.5.0"
+            private const val version = "2.5.1"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -278,7 +282,7 @@ object Libraries {
         }
 
         object Room {
-            private const val version = "2.4.2"
+            private const val version = "2.4.3"
             const val compiler = "androidx.room:room-compiler:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val test = "androidx.room:room-testing:$version"
@@ -342,7 +346,7 @@ object Libraries {
         }
 
         object Emojify {
-            private const val version = "1.6.0-beta01"
+            private const val version = "1.7.0"
             const val emojify = "com.github.anitrend:android-emojify:$version"
         }
 
@@ -432,7 +436,7 @@ object Libraries {
     }
 
     object Blitz {
-        private const val version = "1.0.9"
+        private const val version = "1.0.10"
         const val blitz = "com.github.perfomer:blitz:$version"
     }
 
@@ -448,7 +452,7 @@ object Libraries {
         }
 
         object Turbine {
-            private const val version = "0.8.0"
+            private const val version = "0.9.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
@@ -489,7 +493,7 @@ object Libraries {
     object Google {
 
         object Accompanist {
-            private const val version = "0.23.1"
+            private const val version = "0.25.1"
             const val insets = "com.google.accompanist:accompanist-insets:$version"
             const val uiController = "com.google.accompanist:accompanist-systemuicontroller:${version}"
             const val appCompatTheme = "com.google.accompanist:accompanist-appcompat-theme:${version}"
@@ -499,7 +503,7 @@ object Libraries {
         }
 
         object Gson {
-            private const val version = "2.9.0"
+            private const val version = "2.9.1"
             const val gson = "com.google.code.gson:gson:$version"
         }
 
@@ -524,7 +528,7 @@ object Libraries {
             }
 
             object Crashlytics {
-                private const val version = "18.2.11"
+                private const val version = "18.2.12"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
@@ -534,7 +538,7 @@ object Libraries {
             }
 
             object Messaging {
-                private const val version = "23.0.6"
+                private const val version = "23.0.7"
                 const val messaging = "com.google.firebase:firebase-messaging-ktx:$version"
             }
         }
@@ -569,7 +573,7 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "1.6.21"
+            private const val version = "1.7.10"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 
@@ -661,7 +665,7 @@ object Libraries {
     }
 
     object Mockk {
-        private const val version = "1.12.4"
+        private const val version = "1.12.5"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
@@ -680,7 +684,7 @@ object Libraries {
     }
 
     object Sheets {
-        private const val version = "2.2.8"
+        private const val version = "2.2.9"
 
         const val calendar = "com.maxkeppeler.sheets:calendar:$version"
         const val core = "com.maxkeppeler.sheets:core:$version"
@@ -722,7 +726,7 @@ object Libraries {
         }
 
         object KotlinPoet {
-            private const val version = "1.11.0"
+            private const val version = "1.12.0"
             const val kotlinPoet = "com.squareup:kotlinpoet:$version"
         }
     }

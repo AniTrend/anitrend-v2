@@ -20,3 +20,8 @@ jobs:
         ./.github/scripts/staging-config.sh
     - name: Gradle test
       run: ./gradlew test --stacktrace
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v3
+      if: always()
+      with:
+        report_paths: '**/build/test-results/TEST-*.xml'
