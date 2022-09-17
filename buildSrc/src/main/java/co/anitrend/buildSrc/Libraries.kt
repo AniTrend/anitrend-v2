@@ -561,7 +561,7 @@ object Libraries {
         }
 
         object Services {
-            private const val version = "4.3.13"
+            private const val version = "4.3.14"
             const val googleServices = "com.google.gms:google-services:$version"
 
             object OOS {
