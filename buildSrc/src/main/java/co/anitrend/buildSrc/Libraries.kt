@@ -92,7 +92,7 @@ object Libraries {
             internal const val version = "1.2.1"
 
             object Compiler {
-                internal const val version = "1.3.0"
+                internal const val version = "1.3.1"
             }
 
             object Foundation {
