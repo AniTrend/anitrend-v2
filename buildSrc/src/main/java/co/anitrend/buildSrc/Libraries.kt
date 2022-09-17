@@ -183,7 +183,7 @@ object Libraries {
             const val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:$version"
 
             object Compose {
-                private const val version = "2.5.0"
+                private const val version = "2.5.1"
                 const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
             }
         }
