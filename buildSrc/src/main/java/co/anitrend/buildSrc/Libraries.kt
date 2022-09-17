@@ -665,7 +665,7 @@ object Libraries {
     }
 
     object Mockk {
-        private const val version = "1.12.5"
+        private const val version = "1.12.8"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
