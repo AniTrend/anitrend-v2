@@ -124,7 +124,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.8.0"
+            private const val version = "1.9.0"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
