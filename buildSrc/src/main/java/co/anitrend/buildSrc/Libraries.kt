@@ -522,23 +522,23 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "21.1.0"
+                private const val version = "21.1.1"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "18.2.12"
+                private const val version = "18.2.13"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.9.1"
+                    private const val version = "2.9.2"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
 
             object Messaging {
-                private const val version = "23.0.7"
+                private const val version = "23.0.8"
                 const val messaging = "com.google.firebase:firebase-messaging-ktx:$version"
             }
         }
