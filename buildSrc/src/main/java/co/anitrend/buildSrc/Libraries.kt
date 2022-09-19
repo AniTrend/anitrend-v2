@@ -54,7 +54,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "7.2.2"
+            private const val version = "7.3.0"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -92,7 +92,7 @@ object Libraries {
             internal const val version = "1.2.1"
 
             object Compiler {
-                internal const val version = "1.3.0"
+                internal const val version = "1.3.1"
             }
 
             object Foundation {
@@ -124,7 +124,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.8.0"
+            private const val version = "1.9.0"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -183,7 +183,7 @@ object Libraries {
             const val liveDataCoreKtx = "androidx.lifecycle:lifecycle-livedata-core-ktx:$version"
 
             object Compose {
-                private const val version = "2.5.0"
+                private const val version = "2.5.1"
                 const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
             }
         }
@@ -452,7 +452,7 @@ object Libraries {
         }
 
         object Turbine {
-            private const val version = "0.9.0"
+            private const val version = "0.10.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
@@ -522,23 +522,23 @@ object Libraries {
             const val firebaseCore = "com.google.firebase:firebase-core:$version"
 
             object Analytics {
-                private const val version = "21.1.0"
+                private const val version = "21.1.1"
                 const val analytics = "com.google.firebase:firebase-analytics:$version"
                 const val analyticsKtx = "com.google.firebase:firebase-analytics-ktx:$version"
             }
 
             object Crashlytics {
-                private const val version = "18.2.12"
+                private const val version = "18.2.13"
                 const val crashlytics = "com.google.firebase:firebase-crashlytics:$version"
 
                 object Gradle {
-                    private const val version = "2.9.1"
+                    private const val version = "2.9.2"
                     const val plugin = "com.google.firebase:firebase-crashlytics-gradle:$version"
                 }
             }
 
             object Messaging {
-                private const val version = "23.0.7"
+                private const val version = "23.0.8"
                 const val messaging = "com.google.firebase:firebase-messaging-ktx:$version"
             }
         }
@@ -561,7 +561,7 @@ object Libraries {
         }
 
         object Services {
-            private const val version = "4.3.13"
+            private const val version = "4.3.14"
             const val googleServices = "com.google.gms:google-services:$version"
 
             object OOS {
@@ -665,7 +665,7 @@ object Libraries {
     }
 
     object Mockk {
-        private const val version = "1.12.5"
+        private const val version = "1.12.8"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
