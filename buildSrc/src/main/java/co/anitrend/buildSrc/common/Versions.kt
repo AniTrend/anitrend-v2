@@ -33,16 +33,16 @@ object Versions {
     const val scalingImageView = "3.10.0"
     const val serializationConverter = "0.8.0"
 
-    const val jsoup = "1.15.1"
+    const val jsoup = "1.15.3"
 
-    const val tmdb = "2.7.0"
-    const val trakt = "6.10.0"
+    const val tmdb = "2.8.1"
+    const val trakt = "6.11.2"
 
     const val elements = "1.0.1"
 
-    const val ktlint = "0.43.2"
+    const val ktlint = "0.47.1"
 
     const val deeplink = "0.3.1"
 
-    const val kotlin = "1.6.21"
+    const val kotlin = "1.7.10"
 }
