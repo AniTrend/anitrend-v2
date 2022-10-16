@@ -21,23 +21,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/composeView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <co.anitrend.common.markdown.ui.widget.MarkdownSynopsisWidget
-            android:id="@+id/mediaSynopsis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/xl_margin"
-            tools:layout_height="80dp" />
-
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/composeView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_height="match_parent" />
 
 </co.anitrend.arch.ui.view.widget.SupportStateLayout>

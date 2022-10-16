@@ -88,9 +88,6 @@ class MediaContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
-            requireBinding().mediaSynopsis.setSynopsis(it)
-        }
         viewModelState().loadState.observe(viewLifecycleOwner) {
             if (viewModelState().model.value == null)
                 requireBinding().stateLayout.loadStateFlow.value = it
