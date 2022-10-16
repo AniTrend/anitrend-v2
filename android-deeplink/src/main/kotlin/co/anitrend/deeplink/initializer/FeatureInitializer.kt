@@ -22,7 +22,7 @@ import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 import co.anitrend.deeplink.koin.moduleHelper
 
-class FeatureInitializer :  AbstractFeatureInitializer<Unit>() {
+class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
     /**
      * Initializes and a component given the application [Context]
      *
