@@ -27,3 +27,6 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.tag))
     implementation(Libraries.Google.FlexBox.flexBox)
 }
+android {
+    namespace = "co.anitrend.media.discover.filter"
+}

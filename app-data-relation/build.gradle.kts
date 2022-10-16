@@ -35,3 +35,6 @@ tasks.withType(KotlinCompile::class.java) {
 dependencies {
     implementation(Libraries.JetBrains.KotlinX.Serialization.json)	
 }
+android {
+    namespace = "co.anitrend.data.relation"
+}

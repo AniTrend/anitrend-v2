@@ -25,6 +25,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace = "co.anitrend.core"
 }
 
 dependencies {

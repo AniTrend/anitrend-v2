@@ -25,3 +25,6 @@ dependencies {
     implementation(Libraries.AniTrend.Arch.recycler)
     implementation(Libraries.elements)
 }
+android {
+    namespace = "co.anitrend.navigation.drawer"
+}

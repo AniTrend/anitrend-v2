@@ -32,3 +32,6 @@ dependencies {
 
     implementation(Libraries.AndroidX.Browser.browser)
 }
+android {
+    namespace = "co.anitrend.media"
+}

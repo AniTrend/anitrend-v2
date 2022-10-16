@@ -24,3 +24,6 @@ plugins {
 dependencies {
     implementation(Libraries.AniTrend.Material.multiSearch)
 }
+android {
+    namespace = "co.anitrend.search"
+}

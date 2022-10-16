@@ -29,3 +29,6 @@ dependencies {
 
     implementation(Libraries.Sheets.calendar)
 }
+android {
+    namespace = "co.anitrend.airing"
+}

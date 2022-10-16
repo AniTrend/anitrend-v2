@@ -22,3 +22,6 @@ plugins {
 dependencies {
 
 }
+android {
+    namespace = "co.anitrend.domain"
+}

@@ -24,3 +24,6 @@ plugins {
 dependencies {
     implementation(Libraries.Blitz.blitz)
 }
+android {
+    namespace = "co.anitrend.common.news"
+}

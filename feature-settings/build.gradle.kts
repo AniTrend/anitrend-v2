@@ -24,3 +24,6 @@ plugins {
 dependencies {
     implementation(Libraries.AndroidX.Preference.preferenceKtx)
 }
+android {
+    namespace = "co.anitrend.settings"
+}
