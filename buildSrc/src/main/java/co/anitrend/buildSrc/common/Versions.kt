@@ -44,5 +44,5 @@ object Versions {
 
     const val deeplink = "0.3.1"
 
-    const val kotlin = "1.7.10"
+    const val kotlin = "1.7.20"
 }
