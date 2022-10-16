@@ -17,11 +17,11 @@
 
 package co.anitrend.buildSrc.plugins.strategy
 
-import org.gradle.api.artifacts.dsl.DependencyHandler
-import co.anitrend.buildSrc.module.Modules
-import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.Libraries
+import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.module.Modules
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal class DependencyStrategy(private val project: Project) {
 
@@ -64,8 +64,8 @@ internal class DependencyStrategy(private val project: Project) {
 
     private fun DependencyHandler.applyKoinDependencies() {
         implementation(Libraries.Koin.core)
-        androidTest(Libraries.Koin.Test.test)
-        androidTest(Libraries.Koin.Test.testJUnit4)
+        test(Libraries.Koin.Test.test)
+        test(Libraries.Koin.Test.testJUnit4)
         if (project.hasKoinAndroidSupport()) {
             implementation(Libraries.Koin.android)
             implementation(Libraries.Koin.AndroidX.workManager)
