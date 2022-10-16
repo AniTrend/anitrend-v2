@@ -58,8 +58,11 @@ internal class DependencyStrategy(private val project: Project) {
         implementation(Libraries.JetBrains.KotlinX.Coroutines.core)
         implementation(Libraries.CashApp.Copper.copper)
 
+        test(Libraries.CashApp.Turbine.turbine)
         test(Libraries.JetBrains.KotlinX.Coroutines.test)
+
         androidTest(Libraries.CashApp.Turbine.turbine)
+        androidTest(Libraries.JetBrains.KotlinX.Coroutines.test)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
