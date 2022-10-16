@@ -101,7 +101,7 @@ object Libraries {
             }
 
             object Material {
-                const val material = "androidx.compose.material:material:$version"
+                const val material = "androidx.compose.material3:material3:1.0.0-beta03"
                 const val ripple = "androidx.compose.material:material-ripple:$version"
 
                 object Icons {
@@ -555,8 +555,8 @@ object Libraries {
             const val material = "com.google.android.material:material:$version"
 
             object Compose {
-                private const val version = "1.0.0-beta06"
-                const val themeAdapter = "com.google.android.material:compose-theme-adapter:$version"
+                private const val version = "1.0.19"
+                const val themeAdapter = "com.google.android.material:compose-theme-adapter-3:$version"
             }
         }
 
