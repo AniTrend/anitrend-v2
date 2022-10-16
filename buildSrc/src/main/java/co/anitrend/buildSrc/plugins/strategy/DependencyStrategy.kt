@@ -42,8 +42,8 @@ internal class DependencyStrategy(private val project: Project) {
         androidTest(Libraries.AndroidX.Test.rules)
         androidTest(Libraries.AndroidX.Test.runner)
         androidTest(Libraries.AndroidX.Test.Espresso.core)
-        androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
         androidTest(Libraries.Mockk.mockkAndroid)
+        androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
@@ -64,7 +64,7 @@ internal class DependencyStrategy(private val project: Project) {
 
     private fun DependencyHandler.applyKoinDependencies() {
         implementation(Libraries.Koin.core)
-        test(Libraries.Koin.Test.test)
+        androidTest(Libraries.Koin.Test.test)
         test(Libraries.Koin.Test.testJUnit4)
         if (project.hasKoinAndroidSupport()) {
             implementation(Libraries.Koin.android)
