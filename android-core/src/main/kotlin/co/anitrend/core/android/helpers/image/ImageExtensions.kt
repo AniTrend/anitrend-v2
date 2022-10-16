@@ -23,6 +23,7 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.android.R
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.color.asDrawable
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.domain.common.entity.contract.ICoverImage
@@ -34,6 +35,12 @@ import coil.target.Target
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
 import coil.transition.CrossfadeTransition
+
+val roundedCornersTransformation =
+    RoundedCornersTransformation(8f.dp)
+
+val roundedBottomCornersTransformation =
+    RoundedCornersTransformation(bottomLeft = 8f.dp, bottomRight = 8f.dp)
 
 /**
  * String to cover image converter
@@ -48,15 +55,56 @@ fun String?.toCoverImage(): ICoverImage {
 
 /**
  * Cover image to request image converter
+ *
+ * @see using for usage from multiple receiver types
+ * @see toRequestBuilder to build a coil image request builder
  */
 fun ICoverImage.toRequestImage() = RequestImage.Cover(this)
 
 /**
  * Media cover to request image converter
+ *
+ * @see using for usage from multiple receiver types
+ * @see toRequestBuilder to build a coil image request builder
  */
 fun IMediaCover.toMediaRequestImage(
     type: RequestImage.Media.ImageType
 ) = RequestImage.Media(this, type)
+
+/**
+ * A request image builder for coil
+ *
+ * @param context Any valid context from usage
+ * @param transformations List of transformations to apply
+ */
+fun RequestImage<*>.toRequestBuilder(
+    context: Context,
+    transformations: List<Transformation> = emptyList()
+): ImageRequest.Builder {
+    val requestBuilder = ImageRequest.Builder(context)
+
+    if (transformations.isNotEmpty())
+        requestBuilder.transformations(transformations)
+
+    if (this is RequestImage.Media) {
+        val color = image?.color
+        if (color != null) {
+            val colorDrawable = color.asDrawable(context)
+            requestBuilder
+                .placeholder(colorDrawable)
+                .error(colorDrawable)
+        }
+    }
+
+    return requestBuilder
+        .transition(
+            CrossfadeTransition(
+                context.resources.getInteger(
+                    R.integer.motion_duration_large
+                )
+            )
+        ).data(this)
+}
 
 /**
  * Draws an image onto the image view
