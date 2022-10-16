@@ -19,8 +19,8 @@ package co.anitrend.domain.common
 
 /**
  * A hex colour character sequence, that can be any of the following:
- * - #RRGGBB
- * - #AARRGGBB
+ * - `#RRGGBB`
+ * - `#AARRGGBB`
  */
 typealias HexColor = CharSequence
 
