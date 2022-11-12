@@ -24,3 +24,6 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.media))
 }
+android {
+    namespace = "co.anitrend.common.medialist.ui"
+}

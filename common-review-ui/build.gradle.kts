@@ -24,3 +24,6 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
 }
+android {
+    namespace = "co.anitrend.common.review"
+}

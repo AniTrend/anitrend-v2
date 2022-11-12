@@ -17,11 +17,11 @@
 
 package co.anitrend.buildSrc.plugins.strategy
 
-import org.gradle.api.artifacts.dsl.DependencyHandler
-import co.anitrend.buildSrc.module.Modules
-import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.Libraries
+import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.module.Modules
 import org.gradle.api.Project
+import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal class DependencyStrategy(private val project: Project) {
 
@@ -42,8 +42,8 @@ internal class DependencyStrategy(private val project: Project) {
         androidTest(Libraries.AndroidX.Test.rules)
         androidTest(Libraries.AndroidX.Test.runner)
         androidTest(Libraries.AndroidX.Test.Espresso.core)
-        androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
         androidTest(Libraries.Mockk.mockkAndroid)
+        androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
@@ -58,14 +58,17 @@ internal class DependencyStrategy(private val project: Project) {
         implementation(Libraries.JetBrains.KotlinX.Coroutines.core)
         implementation(Libraries.CashApp.Copper.copper)
 
+        test(Libraries.CashApp.Turbine.turbine)
         test(Libraries.JetBrains.KotlinX.Coroutines.test)
+
         androidTest(Libraries.CashApp.Turbine.turbine)
+        androidTest(Libraries.JetBrains.KotlinX.Coroutines.test)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
         implementation(Libraries.Koin.core)
         androidTest(Libraries.Koin.Test.test)
-        androidTest(Libraries.Koin.Test.testJUnit4)
+        test(Libraries.Koin.Test.testJUnit4)
         if (project.hasKoinAndroidSupport()) {
             implementation(Libraries.Koin.android)
             implementation(Libraries.Koin.AndroidX.workManager)

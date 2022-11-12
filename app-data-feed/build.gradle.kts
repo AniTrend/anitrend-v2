@@ -32,3 +32,6 @@ dependencies {
     // Holding off on using xml util for now, seems not to work and probably needs more testing
     implementation(Libraries.Devrieze.XmlUtil.Android.serialization)
 }
+android {
+    namespace = "co.anitrend.data.feed"
+}

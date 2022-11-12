@@ -25,3 +25,6 @@ dependencies {
     implementation(Libraries.liquidSwipe)
     implementation(Libraries.AirBnB.Lottie.lottie)
 }
+android {
+    namespace = "co.anitrend.onboarding"
+}

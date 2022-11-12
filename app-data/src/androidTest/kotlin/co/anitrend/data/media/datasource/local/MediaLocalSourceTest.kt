@@ -24,14 +24,13 @@ import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.get
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -52,13 +51,13 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
     @Before
     fun setUp() {
         assertNotNull(pageModel?.data)
-        runBlocking(dispatchers.io) {
+        runTest(dispatchers.io) {
             populateDatabase(pageModel!!.data!!)
         }
     }
 
     @Test
-    fun getMediaById() = runBlocking(dispatchers.io) {
+    fun getMediaById() = runTest(dispatchers.io) {
         val id: Long = 16498
         val title = MediaEntity.Title(
             english = "Attack on Titan",
@@ -69,7 +68,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
-        entityFlow.test(timeout = Duration.seconds(15)) {
+        entityFlow.test {
             val entity = expectMostRecentItem()
             // for some reason tests clear the native field
             assertEquals(title, entity?.media?.title)
@@ -80,7 +79,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
     }
 
     @Test
-    fun getMediaWithAiringById() = runBlocking(dispatchers.io) {
+    fun getMediaWithAiringById() = runTest(dispatchers.io) {
         val id: Long = 5114
         val title = MediaEntity.Title(
             english = "Fullmetal Alchemist: Brotherhood",
@@ -91,7 +90,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
         val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
-        entityFlow.test(timeout = Duration.seconds(15)) {
+        entityFlow.test {
             val entity = expectMostRecentItem()
             // for some reason tests clear the native field
             assertEquals(title, entity?.media?.title)

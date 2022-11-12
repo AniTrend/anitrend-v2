@@ -31,4 +31,7 @@ dependencies {
     googleImplementation(Libraries.Google.Services.OOS.licenses)
     googleImplementation(Libraries.Google.Firebase.Messaging.messaging)
 }
+android {
+    namespace = "co.anitrend"
+}
 

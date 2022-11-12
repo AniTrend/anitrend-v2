@@ -30,3 +30,6 @@ dependencies {
 
     implementation(Libraries.AniTrend.QueryBuilder.core)
 }
+android {
+    namespace = "co.anitrend.data.core"
+}

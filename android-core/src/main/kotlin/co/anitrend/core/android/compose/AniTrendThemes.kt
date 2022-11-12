@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.core.android.R
-import com.google.accompanist.insets.ProvideWindowInsets
 
 object AniTrendTheme {
 
@@ -185,17 +184,11 @@ fun AniTrendTheme(
     colors: Colors = AniTrendTheme.colors,
     typography: Typography = AniTrendTheme.typography,
     shapes: Shapes = AniTrendTheme.shapes,
-    consumeIntents: Boolean = false,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colors = colors,
-        content = {
-            ProvideWindowInsets(
-                consumeWindowInsets = consumeIntents,
-                content = content
-            )
-        },
+        content = content,
         typography = typography,
         shapes = shapes
     )

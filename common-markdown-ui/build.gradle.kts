@@ -35,3 +35,6 @@ dependencies {
 	implementation(Libraries.Markwon.html)
 	implementation(Libraries.Markwon.coil)
 }
+android {
+    namespace = "co.anitrend.common.markdown"
+}

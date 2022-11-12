@@ -52,3 +52,6 @@ dependencies {
     implementation(Libraries.AniTrend.QueryBuilder.core)
     kapt(Libraries.AniTrend.QueryBuilder.processor)
 }
+android {
+    namespace = "co.anitrend.data"
+}

@@ -25,3 +25,6 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.review))
     implementation(Libraries.Sheets.core)
 }
+android {
+    namespace = "co.anitrend.review.discover"
+}
