@@ -50,7 +50,7 @@ val buildToolsVersion = "7.3.1"
 val kotlinVersion = "1.7.10"
 val dokkaVersion = "1.7.20"
 val manesVersion = "0.38.0"
-val spotlessVersion = "6.10.0"
+val spotlessVersion = "6.11.0"
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
