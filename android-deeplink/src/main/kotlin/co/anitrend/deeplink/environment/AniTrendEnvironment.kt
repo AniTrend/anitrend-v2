@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.environment
 
 import android.content.Context
@@ -23,5 +22,5 @@ import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
 data class AniTrendEnvironment(
     override val context: Context,
     override val isAuthenticated: Boolean,
-    override val userId: Long
+    override val userId: Long,
 ) : IAniTrendEnvironment

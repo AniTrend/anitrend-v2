@@ -52,7 +52,7 @@ sealed class Media : IMedia {
     abstract val isLocked: Boolean?
     abstract val isRecommendationBlocked: Boolean
     abstract val isReviewBlocked: Boolean
-    abstract val siteUrl: CharSequence?
+    abstract val siteUrl: SiteUrl
     abstract val source: MediaSource?
     abstract val synonyms: Collection<CharSequence>
     abstract val tags: Collection<Tag>
@@ -66,7 +66,7 @@ sealed class Media : IMedia {
     sealed class Category(
         val type: MediaType,
         val total: Int
-        ) {
+    ) {
 
         /**
          * Japanese Anime
@@ -112,6 +112,11 @@ sealed class Media : IMedia {
         }
     }
 
+    data class SiteUrl(
+        val aniList: String? = null,
+        val myAnimeList: String? = null
+    )
+
     data class Core(
         override val externalLinks: Collection<IMediaExternalLink>,
         override val rankings: Collection<IMediaRank>,
@@ -140,7 +145,7 @@ sealed class Media : IMedia {
         override val isLocked: Boolean?,
         override val isRecommendationBlocked: Boolean,
         override val isReviewBlocked: Boolean,
-        override val siteUrl: CharSequence?,
+        override val siteUrl: SiteUrl,
         override val source: MediaSource?,
         override val synonyms: Collection<CharSequence>,
         override val tags: Collection<Tag>,
@@ -159,7 +164,7 @@ sealed class Media : IMedia {
                 isLocked = null,
                 isRecommendationBlocked = false,
                 isReviewBlocked = false,
-                siteUrl = null,
+                siteUrl = SiteUrl(),
                 source = null,
                 synonyms = emptyList(),
                 tags = emptyList(),
@@ -218,7 +223,7 @@ sealed class Media : IMedia {
         override val isLocked: Boolean?,
         override val isRecommendationBlocked: Boolean,
         override val isReviewBlocked: Boolean,
-        override val siteUrl: CharSequence?,
+        override val siteUrl: SiteUrl,
         override val source: MediaSource?,
         override val synonyms: Collection<CharSequence>,
         override val tags: Collection<Tag>
@@ -243,7 +248,7 @@ sealed class Media : IMedia {
                 isRecommendationBlocked = false,
                 isReviewBlocked = false,
                 rankings = emptyList(),
-                siteUrl = null,
+                siteUrl = SiteUrl(),
                 source = null,
                 synonyms = emptyList(),
                 tags = emptyList(),

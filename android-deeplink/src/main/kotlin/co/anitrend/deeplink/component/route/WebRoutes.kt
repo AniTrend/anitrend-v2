@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.component.route
 
 import android.content.Intent
@@ -47,12 +46,13 @@ internal object MainRoute : Route("home") {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = NavigationDrawerRouter.Param(
-            destination = NavigationDrawerRouter.Destination.HOME
-        ).asNavPayload()
+        val payload =
+            NavigationDrawerRouter.Param(
+                destination = NavigationDrawerRouter.Destination.HOME,
+            ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -64,12 +64,13 @@ internal object ForumDiscoverRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = NavigationDrawerRouter.Param(
-            destination = NavigationDrawerRouter.Destination.FORUMS
-        ).asNavPayload()
+        val payload =
+            NavigationDrawerRouter.Param(
+                destination = NavigationDrawerRouter.Destination.FORUMS,
+            ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -81,30 +82,30 @@ internal object ActivityRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         val id = params["id"]
         return if (id == null) {
-            val payload = NavigationDrawerRouter.Param(
-                destination = NavigationDrawerRouter.Destination.SOCIAL
-            ).asNavPayload()
+            val payload =
+                NavigationDrawerRouter.Param(
+                    destination = NavigationDrawerRouter.Destination.SOCIAL,
+                ).asNavPayload()
             MainRouter.forActivity(env.context, payload)
         } else {
             TODO("Feed details deep linking not supported yet")
-            //FeedRouter.forActivity(env.context)
+            // FeedRouter.forActivity(env.context)
         }
-
     }
 }
 
 internal object ForumRoute : Route(
-    "forum/thread/:id"
+    "forum/thread/:id",
 ) {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         TODO("Forum detail deep linking not yet supported yet")
@@ -115,7 +116,7 @@ internal object ReviewRoute : Route("reviews") {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         return ReviewDiscoverRouter.forActivity(env.context)
@@ -126,7 +127,7 @@ internal object RecommendationRoute : Route("recommendations") {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         return RecommendationDiscoverRouter.forActivity(env.context)
@@ -135,35 +136,37 @@ internal object RecommendationRoute : Route("recommendations") {
 
 internal object CharacterRoute : Route(
     "character/:id",
-    "character/:id/:name"
+    "character/:id/:name",
 ) {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = CharacterRouter.Param(
-            id = params["id"]?.toLong(),
-            name = params["name"]
-        ).asNavPayload()
+        val payload =
+            CharacterRouter.Param(
+                id = params["id"]?.toLong(),
+                name = params["name"],
+            ).asNavPayload()
         return CharacterRouter.forActivity(env.context, payload)
     }
 }
 
 internal object StudioRoute : Route(
     "studio/:id",
-    "studio/:id/:name"
+    "studio/:id/:name",
 ) {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = StudioRouter.Param(
-            id = requireNotNull(params["id"]?.toLong())
-        ).asNavPayload()
+        val payload =
+            StudioRouter.Param(
+                id = requireNotNull(params["id"]?.toLong()),
+            ).asNavPayload()
         return StudioRouter.forActivity(env.context, payload)
     }
 }
@@ -177,13 +180,14 @@ internal object StaffRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = StaffRouter.Param(
-            id = params["id"]?.toLong(),
-            name = params["name"]
-        ).asNavPayload()
+        val payload =
+            StaffRouter.Param(
+                id = params["id"]?.toLong(),
+                name = params["name"],
+            ).asNavPayload()
         return StaffRouter.forActivity(env.context, payload)
     }
 }
@@ -192,43 +196,46 @@ internal object MediaRoute : Route(
     "anime/:id",
     "anime/:id/*",
     "manga/:id",
-    "manga/:id/*"
+    "manga/:id/*",
 ) {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val mediaType = uri.pathSegments().first()
-            .uppercase()
+        val mediaType =
+            uri.pathSegments().first()
+                .uppercase()
 
-        val payload = MediaRouter.Param(
-            id = requireNotNull(params["id"]).toLong(),
-            type = MediaType.valueOf(mediaType)
-        ).asNavPayload()
+        val payload =
+            MediaRouter.Param(
+                id = requireNotNull(params["id"]).toLong(),
+                type = MediaType.valueOf(mediaType),
+            ).asNavPayload()
         return MediaRouter.forActivity(env.context, payload)
     }
 }
 
 internal object SearchRoute : Route(
     "search/anime",
-    "search/manga"
+    "search/manga",
 ) {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = SearchRouter.Param(
-            query = uri.queryParameter("search"),
-            genres = uri.queryParameter("genres")?.split(","),
-            year = uri.queryParameter("year")?.toInt(),
-            season = uri.queryParameter("season")?.let { MediaSeason.valueOf(it) },
-            format = uri.queryParameter("format")?.let { MediaFormat.valueOf(it) },
-            status = uri.queryParameter("airing status")?.let { MediaStatus.valueOf(it) },
-        ).asNavPayload()
+        val payload =
+            SearchRouter.Param(
+                query = uri.queryParameter("search"),
+                genres = uri.queryParameter("genres")?.split(","),
+                year = uri.queryParameter("year")?.toInt(),
+                season = uri.queryParameter("season")?.let { MediaSeason.valueOf(it) },
+                format = uri.queryParameter("format")?.let { MediaFormat.valueOf(it) },
+                status = uri.queryParameter("airing status")?.let { MediaStatus.valueOf(it) },
+            ).asNavPayload()
         return SearchRouter.forActivity(env.context, payload)
     }
 }
@@ -240,24 +247,28 @@ internal object MediaListRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         val identifier = params["id"]
-        val mediaType = when (uri.pathSegments().last()) {
-            "animelist" -> MediaType.ANIME
-            else -> MediaType.MANGA
-        }
-        val payload = when (identifier?.isDigitsOnly()) {
-            true -> MediaListRouter.Param(
-                userId = identifier.toLong(),
-                type = mediaType
-            ).asNavPayload()
-            else -> MediaListRouter.Param(
-                userName = identifier,
-                type = mediaType
-            ).asNavPayload()
-        }
+        val mediaType =
+            when (uri.pathSegments().last()) {
+                "animelist" -> MediaType.ANIME
+                else -> MediaType.MANGA
+            }
+        val payload =
+            when (identifier?.isDigitsOnly()) {
+                true ->
+                    MediaListRouter.Param(
+                        userId = identifier.toLong(),
+                        type = mediaType,
+                    ).asNavPayload()
+                else ->
+                    MediaListRouter.Param(
+                        userName = identifier,
+                        type = mediaType,
+                    ).asNavPayload()
+            }
         return MediaListRouter.forActivity(env.context, payload)
     }
 }
@@ -268,18 +279,21 @@ internal object UserRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         val identifier = params["id"]
-        val payload = when (identifier?.isDigitsOnly()) {
-            true -> ProfileRouter.Param(
-                userId = identifier.toLong()
-            ).asNavPayload()
-            else -> ProfileRouter.Param(
-                userName = identifier
-            ).asNavPayload()
-        }
+        val payload =
+            when (identifier?.isDigitsOnly()) {
+                true ->
+                    ProfileRouter.Param(
+                        userId = identifier.toLong(),
+                    ).asNavPayload()
+                else ->
+                    ProfileRouter.Param(
+                        userName = identifier,
+                    ).asNavPayload()
+            }
         return ProfileRouter.forActivity(env.context, payload)
     }
 }
@@ -291,18 +305,21 @@ internal object UserStatsRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         val identifier = params["id"]
-        val payload = when (identifier?.isDigitsOnly()) {
-            true -> ProfileRouter.Param(
-                userId = identifier.toLong()
-            ).asNavPayload()
-            else -> ProfileRouter.Param(
-                userName = identifier
-            ).asNavPayload()
-        }
+        val payload =
+            when (identifier?.isDigitsOnly()) {
+                true ->
+                    ProfileRouter.Param(
+                        userId = identifier.toLong(),
+                    ).asNavPayload()
+                else ->
+                    ProfileRouter.Param(
+                        userName = identifier,
+                    ).asNavPayload()
+            }
         return ProfileRouter.forActivity(env.context, payload)
     }
 }
@@ -313,18 +330,21 @@ internal object UserFavouritesRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         val identifier = params["id"]
-        val payload = when (identifier?.isDigitsOnly()) {
-            true -> ProfileRouter.Param(
-                userId = identifier.toLong()
-            ).asNavPayload()
-            else -> ProfileRouter.Param(
-                userName = identifier
-            ).asNavPayload()
-        }
+        val payload =
+            when (identifier?.isDigitsOnly()) {
+                true ->
+                    ProfileRouter.Param(
+                        userId = identifier.toLong(),
+                    ).asNavPayload()
+                else ->
+                    ProfileRouter.Param(
+                        userName = identifier,
+                    ).asNavPayload()
+            }
         return ProfileRouter.forActivity(env.context, payload)
     }
 }
@@ -335,24 +355,31 @@ internal object UserReviewRoute : Route(
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         super.run(uri, params, env)
         val identifier = params["id"]
-        val payload = when (identifier?.isDigitsOnly()) {
-            true -> ProfileRouter.Param(
-                userId = identifier.toLong()
-            ).asNavPayload()
-            else -> ProfileRouter.Param(
-                userName = identifier
-            ).asNavPayload()
-        }
+        val payload =
+            when (identifier?.isDigitsOnly()) {
+                true ->
+                    ProfileRouter.Param(
+                        userId = identifier.toLong(),
+                    ).asNavPayload()
+                else ->
+                    ProfileRouter.Param(
+                        userName = identifier,
+                    ).asNavPayload()
+            }
         return ProfileRouter.forActivity(env.context, payload)
     }
 }
 
 object FallbackAction : Action<Intent?> {
-    override fun run(uri: DeepLinkUri, params: Map<String, String>, env: Environment): Intent? {
+    override fun run(
+        uri: DeepLinkUri,
+        params: Map<String, String>,
+        env: Environment,
+    ): Intent? {
         val entries = params.entries.joinToString()
         Timber.w("Registered routers failed to match | uri: $uri | params: $entries")
         return SplashRouter.forActivity(env.context)

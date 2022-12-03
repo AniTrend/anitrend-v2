@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.component.route.contract
 
 import android.content.Intent
@@ -31,7 +30,6 @@ import timber.log.Timber
  * Application deep link router for handling anitrend and web URIs
  */
 abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
-
     /**
      * Called when the application receives a matching deep link from [routes]
      *
@@ -42,14 +40,14 @@ abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
-        env: Environment
+        env: Environment,
     ): Intent? {
         Timber.d("Deep link matcher found!")
         val entries = params.entries.joinToString()
         Timber.analytics {
             logCurrentState(
                 Timber.tags.view("deep_link"),
-                bundleOf(Timber.keys.DATA to uri.toString())
+                bundleOf(Timber.keys.DATA to uri.toString()),
             )
         }
         Timber.d("Attempting to resolve -> uri: $uri | params: $entries")

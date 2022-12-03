@@ -32,7 +32,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     tableName = "rank",
     primaryKeys = ["id"],
     indices = [
-        Index(value = ["media_id"])
+        Index(value = ["media_id", "id"], unique = true),
+        Index(value = ["media_id"]),
     ],
     foreignKeys = [
         ForeignKey(

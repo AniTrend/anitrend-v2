@@ -178,6 +178,14 @@ object AniTrendTheme {
         }
 }
 
+@Deprecated(
+    message = "Use AniTrendTheme3 instead",
+    replaceWith = ReplaceWith(
+        "AniTrend3()",
+        "co.anitrend.core.android.ui.theme"
+    ),
+    level = DeprecationLevel.ERROR,
+)
 @Composable
 fun AniTrendTheme(
     colors: Colors = AniTrendTheme.colors,

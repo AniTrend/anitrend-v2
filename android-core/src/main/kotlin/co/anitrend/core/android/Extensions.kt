@@ -17,7 +17,11 @@
 
 package co.anitrend.core.android
 
+import android.content.Context
+import android.content.res.Resources
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout

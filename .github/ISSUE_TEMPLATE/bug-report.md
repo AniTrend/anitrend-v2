@@ -8,7 +8,7 @@ about: Create a bug report to help us identify bugs faster and improve the appli
 
 Before opening a new issue, please take a moment to review our [**community guidelines**](https://github.com/AniTrend/anitrend-v2/blob/master/CONTRIBUTING.md) to make the contribution process easy and effective for everyone involved.
 
-**You may find an answer in already closed issues**:
+**You may find an answer in closed issues**:
 https://github.com/AniTrend/anitrend-v2/issues?q=is%3Aissue+is%3Aclosed
 
 

@@ -25,6 +25,7 @@ import co.anitrend.data.jikan.media.converters.JikanModelConverter
 import co.anitrend.data.jikan.media.datasource.local.JikanLocalSource
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
+import co.anitrend.data.jikan.model.JikanWrapper
 import co.anitrend.data.jikan.producer.mapper.JikanProducerMapper
 import co.anitrend.data.jikan.studio.mapper.JikanStudioMapper
 
@@ -35,7 +36,7 @@ internal class JikanMapper(
     private val studioMapper: JikanStudioMapper.Embed,
     private val localSource: JikanLocalSource,
     private val converter: JikanModelConverter
-) : DefaultMapper<JikanMediaModel, JikanEntity>() {
+) : DefaultMapper<JikanWrapper<JikanMediaModel>, JikanEntity>() {
 
     /**
      * Save [data] into your desired local source
@@ -55,29 +56,29 @@ internal class JikanMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: JikanMediaModel): JikanEntity {
-        when (source) {
+    override suspend fun onResponseMapFrom(source: JikanWrapper<JikanMediaModel>): JikanEntity {
+        when (val data = source.data) {
             is JikanMediaModel.Anime -> {
                 licensorMapper.onEmbedded(
-                    source.licensors?.map {
+                    data.licensors?.map {
                         JikanItem(
-                            jikanId = source.malId,
+                            jikanId = data.malId,
                             model = it
                         )
                     }.orEmpty()
                 )
                 producerMapper.onEmbedded(
-                    source.producers?.map {
+                    data.producers?.map {
                         JikanItem(
-                            jikanId = source.malId,
+                            jikanId = data.malId,
                             model = it
                         )
                     }.orEmpty()
                 )
                 studioMapper.onEmbedded(
-                    source.studios?.map {
+                    data.studios?.map {
                         JikanItem(
-                            jikanId = source.malId,
+                            jikanId = data.malId,
                             model = it
                         )
                     }.orEmpty()
@@ -85,9 +86,9 @@ internal class JikanMapper(
             }
             is JikanMediaModel.Manga -> {
                 authorMapper.onEmbedded(
-                    source.authors?.map {
+                    data.authors?.map {
                         JikanItem(
-                            jikanId = source.malId,
+                            jikanId = data.malId,
                             model = it
                         )
                     }.orEmpty()

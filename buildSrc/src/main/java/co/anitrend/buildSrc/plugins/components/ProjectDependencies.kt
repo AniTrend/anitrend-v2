@@ -108,8 +108,6 @@ private fun Project.applyAppModuleDependencies() {
 
     /** debugImplementation because LeakCanary should only run in debug builds. */
     dependencies.debugImplementation(libs.square.leakcanary.android)
-    /** debugImplementation because debug-db should only run in debug builds */
-    dependencies.debugImplementation(libs.debugDb)
 }
 
 private fun Project.applyAppModuleGroupDependencies() {
@@ -380,6 +378,7 @@ private fun Project.applyComposeDependencies() {
     dependencies.implementation(libs.google.accompanist.flowlayout)
     dependencies.implementation(libs.google.accompanist.insets)
     dependencies.implementation(libs.google.accompanist.pager)
+    dependencies.implementation(libs.google.accompanist.drawablepainter)
 
     dependencies.implementation(libs.coil.compose)
 }

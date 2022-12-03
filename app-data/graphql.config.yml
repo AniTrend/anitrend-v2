@@ -7,12 +7,12 @@ extensions:
         user-agent: JS GraphQL
       introspect: true
     AniTrend:
-      # url: https://graphql.anitrend.co
-      url: http://localhost:8000/graphql/
+      #url: https://graphql.anitrend.co
+      url: http://api.anitrend.docker.localhost/graphql
       headers:
         User-Agent: "JS GraphQL"
         Accept: "*/*"
-        HOST: "localhost"
+        HOST: "graphql.anitrend.co"
         Accept-Encoding: "gzip, deflate, br"
         Accept-Language: "en-GB,en-US;q=0.9,en;q=0.8"
         Content-Type: "application/json"

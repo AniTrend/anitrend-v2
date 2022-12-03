@@ -65,6 +65,15 @@ internal class MediaConverter(
             }
         }
 
+        private fun MediaModel.createSiteUrl(): Media.SiteUrl {
+            return Media.SiteUrl(
+                aniList = siteUrl,
+                myAnimeList = idMal?.let {
+                    "https://myanimelist.net/${type.name.lowercase()}/${it}"
+                }
+            )
+        }
+
         private fun convertMediaListEntry(model: MediaListModel.Core?): MediaList {
             return model?.let {
                 MediaList.Core(
@@ -155,7 +164,7 @@ internal class MediaConverter(
                 },
                 isLicensed = source.isLicensed,
                 isLocked = source.isLocked,
-                siteUrl = source.siteUrl,
+                siteUrl = source.createSiteUrl(),
                 source = source.source,
                 synonyms = source.synonyms,
                 tags = source.tags.map {
@@ -272,7 +281,7 @@ internal class MediaConverter(
                 },
                 isLicensed = source.isLicensed,
                 isLocked = source.isLocked,
-                siteUrl = source.siteUrl,
+                siteUrl = source.createSiteUrl(),
                 source = source.source,
                 synonyms = source.synonyms,
                 tags = source.tags.map {
@@ -394,7 +403,10 @@ internal class MediaConverter(
                         id = it.id,
                     )
                 },
-                siteUrl = source.siteUrl,
+                siteUrl = Media.SiteUrl(
+                    aniList = source.siteUrl,
+                    myAnimeList = source.idMal?.let { "" }
+                ),
                 source = source.source,
                 synonyms = source.synonyms,
                 tags = source.tags.map {
@@ -538,6 +550,15 @@ internal class MediaEntityViewConverter(
             return koinOf<MediaListEntityViewConverter>().convertFrom(this)
         }
 
+        private fun MediaEntity.createSiteUrl(): Media.SiteUrl {
+            return Media.SiteUrl(
+                aniList = siteUrl,
+                myAnimeList = malId?.let {
+                    "https://myanimelist.net/${type.name.lowercase()}/${it}"
+                }
+            )
+        }
+
         private fun MediaEntityView.createMedia(): Media {
             return Media.Core(
                 sourceId = MediaSourceId(
@@ -594,7 +615,7 @@ internal class MediaEntityViewConverter(
                         id = it.id
                     )
                 },
-                siteUrl = media.siteUrl,
+                siteUrl = media.createSiteUrl(),
                 source = media.source ?: jikan?.source?.let {
                     runCatching {
                         MediaSource.valueOf(it.uppercase())

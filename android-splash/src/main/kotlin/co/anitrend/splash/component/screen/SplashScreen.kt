@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.splash.component.screen
 
 import android.os.Bundle
@@ -27,7 +26,6 @@ import co.anitrend.splash.component.content.SplashContent
 import co.anitrend.splash.databinding.ActivitySplashBinding
 
 class SplashScreen : AniTrendScreen<ActivitySplashBinding>() {
-
     override fun configureActivity() {
         super.configureActivity()
         hideStatusBarAndNavigationBar()
@@ -38,7 +36,7 @@ class SplashScreen : AniTrendScreen<ActivitySplashBinding>() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
-        with (splashScreen) {
+        with(splashScreen) {
             setKeepOnScreenCondition {
                 onUpdateUserInterface()
                 false
@@ -51,11 +49,11 @@ class SplashScreen : AniTrendScreen<ActivitySplashBinding>() {
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
     }
 
     private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(fragment = SplashContent::class.java)
+        currentFragmentTag =
+            FragmentItem(fragment = SplashContent::class.java)
                 .commit(requireBinding().authFrame, this)
     }
 }

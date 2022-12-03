@@ -25,6 +25,7 @@ import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Default
+import kotlinx.coroutines.flow.merge
 import timber.log.Timber
 
 abstract class AniTrendViewModelState<T> : ISupportViewModelState<T>,
@@ -48,6 +49,13 @@ abstract class AniTrendViewModelState<T> : ISupportViewModelState<T>,
         Timber.i("Performing `refreshState` switch map using $coroutineContext on $this")
         it.refreshState.asLiveData(coroutineContext)
     }
+
+    val combinedLoadState = state.switchMap {
+        Timber.i("Performing `combinedLoadState` switch map using $coroutineContext on $this")
+        val result = merge(it.loadState, it.refreshState)
+        result.asLiveData(coroutineContext)
+    }
+
     /**
      * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
      * call cancellation of any ongoing jobs.

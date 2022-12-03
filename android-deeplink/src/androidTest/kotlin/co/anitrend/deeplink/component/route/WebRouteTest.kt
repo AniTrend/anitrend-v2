@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.component.route
 
 import android.content.Intent
@@ -24,7 +23,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class WebRouteTest : CommonRouteTest() {
-
     private val deepLinkParser: DeepLinkParser<Intent?> by lazy {
         DeepLinkParser.of<Intent?>(environment)
             .addRoute(MainRoute)

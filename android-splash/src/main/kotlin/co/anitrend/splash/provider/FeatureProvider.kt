@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.splash.provider
 
 import android.content.Context
@@ -23,6 +22,5 @@ import co.anitrend.navigation.SplashRouter
 import co.anitrend.splash.component.screen.SplashScreen
 
 internal class FeatureProvider : SplashRouter.Provider {
-    override fun activity(context: Context?) =
-        Intent(context, SplashScreen::class.java)
+    override fun activity(context: Context?) = Intent(context, SplashScreen::class.java)
 }

@@ -256,11 +256,7 @@ object AuthRouter : NavigationRouter() {
 object MediaRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
+    interface Provider : INavigationProvider
 
     @Parcelize
     data class Param(
@@ -1128,6 +1124,19 @@ object ReviewTaskRouter : NavigationRouter() {
 }
 
 object ConfigTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun worker(): Class<out ListenableWorker>
+        fun scheduler(): WorkSchedulerController
+    }
+
+    fun forWorker() = provider.worker()
+    fun forScheduler() = provider.scheduler()
+}
+
+
+object FavouriteTaskRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {

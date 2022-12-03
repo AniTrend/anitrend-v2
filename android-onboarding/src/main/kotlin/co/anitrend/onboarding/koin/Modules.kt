@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.onboarding.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -27,31 +26,35 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
-private val presenterModule = module {
-    scope<OnBoardingScreen> {
-        scoped {
-            OnBoardingPresenter(
-                context = androidContext(),
-                settings = get()
-            )
+private val presenterModule =
+    module {
+        scope<OnBoardingScreen> {
+            scoped {
+                OnBoardingPresenter(
+                    context = androidContext(),
+                    settings = get(),
+                )
+            }
         }
     }
-}
 
-private val fragmentModule = module {
-    scope<OnBoardingScreen> {
-        fragment {
-            OnBoardingContent()
+private val fragmentModule =
+    module {
+        scope<OnBoardingScreen> {
+            fragment {
+                OnBoardingContent()
+            }
         }
     }
-}
 
-private val featureModule = module {
-    factory<OnBoardingRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<OnBoardingRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(presenterModule, fragmentModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(presenterModule, fragmentModule, featureModule),
+    )

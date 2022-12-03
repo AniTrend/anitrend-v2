@@ -27,19 +27,21 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import co.anitrend.core.android.compose.AniTrendTheme
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import org.koin.androidx.compose.get
+import org.koin.compose.koinInject
 
 
 @Composable
 private fun BackgroundHeader(
     mediaCover: LiveData<IMediaCover>,
     modifier: Modifier = Modifier,
-    imageLoader: ImageLoader = get()
+    imageLoader: ImageLoader = koinInject()
 ) {
     val mediaCoverState = mediaCover.observeAsState()
     Row(modifier = modifier.aspectRatio(1.7f)) {
@@ -55,7 +57,7 @@ private fun BackgroundHeader(
 
 @Composable
 fun MediaListEditorComponent(state: MediaListEditorState) {
-    AniTrendTheme {
+    AniTrendTheme3 {
         Surface {
             BackgroundHeader(state.model.map(Media::image))
         }

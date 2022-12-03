@@ -38,7 +38,7 @@ class MediaCarouselAdapter(
     viewPool: RecycledViewPool,
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
+    override var customSupportAnimator: AbstractAnimator? = null,
     override val mapper: (MediaCarousel) -> IRecyclerItem = {
         MediaCarouselItem(it, settings, viewPool)
     },

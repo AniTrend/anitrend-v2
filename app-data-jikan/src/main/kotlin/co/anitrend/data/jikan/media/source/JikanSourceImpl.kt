@@ -28,8 +28,10 @@ import co.anitrend.data.jikan.media.datasource.remote.JikanRemoteSource
 import co.anitrend.data.jikan.media.entity.projection.JikanWithConnection
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
 import co.anitrend.data.jikan.media.source.contract.JikanSource
+import co.anitrend.data.jikan.model.JikanWrapper
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -56,12 +58,12 @@ internal class JikanSourceImpl(
             .flowOn(coroutineContext)
     }
 
-    private suspend fun getMediaInfo() = runCatching {
+    private suspend fun getMediaInfo(): JikanWrapper<JikanMediaModel.MoreInfo>? = runCatching {
         val mediaType = query.type.name.uppercase()
         val deferred = async {
             remoteSource.getExtraInfo(query.id, mediaType)
         }
-        DefaultNetworkClient<JikanMediaModel.MoreInfo>(dispatcher.io)
+        DefaultNetworkClient<JikanWrapper<JikanMediaModel.MoreInfo>>(dispatcher.io)
             .fetch(deferred)
     }.onFailure {
         Timber.e(it)
@@ -73,20 +75,20 @@ internal class JikanSourceImpl(
             when (query.type) {
                 MediaType.ANIME -> remoteSource.getAnimeDetails(query.id)
                 else -> remoteSource.getMangaDetails(query.id)
-            } as Response<JikanMediaModel>
+            } as Response<JikanWrapper<JikanMediaModel>>
         }
 
-        val jikanMediaInfo = getMediaInfo()
+        val jikanMediaInfo = getMediaInfo()?.data
 
         val result = controller(deferred, callback) { model ->
-            when (model) {
-                is JikanMediaModel.Anime -> model.copy(
+            when (val data = model.data) {
+                is JikanMediaModel.Anime -> data.copy(
                     moreInfo = jikanMediaInfo?.moreInfo
                 )
-                is JikanMediaModel.Manga -> model.copy(
+                is JikanMediaModel.Manga -> data.copy(
                     moreInfo = jikanMediaInfo?.moreInfo
                 )
-            }
+            }.let(::JikanWrapper)
         }
 
         return result != null

@@ -3,26 +3,56 @@ name: release-drafter
 on:
   push:
     branches:
-      - develop
-  pull_request:
+      - 'develop'
+  pull_request_target:
     # Only following types are handled by the action, but one can default to all as well
-    types: [opened, reopened, synchronize]
+    types: [ opened, reopened, synchronize ]
 
 permissions:
   contents: read
 
 jobs:
-  update-release-draft:
+  update-draft-release:
     permissions:
-      # write permission is required to create a github release
       contents: write
-      # write permission is required for autolabeler
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v6
+        id: release_drafter
         with:
-           config-name: release-drafter-config.yml
-           disable-autolabeler: false
+          config-name: release-drafter-config.yml
+          disable-autolabeler: false
+          commitish: develop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Extract version
+        id: version
+        run: echo "${{ steps.release_drafter.outputs.resolved_version }}" > VERSION
+      - name: Calculate code
+        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
+        id: code
+        run: |
+          IFS='.' read -ra VER <<< "$(cat VERSION)"
+          MAJOR=$((VER[0] * 1000000000))
+          MINOR=$((VER[1] * 1000000))
+          PATCH=$((VER[2] * 1000))
+          CODE=$((MAJOR + MINOR + PATCH))
+          echo "version=$(cat VERSION)" > gradle/version.properties
+          echo "code=$CODE" >> gradle/version.properties
+          echo "name=v$(cat VERSION)" >> gradle/version.properties
+
+      - name: Show version
+        run: cat gradle/version.properties
+
+      - name: Push auto generated version file
+        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update version.properties
+          commit_options: '--no-verify --signoff'
+          file_pattern: 'gradle/version.properties'
+          repository: .
+

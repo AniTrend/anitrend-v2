@@ -20,5 +20,6 @@ package co.anitrend.data.jikan.media
 import co.anitrend.data.android.controller.core.DefaultController
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
+import co.anitrend.data.jikan.model.JikanWrapper
 
-internal typealias JikanController = DefaultController<JikanMediaModel, JikanEntity>
+internal typealias JikanController = DefaultController<JikanWrapper<JikanMediaModel>, JikanEntity>

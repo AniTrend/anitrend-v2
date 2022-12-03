@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.common
 
 import android.app.Instrumentation
@@ -30,7 +29,6 @@ import com.kingsleyadio.deeplink.DeepLinkUri
 import org.junit.Rule
 
 abstract class CommonRouteTest {
-
     private val webBaseUrl = "https://anilist.co"
     private val appBaseUrl = "app.anitrend://"
     private val basePackage = "co.anitrend"
@@ -46,7 +44,7 @@ abstract class CommonRouteTest {
         AniTrendEnvironment(
             instrumentation.context,
             false,
-            IAuthenticationSettings.INVALID_USER_ID
+            IAuthenticationSettings.INVALID_USER_ID,
         )
     }
 

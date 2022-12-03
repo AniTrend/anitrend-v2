@@ -21,7 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.navigation.model.common.IParam
 import co.anitrend.notification.R
 import co.anitrend.notification.component.viewmodel.NotificationViewModel
 import co.anitrend.notification.databinding.NotificationContentBinding
@@ -30,13 +34,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NotificationContent(
     override val inflateLayout: Int = R.layout.notification_content
 ) : AniTrendContent<NotificationContentBinding>() {
-    
+
     private val viewModel by viewModel<NotificationViewModel>()
-    
+
     private fun onFetchDataInitialize() {
         // TODO: Implement functionality
     }
-    
+
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
@@ -75,6 +79,15 @@ class NotificationContent(
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = NotificationContentBinding.bind(requireNotNull(view))
+        requireBinding().root.setContent {
+            AniTrendTheme3 {
+                ContentWrapper<IParam>(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    onClick = {},
+                ) {}
+            }
+        }
         return view
     }
 

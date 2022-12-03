@@ -19,25 +19,22 @@ package co.anitrend.profile.component.content
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.layout.Column
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.core.android.compose.AniTrendTheme
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.navigation.ProfileRouter
+import co.anitrend.navigation.model.common.IParam
 import co.anitrend.profile.R
 import co.anitrend.profile.component.viewmodel.ProfileViewModel
 import co.anitrend.profile.databinding.ProfileContentBinding
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class ProfileContent(
     private val stateLayoutConfig: StateLayoutConfig,
@@ -48,36 +45,20 @@ class ProfileContent(
 
     private val param: ProfileRouter.Param? by argument(ProfileRouter.Param.KEY)
 
-    private fun onFetchDataInitialize() {
-        requireBinding().stateLayout.assureParamNotMissing(param) {
-            viewModelState().invoke(requireNotNull(param))
-        }
-    }
-
     /**
      * Additional initialization to be done in this method, this method will be called in
      * [androidx.fragment.app.FragmentActivity.onCreate].
+     *
+     * **N.B.** Calling super of this will register a connectivity change listener, so only
+     * call `super.initializeComponents` if you require this behavior
      *
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                requireBinding().stateLayout.interactionFlow
-                    .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
-                    .onEach {
-                        viewModelState().retry()
-                    }
-                    .catch { cause: Throwable ->
-                        Timber.e(cause)
-                    }
-                    .collect()
-            }
-        }
-        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                onFetchDataInitialize()
+                param?.let(viewModelState()::invoke)
             }
         }
     }
@@ -87,16 +68,7 @@ class ProfileContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
-            requireBinding().composeView.setContent {
-                AniTrendTheme {
 
-                }
-            }
-        }
-        viewModelState().loadState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.loadStateFlow.value = it
-        }
     }
 
     /**
@@ -113,7 +85,19 @@ class ProfileContent(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ProfileContentBinding.bind(view)
-        requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
+        requireBinding().root.setContent {
+            AniTrendTheme3 {
+                ContentWrapper<IParam>(
+                    stateFlow = viewModelState().loadState,
+                    config = stateLayoutConfig,
+                    onClick = viewModelState()::retry,
+                ) {
+                    Column {
+
+                    }
+                }
+            }
+        }
     }
 
     /**

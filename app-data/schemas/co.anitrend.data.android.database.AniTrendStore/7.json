@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "62ececbff9588658819d7f958409935a",
+    "identityHash": "a1ec56181a30fffa2f04cbf3aa505094",
     "entities": [
       {
         "tableName": "cache_log",
@@ -2350,6 +2350,16 @@
         },
         "indices": [
           {
+            "name": "index_rank_media_id_id",
+            "unique": true,
+            "columnNames": [
+              "media_id",
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_rank_media_id_id` ON `${TABLE_NAME}` (`media_id`, `id`)"
+          },
+          {
             "name": "index_rank_media_id",
             "unique": false,
             "columnNames": [
@@ -3394,7 +3404,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62ececbff9588658819d7f958409935a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a1ec56181a30fffa2f04cbf3aa505094')"
     ]
   }
 }

@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.splash.component.presenter
 
 import android.content.Context
@@ -28,16 +27,16 @@ import kotlinx.coroutines.delay
 
 class SplashPresenter(
     context: Context,
-    settings: Settings
+    settings: Settings,
 ) : CorePresenter(context, settings) {
-
     suspend fun firstRunCheck() {
         val duration = SupportAnimatorDuration.MEDIUM
         delay(duration.runtime)
 
-        if (settings.isNewInstallation.value)
+        if (settings.isNewInstallation.value) {
             OnBoardingRouter.startActivity(context)
-        else
+        } else {
             MainRouter.startActivity(context)
+        }
     }
 }

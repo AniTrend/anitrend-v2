@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.component.screen
 
 import android.content.Intent
@@ -39,7 +38,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
-
     private val stateLayoutConfig by inject<StateLayoutConfig>()
     private val router by inject<DeepLinkParser<Intent?>>()
 

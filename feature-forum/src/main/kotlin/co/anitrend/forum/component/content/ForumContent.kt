@@ -21,22 +21,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.forum.R
 import co.anitrend.forum.component.viewmodel.ForumViewModel
 import co.anitrend.forum.databinding.ForumContentBinding
+import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForumContent(
     override val inflateLayout: Int = R.layout.forum_content
 ) : AniTrendContent<ForumContentBinding>() {
-    
+
     private val viewModel by viewModel<ForumViewModel>()
-    
+
     private fun onFetchDataInitialize() {
         // TODO: Implement functionality
     }
-    
+
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
@@ -75,6 +79,15 @@ class ForumContent(
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = ForumContentBinding.bind(requireNotNull(view))
+        requireBinding().root.setContent {
+            AniTrendTheme3 {
+                ContentWrapper<IParam>(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    onClick = {},
+                ) {}
+            }
+        }
         return view
     }
 

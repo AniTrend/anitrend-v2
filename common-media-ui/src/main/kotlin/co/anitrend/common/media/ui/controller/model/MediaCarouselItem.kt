@@ -55,8 +55,9 @@ internal class MediaCarouselItem(
 
     private fun setUpCarouselItems(view: View) {
         val mediaItemAdapter = MediaCompactAdapter(
-            settings,
-            view.resources,
+            settings = settings,
+            resources = view.resources,
+            customSupportAnimator = null, 
             stateConfiguration = StateLayoutConfig()
         )
 

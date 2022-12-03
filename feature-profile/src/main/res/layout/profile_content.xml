@@ -16,15 +16,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<co.anitrend.arch.ui.view.widget.SupportStateLayout
+<androidx.compose.ui.platform.ComposeView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/stateLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/composeView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</co.anitrend.arch.ui.view.widget.SupportStateLayout>
+    android:layout_height="match_parent" />
