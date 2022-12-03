@@ -29,7 +29,7 @@ import co.anitrend.domain.media.entity.contract.IMedia
 @Composable
 fun IMedia.rememberAccentColor(): Color {
     val context = LocalContext.current
-    val defaultColor = colorResource(R.color.primaryTextColor)
+    val defaultColor = colorResource(co.anitrend.arch.theme.R.color.primaryTextColor)
     val accent = remember(image.color) {
         image.color
             ?.asColorInt(context)

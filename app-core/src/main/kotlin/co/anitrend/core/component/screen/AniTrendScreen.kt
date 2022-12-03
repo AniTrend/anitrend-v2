@@ -18,12 +18,22 @@
 package co.anitrend.core.component.screen
 
 import android.content.Context
+import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
+import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.ui.inject
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityRetainedScope
@@ -44,6 +54,30 @@ abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), AndroidScope
     override val scope by activityRetainedScope()
 
     override var binding: B? = null
+
+    private val connectivity by inject<ISupportConnectivity>()
+
+    /**
+     * Additional initialization to be done in this method, this is called in during
+     * [androidx.fragment.app.FragmentActivity.onPostCreate]
+     *
+     * @param savedInstanceState
+     */
+    override fun initializeComponents(savedInstanceState: Bundle?) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                connectivity.connectivityStateFlow
+                    .onEach { state ->
+                        Timber.v("Connectivity state changed: $state")
+                        if (state == ConnectivityState.Connected) viewModelState()?.retry()
+                    }
+                    .catch { cause ->
+                        Timber.w(cause, "While collecting connectivity state")
+                    }
+                    .collect()
+            }
+        }
+    }
 
     /**
      * Can be used to configure custom theme styling as desired

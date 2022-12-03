@@ -61,7 +61,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         private val linksTable = LinkEntitySchema.tableName.asTable()
 
         private val tagTable = TagEntitySchema.tableName.asTable()
-        private val tagConnectionTable = TagEntitySchema.tableName.asTable()
+        private val tagConnectionTable = TagConnectionEntitySchema.tableName.asTable()
 
         private val genreTable = GenreEntitySchema.tableName.asTable()
         private val genreConnectionTable = GenreConnectionEntitySchema.tableName.asTable()
@@ -531,17 +531,23 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun order(filter: MediaParam.Find) {
             filter.sort?.forEach { sort ->
-                when (sort.sortable) {
-                    MediaSort.SEARCH_MATCH -> {
-                        requireBuilder()
-                            .orderBy(MediaEntitySchema.titleUser_preferred.asColumn(mediaTable), sort.order)
-                            .orderBy(MediaEntitySchema.titleEnglish.asColumn(mediaTable), sort.order)
-                            .orderBy(MediaEntitySchema.titleOriginal.asColumn(mediaTable), sort.order)
-                            .orderBy(MediaEntitySchema.titleRomaji.asColumn(mediaTable), sort.order)
-                    }
-                    else -> {
-                        val qualifier = sort.sortable.name.lowercase()
-                        requireBuilder().orderBy(qualifier.asColumn(mediaTable), sort.order)
+                with(requireBuilder()) {
+                    when (sort.sortable) {
+                        MediaSort.SEARCH_MATCH -> {
+                            orderBy(MediaEntitySchema.titleUser_preferred.asColumn(mediaTable), sort.order)
+                                .orderBy(MediaEntitySchema.titleEnglish.asColumn(mediaTable), sort.order)
+                                .orderBy(MediaEntitySchema.titleOriginal.asColumn(mediaTable), sort.order)
+                                .orderBy(MediaEntitySchema.titleRomaji.asColumn(mediaTable), sort.order)
+                        }
+
+                        MediaSort.SCORE -> {
+                            orderBy(MediaEntitySchema.averageScore.asColumn(mediaTable), sort.order)
+                        }
+
+                        else -> {
+                            val qualifier = sort.sortable.name.lowercase()
+                            orderBy(qualifier.asColumn(mediaTable), sort.order)
+                        }
                     }
                 }
             }

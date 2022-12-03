@@ -21,7 +21,6 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
@@ -73,7 +72,7 @@ internal class EpisodeItem(
                     fragment = EpisodeRouter.forSheet(),
                     parameter = EpisodeRouter.Param(id = entity.id).asBundle()
                 )
-                val dialog = fragmentItem.fragmentByTagOrNew(this) as DialogFragment
+                val dialog = fragmentItem.fragmentByTagOrNew(this)
                 dialog.show(supportFragmentManager, fragmentItem.tag())
             }
         }

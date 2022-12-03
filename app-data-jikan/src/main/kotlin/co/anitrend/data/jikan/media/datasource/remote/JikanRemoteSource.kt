@@ -19,6 +19,7 @@ package co.anitrend.data.jikan.media.datasource.remote
 
 import co.anitrend.data.core.JSON
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
+import co.anitrend.data.jikan.model.JikanWrapper
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -30,17 +31,17 @@ internal interface JikanRemoteSource {
     suspend fun getExtraInfo(
         @Path("id") id: Long,
         @Path("type") type: String
-    ): Response<JikanMediaModel.MoreInfo>
+    ): Response<JikanWrapper<JikanMediaModel.MoreInfo>>
 
     @JSON
     @GET("anime/{id}")
     suspend fun getAnimeDetails(
         @Path("id") id: Long
-    ): Response<JikanMediaModel.Anime>
+    ): Response<JikanWrapper<JikanMediaModel.Anime>>
 
     @JSON
     @GET("manga/{id}")
     suspend fun getMangaDetails(
         @Path("id") id: Long
-    ): Response<JikanMediaModel.Manga>
+    ): Response<JikanWrapper<JikanMediaModel.Manga>>
 }

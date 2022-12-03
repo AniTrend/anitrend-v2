@@ -17,17 +17,23 @@
 
 package co.anitrend.common.genre.ui.compose
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import co.anitrend.arch.extension.ext.getLayoutInflater
-import co.anitrend.common.genre.databinding.GenreItemBinding
 import co.anitrend.core.android.views.text.TextDrawable
 import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.forActivity
+import co.anitrend.navigation.extensions.startActivity
+import com.google.android.material.chip.Chip
 
 @Composable
 private fun GenreItem(
@@ -35,14 +41,24 @@ private fun GenreItem(
     genre: Genre
 ) {
     AndroidView(
-        factory = { context ->
-            val binding = GenreItemBinding.inflate(context.getLayoutInflater())
-            binding.genre.text = genre.name
-            binding.genre.chipIcon = TextDrawable(context, genre.emoji)
-            binding.root
-        },
-        modifier = modifier
-    )
+        factory = ::Chip,
+        modifier = modifier,
+    ) { chip ->
+        chip.setOnClickListener {
+            MediaDiscoverRouter.startActivity(
+                view = it,
+                navPayload = MediaDiscoverRouter.Param(
+                    genre = genre.name
+                ).asNavPayload()
+            )
+        }
+
+        chip.text = genre.name
+        chip.chipIcon = TextDrawable(
+            chip.context,
+            genre.emoji
+        )
+    }
 }
 
 @Composable
@@ -50,14 +66,14 @@ fun GenresListComponent(
     genres: List<Genre>,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(88.dp),
-        modifier = modifier,
-        contentPadding = PaddingValues(8.dp)
+    LazyRow(
+        state = rememberLazyListState(),
+        contentPadding = PaddingValues(all = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
     ) {
         items(genres.size) { index ->
             GenreItem(
-                modifier = Modifier,
                 genre = genres[index]
             )
         }

@@ -68,7 +68,9 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
      * @param forItem Optional menu item to create view for
      */
     override fun createWidget(forItem: MenuItem?): View {
-        actionImageView.setOnClickListener(::onActionClicked)
+        if (!actionImageView.hasOnClickListeners())
+            actionImageView.setOnClickListener(::onActionClicked)
+
         context.lifecycleScope()?.launch {
             context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 iconForSetting(settings.preferredViewMode.value)

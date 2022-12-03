@@ -14,17 +14,16 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.exception
 
 sealed class DeepLinkException : Throwable() {
     data class MissingIntentData(
         override val message: String =
-            "The data for this launching intent cannot be null"
+            "The data for this launching intent cannot be null",
     ) : DeepLinkException()
 
     data class InvalidScreenIntent(
         override val message: String =
-            "A target screen for this handler cannot be null"
+            "A target screen for this handler cannot be null",
     ) : DeepLinkException()
 }

@@ -74,7 +74,6 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
                     R.drawable.ic_notifications_24
                 )
             )
-            setOnClickListener(NotificationRouter::startActivity)
         }
     }
 
@@ -89,6 +88,8 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
         setUpVisibility(forItem)
         setUpActionImageView()
         context.lifecycleScope()?.launch {
+            if (!actionImageView.hasOnClickListeners())
+                actionImageView.setOnClickListener(NotificationRouter::startActivity)
             context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 runCatching {
                     container.addView(actionImageView)

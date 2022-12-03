@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.onboarding.component.screen
 
 import android.os.Bundle
@@ -29,9 +28,7 @@ import co.anitrend.onboarding.databinding.OnboardingScreenBinding
 import kotlinx.coroutines.launch
 
 class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
-
     private val presenter by inject<OnBoardingPresenter>()
-
 
     private val pageChangeListener =
         object : ViewPager.OnPageChangeListener {
@@ -48,7 +45,6 @@ class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
              * @see ViewPager.SCROLL_STATE_SETTLING
              */
             override fun onPageScrollStateChanged(state: Int) {
-
             }
 
             /**
@@ -63,9 +59,9 @@ class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
-                positionOffsetPixels: Int
+                positionOffsetPixels: Int,
             ) {
-                //TODO: Updating motion layout progress seems to mess up the view pager
+                // TODO: Updating motion layout progress seems to mess up the view pager
                 lifecycleScope.launch {
                     val newProgress = (position + positionOffset) / presenter.pages
                     binding?.motionLayout?.progress = newProgress
@@ -79,7 +75,6 @@ class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
              * @param position Position index of the new selected page.
              */
             override fun onPageSelected(position: Int) {
-
             }
         }
 
@@ -112,18 +107,20 @@ class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val currentItem = binding?.liquidSwipeViewPager?.currentItem
-        if (currentItem != null)
+        if (currentItem != null) {
             outState.putInt(PAGER_STATE_KEY, currentItem)
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val lastPosition = savedInstanceState.getInt(PAGER_STATE_KEY, 0)
-        if (binding?.liquidSwipeViewPager?.currentItem != lastPosition)
+        if (binding?.liquidSwipeViewPager?.currentItem != lastPosition) {
             binding?.liquidSwipeViewPager?.setCurrentItem(
                 lastPosition,
-                false
+                false,
             )
+        }
     }
 
     override fun onResume() {
@@ -139,11 +136,12 @@ class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {
     private fun onUpdateUserInterface() {
         // workaround, for some reason updating motion progress messes up the view pager
         binding?.liquidSwipeViewPager?.offscreenPageLimit = presenter.pages - 1
-        binding?.liquidSwipeViewPager?.adapter = OnBoardingPageAdapter(
-            presenter.onBoardingItems,
-            this,
-            supportFragmentManager
-        )
+        binding?.liquidSwipeViewPager?.adapter =
+            OnBoardingPageAdapter(
+                presenter.onBoardingItems,
+                this,
+                supportFragmentManager,
+            )
         /*binding.liquidSwipeViewPager.setPageTransformer(
             false
         ) { page, position ->

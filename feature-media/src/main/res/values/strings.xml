@@ -16,5 +16,7 @@
   -->
 
 <resources>
-    
+
+    <string name="action_my_anime_list">MyAnimeList</string>
+    <string name="action_manage_on_list">Manage status</string>
 </resources>

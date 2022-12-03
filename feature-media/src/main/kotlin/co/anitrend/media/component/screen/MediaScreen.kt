@@ -18,35 +18,43 @@
 package co.anitrend.media.component.screen
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.viewbinding.ViewBinding
+import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.media.databinding.MediaScreenBinding
+import co.anitrend.media.component.compose.MediaScreenContent
+import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.MediaRouter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaScreen : AniTrendScreen<MediaScreenBinding>() {
+class MediaScreen : AniTrendScreen<ViewBinding>() {
 
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        updateUserInterface()
-    }
+    private val viewModel by viewModel<MediaViewModel>()
+
+    private val mediaRouterParam: MediaRouter.Param? by extra(MediaRouter.Param.KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MediaScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = viewModelState().combinedLoadState,
+                    param = mediaRouterParam,
+                    onLoad = viewModelState()::invoke,
+                    onClick = viewModelState()::retry,
+                ) {
+                    MediaScreenContent(
+                        mediaState = viewModelState(),
+                    )
+                }
+            }
+        }
     }
 
-    private fun updateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = MediaRouter.forFragment(),
-            parameter = intent.extras
-        ).commit(requireBinding().content, this)
-    }
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
 }

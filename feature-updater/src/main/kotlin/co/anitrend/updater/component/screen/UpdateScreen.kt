@@ -18,33 +18,19 @@
 package co.anitrend.updater.component.screen
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.viewbinding.ViewBinding
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.updater.component.content.UpdateContent
-import co.anitrend.updater.databinding.UpdateScreenBinding
+import co.anitrend.updater.component.compose.UpdateScreenContent
 
-class UpdateScreen : AniTrendScreen<UpdateScreenBinding>() {
-
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        onUpdateUserInterface()
-    }
-
+class UpdateScreen : AniTrendScreen<ViewBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = UpdateScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
-    }
-
-    private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(fragment = UpdateContent::class.java)
-            .commit(requireBinding().content, this)
+        setContent {
+            AniTrendTheme3 {
+                UpdateScreenContent(onBackPress = ::onBackPressed)
+            }
+        }
     }
 }

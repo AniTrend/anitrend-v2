@@ -14,12 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.settings.customize.common
 
 enum class PreferredViewMode {
     DETAILED,
     SUMMARY,
     COMPACT,
-    COMFORTABLE
+    COMFORTABLE,
 }

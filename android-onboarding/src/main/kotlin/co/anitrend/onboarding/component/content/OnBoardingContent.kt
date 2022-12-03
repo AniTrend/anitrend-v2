@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.onboarding.component.content
 
 import android.os.Bundle
@@ -34,18 +33,16 @@ import com.airbnb.lottie.LottieDrawable
 import kotlinx.coroutines.launch
 
 class OnBoardingContent(
-    override val inflateLayout: Int = R.layout.onboarding_content
+    override val inflateLayout: Int = R.layout.onboarding_content,
 ) : AniTrendContent<OnboardingContentBinding>() {
-
     private val param by argument<OnBoardingRouter.Param>(
-        OnBoardingRouter.Param.KEY
+        OnBoardingRouter.Param.KEY,
     )
 
     /**
      * Invoke view model observer to watch for changes
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -90,7 +87,7 @@ class OnBoardingContent(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = OnboardingContentBinding.bind(requireNotNull(view))
@@ -108,7 +105,10 @@ class OnBoardingContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         param?.also { model ->
             view.background = context?.getCompatDrawable(model.background)

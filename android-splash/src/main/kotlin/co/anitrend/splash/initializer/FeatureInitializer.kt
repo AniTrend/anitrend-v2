@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.splash.initializer
 
 import android.content.Context
@@ -23,7 +22,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadMod
 import co.anitrend.splash.koin.moduleHelper
 
 class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
-
     /**
      * Initializes and a component given the application [Context]
      *

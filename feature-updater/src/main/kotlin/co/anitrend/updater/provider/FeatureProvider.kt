@@ -19,13 +19,13 @@ package co.anitrend.updater.provider
 
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.Fragment
 import co.anitrend.navigation.UpdaterRouter
-import co.anitrend.updater.component.content.UpdateContent
 import co.anitrend.updater.component.screen.UpdateScreen
 
 class FeatureProvider : UpdaterRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, UpdateScreen::class.java)
 
-    override fun fragment() = UpdateContent::class.java
+    override fun fragment() = Fragment::class.java
 }

@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.onboarding.provider
 
 import android.content.Context
@@ -26,6 +25,5 @@ import co.anitrend.onboarding.component.screen.OnBoardingScreen
 internal class FeatureProvider : OnBoardingRouter.Provider {
     override fun fragment() = OnBoardingContent::class.java
 
-    override fun activity(context: Context?) =
-        Intent(context, OnBoardingScreen::class.java)
+    override fun activity(context: Context?) = Intent(context, OnBoardingScreen::class.java)
 }

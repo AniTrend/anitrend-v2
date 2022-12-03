@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.onboarding.component.pager
 
 import androidx.fragment.app.Fragment
@@ -29,14 +28,13 @@ import co.anitrend.navigation.extensions.asBundle
 class OnBoardingPageAdapter(
     private val pages: List<OnBoardingRouter.Param>,
     private val fragmentActivity: FragmentActivity,
-    fragmentManager: FragmentManager
+    fragmentManager: FragmentManager,
 ) : SupportPageAdapter(fragmentManager) {
-
     init {
         titles.addAll(
             pages.map {
                 it.title.toString()
-            }
+            },
         )
     }
 
@@ -46,10 +44,11 @@ class OnBoardingPageAdapter(
      * @param position
      */
     override fun getItem(position: Int): Fragment {
-        val fragmentItem = FragmentItem(
-            fragment = OnBoardingRouter.forFragment(),
-            parameter = pages[position].asBundle()
-        )
+        val fragmentItem =
+            FragmentItem(
+                fragment = OnBoardingRouter.forFragment(),
+                parameter = pages[position].asBundle(),
+            )
 
         return fragmentItem.fragmentByTagOrNew(fragmentActivity)
     }

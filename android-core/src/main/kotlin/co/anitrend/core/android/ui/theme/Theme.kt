@@ -1,20 +1,20 @@
 package co.anitrend.core.android.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.fragment.app.FragmentActivity
+import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import co.anitrend.core.android.ui.color.md_theme_dark_background
 import co.anitrend.core.android.ui.color.md_theme_dark_error
 import co.anitrend.core.android.ui.color.md_theme_dark_errorContainer
@@ -74,6 +74,7 @@ import co.anitrend.core.android.ui.color.md_theme_light_surfaceVariant
 import co.anitrend.core.android.ui.color.md_theme_light_tertiary
 import co.anitrend.core.android.ui.color.md_theme_light_tertiaryContainer
 import co.anitrend.core.android.ui.typography.AniTrendTypography
+import org.koin.compose.koinInject
 
 
 private val LightColorScheme = lightColorScheme(
@@ -140,11 +141,15 @@ private val DarkColorScheme = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
-val AniTrendIcons = Icons.Rounded
+private val AniTrendShapes = Shapes()
+
+typealias AniTrendIcons = Icons.Rounded
+
 
 @Composable
 fun AniTrendTheme3(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    themeHelper: IThemeHelper = koinInject(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -160,14 +165,14 @@ fun AniTrendTheme3(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            themeHelper.applyApplicationTheme(view.context as FragmentActivity)
+            themeHelper.applyDynamicNightModeFromTheme()
         }
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
+        shapes = AniTrendShapes,
         typography = AniTrendTypography,
         content = content
     )

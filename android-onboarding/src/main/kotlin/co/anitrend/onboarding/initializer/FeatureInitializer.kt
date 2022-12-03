@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.onboarding.initializer
 
 import android.content.Context
@@ -30,14 +29,13 @@ import co.anitrend.onboarding.koin.moduleHelper
 import timber.log.Timber
 
 class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
-
     @RequiresApi(Build.VERSION_CODES.N_MR1)
     private fun setUpShortcuts() {
         runCatching {
             val controller = koinOf<IShortcutController>()
             controller.createShortcuts(
                 Shortcut.AiringSchedule(),
-                Shortcut.Search()
+                Shortcut.Search(),
             )
         }.onFailure {
             Timber.w(it)

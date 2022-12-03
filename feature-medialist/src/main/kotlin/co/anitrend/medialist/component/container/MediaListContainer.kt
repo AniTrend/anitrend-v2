@@ -112,9 +112,6 @@ class MediaListContainer(
                 tabLayoutMediator.attach()
             }.onFailure(Timber::e)
         }
-        viewModelState().refreshState.observe(viewLifecycleOwner) {
-            requireBinding().stateLayout.loadStateFlow.value = it
-        }
         viewModelState().loadState.observe(viewLifecycleOwner) {
             requireBinding().stateLayout.loadStateFlow.value = it
         }

@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.deeplink.koin
 
 import android.content.Intent
@@ -56,56 +55,59 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-private val coreModule = module {
-    factory<IAniTrendEnvironment> {
-        val settings = get<IAuthenticationSettings>()
-        AniTrendEnvironment(
-            context = androidContext(),
-            isAuthenticated = settings.isAuthenticated.value,
-            userId = settings.authenticatedUserId.value
-        )
-    } bind Environment::class
-}
+private val coreModule =
+    module {
+        factory<IAniTrendEnvironment> {
+            val settings = get<IAuthenticationSettings>()
+            AniTrendEnvironment(
+                context = androidContext(),
+                isAuthenticated = settings.isAuthenticated.value,
+                userId = settings.authenticatedUserId.value,
+            )
+        } bind Environment::class
+    }
 
-private val routerModule = module {
-    scope<DeepLinkScreen> {
-        factory {
-            val environment = get<IAniTrendEnvironment>()
-            DeepLinkParser.of<Intent?>(environment)
-                // AniList specific routes
-                .addRoute(MainRoute)
-                .addRoute(ActivityRoute)
-                .addRoute(ForumRoute)
-                .addRoute(ReviewRoute)
-                .addRoute(NewsRoute)
-                .addRoute(EpisodesRoute)
-                .addRoute(ForumDiscoverRoute)
-                .addRoute(RecommendationRoute)
-                .addRoute(CharacterRoute)
-                .addRoute(StudioRoute)
-                .addRoute(StaffRoute)
-                .addRoute(MediaRoute)
-                .addRoute(SearchRoute)
-                .addRoute(MediaListRoute)
-                .addRoute(UserRoute)
-                .addRoute(UserStatsRoute)
-                .addRoute(UserFavouritesRoute)
-                .addRoute(UserReviewRoute)
-                // AniTrend specific routes
-                .addRoute(DiscoverRoute)
-                .addRoute(SocialRoute)
-                .addRoute(SuggestionsRoute)
-                .addRoute(SettingsRoute)
-                .addRoute(ProfileRoute)
-                .addRoute(UpdatesRoute)
-                .addRoute(AboutRoute)
-                .addRoute(OAuthRoute)
-                .addFallbackAction(FallbackAction)
-                .build()
+private val routerModule =
+    module {
+        scope<DeepLinkScreen> {
+            factory {
+                val environment = get<IAniTrendEnvironment>()
+                DeepLinkParser.of<Intent?>(environment)
+                    // AniList specific routes
+                    .addRoute(MainRoute)
+                    .addRoute(ActivityRoute)
+                    .addRoute(ForumRoute)
+                    .addRoute(ReviewRoute)
+                    .addRoute(NewsRoute)
+                    .addRoute(EpisodesRoute)
+                    .addRoute(ForumDiscoverRoute)
+                    .addRoute(RecommendationRoute)
+                    .addRoute(CharacterRoute)
+                    .addRoute(StudioRoute)
+                    .addRoute(StaffRoute)
+                    .addRoute(MediaRoute)
+                    .addRoute(SearchRoute)
+                    .addRoute(MediaListRoute)
+                    .addRoute(UserRoute)
+                    .addRoute(UserStatsRoute)
+                    .addRoute(UserFavouritesRoute)
+                    .addRoute(UserReviewRoute)
+                    // AniTrend specific routes
+                    .addRoute(DiscoverRoute)
+                    .addRoute(SocialRoute)
+                    .addRoute(SuggestionsRoute)
+                    .addRoute(SettingsRoute)
+                    .addRoute(ProfileRoute)
+                    .addRoute(UpdatesRoute)
+                    .addRoute(AboutRoute)
+                    .addRoute(OAuthRoute)
+                    .addFallbackAction(FallbackAction)
+                    .build()
+            }
         }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(coreModule, routerModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(coreModule, routerModule),
+    )

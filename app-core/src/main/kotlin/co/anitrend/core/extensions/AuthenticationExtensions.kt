@@ -68,6 +68,6 @@ fun View.runIfAuthenticated(
             it.dismiss()
         }.show()
     } else {
-        action()
+        runCatching(action).stackTrace()
     }
 }

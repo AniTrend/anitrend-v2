@@ -18,10 +18,22 @@
 package co.anitrend.common.media.ui.compose
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,13 +41,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import co.anitrend.arch.extension.ext.capitalizeWords
+import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
+import co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
 import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.compose.series_aspect_ration
 import co.anitrend.core.android.compose.series_image_lg
@@ -43,15 +58,21 @@ import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.roundedCornersTransformation
 import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.toRequestBuilder
+import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.enums.MediaRankType
+import co.anitrend.domain.media.enums.MediaSort
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.model.sorting.Sorting
 import coil.compose.rememberImagePainter
-
 
 
 @Composable
@@ -96,7 +117,7 @@ private fun TitleWidget(
             text = title.userPreferred.toString(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = AniTrendTheme.typography.h6
+            style = AniTrendTheme.typography.h6,
         )
         Spacer(Modifier.height(8.dp))
         Text(
@@ -104,83 +125,124 @@ private fun TitleWidget(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 8.dp),
-            style = AniTrendTheme.typography.caption
+            style = AniTrendTheme.typography.caption,
         )
     }
 }
 
 @Composable
 private fun ReleaseStatusWidget(media: Media, modifier: Modifier = Modifier) {
-    val category = media.category
-    if (category is Media.Category.Anime && category.schedule != null) {
-        Spacer(Modifier.height(8.dp))
-        AndroidView(
-            factory = ::MediaAiringScheduleWidget,
-            modifier = modifier
-        ) { widget ->
-            widget.setUpAiringSchedule(media)
+    Spacer(Modifier.height(8.dp))
+    when (val category = media.category) {
+        is Media.Category.Anime -> {
+            Spacer(Modifier.height(8.dp))
+            AndroidView(
+                factory = ::MediaAiringScheduleWidget,
+                modifier = modifier
+            ) { widget ->
+                widget.setUpAiringSchedule(media)
+            }
         }
-    } else {
-        Spacer(Modifier.height(8.dp))
-        Text(
-            text = media.status?.alias.toString(),
-            fontWeight = FontWeight.Bold,
-            color = media.rememberAccentColor(),
-            style = AniTrendTheme.typography.caption,
-            modifier = Modifier.padding(4.dp)
-        )
-    }
-}
+        is Media.Category.Manga -> {
+            val chapters = pluralStringResource(
+                R.plurals.label_number_of_chapters,
+                category.chapters
+            ).format(category.chapters)
+            val volumes = pluralStringResource(
+                R.plurals.label_number_of_volumes,
+                category.volumes
+            ).format(category.volumes)
 
-@Composable
-private fun InfoWidget(media: Media, modifier: Modifier = Modifier) {
-    val ratedRank = remember(media.rankings) {
-        media.rankings.firstOrNull {
-            it.type == MediaRankType.RATED
-        }
-    }
+            val textTemplate = if (category.volumes > 0)
+                "$volumes $CHARACTER_SEPARATOR $chapters"
+            else
+                "${media.status?.alias.toString()} $CHARACTER_SEPARATOR $chapters"
 
-    Row(modifier = modifier) {
-        Text(
-            text = "${media.averageScore}%",
-            color = media.rememberAccentColor(),
-            fontWeight = FontWeight.Bold,
-            style = AniTrendTheme.typography.h6
-        )
-        Spacer(Modifier.width(8.dp))
-        if (ratedRank != null) {
             Text(
-                text = "# ${ratedRank.rank} ${ratedRank.context}".capitalizeWords(),
+                text = textTemplate,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = media.rememberAccentColor(),
                 style = AniTrendTheme.typography.caption,
-                modifier = Modifier
-                    .background(
-                        color = media.rememberAccentColor(),
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .padding(4.dp)
+                modifier = Modifier.padding(4.dp)
             )
         }
     }
 }
 
 @Composable
-private fun StudioWidget(media: Media) {
-    media.twitterTag?.let { twitterTag ->
-        Text(
-            text = twitterTag.toString(),
-            fontWeight = FontWeight.Bold,
-            color = media.rememberAccentColor(),
-            style = AniTrendTheme.typography.caption,
-            modifier = Modifier.padding(4.dp)
-        )
+private fun RankingItems(
+    accentColor: Color,
+    modifier: Modifier = Modifier,
+    rankings: List<IMediaRank> = emptyList(),
+    onClick: (IMediaRank) -> Unit,
+) {
+    LazyRow(
+        state = rememberLazyListState(),
+        contentPadding = PaddingValues(all = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
+    ) {
+        items(
+            count = rankings.size,
+            key = { rankings[it].id },
+            contentType = { rankings[it].type }
+        ) { index ->
+            val item = rankings[index]
+            Chip(
+                onClick = { onClick(item) },
+                colors = ChipDefaults.chipColors(
+                    backgroundColor = accentColor,
+                    contentColor = Color.White,
+                ),
+                modifier = Modifier
+            ) {
+                Text(
+                    text = "# ${item.rank} ${item.context}".capitalizeWords(),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = AniTrendTheme.typography.caption,
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun SummarySection(media: Media, modifier: Modifier = Modifier) {
+private fun InfoWidget(
+    accentColor: Color,
+    meanScore: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier) {
+        Text(
+            text = "${meanScore}%",
+            color = accentColor,
+            fontWeight = FontWeight.Bold,
+            style = AniTrendTheme.typography.h6
+        )
+        Spacer(Modifier.width(8.dp))
+    }
+}
+
+@Composable
+private fun MediaSubTitle(
+    media: Media,
+    modifier: Modifier = Modifier
+) {
+    AndroidView(
+        factory = ::MediaSubTitleWidget,
+        modifier = modifier
+    ) {
+        it.setUpSubTitle(media)
+    }
+}
+
+@Composable
+fun SummarySection(media: Media, accentColor: Color, modifier: Modifier = Modifier) {
     media as Media.Extended
+
+    val context = LocalContext.current
+
     Row(modifier = modifier) {
         MediaCover(
             cover = media.image,
@@ -195,9 +257,43 @@ fun SummarySection(media: Media, modifier: Modifier = Modifier) {
             )
             ReleaseStatusWidget(media)
             Spacer(Modifier.height(8.dp))
-            InfoWidget(media)
+            MediaSubTitle(
+                media = media
+            )
             Spacer(Modifier.height(8.dp))
-            StudioWidget(media)
+            InfoWidget(
+                accentColor = accentColor,
+                meanScore = media.meanScore,
+            )
+            Spacer(Modifier.height(8.dp))
+            RankingItems(
+                accentColor = accentColor,
+                rankings = media.rankings.toList(),
+                onClick = { rank ->
+                    val sorting = when (rank.type) {
+                        MediaRankType.RATED -> Sorting(
+                            sortable = MediaSort.SCORE,
+                            order = SortOrder.DESC
+                        )
+                        else -> Sorting(
+                            sortable = MediaSort.POPULARITY,
+                            order = SortOrder.DESC
+                        )
+                    }
+
+                    MediaDiscoverRouter.startActivity(
+                        context = context,
+                        navPayload = MediaDiscoverRouter.Param(
+                            type = media.category.type,
+                            format = media.format,
+                            season = media.season,
+                            seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
+                            startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
+                            sort = listOf(sorting)
+                        ).asNavPayload()
+                    )
+                }
+            )
         }
     }
 }

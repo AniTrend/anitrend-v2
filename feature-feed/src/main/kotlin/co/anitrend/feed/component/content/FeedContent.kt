@@ -21,22 +21,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.feed.R
 import co.anitrend.feed.component.viewmodel.FeedViewModel
 import co.anitrend.feed.databinding.FeedContentBinding
+import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeedContent(
     override val inflateLayout: Int = R.layout.feed_content
 ) : AniTrendContent<FeedContentBinding>() {
-    
+
     private val viewModel by viewModel<FeedViewModel>()
-    
+
     private fun onFetchDataInitialize() {
         // TODO: Implement functionality
     }
-    
+
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
@@ -75,6 +79,15 @@ class FeedContent(
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = FeedContentBinding.bind(requireNotNull(view))
+        requireBinding().root.setContent {
+            AniTrendTheme3 {
+                ContentWrapper<IParam>(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    onClick = {},
+                ) {}
+            }
+        }
         return view
     }
 

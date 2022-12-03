@@ -19,12 +19,10 @@ package co.anitrend.media.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.media.component.content.MediaContent
 import co.anitrend.media.component.screen.MediaScreen
 import co.anitrend.navigation.MediaRouter
 
 class FeatureProvider : MediaRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, MediaScreen::class.java)
-    override fun fragment() = MediaContent::class.java
 }

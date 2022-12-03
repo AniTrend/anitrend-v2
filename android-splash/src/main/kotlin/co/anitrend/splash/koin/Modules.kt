@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.splash.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -27,33 +26,37 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
-private val presenterModule = module {
-    scope<SplashScreen> {
-        scoped {
-            SplashPresenter(
-                context = androidContext(),
-                settings = get()
-            )
+private val presenterModule =
+    module {
+        scope<SplashScreen> {
+            scoped {
+                SplashPresenter(
+                    context = androidContext(),
+                    settings = get(),
+                )
+            }
         }
     }
-}
 
-private val fragmentModule = module {
-    scope<SplashScreen> {
-        fragment {
-            SplashContent(
-                presenter = get()
-            )
+private val fragmentModule =
+    module {
+        scope<SplashScreen> {
+            fragment {
+                SplashContent(
+                    presenter = get(),
+                )
+            }
         }
     }
-}
 
-private val featureModule = module {
-    factory<SplashRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<SplashRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(presenterModule, fragmentModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(presenterModule, fragmentModule, featureModule),
+    )

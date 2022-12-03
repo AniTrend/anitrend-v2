@@ -24,57 +24,58 @@ import co.anitrend.data.jikan.contract.JikanItem
 import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
 import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.jikan.media.model.anime.JikanMediaModel
+import co.anitrend.data.jikan.model.JikanWrapper
 import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
 import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 
 internal class JikanModelConverter(
-    override val fromType: (JikanMediaModel) -> JikanEntity = ::transform,
-    override val toType: (JikanEntity) -> JikanMediaModel = { throw NotImplementedError() }
-) : SupportConverter<JikanMediaModel, JikanEntity>() {
-    private companion object : ISupportTransformer<JikanMediaModel, JikanEntity> {
-        override fun transform(source: JikanMediaModel) = when(source) {
+    override val fromType: (JikanWrapper<JikanMediaModel>) -> JikanEntity = ::transform,
+    override val toType: (JikanEntity) -> JikanWrapper<JikanMediaModel> = { throw NotImplementedError() }
+) : SupportConverter<JikanWrapper<JikanMediaModel>, JikanEntity>() {
+    private companion object : ISupportTransformer<JikanWrapper<JikanMediaModel>, JikanEntity> {
+        override fun transform(source: JikanWrapper<JikanMediaModel>) = when(val data = source.data) {
             is JikanMediaModel.Anime -> JikanEntity(
                 title = JikanEntity.Title(
-                    japanese = source.titleJapanese,
-                    english = source.titleEnglish,
-                    preferred = source.title,
-                    synonyms = source.titleSynonyms.orEmpty()
+                    japanese = data.titleJapanese,
+                    english = data.titleEnglish,
+                    preferred = data.title,
+                    synonyms = data.titleSynonyms.orEmpty()
                 ),
-                info = source.moreInfo,
-                source = source.source,
-                rating = source.rating,
-                episodes = source.episodes,
-                duration = source.duration,
-                premiered = source.premiered,
-                broadcast = source.broadcast,
-                trailerUrl = source.trailerUrl,
-                openingThemes = source.openingThemes.orEmpty(),
-                endingThemes = source.endingThemes.orEmpty(),
-                url = source.url,
-                imageUrl = source.imageUrl,
-                type = source.type,
-                releasing = source.releasing,
-                synopsis = source.synopsis,
-                background = source.background,
-                id = source.malId,
+                info = data.moreInfo,
+                source = data.source,
+                rating = data.rating,
+                episodes = data.episodes,
+                duration = data.duration,
+                premiered = data.premiered,
+                broadcast = data.broadcast,
+                trailerUrl = data.trailerUrl,
+                openingThemes = data.openingThemes.orEmpty(),
+                endingThemes = data.endingThemes.orEmpty(),
+                url = data.url,
+                imageUrl = data.imageUrl,
+                type = data.type,
+                releasing = data.releasing,
+                synopsis = data.synopsis,
+                background = data.background,
+                id = data.malId,
             )
             is JikanMediaModel.Manga -> JikanEntity(
                 title = JikanEntity.Title(
-                    japanese = source.titleJapanese,
-                    english = source.titleEnglish,
-                    preferred = source.title,
-                    synonyms = source.titleSynonyms.orEmpty()
+                    japanese = data.titleJapanese,
+                    english = data.titleEnglish,
+                    preferred = data.title,
+                    synonyms = data.titleSynonyms.orEmpty()
                 ),
-                info = source.moreInfo,
-                volumes = source.volumes,
-                chapters = source.chapters,
-                url = source.url,
-                imageUrl = source.imageUrl,
-                type = source.type,
-                releasing = source.releasing,
-                synopsis = source.synopsis,
-                background = source.background,
-                id = source.malId,
+                info = data.moreInfo,
+                volumes = data.volumes,
+                chapters = data.chapters,
+                url = data.url,
+                imageUrl = data.imageUrl,
+                type = data.type,
+                releasing = data.releasing,
+                synopsis = data.synopsis,
+                background = data.background,
+                id = data.malId,
             )
         }
     }

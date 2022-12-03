@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.splash.component.content
 
 import android.os.Bundle
@@ -30,18 +29,19 @@ import kotlinx.coroutines.launch
 
 class SplashContent(
     private val presenter: SplashPresenter,
-    override val inflateLayout: Int = R.layout.content_splash
+    override val inflateLayout: Int = R.layout.content_splash,
 ) : AniTrendContent<ContentSplashBinding>() {
-
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = ContentSplashBinding.bind(view)
     }
