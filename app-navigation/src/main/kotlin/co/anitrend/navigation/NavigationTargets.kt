@@ -21,6 +21,7 @@ import android.text.SpannedString
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.work.ListenableWorker
 import co.anitrend.domain.airing.enums.AiringSort
@@ -274,7 +275,7 @@ object MediaDiscoverRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun fragment(): Class<out Fragment>
-        fun sheet(): Class<out Fragment>
+        fun sheet(): Class<out DialogFragment>
     }
 
     fun forFragment() = provider.fragment()
@@ -730,7 +731,7 @@ object EpisodeRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun fragment(): Class<out Fragment>
-        fun sheet(): Class<out Fragment>
+        fun sheet(): Class<out DialogFragment>
     }
 
     fun forFragment() = provider.fragment()
@@ -819,7 +820,7 @@ object MediaListEditorRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
-        fun sheet(): Class<out Fragment>
+        fun sheet(): Class<out DialogFragment>
     }
 
     fun forSheet() = provider.sheet()

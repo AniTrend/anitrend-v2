@@ -19,17 +19,17 @@ package co.anitrend.episode.component.content
 
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 import co.anitrend.episode.R
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
-import co.anitrend.episode.presenter.EpisodePresenter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EpisodeContent(
-    private val presenter: EpisodePresenter,
+    private val settings: ILocaleSettings,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Episode>,
     override val defaultSpanSize: Int = R.integer.column_x1,
@@ -46,7 +46,7 @@ class EpisodeContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        val locale = presenter.settings.locale.value.asLocaleString()
+        val locale = settings.locale.value.asLocaleString()
         viewModelState().invoke(
             EpisodeParam.Paged(locale)
         )

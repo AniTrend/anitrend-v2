@@ -18,14 +18,12 @@
 package co.anitrend.common.media.ui.controller.extensions
 
 import android.view.View
-import androidx.fragment.app.DialogFragment
-import co.anitrend.arch.extension.ext.snackBar
-import co.anitrend.common.media.ui.R
 import co.anitrend.core.android.extensions.fragmentManager
-import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.extensions.runIfActivityContext
+import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaRouter
@@ -43,12 +41,12 @@ internal fun View.startMediaScreenFor(entity: Media) {
     )
 }
 
-internal fun View.openMediaListSheetFor(
+fun View.openMediaListSheetFor(
     entity: Media,
-    settings: Settings
+    settings: IUserSettings
 ): Boolean {
     runIfActivityContext {
-        if (settings.isAuthenticated.value) {
+        runIfAuthenticated(settings) {
             val fragmentItem = FragmentItem(
                 fragment = MediaListEditorRouter.forSheet(),
                 parameter = MediaListEditorRouter.Param(
@@ -57,12 +55,9 @@ internal fun View.openMediaListSheetFor(
                     scoreFormat = settings.scoreFormat.value
                 ).asBundle()
             )
-            val dialog = fragmentItem.fragmentByTagOrNew(this) as DialogFragment
+            val dialog = fragmentItem.fragmentByTagOrNew(this)
             dialog.show(fragmentManager(), fragmentItem.tag())
-        } else
-            snackBar(
-                text = resources.getString(R.string.label_text_authentication_required)
-            ).show()
+        }
     }
     return true
 }

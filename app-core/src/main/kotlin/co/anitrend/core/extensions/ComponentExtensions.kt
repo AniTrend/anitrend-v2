@@ -22,9 +22,10 @@ import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import coil.ImageLoader
 import org.koin.android.ext.android.get
+import timber.log.Timber
 
 internal fun ComponentCallbacks.themeHelper() = get<IThemeHelper>()
 
 internal fun ComponentCallbacks.imageLoader() = get<ImageLoader>()
 
-internal fun ComponentCallbacks.analytics() = get<ISupportAnalytics>()
+internal fun ComponentCallbacks.analyticsTree() = get<ISupportAnalytics>() as Timber.Tree

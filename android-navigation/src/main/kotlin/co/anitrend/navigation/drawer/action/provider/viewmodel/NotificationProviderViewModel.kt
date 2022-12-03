@@ -18,13 +18,25 @@
 package co.anitrend.navigation.drawer.action.provider.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import co.anitrend.core.extensions.hook
+import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.action.provider.viewmodel.state.AuthenticatedUserState
 import timber.log.Timber
 
 internal class NotificationProviderViewModel(
     val state: AuthenticatedUserState
 ) : ViewModel() {
+
+    val unreadNotifications = state.model.map { user ->
+        when (user) {
+            is User.Authenticated -> user.unreadNotifications
+            else -> {
+                Timber.w("Type of $user does not has no `unreadNotifications` property")
+                0
+            }
+        }
+    }
 
     init {
         hook(state)

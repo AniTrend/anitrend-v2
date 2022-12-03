@@ -49,4 +49,8 @@
     <string name="action_filter">Filter</string>
     <!-- Reusable for setting the list style on various discover style screens. e.g anime, manga, users, studios, character and staff screens -->
     <string name="action_list_style">List style</string>
+    <!-- Reusable for setting the list style on various discover style screens. e.g anime, manga, users, studios, character and staff screens -->
+    <string name="action_share">Share</string>
+    <!-- Reusable for setting the list style on various discover style screens. e.g anime, manga, users, studios, character and staff screens -->
+    <string name="action_favourite">Favourite</string>
 </resources>

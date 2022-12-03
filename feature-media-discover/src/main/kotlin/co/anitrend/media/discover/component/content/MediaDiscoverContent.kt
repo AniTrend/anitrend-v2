@@ -19,7 +19,6 @@ package co.anitrend.media.discover.component.content
 
 import android.view.MenuItem
 import androidx.annotation.IntegerRes
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
@@ -88,7 +87,7 @@ class MediaDiscoverContent(
                     fragment = MediaDiscoverRouter.forSheet(),
                     parameter = viewModel.default.asBundle()
                 )
-                val dialog = fragmentItem.fragmentByTagOrNew(requireActivity()) as DialogFragment
+                val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
                 dialog.show(childFragmentManager, fragmentItem.tag())
                 true
             }

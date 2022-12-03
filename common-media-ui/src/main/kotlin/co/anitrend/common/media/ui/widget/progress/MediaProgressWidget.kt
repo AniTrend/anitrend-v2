@@ -31,7 +31,6 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.presenter.MediaPresenter
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.core.extensions.stackTrace
 import co.anitrend.domain.media.entity.contract.IMedia
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
@@ -148,7 +147,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
     fun setupUsingMedia(media: IMedia, settings: Settings) {
         presenter = MediaPresenter(context, settings, media)
 
-        if (presenter == null || presenter?.controller?.shouldHideWidget() == true) {
+        if (presenter?.controller?.shouldHideWidget() == true) {
             gone()
             return
         } else

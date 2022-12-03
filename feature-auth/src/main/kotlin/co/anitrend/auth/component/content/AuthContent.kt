@@ -56,9 +56,13 @@ class AuthContent(
                 if (stateFlow?.value is LoadState.Loading || stateFlow?.value is LoadState.Error)
                     stateFlow.value = LoadState.Idle()
                 else
-                    activity?.finish()
+                    closeScreen()
             }
         }
+
+    private fun closeScreen() {
+        activity?.finish()
+    }
 
     /**
      * Additional initialization to be done in this method, this method will be called in
@@ -128,7 +132,7 @@ class AuthContent(
                     Snackbar.LENGTH_INDEFINITE
                 ).setAction(R.string.label_text_action_ok) {
                     presenter.runSignOutWorker()
-                    activity?.finish()
+                    closeScreen()
                 }.show()
             }
         }
@@ -140,7 +144,7 @@ class AuthContent(
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
         requireBinding().anonymousControls.anonymousAccount.setOnClickListener {
             presenter.runSignOutWorker()
-            activity?.finish()
+            closeScreen()
         }
         requireBinding().authorizationControls.authorizationIssues.setOnClickListener {
             presenter.authorizationIssues(requireActivity())

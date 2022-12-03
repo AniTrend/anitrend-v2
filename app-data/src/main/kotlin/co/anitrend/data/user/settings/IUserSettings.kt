@@ -22,7 +22,7 @@ import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
-interface IUserSettings {
+interface IUserSettings : IAuthenticationSettings {
     val titleLanguage: AbstractSetting<UserTitleLanguage>
     val scoreFormat: AbstractSetting<ScoreFormat>
 

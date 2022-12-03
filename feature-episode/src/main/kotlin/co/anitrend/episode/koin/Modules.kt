@@ -26,7 +26,6 @@ import co.anitrend.episode.component.content.viewmodel.state.EpisodeContentState
 import co.anitrend.episode.component.sheet.EpisodeSheet
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
 import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
-import co.anitrend.episode.presenter.EpisodePresenter
 import co.anitrend.episode.provider.FeatureProvider
 import co.anitrend.navigation.EpisodeRouter
 import org.koin.android.ext.koin.androidContext
@@ -38,7 +37,7 @@ import org.koin.dsl.module
 private val fragmentModule = module {
     fragment {
         EpisodeContent(
-            presenter = get(),
+            settings = get(),
             stateConfig = get(),
             supportViewAdapter = EpisodePagedAdapter(
                 resources = androidContext().resources,
@@ -48,8 +47,7 @@ private val fragmentModule = module {
     }
     fragment {
         EpisodeSheet(
-            markwon = get(named(MarkdownFlavour.STANDARD)),
-            presenter = get()
+            markwon = get(named(MarkdownFlavour.STANDARD))
         )
     }
 }
@@ -71,15 +69,6 @@ private val viewModelModule = module {
     }
 }
 
-private val presenterModule = module {
-    factory {
-        EpisodePresenter(
-            context = get(),
-            settings = get()
-        )
-    }
-}
-
 private val featureModule = module {
     factory<EpisodeRouter.Provider> {
         FeatureProvider()
@@ -87,5 +76,5 @@ private val featureModule = module {
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, presenterModule, featureModule)
+    listOf(fragmentModule, viewModelModule, featureModule)
 )

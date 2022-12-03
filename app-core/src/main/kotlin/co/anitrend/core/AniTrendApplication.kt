@@ -19,7 +19,7 @@ package co.anitrend.core
 
 import android.app.Application
 import co.anitrend.core.crash.runtime.UncaughtExceptionHandler
-import co.anitrend.core.extensions.analytics
+import co.anitrend.core.extensions.analyticsTree
 import co.anitrend.core.extensions.imageLoader
 import co.anitrend.core.extensions.themeHelper
 import coil.ImageLoader
@@ -45,10 +45,8 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
      * Timber logging tree depending on the build type we plant the appropriate tree
      */
     protected open fun plantAnalyticsTree() {
-        if (!BuildConfig.DEBUG) {
-            val loggingTree = analytics() as Timber.Tree
-            Timber.plant(loggingTree)
-        }
+        if (!BuildConfig.DEBUG)
+            Timber.plant(analyticsTree())
     }
 
     /**

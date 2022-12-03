@@ -21,9 +21,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.UriCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.auth.R
+import co.anitrend.core.android.extensions.Keys
+import co.anitrend.core.android.extensions.Tags
+import co.anitrend.core.android.extensions.analytics
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.extensions.startViewIntent
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.auth.helper.AuthenticationType
 import co.anitrend.data.auth.helper.authenticationUri
@@ -40,22 +46,40 @@ class AuthPresenter(
 
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
+        val uri = Uri.parse(context.getString(R.string.app_faq_page_link))
         runCatching {
+            Timber.analytics {
+                logCurrentState(
+                    tag = Tags.ACTION_PREFIX.plus("authorization_issue"),
+                    bundle = bundleOf(
+                        Keys.DATA to UriCompat.toSafeString(uri)
+                    )
+                )
+            }
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            customTabs.launchUrl(activity, Uri.parse(context.getString(R.string.app_faq_page_link)))
+            customTabs.launchUrl(activity, uri)
         }.onFailure {
             Timber.w(it, "Unable to open custom tabs")
-            startViewIntent(Uri.parse(context.getString(R.string.app_faq_page_link)))
+            context.startViewIntent(uri)
         }
     }
 
     fun authorizeWithAniList(activity: FragmentActivity) {
+        val uri = authenticationUri(AuthenticationType.TOKEN, clientId)
         runCatching {
+            Timber.analytics {
+                logCurrentState(
+                    tag = Tags.ACTION_PREFIX.plus("authorization_issue"),
+                    bundle = bundleOf(
+                        Keys.DATA to UriCompat.toSafeString(uri)
+                    )
+                )
+            }
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            customTabs.launchUrl(activity, authenticationUri(AuthenticationType.TOKEN, clientId))
+            customTabs.launchUrl(activity, uri)
         }.onFailure {
             Timber.w(it, "Unable to open custom tabs")
-            startViewIntent(authenticationUri(AuthenticationType.TOKEN, clientId))
+            context.startViewIntent(uri)
         }
     }
 

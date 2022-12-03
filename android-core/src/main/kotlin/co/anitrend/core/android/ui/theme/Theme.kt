@@ -1,6 +1,7 @@
 package co.anitrend.core.android.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -65,6 +66,8 @@ private val DarkColors = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
     surfaceTint = md_theme_dark_surfaceTint,
 )
+
+val AniTrendIcons = Icons.Rounded
 
 @Composable
 fun AniTrendTheme3(

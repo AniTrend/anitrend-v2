@@ -24,8 +24,9 @@ import android.transition.TransitionManager
 import android.view.View
 import co.anitrend.R
 import co.anitrend.core.android.components.action.FloatingActionMenu
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.extensions.startViewIntent
+import co.anitrend.core.presenter.CorePresenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
@@ -68,16 +69,16 @@ internal class MainPresenter(
 
     fun redirectToFAQ() {
         val faq = context.getString(R.string.app_faq_page_link)
-        startViewIntent(Uri.parse(faq))
+        context.startViewIntent(Uri.parse(faq))
     }
 
     fun redirectToPatreon() {
         val patreon = context.getString(R.string.app_patreon_page_link)
-        startViewIntent(Uri.parse(patreon))
+        context.startViewIntent(Uri.parse(patreon))
     }
 
     fun redirectToDiscord() {
         val discord = context.getString(R.string.app_discord_page_link)
-        startViewIntent(Uri.parse(discord))
+        context.startViewIntent(Uri.parse(discord))
     }
 }

@@ -20,15 +20,8 @@ package co.anitrend.core.android.provider
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.view.ActionProvider
-import androidx.core.view.setPadding
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.extension.ext.getDrawableAttr
 import co.anitrend.core.android.R
-import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.extensions.lifecycleScope
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.data.settings.customize.ICustomizationSettings
@@ -38,31 +31,11 @@ import org.koin.core.component.inject
 
 class StyleActionProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
 
-    private val actionImageView = AppCompatImageView(context).apply {
-        background = context.getDrawableAttr(
-            R.attr.selectableItemBackgroundBorderless
-        )
-        isClickable = true
-        isFocusable = true
-        setPadding(2.dp)
-        setOnClickListener {
-            onActionClicked()
-        }
-    }
-
-    private val container = FrameLayout(context).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.MarginLayoutParams.WRAP_CONTENT,
-            ViewGroup.MarginLayoutParams.WRAP_CONTENT
-        )
-        setPadding(10.dp)
-    }
-
     private val settings by inject<ICustomizationSettings>()
 
     private val viewModes = PreferredViewMode.values()
 
-    private fun onActionClicked() {
+    private fun onActionClicked(view: View) {
         val current = settings.preferredViewMode.value
         val currentIndex = viewModes.indexOf(current)
         settings.preferredViewMode.value = when (currentIndex) {
@@ -85,11 +58,12 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
     }
 
     /**
-     * Factory for creating the [ActionProvider] view
+     * Factory for creating the [androidx.core.view.ActionProvider] view
      *
      * @param forItem Optional menu item to create view for
      */
     override fun createWidget(forItem: MenuItem?): View {
+        actionImageView.setOnClickListener(::onActionClicked)
         context.lifecycleScope()?.launchWhenResumed {
             iconForSetting(settings.preferredViewMode.value)
             container.addView(actionImageView)
@@ -97,26 +71,4 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
         }
         return container
     }
-
-    /**
-     * Factory method called by the Android framework to create new action views.
-     * This method returns a new action view for the given MenuItem.
-     *
-     *
-     * If your ActionProvider implementation overrides the deprecated no-argument overload
-     * [onCreateActionView], overriding this method for devices running API 16 or later
-     * is recommended but optional. The default implementation calls [onCreateActionView]
-     * for compatibility with applications written for older platform versions.
-     *
-     * @param forItem MenuItem to create the action view for
-     * @return the new action view
-     */
-    override fun onCreateActionView(forItem: MenuItem) = createWidget(forItem)
-
-    /**
-     * Factory method for creating new action views.
-     *
-     * @return A new action view.
-     */
-    override fun onCreateActionView() = createWidget()
 }

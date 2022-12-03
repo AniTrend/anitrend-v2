@@ -55,6 +55,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ViewModelOwner
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import timber.log.Timber
 import kotlin.math.abs
@@ -69,7 +70,8 @@ class BottomDrawerContent(
     private val presenter by inject<DrawerPresenter>()
 
     private val viewModel by stateViewModel<BottomDrawerViewModel>(
-        state = { arguments.orEmpty() }
+        state = { arguments.orEmpty() },
+        owner = { ViewModelOwner.fromAny(requireActivity()) }
     )
 
     private val behavior: BottomSheetBehavior<FrameLayout> by lazy(UNSAFE) {

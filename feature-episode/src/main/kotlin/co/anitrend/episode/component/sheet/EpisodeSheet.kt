@@ -23,19 +23,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
+import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 import co.anitrend.episode.R
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
 import co.anitrend.episode.databinding.EpisodeSheetBinding
-import co.anitrend.episode.presenter.EpisodePresenter
 import co.anitrend.navigation.EpisodeRouter
 import coil.request.Disposable
 import io.noties.markwon.Markwon
@@ -44,7 +43,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EpisodeSheet(
     private val markwon: Markwon,
-    private val presenter: EpisodePresenter,
     override val inflateLayout: Int = R.layout.episode_sheet
 ) : AniTrendBottomSheet<EpisodeSheetBinding>() {
 
@@ -149,7 +147,7 @@ class EpisodeSheet(
         BetterLinkMovementMethod.linkify(Linkify.ALL, activity)
             .setOnLinkClickListener { target, url ->
                 runCatching {
-                    presenter.handleViewIntent(target, url)
+                    target.handleViewIntent(url)
                 }.stackTrace()
                 true
             }
@@ -161,7 +159,7 @@ class EpisodeSheet(
         requireBinding().episodeDuration.text = episode.about.episodeDuration
         requireBinding().episodePublisher.text = episode.series.seriesPublisher
         requireBinding().episodePlay.setOnClickListener {
-            presenter.handleViewIntent(it, episode.guid)
+            it.handleViewIntent(episode.guid)
         }
         requireBinding().episodePublisher.setOnClickListener {
             Toast.makeText(context, "Open search to find studio", Toast.LENGTH_LONG).show()

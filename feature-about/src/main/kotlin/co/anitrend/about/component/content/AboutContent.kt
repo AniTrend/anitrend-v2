@@ -17,61 +17,23 @@
 
 package co.anitrend.about.component.content
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.More
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.android.compose.AniTrendTheme
-import co.anitrend.core.android.compose.onBackgroundColor
-
-@Composable
-private fun CreateBottomAppBar(context: Context) {
-    BottomAppBar {
-        val parent = context as FragmentActivity
-        IconButton(onClick = { parent.onBackPressed() }) {
-            Icon(
-                imageVector = Icons.Rounded.ArrowBack,
-                contentDescription = "Return to calling activity",
-                tint = context.onBackgroundColor()
-            )
-        }
-        // The actions should be at the end of the BottomAppBar
-        Spacer(Modifier.weight(1f, true))
-        IconButton(onClick = { /* doSomething() */ }) {
-            Icon(
-                imageVector = Icons.Rounded.More,
-                contentDescription = "Return to calling activity",
-                tint = context.onBackgroundColor()
-            )
-        }
-    }
-}
 
 @Preview
 @Composable
 fun AboutContent() {
-    val context = LocalContext.current
     AniTrendTheme {
-        Scaffold(
-            bottomBar = {
-                CreateBottomAppBar(context)
-            }
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "Hello People"
-                )
-            }
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Hello People"
+            )
         }
     }
 }

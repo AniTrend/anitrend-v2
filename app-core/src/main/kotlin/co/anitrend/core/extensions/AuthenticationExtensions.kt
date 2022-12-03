@@ -18,8 +18,15 @@
 package co.anitrend.core.extensions
 
 import android.content.Context
+import android.view.View
+import co.anitrend.arch.extension.ext.snackBar
+import co.anitrend.core.R
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.UserTaskRouter
+import co.anitrend.navigation.extensions.startActivity
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Fires off worker schedules that should run when a user is signed in
@@ -39,4 +46,28 @@ fun Context.cancelAuthenticationWorkers() {
     UserTaskRouter.forStatisticSyncScheduler().cancel(this)
     MediaListTaskRouter.forAnimeScheduler().cancel(this)
     MediaListTaskRouter.forMangaScheduler().cancel(this)
+}
+
+/**
+ * Performs an authentication check, and displays a snack bar or proceeds with [action]
+ *
+ * @param settings Authentication settings
+ * @param action If authenticated delegate
+ */
+fun View.runIfAuthenticated(
+    settings: IAuthenticationSettings,
+    action: () -> Unit
+) {
+    if (!settings.isAuthenticated.value) {
+        snackBar(
+            text = R.string.label_text_authentication_required,
+            duration = Snackbar.LENGTH_INDEFINITE,
+            actionText = R.string.action_login
+        ) {
+            AuthRouter.startActivity(it.context)
+            it.dismiss()
+        }.show()
+    } else {
+        action()
+    }
 }

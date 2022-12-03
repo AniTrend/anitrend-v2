@@ -22,6 +22,7 @@
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
     <string name="action_read_more">Read More</string>
+    <string name="action_login">Login</string>
 
     <!-- A label that will be shown at the end of a list when there are no more items to show (paging) -->
     <string name="label_text_end_of_list">No more entries to display</string>

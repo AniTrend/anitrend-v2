@@ -24,6 +24,7 @@ import android.view.MenuItem
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.NewsRouter
@@ -34,7 +35,6 @@ import co.anitrend.news.presenter.NewsPresenter
 import io.noties.markwon.Markwon
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.core.qualifier.named
-import timber.log.Timber
 
 class NewsScreen : AniTrendScreen<NewsScreenBinding>() {
 
@@ -65,8 +65,7 @@ class NewsScreen : AniTrendScreen<NewsScreenBinding>() {
         return when (item.itemId) {
             R.id.action_open_in_browser -> {
                 runCatching {
-                    presenter.handleViewIntent(
-                        requireBinding().root,
+                    binding?.root?.handleViewIntent(
                         requireNotNull(param?.link)
                     )
                 }.stackTrace()
@@ -90,14 +89,12 @@ class NewsScreen : AniTrendScreen<NewsScreenBinding>() {
 
             runCatching {
                 startActivity(shareCompat)
-            }.onFailure { throwable ->
-                Timber.w(throwable)
-            }
+            }.stackTrace()
         }
         BetterLinkMovementMethod.linkify(Linkify.ALL, this)
             .setOnLinkClickListener { view, url ->
                 runCatching {
-                    presenter.handleViewIntent(view, url)
+                    view.handleViewIntent(url)
                 }.stackTrace()
                 true
             }

@@ -41,7 +41,7 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 
 /**
- * Get given dependency
+ * Get given dependency, from either local scope or global scope
  *
  * @param qualifier - bean qualifier / optional
  * @param parameters - injection parameters
@@ -56,7 +56,7 @@ inline fun <reified T : Any> KoinScopeComponent.get(
 }
 
 /**
- * Inject lazily
+ * Inject lazily, by both local and global scope
  *
  * @param qualifier - bean qualifier / optional
  * @param parameters - injection parameters
@@ -138,7 +138,7 @@ inline fun <reified T : Fragment> FragmentActivity.createFragment(
     val qualifier = classDefinition.name
     val factory = supportFragmentManager.fragmentFactory
     require(factory is KoinFragmentFactory) {
-        """Fragment factory for $this is $factory instead of KoinFragmentFactory.
+        """Fragment factory for $this is $factory instead of `KoinFragmentFactory`.
             |Did you forget to call setupKoinFragmentFactory before onCreate?
         """.trimMargin()
     }
@@ -203,13 +203,18 @@ inline fun <reified T : ViewModel> ViewGroup.viewModel(
 }
 
 /**
- * Resolve view models from within action providers
+ * Resolve view models from within action providers, by default this looks view models
+ * using the parent activity as the owner. You should assure that any fragment also use
+ * `sharedViewModel` to avoid getting a mismatch between viewModels
+ *
+ * @param qualifier Custom qualifier to lookup
+ * @param owner ViewModel owner, defaults to parent activity
+ * @param parameters
  */
 inline fun <reified T : ViewModel> AbstractActionProvider.sharedViewModel(
     qualifier: Qualifier? = null,
     noinline owner: ViewModelOwnerDefinition = {
-        val parent = context as FragmentActivity
-        ViewModelOwner.from(parent, parent)
+        ViewModelOwner.fromAny(context)
     },
     noinline parameters: ParametersDefinition? = null
 ): Lazy<T> = lazy(SYNCHRONIZED) {

@@ -20,12 +20,36 @@ package co.anitrend.core.android.provider.contract
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ActionProvider
+import androidx.core.view.setPadding
+import co.anitrend.arch.extension.ext.getDrawableAttr
+import co.anitrend.core.android.R
+import co.anitrend.core.android.extensions.dp
 
 abstract class AbstractActionProvider(context: Context) : ActionProvider(context) {
 
+    protected val actionImageView = AppCompatImageView(context).apply {
+        background = context.getDrawableAttr(
+            R.attr.selectableItemBackgroundBorderless
+        )
+        isClickable = true
+        isFocusable = true
+        setPadding(2.dp)
+    }
+
+    protected val container = FrameLayout(context).apply {
+        layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT,
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT
+        )
+        setPadding(10.dp)
+    }
+
     /**
-     * Factory for creating the [ActionProvider] view
+     * Factory for creating the [androidx.core.view.ActionProvider] view
      *
      * @param forItem Optional menu item to create view for
      */

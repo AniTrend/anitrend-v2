@@ -38,25 +38,23 @@ fun Context.fragmentManager() = when (this) {
     else -> throw NotImplementedError("This type of context: $this is not handled/supported")
 }
 
-fun Context.lifecycleOwner(): LifecycleOwner? {
-    return when (val context = this) {
-        is LifecycleOwner -> context
-        else -> {
-            Timber.w("$context is not a lifecycle owner")
-            null
-        }
-    }
-}
-
-fun Context.lifecycleScope(): LifecycleCoroutineScope? {
-    val lifecycleOwner = lifecycleOwner()
-    return lifecycleOwner?.lifecycleScope
-}
-
 @Throws(IllegalArgumentException::class)
 fun Context.requireLifecycleOwner(): LifecycleOwner {
     return when (val context = this) {
         is LifecycleOwner -> context
         else -> throw IllegalArgumentException("$context is not a lifecycle owner")
     }
+}
+
+fun Context.lifecycleOwner(): LifecycleOwner? {
+    return runCatching(::requireLifecycleOwner)
+        .getOrElse {
+            Timber.w(it)
+            null
+        }
+}
+
+fun Context.lifecycleScope(): LifecycleCoroutineScope? {
+    val lifecycleOwner = lifecycleOwner()
+    return lifecycleOwner?.lifecycleScope
 }

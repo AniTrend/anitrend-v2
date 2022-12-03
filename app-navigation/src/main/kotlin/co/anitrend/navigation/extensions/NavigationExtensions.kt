@@ -20,6 +20,7 @@ package co.anitrend.navigation.extensions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.collection.LruCache
 import androidx.core.os.bundleOf
 import androidx.work.*
@@ -112,6 +113,17 @@ fun NavigationRouter.startActivity(
         Timber.tag(moduleTag).e(it)
     }
 }
+
+/**
+ * Builds an activity intent and starts it
+ */
+fun NavigationRouter.startActivity(
+    view: View?,
+    navPayload: NavPayload? = null,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+    options: Bundle? = null
+) = startActivity(view?.context,navPayload, flags, action, options)
 
 /**
  * Constructs bundles from [IParam] sub types

@@ -19,6 +19,7 @@ package co.anitrend.deeplink.component.route
 
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.UriCompat
 import co.anitrend.data.auth.helper.*
 import co.anitrend.deeplink.component.route.contract.Route
 import co.anitrend.deeplink.environment.AniTrendEnvironment
@@ -28,6 +29,7 @@ import co.anitrend.navigation.extensions.forActivity
 import com.hellofresh.deeplink.DeepLinkUri
 import com.hellofresh.deeplink.Environment
 import com.hellofresh.deeplink.extension.get
+import com.hellofresh.deeplink.extension.toAndroidUri
 import timber.log.Timber
 
 internal object DiscoverRoute : Route("discover") {
@@ -154,7 +156,7 @@ internal object OAuthRoute : Route(
 ) {
 
     private fun DeepLinkUri.getAuthRouterParam(): AuthRouter.Param {
-        val fullyQualifiedUrl = toString()
+        val fullyQualifiedUrl = UriCompat.toSafeString(toAndroidUri())
         return runCatching {
             AuthRouter.Param(
                 accessToken = requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {

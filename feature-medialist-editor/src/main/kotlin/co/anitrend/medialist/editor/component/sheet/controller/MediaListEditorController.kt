@@ -70,7 +70,7 @@ class MediaListEditorController(
             repeat = media.mediaList?.progress?.repeated,
             priority = media.mediaList?.priority,
             private = media.mediaList?.privacy?.isPrivate,
-            notes = media.mediaList?.privacy?.notes.toString(),
+            notes = media.mediaList?.privacy?.notes?.toString(),
             hiddenFromStatusLists = media.mediaList?.privacy?.isHidden,
             customLists = media.mediaList?.customLists?.map { it.name.toString() },
             advancedScores = media.mediaList?.advancedScores?.map(IMediaList.IAdvancedScore::score),

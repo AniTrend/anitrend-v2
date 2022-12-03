@@ -65,9 +65,7 @@ class AuthorizeAccountItem(
                 R.color.primaryTextColor
             )
         )
-        requireBinding().accountContainer.setOnClickListener {
-            AuthRouter.startActivity(it.context)
-        }
+        requireBinding().accountContainer.setOnClickListener(AuthRouter::startActivity)
     }
 
     /**
