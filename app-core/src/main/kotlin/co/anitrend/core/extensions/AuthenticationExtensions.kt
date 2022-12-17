@@ -60,9 +60,9 @@ fun View.runIfAuthenticated(
 ) {
     if (!settings.isAuthenticated.value) {
         snackBar(
-            text = R.string.label_text_authentication_required,
+            text = resources.getString(R.string.label_text_authentication_required),
             duration = Snackbar.LENGTH_INDEFINITE,
-            actionText = R.string.action_login
+            actionText = resources.getString(R.string.action_login)
         ) {
             AuthRouter.startActivity(it.context)
             it.dismiss()
