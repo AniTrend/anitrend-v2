@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2022  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.deeplink.environment
+package co.anitrend.deeplink.environment.contract
 
-import android.content.Context
-import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
+import com.kingsleyadio.deeplink.Environment
 
-data class AniTrendEnvironment(
-    override val context: Context,
-    override val isAuthenticated: Boolean,
-    override val userId: Long
-) : IAniTrendEnvironment
+interface IAniTrendEnvironment : Environment {
+    val userId: Long
+}

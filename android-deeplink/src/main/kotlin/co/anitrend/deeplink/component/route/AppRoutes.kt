@@ -22,14 +22,14 @@ import android.net.Uri
 import androidx.core.net.UriCompat
 import co.anitrend.data.auth.helper.*
 import co.anitrend.deeplink.component.route.contract.Route
-import co.anitrend.deeplink.environment.AniTrendEnvironment
+import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
 import co.anitrend.navigation.*
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.forActivity
-import com.hellofresh.deeplink.DeepLinkUri
-import com.hellofresh.deeplink.Environment
-import com.hellofresh.deeplink.extension.get
-import com.hellofresh.deeplink.extension.toAndroidUri
+import com.kingsleyadio.deeplink.DeepLinkUri
+import com.kingsleyadio.deeplink.Environment
+import com.kingsleyadio.deeplink.extension.get
+import com.kingsleyadio.deeplink.extension.toAndroidUri
 import timber.log.Timber
 
 internal object DiscoverRoute : Route("discover") {
@@ -92,7 +92,7 @@ internal object ProfileRoute : Route("profile") {
         env: Environment
     ): Intent? {
         super.run(uri, params, env)
-        env as AniTrendEnvironment
+        env as IAniTrendEnvironment
         val payload = ProfileRouter.Param(
             userId = env.userId
         ).asNavPayload()

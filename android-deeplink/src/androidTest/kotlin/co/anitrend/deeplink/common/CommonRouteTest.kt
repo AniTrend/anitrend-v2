@@ -22,7 +22,8 @@ import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.deeplink.environment.AniTrendEnvironment
-import com.hellofresh.deeplink.DeepLinkUri
+import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
+import com.kingsleyadio.deeplink.DeepLinkUri
 import org.koin.test.KoinTest
 
 abstract class CommonRouteTest : KoinTest {
@@ -35,7 +36,7 @@ abstract class CommonRouteTest : KoinTest {
         InstrumentationRegistry.getInstrumentation()
     }
 
-    protected val environment by lazy {
+    protected val environment: IAniTrendEnvironment by lazy {
         AniTrendEnvironment(
             instrumentationRegistry.context,
             false,
