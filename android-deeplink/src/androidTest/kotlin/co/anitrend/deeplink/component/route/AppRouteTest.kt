@@ -49,4 +49,20 @@ class AppRouteTest : CommonRouteTest() {
 
         Assert.assertEquals(expected, actual)
     }
+
+    @Test
+    fun verifySocialAppRoute() {
+        val expected = "component.screen.MainScreen".toIntent()
+        val actual = deepLinkParser.parse(appLinkOf("social"))
+
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun verifySuggestionsAppRoute() {
+        val expected = "component.screen.MainScreen".toIntent()
+        val actual = deepLinkParser.parse(appLinkOf("suggestions"))
+
+        Assert.assertEquals(expected, actual)
+    }
 }

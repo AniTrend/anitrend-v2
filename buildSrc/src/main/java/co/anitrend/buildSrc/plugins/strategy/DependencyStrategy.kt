@@ -42,6 +42,7 @@ internal class DependencyStrategy(private val project: Project) {
         androidTest(project.libs.androidx.test.rules)
         androidTest(project.libs.androidx.test.runner)
         androidTest(project.libs.androidx.test.espresso.core)
+        androidTest(project.libs.androidx.test.espresso.intents)
         androidTest(project.libs.mockk.android)
         androidTest(project.libs.androidx.test.ext.junit.ktx)
     }
