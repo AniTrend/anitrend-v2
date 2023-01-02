@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     `kotlin-dsl`
+    `version-catalog`
 }
 
 repositories {
@@ -46,11 +47,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-val buildToolsVersion = "7.3.1"
-val kotlinVersion = "1.7.10"
-val dokkaVersion = "1.7.10"
-val manesVersion = "0.38.0"
-val spotlessVersion = "6.10.0"
+fun Project.library(alias: String) =
+    extensions.getByType<VersionCatalogsExtension>()
+        .named("libs")
+        .findLibrary(alias)
+        .get()
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
@@ -59,7 +60,7 @@ dependencies {
     /** Depend on the kotlin plugin, since we want to access it in our plugin */
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
-    /* Depend on the dokka plugin, since we want to access it in our plugin */
+    /** Depend on the dokka plugin, since we want to access it in our plugin */
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
 
     /** Dependency management */
@@ -68,7 +69,7 @@ dependencies {
     /** Spotless */
     implementation("com.diffplug.spotless:spotless-plugin-gradle:$spotlessVersion")
 
-    /* Depend on the default Gradle API's since we want to build a custom plugin */
+    /** Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())
     implementation(localGroovy())
 }
