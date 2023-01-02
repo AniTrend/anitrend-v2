@@ -17,7 +17,6 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.common.Configuration
 import co.anitrend.buildSrc.extensions.*
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
@@ -206,7 +205,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     if (project.hasComposeSupport()) {
         composeOptions {
-            kotlinCompilerExtensionVersion = Libraries.AndroidX.Compose.Compiler.version
+            kotlinCompilerExtensionVersion = version("androidx-compose-compiler").toString()
         }
     }
 }
