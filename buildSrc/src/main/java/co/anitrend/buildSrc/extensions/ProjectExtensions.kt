@@ -29,9 +29,14 @@ import com.android.build.gradle.TestPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
@@ -78,6 +83,20 @@ fun Project.hasKaptSupport() =
 fun Project.hasKotlinAndroidExtensionSupport() =
     name != Modules.App.Domain.id
 
+fun Project.versionCatalog(): VersionCatalog =
+    versionCatalogExtension()
+        .named("libs")
+
+fun Project.library(alias: String): Provider<MinimalExternalModuleDependency> =
+    versionCatalog()
+        .findLibrary(alias)
+        .get()
+
+fun Project.version(alias: String): VersionConstraint =
+    versionCatalog()
+        .findVersion(alias)
+        .get()
+
 internal fun Project.baseExtension() =
     extensions.getByType<BaseExtension>()
 
@@ -116,6 +135,9 @@ internal fun Project.publishingExtension() =
 
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
+
+internal fun Project.versionCatalogExtension() =
+    extensions.getByType<VersionCatalogsExtension>()
 
 internal fun Project.androidComponents() =
     extensions.getByType<ApplicationAndroidComponentsExtension>()
