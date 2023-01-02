@@ -47,7 +47,7 @@ private fun NamedDomainObjectContainer<LibraryBuildType>.applyVersionProperties(
 
 private fun NamedDomainObjectContainer<LibraryBuildType>.applyConfigurationProperties(project: Project) {
     asMap.forEach { buildTypeEntry ->
-        println("Configuring build type -> ${buildTypeEntry.key}")
+        project.logger.lifecycle("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
 
         buildType.buildConfigField("String", "versionName", "\"${Configuration.versionName}\"")
@@ -72,7 +72,7 @@ private fun NamedDomainObjectContainer<LibraryBuildType>.applyConfigurationPrope
 }
 
 private fun LibraryDefaultConfig.applyRoomCompilerOptions(project: Project) {
-    println("Adding java compiler options for room on module-> ${project.path}")
+    project.logger.lifecycle("Adding java compiler options for room on module-> ${project.path}")
     javaCompileOptions {
         annotationProcessorOptions {
             arguments(
@@ -96,7 +96,7 @@ internal fun Project.createSigningConfiguration(extension: BaseExtension) {
                 properties = this
             }
         }
-    else println("${keyStoreFile.absolutePath} could not be found, automated releases may not be singed")
+    else logger.lifecycle("${keyStoreFile.absolutePath} could not be found, automated releases may not be singed")
     properties?.also {
         extension.signingConfigs {
             create("release") {

@@ -15,7 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -29,11 +28,11 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
-	implementation(Libraries.Saket.BetterLinkMovement.betterLinkMovement)
+	implementation(libs.saket.betterlinkmovementmethod)
 	
-	implementation(Libraries.Markwon.core)
-	implementation(Libraries.Markwon.html)
-	implementation(Libraries.Markwon.coil)
+	implementation(libs.markwon.core)
+	implementation(libs.markwon.html)
+	implementation(libs.markwon.coil)
 }
 android {
     namespace = "co.anitrend.common.markdown"

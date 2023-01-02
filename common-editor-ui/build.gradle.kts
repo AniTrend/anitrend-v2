@@ -15,16 +15,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
-	implementation(Libraries.Markwon.core)
-	implementation(Libraries.Markwon.editor)
-	implementation(Libraries.AniTrend.Emojify.emojify)
+	implementation(libs.markwon.core)
+	implementation(libs.markwon.editor)
+	implementation(libs.anitrend.emojify)
 }
 android {
     namespace = "co.anitrend.common.editor"

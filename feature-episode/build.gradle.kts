@@ -25,16 +25,16 @@ dependencies {
     implementation(project(Libraries.AniTrend.Data.feed))
     implementation(project(Libraries.AniTrend.CommonUi.episode))
 
-    implementation(Libraries.AndroidX.Browser.browser)
+    implementation(libs.androidx.browser)
 
-    implementation(Libraries.Saket.BetterLinkMovement.betterLinkMovement)
-    implementation(Libraries.jsoup)
+    implementation(libs.saket.betterlinkmovementmethod)
+    implementation(libs.jsoup)
 
     /** Markwon */
-    implementation(Libraries.Markwon.core)
-    implementation(Libraries.Markwon.html)
-    implementation(Libraries.Markwon.linkify)
-    implementation(Libraries.Markwon.coil)
+    implementation(libs.markwon.core)
+    implementation(libs.markwon.html)
+    implementation(libs.markwon.linkify)
+    implementation(libs.markwon.coil)
 }
 android {
     namespace = "co.anitrend.episode"

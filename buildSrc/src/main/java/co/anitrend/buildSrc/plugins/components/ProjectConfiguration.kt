@@ -67,7 +67,7 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
         // checking app module again since the group for app modules is
         // `app-` while the main app is just `app`
         if (!project.isAppModule()) {
-            println("Applying view binding feature for module -> ${project.path}")
+            project.logger.lifecycle("Applying view binding feature for module -> ${project.path}")
             project.libraryExtension().buildFeatures {
                 viewBinding = true
                 if (project.hasComposeSupport())
@@ -75,7 +75,7 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             }
         }
 
-        println("Applying vector drawables configuration for module -> ${project.path}")
+        project.logger.lifecycle("Applying vector drawables configuration for module -> ${project.path}")
         vectorDrawables.useSupportLibrary = true
     }
 }
@@ -100,9 +100,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     if (isAppModule()) {
-        project.configureLint()
-        project.configureBuildFlavours()
-        project.createSigningConfiguration(this)
+        configureLint()
+        configureBuildFlavours()
+        createSigningConfiguration(this)
     }
 
     buildTypes {
@@ -189,7 +189,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             compilerArgumentOptions.add("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
         }
 
-        if (isAppModule() || isCoreModule() || isNavigationModule()) {
+        if (isAppModule() || isCoreModule()) {
             compilerArgumentOptions.apply {
                 add("-opt-in=org.koin.core.component.KoinApiExtension")
                 add("-opt-in=org.koin.core.KoinExperimentalAPI")
@@ -203,9 +203,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
     }
 
-    if (project.hasComposeSupport()) {
+    if (hasComposeSupport()) {
         composeOptions {
-            kotlinCompilerExtensionVersion = version("androidx-compose-compiler").toString()
+            kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
         }
     }
 }

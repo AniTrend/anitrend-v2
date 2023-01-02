@@ -17,12 +17,12 @@
 
 package co.anitrend.buildSrc.resolver
 
-import co.anitrend.buildSrc.Libraries
-import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.extensions.libs
 import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 
-fun Configuration.handleConflicts() {
+fun Configuration.handleConflicts(project: Project): Unit = with(project) {
     resolutionStrategy.eachDependency {
         when (requested.group) {
             "org.jetbrains.kotlin" -> {
@@ -31,21 +31,21 @@ fun Configuration.handleConflicts() {
                     "kotlin-stdlib",
                     "kotlin-stdlib-common",
                     "kotlin-stdlib-jdk8",
-                    "kotlin-stdlib-jdk7" -> useVersion(Versions.kotlin)
+                    "kotlin-stdlib-jdk7" -> useVersion(libs.versions.jetbrains.kotlin.get())
                 }
             }
         }
         if (requested.name == "kotlinx-serialization-json") {
-            useTarget(Libraries.JetBrains.KotlinX.Serialization.json)
+            useTarget(libs.jetbrains.kotlinx.serialization.json)
         }
         if (requested.group == "com.google.android.material") {
-            useTarget(Libraries.Google.Material.material)
+            useTarget(libs.google.android.material)
         }
         if (requested.group == "com.jakewharton.timber") {
-            useTarget(Libraries.timber)
+            useTarget(libs.timber)
         }
         if (requested.group == "androidx.startup") {
-            useTarget(Libraries.AndroidX.StartUp.startUpRuntime)
+            useTarget(libs.androidx.startup.runtime)
         }
     }
 }

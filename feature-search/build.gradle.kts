@@ -15,14 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
-    implementation(Libraries.AniTrend.Material.multiSearch)
+    implementation(libs.anitrend.material)
 }
 android {
     namespace = "co.anitrend.search"

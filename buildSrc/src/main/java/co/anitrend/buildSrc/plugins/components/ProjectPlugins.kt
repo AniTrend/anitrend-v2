@@ -53,21 +53,21 @@ internal fun Project.configurePlugins() {
 
 internal fun Project.configureAdditionalPlugins() {
     /*if (isAppModule()) {
-        println("Applying additional google plugins")
+        logger.lifecycle("Applying additional google plugins")
         if (file("google-services.json").exists()) {
             plugins.apply("com.google.gms.google-services")
             plugins.apply("com.google.firebase.crashlytics")
-        } else println("google-services.json cannot be found and will not be using any of the google plugins")
+        } else logger.lifecycle("google-services.json cannot be found and will not be using any of the google plugins")
     }*/
     if (isAppModule()) {
         androidComponents().beforeVariants {
-            println("VariantFilter { name: ${it.name}, flavor: ${it.flavorName}, module: $name }")
+            logger.lifecycle("VariantFilter { name: ${it.name}, flavor: ${it.flavorName}, module: $name }")
             if (it.flavorName == "google") {
-                println("Applying additional google plugins on -> module: $name | type: ${it.name}")
+                logger.lifecycle("Applying additional google plugins on -> module: $name | type: ${it.name}")
                 if (file("google-services.json").exists()) {
                     plugins.apply("com.google.gms.google-services")
                     plugins.apply("com.google.firebase.crashlytics")
-                } else println("google-services.json cannot be found and will not be using any of the google plugins")
+                } else logger.lifecycle("google-services.json cannot be found and will not be using any of the google plugins")
             }
         }
     }

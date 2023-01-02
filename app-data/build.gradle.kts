@@ -15,7 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -33,24 +32,24 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
-    implementation(Libraries.JetBrains.KotlinX.Serialization.json)
-    implementation(Libraries.AndroidX.StartUp.startUpRuntime)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+    implementation(libs.androidx.startup.runtime)
 
-    implementation(Libraries.AniTrend.Sync.plugin)
-    implementation(Libraries.CashApp.Copper.copper)
+    implementation(libs.anitrend.sync)
+    implementation(libs.cash.copper)
 
-    implementation(Libraries.tmdb) {
+    implementation(libs.tmdb) {
         exclude(group = "org.threeten", module = "threetenbp")
     }
-    implementation(Libraries.trakt) {
+    implementation(libs.trakt) {
         exclude(group = "org.threeten", module = "threetenbp")
     }
 
-    implementation(Libraries.AniTrend.Emojify.emojify)
+    implementation(libs.anitrend.emojify)
 
-    implementation(Libraries.AniTrend.QueryBuilder.annotation)
-    implementation(Libraries.AniTrend.QueryBuilder.core)
-    kapt(Libraries.AniTrend.QueryBuilder.processor)
+    implementation(libs.anitrend.querybuilder.annotation)
+    implementation(libs.anitrend.querybuilder.core)
+    kapt(libs.anitrend.querybuilder.processor)
 }
 android {
     namespace = "co.anitrend.data"

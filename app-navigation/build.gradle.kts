@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import co.anitrend.buildSrc.Libraries
 
 plugins {
     id("co.anitrend.plugin")
@@ -23,8 +22,8 @@ plugins {
 dependencies {
     implementation(project(":app-domain"))
 
-    implementation(Libraries.AndroidX.Work.runtimeKtx)
-    implementation(Libraries.Google.Gson.gson)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.google.gson)
 }
 android {
     namespace = "co.anitrend.navigation"

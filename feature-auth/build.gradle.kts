@@ -15,14 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
-    implementation(Libraries.AndroidX.Browser.browser)
+    implementation(libs.androidx.browser)
 }
 android {
     namespace = "co.anitrend.auth"

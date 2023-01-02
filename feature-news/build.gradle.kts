@@ -26,15 +26,15 @@ dependencies {
 	implementation(project(Libraries.AniTrend.CommonUi.news))
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
 
-    implementation(Libraries.AndroidX.Browser.browser)
+    implementation(libs.androidx.browser)
 
-    implementation(Libraries.Saket.BetterLinkMovement.betterLinkMovement)
-    implementation(Libraries.jsoup)
+    implementation(libs.saket.betterlinkmovementmethod)
+    implementation(libs.jsoup)
 
     /** Markwon */
-    implementation(Libraries.Markwon.core)
-	implementation(Libraries.Markwon.html)
-    implementation(Libraries.Markwon.linkify)
+    implementation(libs.markwon.core)
+	implementation(libs.markwon.html)
+    implementation(libs.markwon.linkify)
 }
 android {
     namespace = "co.anitrend.news"

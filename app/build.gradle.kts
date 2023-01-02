@@ -24,12 +24,12 @@ plugins {
 dependencies {
 
     /** Material Design */
-    implementation(Libraries.Google.Material.material)
+    implementation(libs.google.android.material)
 
-    implementation(Libraries.AniTrend.Emojify.emojify)
+    implementation(libs.anitrend.emojify)
 
-    googleImplementation(Libraries.Google.Services.OOS.licenses)
-    googleImplementation(Libraries.Google.Firebase.Messaging.messaging)
+    googleImplementation(libs.google.android.gsm.playServicesOssLicenses)
+    googleImplementation(libs.google.firebase.messaging.ktx)
 }
 android {
     namespace = "co.anitrend"

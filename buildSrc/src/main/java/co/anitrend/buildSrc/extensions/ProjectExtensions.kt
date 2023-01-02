@@ -41,6 +41,9 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.api.plugins.ExtensionAware
+import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 
@@ -83,19 +86,8 @@ fun Project.hasKaptSupport() =
 fun Project.hasKotlinAndroidExtensionSupport() =
     name != Modules.App.Domain.id
 
-fun Project.versionCatalog(): VersionCatalog =
-    versionCatalogExtension()
-        .named("libs")
-
-fun Project.library(alias: String): Provider<MinimalExternalModuleDependency> =
-    versionCatalog()
-        .findLibrary(alias)
-        .get()
-
-fun Project.version(alias: String): VersionConstraint =
-    versionCatalog()
-        .findVersion(alias)
-        .get()
+internal val Project.libs: LibrariesForLibs get() =
+    (this as ExtensionAware).extensions.getByName("libs") as LibrariesForLibs
 
 internal fun Project.baseExtension() =
     extensions.getByType<BaseExtension>()
@@ -135,9 +127,6 @@ internal fun Project.publishingExtension() =
 
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
-
-internal fun Project.versionCatalogExtension() =
-    extensions.getByType<VersionCatalogsExtension>()
 
 internal fun Project.androidComponents() =
     extensions.getByType<ApplicationAndroidComponentsExtension>()

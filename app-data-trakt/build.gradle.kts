@@ -15,7 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -33,10 +32,10 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
-    implementation(Libraries.JetBrains.KotlinX.Serialization.json)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
     
     // Will remove this later, we just need a few specific endpoints so no need to include this package
-    implementation(Libraries.trakt) {
+    implementation(libs.trakt) {
         exclude(group = "org.threeten", module = "threetenbp")
     }
 }

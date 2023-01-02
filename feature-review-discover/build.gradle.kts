@@ -23,7 +23,7 @@ plugins {
 
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.review))
-    implementation(Libraries.Sheets.core)
+    implementation(libs.sheets.core)
 }
 android {
     namespace = "co.anitrend.review.discover"

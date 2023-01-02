@@ -22,17 +22,17 @@ plugins {
 }
 
 dependencies {
-	implementation(Libraries.Blitz.blitz)
+	implementation(libs.blitz)
 
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
-	implementation(Libraries.AniTrend.Markdown.markdown)
+	implementation(libs.anitrend.markdown)
 
-	implementation(Libraries.Markwon.core)
-	implementation(Libraries.Markwon.html)
-	implementation(Libraries.Markwon.image)
-	implementation(Libraries.Markwon.simpleExt)
-	implementation(Libraries.Markwon.Extension.taskList)
-	implementation(Libraries.Markwon.Extension.strikeThrough)
+	implementation(libs.markwon.core)
+	implementation(libs.markwon.html)
+	implementation(libs.markwon.image)
+	implementation(libs.markwon.simple.ext)
+	implementation(libs.markwon.ext.tasklist)
+	implementation(libs.markwon.ext.strikethrough)
 }
 android {
     namespace = "co.anitrend.common.shared"

@@ -15,22 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
 
 
 dependencies {
-    implementation(Libraries.threeTenBp)
-	implementation(Libraries.Square.Retrofit.xmlConverter) {
+    implementation(libs.threeTenBp)
+	implementation(libs.square.retrofit.converter.simplexml) {
         exclude("xpp3", "xpp3")
         exclude("stax", "stax-api")
         exclude("stax", "stax")
     }
     // Holding off on using xml util for now, seems not to work and probably needs more testing
-    implementation(Libraries.Devrieze.XmlUtil.Android.serialization)
+    implementation(libs.devrieze.xmlutil.android.serialization)
 }
 android {
     namespace = "co.anitrend.data.feed"

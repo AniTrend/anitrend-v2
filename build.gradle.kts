@@ -40,7 +40,7 @@ allprojects {
     }
 
     configurations.all {
-        handleConflicts()
+        handleConflicts(this@allprojects)
     }
 }
 

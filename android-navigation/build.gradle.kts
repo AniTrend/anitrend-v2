@@ -15,15 +15,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
-    implementation(Libraries.AniTrend.Arch.recycler)
-    implementation(Libraries.elements)
+    implementation(libs.anitrend.arch.recycler)
+    implementation(libs.elements)
 }
 android {
     namespace = "co.anitrend.navigation.drawer"

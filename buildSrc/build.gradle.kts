@@ -47,29 +47,29 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-fun Project.library(alias: String) =
-    extensions.getByType<VersionCatalogsExtension>()
-        .named("libs")
-        .findLibrary(alias)
-        .get()
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
+
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
-    implementation(library("android-gradle-plugin"))
+    implementation(libs.android.gradle.plugin)
 
     /** Depend on the kotlin plugin, since we want to access it in our plugin */
-    implementation(library("jetbrains-kotlin-gradle"))
+    implementation(libs.jetbrains.kotlin.gradle)
 
     /** Depend on the dokka plugin, since we want to access it in our plugin */
-    implementation(library("jetbrains-dokka-gradle"))
+    implementation(libs.jetbrains.dokka.gradle)
 
     /** Dependency management */
-    implementation(library("gradle-versions"))
+    implementation(libs.gradle.versions)
 
     /** Spotless */
-    implementation(library("spotless-gradle"))
+    implementation(libs.spotless.gradle)
 
     /** Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())
     implementation(localGroovy())
+
+    /** Work around to include ../.gradle/LibrariesForLibs generated file for version catalog */
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
