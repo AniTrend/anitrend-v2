@@ -55,19 +55,19 @@ fun Project.library(alias: String) =
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
-    implementation("com.android.tools.build:gradle:$buildToolsVersion")
+    implementation(library("android-gradle-plugin"))
 
     /** Depend on the kotlin plugin, since we want to access it in our plugin */
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    implementation(library("jetbrains-kotlin-gradle"))
 
     /** Depend on the dokka plugin, since we want to access it in our plugin */
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
+    implementation(library("jetbrains-dokka-gradle"))
 
     /** Dependency management */
-    implementation("com.github.ben-manes:gradle-versions-plugin:$manesVersion")
+    implementation(library("gradle-versions"))
 
     /** Spotless */
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:$spotlessVersion")
+    implementation(library("spotless-gradle"))
 
     /** Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())
