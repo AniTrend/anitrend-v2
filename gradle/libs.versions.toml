@@ -50,8 +50,8 @@ devrieze-xmlutil = "0.84.2"
 google-accompanist = "0.25.1"
 google-android-material = "1.7.0"
 
-jetbrains-dokka = "1.7.20"
-jetbrains-kotlin = "1.7.22"
+jetbrains-dokka = "1.7.10"
+jetbrains-kotlin = "1.7.10"
 jetbrains-kotlinx-coroutines = "1.6.4"
 jetbrains-kotlinx-datetime = "0.2.1"
 jetbrains-kotlinx-serialization = "1.3.3"
@@ -235,8 +235,6 @@ google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-cr
 google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "23.0.8" }
 
 google-flexbox = { module = "com.google.android:flexbox", version = "2.0.1" }
-
-
 
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-android-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter-3", version = "1.0.19" }
