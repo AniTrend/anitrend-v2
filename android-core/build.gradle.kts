@@ -15,7 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -33,10 +32,10 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
-    implementation(Libraries.AirBnB.Paris.paris)
-    implementation(Libraries.AniTrend.Arch.recycler)
-    implementation(Libraries.Google.FlexBox.flexBox)
-    implementation(Libraries.prettyTime)
+    implementation(libs.airbnb.paris)
+    implementation(libs.anitrend.arch.recycler)
+    implementation(libs.google.flexbox)
+    implementation(libs.prettyTime)
 }
 android {
     namespace = "co.anitrend.core.android"

@@ -15,7 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -26,20 +25,21 @@ plugins {
 tasks.withType(KotlinCompile::class.java) {
     kotlinOptions {
         freeCompilerArgs = listOf(
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-Xopt-in=kotlin.RequiresOptIn"
+            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-opt-in=kotlin.RequiresOptIn"
         )
     }
 }
 
 dependencies {
-    implementation(Libraries.JetBrains.KotlinX.Serialization.json)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 
-    implementation(Libraries.AniTrend.Retrofit.graphQL)
+    implementation(libs.anitrend.retrofit.graphql)
 
-    implementation(Libraries.CashApp.Copper.copper)
+    implementation(libs.cash.copper)
 
-    implementation(Libraries.AniTrend.QueryBuilder.core)
+    implementation(libs.anitrend.querybuilder.annotation)
+    implementation(libs.anitrend.querybuilder.core)
 }
 android {
     namespace = "co.anitrend.data.android"

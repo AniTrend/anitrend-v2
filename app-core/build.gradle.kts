@@ -15,8 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
@@ -29,14 +27,14 @@ android {
 }
 
 dependencies {
-    implementation(Libraries.AndroidX.Browser.browser)
+    implementation(libs.androidx.browser)
 
-    implementation(Libraries.AniTrend.Emojify.emojify)
+    implementation(libs.anitrend.emojify)
 
-    implementation(Libraries.Square.OkHttp.logging)
+    implementation(libs.square.okhttp.logging)
 
-    implementation(Libraries.Google.FlexBox.flexBox)
+    implementation(libs.google.flexbox)
 
     /** Timber Trees */
-    implementation(Libraries.treessence)
+    implementation(libs.treessence)
 }

@@ -27,7 +27,7 @@ dependencies {
 
     implementation(project(Libraries.AniTrend.CommonUi.media))
 
-    implementation(Libraries.Sheets.calendar)
+    implementation(libs.sheets.calendar)
 }
 android {
     namespace = "co.anitrend.airing"

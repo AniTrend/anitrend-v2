@@ -15,7 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
@@ -33,7 +32,7 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
-    implementation(Libraries.JetBrains.KotlinX.Serialization.json)	
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 }
 android {
     namespace = "co.anitrend.data.relation"

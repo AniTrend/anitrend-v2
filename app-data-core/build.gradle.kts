@@ -15,8 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
@@ -24,11 +22,11 @@ plugins {
 
 
 dependencies {
-    implementation(Libraries.JetBrains.KotlinX.Serialization.json)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
 
-    implementation(Libraries.AndroidX.Collection.collectionKtx)
+    implementation(libs.androidx.collection.ktx)
 
-    implementation(Libraries.AniTrend.QueryBuilder.core)
+    implementation(libs.anitrend.querybuilder.core)
 }
 android {
     namespace = "co.anitrend.data.core"

@@ -15,14 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import co.anitrend.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.plugin")
 }
 
 dependencies {
-    implementation(Libraries.Blitz.blitz)
+    implementation(libs.blitz)
 }
 android {
     namespace = "co.anitrend.common.news"

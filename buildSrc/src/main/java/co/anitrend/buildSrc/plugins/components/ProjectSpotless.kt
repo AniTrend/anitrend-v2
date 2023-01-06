@@ -18,14 +18,14 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.extensions.spotlessExtension
-import co.anitrend.buildSrc.common.Versions
+import co.anitrend.buildSrc.extensions.libs
 import org.gradle.api.Project
 
 internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     kotlin {
         target("**/*.kt")
         targetExclude("$buildDir/**/*.kt", "bin/**/*.kt")
-        ktlint(Versions.ktlint).userData(
+        ktlint(libs.versions.ktlint.get()).userData(
             mapOf(
                 "android" to "true",
                 "max_line_length" to "150",

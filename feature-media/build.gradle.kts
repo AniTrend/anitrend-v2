@@ -30,7 +30,7 @@ dependencies {
 
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
 
-    implementation(Libraries.AndroidX.Browser.browser)
+    implementation(libs.androidx.browser)
 }
 android {
     namespace = "co.anitrend.media"

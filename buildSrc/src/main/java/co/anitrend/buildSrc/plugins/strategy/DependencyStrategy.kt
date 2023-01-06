@@ -20,54 +20,52 @@ package co.anitrend.buildSrc.plugins.strategy
 import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.module.Modules
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal class DependencyStrategy(private val project: Project) {
 
     private fun DependencyHandler.applyDefaultDependencies() {
-        implementation(Libraries.JetBrains.Kotlin.stdlib)
+        implementation(project.libs.jetbrains.kotlin.stdlib.jdk8)
         if (!project.isDomainModule())
-            implementation(Libraries.timber)
+            implementation(project.libs.timber)
 
-        test(Libraries.junit)
-        test(Libraries.Mockk.mockk)
+        test(project.libs.junit)
+        test(project.libs.mockk)
 
         /** Work around for crashing tests when startup. initializer is not found in *.test packages */
-        androidTest(Libraries.AndroidX.StartUp.startUpRuntime)
+        androidTest(project.libs.androidx.startup.runtime)
     }
 
     private fun DependencyHandler.applyAndroidTestDependencies() {
-        androidTest(Libraries.AndroidX.Test.coreKtx)
-        androidTest(Libraries.AndroidX.Test.rules)
-        androidTest(Libraries.AndroidX.Test.runner)
-        androidTest(Libraries.AndroidX.Test.Espresso.core)
-        androidTest(Libraries.Mockk.mockkAndroid)
-        androidTest(Libraries.AndroidX.Test.Extension.junitKtx)
+        androidTest(project.libs.androidx.test.core.ktx)
+        androidTest(project.libs.androidx.test.rules)
+        androidTest(project.libs.androidx.test.runner)
+        androidTest(project.libs.androidx.test.espresso.core)
+        androidTest(project.libs.mockk.android)
+        androidTest(project.libs.androidx.test.ext.junit.ktx)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
-        implementation(Libraries.AndroidX.Lifecycle.liveDataCoreKtx)
-        implementation(Libraries.AndroidX.Lifecycle.runTimeKtx)
-        implementation(Libraries.AndroidX.Lifecycle.liveDataKtx)
-        implementation(Libraries.AndroidX.Lifecycle.extensions)
+        implementation(project.libs.androidx.lifecycle.livedata.core.ktx)
+        implementation(project.libs.androidx.lifecycle.runtime.ktx)
+        implementation(project.libs.androidx.lifecycle.livedata.ktx)
+        implementation(project.libs.androidx.lifecycle.extensions)
     }
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
-        implementation(Libraries.JetBrains.KotlinX.Coroutines.android)
-        implementation(Libraries.JetBrains.KotlinX.Coroutines.core)
-        implementation(Libraries.CashApp.Copper.copper)
+        implementation(project.libs.jetbrains.kotlinx.coroutines.android)
+        implementation(project.libs.jetbrains.kotlinx.coroutines.core)
+        implementation(project.libs.cash.copper)
 
-        test(Libraries.CashApp.Turbine.turbine)
-        test(Libraries.JetBrains.KotlinX.Coroutines.test)
-
-        androidTest(Libraries.CashApp.Turbine.turbine)
-        androidTest(Libraries.JetBrains.KotlinX.Coroutines.test)
+        test(project.libs.cash.turbine)
+        test(project.libs.jetbrains.kotlinx.coroutines.test)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
         implementation(Libraries.Koin.core)
-        androidTest(Libraries.Koin.Test.test)
+        test(Libraries.Koin.Test.test)
         test(Libraries.Koin.Test.testJUnit4)
         if (project.hasKoinAndroidSupport()) {
             implementation(Libraries.Koin.android)
@@ -78,27 +76,27 @@ internal class DependencyStrategy(private val project: Project) {
     private fun DependencyHandler.applyOtherDependencies() {
         when (project.name) {
             Modules.App.Main.id -> {
-                implementation(Libraries.AniTrend.Arch.recycler)
-                implementation(Libraries.AniTrend.Arch.domain)
-                implementation(Libraries.AniTrend.Arch.theme)
-                implementation(Libraries.AniTrend.Arch.core)
-                implementation(Libraries.AniTrend.Arch.data)
-                implementation(Libraries.AniTrend.Arch.ext)
-                implementation(Libraries.AniTrend.Arch.ui)
+                implementation(project.libs.anitrend.arch.recycler)
+                implementation(project.libs.anitrend.arch.domain)
+                implementation(project.libs.anitrend.arch.theme)
+                implementation(project.libs.anitrend.arch.core)
+                implementation(project.libs.anitrend.arch.data)
+                implementation(project.libs.anitrend.arch.ext)
+                implementation(project.libs.anitrend.arch.ui)
             }
             Modules.App.Core.id -> {
-                implementation(Libraries.AniTrend.Arch.recycler)
-                implementation(Libraries.AniTrend.Arch.domain)
-                implementation(Libraries.AniTrend.Arch.theme)
-                implementation(Libraries.AniTrend.Arch.core)
-                implementation(Libraries.AniTrend.Arch.data)
-                implementation(Libraries.AniTrend.Arch.ext)
-                implementation(Libraries.AniTrend.Arch.ui)
+                implementation(project.libs.anitrend.arch.recycler)
+                implementation(project.libs.anitrend.arch.domain)
+                implementation(project.libs.anitrend.arch.theme)
+                implementation(project.libs.anitrend.arch.core)
+                implementation(project.libs.anitrend.arch.data)
+                implementation(project.libs.anitrend.arch.ext)
+                implementation(project.libs.anitrend.arch.ui)
             }
             Modules.App.Data.id -> {
-                implementation(Libraries.AniTrend.Arch.domain)
-                implementation(Libraries.AniTrend.Arch.data)
-                implementation(Libraries.AniTrend.Arch.ext)
+                implementation(project.libs.anitrend.arch.domain)
+                implementation(project.libs.anitrend.arch.data)
+                implementation(project.libs.anitrend.arch.ext)
             }
         }
     }

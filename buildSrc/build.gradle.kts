@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     `kotlin-dsl`
+    `version-catalog`
 }
 
 repositories {
@@ -46,29 +47,29 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-val buildToolsVersion = "7.3.1"
-val kotlinVersion = "1.7.10"
-val dokkaVersion = "1.7.10"
-val manesVersion = "0.38.0"
-val spotlessVersion = "6.10.0"
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
+
 
 dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
-    implementation("com.android.tools.build:gradle:$buildToolsVersion")
+    implementation(libs.android.gradle.plugin)
 
     /** Depend on the kotlin plugin, since we want to access it in our plugin */
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    implementation(libs.jetbrains.kotlin.gradle)
 
-    /* Depend on the dokka plugin, since we want to access it in our plugin */
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
+    /** Depend on the dokka plugin, since we want to access it in our plugin */
+    implementation(libs.jetbrains.dokka.gradle)
 
     /** Dependency management */
-    implementation("com.github.ben-manes:gradle-versions-plugin:$manesVersion")
+    implementation(libs.gradle.versions)
 
     /** Spotless */
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:$spotlessVersion")
+    implementation(libs.spotless.gradle)
 
-    /* Depend on the default Gradle API's since we want to build a custom plugin */
+    /** Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())
     implementation(localGroovy())
+
+    /** Work around to include ../.gradle/LibrariesForLibs generated file for version catalog */
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

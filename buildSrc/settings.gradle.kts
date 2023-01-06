@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2023  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,14 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+@file:Suppress("UnstableApiUsage")
 
-dependencies {
-    implementation(libs.scalingImageView)
-    implementation(libs.coil)
-}
-android {
-    namespace = "co.anitrend.viewer"
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }

@@ -30,7 +30,7 @@ open class CorePlugin : Plugin<Project> {
     internal fun Project.availableExtensions() {
         val extensionSchema = project.extensions.extensionsSchema
         extensionSchema.forEach {
-            println("Available extension for module ${project.path}: ${it.name} -> ${it.publicType}")
+            logger.lifecycle("Available extension for module ${project.path}: ${it.name} -> ${it.publicType}")
         }
     }
 
@@ -41,7 +41,7 @@ open class CorePlugin : Plugin<Project> {
     internal fun Project.availableComponents() {
         val collectionSchema = project.components.asMap
         collectionSchema.forEach {
-            println("Available component for module ${project.path}: ${it.key} -> ${it.value}")
+            logger.lifecycle("Available component for module ${project.path}: ${it.key} -> ${it.value}")
         }
     }
 

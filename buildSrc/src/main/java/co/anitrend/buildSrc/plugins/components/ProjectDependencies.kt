@@ -24,35 +24,35 @@ import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
 import org.gradle.api.Project
 
 private fun Project.applyFeatureModuleGroupDependencies() {
-    println("Applying shared dependencies for feature module -> $path")
+    logger.lifecycle("Applying shared dependencies for feature module -> $path")
 
-    dependencies.implementation(Libraries.AniTrend.Arch.ui)
-    dependencies.implementation(Libraries.AniTrend.Arch.ext)
-    dependencies.implementation(Libraries.AniTrend.Arch.core)
-    dependencies.implementation(Libraries.AniTrend.Arch.data)
-    dependencies.implementation(Libraries.AniTrend.Arch.theme)
-    dependencies.implementation(Libraries.AniTrend.Arch.domain)
-    dependencies.implementation(Libraries.AniTrend.Arch.recycler)
+    dependencies.implementation(libs.anitrend.arch.ui)
+    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.core)
+    dependencies.implementation(libs.anitrend.arch.data)
+    dependencies.implementation(libs.anitrend.arch.theme)
+    dependencies.implementation(libs.anitrend.arch.domain)
+    dependencies.implementation(libs.anitrend.arch.recycler)
 
-    dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
-    dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
-    dependencies.implementation(Libraries.AndroidX.AppCompat.appcompat)
-    dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
-    dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
-    dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
-    dependencies.implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
-    dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
+    dependencies.implementation(libs.androidx.core.ktx)
+    dependencies.implementation(libs.androidx.work.runtime.ktx)
+    dependencies.implementation(libs.androidx.work.multiprocess)
+    dependencies.implementation(libs.androidx.paging.runtime.ktx)
+    dependencies.implementation(libs.androidx.activity.ktx)
+    dependencies.implementation(libs.androidx.appcompat)
+    dependencies.implementation(libs.androidx.fragment.ktx)
+    dependencies.implementation(libs.androidx.startup.runtime)
+    dependencies.implementation(libs.androidx.collection.ktx)
+    dependencies.implementation(libs.androidx.swiperefreshlayout)
+    dependencies.implementation(libs.androidx.constraintlayout)
 
-    dependencies.implementation(Libraries.Saket.Cascade.cascade)
-    dependencies.implementation(Libraries.CashApp.Contour.contour)
+    dependencies.implementation(libs.saket.cascade)
+    dependencies.implementation(libs.cash.contour)
 
-    dependencies.implementation(Libraries.Google.Material.material)
+    dependencies.implementation(libs.google.android.material)
 
-    dependencies.implementation(Libraries.AirBnB.Paris.paris)
-    dependencies.implementation(Libraries.threeTenBp)
+    dependencies.implementation(libs.airbnb.paris)
+    dependencies.implementation(libs.threeTenBp)
 
     dependencies.implementation(project(Modules.Android.Core.path()))
     dependencies.implementation(project(Modules.App.Navigation.path()))
@@ -64,54 +64,54 @@ private fun Project.applyFeatureModuleGroupDependencies() {
 
 private fun Project.applyAppModuleDependencies() {
     Modules.Feature.values().forEach { module ->
-        println("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
+        logger.lifecycle("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
         dependencies.runtime(project(module.path()))
     }
 
     Modules.Task.values().forEach { module ->
-        println("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
+        logger.lifecycle("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
         dependencies.runtime(project(module.path()))
     }
 
     Modules.App.values().forEach { module ->
         if (module != Modules.App.Main) {
-            println("Adding base module dependency ${module.path()} -> ${project.path}")
+            logger.lifecycle("Adding base module dependency ${module.path()} -> ${project.path}")
             dependencies.implementation(project(module.path()))
         }
     }
 
     Modules.Android.values().forEach { module ->
-        println("Adding android core module dependency ${module.path()} -> ${project.path}")
+        logger.lifecycle("Adding android core module dependency ${module.path()} -> ${project.path}")
         dependencies.implementation(project(module.path()))
     }
 
-    dependencies.implementation(Libraries.Google.Material.material)
+    dependencies.implementation(libs.google.android.material)
 
-    dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
-    dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
-    dependencies.implementation(Libraries.AndroidX.AppCompat.appcompat)
-    dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
-    dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
-    dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
+    dependencies.implementation(libs.androidx.core.ktx)
+    dependencies.implementation(libs.androidx.work.runtime.ktx)
+    dependencies.implementation(libs.androidx.work.multiprocess)
+    dependencies.implementation(libs.androidx.activity.ktx)
+    dependencies.implementation(libs.androidx.appcompat)
+    dependencies.implementation(libs.androidx.fragment.ktx)
+    dependencies.implementation(libs.androidx.startup.runtime)
+    dependencies.implementation(libs.androidx.constraintlayout)
 
-    dependencies.implementation(Libraries.Coil.coil)
-    dependencies.implementation(Libraries.Saket.Cascade.cascade)
+    dependencies.implementation(libs.coil)
+    dependencies.implementation(libs.saket.cascade)
 
     dependencies.implementation(project(Modules.Data.Settings.path()))
 
-    dependencies.googleImplementation(Libraries.Google.Firebase.Analytics.analyticsKtx)
-    dependencies.googleImplementation(Libraries.Google.Firebase.Crashlytics.crashlytics)
+    dependencies.googleImplementation(libs.google.firebase.analytics.ktx)
+    dependencies.googleImplementation(libs.google.firebase.crashlytics)
 
     /** debugImplementation because LeakCanary should only run in debug builds. */
-    dependencies.debugImplementation(Libraries.Square.LeakCanary.leakCanary)
+    dependencies.debugImplementation(libs.square.leakcanary.android)
     /** debugImplementation because debug-db should only run in debug builds */
-    dependencies.debugImplementation(Libraries.debugDb)
+    dependencies.debugImplementation(libs.debugDb)
 }
 
 private fun Project.applyAppModuleGroupDependencies() {
-    println("Applying base module dependencies for module -> $path")
+    logger.lifecycle("Applying base module dependencies for module -> $path")
     when (name) {
         Modules.App.Core.id -> {
             dependencies.implementation(project(Modules.Android.Core.path()))
@@ -119,26 +119,26 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(project(Modules.App.Domain.path()))
             dependencies.implementation(project(Modules.App.Data.path()))
 
-            dependencies.implementation(Libraries.Google.Material.material)
+            dependencies.implementation(libs.google.android.material)
 
-            dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-            dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
-            dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
-            dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
-            dependencies.implementation(Libraries.AndroidX.AppCompat.appcompat)
-            dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
-            dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
-            dependencies.implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
-            dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
+            dependencies.implementation(libs.androidx.core.ktx)
+            dependencies.implementation(libs.androidx.work.runtime.ktx)
+            dependencies.implementation(libs.androidx.work.multiprocess)
+            dependencies.implementation(libs.androidx.activity.ktx)
+            dependencies.implementation(libs.androidx.appcompat)
+            dependencies.implementation(libs.androidx.fragment.ktx)
+            dependencies.implementation(libs.androidx.startup.runtime)
+            dependencies.implementation(libs.androidx.swiperefreshlayout)
+            dependencies.implementation(libs.androidx.constraintlayout)
 
-            dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
-            dependencies.implementation(Libraries.AndroidX.Recycler.recyclerView)
-            dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
+            dependencies.implementation(libs.androidx.collection.ktx)
+            dependencies.implementation(libs.androidx.recyclerview)
+            dependencies.implementation(libs.androidx.paging.runtime.ktx)
 
-            dependencies.implementation(Libraries.Coil.coil)
-            dependencies.implementation(Libraries.Coil.gif)
-            dependencies.implementation(Libraries.Coil.svg)
-            dependencies.implementation(Libraries.Coil.video)
+            dependencies.implementation(libs.coil)
+            dependencies.implementation(libs.coil.gif)
+            dependencies.implementation(libs.coil.svg)
+            dependencies.implementation(libs.coil.video)
 
             dependencies.implementation(project(Modules.Data.Core.path()))
             dependencies.implementation(project(Modules.Data.Android.path()))
@@ -147,74 +147,74 @@ private fun Project.applyAppModuleGroupDependencies() {
         Modules.App.Data.id -> {
             dependencies.implementation(project(Modules.App.Domain.path()))
 
-            dependencies.implementation(Libraries.AndroidX.Paging.common)
-            dependencies.implementation(Libraries.AndroidX.Paging.runtime)
-            dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
-            dependencies.implementation(Libraries.AndroidX.Room.runtime)
-            dependencies.implementation(Libraries.AndroidX.Room.ktx)
-            dependencies.kapt(Libraries.AndroidX.Room.compiler)
+            dependencies.implementation(libs.androidx.paging.common)
+            dependencies.implementation(libs.androidx.paging.runtime)
+            dependencies.implementation(libs.androidx.paging.runtime.ktx)
+            dependencies.implementation(libs.androidx.room.runtime)
+            dependencies.implementation(libs.androidx.room.ktx)
+            dependencies.kapt(libs.androidx.room.compiler)
 
-            dependencies.implementation(Libraries.Square.OkHttp.logging)
-            dependencies.implementation(Libraries.Square.Retrofit.retrofit)
-            dependencies.implementation(Libraries.Square.Retrofit.gsonConverter)
+            dependencies.implementation(libs.square.okhttp.logging)
+            dependencies.implementation(libs.square.retrofit)
+            dependencies.implementation(libs.square.retrofit.converter.gson)
 
-            dependencies.implementation(Libraries.AniTrend.Retrofit.graphQL)
-            dependencies.implementation(Libraries.retrofitSerializer)
-            dependencies.implementation(Libraries.threeTenBp)
+            dependencies.implementation(libs.anitrend.retrofit.graphql)
+            dependencies.implementation(libs.retrofitSerializer)
+            dependencies.implementation(libs.threeTenBp)
 
-            dependencies.debugImplementation(Libraries.Chuncker.debug)
-            dependencies.releaseImplementation(Libraries.Chuncker.release)
+            dependencies.debugImplementation(libs.chuncker.debug)
+            dependencies.releaseImplementation(libs.chuncker.release)
 
-            dependencies.androidTest(Libraries.AndroidX.Room.test)
-            dependencies.androidTest(Libraries.Square.OkHttp.mockServer)
+            dependencies.androidTest(libs.androidx.room.testing)
+            dependencies.androidTest(libs.square.okhttp.mockwebserver)
 
-            dependencies.compile(Libraries.Square.KotlinPoet.kotlinPoet)
+            dependencies.compile(libs.square.kotlinpoet)
 
             Modules.Data.values().forEach { module ->
                 dependencies.implementation(project(module.path()))
             }
         }
         Modules.App.Domain.id -> {
-            dependencies.implementation(Libraries.AniTrend.Arch.domain)
+            dependencies.implementation(libs.anitrend.arch.domain)
         }
         Modules.App.Navigation.id -> {
-            dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-            dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
-            dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
-            dependencies.implementation(Libraries.AndroidX.Fragment.fragment)
+            dependencies.implementation(libs.androidx.core.ktx)
+            dependencies.implementation(libs.androidx.activity.ktx)
+            dependencies.implementation(libs.androidx.collection.ktx)
+            dependencies.implementation(libs.androidx.fragment.ktx)
         }
     }
 }
 
 private fun Project.applyDataModuleGroupDependencies() {
-    println("Applying base module dependencies for module -> $path")
-    dependencies.implementation(Libraries.AniTrend.Arch.domain)
-    dependencies.implementation(Libraries.AniTrend.Arch.data)
-    dependencies.implementation(Libraries.AniTrend.Arch.ext)
+    logger.lifecycle("Applying base module dependencies for module -> $path")
+    dependencies.implementation(libs.anitrend.arch.domain)
+    dependencies.implementation(libs.anitrend.arch.data)
+    dependencies.implementation(libs.anitrend.arch.ext)
 
     dependencies.implementation(project(Modules.App.Domain.path()))
 
     if (name != Modules.Data.Settings.id) {
-        dependencies.implementation(Libraries.AndroidX.Paging.common)
-        dependencies.implementation(Libraries.AndroidX.Paging.runtime)
-        dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
+        dependencies.implementation(libs.androidx.paging.common)
+        dependencies.implementation(libs.androidx.paging.runtime)
+        dependencies.implementation(libs.androidx.paging.runtime.ktx)
 
-        dependencies.implementation(Libraries.AndroidX.Room.runtime)
-        dependencies.implementation(Libraries.AndroidX.Room.ktx)
-        dependencies.kapt(Libraries.AndroidX.Room.compiler)
+        dependencies.implementation(libs.androidx.room.runtime)
+        dependencies.implementation(libs.androidx.room.ktx)
+        dependencies.kapt(libs.androidx.room.compiler)
 
-        dependencies.implementation(Libraries.Square.OkHttp.logging)
-        dependencies.implementation(Libraries.Square.Retrofit.retrofit)
-        dependencies.implementation(Libraries.Square.Retrofit.gsonConverter)
+        dependencies.implementation(libs.square.okhttp.logging)
+        dependencies.implementation(libs.square.retrofit)
+        dependencies.implementation(libs.square.retrofit.converter.gson)
 
-        dependencies.implementation(Libraries.retrofitSerializer)
-        dependencies.implementation(Libraries.threeTenBp)
+        dependencies.implementation(libs.retrofitSerializer)
+        dependencies.implementation(libs.threeTenBp)
 
-        dependencies.debugImplementation(Libraries.Chuncker.debug)
-        dependencies.releaseImplementation(Libraries.Chuncker.release)
+        dependencies.debugImplementation(libs.chuncker.debug)
+        dependencies.releaseImplementation(libs.chuncker.release)
 
-        dependencies.androidTest(Libraries.AndroidX.Room.test)
-        dependencies.androidTest(Libraries.Square.OkHttp.mockServer)
+        dependencies.androidTest(libs.androidx.room.testing)
+        dependencies.androidTest(libs.square.okhttp.mockwebserver)
     }
 
     when (name) {
@@ -227,7 +227,7 @@ private fun Project.applyDataModuleGroupDependencies() {
             dependencies.implementation(project(Modules.Data.Settings.path()))
         }
         else -> {
-            println("Applying core and android data dependencies for module -> $path")
+            logger.lifecycle("Applying core and android data dependencies for module -> $path")
             dependencies.implementation(project(Modules.Data.Core.path()))
             dependencies.implementation(project(Modules.Data.Android.path()))
             dependencies.implementation(project(Modules.Data.Settings.path()))
@@ -236,33 +236,33 @@ private fun Project.applyDataModuleGroupDependencies() {
 }
 
 private fun Project.applyAndroidModuleGroupDependencies() {
-    println("Applying core feature dependencies for feature module -> $path")
+    logger.lifecycle("Applying core feature dependencies for feature module -> $path")
 
-    dependencies.implementation(Libraries.AniTrend.Arch.ui)
-    dependencies.implementation(Libraries.AniTrend.Arch.ext)
-    dependencies.implementation(Libraries.AniTrend.Arch.core)
-    dependencies.implementation(Libraries.AniTrend.Arch.data)
-    dependencies.implementation(Libraries.AniTrend.Arch.theme)
-    dependencies.implementation(Libraries.AniTrend.Arch.domain)
+    dependencies.implementation(libs.anitrend.arch.ui)
+    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.core)
+    dependencies.implementation(libs.anitrend.arch.data)
+    dependencies.implementation(libs.anitrend.arch.theme)
+    dependencies.implementation(libs.anitrend.arch.domain)
 
-    dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
-    dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
-    dependencies.implementation(Libraries.AndroidX.AppCompat.appcompat)
-    dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
-    dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
-    dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
-    dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
+    dependencies.implementation(libs.androidx.core.ktx)
+    dependencies.implementation(libs.androidx.work.runtime.ktx)
+    dependencies.implementation(libs.androidx.work.multiprocess)
+    dependencies.implementation(libs.androidx.paging.runtime.ktx)
+    dependencies.implementation(libs.androidx.activity.ktx)
+    dependencies.implementation(libs.androidx.appcompat)
+    dependencies.implementation(libs.androidx.fragment.ktx)
+    dependencies.implementation(libs.androidx.startup.runtime)
+    dependencies.implementation(libs.androidx.collection.ktx)
+    dependencies.implementation(libs.androidx.constraintlayout)
 
-    dependencies.implementation(Libraries.CashApp.Contour.contour)
-    dependencies.implementation(Libraries.Saket.Cascade.cascade)
+    dependencies.implementation(libs.cash.contour)
+    dependencies.implementation(libs.saket.cascade)
 
-    dependencies.implementation(Libraries.Google.Material.material)
+    dependencies.implementation(libs.google.android.material)
 
-    dependencies.implementation(Libraries.Coil.coil)
-    dependencies.implementation(Libraries.threeTenBp)
+    dependencies.implementation(libs.coil)
+    dependencies.implementation(libs.threeTenBp)
 
     dependencies.implementation(project(Modules.App.Navigation.path()))
     dependencies.implementation(project(Modules.App.Domain.path()))
@@ -277,34 +277,34 @@ private fun Project.applyAndroidModuleGroupDependencies() {
 }
 
 private fun Project.applyCommonModuleGroupDependencies() {
-    println("Applying common feature dependencies for module -> $path")
+    logger.lifecycle("Applying common feature dependencies for module -> $path")
 
-    dependencies.implementation(Libraries.AniTrend.Arch.ui)
-    dependencies.implementation(Libraries.AniTrend.Arch.ext)
-    dependencies.implementation(Libraries.AniTrend.Arch.core)
-    dependencies.implementation(Libraries.AniTrend.Arch.data)
-    dependencies.implementation(Libraries.AniTrend.Arch.theme)
-    dependencies.implementation(Libraries.AniTrend.Arch.domain)
-    dependencies.implementation(Libraries.AniTrend.Arch.recycler)
+    dependencies.implementation(libs.anitrend.arch.ui)
+    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.core)
+    dependencies.implementation(libs.anitrend.arch.data)
+    dependencies.implementation(libs.anitrend.arch.theme)
+    dependencies.implementation(libs.anitrend.arch.domain)
+    dependencies.implementation(libs.anitrend.arch.recycler)
 
-    dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
-    dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Activity.activityKtx)
-    dependencies.implementation(Libraries.AndroidX.Fragment.fragmentKtx)
-    dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
-    dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
-    dependencies.implementation(Libraries.AndroidX.ConstraintLayout.constraintLayout)
+    dependencies.implementation(libs.androidx.core.ktx)
+    dependencies.implementation(libs.androidx.work.runtime.ktx)
+    dependencies.implementation(libs.androidx.work.multiprocess)
+    dependencies.implementation(libs.androidx.paging.runtime.ktx)
+    dependencies.implementation(libs.androidx.activity.ktx)
+    dependencies.implementation(libs.androidx.fragment.ktx)
+    dependencies.implementation(libs.androidx.startup.runtime)
+    dependencies.implementation(libs.androidx.collection.ktx)
+    dependencies.implementation(libs.androidx.constraintlayout)
 
-    dependencies.implementation(Libraries.CashApp.Contour.contour)
+    dependencies.implementation(libs.cash.contour)
 
-    dependencies.implementation(Libraries.Google.Material.material)
+    dependencies.implementation(libs.google.android.material)
 
-    dependencies.implementation(Libraries.Coil.coil)
+    dependencies.implementation(libs.coil)
 
-    dependencies.implementation(Libraries.threeTenBp)
-    dependencies.implementation(Libraries.AirBnB.Paris.paris)
+    dependencies.implementation(libs.threeTenBp)
+    dependencies.implementation(libs.airbnb.paris)
 
     dependencies.implementation(project(Modules.Android.Core.path()))
     dependencies.implementation(project(Modules.App.Navigation.path()))
@@ -315,21 +315,21 @@ private fun Project.applyCommonModuleGroupDependencies() {
 }
 
 private fun Project.applyTaskModuleGroupDependencies() {
-    println("Applying task feature dependencies for module -> $path")
+    logger.lifecycle("Applying task feature dependencies for module -> $path")
 
-    dependencies.implementation(Libraries.AniTrend.Arch.ext)
-    dependencies.implementation(Libraries.AniTrend.Arch.core)
-    dependencies.implementation(Libraries.AniTrend.Arch.data)
-    dependencies.implementation(Libraries.AniTrend.Arch.domain)
+    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.core)
+    dependencies.implementation(libs.anitrend.arch.data)
+    dependencies.implementation(libs.anitrend.arch.domain)
 
-    dependencies.implementation(Libraries.AndroidX.Core.coreKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.Work.multiProcess)
-    dependencies.implementation(Libraries.AndroidX.Paging.runtimeKtx)
-    dependencies.implementation(Libraries.AndroidX.StartUp.startUpRuntime)
-    dependencies.implementation(Libraries.AndroidX.Collection.collectionKtx)
+    dependencies.implementation(libs.androidx.core.ktx)
+    dependencies.implementation(libs.androidx.work.runtime.ktx)
+    dependencies.implementation(libs.androidx.work.multiprocess)
+    dependencies.implementation(libs.androidx.paging.runtime.ktx)
+    dependencies.implementation(libs.androidx.startup.runtime)
+    dependencies.implementation(libs.androidx.collection.ktx)
 
-    dependencies.implementation(Libraries.threeTenBp)
+    dependencies.implementation(libs.threeTenBp)
 
     dependencies.implementation(project(Modules.Android.Core.path()))
     dependencies.implementation(project(Modules.App.Navigation.path()))
@@ -338,41 +338,40 @@ private fun Project.applyTaskModuleGroupDependencies() {
     dependencies.implementation(project(Modules.App.Core.path()))
     dependencies.implementation(project(Modules.Data.Settings.path()))
 
-    //dependencies.androidTest(Libraries.AndroidX.Work.test)
+    //dependencies.androidTest(libs.androidx.work.test)
 }
 
 private fun Project.applyComposeDependencies() {
-    println("Applying compose dependencies for feature module -> $path")
-    dependencies.implementation(Libraries.AndroidX.Compose.Foundation.foundation)
-    dependencies.implementation(Libraries.AndroidX.Compose.Foundation.layout)
-    dependencies.implementation(Libraries.AndroidX.Compose.Material.material)
-    dependencies.implementation(Libraries.AndroidX.Compose.Material.Icons.core)
-    dependencies.implementation(Libraries.AndroidX.Compose.Material.Icons.extended)
-    dependencies.implementation(Libraries.AndroidX.Compose.Runtime.runtime)
-    dependencies.implementation(Libraries.AndroidX.Compose.Runtime.liveData)
-    dependencies.implementation(Libraries.AndroidX.Compose.Ui.tooling)
-    dependencies.implementation(Libraries.AndroidX.Compose.Ui.ui)
-    dependencies.implementation(Libraries.AndroidX.Compose.Ui.viewBinding)
-    dependencies.androidTest(Libraries.AndroidX.Compose.Ui.test)
+    logger.lifecycle("Applying compose dependencies for feature module -> $path")
+    dependencies.implementation(libs.androidx.compose.foundation)
+    dependencies.implementation(libs.androidx.compose.foundation.layout)
+    dependencies.implementation(libs.androidx.compose.material)
+    dependencies.implementation(libs.androidx.compose.material.icons.core)
+    dependencies.implementation(libs.androidx.compose.material.icons.extended)
+    dependencies.implementation(libs.androidx.compose.runtime)
+    dependencies.implementation(libs.androidx.compose.runtime.livedata)
+    dependencies.implementation(libs.androidx.compose.ui.viewbinding)
+    dependencies.implementation(libs.androidx.compose.ui.tooling)
+    dependencies.androidTest(libs.androidx.compose.ui.test)
+    dependencies.implementation(libs.androidx.compose.ui)
 
-    dependencies.implementation(Libraries.AndroidX.Activity.Compose.activityCompose)
-    dependencies.implementation(Libraries.AndroidX.Lifecycle.Compose.viewModelCompose)
-    dependencies.implementation(Libraries.AndroidX.ConstraintLayout.Compose.constraintLayoutCompose)
+    dependencies.implementation(libs.androidx.activity.compose)
+    dependencies.implementation(libs.androidx.lifecycle.viewmodel.compose)
+    dependencies.implementation(libs.androidx.constraintlayout.compose)
     // Until I migrate to paging v3.0
-    //dependencies.implementation(Libraries.AndroidX.Paging.Compose.pagingCompose)
+    //dependencies.implementation(libs.androidx.paging.Compose.pagingCompose)
 
-    dependencies.implementation(Libraries.Google.Material.Compose.themeAdapter)
-    dependencies.implementation(Libraries.Google.Material.Compose.themeAdapter)
+    dependencies.implementation(libs.google.android.material.compose.theme.adapter)
     dependencies.implementation(Libraries.Koin.AndroidX.compose)
 
-    dependencies.implementation(Libraries.Google.Accompanist.pagerIndicators)
-    dependencies.implementation(Libraries.Google.Accompanist.appCompatTheme)
-    dependencies.implementation(Libraries.Google.Accompanist.uiController)
-    dependencies.implementation(Libraries.Google.Accompanist.flowLayout)
-    dependencies.implementation(Libraries.Google.Accompanist.insets)
-    dependencies.implementation(Libraries.Google.Accompanist.pager)
+    dependencies.implementation(libs.google.accompanist.pager.indicators)
+    dependencies.implementation(libs.google.accompanist.appcompat.theme)
+    dependencies.implementation(libs.google.accompanist.systemuicontroller)
+    dependencies.implementation(libs.google.accompanist.flowlayout)
+    dependencies.implementation(libs.google.accompanist.insets)
+    dependencies.implementation(libs.google.accompanist.pager)
 
-    dependencies.implementation(Libraries.Coil.compose)
+    dependencies.implementation(libs.coil.compose)
 }
 
 internal fun Project.configureDependencies() {

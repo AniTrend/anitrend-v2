@@ -14,14 +14,14 @@ buildscript {
     }
 
     dependencies {
-        classpath(co.anitrend.buildSrc.Libraries.Android.Tools.buildGradle)
-        classpath(co.anitrend.buildSrc.Libraries.JetBrains.Kotlin.Gradle.plugin)
-        classpath(co.anitrend.buildSrc.Libraries.JetBrains.Kotlin.Serialization.serialization)
+        classpath(libs.android.gradle.plugin)
+        classpath(libs.jetbrains.kotlin.gradle)
+        classpath(libs.jetbrains.kotlin.serialization)
 
         classpath(co.anitrend.buildSrc.Libraries.Koin.Gradle.plugin)
-        
-        classpath(co.anitrend.buildSrc.Libraries.Google.Services.googleServices)
-        classpath(co.anitrend.buildSrc.Libraries.Google.Firebase.Crashlytics.Gradle.plugin)
+
+        classpath(libs.google.gms.google.services)
+        classpath(libs.google.firebase.crashlytics.gradle)
     }
 }
 
@@ -40,7 +40,7 @@ allprojects {
     }
 
     configurations.all {
-        handleConflicts()
+        handleConflicts(this@allprojects)
     }
 }
 
