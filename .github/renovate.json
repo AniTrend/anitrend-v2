@@ -4,6 +4,6 @@
     "config:base"
   ],
   "labels": [":dagger: dependencies"],
-  "baseBranches": ["dependencies/version-bump"],
+  "baseBranches": ["develop"],
   "schedule": ["every weekend"]
 }
