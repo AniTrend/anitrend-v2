@@ -540,12 +540,17 @@ internal class MediaEntityViewConverter(
 
         private fun MediaEntityView.createMedia(): Media {
             return Media.Core(
-                sourceId = MediaSourceId.empty().copy(
-                    anilist = media.id,
-                    mal = media.malId ?: moe?.mal,
+                sourceId = MediaSourceId(
                     aniDb = moe?.aniDb,
-                    trakt = 0, // TODO provide trakt Id?
+                    anilist = media.id,
+                    animePlanet = moe?.animePlanet,
+                    aniSearch = moe?.aniSearch,
+                    imdb = moe?.imdb,
                     kitsu = moe?.kitsu,
+                    liveChart = moe?.liveChart,
+                    notifyMoe = moe?.notifyMoe,
+                    theMovieDb = moe?.theMovieDb,
+                    mal = media.malId ?: moe?.mal,
                 ),
                 countryCode = media.countryOfOrigin,
                 description = media.description ?: jikan?.synopsis,
