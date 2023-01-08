@@ -25,8 +25,14 @@ import androidx.room.Entity
     primaryKeys = ["anilist"]
 )
 data class RelationEntity(
+    @ColumnInfo(name = "anidb") val aniDb: Long? = null,
     @ColumnInfo(name = "anilist") val anilist: Long = 0,
-    @ColumnInfo(name = "anidb") val aniDb: Long?,
-    @ColumnInfo(name = "kitsu") val kitsu: Long?,
-    @ColumnInfo(name = "mal") val mal: Long?
+    @ColumnInfo(name = "anime-planet") val animePlanet: String? = null,
+    @ColumnInfo(name = "anisearch") val aniSearch: Long? = null,
+    @ColumnInfo(name = "imdb") val imdb: String? = null,
+    @ColumnInfo(name = "kitsu") val kitsu: Long? = null,
+    @ColumnInfo(name = "livechart") val liveChart: Long? = null,
+    @ColumnInfo(name = "notify-moe") val notifyMoe: String? = null,
+    @ColumnInfo(name = "themoviedb") val theMovieDb: Long? = null,
+    @ColumnInfo(name = "myanimelist") val mal: Long? = null,
 )

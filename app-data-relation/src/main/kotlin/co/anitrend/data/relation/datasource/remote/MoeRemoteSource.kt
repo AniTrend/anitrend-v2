@@ -26,9 +26,10 @@ import retrofit2.http.Query
 internal interface MoeRemoteSource {
 
     @JSON
-    @GET("api/ids")
+    @GET("api/v2/ids")
     suspend fun getFromSource(
+        @Query("id") id: Long,
         @Query("source") source: String,
-        @Query("id") id: Long
+        @Query("include") include: String? = null,
     ) : Response<MoeModel?>
 }

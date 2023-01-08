@@ -30,10 +30,16 @@ internal class RelationModelConverter : SupportConverter<MoeModel, RelationEntit
      */
     override val fromType: (MoeModel) -> RelationEntity = { model ->
         RelationEntity(
-            anilist = model.anilist ?: 0,
             aniDb = model.aniDb,
+            anilist = model.anilist ?: 0,
+            animePlanet = model.animePlanet,
+            aniSearch = model.aniSearch,
+            imdb = model.imdb,
             kitsu = model.kitsu,
-            mal = model.mal
+            liveChart = model.liveChart,
+            notifyMoe = model.notifyMoe,
+            theMovieDb = model.theMovieDb,
+            mal = model.mal,
         )
     }
 
@@ -52,11 +58,17 @@ internal class RelationEntityConverter : SupportConverter<RelationEntity, IMedia
      * be called by [convertFrom]
      */
     override val fromType: (RelationEntity) -> MediaSourceId = { entity ->
-        MediaSourceId.empty().copy(
-            anilist = entity.anilist,
+        MediaSourceId(
             aniDb = entity.aniDb,
+            anilist = entity.anilist,
+            animePlanet = entity.animePlanet,
+            aniSearch = entity.aniSearch,
+            imdb = entity.imdb,
             kitsu = entity.kitsu,
-            mal = entity.mal
+            liveChart = entity.liveChart,
+            notifyMoe = entity.notifyMoe,
+            theMovieDb = entity.theMovieDb,
+            mal = entity.mal,
         )
     }
 
