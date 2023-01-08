@@ -86,6 +86,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
+    autoMigrations = []
 )
 @TypeConverters(
     value = [
@@ -96,7 +97,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 5
+        const val DATABASE_SCHEMA_VERSION = 6
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(

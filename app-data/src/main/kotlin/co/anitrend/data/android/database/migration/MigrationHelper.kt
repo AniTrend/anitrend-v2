@@ -19,6 +19,7 @@ package co.anitrend.data.android.database.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import org.intellij.lang.annotations.Language
 import timber.log.Timber
 
 private fun SupportSQLiteDatabase.usingTransaction(tag: String, query: String) {
@@ -46,7 +47,7 @@ internal val MIGRATION_1_2 = object : Migration(1, 2) {
      */
     override fun migrate(database: SupportSQLiteDatabase) {
         val tableName = "media_list"
-        val createQuery = """
+        @Language("sql") val createQuery = """
             CREATE TABLE `${tableName}_temp`(
                 `media_type` TEXT NOT NULL, 
                 `completed_at` TEXT, 
