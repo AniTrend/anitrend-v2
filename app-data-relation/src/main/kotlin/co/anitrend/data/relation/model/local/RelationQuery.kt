@@ -29,4 +29,11 @@ import kotlinx.serialization.Serializable
 data class RelationQuery(
     @SerialName("id") val id: Long,
     @SerialName("source") val source: RelationType = RelationType.ANILIST,
-)
+    @SerialName("include") val include: List<RelationType> = emptyList(),
+) {
+    fun includeRelations(): String? {
+        return if (include.isNotEmpty()) {
+            include.joinToString(transform = RelationType::type)
+        } else null
+    }
+}

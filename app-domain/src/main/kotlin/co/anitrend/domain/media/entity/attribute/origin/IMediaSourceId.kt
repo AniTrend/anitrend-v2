@@ -21,9 +21,14 @@ package co.anitrend.domain.media.entity.attribute.origin
  * Ids for media from different sources
  */
 interface IMediaSourceId {
-    val mal: Long?
     val aniDb: Long?
-    val trakt: Long?
-    val kitsu: Long?
     val anilist: Long?
+    val animePlanet: String?
+    val aniSearch: Long?
+    val imdb: String?
+    val kitsu: Long?
+    val liveChart: Long?
+    val notifyMoe: String?
+    val theMovieDb: Long?
+    val mal: Long?
 }

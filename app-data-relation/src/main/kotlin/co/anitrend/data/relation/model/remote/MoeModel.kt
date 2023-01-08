@@ -22,8 +22,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class MoeModel(
-    @SerialName("anidb") val aniDb: Long?,
-    @SerialName("kitsu") val kitsu: Long?,
-    @SerialName("anilist") val anilist: Long?,
-    @SerialName("myanimelist") val mal: Long?
+    @SerialName("anidb") val aniDb: Long? = null,
+    @SerialName("anilist") val anilist: Long? = null,
+    @SerialName("anime-planet") val animePlanet: String? = null,
+    @SerialName("anisearch") val aniSearch: Long? = null,
+    @SerialName("imdb") val imdb: String? = null,
+    @SerialName("kitsu") val kitsu: Long? = null,
+    @SerialName("livechart") val liveChart: Long? = null,
+    @SerialName("notify-moe") val notifyMoe: String? = null,
+    @SerialName("themoviedb") val theMovieDb: Long? = null,
+    @SerialName("thetvdb") val theTvDb: Long? = null,
+    @SerialName("myanimelist") val mal: Long? = null,
 )

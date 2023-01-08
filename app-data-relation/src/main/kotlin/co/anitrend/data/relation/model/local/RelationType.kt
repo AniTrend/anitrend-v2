@@ -23,6 +23,12 @@ package co.anitrend.data.relation.model.local
 enum class RelationType(val type: String) {
     ANILIST("anilist"),
     ANIDB("anidb"),
+    ANIME_PLANET("anime-planet"),
+    ANISEARCH("anisearch"),
+    IMDB("imdb"),
+    KITSU("kitsu"),
+    LIVECHART("livechart"),
+    TMDB("themoviedb"),
+    NOTIFY_MOE("notify-moe"),
     MAL("myanimelist"),
-    KITSU("kitsu")
 }
