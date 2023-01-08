@@ -303,4 +303,4 @@ square-retrofit-converter-simplexml = { module = "com.squareup.retrofit2:convert
 
 gradle-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version = "0.44.0" }
 
-spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.12.0" }
+spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.12.1" }
