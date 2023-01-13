@@ -87,7 +87,7 @@ fun Project.hasKotlinAndroidExtensionSupport() =
     name != Modules.App.Domain.id
 
 internal val Project.libs: LibrariesForLibs get() =
-    (this as ExtensionAware).extensions.getByName("libs") as LibrariesForLibs
+    extensions.getByType<LibrariesForLibs>()
 
 internal fun Project.baseExtension() =
     extensions.getByType<BaseExtension>()

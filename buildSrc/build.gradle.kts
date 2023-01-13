@@ -47,7 +47,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
+val libs = extensions.getByType<org.gradle.accessors.dm.LibrariesForLibs>()
 
 
 dependencies {
