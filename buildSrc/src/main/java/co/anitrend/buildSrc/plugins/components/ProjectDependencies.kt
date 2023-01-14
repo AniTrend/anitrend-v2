@@ -362,7 +362,7 @@ private fun Project.applyComposeDependencies() {
     //dependencies.implementation(libs.androidx.paging.Compose.pagingCompose)
 
     dependencies.implementation(libs.google.android.material.compose.theme.adapter)
-    dependencies.implementation(Libraries.Koin.AndroidX.compose)
+    dependencies.implementation(libs.koin.androidx.compose)
 
     dependencies.implementation(libs.google.accompanist.pager.indicators)
     dependencies.implementation(libs.google.accompanist.appcompat.theme)
