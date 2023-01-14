@@ -15,7 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     `kotlin-dsl`
@@ -47,7 +48,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-val libs = extensions.getByType<org.gradle.accessors.dm.LibrariesForLibs>()
+val libs = extensions.getByType<LibrariesForLibs>()
 
 
 dependencies {
