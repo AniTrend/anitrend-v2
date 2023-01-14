@@ -18,7 +18,7 @@ buildscript {
         classpath(libs.jetbrains.kotlin.gradle)
         classpath(libs.jetbrains.kotlin.serialization)
 
-        classpath(co.anitrend.buildSrc.Libraries.Koin.Gradle.plugin)
+        classpath(libs.koin.gradle.plugin)
 
         classpath(libs.google.gms.google.services)
         classpath(libs.google.firebase.crashlytics.gradle)
