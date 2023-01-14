@@ -10,22 +10,23 @@ Please ensure your **issues** adheres to the following guidelines:
 
 - Search previous suggestions for duplicates before making a new one.
 - Individual issues for each suggestion, bug or feature.
-- Use the following format: `- [Bookmark Title](link): Description.`
-- Titles should be [capitalized](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html)
-- Check your spelling and grammar.
+- Titles should be [sentence case](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html)
 
 Please ensure your **pull request** adheres to the following guidelines:
 
-- Make an individual pull request for each issue.
-- Use the following format: `- [Bookmark Title](link): Description.`
-- Titles should be [capitalized](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html)
-- Be sure not to stage any files in excluded in .gitignore
-- Check your spelling and grammar.
+- Make an individual pull requests for each issue, and make sure the issue is linked to the PR
+- Titles should be based off of the branch name .e.g. `feature/106-add-new-fancy-feature`
+- Be sure not to stage any files excluded in any of the `.gitignore` files
 - Assure that your commits mention any relevant **issues** or other **pull requests**
+
 
 ## Quality Standards
 
-For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your usecase coverage. If you have any questions regarding this please feel free to ask.
+For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your usecase coverage. If you have any questions regarding this please feel free to ask. In addition to these standards please follow the following
+
+- Create branches from issues with the prefix matching the issue type: .e.g `feature/106-name-of-issue-with-feature-description`
+- Assign yourself to an issue prior to picking up any work to ensure that multiple people don't start working on the same thing
+- Use [discussions](https://github.com/AniTrend/anitrend-v2/discussions) for general development related queries or planning information to keep our issues clutter free
 
 Please see [Git Best Practises](https://deepsource.io/blog/git-best-practices/)
 
