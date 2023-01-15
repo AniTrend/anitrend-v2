@@ -23,7 +23,6 @@ androidx-preference = "1.2.0"
 androidx-recycler = "1.3.0-rc01"
 androidx-recycler-selection = "1.1.0-rc03"
 androidx-room = "2.5.0"
-androidx-test = "1.5.2"
 androidx-test-espresso = "3.4.0"
 androidx-test-ext = "1.1.5"
 androidx-work = "2.7.1"
@@ -74,7 +73,6 @@ sheets = "2.2.9"
 
 [plugins]
 gradle-versions = { id = "com.github.ben-manes.versions", version = "0.44.0" }
-
 
 
 [libraries]
@@ -166,9 +164,9 @@ androidx-startup-runtime = { module = "androidx.startup:startup-runtime", versio
 
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0-alpha01" }
 
-androidx-test-core-ktx =  { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
-androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
-androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
+androidx-test-core-ktx =  { module = "androidx.test:core-ktx", version = "1.5.0" }
+androidx-test-runner = { module = "androidx.test:runner", version = "1.5.2" }
+androidx-test-rules = { module = "androidx.test:rules", version = "1.5.0" }
 
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
 
@@ -176,7 +174,7 @@ androidx-test-ext-junit-ktx =  { module = "androidx.test.ext:junit-ktx", version
 
 androidx-work-runtime-ktx =  { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-work-multiprocess = { module = "androidx.work:work-multiprocess", version.ref = "androidx-work" }
-androidx-work-test = { module = "androidx.work:work-test", version.ref = "androidx-work" }
+androidx-work-test = { module = "androidx.work:work-testing", version.ref = "androidx-work" }
 
 anitrend-arch-ui = { module = "com.github.anitrend.support-arch:ui", version.ref = "anitrend-arch" }
 anitrend-arch-ext = { module = "com.github.anitrend.support-arch:extension", version.ref = "anitrend-arch" }
