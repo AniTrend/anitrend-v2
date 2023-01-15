@@ -25,7 +25,7 @@ Please ensure your **pull request** adheres to the following guidelines:
 
 ## Quality Standards
 
-For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your usecase coverage. If you have any questions regarding this please feel free to ask.
+For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your use case coverage. If you have any questions regarding this please feel free to ask. In addition to these standards please follow the following
 
 Please see [Git Best Practises](https://deepsource.io/blog/git-best-practices/)
 

@@ -12,25 +12,18 @@ Before opening a pull request, please ensure:
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
 - [ ] You have followed our [**contributing guidelines**](https://github.com/AniTrend/anitrend-v2/blob/master/CONTRIBUTING.md)
-- [ ] Double checked that your branch is based on `develop` and targets `develop` 
+- [ ] Double checked that your branch is based on `develop` and targets `develop`
 - [ ] Pull request has tests
-- [ ] Code is well-commented, linted and follows project conventions
 - [ ] Documentation is updated (if necessary)
 - [ ] Description explains the issue/use-case resolved
-- [ ] I did not commit files that are excluded in the .gitignore file (Happens if you stage files with Android Studio)
 
 
 ## Description
-<!--- Describe your changes in detail -->
+<!--- Describe your changes in detail, or link an existing issue here -->
 
 ## Motivation and Context
 <!--- Why is this change required? What problem does it solve? -->
 <!--- If it fixes an open issue, please link to the issue here. -->
-
-## How Has This Been Tested?
-<!--- Please describe in detail how you tested your changes. -->
-<!--- Include details of your testing environment, tests ran to see how -->
-<!--- your change affects other areas of the code, etc. -->
 
 ## Screenshots:
 <!-- If applicable, if not feel free to remove this section -->
@@ -41,7 +34,7 @@ Before opening a pull request, please ensure:
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
-<!--- Be kind to code reviewers, please try to keep pull requests as small and focused as possible :) -->
+<!--- Be kind to code reviewers, and please try to keep pull requests as small and focused as possible :) -->
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project
 owners to license your work under the terms of the [GPL v3 License](https://github.com/AniTrend/anitrend-v2/blob/master/LICENSE.md).

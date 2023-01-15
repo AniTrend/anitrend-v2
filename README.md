@@ -25,6 +25,10 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 Development documentation for AniTrend is still a work in progress so for the time being on the essentials are available and can be found over at: __[anitrend.gitbook.io](https://anitrend.gitbook.io/project/)__
 
+## Sponsors
+
+> Big thanks to **[POEditor](https://poeditor.com)** for supporting the open source movement! AniTrend was approved for a free localization project. 
+
 ## Tools
 
 - **[POEditor](https://poeditor.com/join/project/dicYaYCroE)** for translating translating resource to multiple languages
