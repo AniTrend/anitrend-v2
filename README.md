@@ -27,7 +27,7 @@ Development documentation for AniTrend is still a work in progress so for the ti
 
 ## Sponsors
 
-> Big thanks to **[POEditor](https://poeditor.com)** for supportings the open source movement! AniTrend was approved for a free localization project. 
+> Big thanks to **[POEditor](https://poeditor.com)** for supporting the open source movement! AniTrend was approved for a free localization project. 
 
 ## Tools
 

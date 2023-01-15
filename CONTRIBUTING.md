@@ -22,7 +22,7 @@ Please ensure your **pull request** adheres to the following guidelines:
 
 ## Quality Standards
 
-For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your usecase coverage. If you have any questions regarding this please feel free to ask. In addition to these standards please follow the following
+For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your use case coverage. If you have any questions regarding this please feel free to ask. In addition to these standards please follow the following
 
 - Create branches from issues with the prefix matching the issue type: .e.g `feature/106-name-of-issue-with-feature-description`
 - Assign yourself to an issue prior to picking up any work to ensure that multiple people don't start working on the same thing

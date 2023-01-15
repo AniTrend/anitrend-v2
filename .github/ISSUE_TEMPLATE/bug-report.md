@@ -13,16 +13,15 @@ https://github.com/AniTrend/anitrend-v2/issues?q=is%3Aissue+is%3Aclosed
 
 
 ## Description of Bug
-<!-- A clear and concise description of what the bug is. e.g. -->
+<!-- A clear and concise short description of what the bug is. e.g. -->
 
 
 ## Reproduction Steps
 <!-- In detail, please explain how and what can be done to reproduce this bug. -->
 
 
-
 ## Screenshots/Videos
-<!-- Screenshots or videos usally paint a better picutre, if you have non please remove this heading -->
+<!-- Screenshots or videos usually paint a better picture, if you have non please remove this heading -->
 
 
 ## Device & Build Information
@@ -33,8 +32,8 @@ https://github.com/AniTrend/anitrend-v2/issues?q=is%3Aissue+is%3Aclosed
 * Phone Model: Xperia SP
 * Phone Brand: Sony
 
-Donwload Source:
-- [x] Playstore
+Download Source:
+- [ ] PlayStore
 - [ ] Github
 - [ ] Other (specify)
 
@@ -44,7 +43,3 @@ Donwload Source:
 Providing context helps us come up with a solution that is most useful in the real world, 
 also include any logs if you have any in this section, if not please remove this section
 -->
-
-I have tested with multiple devices and the issue doesn't seem to be bound to any specific device, OS version or form factor.
-
-I have tested with ......
