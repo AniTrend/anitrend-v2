@@ -21,11 +21,23 @@ import androidx.room.*
 import co.anitrend.data.core.common.Identity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "custom_list",
+    indices = [
+        Index(
+            value = [
+                "media_list_id",
+                "list_name",
+                "user_id",
+                "user_name",
+            ],
+            unique = true
+        ),
+        Index(value = ["media_list_id"]),
+        Index(value = ["user_id"]),
+    ],
     foreignKeys = [
         ForeignKey(
             entity = MediaListEntity::class,
@@ -40,17 +52,6 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
             parentColumns = ["id"]
-        )
-    ],
-    indices = [
-        Index(
-            value = [
-                "media_list_id",
-                "list_name",
-                "user_id",
-                "user_name",
-            ],
-            unique = true
         )
     ]
 )

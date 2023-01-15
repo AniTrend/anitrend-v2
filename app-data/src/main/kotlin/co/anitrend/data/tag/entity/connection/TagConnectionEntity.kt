@@ -18,8 +18,8 @@
 package co.anitrend.data.tag.entity.connection
 
 import androidx.room.*
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.core.common.Identity
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
@@ -27,6 +27,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     tableName = "tag_connection",
     indices = [
         Index(value = ["tag_id", "media_id"], unique = true),
+        Index(value = ["media_id"]),
+        Index(value = ["tag_id"]),
     ],
     foreignKeys = [
         ForeignKey(
