@@ -17,6 +17,7 @@
 
 package co.anitrend.deeplink.common
 
+import android.app.Instrumentation
 import android.content.Intent
 import androidx.core.net.toUri
 import androidx.test.ext.junit.rules.activityScenarioRule
@@ -38,7 +39,7 @@ abstract class CommonRouteTest : KoinTest {
     @get:Rule
     protected val rule = activityScenarioRule<DeepLinkScreen>()
 
-    protected val instrumentation by lazy {
+    protected val instrumentation: Instrumentation by lazy {
         InstrumentationRegistry.getInstrumentation()
     }
 
