@@ -1,3 +1,4 @@
+import co.anitrend.buildSrc.Libraries.Repositories
 import co.anitrend.buildSrc.resolver.handleConflicts
 import co.anitrend.buildSrc.resolver.handleDependencySelection
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
@@ -18,7 +19,7 @@ buildscript {
         classpath(libs.jetbrains.kotlin.gradle)
         classpath(libs.jetbrains.kotlin.serialization)
 
-        classpath(co.anitrend.buildSrc.Libraries.Koin.Gradle.plugin)
+        classpath(libs.koin.gradle.plugin)
 
         classpath(libs.google.gms.google.services)
         classpath(libs.google.firebase.crashlytics.gradle)
@@ -32,10 +33,10 @@ allprojects {
         jcenter()
         mavenCentral()
         maven {
-            setUrl(co.anitrend.buildSrc.Libraries.Repositories.jitPack)
+            setUrl(Repositories.jitPack)
         }
         maven {
-            setUrl(co.anitrend.buildSrc.Libraries.Repositories.sonatypeReleases)
+            setUrl(Repositories.sonatypeReleases)
         }
     }
 
