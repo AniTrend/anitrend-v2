@@ -17,12 +17,17 @@
 
 package co.anitrend.deeplink.common
 
+import android.app.Instrumentation
 import android.content.Intent
 import androidx.core.net.toUri
+import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.deeplink.component.screen.DeepLinkScreen
 import co.anitrend.deeplink.environment.AniTrendEnvironment
-import com.hellofresh.deeplink.DeepLinkUri
+import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
+import com.kingsleyadio.deeplink.DeepLinkUri
+import org.junit.Rule
 import org.koin.test.KoinTest
 
 abstract class CommonRouteTest : KoinTest {
@@ -31,13 +36,16 @@ abstract class CommonRouteTest : KoinTest {
     private val appBaseUrl = "app.anitrend://"
     private val basePackage = "co.anitrend"
 
-    protected val instrumentationRegistry by lazy {
+    @get:Rule
+    protected val rule = activityScenarioRule<DeepLinkScreen>()
+
+    protected val instrumentation: Instrumentation by lazy {
         InstrumentationRegistry.getInstrumentation()
     }
 
-    protected val environment by lazy {
+    protected val environment: IAniTrendEnvironment by lazy {
         AniTrendEnvironment(
-            instrumentationRegistry.context,
+            instrumentation.context,
             false,
             IAuthenticationSettings.INVALID_USER_ID
         )
@@ -53,6 +61,15 @@ abstract class CommonRouteTest : KoinTest {
 
     protected fun String.toIntent(): Intent {
         val fullyQualifiedPatched = "$basePackage.$this"
-        return Intent(Intent.ACTION_VIEW, fullyQualifiedPatched.toUri())
+        return intentOf {
+            action = Intent.ACTION_VIEW
+            data = fullyQualifiedPatched.toUri()
+        }
+    }
+
+    protected fun intentOf(action: Intent.() -> Unit): Intent {
+        val intent = Intent()
+        intent.action()
+        return intent
     }
 }

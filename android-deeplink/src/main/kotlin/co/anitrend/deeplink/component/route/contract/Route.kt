@@ -18,9 +18,13 @@
 package co.anitrend.deeplink.component.route.contract
 
 import android.content.Intent
-import com.hellofresh.deeplink.BaseRoute
-import com.hellofresh.deeplink.DeepLinkUri
-import com.hellofresh.deeplink.Environment
+import androidx.core.os.bundleOf
+import co.anitrend.core.android.extensions.Keys
+import co.anitrend.core.android.extensions.Tags
+import co.anitrend.core.android.extensions.analytics
+import com.kingsleyadio.deeplink.BaseRoute
+import com.kingsleyadio.deeplink.DeepLinkUri
+import com.kingsleyadio.deeplink.Environment
 import timber.log.Timber
 
 /**
@@ -42,6 +46,12 @@ abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
     ): Intent? {
         Timber.d("Deep link matcher found!")
         val entries = params.entries.joinToString()
+        Timber.analytics {
+            logCurrentState(
+                Tags.VIEW_PREFIX.plus("deep_link"),
+                bundleOf(Keys.DATA to uri.toString())
+            )
+        }
         Timber.d("Attempting to resolve -> uri: $uri | params: $entries")
         return null
     }
