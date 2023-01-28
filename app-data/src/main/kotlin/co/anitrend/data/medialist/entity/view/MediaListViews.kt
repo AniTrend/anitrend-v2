@@ -21,13 +21,10 @@ import androidx.room.ColumnInfo
 import androidx.room.DatabaseView
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
+import org.intellij.lang.annotations.Language
 
 @DatabaseView(
-    """
-        select count(media_list.id) as list_count, media_list.media_type, media_list.list_status, media_list.user_id
-        from media_list
-        group by media_list.user_id, media_list.media_type, media_list.list_status
-    """,
+    value = MediaListCountView.QUERY,
     viewName = "media_list_count"
 )
 internal data class MediaListCountView(
@@ -35,17 +32,20 @@ internal data class MediaListCountView(
     @ColumnInfo(name = "media_type") val mediaType: MediaType,
     @ColumnInfo(name = "list_status") val listStatus: MediaListStatus,
     @ColumnInfo(name = "user_id") val userId: Long,
-)
+) {
+    internal companion object {
+        @Language("sql")
+        const val QUERY = """
+            select count(media_list.id) as list_count, media_list.media_type, media_list.list_status, media_list.user_id
+            from media_list
+            group by media_list.user_id, media_list.media_type, media_list.list_status
+        """
+    }
+}
 
 
 @DatabaseView(
-    """
-        select count(custom_list.id) as list_count, media_list.media_type, custom_list.user_id, custom_list.list_name
-        from custom_list
-        inner join media_list on media_list.id = custom_list.media_list_id
-        where custom_list.enabled = 1
-        group by custom_list.user_id, media_list.media_type, custom_list.list_name
-    """,
+    value = CustomListCountView.QUERY,
     viewName = "custom_list_count"
 )
 internal data class CustomListCountView(
@@ -53,4 +53,15 @@ internal data class CustomListCountView(
     @ColumnInfo(name = "media_type") val mediaType: MediaType,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "list_name") val customListName: String?,
-)
+) {
+    internal companion object {
+        @Language("sql")
+        const val QUERY: String = """
+            select count(custom_list.id) as list_count, media_list.media_type, custom_list.user_id, custom_list.list_name
+            from custom_list
+            inner join media_list on media_list.id = custom_list.media_list_id
+            where custom_list.enabled = 1
+            group by custom_list.user_id, media_list.media_type, custom_list.list_name
+        """
+    }
+}

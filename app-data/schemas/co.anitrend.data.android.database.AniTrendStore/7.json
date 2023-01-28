@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "573f66b78c60acd396ed51472f5354d0",
+    "identityHash": "faa63bed651d09b9f33a54bbde80e855",
     "entities": [
       {
         "tableName": "cache_log",
@@ -3185,7 +3185,7 @@
       },
       {
         "tableName": "user_notification",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `unread_notifications` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `unread_notifications` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "userId",
@@ -3226,8 +3226,8 @@
         "foreignKeys": [
           {
             "table": "user",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
             "columns": [
               "user_id"
             ],
@@ -3241,16 +3241,16 @@
     "views": [
       {
         "viewName": "media_list_count",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select count(media_list.id) as list_count, media_list.media_type, media_list.list_status, media_list.user_id\n        from media_list\n        group by media_list.user_id, media_list.media_type, media_list.list_status"
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select count(media_list.id) as list_count, media_list.media_type, media_list.list_status, media_list.user_id\n            from media_list\n            group by media_list.user_id, media_list.media_type, media_list.list_status"
       },
       {
         "viewName": "custom_list_count",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select count(custom_list.id) as list_count, media_list.media_type, custom_list.user_id, custom_list.list_name\n        from custom_list\n        inner join media_list on media_list.id = custom_list.media_list_id\n        where custom_list.enabled = 1\n        group by custom_list.user_id, media_list.media_type, custom_list.list_name"
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select count(custom_list.id) as list_count, media_list.media_type, custom_list.user_id, custom_list.list_name\n            from custom_list\n            inner join media_list on media_list.id = custom_list.media_list_id\n            where custom_list.enabled = 1\n            group by custom_list.user_id, media_list.media_type, custom_list.list_name"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '573f66b78c60acd396ed51472f5354d0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'faa63bed651d09b9f33a54bbde80e855')"
     ]
   }
 }
