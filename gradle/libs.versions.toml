@@ -52,7 +52,7 @@ google-android-material = "1.8.0"
 jetbrains-dokka = "1.7.20"
 jetbrains-kotlin = "1.7.10"
 jetbrains-kotlinx-coroutines = "1.6.4"
-jetbrains-kotlinx-datetime = "0.2.1"
+jetbrains-kotlinx-datetime = "0.4.0"
 jetbrains-kotlinx-serialization = "1.4.1"
 
 koin = "3.1.6"
