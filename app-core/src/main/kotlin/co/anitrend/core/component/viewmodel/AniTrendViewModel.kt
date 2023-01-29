@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2023  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,10 +17,21 @@
 
 package co.anitrend.core.component.viewmodel
 
-import co.anitrend.arch.core.model.ISupportViewModelState
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
+import androidx.lifecycle.ViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-abstract class AniTrendViewModelState<T> : ISupportViewModelState<T> {
-    var context by Delegates.notNull<CoroutineContext>()
+abstract class AniTrendViewModel(
+    private val state: AniTrendViewModelState<*>
+) : ViewModel() {
+
+    /**
+     * This method will be called when this ViewModel is no longer used and will be destroyed.
+     *
+     * It is useful when ViewModel observes some data and you need to clear this subscription to
+     * prevent a leak of this ViewModel.
+     */
+    override fun onCleared() {
+        state.onCleared()
+        super.onCleared()
+    }
 }

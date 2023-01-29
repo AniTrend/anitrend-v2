@@ -17,60 +17,15 @@
 
 package co.anitrend.feed.component.viewmodel.state
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asLiveData
-import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
 class FeedState(
-    private val interactor: IUseCase
+    override val interactor: IUseCase
 ): AniTrendViewModelState<Any>() {
-
-    private val useCaseResult = MutableLiveData<DataState<Any>>()
-
-    override val model = Transformations.switchMap(useCaseResult) {
-        it.model.asLiveData(context)
-    }
-
-    override val loadState = Transformations.switchMap(useCaseResult) {
-        it.loadState.asLiveData(context)
-    }
-
-    override val refreshState = Transformations.switchMap(useCaseResult) {
-        it.refreshState.asLiveData(context)
-    }
     
     operator fun invoke() {
         // val result = interactor()
-        // useCaseResult.postValue(result)
-    }
-    
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        interactor.onCleared()
-    }
-
-    /**
-     * Triggers use case to perform refresh operation
-     */
-    override suspend fun refresh() {
-        val uiModel = useCaseResult.value
-        uiModel?.refresh?.invoke()
-    }
-
-    /**
-     * Triggers use case to perform a retry operation
-     */
-    override suspend fun retry() {
-        val uiModel = useCaseResult.value
-        uiModel?.retry?.invoke()
+        // state.postValue(result)
     }
 }

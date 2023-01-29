@@ -58,7 +58,7 @@ private val viewModelModule = module {
     viewModel {
         CarouselViewModel(
             state = CarouselState(
-                useCase = get()
+                interactor = get()
             )
         )
     }

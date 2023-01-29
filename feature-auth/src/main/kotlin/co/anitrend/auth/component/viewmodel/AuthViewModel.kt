@@ -18,21 +18,16 @@
 package co.anitrend.auth.component.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import co.anitrend.auth.R
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.model.Authentication
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.navigation.AuthRouter
 import timber.log.Timber
 
 class AuthViewModel(
     val state: AuthState
-) : ViewModel() {
-
-    init {
-        hook(state)
-    }
+) : AniTrendViewModel(state) {
 
     fun onIntentData(context: Context, param: AuthRouter.Param?) {
         if (param == null) {
@@ -54,16 +49,5 @@ class AuthViewModel(
                     ?: context.getString(R.string.auth_error_default_message)
             )
         }
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
     }
 }

@@ -17,7 +17,6 @@
 
 package co.anitrend.navigation.drawer.koin
 
-import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.drawer.action.provider.viewmodel.NotificationProviderViewModel
@@ -27,9 +26,10 @@ import co.anitrend.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
-import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.AccountViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.NavigationViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.mapper.UsersToAccountsMapper
 import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
-import co.anitrend.navigation.drawer.component.viewmodel.state.NavigationState
 import co.anitrend.navigation.drawer.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
@@ -50,22 +50,25 @@ private val presenterModule = module {
 
 private val viewModelModule = module {
 	viewModel {
-		val settings = get<Settings>()
-		BottomDrawerViewModel(
-			accountState = AccountState(
-				settings = settings,
-				useCase = get()
+		AccountViewModel(
+			mapper = UsersToAccountsMapper(
+				settings = get()
 			),
-			navigationState = NavigationState(
-				settings = settings,
-				savedStateHandle = get()
-			)
+			accountState = AccountState(
+				interactor = get()
+			),
+		)
+	}
+	viewModel {
+		NavigationViewModel(
+			settings = get(),
+			savedStateHandle = get()
 		)
 	}
 	viewModel {
 		NotificationProviderViewModel(
 			state = AuthenticatedUserState(
-				useCase = get()
+				interactor = get()
 			)
 		)
 	}

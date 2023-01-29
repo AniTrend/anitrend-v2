@@ -17,27 +17,28 @@
 
 package co.anitrend.media.discover.component.content.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.media.discover.component.content.viewmodel.state.MediaDiscoverState
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MediaDiscoverViewModel(
     val state: MediaDiscoverState,
     private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+) : AniTrendViewModel(state) {
 
     init {
-        hook(state)
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaDiscoverRouter.Param>(
                 MediaDiscoverFilterRouter.Action.KEY
             ).asFlow().collect { param ->
-                state(param, false)
+                state(param)
             }
         }
     }
@@ -53,17 +54,6 @@ class MediaDiscoverViewModel(
      * Handle param changes by settings the new [param] to the [state]
      */
     fun setParam(param: MediaDiscoverRouter.Param) {
-        savedStateHandle.set(MediaDiscoverFilterRouter.Action.KEY, param)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
+        savedStateHandle[MediaDiscoverFilterRouter.Action.KEY] = param
     }
 }

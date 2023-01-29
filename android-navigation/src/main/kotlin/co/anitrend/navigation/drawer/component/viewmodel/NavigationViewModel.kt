@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2023  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,41 +15,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.navigation.drawer.component.viewmodel.state
+package co.anitrend.navigation.drawer.component.viewmodel
 
 import androidx.annotation.IdRes
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
-import co.anitrend.arch.domain.entities.LoadState
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
-internal class NavigationState(
+internal class NavigationViewModel(
     settings: IAuthenticationSettings,
     private val savedStateHandle: SavedStateHandle
-) : AniTrendViewModelState<List<Navigation>>() {
+) : ViewModel() {
 
-    private val navigationItems by lazy(UNSAFE) {
+    val navigationItems by lazy(UNSAFE) {
         val initialState = createNavigationItems(settings.isAuthenticated.value)
         MutableStateFlow(initialState)
-    }
-
-    override val model by lazy(UNSAFE) {
-        navigationItems.asLiveData(context)
-    }
-
-    override val loadState = liveData<LoadState> {
-        emit(LoadState.Loading())
-    }
-
-    override val refreshState = liveData<LoadState> {
-        emit(LoadState.Loading())
     }
 
     private fun createNavigationItems(authenticated: Boolean): List<Navigation> {
@@ -156,14 +143,16 @@ internal class NavigationState(
         return navigationItems
     }
 
-    suspend fun onAuthenticationStateChanged(isAuthenticated: Boolean) {
-        val checkedId: Int? = savedStateHandle[CHECKED_ITEM_ID]
-        navigationItems.emit(createNavigationItems(isAuthenticated))
-        if (checkedId != null) {
-            Timber.v("Updating check menu item")
-            setNavigationMenuItemChecked(checkedId)
-        } else
-            Timber.v("There is no last checked item")
+    operator fun invoke(isAuthenticated: Boolean) {
+        viewModelScope.launch {
+            val checkedId: Int? = savedStateHandle[CHECKED_ITEM_ID]
+            navigationItems.emit(createNavigationItems(isAuthenticated))
+            if (checkedId != null) {
+                Timber.v("Updating check menu item")
+                setNavigationMenuItemChecked(checkedId)
+            } else
+                Timber.v("There is no last checked item")
+        }
     }
 
     /**
@@ -171,47 +160,22 @@ internal class NavigationState(
      *
      * @return true if the currently selected item has changed.
      */
-    suspend fun setNavigationMenuItemChecked(@IdRes id: Int): Boolean {
-        var updated = false
-        val snapshot = mutableListOf<Navigation>()
-        snapshot.addAll(navigationItems.value)
-        snapshot.filterIsInstance<Navigation.Menu>()
-            .onEach {
-                val shouldCheck = it.id == id
-                if (it.isChecked != shouldCheck)
-                    updated = true
-                it.isChecked = shouldCheck
-            }
-        savedStateHandle[CHECKED_ITEM_ID] = id
-        if (updated)
-            navigationItems.emit(snapshot)
-
-        return updated
-    }
-
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        throw UnsupportedOperationException("$this does not support clear operation")
-    }
-
-    /**
-     * Triggers use case to perform refresh operation
-     */
-    override suspend fun refresh() {
-        throw UnsupportedOperationException("$this does not support refresh operation")
-    }
-
-    /**
-     * Triggers use case to perform a retry operation
-     */
-    override suspend fun retry() {
-        throw UnsupportedOperationException("$this does not support retry operation")
+    fun setNavigationMenuItemChecked(@IdRes id: Int) {
+        viewModelScope.launch {
+            var updated = false
+            val snapshot = mutableListOf<Navigation>()
+            snapshot.addAll(navigationItems.value)
+            snapshot.filterIsInstance<Navigation.Menu>()
+                .onEach {
+                    val shouldCheck = it.id == id
+                    if (it.isChecked != shouldCheck)
+                        updated = true
+                    it.isChecked = shouldCheck
+                }
+            savedStateHandle[CHECKED_ITEM_ID] = id
+            if (updated)
+                navigationItems.emit(snapshot)
+        }
     }
 
     private companion object {

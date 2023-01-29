@@ -17,26 +17,9 @@
 
 package co.anitrend.episode.component.content.viewmodel
 
-import androidx.lifecycle.ViewModel
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.episode.component.content.viewmodel.state.EpisodeContentState
 
 class EpisodeContentViewModel(
     val state: EpisodeContentState
-) : ViewModel() {
-
-    init {
-        hook(state)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
-    }
-}
+) : AniTrendViewModel(state)

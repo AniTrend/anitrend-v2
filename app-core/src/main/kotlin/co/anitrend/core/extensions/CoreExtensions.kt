@@ -28,14 +28,11 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.core.android.extensions.Keys
-import co.anitrend.core.android.extensions.Tags
 import co.anitrend.core.android.extensions.analytics
+import co.anitrend.core.android.extensions.keys
+import co.anitrend.core.android.extensions.tags
 import co.anitrend.core.android.koinOf
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
@@ -52,18 +49,14 @@ fun FragmentActivity.recreateModules() {
     runCatching {
         val app = applicationContext as AniTrendApplication
         app.restartDependencyInjection()
-    }.onFailure {
-        Timber.e(it)
-    }
+    }.onFailure(Timber::e)
 }
 
 /**
  * Prints failures to the logger
  */
 fun <T> Result<T>.stackTrace(): T? {
-    onFailure { throwable ->
-        Timber.w(throwable)
-    }
+    onFailure(Timber::w)
     return getOrNull()
 }
 
@@ -87,14 +80,6 @@ inline fun <T : View> T.runIfActivityContext(
 ) = context.runIfActivityContext(block)
 
 /**
- * Hooks [ViewModel.viewModelScope] context to [states]
- */
-fun ViewModel.hook(vararg states: AniTrendViewModelState<*>) {
-    val coroutineContext = viewModelScope.coroutineContext
-    states.forEach { it.context = coroutineContext }
-}
-
-/**
  * Starts a view intent action given the [uri] as data
  */
 fun Context.startViewIntent(uri: Uri) {
@@ -105,9 +90,9 @@ fun Context.startViewIntent(uri: Uri) {
     }
     Timber.analytics {
         logCurrentState(
-            tag = Tags.ACTION_PREFIX.plus("start_view_intent"),
+            tag = Timber.tags.action("start_view_intent"),
             bundle = bundleOf(
-                Keys.DATA to UriCompat.toSafeString(uri)
+                Timber.keys.DATA to UriCompat.toSafeString(uri)
             )
         )
     }
@@ -125,9 +110,9 @@ fun View.handleViewIntent(url: String) {
     val uri = url.toUri()
     Timber.analytics {
         logCurrentState(
-            tag = Tags.ACTION_PREFIX.plus("handle_view_intent"),
+            tag = Timber.tags.action("handle_view_intent"),
             bundle = bundleOf(
-                Keys.DATA to UriCompat.toSafeString(uri)
+                Timber.keys.DATA to UriCompat.toSafeString(uri)
             )
         )
     }
