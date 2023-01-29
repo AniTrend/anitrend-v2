@@ -19,10 +19,9 @@ package co.anitrend.episode.component.sheet.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.empty
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.episode.R
 import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
@@ -31,11 +30,7 @@ import org.jsoup.Jsoup
 
 class EpisodeSheetViewModel(
     val state: EpisodeSheetState
-) : ViewModel() {
-
-    init {
-        hook(state)
-    }
+) : AniTrendViewModel(state) {
 
     val model = MutableLiveData<String>()
 
@@ -49,16 +44,5 @@ class EpisodeSheetViewModel(
             val document = Jsoup.parse(content)
             model.postValue(document.html())
         }
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
     }
 }

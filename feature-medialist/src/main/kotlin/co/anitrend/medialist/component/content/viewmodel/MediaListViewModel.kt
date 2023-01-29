@@ -19,34 +19,17 @@ package co.anitrend.medialist.component.content.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
 import co.anitrend.navigation.MediaListRouter
 
 class MediaListViewModel(
     val state: MediaListState,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : AniTrendViewModel(state) {
 
     val param: MediaListRouter.Param? by savedStateHandle.extra(MediaListRouter.Param.KEY)
 
     val filter = MutableLiveData(param)
-
-    init {
-        hook(state)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
-    }
 }

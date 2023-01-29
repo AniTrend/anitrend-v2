@@ -17,35 +17,22 @@
 
 package co.anitrend.navigation.drawer.component.viewmodel
 
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import co.anitrend.core.extensions.hook
+import androidx.lifecycle.map
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.mapper.UsersToAccountsMapper
 import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
-import co.anitrend.navigation.drawer.component.viewmodel.state.NavigationState
 import co.anitrend.navigation.drawer.model.account.Account
 
-internal class BottomDrawerViewModel(
-    val navigationState: NavigationState,
-    val accountState: AccountState
-) : ViewModel() {
+internal class AccountViewModel(
+    mapper: UsersToAccountsMapper,
+    val accountState: AccountState,
+) : AniTrendViewModel(accountState) {
 
-    init {
-        hook(accountState, navigationState)
+    val userAccounts = accountState.model.map {
+        mapper(it)
     }
 
-    val userAccount = Transformations.map(accountState.model) {
-        it?.singleOrNull(Account::isActiveUser)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        super.onCleared()
-        accountState.onCleared()
+    val activeAccount = userAccounts.map {
+        it.singleOrNull(Account::isActiveUser)
     }
 }

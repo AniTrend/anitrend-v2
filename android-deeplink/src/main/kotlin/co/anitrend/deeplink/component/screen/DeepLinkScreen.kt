@@ -42,14 +42,14 @@ class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
     private val router by inject<DeepLinkParser<Intent?>>()
 
     private fun handleIntentData() {
-        when (val data = intent.data) {
+        when (val uri = intent.data) {
             null -> {
                 requireBinding().stateLayout.loadStateFlow.value =
                     LoadState.Error(DeepLinkException.MissingIntentData())
             }
             else -> {
-                val uri = DeepLinkUri.parse(data.toString())
-                val intent = router.parse(uri)
+                val deepLinkUri = DeepLinkUri.parse(uri.toString())
+                val intent = router.parse(deepLinkUri)
                 if (intent == null) {
                     requireBinding().stateLayout.loadStateFlow.value =
                         LoadState.Error(DeepLinkException.InvalidScreenIntent())

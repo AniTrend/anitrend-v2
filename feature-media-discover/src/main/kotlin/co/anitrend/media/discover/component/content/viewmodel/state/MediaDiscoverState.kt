@@ -17,38 +17,19 @@
 
 package co.anitrend.media.discover.component.content.viewmodel.state
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
-import co.anitrend.data.media.GetNetworkMediaInteractor
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.MediaDiscoverRouter
 
-data class MediaDiscoverState(
-    private val pagedInteractor: GetPagedMediaInteractor,
-    private val networkInteractor: GetNetworkMediaInteractor
+class MediaDiscoverState(
+    override val interactor: GetPagedMediaInteractor,
+    //private val networkInteractor: GetNetworkMediaInteractor
 ) : AniTrendViewModelState<PagedList<Media>>() {
 
-    private val useCaseResult = MutableLiveData<DataState<PagedList<Media>>>()
-
-    override val model = Transformations.switchMap(useCaseResult) {
-        it.model.asLiveData(context)
-    }
-
-    override val loadState = Transformations.switchMap(useCaseResult) {
-        it.loadState.asLiveData(context)
-    }
-
-    override val refreshState = Transformations.switchMap(useCaseResult) {
-        it.refreshState.asLiveData(context)
-    }
-
-    operator fun invoke(param: MediaDiscoverRouter.Param, onNetwork: Boolean = false) {
+    operator fun invoke(param: MediaDiscoverRouter.Param) {
         val query = MediaParam.Find() builder {
             averageScore = param.averageScore
             averageScore_greater = param.averageScore_greater
@@ -118,38 +99,7 @@ data class MediaDiscoverState(
             volumes_lesser = param.volumes_lesser
         }
 
-        val result = if (!onNetwork)
-            pagedInteractor(query)
-        else
-            networkInteractor(query)
-        useCaseResult.postValue(result)
-    }
-
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        pagedInteractor.onCleared()
-        networkInteractor.onCleared()
-    }
-
-    /**
-     * Triggers use case to perform refresh operation
-     */
-    override suspend fun refresh() {
-        val uiModel = useCaseResult.value
-        uiModel?.refresh?.invoke()
-    }
-
-    /**
-     * Triggers use case to perform a retry operation
-     */
-    override suspend fun retry() {
-        val uiModel = useCaseResult.value
-        uiModel?.retry?.invoke()
+        val result = interactor(query)
+        state.postValue(result)
     }
 }

@@ -17,11 +17,7 @@
 
 package co.anitrend.media.component.viewmodel.state
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asLiveData
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
@@ -29,23 +25,9 @@ import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.MediaRouter
 
 class MediaState(
-    private val useCase: GetDetailMediaInteractor,
+    override val interactor: GetDetailMediaInteractor,
     private val settings: IUserSettings
 ) : AniTrendViewModelState<Media>() {
-
-    private val useCaseResult = MutableLiveData<DataState<Media>>()
-
-    override val model = Transformations.switchMap(useCaseResult) {
-        it.model.asLiveData(context)
-    }
-
-    override val loadState = Transformations.switchMap(useCaseResult) {
-        it.loadState.asLiveData(context)
-    }
-
-    override val refreshState = Transformations.switchMap(useCaseResult) {
-        it.refreshState.asLiveData(context)
-    }
 
     operator fun invoke(parameter: MediaRouter.Param) {
         val param = MediaParam.Detail(
@@ -53,34 +35,7 @@ class MediaState(
             type = parameter.type,
             scoreFormat = settings.scoreFormat.value
         )
-        val result = useCase(param)
-        useCaseResult.postValue(result)
-    }
-
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        useCase.onCleared()
-    }
-
-    /**
-     * Triggers use case to perform refresh operation
-     */
-    override suspend fun refresh() {
-        val uiModel = useCaseResult.value
-        uiModel?.refresh?.invoke()
-    }
-
-    /**
-     * Triggers use case to perform a retry operation
-     */
-    override suspend fun retry() {
-        val uiModel = useCaseResult.value
-        uiModel?.retry?.invoke()
+        val result = interactor(param)
+        state.postValue(result)
     }
 }

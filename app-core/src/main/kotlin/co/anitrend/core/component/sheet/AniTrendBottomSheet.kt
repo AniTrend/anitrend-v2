@@ -39,7 +39,7 @@ import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.koinOf
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.extensions.stackTrace
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -142,7 +142,7 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
      * This is optional, and non-graphical fragments can return null. This will be called between
      * [onCreate] and [onViewCreated].
      *
-     * A default View can be returned by calling [Fragment] in your
+     * A default View can be returned by calling [androidx.fragment.app.Fragment] in your
      * constructor. Otherwise, this method returns null.
      *
      * It is recommended to **only** inflate the layout in this method and move

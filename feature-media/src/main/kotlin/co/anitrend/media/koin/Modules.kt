@@ -42,7 +42,7 @@ private val viewModelModule = module {
     viewModel {
         MediaViewModel(
             state = MediaState(
-                useCase = get(),
+                interactor = get(),
                 settings = get()
             )
         )

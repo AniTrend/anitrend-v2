@@ -20,12 +20,12 @@ package co.anitrend.media.discover.koin
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.media.discover.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.component.content.MediaDiscoverContent
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.media.discover.component.content.viewmodel.state.MediaDiscoverState
 import co.anitrend.media.discover.component.sheet.MediaDiscoverFilterSheet
+import co.anitrend.media.discover.provider.FeatureProvider
 import co.anitrend.navigation.MediaDiscoverRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
@@ -55,8 +55,7 @@ private val viewModelModule = module {
 	viewModel { scope ->
 		MediaDiscoverViewModel(
 			state = MediaDiscoverState(
-				pagedInteractor = get(),
-				networkInteractor = get()
+				interactor = get(),
 			),
 			savedStateHandle = scope.get()
 		)

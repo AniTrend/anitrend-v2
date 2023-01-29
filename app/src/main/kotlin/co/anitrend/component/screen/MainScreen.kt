@@ -32,8 +32,6 @@ import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
-import co.anitrend.core.android.extensions.cascadeMenu
-import co.anitrend.core.android.extensions.onMenu
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.commit
