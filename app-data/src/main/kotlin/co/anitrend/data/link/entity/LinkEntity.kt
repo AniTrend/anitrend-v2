@@ -29,6 +29,9 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 @Entity(
     tableName = "link",
     primaryKeys = ["id"],
+    indices = [
+        Index(value = ["media_id"])
+    ],
     foreignKeys = [
         ForeignKey(
             entity = MediaEntity::class,
@@ -38,7 +41,6 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             parentColumns = ["id"]
         )
     ],
-    indices = [Index(value = ["media_id"])]
 )
 @EntitySchema
 internal data class LinkEntity(

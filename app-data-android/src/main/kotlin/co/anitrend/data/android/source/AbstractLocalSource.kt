@@ -78,26 +78,14 @@ abstract class AbstractLocalSource<T> {
      *
      * @param attribute item/s to insert
      */
-    @Transaction
-    open suspend fun upsert(attribute: T) {
-        val id = insert(attribute);
-        if (id == -1L)
-            update(attribute)
-    }
+    @Upsert
+    abstract suspend fun upsert(attribute: T)
 
     /**
      * Inserts or updates matching attributes on conflict
      *
      * @param attribute item/s to insert
      */
-    @Transaction
-    open suspend fun upsert(attribute: List<T>) {
-        val pendingUpdates = insert(attribute)
-            .withIndex()
-            .filter { it.value == -1L }
-            .map { attribute[it.index] }
-
-        if (pendingUpdates.isNotEmpty())
-            update(pendingUpdates)
-    }
+    @Upsert
+    abstract suspend fun upsert(attribute: List<T>)
 }
