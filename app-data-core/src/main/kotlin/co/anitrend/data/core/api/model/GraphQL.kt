@@ -17,9 +17,9 @@
 
 package co.anitrend.data.core.api.model
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Location describing which part of GraphQL document caused an exception.

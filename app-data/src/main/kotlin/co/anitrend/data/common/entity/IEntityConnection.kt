@@ -17,6 +17,8 @@
 
 package co.anitrend.data.common.entity
 
+import co.anitrend.data.common.entity.IEntityConnection.IEdge
+import co.anitrend.data.common.entity.IEntityConnection.INode
 import co.anitrend.data.common.model.paging.info.IPageInfo
 
 /**

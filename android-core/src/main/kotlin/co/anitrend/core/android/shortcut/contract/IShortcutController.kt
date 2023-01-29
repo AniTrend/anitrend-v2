@@ -20,7 +20,6 @@ package co.anitrend.core.android.shortcut.contract
 import android.os.Build
 import androidx.annotation.RequiresApi
 import co.anitrend.core.android.shortcut.model.Shortcut
-import kotlin.jvm.Throws
 
 @RequiresApi(Build.VERSION_CODES.N_MR1)
 interface IShortcutController {

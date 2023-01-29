@@ -20,7 +20,6 @@ package co.anitrend.task.news.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import co.anitrend.core.initializer.contract.AbstractTaskInitializer
-import co.anitrend.navigation.NewsTaskRouter
 
 class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
     /**

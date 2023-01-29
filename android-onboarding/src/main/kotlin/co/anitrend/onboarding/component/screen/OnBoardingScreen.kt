@@ -23,9 +23,9 @@ import androidx.viewpager.widget.ViewPager
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
-import co.anitrend.onboarding.databinding.OnboardingScreenBinding
-import co.anitrend.onboarding.component.presenter.OnBoardingPresenter
 import co.anitrend.onboarding.component.pager.OnBoardingPageAdapter
+import co.anitrend.onboarding.component.presenter.OnBoardingPresenter
+import co.anitrend.onboarding.databinding.OnboardingScreenBinding
 import kotlinx.coroutines.launch
 
 class OnBoardingScreen : AniTrendScreen<OnboardingScreenBinding>() {

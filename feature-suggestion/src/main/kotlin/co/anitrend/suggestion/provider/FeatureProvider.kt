@@ -19,9 +19,9 @@ package co.anitrend.suggestion.provider
 
 import android.content.Context
 import android.content.Intent
+import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.suggestion.component.content.SuggestionContent
 import co.anitrend.suggestion.component.screen.SuggestionScreen
-import co.anitrend.navigation.SuggestionRouter
 
 class FeatureProvider : SuggestionRouter.Provider {
     override fun activity(context: Context?) =

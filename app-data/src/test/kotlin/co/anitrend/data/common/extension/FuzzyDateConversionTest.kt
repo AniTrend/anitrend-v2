@@ -17,8 +17,8 @@
 
 package co.anitrend.data.common.extension
 
-import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.common.FuzzyDateInt
+import co.anitrend.data.common.model.date.FuzzyDateModel
 import org.junit.Assert
 import org.junit.Test
 

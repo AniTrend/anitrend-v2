@@ -17,9 +17,6 @@
 
 package co.anitrend.feed.koin
 
-import org.koin.androidx.fragment.dsl.fragment
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.feed.component.content.FeedContent
 import co.anitrend.feed.component.screen.FeedScreen
@@ -27,6 +24,9 @@ import co.anitrend.feed.component.viewmodel.FeedViewModel
 import co.anitrend.feed.component.viewmodel.state.FeedState
 import co.anitrend.feed.provider.FeatureProvider
 import co.anitrend.navigation.FeedRouter
+import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 private val fragmentModule = module {
     scope<FeedScreen> {

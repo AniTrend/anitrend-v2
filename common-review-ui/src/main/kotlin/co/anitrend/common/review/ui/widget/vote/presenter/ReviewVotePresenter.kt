@@ -21,8 +21,8 @@ import android.content.Context
 import androidx.work.Operation
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.common.review.ui.widget.vote.controller.ReviewVoteController
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.domain.review.entity.contract.IReview
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.navigation.ReviewTaskRouter

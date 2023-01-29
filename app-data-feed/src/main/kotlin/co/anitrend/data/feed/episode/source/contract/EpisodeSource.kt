@@ -27,10 +27,8 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.feed.episode.cache.EpisodeCache
 import co.anitrend.data.feed.episode.model.query.EpisodeQuery
-import co.anitrend.data.feed.news.model.query.NewsQuery
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
-import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emitAll

@@ -19,10 +19,10 @@ package co.anitrend.splash.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SplashRouter
-import co.anitrend.splash.component.presenter.SplashPresenter
-import co.anitrend.splash.provider.FeatureProvider
 import co.anitrend.splash.component.content.SplashContent
+import co.anitrend.splash.component.presenter.SplashPresenter
 import co.anitrend.splash.component.screen.SplashScreen
+import co.anitrend.splash.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module

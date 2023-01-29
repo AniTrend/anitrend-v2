@@ -21,11 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.feed.R
 import co.anitrend.feed.component.viewmodel.FeedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.feed.databinding.FeedContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeedContent(
     override val inflateLayout: Int = R.layout.feed_content

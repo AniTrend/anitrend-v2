@@ -21,7 +21,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
-import androidx.appcompat.view.ActionMode
 
 interface IFloatingActionMenu {
 

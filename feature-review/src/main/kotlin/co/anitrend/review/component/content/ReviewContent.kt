@@ -21,11 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.review.R
 import co.anitrend.review.component.viewmodel.ReviewViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.review.databinding.ReviewContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewContent(
     override val inflateLayout: Int = R.layout.review_content

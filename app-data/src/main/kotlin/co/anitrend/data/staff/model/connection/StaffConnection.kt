@@ -20,7 +20,6 @@ package co.anitrend.data.staff.model.connection
 import co.anitrend.data.common.entity.IEntityConnection
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.media.model.MediaModel
-import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.data.staff.model.edge.StaffEdge
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -30,7 +30,6 @@ import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.model.mutation.MediaListMutation
 import co.anitrend.data.medialist.model.query.MediaListQuery
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.model.MediaListParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull

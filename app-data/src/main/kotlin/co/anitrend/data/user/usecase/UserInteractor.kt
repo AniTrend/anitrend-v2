@@ -19,8 +19,6 @@ package co.anitrend.data.user.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.user.*
-import co.anitrend.data.user.UserSearchRepository
-import co.anitrend.data.user.UserProfileRepository
 
 internal interface UserInteractor {
 

@@ -19,7 +19,6 @@ package co.anitrend.onboarding.provider
 
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
 import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.onboarding.component.content.OnBoardingContent
 import co.anitrend.onboarding.component.screen.OnBoardingScreen

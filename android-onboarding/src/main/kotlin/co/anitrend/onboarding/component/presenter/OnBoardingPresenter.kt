@@ -19,8 +19,8 @@ package co.anitrend.onboarding.component.presenter
 
 import android.content.Context
 import androidx.core.text.buildSpannedString
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.navigation.extensions.startActivity

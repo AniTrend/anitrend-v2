@@ -21,11 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.notification.R
 import co.anitrend.notification.component.viewmodel.NotificationViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.notification.databinding.NotificationContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotificationContent(
     override val inflateLayout: Int = R.layout.notification_content

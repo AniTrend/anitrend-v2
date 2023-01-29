@@ -19,7 +19,6 @@ package co.anitrend.buildSrc.plugins.strategy
 
 import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.module.Modules
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 

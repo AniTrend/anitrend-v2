@@ -27,7 +27,6 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 internal class AiringScheduleSource {
 

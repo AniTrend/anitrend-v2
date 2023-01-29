@@ -21,7 +21,6 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
-import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.user.entity.UserEntity
 

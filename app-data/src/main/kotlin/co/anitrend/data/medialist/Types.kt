@@ -23,7 +23,6 @@ import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.model.container.MediaListContainerModel
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.interactor.MediaListUseCase
 import co.anitrend.domain.medialist.repository.IMediaListRepository
 

@@ -19,9 +19,9 @@ package co.anitrend.review.discover.provider
 
 import android.content.Context
 import android.content.Intent
+import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.review.discover.component.content.ReviewDiscoverContent
 import co.anitrend.review.discover.component.screen.ReviewDiscoverScreen
-import co.anitrend.navigation.ReviewDiscoverRouter
 
 class FeatureProvider : ReviewDiscoverRouter.Provider {
     override fun activity(context: Context?) =

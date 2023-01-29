@@ -21,11 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.suggestion.R
 import co.anitrend.suggestion.component.viewmodel.SuggestionViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.suggestion.databinding.SuggestionContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SuggestionContent(
     override val inflateLayout: Int = R.layout.suggestion_content

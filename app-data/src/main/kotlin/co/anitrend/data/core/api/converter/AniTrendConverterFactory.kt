@@ -17,10 +17,10 @@
 
 package co.anitrend.data.core.api.converter
 
-import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.JSON
 import co.anitrend.data.core.XML
+import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import com.google.gson.Gson
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.GraphConverter

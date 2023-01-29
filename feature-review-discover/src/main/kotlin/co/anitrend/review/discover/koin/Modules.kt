@@ -18,18 +18,17 @@
 package co.anitrend.review.discover.koin
 
 import co.anitrend.common.review.ui.adapter.ReviewPagedAdapter
-import co.anitrend.core.android.settings.common.IConfigurationSettings
-import org.koin.androidx.fragment.dsl.fragment
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.review.discover.component.content.ReviewDiscoverContent
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import co.anitrend.review.discover.component.content.viewmodel.state.ReviewDiscoverState
 import co.anitrend.review.discover.provider.FeatureProvider
-import co.anitrend.navigation.ReviewDiscoverRouter
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 private val fragmentModule = module {
     fragment {

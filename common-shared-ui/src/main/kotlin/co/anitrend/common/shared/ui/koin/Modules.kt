@@ -17,16 +17,16 @@
 
 package co.anitrend.common.shared.ui.koin
 
+//import co.anitrend.support.markdown.link.LinkifyPlugin
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.common.shared.R
-import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.common.shared.ui.plugin.MarkdownPlugin
+import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.support.markdown.center.CenterPlugin
 import co.anitrend.support.markdown.ephasis.EmphasisPlugin
 import co.anitrend.support.markdown.heading.HeadingPlugin
 import co.anitrend.support.markdown.image.ImagePlugin
-//import co.anitrend.support.markdown.link.LinkifyPlugin
 import co.anitrend.support.markdown.spoiler.SpoilerPlugin
 import co.anitrend.support.markdown.webm.WebMPlugin
 import co.anitrend.support.markdown.youtube.YouTubePlugin

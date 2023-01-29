@@ -17,8 +17,8 @@
 
 package co.anitrend.data.util.graphql
 
-import co.anitrend.data.common.model.paging.query.PageQuery
 import co.anitrend.data.base.MockQuery
+import co.anitrend.data.common.model.paging.query.PageQuery
 import co.anitrend.data.util.GraphUtil
 import co.anitrend.data.util.GraphUtil.applySortOrderUsing
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder

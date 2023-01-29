@@ -18,7 +18,6 @@
 package co.anitrend.data.medialist.model.container
 
 import co.anitrend.data.common.model.delete.DeletedModel
-import co.anitrend.data.common.model.delete.contract.IDeletedModel
 import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.medialist.model.MediaListModel

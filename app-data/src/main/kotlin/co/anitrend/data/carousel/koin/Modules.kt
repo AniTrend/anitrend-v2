@@ -17,7 +17,6 @@
 
 package co.anitrend.data.carousel.koin
 
-import co.anitrend.data.core.extensions.store
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.carousel.GetCarouselInteractor
 import co.anitrend.data.carousel.MediaCarouselListRepository
@@ -28,6 +27,7 @@ import co.anitrend.data.carousel.source.CarouselSourceImpl
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.carousel.usecase.MediaCarouselUseCaseImpl
 import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule = module {

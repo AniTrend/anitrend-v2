@@ -17,8 +17,8 @@
 
 package co.anitrend.data.trakt.koin
 
-import co.anitrend.data.trakt.BuildConfig
 import co.anitrend.data.android.network.cache.CacheHelper
+import co.anitrend.data.trakt.BuildConfig
 import co.anitrend.data.trakt.api.TraktApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module

@@ -17,8 +17,8 @@
 
 package co.anitrend.data.trakt.api
 
-import co.anitrend.data.trakt.BuildConfig
 import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.trakt.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.uwetrottmann.trakt5.TraktV2
 import okhttp3.Cache

@@ -32,7 +32,6 @@ import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.medialist.*
 import co.anitrend.data.medialist.cache.MediaListCache
-import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
@@ -40,7 +39,6 @@ import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async

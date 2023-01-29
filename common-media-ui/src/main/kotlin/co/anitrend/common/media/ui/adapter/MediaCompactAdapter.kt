@@ -30,7 +30,6 @@ import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil
 import co.anitrend.common.media.ui.controller.model.MediaCompactItem
 import co.anitrend.common.media.ui.controller.model.MediaCompactItem.Companion.createMediaItemViewHolder
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 
 class MediaCompactAdapter(

@@ -17,7 +17,6 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy

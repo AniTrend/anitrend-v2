@@ -18,7 +18,6 @@
 package co.anitrend.data.core.extensions
 
 import com.google.gson.reflect.TypeToken
-import timber.log.Timber
 
 /**
  * Hash code generator with the ability to mask negative values

@@ -22,7 +22,6 @@ import co.anitrend.common.medialist.ui.widget.contract.controller.AbstractEditCo
 import co.anitrend.common.medialist.ui.widget.score.model.ScoreEditModel
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.medialist.enums.ScoreFormat
-import java.text.DecimalFormatSymbols
 
 internal class ScoreEditController(
     private val model: ScoreEditModel,

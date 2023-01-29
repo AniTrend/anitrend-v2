@@ -20,7 +20,6 @@ package co.anitrend.data.staff.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
 import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.staff.entity.StaffEntity
 import kotlinx.coroutines.flow.Flow

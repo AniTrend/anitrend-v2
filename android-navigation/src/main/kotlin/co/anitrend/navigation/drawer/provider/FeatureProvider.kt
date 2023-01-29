@@ -17,8 +17,8 @@
 
 package co.anitrend.navigation.drawer.provider
 
-import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.NavigationDrawerRouter
+import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 
 class FeatureProvider : NavigationDrawerRouter.Provider {
     override fun fragment() = BottomDrawerContent::class.java

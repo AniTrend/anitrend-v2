@@ -20,8 +20,6 @@ package co.anitrend.data.review.model.container
 import co.anitrend.data.common.model.delete.DeletedModel
 import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
-import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.data.medialist.model.container.MediaListContainerModel
 import co.anitrend.data.review.model.remote.ReviewModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

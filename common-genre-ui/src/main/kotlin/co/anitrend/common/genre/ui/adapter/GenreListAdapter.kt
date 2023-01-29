@@ -26,7 +26,6 @@ import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.genre.ui.controller.helpers.GenreDiffUtil
 import co.anitrend.common.genre.ui.controller.model.GenreItem
 import co.anitrend.common.genre.ui.controller.model.GenreItem.Companion.createViewHolder

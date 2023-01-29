@@ -21,8 +21,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.core.common.Identity
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(

@@ -19,8 +19,8 @@ package co.anitrend.medialist.editor.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.medialist.editor.component.sheet.MediaListEditorContent
 import co.anitrend.medialist.editor.component.screen.MediaListEditorScreen
+import co.anitrend.medialist.editor.component.sheet.MediaListEditorContent
 import co.anitrend.navigation.MediaListEditorRouter
 
 class FeatureProvider : MediaListEditorRouter.Provider {

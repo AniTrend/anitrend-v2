@@ -22,14 +22,10 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.ViewGroup
-import android.widget.Space
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.widget.TextViewCompat
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.arch.extension.ext.themeStyle
 import co.anitrend.arch.extension.ext.updateMargins
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.shared.R

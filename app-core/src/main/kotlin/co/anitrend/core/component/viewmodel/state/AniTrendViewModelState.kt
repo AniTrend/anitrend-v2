@@ -35,17 +35,17 @@ abstract class AniTrendViewModelState<T> : ISupportViewModelState<T>,
     protected abstract val interactor: IUseCase
 
     override val model = state.switchMap {
-        Timber.i("Performing `model` switch map using $coroutineContext")
+        Timber.i("Performing `model` switch map using $coroutineContext on $this")
         it.model.asLiveData(coroutineContext)
     }
 
     override val loadState = state.switchMap {
-        Timber.i("Performing `loadState` switch map using $coroutineContext")
+        Timber.i("Performing `loadState` switch map using $coroutineContext on $this")
         it.loadState.asLiveData(coroutineContext)
     }
 
     override val refreshState = state.switchMap {
-        Timber.i("Performing `refreshState` switch map using $coroutineContext")
+        Timber.i("Performing `refreshState` switch map using $coroutineContext on $this")
         it.refreshState.asLiveData(coroutineContext)
     }
     /**

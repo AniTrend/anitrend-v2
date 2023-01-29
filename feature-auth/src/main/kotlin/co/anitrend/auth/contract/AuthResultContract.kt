@@ -22,7 +22,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.auth.R
 import co.anitrend.auth.model.Authentication
 import co.anitrend.data.auth.helper.*

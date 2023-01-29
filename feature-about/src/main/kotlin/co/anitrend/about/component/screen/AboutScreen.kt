@@ -18,8 +18,8 @@
 package co.anitrend.about.component.screen
 
 import android.os.Bundle
-import androidx.viewbinding.ViewBinding
 import androidx.activity.compose.setContent
+import androidx.viewbinding.ViewBinding
 import co.anitrend.about.component.content.AboutContent
 import co.anitrend.core.component.screen.AniTrendScreen
 

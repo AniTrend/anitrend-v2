@@ -27,10 +27,6 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.review.*
-import co.anitrend.data.review.ReviewDeleteController
-import co.anitrend.data.review.ReviewEntryController
-import co.anitrend.data.review.ReviewPagedController
-import co.anitrend.data.review.ReviewRateController
 import co.anitrend.data.review.cache.ReviewCache
 import co.anitrend.data.review.converter.ReviewEntityViewConverter
 import co.anitrend.data.review.datasource.local.ReviewLocalSource
