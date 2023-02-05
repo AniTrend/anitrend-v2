@@ -16,10 +16,8 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Configure properties
       run: |
-        chmod +x .github/scripts/pre-config.sh
         chmod +x .github/scripts/staging-config.sh
-        ./.github/scripts/pre-config.sh
-        ./.github/scripts/staging-config.sh
+        bash .github/scripts/staging-config.sh
     - name: Gradle test
       run: ./gradlew test --stacktrace
     - name: Publish Test Report

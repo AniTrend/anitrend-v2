@@ -34,8 +34,8 @@ jobs:
         run: |
           chmod +x .github/scripts/pre-config.sh
           chmod +x .github/scripts/pre-deploy.sh
-          ./.github/scripts/pre-config.sh
-          ./.github/scripts/pre-deploy.sh
+          bash .github/scripts/pre-config.sh
+          bash .github/scripts/pre-deploy.sh
       - name: build release
         run: |
           chmod +x gradlew
