@@ -1,9 +1,9 @@
-name: First time contributor greeting
+name: first-contribution-greeting
 
 on: [pull_request_target, issues]
 
 jobs:
-  greeting:
+  first-contribution-greeting:
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -12,5 +12,5 @@ jobs:
     - uses: actions/first-interaction@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: "Hey there! Thank you for creating an issue :) Please take a moment to review our [**community guidelines**](https://github.com/AniTrend/anitrend-v2/blob/master/CONTRIBUTING.md) to make the contribution process easy and effective for everyone involved."
-        pr-message: "Hey there! Thank you for this PR :) Please take a moment to review our [**community guidelines**](https://github.com/AniTrend/anitrend-v2/blob/master/CONTRIBUTING.md) to make the contribution process easy and effective for everyone involved."
+        issue-message: "Hey there! Thank you for creating an issue :) Please take a moment to review our [**community guidelines**](https://github.com/AniTrend/anitrend-v2/blob/develop/CONTRIBUTING.md) to make the contribution process easy and effective for everyone involved."
+        pr-message: "Hey there! Thank you for this PR :) Please take a moment to review our [**community guidelines**](https://github.com/AniTrend/anitrend-v2/blob/develop/CONTRIBUTING.md) to make the contribution process easy and effective for everyone involved."
