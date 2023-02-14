@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2023  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.settings.developer
+package co.anitrend.koin
 
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
+import co.anitrend.config.DeveloperModeConfig
+import co.anitrend.core.config.contract.IDeveloperModeConfig
+import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import org.koin.dsl.module
 
-interface IDeveloperSettings {
-    val automaticHeapDump: AbstractSetting<Boolean>
-    val showLeakLauncher: AbstractSetting<Boolean>
+private val variantModule = module {
+    factory<IDeveloperModeConfig> {
+        DeveloperModeConfig(
+            settings = get()
+        )
+    }
 }
+
+internal val debugAppModules = DynamicFeatureModuleHelper(
+    listOf(variantModule)
+)

@@ -15,16 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer.extensions
+package co.anitrend.core.config
 
-import android.content.Context
-import co.anitrend.core.android.koinOf
+import co.anitrend.core.config.contract.IDeveloperModeConfig
 import co.anitrend.data.settings.developer.IDeveloperSettings
-import leakcanary.LeakCanary
 
-internal fun Context.configureApplication() {
-    val settings = koinOf<IDeveloperSettings>()
-    LeakCanary.config = LeakCanary.config.copy(
-        dumpHeap = settings.automaticHeapDump.value
-    )
+/**
+ * Developer mode configuration contract
+ *
+ * @property settings Developer settings
+ */
+abstract class AbstractDeveloperModeConfig : IDeveloperModeConfig {
+    protected abstract val settings: IDeveloperSettings
 }

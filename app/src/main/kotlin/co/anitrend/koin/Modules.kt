@@ -29,7 +29,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private val variantModule = module {
+private val analyticsModule = module {
     single<ISupportAnalytics> {
         AnalyticsTree(
             context = androidContext(),
@@ -64,5 +64,5 @@ private val featureModule = module {
 }
 
 internal val appModules = DynamicFeatureModuleHelper(
-    listOf(variantModule, presenterModule, viewModelModule, featureModule)
+    listOf(analyticsModule, presenterModule, viewModelModule, featureModule)
 )
