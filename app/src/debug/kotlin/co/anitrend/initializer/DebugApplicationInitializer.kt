@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2023  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -19,12 +19,13 @@ package co.anitrend.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
+import co.anitrend.core.android.koinOf
+import co.anitrend.core.config.contract.IDeveloperModeConfig
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
-import co.anitrend.core.initializer.injector.InjectorInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
-import co.anitrend.koin.appModules
+import co.anitrend.koin.debugAppModules
 
-class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
+class DebugApplicationInitializer : AbstractCoreInitializer<Unit>() {
 
     /**
      * Initializes and a component given the application [Context]
@@ -32,7 +33,8 @@ class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
      * @param context The application context.
      */
     override fun create(context: Context) {
-        appModules.loadModules()
+        debugAppModules.loadModules()
+        koinOf<IDeveloperModeConfig>().initialize()
     }
 
     /**
@@ -43,5 +45,5 @@ class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
      * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
     override fun dependencies(): List<Class<out Initializer<*>>> =
-        listOf(InjectorInitializer::class.java)
+        listOf(ApplicationInitializer::class.java)
 }
