@@ -28,7 +28,7 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module
 
 private val presenterModule = module {
-    scope<SplashContent> {
+    scope<SplashScreen> {
         scoped {
             SplashPresenter(
                 context = androidContext(),
@@ -41,7 +41,9 @@ private val presenterModule = module {
 private val fragmentModule = module {
     scope<SplashScreen> {
         fragment {
-            SplashContent()
+            SplashContent(
+                presenter = get()
+            )
         }
     }
 }

@@ -21,12 +21,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.core.ui.inject
 import co.anitrend.splash.R
 import co.anitrend.splash.component.presenter.SplashPresenter
 import co.anitrend.splash.databinding.ContentSplashBinding
 
 class SplashContent(
+    private val presenter: SplashPresenter,
     override val inflateLayout: Int = R.layout.content_splash
 ) : AniTrendContent<ContentSplashBinding>() {
 
@@ -37,8 +37,6 @@ class SplashContent(
     override fun setUpViewModelObserver() {
 
     }
-
-    private val presenter by inject<SplashPresenter>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +51,8 @@ class SplashContent(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launchWhenResumed {
-            presenter.firstRunCheck(requireActivity())
+            presenter.firstRunCheck()
+            activity?.finishAfterTransition()
         }
     }
 }
