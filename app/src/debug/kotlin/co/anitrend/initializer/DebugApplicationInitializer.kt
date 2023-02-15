@@ -19,8 +19,6 @@ package co.anitrend.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.android.koinOf
-import co.anitrend.core.config.contract.IDeveloperModeConfig
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 import co.anitrend.koin.debugAppModules
@@ -34,7 +32,6 @@ class DebugApplicationInitializer : AbstractCoreInitializer<Unit>() {
      */
     override fun create(context: Context) {
         debugAppModules.loadModules()
-        koinOf<IDeveloperModeConfig>().initialize()
     }
 
     /**
