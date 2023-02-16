@@ -19,6 +19,7 @@ package co.anitrend.config
 
 import android.content.Intent
 import co.anitrend.core.config.AbstractDeveloperModeConfig
+import co.anitrend.core.extensions.stackTrace
 import co.anitrend.data.settings.developer.IDeveloperSettings
 import leakcanary.LeakCanary
 
@@ -26,7 +27,12 @@ internal class DeveloperModeConfig(
     override val settings: IDeveloperSettings
 ) : AbstractDeveloperModeConfig() {
 
-    override fun initialize() {
+    init {
+        runCatching(::initialize)
+            .stackTrace()
+    }
+
+    private fun initialize() {
         LeakCanary.showLeakDisplayActivityLauncherIcon(
             settings.showLeakLauncher.value
         )

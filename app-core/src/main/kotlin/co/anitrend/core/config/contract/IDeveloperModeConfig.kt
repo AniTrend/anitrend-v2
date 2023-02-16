@@ -20,7 +20,6 @@ package co.anitrend.core.config.contract
 import android.content.Intent
 
 interface IDeveloperModeConfig {
-    fun initialize()
     fun forceHeapDump()
     fun leakDumpIntent(): Intent?
 }

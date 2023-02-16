@@ -120,6 +120,8 @@ androidx-core-ktx =  { module = "androidx.core:core-ktx", version.ref = "android
 androidx-core-animation =  { module = "androidx.core:core-ktx", version.ref = "androidx-core-animation" }
 androidx-core-animation-test =  { module = "androidx.core:core-ktx", version.ref = "androidx-core-animation" }
 
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.0" }
+
 androidx-constraintlayout =  { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
 androidx-constraintlayout-compose =  { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.0.1" }
 
