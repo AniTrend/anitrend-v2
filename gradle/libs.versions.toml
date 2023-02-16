@@ -1,5 +1,5 @@
 [versions]
-ktlint = "0.40.0"
+ktlint = "0.48.2"
 
 gradle-plugin = "7.4.0"
 
