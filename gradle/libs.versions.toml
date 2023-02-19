@@ -85,7 +85,7 @@ treessence = { module = "com.github.bastienpaulfr:Treessence", version = "1.0.5"
 debugDb = { module = "com.amitshekhar.android:debug-db", version = "1.0.6" }
 tmdb = { module = "com.uwetrottmann.tmdb2:tmdb-java", version = "2.8.1" }
 trakt = { module = "com.uwetrottmann.trakt5:trakt-java", version = "6.11.2" }
-jsoup = { module = "org.jsoup:jsoup", version = "1.15.3" }
+jsoup = { module = "org.jsoup:jsoup", version = "1.15.4" }
 scalingImageView = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version = "3.10.0" }
 prettyTime = { module = "org.ocpsoft.prettytime:prettytime", version = "5.0.4.Final" }
 retrofitSerializer = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "0.8.0" }
