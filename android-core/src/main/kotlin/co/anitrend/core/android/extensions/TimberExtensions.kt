@@ -17,7 +17,7 @@
 
 package co.anitrend.core.android.extensions
 
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import timber.log.Timber.Forest
 
 private const val UNDEFINED_INDEX = -1

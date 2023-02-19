@@ -21,7 +21,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.settings.privacy.IPrivacySettings
 import com.google.firebase.FirebaseApp
@@ -79,13 +79,6 @@ class AnalyticsTree(
         runCatching {
             crashlytics?.log(message)
         }.exceptionOrNull()?.printStackTrace()
-    }
-
-    /**
-     * Handles logging the current state of a visited screen
-     */
-    override fun logCurrentScreen(context: FragmentActivity, tag: String) {
-        // Deprecated
     }
 
     /**
