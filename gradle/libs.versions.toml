@@ -27,7 +27,7 @@ androidx-test-espresso = "3.5.1"
 androidx-test-ext = "1.1.5"
 androidx-work = "2.7.1"
 
-anitrend-arch = "1.4.1"
+anitrend-arch = "1.5.0"
 anitrend-emojify = "1.7.0"
 anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
@@ -186,6 +186,7 @@ anitrend-arch-data = { module = "com.github.anitrend.support-arch:data", version
 anitrend-arch-theme = { module = "com.github.anitrend.support-arch:theme", version.ref = "anitrend-arch" }
 anitrend-arch-domain = { module = "com.github.anitrend.support-arch:domain", version.ref = "anitrend-arch" }
 anitrend-arch-recycler = { module = "com.github.anitrend.support-arch:recycler", version.ref = "anitrend-arch" }
+anitrend-arch-analytics = { module = "com.github.anitrend.support-arch:analytics", version.ref = "anitrend-arch" }
 
 anitrend-emojify = { module = "com.github.anitrend:android-emojify", version.ref = "anitrend-emojify" }
 anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.ref = "anitrend-markdown" }
