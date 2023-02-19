@@ -18,7 +18,7 @@
 package co.anitrend.koin
 
 import co.anitrend.analytics.AnalyticsTree
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.screen.MainScreen
 import co.anitrend.component.viewmodel.MainScreenViewModel

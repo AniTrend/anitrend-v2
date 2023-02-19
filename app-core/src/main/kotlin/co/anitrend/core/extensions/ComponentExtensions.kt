@@ -18,7 +18,7 @@
 package co.anitrend.core.extensions
 
 import android.content.ComponentCallbacks
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import coil.ImageLoader
 import org.koin.android.ext.android.get
