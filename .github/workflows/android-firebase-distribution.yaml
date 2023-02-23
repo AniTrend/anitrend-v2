@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   android-firebase-distribution:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       KEYSTORE: ${{ secrets.KEYSTORE }}
       KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
