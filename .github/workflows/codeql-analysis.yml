@@ -22,7 +22,7 @@ on:
 
 jobs:
   codeql-analysis:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     permissions:
       actions: read
       contents: read
