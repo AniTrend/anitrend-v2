@@ -44,7 +44,7 @@ object Libraries {
 
     const val retrofitSerializer = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.serializationConverter}"
 
-    const val deeplink = "com.hellofresh.android:deeplink:${Versions.deeplink}"
+    const val deeplink = "com.kingsleyadio.deeplink:deeplink:${Versions.deeplink}"
 
     object Repositories {
         const val jitPack = "https://www.jitpack.io"
@@ -314,6 +314,7 @@ object Libraries {
             object Espresso {
                 private const val version = "3.4.0"
                 const val core = "androidx.test.espresso:espresso-core:$version"
+                const val intents = "androidx.test.espresso:espresso-intents:$version"
             }
 
             object Extension {

@@ -100,7 +100,7 @@ fun RequestImage<*>.toRequestBuilder(
         .transition(
             CrossfadeTransition(
                 context.resources.getInteger(
-                    R.integer.motion_duration_large
+                    R.integer.motion_duration_long
                 )
             )
         ).data(this)
@@ -138,7 +138,7 @@ fun AppCompatImageView.using(
         .transition(
             CrossfadeTransition(
                 resources.getInteger(
-                    R.integer.motion_duration_large
+                    R.integer.motion_duration_long
                 )
             )
         )
@@ -170,7 +170,7 @@ fun AppCompatImageView.using(
     val request = requestBuilder
         .transition(
             CrossfadeTransition(
-                resources.getInteger(R.integer.motion_duration_large)
+                resources.getInteger(R.integer.motion_duration_long)
             )
         )
         .data(resource)
@@ -218,7 +218,7 @@ fun <T: ICoverImage> AppCompatImageView.using(
     val request = requestBuilder
         .transition(
             CrossfadeTransition(
-                resources.getInteger(R.integer.motion_duration_large)
+                resources.getInteger(R.integer.motion_duration_long)
             )
         )
         .data(resource?.toRequestImage())
@@ -250,7 +250,7 @@ fun <T: ICoverImage> Target.using(
     val request = requestBuilder
         .transition(
             CrossfadeTransition(
-                context.resources.getInteger(R.integer.motion_duration_large)
+                context.resources.getInteger(R.integer.motion_duration_long)
             )
         )
         .data(resource?.toRequestImage())

@@ -19,8 +19,8 @@ package co.anitrend.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.navigation.MainRouter
 import co.anitrend.component.screen.MainScreen
+import co.anitrend.navigation.MainRouter
 
 class FeatureProvider : MainRouter.Provider {
     override fun activity(context: Context?) =

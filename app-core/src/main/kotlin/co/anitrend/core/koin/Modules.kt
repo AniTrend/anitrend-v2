@@ -29,13 +29,13 @@ import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
 import co.anitrend.core.android.koin.androidCoreModules
+import co.anitrend.core.android.storage.contract.IStorageController
+import co.anitrend.core.android.storage.enums.StorageType
 import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.data.android.koin.dataModules
 import co.anitrend.data.android.network.model.NetworkMessage
-import co.anitrend.core.android.storage.contract.IStorageController
-import co.anitrend.core.android.storage.enums.StorageType
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder

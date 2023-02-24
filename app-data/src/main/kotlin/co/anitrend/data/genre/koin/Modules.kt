@@ -31,7 +31,6 @@ import co.anitrend.data.genre.repository.GenreRepository
 import co.anitrend.data.genre.source.GenreSourceImpl
 import co.anitrend.data.genre.source.contract.GenreSource
 import co.anitrend.data.genre.usecase.GenreUseCaseImpl
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val sourceModule = module {

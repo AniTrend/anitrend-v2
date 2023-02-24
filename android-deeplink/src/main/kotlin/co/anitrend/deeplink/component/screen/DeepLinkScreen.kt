@@ -20,9 +20,7 @@ package co.anitrend.deeplink.component.screen
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.screen.AniTrendScreen
@@ -30,13 +28,12 @@ import co.anitrend.core.ui.inject
 import co.anitrend.deeplink.R
 import co.anitrend.deeplink.databinding.DeepLinkScreenBinding
 import co.anitrend.deeplink.exception.DeepLinkException
-import com.hellofresh.deeplink.DeepLinkParser
-import com.hellofresh.deeplink.DeepLinkUri
+import com.kingsleyadio.deeplink.DeepLinkParser
+import com.kingsleyadio.deeplink.DeepLinkUri
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
@@ -45,14 +42,14 @@ class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
     private val router by inject<DeepLinkParser<Intent?>>()
 
     private fun handleIntentData() {
-        when (val data = intent.data) {
+        when (val uri = intent.data) {
             null -> {
                 requireBinding().stateLayout.loadStateFlow.value =
                     LoadState.Error(DeepLinkException.MissingIntentData())
             }
             else -> {
-                val uri = DeepLinkUri.parse(data.toString())
-                val intent = router.parse(uri)
+                val deepLinkUri = DeepLinkUri.parse(uri.toString())
+                val intent = router.parse(deepLinkUri)
                 if (intent == null) {
                     requireBinding().stateLayout.loadStateFlow.value =
                         LoadState.Error(DeepLinkException.InvalidScreenIntent())

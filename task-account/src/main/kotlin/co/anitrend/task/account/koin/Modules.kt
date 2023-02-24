@@ -19,8 +19,8 @@ package co.anitrend.task.account.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AccountTaskRouter
-import co.anitrend.task.account.component.AccountSignOutWorker
 import co.anitrend.task.account.component.AccountSignInWorker
+import co.anitrend.task.account.component.AccountSignOutWorker
 import co.anitrend.task.account.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker

@@ -22,7 +22,6 @@ import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.episode.koin.episodeModules
 import co.anitrend.data.feed.news.koin.newsModules
 import org.koin.dsl.bind
-import org.koin.dsl.binds
 import org.koin.dsl.module
 
 private val coreModule = module {

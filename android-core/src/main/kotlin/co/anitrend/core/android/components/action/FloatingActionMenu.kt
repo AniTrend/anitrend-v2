@@ -21,7 +21,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.FrameLayout
 import androidx.annotation.MenuRes
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.extension.ext.gone

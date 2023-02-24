@@ -17,7 +17,7 @@
 
 package co.anitrend.core.android.extensions
 
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import timber.log.Timber.Forest
 
 private const val UNDEFINED_INDEX = -1
@@ -25,18 +25,27 @@ private var treeSize = UNDEFINED_INDEX
 private var analyticsIndex = UNDEFINED_INDEX
 
 object Tags {
-    const val ACTION_PREFIX = "action_"
-    const val VIEW_PREFIX = "view_"
+    private const val ACTION_PREFIX = "action_"
+    private const val VIEW_PREFIX = "view_"
+    private const val STATE_PREFIX = "state_"
+
+    fun action(postfix: String) = ACTION_PREFIX.plus(postfix)
+    fun view(postfix: String) = VIEW_PREFIX.plus(postfix)
+    fun state(postfix: String) = STATE_PREFIX.plus(postfix)
 }
 
 object Keys {
     const val DATA = "data"
     const val EVENT = "event"
+    const val SOURCE = "source"
 }
 
 private inline fun <reified T> Forest.indexOf(): Int {
     return forest().indexOfFirst { it is T }
 }
+
+val Forest.tags get() = Tags
+val Forest.keys get() = Keys
 
 fun Forest.analytics(action: ISupportAnalytics.() -> Unit) {
     if (analyticsIndex == UNDEFINED_INDEX || treeSize != treeCount) {

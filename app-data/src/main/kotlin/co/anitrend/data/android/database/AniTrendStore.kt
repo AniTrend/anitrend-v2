@@ -18,10 +18,7 @@
 package co.anitrend.data.android.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.database.common.IAniTrendStore
@@ -86,7 +83,9 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
-    autoMigrations = []
+    autoMigrations = [
+        AutoMigration(from = 6, to = 7)
+    ]
 )
 @TypeConverters(
     value = [
@@ -97,7 +96,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
 
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 6
+        const val DATABASE_SCHEMA_VERSION = 7
 
         internal fun create(applicationContext: Context): IAniTrendStore {
             return Room.databaseBuilder(

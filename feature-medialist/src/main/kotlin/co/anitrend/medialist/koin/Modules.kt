@@ -22,11 +22,11 @@ import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.medialist.component.container.MediaListContainer
-import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
-import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
 import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.medialist.component.content.MediaListContent
+import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
+import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
 import co.anitrend.medialist.provider.FeatureProvider
 import co.anitrend.navigation.MediaListRouter
 import org.koin.android.ext.koin.androidContext

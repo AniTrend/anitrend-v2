@@ -39,7 +39,7 @@ private val builderModule = module {
         ).toFloat()
 
         val duration = context.resources.getInteger(
-            R.integer.motion_duration_large
+            R.integer.motion_duration_long
         )
 
         val imageLoader = Coil.imageLoader(context)

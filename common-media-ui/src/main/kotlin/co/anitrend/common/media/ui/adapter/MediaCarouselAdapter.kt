@@ -31,7 +31,6 @@ import co.anitrend.common.media.ui.controller.helpers.CarouselDiffUtil
 import co.anitrend.common.media.ui.controller.model.MediaCarouselItem
 import co.anitrend.common.media.ui.controller.model.MediaCarouselItem.Companion.createCarouselViewHolder
 import co.anitrend.core.android.settings.Settings
-import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.carousel.entity.MediaCarousel
 
 class MediaCarouselAdapter(

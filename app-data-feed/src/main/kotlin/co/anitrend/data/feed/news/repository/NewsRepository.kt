@@ -20,8 +20,8 @@ package co.anitrend.data.feed.news.repository
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.data.feed.news.NewsSyncRepository
 import co.anitrend.data.feed.news.NewsPagedRepository
+import co.anitrend.data.feed.news.NewsSyncRepository
 import co.anitrend.data.feed.news.source.contract.NewsSource
 import co.anitrend.domain.news.model.NewsParam
 

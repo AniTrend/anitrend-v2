@@ -20,10 +20,10 @@ package co.anitrend.data.android.controller.graphql
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.domain.entities.RequestError
-import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
+import co.anitrend.data.core.api.model.GraphQLResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext

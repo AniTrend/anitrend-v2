@@ -33,7 +33,7 @@ import co.anitrend.core.R
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.component.adapter.AniTrendLoadStateAdapter
 import co.anitrend.core.component.content.list.presenter.AniTrendListContentPresenter
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach

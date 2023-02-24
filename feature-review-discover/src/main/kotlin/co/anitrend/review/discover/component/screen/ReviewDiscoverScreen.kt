@@ -18,8 +18,6 @@
 package co.anitrend.review.discover.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.review.discover.databinding.DiscoverScreenBinding
 

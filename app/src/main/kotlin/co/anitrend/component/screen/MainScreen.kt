@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -32,10 +33,10 @@ import co.anitrend.component.action.ChangeSettingsMenuStateAction
 import co.anitrend.component.action.ShowHideFabStateAction
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
-import co.anitrend.core.android.extensions.cascadeMenu
-import co.anitrend.core.android.extensions.onMenu
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.extensions.invoke
 import co.anitrend.core.extensions.orEmpty
+import co.anitrend.core.koin.scope.AppScope
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.inject
@@ -99,6 +100,13 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
         }
     }
 
+    private val onBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressedDelegate()
+            }
+        }
+
     private suspend fun observeNavigationDrawer() {
         navigationDrawer.navigationFlow
             .onEach(::onNavigationItemSelected)
@@ -148,11 +156,23 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
         }
     }
 
+    /**
+     * Can be used to configure custom theme styling as desired
+     */
+    override fun configureActivity() {
+        scope.linkTo(AppScope.BOTTOM_NAV_DRAWER())
+        super.configureActivity()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
         setSupportActionBar(requireBinding().bottomAppBar)
+        onBackPressedDispatcher.addCallback(
+            this,
+            onBackPressedCallback
+        )
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
@@ -215,15 +235,7 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
         super.onSaveInstanceState(outState)
     }
 
-    /**
-     * Called when the activity has detected the user's press of the back
-     * key. The [getOnBackPressedDispatcher] will be given a
-     * chance to handle the back button before the default behavior of
-     * [android.app.Activity.onBackPressed] is invoked.
-     *
-     * @see getOnBackPressedDispatcher
-     */
-    override fun onBackPressed() {
+    private fun onBackPressedDelegate() {
         if (navigationDrawer.isShowing()) {
             navigationDrawer.dismiss()
             return

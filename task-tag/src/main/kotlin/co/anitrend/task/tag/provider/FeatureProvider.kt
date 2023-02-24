@@ -19,7 +19,6 @@ package co.anitrend.task.tag.provider
 
 import co.anitrend.core.android.koinOf
 import co.anitrend.navigation.TagTaskRouter
-import co.anitrend.navigation.work.WorkSchedulerController
 import co.anitrend.task.tag.component.TagWorker
 import co.anitrend.task.tag.scheduler.TagScheduler
 

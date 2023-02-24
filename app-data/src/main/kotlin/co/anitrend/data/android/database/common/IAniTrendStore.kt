@@ -19,21 +19,21 @@ package co.anitrend.data.android.database.common
 
 import androidx.room.RoomDatabase
 import co.anitrend.data.airing.datasource.local.IAiringStore
-import co.anitrend.data.auth.datasource.local.IAuthStore
 import co.anitrend.data.android.cache.datasource.ICacheStore
+import co.anitrend.data.auth.datasource.local.IAuthStore
 import co.anitrend.data.carousel.datasource.local.ICarouselStore
 import co.anitrend.data.character.datasource.local.ICharacterStore
 import co.anitrend.data.customlist.datasource.ICustomListStore
 import co.anitrend.data.customscore.datasource.ICustomScoreStore
 import co.anitrend.data.feed.episode.datasource.local.IEpisodeStore
+import co.anitrend.data.feed.news.datasource.local.INewsStore
 import co.anitrend.data.genre.datasource.local.IGenreStore
 import co.anitrend.data.jikan.media.datasource.local.IJikanStore
 import co.anitrend.data.link.datasource.ILinkStore
 import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.medialist.datasource.local.IMediaListStore
-import co.anitrend.data.relation.datasource.local.IRelationStore
-import co.anitrend.data.feed.news.datasource.local.INewsStore
 import co.anitrend.data.rank.datasource.IRankStore
+import co.anitrend.data.relation.datasource.local.IRelationStore
 import co.anitrend.data.review.datasource.local.IReviewStore
 import co.anitrend.data.staff.datasource.local.IStaffStore
 import co.anitrend.data.studio.datasource.local.IStudioStore

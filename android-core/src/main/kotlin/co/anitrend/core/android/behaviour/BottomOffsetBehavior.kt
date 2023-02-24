@@ -22,7 +22,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.android.R
 
 /**

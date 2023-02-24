@@ -20,13 +20,10 @@ package co.anitrend.core.android.recycler.model
 import android.content.res.Resources
 import android.view.View
 import androidx.viewbinding.ViewBinding
-import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
-import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.core.android.R
 import co.anitrend.core.android.binding.IBindingView
-import kotlinx.coroutines.flow.MutableStateFlow
 
 abstract class RecyclerItemBinding<B : ViewBinding>(
     override val id: Long

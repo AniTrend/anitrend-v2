@@ -44,7 +44,7 @@ import coil.transform.CircleCropTransformation
 import com.google.android.material.shape.MaterialShapeDrawable
 import timber.log.Timber
 
-internal class DrawerPresenter(
+class DrawerPresenter(
     context: Context,
     settings: Settings
 ) : CorePresenter(context, settings) {

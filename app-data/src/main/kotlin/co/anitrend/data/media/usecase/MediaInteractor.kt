@@ -19,8 +19,6 @@ package co.anitrend.data.media.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.media.*
-import co.anitrend.data.media.MediaNetworkRepository
-import co.anitrend.data.media.MediaPagedRepository
 
 internal interface MediaInteractor {
 

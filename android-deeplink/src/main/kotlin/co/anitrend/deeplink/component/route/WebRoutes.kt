@@ -27,9 +27,9 @@ import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.*
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.forActivity
-import com.hellofresh.deeplink.Action
-import com.hellofresh.deeplink.DeepLinkUri
-import com.hellofresh.deeplink.Environment
+import com.kingsleyadio.deeplink.Action
+import com.kingsleyadio.deeplink.DeepLinkUri
+import com.kingsleyadio.deeplink.Environment
 import timber.log.Timber
 
 internal object MainRoute : Route("home") {

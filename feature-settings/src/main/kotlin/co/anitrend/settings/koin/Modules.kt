@@ -19,10 +19,10 @@ package co.anitrend.settings.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
-import co.anitrend.settings.component.presenter.SettingsPresenter
-import co.anitrend.settings.provider.FeatureProvider
-import co.anitrend.settings.component.screen.SettingsScreen
 import co.anitrend.settings.component.content.SettingsContent
+import co.anitrend.settings.component.presenter.SettingsPresenter
+import co.anitrend.settings.component.screen.SettingsScreen
+import co.anitrend.settings.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module

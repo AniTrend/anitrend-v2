@@ -19,10 +19,10 @@ package co.anitrend.search.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SearchRouter
-import co.anitrend.search.component.presenter.SearchPresenter
-import co.anitrend.search.provider.FeatureProvider
 import co.anitrend.search.component.content.SearchContent
+import co.anitrend.search.component.presenter.SearchPresenter
 import co.anitrend.search.component.screen.SearchScreen
+import co.anitrend.search.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.dsl.module

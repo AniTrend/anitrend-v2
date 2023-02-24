@@ -17,16 +17,16 @@
 
 package co.anitrend.review.koin
 
-import org.koin.androidx.fragment.dsl.fragment
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.navigation.ReviewRouter
 import co.anitrend.review.component.content.ReviewContent
 import co.anitrend.review.component.screen.ReviewScreen
 import co.anitrend.review.component.viewmodel.ReviewViewModel
 import co.anitrend.review.component.viewmodel.state.ReviewState
 import co.anitrend.review.provider.FeatureProvider
-import co.anitrend.navigation.ReviewRouter
+import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 private val fragmentModule = module {
     scope<ReviewScreen> {

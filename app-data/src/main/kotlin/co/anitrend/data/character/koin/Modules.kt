@@ -18,8 +18,8 @@
 package co.anitrend.data.character.koin
 
 import co.anitrend.data.character.converter.CharacterConverter
-import co.anitrend.data.character.converter.CharacterModelConverter
 import co.anitrend.data.character.converter.CharacterEntityConverter
+import co.anitrend.data.character.converter.CharacterModelConverter
 import org.koin.dsl.module
 
 private val sourceModule = module {

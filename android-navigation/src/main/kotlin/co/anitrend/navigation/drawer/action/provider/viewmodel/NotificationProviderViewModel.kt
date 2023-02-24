@@ -17,16 +17,15 @@
 
 package co.anitrend.navigation.drawer.action.provider.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.action.provider.viewmodel.state.AuthenticatedUserState
 import timber.log.Timber
 
 internal class NotificationProviderViewModel(
     val state: AuthenticatedUserState
-) : ViewModel() {
+) : AniTrendViewModel(state) {
 
     val unreadNotifications = state.model.map { user ->
         when (user) {
@@ -39,23 +38,11 @@ internal class NotificationProviderViewModel(
     }
 
     init {
-        hook(state)
         fetchUser()
     }
 
     fun fetchUser() {
         runCatching(state::invoke)
             .onFailure(Timber::w)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
     }
 }

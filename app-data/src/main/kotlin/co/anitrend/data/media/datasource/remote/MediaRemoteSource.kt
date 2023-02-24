@@ -17,9 +17,9 @@
 
 package co.anitrend.data.media.datasource.remote
 
+import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.EndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.media.model.container.MediaModelContainer
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder

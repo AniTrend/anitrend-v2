@@ -27,7 +27,6 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.base.IMediaList
-import co.anitrend.domain.medialist.enums.ScoreFormat
 
 interface IMedia : IEntity, IFavourable, ISynopsis {
     val title: IMediaTitle

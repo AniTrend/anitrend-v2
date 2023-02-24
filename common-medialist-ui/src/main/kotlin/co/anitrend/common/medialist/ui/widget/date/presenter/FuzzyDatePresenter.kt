@@ -25,7 +25,6 @@ import co.anitrend.core.android.helpers.date.AniTrendDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textview.MaterialTextView
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class FuzzyDatePresenter(

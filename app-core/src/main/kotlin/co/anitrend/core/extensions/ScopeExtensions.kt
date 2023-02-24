@@ -15,16 +15,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer.extensions
+package co.anitrend.core.extensions
 
-import android.content.Context
-import co.anitrend.core.android.koinOf
-import co.anitrend.data.settings.developer.IDeveloperSettings
-import leakcanary.LeakCanary
+import co.anitrend.core.koin.scope.contract.ICustomScope
+import org.koin.core.scope.Scope
+import org.koin.mp.KoinPlatformTools
+import timber.log.Timber
 
-internal fun Context.configureApplication() {
-    val settings = koinOf<IDeveloperSettings>()
-    LeakCanary.config = LeakCanary.config.copy(
-        dumpHeap = settings.automaticHeapDump.value
+/**
+ * Helper to get or create a custom scope
+ *
+ * @return [Scope] of custom type
+ */
+operator fun ICustomScope.invoke(): Scope {
+    val koin = KoinPlatformTools.defaultContext().get()
+    val scope = koin.getOrCreateScope(
+        toString(),
+        qualifier
     )
+    Timber.v("Retrieving or creating custom scope: $scope")
+    return scope
 }

@@ -17,4 +17,10 @@
 #     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-mkdir -p ./app-core/src/main/resources/org/koin/core/
+target_directory=./app-core/src/main/resources/org/koin/core/
+
+if [ -f $target_directory ]; then
+  mkdir -p $target_directory
+else
+  echo "'$target_directory' already exists, skipping directory creation"
+fi

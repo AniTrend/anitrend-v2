@@ -17,22 +17,23 @@
 
 package co.anitrend.medialist.component.container.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.domain.user.entity.User
 import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.navigation.MediaListRouter
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class UserViewModel(
     val state: UserState,
     private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+) : AniTrendViewModel(state) {
 
     init {
-        hook(state)
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaListRouter.Param>(
                 MediaListRouter.Param.KEY
@@ -47,17 +48,5 @@ class UserViewModel(
         user.mediaListInfo.filter { mediaListInfo ->
             mediaListInfo.mediaType == requireNotNull(param?.type)
         }
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
     }
 }

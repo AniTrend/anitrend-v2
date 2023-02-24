@@ -20,7 +20,6 @@ package co.anitrend.data.genre.usecase
 import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.genre.GenreInteractor
 import co.anitrend.data.genre.GenreListRepository
-import co.anitrend.data.genre.repository.GenreRepository
 
 internal class GenreUseCaseImpl(
     repository: GenreListRepository

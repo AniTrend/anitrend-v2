@@ -25,9 +25,9 @@ import androidx.core.net.UriCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.auth.R
-import co.anitrend.core.android.extensions.Keys
-import co.anitrend.core.android.extensions.Tags
 import co.anitrend.core.android.extensions.analytics
+import co.anitrend.core.android.extensions.keys
+import co.anitrend.core.android.extensions.tags
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.extensions.startViewIntent
 import co.anitrend.core.presenter.CorePresenter
@@ -50,9 +50,9 @@ class AuthPresenter(
         runCatching {
             Timber.analytics {
                 logCurrentState(
-                    tag = Tags.ACTION_PREFIX.plus("authorization_issue"),
+                    tag = Timber.tags.action("authorization_issue"),
                     bundle = bundleOf(
-                        Keys.DATA to UriCompat.toSafeString(uri)
+                        Timber.keys.DATA to UriCompat.toSafeString(uri)
                     )
                 )
             }
@@ -69,9 +69,9 @@ class AuthPresenter(
         runCatching {
             Timber.analytics {
                 logCurrentState(
-                    tag = Tags.ACTION_PREFIX.plus("authorization_issue"),
+                    tag = Timber.tags.action("authorization_issue"),
                     bundle = bundleOf(
-                        Keys.DATA to UriCompat.toSafeString(uri)
+                        Timber.keys.DATA to UriCompat.toSafeString(uri)
                     )
                 )
             }

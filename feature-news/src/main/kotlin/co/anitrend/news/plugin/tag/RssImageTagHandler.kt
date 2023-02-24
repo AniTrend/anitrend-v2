@@ -18,8 +18,8 @@
 package co.anitrend.news.plugin.tag
 
 import co.anitrend.common.markdown.ui.extension.onImage
-import co.anitrend.news.plugin.span.RssImageSpanConfiguration
 import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
+import co.anitrend.news.plugin.span.RssImageSpanConfiguration
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlTag

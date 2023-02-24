@@ -16,9 +16,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name=".App"

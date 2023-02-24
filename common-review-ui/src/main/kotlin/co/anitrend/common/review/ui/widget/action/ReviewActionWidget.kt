@@ -19,15 +19,10 @@ package co.anitrend.common.review.ui.widget.action
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Space
 import androidx.appcompat.widget.LinearLayoutCompat
-import androidx.core.view.marginLeft
-import androidx.core.view.updateLayoutParams
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.extension.ext.updateMargins
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.review.R

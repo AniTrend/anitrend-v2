@@ -19,9 +19,9 @@ package co.anitrend.data.jikan.media.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.network.default.DefaultNetworkClient
-import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.jikan.media.JikanController
 import co.anitrend.data.jikan.media.datasource.local.JikanLocalSource
 import co.anitrend.data.jikan.media.datasource.remote.JikanRemoteSource

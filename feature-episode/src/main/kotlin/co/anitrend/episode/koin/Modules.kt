@@ -56,14 +56,14 @@ private val viewModelModule = module {
     viewModel {
         EpisodeContentViewModel(
             state = EpisodeContentState(
-                useCase = get()
+                interactor = get()
             )
         )
     }
     viewModel {
         EpisodeSheetViewModel(
             state = EpisodeSheetState(
-                useCase = get()
+                interactor = get()
             )
         )
     }

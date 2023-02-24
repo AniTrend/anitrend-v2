@@ -19,11 +19,11 @@ package co.anitrend.data.feed.episode.converter
 
 import co.anitrend.data.feed.episode.converter.EpisodeModelConverter.Companion.durationFormatted
 import co.anitrend.data.feed.episode.converter.EpisodeModelConverter.Companion.toCoverImage
-import co.anitrend.data.feed.episode.model.EpisodeModelItem
 import co.anitrend.data.feed.episode.entity.EpisodeEntity.CoverImage
+import co.anitrend.data.feed.episode.model.EpisodeModelItem
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 

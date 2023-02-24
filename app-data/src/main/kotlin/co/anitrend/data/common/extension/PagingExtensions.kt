@@ -20,7 +20,6 @@ package co.anitrend.data.common.extension
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.query.PageQuery
-import co.anitrend.domain.common.entity.contract.IEntityPageInfo
 
 internal fun SupportPagingHelper.toPageQuery() = PageQuery(page, pageSize)
 

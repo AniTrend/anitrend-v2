@@ -17,8 +17,8 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.spotlessExtension
 import co.anitrend.buildSrc.extensions.libs
+import co.anitrend.buildSrc.extensions.spotlessExtension
 import org.gradle.api.Project
 
 internal fun Project.configureSpotless(): Unit = spotlessExtension().run {

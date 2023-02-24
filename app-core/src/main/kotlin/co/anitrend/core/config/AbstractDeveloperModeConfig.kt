@@ -15,12 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.component.viewmodel
+package co.anitrend.core.config
 
-import co.anitrend.arch.core.model.ISupportViewModelState
-import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
+import co.anitrend.core.config.contract.IDeveloperModeConfig
+import co.anitrend.data.settings.developer.IDeveloperSettings
 
-abstract class AniTrendViewModelState<T> : ISupportViewModelState<T> {
-    var context by Delegates.notNull<CoroutineContext>()
+/**
+ * Developer mode configuration contract
+ *
+ * @property settings Developer settings
+ */
+abstract class AbstractDeveloperModeConfig : IDeveloperModeConfig {
+    protected abstract val settings: IDeveloperSettings
 }

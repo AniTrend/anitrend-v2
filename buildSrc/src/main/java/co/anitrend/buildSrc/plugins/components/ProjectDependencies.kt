@@ -17,7 +17,6 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
@@ -33,6 +32,7 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
+    dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)
     dependencies.implementation(libs.androidx.work.runtime.ktx)
@@ -188,6 +188,7 @@ private fun Project.applyAppModuleGroupDependencies() {
 
 private fun Project.applyDataModuleGroupDependencies() {
     logger.lifecycle("Applying base module dependencies for module -> $path")
+    dependencies.implementation(libs.anitrend.arch.analytics)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.ext)
@@ -244,6 +245,7 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
+    dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)
     dependencies.implementation(libs.androidx.work.runtime.ktx)
@@ -286,6 +288,7 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
+    dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)
     dependencies.implementation(libs.androidx.work.runtime.ktx)

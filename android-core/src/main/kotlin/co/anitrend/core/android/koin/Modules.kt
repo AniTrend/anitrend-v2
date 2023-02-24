@@ -23,7 +23,6 @@ import android.os.PowerManager
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.ext.systemServiceOf
-import co.anitrend.arch.extension.util.date.SupportDateHelper
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.android.controller.power.AndroidPowerController
 import co.anitrend.core.android.controller.power.contract.IPowerController

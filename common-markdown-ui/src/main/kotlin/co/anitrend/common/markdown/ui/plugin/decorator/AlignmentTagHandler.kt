@@ -18,11 +18,11 @@
 package co.anitrend.common.markdown.ui.plugin.decorator
 
 import android.text.Layout
+import android.text.style.AlignmentSpan
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler
-import android.text.style.AlignmentSpan
 
 /**
  * Handle align tags

@@ -17,7 +17,6 @@
 
 package co.anitrend.news.koin
 
-import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.common.news.ui.adapter.NewsPagedAdapter
 import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -80,7 +79,7 @@ private val viewModelModule = module {
     viewModel {
         NewsContentViewModel(
             state = NewsContentState(
-                useCase = get()
+                interactor = get()
             )
         )
     }

@@ -19,15 +19,11 @@ package co.anitrend.data.review.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
-import co.anitrend.data.media.converter.MediaModelConverter
-import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.review.entity.view.ReviewEntityView
 import co.anitrend.data.review.model.remote.ReviewModel
 import co.anitrend.data.user.converter.UserEntityConverter
-import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
 

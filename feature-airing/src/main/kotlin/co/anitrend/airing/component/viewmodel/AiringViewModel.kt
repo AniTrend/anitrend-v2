@@ -19,33 +19,17 @@ package co.anitrend.airing.component.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import co.anitrend.airing.component.viewmodel.state.AiringState
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.navigation.AiringRouter
 
 class AiringViewModel(
     val state: AiringState,
     stateHandle: SavedStateHandle
-) : ViewModel() {
+) : AniTrendViewModel(state) {
 
     val param: AiringRouter.Param? by stateHandle.extra(AiringRouter.Param.KEY)
 
     val filter = MutableLiveData<AiringRouter.Param>(param)
-
-    init {
-        hook(state)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
-    }
 }

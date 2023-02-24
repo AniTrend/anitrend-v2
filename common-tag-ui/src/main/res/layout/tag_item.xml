@@ -15,12 +15,10 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tag"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:chipIcon="@drawable/ic_info"
-    tools:text="@sample/tag.json/name"/>
+    tools:text="@sample/tag.json/name" />

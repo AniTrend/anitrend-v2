@@ -20,13 +20,12 @@ package co.anitrend.data.feed.episode.converter
 import androidx.annotation.VisibleForTesting
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
+import co.anitrend.data.feed.contract.RssLocale
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.model.EpisodeModelItem
-import co.anitrend.data.feed.contract.RssLocale
 import co.anitrend.data.feed.extensions.rcf822ToUnixTime
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.episode.entity.Episode
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 internal class EpisodeModelConverter(

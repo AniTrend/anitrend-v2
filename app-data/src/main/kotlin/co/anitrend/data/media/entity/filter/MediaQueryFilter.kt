@@ -36,7 +36,6 @@ import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
 import co.anitrend.support.query.builder.dsl.innerJoin
 import co.anitrend.support.query.builder.dsl.whereAnd
-import java.util.*
 
 internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 

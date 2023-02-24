@@ -21,9 +21,6 @@ import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.core.extensions.graphApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.*
-import co.anitrend.data.medialist.MediaListCollectionRepository
-import co.anitrend.data.medialist.MediaListEntryRepository
-import co.anitrend.data.medialist.MediaListPagedRepository
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter

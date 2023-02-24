@@ -22,21 +22,21 @@
         android:propertyName="scale"
         android:valueFrom="0"
         android:valueTo="1"
-        android:duration="@integer/motion_duration_small"
+        android:duration="@integer/motion_duration_short"
         android:repeatMode="restart"
         android:interpolator="@android:interpolator/fast_out_slow_in"/>
     <objectAnimator
         android:propertyName="iconScale"
         android:valueFrom="0"
         android:valueTo="1"
-        android:duration="@integer/motion_duration_small"
+        android:duration="@integer/motion_duration_short"
         android:repeatMode="restart"
         android:interpolator="@android:interpolator/fast_out_slow_in"/>
     <objectAnimator
         android:propertyName="opacity"
         android:valueFrom="0"
         android:valueTo="1"
-        android:duration="@integer/motion_duration_small"
+        android:duration="@integer/motion_duration_short"
         android:repeatMode="restart"
         android:interpolator="@android:interpolator/fast_out_slow_in"/>
 </set>

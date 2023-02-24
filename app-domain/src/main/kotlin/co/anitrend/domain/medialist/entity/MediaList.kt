@@ -19,7 +19,6 @@ package co.anitrend.domain.medialist.entity
 
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.extension.INVALID_ID
-import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress

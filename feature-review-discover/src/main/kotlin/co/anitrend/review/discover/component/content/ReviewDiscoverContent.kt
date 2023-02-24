@@ -23,13 +23,12 @@ import android.view.MenuItem
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.core.android.settings.Settings
-import co.anitrend.review.discover.R
-import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.review.entity.Review
+import co.anitrend.review.discover.R
+import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class ReviewDiscoverContent(
     override val stateConfig: StateLayoutConfig,

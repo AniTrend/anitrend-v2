@@ -28,7 +28,6 @@ import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.user.entity.UserEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEntity>() {

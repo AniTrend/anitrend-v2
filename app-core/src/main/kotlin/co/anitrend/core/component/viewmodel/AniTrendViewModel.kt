@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2023  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,11 +15,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.initializer.extensions
+package co.anitrend.core.component.viewmodel
 
-import android.content.Context
+import androidx.lifecycle.ViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-/*
-internal fun Context.configureApplication() {
+abstract class AniTrendViewModel(
+    private val state: AniTrendViewModelState<*>
+) : ViewModel() {
 
-}*/
+    /**
+     * This method will be called when this ViewModel is no longer used and will be destroyed.
+     *
+     * It is useful when ViewModel observes some data and you need to clear this subscription to
+     * prevent a leak of this ViewModel.
+     */
+    override fun onCleared() {
+        state.onCleared()
+        super.onCleared()
+    }
+}

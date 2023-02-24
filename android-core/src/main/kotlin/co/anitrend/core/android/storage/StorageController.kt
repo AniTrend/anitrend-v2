@@ -18,10 +18,10 @@
 package co.anitrend.core.android.storage
 
 import android.content.Context
-import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.core.android.storage.contract.IStorageController
 import co.anitrend.core.android.storage.enums.StorageType
 import co.anitrend.core.android.storage.extensions.toHumanReadableByteValue
+import co.anitrend.data.settings.cache.ICacheSettings
 import timber.log.Timber
 import java.io.File
 

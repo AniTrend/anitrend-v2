@@ -20,9 +20,9 @@ package co.anitrend.domain.user.entity.attribute.statistic
 import co.anitrend.domain.common.CountryCode
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.medialist.enums.MediaListStatus
-import co.anitrend.domain.tag.entity.Tag as TagEntity
 import co.anitrend.domain.staff.entity.Staff as StaffEntity
 import co.anitrend.domain.studio.entity.Studio as StudioEntity
+import co.anitrend.domain.tag.entity.Tag as TagEntity
 
 /**
  * Contract for user statistics, applied on various items such as countries, formats, genres, years, staff e.t.c

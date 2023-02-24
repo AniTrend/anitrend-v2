@@ -18,9 +18,9 @@
 package co.anitrend.forum.component.screen
 
 import android.os.Bundle
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.forum.databinding.ForumScreenBinding
 import co.anitrend.navigation.ForumRouter
 

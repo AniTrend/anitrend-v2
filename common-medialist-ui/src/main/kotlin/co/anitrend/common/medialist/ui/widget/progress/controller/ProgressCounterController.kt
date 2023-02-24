@@ -19,8 +19,6 @@ package co.anitrend.common.medialist.ui.widget.progress.controller
 
 import co.anitrend.common.medialist.ui.widget.contract.controller.AbstractEditController
 import co.anitrend.common.medialist.ui.widget.progress.model.ProgressEditModel
-import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 
 internal class ProgressCounterController(
     private val model: ProgressEditModel

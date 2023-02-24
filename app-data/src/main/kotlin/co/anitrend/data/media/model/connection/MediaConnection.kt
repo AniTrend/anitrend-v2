@@ -19,7 +19,6 @@ package co.anitrend.data.media.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
 import co.anitrend.data.common.model.paging.info.PageInfo
-import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.media.model.edge.MediaEdge
 import co.anitrend.data.review.model.remote.ReviewModel
 import kotlinx.serialization.SerialName

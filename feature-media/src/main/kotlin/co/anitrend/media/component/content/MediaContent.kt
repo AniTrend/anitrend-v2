@@ -30,7 +30,10 @@ import co.anitrend.media.component.compose.MediaDetailComponent
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.databinding.MediaContentBinding
 import co.anitrend.navigation.MediaRouter
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 

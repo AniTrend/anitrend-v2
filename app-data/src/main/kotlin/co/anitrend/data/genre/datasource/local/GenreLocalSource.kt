@@ -21,7 +21,6 @@ import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.genre.entity.GenreEntity
-import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

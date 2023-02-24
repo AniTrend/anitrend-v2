@@ -17,15 +17,24 @@
 #     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-cd ./app-core/src/main/resources/org/koin/core/ || {
-  echo "Unable to change to created directory"; exit 1;
-}
+target_file=koin.properties
+target_directory=./app-core/src/main/resources/org/koin/core
 
-touch koin.properties
-{
-  echo "aniListClientId=\"aniListClientId\""
-  echo "aniListClientSecret=\"aniListClientSecret\""
-  echo "traktClientId=\"traktClientId\""
-  echo "traktClientSecret=\"traktClientSecret\""
-  echo "tmdbClientSecret=\"tmdbClientSecret\""
-} >> koin.properties
+target_path=$target_directory/$target_file
+
+if [ -f $target_path ]; then
+  echo "'$target_path' already exists, skipping file creation"; exit 1;
+else
+  mkdir -vp $target_directory
+
+  touch $target_path
+  {
+    echo "aniListClientId=aniListClientId"
+    echo "aniListClientSecret=aniListClientSecret"
+    echo "traktClientId=traktClientId"
+    echo "traktClientSecret=traktClientSecret"
+    echo "tmdbClientSecret=tmdbClientSecret"
+  } >> $target_path
+
+  echo "Make sure to update the contents of '$target_path' according to the setup docs"
+fi

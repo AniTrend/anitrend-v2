@@ -18,14 +18,13 @@
 package co.anitrend.splash.component.screen
 
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.splash.component.content.SplashContent
 import co.anitrend.splash.databinding.ActivitySplashBinding
-import kotlinx.coroutines.launch
 
 class SplashScreen : AniTrendScreen<ActivitySplashBinding>() {
 
@@ -35,15 +34,24 @@ class SplashScreen : AniTrendScreen<ActivitySplashBinding>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
+        with (splashScreen) {
+            setKeepOnScreenCondition {
+                onUpdateUserInterface()
+                false
+            }
+
+            setOnExitAnimationListener { splashScreenView ->
+                splashScreenView.remove()
+            }
+        }
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launch {
-            onUpdateUserInterface()
-        }
+
     }
 
     private fun onUpdateUserInterface() {

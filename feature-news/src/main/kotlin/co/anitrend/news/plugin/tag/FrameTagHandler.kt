@@ -17,8 +17,8 @@
 
 package co.anitrend.news.plugin.tag
 
-import co.anitrend.news.extensions.onFrame
 import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
+import co.anitrend.news.extensions.onFrame
 import co.anitrend.news.plugin.span.YouTubeSpanConfiguration
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps

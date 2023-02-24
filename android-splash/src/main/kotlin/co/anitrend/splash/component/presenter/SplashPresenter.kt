@@ -18,9 +18,9 @@
 package co.anitrend.splash.component.presenter
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
-import co.anitrend.core.presenter.CorePresenter
+import co.anitrend.arch.theme.animator.contract.SupportAnimatorDuration
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.navigation.extensions.startActivity
@@ -31,13 +31,13 @@ class SplashPresenter(
     settings: Settings
 ) : CorePresenter(context, settings) {
 
-    suspend fun firstRunCheck(activity: FragmentActivity) {
-        delay(750)
+    suspend fun firstRunCheck() {
+        val duration = SupportAnimatorDuration.MEDIUM
+        delay(duration.runtime)
 
         if (settings.isNewInstallation.value)
             OnBoardingRouter.startActivity(context)
         else
             MainRouter.startActivity(context)
-        activity.finish()
     }
 }
