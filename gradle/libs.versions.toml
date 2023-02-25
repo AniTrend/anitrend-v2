@@ -229,7 +229,7 @@ google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-f
 
 google-gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 
-google-firebase-core = { module = "com.google.firebase:firebase-core", version = "17.5.1" }
+google-firebase-core = { module = "com.google.firebase:firebase-core", version = "21.1.1" }
 google-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "21.2.0" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "18.3.5" }
 google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.4" }
