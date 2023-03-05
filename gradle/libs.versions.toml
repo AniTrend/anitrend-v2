@@ -49,7 +49,7 @@ devrieze-xmlutil = "0.85.0"
 google-accompanist = "0.28.0"
 google-android-material = "1.8.0"
 
-jetbrains-dokka = "1.7.20"
+jetbrains-dokka = "1.8.10"
 jetbrains-kotlin = "1.7.10"
 jetbrains-kotlinx-coroutines = "1.6.4"
 jetbrains-kotlinx-datetime = "0.4.0"
