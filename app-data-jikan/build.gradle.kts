@@ -34,6 +34,7 @@ tasks.withType(KotlinCompile::class.java) {
 dependencies {
     implementation(libs.jetbrains.kotlinx.serialization.json)
 }
+
 android {
     namespace = "co.anitrend.data.jikan"
 }

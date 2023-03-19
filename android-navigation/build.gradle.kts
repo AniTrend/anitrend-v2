@@ -22,6 +22,7 @@ plugins {
 dependencies {
     implementation(libs.anitrend.arch.recycler)
 }
+
 android {
     namespace = "co.anitrend.navigation.drawer"
 }

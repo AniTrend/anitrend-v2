@@ -25,6 +25,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.media))
     implementation(libs.sheets.core)
 }
+
 android {
     namespace = "co.anitrend.medialist"
 }

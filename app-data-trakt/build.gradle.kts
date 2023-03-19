@@ -39,6 +39,7 @@ dependencies {
         exclude(group = "org.threeten", module = "threetenbp")
     }
 }
+
 android {
     namespace = "co.anitrend.data.trakt"
 }

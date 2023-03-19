@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
 }
+
 android {
     namespace = "co.anitrend.data.android"
 }

@@ -29,6 +29,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.media))
     implementation(project(Libraries.AniTrend.CommonUi.genre))
 }
+
 android {
     namespace = "co.anitrend.medialist.editor"
 }

@@ -24,6 +24,7 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.Data.feed))
 }
+
 android {
     namespace = "co.anitrend.task.episode"
 }
