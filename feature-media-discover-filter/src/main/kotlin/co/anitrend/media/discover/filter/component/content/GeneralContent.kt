@@ -30,7 +30,6 @@ import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGeneralBinding
 import co.anitrend.navigation.MediaDiscoverRouter
 import kotlinx.coroutines.launch
-import java.util.*
 
 internal class GeneralContent(
     private val dateHelper: AbstractSupportDateHelper,

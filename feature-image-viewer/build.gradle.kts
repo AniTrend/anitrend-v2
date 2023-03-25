@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.scalingImageView)
     implementation(libs.coil)
 }
+
 android {
     namespace = "co.anitrend.viewer"
 }

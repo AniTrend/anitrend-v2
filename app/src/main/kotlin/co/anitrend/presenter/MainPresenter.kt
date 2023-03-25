@@ -18,8 +18,8 @@
 package co.anitrend.presenter
 
 import android.content.Context
-import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.presenter.CorePresenter
 
 class MainPresenter(
     context: Context,

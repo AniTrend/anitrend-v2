@@ -21,11 +21,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.forum.R
 import co.anitrend.forum.component.viewmodel.ForumViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.forum.databinding.ForumContentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForumContent(
     override val inflateLayout: Int = R.layout.forum_content

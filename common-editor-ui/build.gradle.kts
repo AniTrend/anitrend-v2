@@ -24,6 +24,7 @@ dependencies {
 	implementation(libs.markwon.editor)
 	implementation(libs.anitrend.emojify)
 }
+
 android {
     namespace = "co.anitrend.common.editor"
 }

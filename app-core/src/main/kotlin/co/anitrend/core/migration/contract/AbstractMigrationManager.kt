@@ -17,8 +17,8 @@
 
 package co.anitrend.core.migration.contract
 
-import co.anitrend.core.migration.model.Migration
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.migration.model.Migration
 
 internal abstract class AbstractMigrationManager : IMigrationManager {
     protected abstract val settings: Settings

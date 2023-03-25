@@ -16,7 +16,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="AppTheme.FontFamily" parent="SupportTheme.FontFamily">
         <item name="android:fontFamily">@font/product_sans_regular</item>

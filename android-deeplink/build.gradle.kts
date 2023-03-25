@@ -22,6 +22,7 @@ plugins {
 dependencies {
     implementation(libs.deeplink)
 }
+
 android {
     namespace = "co.anitrend.deeplink"
 }

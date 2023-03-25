@@ -43,7 +43,7 @@ private val viewModelModule = module {
     viewModel {
         ProfileViewModel(
             state = ProfileState(
-                useCase = get()
+                interactor = get()
             )
         )
     }

@@ -88,7 +88,7 @@ class ImageViewerScreen : AniTrendScreen<ImageViewerScreenBinding>() {
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
-        val duration = resources.getInteger(R.integer.motion_duration_large)
+        val duration = resources.getInteger(R.integer.motion_duration_long)
         requireBinding().subSamplingImageView.setOnClickListener {
             val transparency = requireBinding().downloadAction.alpha
             requireBinding().downloadAction.animate()

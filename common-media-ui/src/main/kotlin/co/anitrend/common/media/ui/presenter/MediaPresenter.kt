@@ -20,7 +20,7 @@ package co.anitrend.common.media.ui.presenter
 import android.content.Context
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import androidx.work.*
+import androidx.work.Operation
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.common.media.ui.widget.progress.controller.MediaProgressController
 import co.anitrend.core.android.koinOf

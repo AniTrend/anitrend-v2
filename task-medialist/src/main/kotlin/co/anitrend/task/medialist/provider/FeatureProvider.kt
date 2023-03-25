@@ -19,12 +19,12 @@ package co.anitrend.task.medialist.provider
 
 import co.anitrend.core.android.koinOf
 import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
+import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker
 import co.anitrend.task.medialist.component.worker.MediaListDeleteCustomListWorker
 import co.anitrend.task.medialist.component.worker.MediaListDeleteEntryWorker
 import co.anitrend.task.medialist.component.worker.MediaListSaveEntriesWorker
 import co.anitrend.task.medialist.component.worker.MediaListSaveEntryWorker
-import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
-import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker
 import co.anitrend.task.medialist.scheduler.AnimeSyncScheduler
 import co.anitrend.task.medialist.scheduler.MangaSyncScheduler
 

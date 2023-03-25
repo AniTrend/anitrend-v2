@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.markwon.linkify)
     implementation(libs.markwon.coil)
 }
+
 android {
     namespace = "co.anitrend.episode"
 }

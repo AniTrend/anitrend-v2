@@ -33,8 +33,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,
-            onDelete = ForeignKey.NO_ACTION,
-            onUpdate = ForeignKey.NO_ACTION,
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
             parentColumns = ["id"]
         )

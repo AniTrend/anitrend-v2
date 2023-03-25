@@ -20,7 +20,6 @@ package co.anitrend.data.tag.usecase
 import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.data.tag.TagListRepository
-import co.anitrend.data.tag.repository.TagRepository
 
 internal class TagUseCaseImpl(
     repository: TagListRepository

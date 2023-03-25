@@ -17,9 +17,9 @@
 
 package co.anitrend.data.feed.news.model.page
 
-import co.anitrend.data.feed.news.model.NewsModelItem
 import co.anitrend.data.feed.contract.model.IRssChannelModel
 import co.anitrend.data.feed.contract.model.contract.IRssContainer
+import co.anitrend.data.feed.news.model.NewsModelItem
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root

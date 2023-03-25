@@ -25,6 +25,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.genre))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
+
 android {
     namespace = "co.anitrend.common.media.ui"
 }

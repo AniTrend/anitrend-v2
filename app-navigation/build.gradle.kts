@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.google.gson)
 }
+
 android {
     namespace = "co.anitrend.navigation"
 }

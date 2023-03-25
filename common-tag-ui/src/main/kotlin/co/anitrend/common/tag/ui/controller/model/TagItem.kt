@@ -37,7 +37,6 @@ import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
-import com.airbnb.paris.extensions.style
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class TagItem(

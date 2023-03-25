@@ -18,10 +18,10 @@
 package co.anitrend.deeplink.environment
 
 import android.content.Context
-import com.hellofresh.deeplink.Environment
+import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
 
 data class AniTrendEnvironment(
     override val context: Context,
     override val isAuthenticated: Boolean,
-    val userId: Long
-) : Environment
+    override val userId: Long
+) : IAniTrendEnvironment

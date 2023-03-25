@@ -20,9 +20,9 @@ package co.anitrend.data.feed.news.converter
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.arch.extension.ext.empty
+import co.anitrend.data.feed.extensions.rcf822ToUnixTime
 import co.anitrend.data.feed.news.entity.NewsEntity
 import co.anitrend.data.feed.news.model.NewsModelItem
-import co.anitrend.data.feed.extensions.rcf822ToUnixTime
 import co.anitrend.domain.news.entity.News
 import okhttp3.HttpUrl.Companion.toHttpUrl
 

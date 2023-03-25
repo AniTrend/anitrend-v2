@@ -19,10 +19,8 @@ package co.anitrend.task.tag.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import androidx.work.*
 import co.anitrend.core.initializer.contract.AbstractTaskInitializer
 import co.anitrend.navigation.TagTaskRouter
-import java.util.concurrent.TimeUnit
 
 class WorkSchedulerInitializer : AbstractTaskInitializer<Unit>() {
     /**

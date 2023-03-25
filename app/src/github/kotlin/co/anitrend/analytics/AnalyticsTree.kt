@@ -21,7 +21,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.data.settings.privacy.IPrivacySettings
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import timber.log.Timber
 
 /**
@@ -43,13 +43,6 @@ class AnalyticsTree(
      * Handles logging of an analytic service with the [priority] defaulted to [Log.WARN]
      */
     override fun log(priority: Int, tag: String?, message: String) {
-
-    }
-
-    /**
-     * Handles logging the current state of a visited screen
-     */
-    override fun logCurrentScreen(context: FragmentActivity, tag: String) {
 
     }
 

@@ -197,6 +197,13 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
         preference = this
     )
 
+    override val showLeakLauncher = BooleanSetting(
+        key = R.string.settings_show_leak_launcher,
+        default = false,
+        resources = context.resources,
+        preference = this
+    )
+
     companion object {
         /**
          * Binding types for [Settings]

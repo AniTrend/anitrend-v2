@@ -22,6 +22,7 @@ plugins {
 dependencies {
     implementation(libs.anitrend.material)
 }
+
 android {
     namespace = "co.anitrend.search"
 }

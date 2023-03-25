@@ -18,8 +18,8 @@
 package co.anitrend.core.android.storage.contract
 
 import android.content.Context
-import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.core.android.storage.enums.StorageType
+import co.anitrend.data.settings.cache.ICacheSettings
 import java.io.File
 
 interface IStorageController {

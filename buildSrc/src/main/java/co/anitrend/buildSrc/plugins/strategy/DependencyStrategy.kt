@@ -17,10 +17,8 @@
 
 package co.anitrend.buildSrc.plugins.strategy
 
-import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.extensions.*
 import co.anitrend.buildSrc.module.Modules
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
@@ -43,6 +41,7 @@ internal class DependencyStrategy(private val project: Project) {
         androidTest(project.libs.androidx.test.rules)
         androidTest(project.libs.androidx.test.runner)
         androidTest(project.libs.androidx.test.espresso.core)
+        androidTest(project.libs.androidx.test.espresso.intents)
         androidTest(project.libs.mockk.android)
         androidTest(project.libs.androidx.test.ext.junit.ktx)
     }
@@ -64,18 +63,20 @@ internal class DependencyStrategy(private val project: Project) {
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
-        implementation(Libraries.Koin.core)
-        test(Libraries.Koin.Test.test)
-        test(Libraries.Koin.Test.testJUnit4)
+        implementation(project.libs.koin.core)
+        test(project.libs.koin.test)
+        test(project.libs.koin.test.junit4)
         if (project.hasKoinAndroidSupport()) {
-            implementation(Libraries.Koin.android)
-            implementation(Libraries.Koin.AndroidX.workManager)
+            implementation(project.libs.koin.android)
+            implementation(project.libs.koin.androidx.navigation)
+            implementation(project.libs.koin.androidx.workManager)
         }
     }
 
     private fun DependencyHandler.applyOtherDependencies() {
         when (project.name) {
             Modules.App.Main.id -> {
+                implementation(project.libs.anitrend.arch.analytics)
                 implementation(project.libs.anitrend.arch.recycler)
                 implementation(project.libs.anitrend.arch.domain)
                 implementation(project.libs.anitrend.arch.theme)
@@ -85,6 +86,7 @@ internal class DependencyStrategy(private val project: Project) {
                 implementation(project.libs.anitrend.arch.ui)
             }
             Modules.App.Core.id -> {
+                implementation(project.libs.anitrend.arch.analytics)
                 implementation(project.libs.anitrend.arch.recycler)
                 implementation(project.libs.anitrend.arch.domain)
                 implementation(project.libs.anitrend.arch.theme)
@@ -94,6 +96,7 @@ internal class DependencyStrategy(private val project: Project) {
                 implementation(project.libs.anitrend.arch.ui)
             }
             Modules.App.Data.id -> {
+                implementation(project.libs.anitrend.arch.analytics)
                 implementation(project.libs.anitrend.arch.domain)
                 implementation(project.libs.anitrend.arch.data)
                 implementation(project.libs.anitrend.arch.ext)

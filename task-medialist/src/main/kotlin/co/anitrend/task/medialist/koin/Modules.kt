@@ -19,12 +19,12 @@ package co.anitrend.task.medialist.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
+import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker
 import co.anitrend.task.medialist.component.worker.MediaListDeleteCustomListWorker
 import co.anitrend.task.medialist.component.worker.MediaListDeleteEntryWorker
 import co.anitrend.task.medialist.component.worker.MediaListSaveEntriesWorker
 import co.anitrend.task.medialist.component.worker.MediaListSaveEntryWorker
-import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
-import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker
 import co.anitrend.task.medialist.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker

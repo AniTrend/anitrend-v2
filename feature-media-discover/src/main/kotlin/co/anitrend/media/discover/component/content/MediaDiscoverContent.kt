@@ -106,8 +106,7 @@ class MediaDiscoverContent(
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
             viewModelState().invoke(
-                viewModel.default,
-                false
+                viewModel.default
             )
         }
         lifecycleScope.launchWhenResumed {

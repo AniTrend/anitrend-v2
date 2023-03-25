@@ -46,7 +46,8 @@ import co.anitrend.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
-import co.anitrend.navigation.drawer.component.viewmodel.BottomDrawerViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.AccountViewModel
+import co.anitrend.navigation.drawer.component.viewmodel.NavigationViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.drawer.model.state.SandwichState
@@ -69,7 +70,11 @@ class BottomDrawerContent(
 
     private val presenter by inject<DrawerPresenter>()
 
-    private val viewModel by stateViewModel<BottomDrawerViewModel>(
+    private val accountViewModel by stateViewModel<AccountViewModel>(
+        owner = { ViewModelOwner.fromAny(requireActivity()) }
+    )
+
+    private val navigationViewModel by stateViewModel<NavigationViewModel>(
         state = { arguments.orEmpty() },
         owner = { ViewModelOwner.fromAny(requireActivity()) }
     )
@@ -218,7 +223,7 @@ class BottomDrawerContent(
             this, closeDrawerOnBackPressed
         )
         lifecycleScope.launchWhenResumed {
-            viewModel.accountState()
+            accountViewModel.accountState()
         }
         lifecycleScope.launchWhenResumed {
             navigationAdapter.clickableFlow
@@ -237,8 +242,8 @@ class BottomDrawerContent(
         lifecycleScope.launchWhenResumed {
             presenter.settings.isAuthenticated.flow
                 .onEach {
-                    viewModel.accountState()
-                    viewModel.navigationState.onAuthenticationStateChanged(it)
+                    accountViewModel.accountState()
+                    navigationViewModel(it)
                 }.catch { cause: Throwable ->
                     Timber.e(cause)
                 }.collect()
@@ -246,14 +251,18 @@ class BottomDrawerContent(
     }
 
     override fun setUpViewModelObserver() {
-        viewModel.accountState.model.observe(viewLifecycleOwner) {
+        accountViewModel.userAccounts.observe(viewLifecycleOwner) {
             accountAdapter.submitList(it)
         }
-        viewModel.userAccount.observe(viewLifecycleOwner) { account ->
+        accountViewModel.activeAccount.observe(viewLifecycleOwner) { account ->
             presenter.applyProfilePicture(requireBinding().profileImageView, account)
         }
-        viewModel.navigationState.model.observe(viewLifecycleOwner) {
-            navigationAdapter.submitList(it)
+        lifecycleScope.launch {
+            navigationViewModel.navigationItems.onEach {
+                navigationAdapter.submitList(it)
+            }.catch {
+                Timber.e(it)
+            }.collect()
         }
         setCheckedItem(R.id.navigation_home)
     }
@@ -371,9 +380,7 @@ class BottomDrawerContent(
     }
 
     override fun setCheckedItem(@IdRes selectedItem: Int) {
-        lifecycleScope.launch {
-            viewModel.navigationState.setNavigationMenuItemChecked(selectedItem)
-        }
+        navigationViewModel.setNavigationMenuItemChecked(selectedItem)
     }
 
     override fun toggleMenuVisibility(showDrawerMenu: Boolean) {

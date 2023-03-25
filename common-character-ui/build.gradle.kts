@@ -24,6 +24,7 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
+
 android {
     namespace = "co.anitrend.common.character"
 }

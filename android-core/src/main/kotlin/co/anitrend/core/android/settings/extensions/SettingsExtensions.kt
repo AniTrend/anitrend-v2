@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.data.settings.customize.common.PreferredViewMode
-import kotlinx.coroutines.flow.collect
 
 /**
  * Updates [RecyclerView.getLayoutManager] span count and configuration

@@ -17,12 +17,8 @@
 
 package co.anitrend.medialist.component.content.viewmodel.state
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asLiveData
 import androidx.paging.PagedList
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
@@ -30,23 +26,9 @@ import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListRouter
 
 class MediaListState(
-    private val interactor: GetPagedMediaListInteractor,
+    override val interactor: GetPagedMediaListInteractor,
     private val settings: IUserSettings
 ) : AniTrendViewModelState<PagedList<Media>>() {
-
-    private val useCaseResult = MutableLiveData<DataState<PagedList<Media>>>()
-
-    override val model = Transformations.switchMap(useCaseResult) {
-        it.model.asLiveData(context)
-    }
-
-    override val loadState = Transformations.switchMap(useCaseResult) {
-        it.loadState.asLiveData(context)
-    }
-
-    override val refreshState = Transformations.switchMap(useCaseResult) {
-        it.refreshState.asLiveData(context)
-    }
 
     operator fun invoke(param: MediaListRouter.Param) {
         val query = MediaListParam.Paged(
@@ -79,34 +61,7 @@ class MediaListState(
 
         val result = interactor(query)
 
-        useCaseResult.postValue(result)
+        state.postValue(result)
 
-    }
-
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        interactor.onCleared()
-    }
-
-    /**
-     * Triggers use case to perform refresh operation
-     */
-    override suspend fun refresh() {
-        val uiModel = useCaseResult.value
-        uiModel?.refresh?.invoke()
-    }
-
-    /**
-     * Triggers use case to perform a retry operation
-     */
-    override suspend fun retry() {
-        val uiModel = useCaseResult.value
-        uiModel?.retry?.invoke()
     }
 }

@@ -34,6 +34,7 @@ dependencies {
 	implementation(libs.markwon.ext.tasklist)
 	implementation(libs.markwon.ext.strikethrough)
 }
+
 android {
     namespace = "co.anitrend.common.shared"
 }

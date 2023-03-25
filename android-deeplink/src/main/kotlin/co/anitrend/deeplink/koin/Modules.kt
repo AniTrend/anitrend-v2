@@ -23,26 +23,28 @@ import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.deeplink.component.route.*
 import co.anitrend.deeplink.component.screen.DeepLinkScreen
 import co.anitrend.deeplink.environment.AniTrendEnvironment
-import com.hellofresh.deeplink.DeepLinkParser
-import com.hellofresh.deeplink.Environment
+import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
+import com.kingsleyadio.deeplink.DeepLinkParser
+import com.kingsleyadio.deeplink.Environment
 import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val coreModule = module {
-    factory<Environment> {
+    factory<IAniTrendEnvironment> {
         val settings = get<IAuthenticationSettings>()
         AniTrendEnvironment(
             context = androidContext(),
             isAuthenticated = settings.isAuthenticated.value,
             userId = settings.authenticatedUserId.value
         )
-    }
+    } bind Environment::class
 }
 
 private val routerModule = module {
     scope<DeepLinkScreen> {
         factory {
-            val environment = get<Environment>()
+            val environment = get<IAniTrendEnvironment>()
             DeepLinkParser.of<Intent?>(environment)
                 // AniList specific routes
                 .addRoute(MainRoute)

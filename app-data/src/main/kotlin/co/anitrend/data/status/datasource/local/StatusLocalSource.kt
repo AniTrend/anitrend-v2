@@ -17,8 +17,8 @@
 
 package co.anitrend.data.status.datasource.local
 
-import co.anitrend.data.status.entity.StatusEntity
 import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.status.entity.StatusEntity
 
 internal abstract class StatusLocalSource : AbstractLocalSource<StatusEntity>() {
     

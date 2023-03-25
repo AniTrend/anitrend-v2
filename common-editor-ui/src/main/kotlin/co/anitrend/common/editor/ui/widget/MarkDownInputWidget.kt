@@ -18,7 +18,6 @@
 package co.anitrend.common.editor.ui.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -36,23 +35,21 @@ import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.core.view.inputmethod.InputContentInfoCompat
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.dipToPx
-import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.editor.R
 import co.anitrend.core.android.koinOf
-import com.google.android.material.R as MaterialR
 import com.google.android.material.textfield.TextInputEditText
 import io.noties.markwon.editor.MarkwonEditorTextWatcher
 import io.wax911.emojify.EmojiManager
 import io.wax911.emojify.parser.parseToHtmlHexadecimal
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
+import com.google.android.material.R as MaterialR
 
 class MarkDownInputWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = MaterialR.attr.editTextStyle

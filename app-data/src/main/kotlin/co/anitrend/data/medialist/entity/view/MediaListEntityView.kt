@@ -23,7 +23,6 @@ import co.anitrend.data.customlist.entity.CustomListEntity
 import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.user.entity.UserEntity
 
 internal sealed class MediaListEntityView {
     abstract val mediaList: MediaListEntity

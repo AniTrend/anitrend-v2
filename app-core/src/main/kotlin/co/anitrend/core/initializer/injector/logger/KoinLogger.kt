@@ -29,7 +29,7 @@ internal class KoinLogger(
 ) : Logger(logLevel) {
     override fun log(level: Level, msg: MESSAGE) {
         when (level) {
-            Level.DEBUG -> Timber.tag(KOIN_TAG).v(msg)
+            Level.DEBUG -> Timber.tag(KOIN_TAG).d(msg)
             Level.INFO -> Timber.tag(KOIN_TAG).i(msg)
             Level.ERROR -> Timber.tag(KOIN_TAG).e(msg)
             Level.NONE -> { /* logging disabled */ }

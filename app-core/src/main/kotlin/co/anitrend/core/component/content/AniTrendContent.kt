@@ -25,7 +25,7 @@ import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.koinOf
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach

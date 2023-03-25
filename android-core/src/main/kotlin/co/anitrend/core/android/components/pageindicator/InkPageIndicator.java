@@ -17,26 +17,26 @@
 
 package co.anitrend.core.android.components.pageindicator;
 
- import android.animation.Animator;
- import android.animation.AnimatorListenerAdapter;
- import android.animation.ValueAnimator;
- import android.content.Context;
- import android.content.res.TypedArray;
- import android.database.DataSetObserver;
- import android.graphics.Canvas;
- import android.graphics.Paint;
- import android.graphics.Path;
- import android.graphics.RectF;
- import android.util.AttributeSet;
- import android.util.Log;
- import android.view.View;
- import android.view.animation.Interpolator;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.database.DataSetObserver;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
+import android.view.animation.Interpolator;
 
- import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 
- import java.util.Arrays;
+import java.util.Arrays;
 
- import co.anitrend.core.android.R;
+import co.anitrend.core.android.R;
 
  /**
   * An ink inspired widget for indicating pages in a {@link ViewPager}.

@@ -17,8 +17,8 @@
 
 package co.anitrend.common.shared.ui.plugin
 
-import co.anitrend.common.markdown.ui.plugin.decorator.ParagraphTagHandler
 import co.anitrend.common.markdown.ui.plugin.decorator.CenterTagHandler
+import co.anitrend.common.markdown.ui.plugin.decorator.ParagraphTagHandler
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.html.HtmlPlugin

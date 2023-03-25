@@ -19,7 +19,6 @@ package co.anitrend.airing.provider
 
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
 import co.anitrend.airing.component.content.AiringContent
 import co.anitrend.airing.component.screen.AiringScreen
 import co.anitrend.navigation.AiringRouter

@@ -38,6 +38,9 @@ fun Configuration.handleConflicts(project: Project): Unit = with(project) {
         if (requested.name == "kotlinx-serialization-json") {
             useTarget(libs.jetbrains.kotlinx.serialization.json)
         }
+        if (requested.name == "kotlinx-datetime") {
+            useTarget(libs.jetbrains.kotlinx.datetime)
+        }
         if (requested.group == "com.google.android.material") {
             useTarget(libs.google.android.material)
         }

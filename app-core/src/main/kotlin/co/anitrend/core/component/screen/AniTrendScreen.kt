@@ -22,7 +22,7 @@ import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.ui.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityRetainedScope

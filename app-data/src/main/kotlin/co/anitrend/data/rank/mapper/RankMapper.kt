@@ -20,11 +20,6 @@ package co.anitrend.data.rank.mapper
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
-import co.anitrend.data.link.converter.LinkModelConverter
-import co.anitrend.data.link.datasource.LinkLocalSource
-import co.anitrend.data.link.entity.LinkEntity
-import co.anitrend.data.link.mapper.LinkMapper
-import co.anitrend.data.link.model.LinkModel
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.rank.converter.RankModelConverter
 import co.anitrend.data.rank.datasource.RankLocalSource

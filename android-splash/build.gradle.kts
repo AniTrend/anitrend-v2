@@ -20,8 +20,9 @@ plugins {
 }
 
 dependencies {
-
+    implementation(libs.androidx.core.splashscreen)
 }
+
 android {
     namespace = "co.anitrend.splash"
 }

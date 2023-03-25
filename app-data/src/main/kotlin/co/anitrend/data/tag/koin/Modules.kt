@@ -32,7 +32,6 @@ import co.anitrend.data.tag.repository.TagRepository
 import co.anitrend.data.tag.source.TagSourceImpl
 import co.anitrend.data.tag.source.contract.TagSource
 import co.anitrend.data.tag.usecase.TagUseCaseImpl
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val sourceModule = module {

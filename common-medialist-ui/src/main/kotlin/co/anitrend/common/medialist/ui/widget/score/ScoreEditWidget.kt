@@ -18,7 +18,6 @@
 package co.anitrend.common.medialist.ui.widget.score
 
 import android.content.Context
-import android.text.Editable
 import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import co.anitrend.common.medialist.ui.widget.contract.AbstractEditWidget

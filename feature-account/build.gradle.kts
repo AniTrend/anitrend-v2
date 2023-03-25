@@ -22,6 +22,7 @@ plugins {
 dependencies {
 
 }
+
 android {
     namespace = "co.anitrend.account"
 }

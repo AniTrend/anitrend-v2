@@ -18,9 +18,9 @@
 package co.anitrend.media.discover.initializer
 
 import android.content.Context
-import co.anitrend.media.discover.koin.moduleHelper
 import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
+import co.anitrend.media.discover.koin.moduleHelper
 
 class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
     /**

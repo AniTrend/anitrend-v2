@@ -17,8 +17,9 @@
 
 package co.anitrend.data.jikan.media.entity
 
-import androidx.room.*
-import co.anitrend.data.jikan.contract.JikanEntityAttribute
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
 import co.anitrend.data.core.common.Identity
 
 @Entity(

@@ -18,13 +18,10 @@
 package co.anitrend.data.tag.repository
 
 import co.anitrend.arch.data.repository.SupportRepository
-import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.source.contract.TagSource
-import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
-import co.anitrend.domain.tag.repository.ITagRepository
 
 internal class TagRepository(
     private val source: TagSource

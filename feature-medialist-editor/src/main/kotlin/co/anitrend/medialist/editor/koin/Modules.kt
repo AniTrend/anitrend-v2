@@ -17,9 +17,6 @@
 
 package co.anitrend.medialist.editor.koin
 
-import org.koin.androidx.fragment.dsl.fragment
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.medialist.editor.component.sheet.MediaListEditorContent
 import co.anitrend.medialist.editor.component.sheet.controller.MediaListEditorController
@@ -27,6 +24,9 @@ import co.anitrend.medialist.editor.component.sheet.viewmodel.MediaListEditorVie
 import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 import co.anitrend.medialist.editor.provider.FeatureProvider
 import co.anitrend.navigation.MediaListEditorRouter
+import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 private val fragmentModule = module {
     fragment {

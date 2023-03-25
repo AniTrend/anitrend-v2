@@ -17,139 +17,16 @@
 
 package co.anitrend.navigation.drawer.component.viewmodel.state
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.core.component.viewmodel.AniTrendViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.account.AccountInteractor
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.user.entity.User
-import co.anitrend.navigation.drawer.R
-import co.anitrend.navigation.drawer.model.account.Account
 
 internal class AccountState(
-    settings: IAuthenticationSettings,
-    private val useCase: AccountInteractor
-) : AniTrendViewModelState<List<Account>>() {
-
-    private val useCaseResult = MutableLiveData<DataState<List<User>>>()
-
-    override val model = Transformations.switchMap(useCaseResult) { dataState ->
-            dataState.model.asLiveData(context).map { users ->
-                if (users.isNullOrEmpty())
-                    listOf(
-                        Account.Group(
-                            titleRes = R.string.account_header_active,
-                            groupId = R.id.account_group_active
-                        ),
-                        Account.Anonymous(
-                            titleRes = R.string.label_account_anonymous,
-                            imageRes = R.mipmap.ic_launcher,
-                            isActiveUser = true
-                        ),
-                        Account.Group(
-                            titleRes = R.string.account_header_other,
-                            groupId = R.id.account_group_other
-                        ),
-                        Account.Authorize(
-                            titleRes = R.string.label_account_add_new
-                        )
-                    )
-                else {
-                    val activeUser = users.firstOrNull { user ->
-                        settings.authenticatedUserId.value == user.id
-                    }
-
-                    val accounts = mutableListOf<Account>(
-                        Account.Group(
-                            titleRes = R.string.account_header_active,
-                            groupId = R.id.account_group_active
-                        )
-                    )
-
-                    if (activeUser != null) {
-                        accounts.add(
-                            Account.Authenticated(
-                                id = activeUser.id,
-                                isActiveUser = true,
-                                userName = activeUser.name,
-                                coverImage = activeUser.avatar
-                            )
-                        )
-
-                        if (users.size > 1) {
-                            accounts.add(
-                                Account.Group(
-                                    titleRes = R.string.account_header_inactive,
-                                    groupId = R.id.account_group_inactive
-                                )
-                            )
-                            accounts += users.filter {
-                                activeUser.id != it.id
-                            }.map { user ->
-                                Account.Authenticated(
-                                    id = user.id,
-                                    isActiveUser = false,
-                                    userName = user.name,
-                                    coverImage = user.avatar
-                                )
-                            }
-                        }
-                    }
-
-                    accounts += listOf(
-                        Account.Group(
-                            titleRes = R.string.account_header_other,
-                            groupId = R.id.account_group_other
-                        ),
-                        Account.Authorize(
-                            titleRes = R.string.label_account_add_new
-                        )
-                    )
-                    accounts
-                }
-            }
-        }
-
-    override val loadState = Transformations.switchMap(useCaseResult) {
-        it.loadState.asLiveData(context)
-    }
-
-    override val refreshState = Transformations.switchMap(useCaseResult) {
-        it.refreshState.asLiveData(context)
-    }
+    override val interactor: AccountInteractor
+) : AniTrendViewModelState<List<User>>() {
 
     operator fun invoke() {
-        val result = useCase.getAuthorizedAccounts()
-        useCaseResult.postValue(result)
-    }
-
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        useCase.onCleared()
-    }
-
-    /**
-     * Triggers use case to perform refresh operation
-     */
-    override suspend fun refresh() {
-        val uiModel = useCaseResult.value
-        uiModel?.refresh?.invoke()
-    }
-
-    /**
-     * Triggers use case to perform a retry operation
-     */
-    override suspend fun retry() {
-        val uiModel = useCaseResult.value
-        uiModel?.retry?.invoke()
+        val result = interactor.getAuthorizedAccounts()
+        state.postValue(result)
     }
 }

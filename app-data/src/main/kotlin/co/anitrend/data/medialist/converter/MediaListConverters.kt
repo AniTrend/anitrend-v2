@@ -21,7 +21,6 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.common.extension.asFuzzyDate
 import co.anitrend.data.common.extension.toFuzzyDateInt
-import co.anitrend.data.common.extension.toFuzzyDateModel
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.medialist.model.MediaListModel

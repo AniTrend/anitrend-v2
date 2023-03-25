@@ -17,12 +17,11 @@
 
 package co.anitrend.data.android.network.graphql
 
+import co.anitrend.data.android.network.client.DeferrableNetworkClient
 import co.anitrend.data.core.api.model.GraphQLError
 import co.anitrend.data.core.api.model.GraphQLResponse
-import co.anitrend.data.android.network.client.DeferrableNetworkClient
 import co.anitrend.data.core.extensions.typeToken
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineDispatcher
 import retrofit2.HttpException
 import retrofit2.Response

@@ -18,9 +18,9 @@
 package co.anitrend.suggestion.component.screen
 
 import android.os.Bundle
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.suggestion.databinding.SuggestionScreenBinding
 

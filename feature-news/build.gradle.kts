@@ -36,6 +36,7 @@ dependencies {
 	implementation(libs.markwon.html)
     implementation(libs.markwon.linkify)
 }
+
 android {
     namespace = "co.anitrend.news"
 }

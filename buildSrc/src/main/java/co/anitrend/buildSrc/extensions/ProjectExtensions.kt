@@ -17,7 +17,6 @@
 
 package co.anitrend.buildSrc.extensions
 
-import co.anitrend.buildSrc.Libraries
 import co.anitrend.buildSrc.module.Modules
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
@@ -28,22 +27,15 @@ import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.TestPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
-import org.gradle.api.artifacts.MinimalExternalModuleDependency
-import org.gradle.api.artifacts.VersionCatalog
-import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.accessors.dm.LibrariesForLibs
-import org.gradle.api.plugins.ExtensionAware
-import org.gradle.kotlin.dsl.getByName
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 
@@ -63,31 +55,36 @@ fun Project.matchesCommonModule() = name.startsWith(Modules.commonModulePattern)
 fun Project.matchesTaskModule() = name.startsWith(Modules.taskModulePattern)
 
 /**
- * Module that support [Libraries.JetBrains.KotlinX.Coroutines] dependencies
+ * Module that supports kotlinx-coroutines dependencies
  */
 fun Project.hasCoroutineSupport() = name != Modules.App.Navigation.id || name != Modules.App.Domain.id
+
 /**
- * Module that support [Libraries.AndroidX.Compose] dependencies
+ * Module that supports androidx.compose dependencies
  */
-fun Project.hasComposeSupport() = isAppModule() || matchesFeatureModule() || matchesAndroidModule() || matchesCommonModule()
+fun Project.hasComposeSupport() = isAppModule() || matchesFeatureModule() ||
+        matchesAndroidModule() || matchesCommonModule()
+
 /**
- * Module that support [Libraries.Koin.AndroidX] dependencies
+ * Module that support [io.insert-koin:koin-androidx-*] dependencies
  */
 fun Project.hasKoinAndroidSupport() = 
     name != Modules.App.Data.id || name != Modules.App.Core.id || name != Modules.App.Navigation.id
+
 /**
- * Module that support the kotlin annotation processor plugin
+ * Module that supports the kotlin annotation processor plugin
  */
 fun Project.hasKaptSupport() =
     name != Modules.App.Main.id || name != Modules.App.Data.id || name != Modules.App.Core.id
+
 /**
- * Module that support the kotlin-android-extensions annotation processor plugin
+ * Module that supports the kotlin-android-extensions annotation processor plugin
  */
 fun Project.hasKotlinAndroidExtensionSupport() =
     name != Modules.App.Domain.id
 
 internal val Project.libs: LibrariesForLibs get() =
-    (this as ExtensionAware).extensions.getByName("libs") as LibrariesForLibs
+    extensions.getByType<LibrariesForLibs>()
 
 internal fun Project.baseExtension() =
     extensions.getByType<BaseExtension>()

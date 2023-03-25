@@ -18,8 +18,8 @@
 package co.anitrend.data.feed.episode.datasource.remote
 
 import co.anitrend.data.core.XML
-import co.anitrend.data.feed.episode.model.page.EpisodePageModel
 import co.anitrend.data.feed.contract.RssLocale
+import co.anitrend.data.feed.episode.model.page.EpisodePageModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

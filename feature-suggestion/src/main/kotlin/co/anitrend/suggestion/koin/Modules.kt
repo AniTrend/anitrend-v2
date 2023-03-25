@@ -17,16 +17,16 @@
 
 package co.anitrend.suggestion.koin
 
-import org.koin.androidx.fragment.dsl.fragment
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.suggestion.component.content.SuggestionContent
 import co.anitrend.suggestion.component.screen.SuggestionScreen
 import co.anitrend.suggestion.component.viewmodel.SuggestionViewModel
 import co.anitrend.suggestion.component.viewmodel.state.SuggestionState
 import co.anitrend.suggestion.provider.FeatureProvider
-import co.anitrend.navigation.SuggestionRouter
+import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
 
 private val fragmentModule = module {
     scope<SuggestionScreen> {

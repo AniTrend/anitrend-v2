@@ -25,8 +25,6 @@ import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.source.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.medialist.entity.MediaListEntity
-import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.review.entity.view.ReviewEntityView
 import co.anitrend.data.user.entity.UserEntity

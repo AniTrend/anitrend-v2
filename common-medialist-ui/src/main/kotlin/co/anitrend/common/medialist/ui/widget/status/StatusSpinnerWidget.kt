@@ -26,10 +26,8 @@ import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.medialist.ui.R
 import co.anitrend.common.medialist.ui.widget.status.adapter.StatusIconAdapter
 import co.anitrend.domain.medialist.enums.MediaListStatus
-import com.airbnb.paris.extensions.style
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
-import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

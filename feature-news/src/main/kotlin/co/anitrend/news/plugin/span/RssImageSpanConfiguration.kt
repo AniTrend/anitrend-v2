@@ -17,8 +17,8 @@
 
 package co.anitrend.news.plugin.span
 
-import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
 import co.anitrend.common.markdown.ui.plugin.span.image.AbstractImageSpan
+import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
 import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.RenderProps
 import io.noties.markwon.html.HtmlTag

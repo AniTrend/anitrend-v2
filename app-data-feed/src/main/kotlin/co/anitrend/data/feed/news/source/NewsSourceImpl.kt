@@ -22,8 +22,8 @@ import co.anitrend.arch.data.paging.FlowPagedListBuilder
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.feed.news.NewPagedController
 import co.anitrend.data.feed.news.converter.NewsEntityConverter
 import co.anitrend.data.feed.news.datasource.local.NewsLocalSource

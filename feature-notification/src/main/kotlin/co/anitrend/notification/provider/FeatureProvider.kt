@@ -19,9 +19,9 @@ package co.anitrend.notification.provider
 
 import android.content.Context
 import android.content.Intent
+import co.anitrend.navigation.NotificationRouter
 import co.anitrend.notification.component.content.NotificationContent
 import co.anitrend.notification.component.screen.NotificationScreen
-import co.anitrend.navigation.NotificationRouter
 
 class FeatureProvider : NotificationRouter.Provider {
     override fun activity(context: Context?) =

@@ -20,15 +20,9 @@ package co.anitrend.common.medialist.ui.widget.counter
 import android.content.Context
 import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
-import android.view.ViewGroup
-import androidx.core.widget.TextViewCompat
-import co.anitrend.common.medialist.ui.R
 import co.anitrend.common.medialist.ui.widget.contract.AbstractEditWidget
-import co.anitrend.common.medialist.ui.widget.contract.model.AbstractEditModel
 import co.anitrend.common.medialist.ui.widget.counter.controller.CounterEditController
 import co.anitrend.common.medialist.ui.widget.counter.model.CounterEditModel
-import com.airbnb.paris.extensions.style
-import com.google.android.material.textview.MaterialTextView
 
 class CounterEditWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

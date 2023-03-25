@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.google.flexbox)
     implementation(libs.prettyTime)
 }
+
 android {
     namespace = "co.anitrend.core.android"
 }

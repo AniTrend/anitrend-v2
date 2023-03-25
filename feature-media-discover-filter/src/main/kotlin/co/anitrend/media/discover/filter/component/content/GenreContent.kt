@@ -18,26 +18,11 @@
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.arch.extension.ext.attachComponent
-import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportAdapter
-import co.anitrend.arch.recycler.adapter.SupportListAdapter
-import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
-import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.extensions.isEmpty
-import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
-import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.recycler.decorator.DefaultSpacingDecorator
-import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.component.content.selection.AniTrendSelectionContent
 import co.anitrend.core.extensions.combine
 import co.anitrend.core.extensions.union
@@ -48,16 +33,7 @@ import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGenreBinding
 import co.anitrend.navigation.MediaDiscoverRouter
-import com.google.android.flexbox.AlignContent
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 internal class GenreContent(
     override val stateConfig: StateLayoutConfig,

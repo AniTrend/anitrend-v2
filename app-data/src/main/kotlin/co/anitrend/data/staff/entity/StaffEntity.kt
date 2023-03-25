@@ -21,7 +21,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import co.anitrend.data.common.FuzzyDateInt
-import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.core.common.Identity
 import co.anitrend.domain.staff.enums.StaffLanguage
 import co.anitrend.support.query.builder.annotation.EntitySchema

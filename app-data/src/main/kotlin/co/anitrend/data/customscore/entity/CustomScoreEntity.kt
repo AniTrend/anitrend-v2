@@ -25,6 +25,19 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "custom_score",
+    indices = [
+        Index(
+            value = [
+                "media_list_id",
+                "score_name",
+                "user_id",
+                "user_name"
+            ],
+            unique = true
+        ),
+        Index(value = ["media_list_id"]),
+        Index(value = ["user_id"]),
+    ],
     foreignKeys = [
         ForeignKey(
             entity = MediaListEntity::class,
@@ -39,17 +52,6 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
             parentColumns = ["id"]
-        )
-    ],
-    indices = [
-        Index(
-            value = [
-                "media_list_id",
-                "score_name",
-                "user_id",
-                "user_name"
-            ],
-            unique = true
         )
     ]
 )

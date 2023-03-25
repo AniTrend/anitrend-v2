@@ -19,8 +19,8 @@ package co.anitrend.data.tag.source
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.tag.TagController
 import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.tag.datasource.local.TagLocalSource
@@ -31,7 +31,9 @@ import co.anitrend.domain.tag.entity.Tag
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 internal class TagSourceImpl(
     private val remoteSource: MediaTagRemoteSource,

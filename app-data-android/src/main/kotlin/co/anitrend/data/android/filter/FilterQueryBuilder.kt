@@ -23,7 +23,10 @@ import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.support.query.builder.core.QueryBuilder
 import co.anitrend.support.query.builder.core.contract.AbstractQueryBuilder
 import co.anitrend.support.query.builder.core.projection.Projection
-import co.anitrend.support.query.builder.dsl.*
+import co.anitrend.support.query.builder.dsl.orderByAsc
+import co.anitrend.support.query.builder.dsl.orderByAscCollate
+import co.anitrend.support.query.builder.dsl.orderByDesc
+import co.anitrend.support.query.builder.dsl.orderByDescCollate
 import timber.log.Timber
 
 /**

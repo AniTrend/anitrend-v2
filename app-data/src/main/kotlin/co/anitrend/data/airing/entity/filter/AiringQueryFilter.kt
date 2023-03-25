@@ -34,7 +34,6 @@ import co.anitrend.support.query.builder.dsl.from
 import co.anitrend.support.query.builder.dsl.leftJoin
 import co.anitrend.support.query.builder.dsl.where
 import co.anitrend.support.query.builder.dsl.whereAnd
-import java.util.*
 
 internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
     

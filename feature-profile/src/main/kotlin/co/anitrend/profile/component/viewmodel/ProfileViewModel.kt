@@ -17,24 +17,9 @@
 
 package co.anitrend.profile.component.viewmodel
 
-import androidx.lifecycle.ViewModel
-import co.anitrend.core.extensions.hook
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.profile.component.viewmodel.state.ProfileState
 
-class ProfileViewModel(val state: ProfileState) : ViewModel() {
-
-    init {
-        hook(state)
-    }
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
-    }
-}
+class ProfileViewModel(
+    val state: ProfileState
+) : AniTrendViewModel(state)

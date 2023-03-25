@@ -19,8 +19,8 @@ package co.anitrend.search.component.content
 
 import android.os.Bundle
 import android.view.View
-import co.anitrend.core.ui.inject
 import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.core.ui.inject
 import co.anitrend.search.R
 import co.anitrend.search.component.presenter.SearchPresenter
 import co.anitrend.search.databinding.SearchContentBinding

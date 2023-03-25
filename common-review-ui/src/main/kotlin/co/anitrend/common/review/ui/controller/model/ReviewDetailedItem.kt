@@ -33,7 +33,6 @@ import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.domain.review.entity.Review
 import coil.request.Disposable
-import coil.transform.RoundedCornersTransformation
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ReviewDetailedItem(

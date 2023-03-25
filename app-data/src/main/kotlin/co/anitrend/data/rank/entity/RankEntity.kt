@@ -21,8 +21,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.core.common.Identity
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
@@ -31,6 +31,9 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 @Entity(
     tableName = "rank",
     primaryKeys = ["id"],
+    indices = [
+        Index(value = ["media_id"])
+    ],
     foreignKeys = [
         ForeignKey(
             entity = MediaEntity::class,
@@ -40,7 +43,6 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             parentColumns = ["id"]
         )
     ],
-    indices = [Index(value = ["media_id"])]
 )
 @EntitySchema
 internal data class RankEntity(

@@ -18,8 +18,8 @@
 package co.anitrend.task.account.provider
 
 import co.anitrend.navigation.AccountTaskRouter
-import co.anitrend.task.account.component.AccountSignOutWorker
 import co.anitrend.task.account.component.AccountSignInWorker
+import co.anitrend.task.account.component.AccountSignOutWorker
 
 class FeatureProvider : AccountTaskRouter.Provider {
     override fun signOutWorker() = AccountSignOutWorker::class.java

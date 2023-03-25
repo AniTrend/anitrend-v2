@@ -21,7 +21,6 @@ import android.content.Context
 import co.anitrend.core.initializer.contract.AbstractFeatureInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 import co.anitrend.media.koin.moduleHelper
-import kotlinx.coroutines.launch
 
 class FeatureInitializer : AbstractFeatureInitializer<Unit>() {
     /**

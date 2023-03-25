@@ -21,10 +21,7 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.customlist.datasource.CustomListLocalSource
 import co.anitrend.data.customlist.entity.CustomListEntity
-import co.anitrend.data.genre.mapper.GenreMapper
-import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.medialist.model.MediaListModel
-import co.anitrend.domain.media.enums.MediaType
 
 internal class CustomListMapper(
     override val localSource: CustomListLocalSource

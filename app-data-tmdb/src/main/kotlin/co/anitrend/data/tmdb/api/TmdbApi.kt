@@ -17,8 +17,8 @@
 
 package co.anitrend.data.tmdb.api
 
-import co.anitrend.data.tmdb.BuildConfig
 import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.tmdb.BuildConfig
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.uwetrottmann.tmdb2.Tmdb
 import okhttp3.Cache
