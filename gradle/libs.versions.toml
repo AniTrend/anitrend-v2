@@ -42,7 +42,7 @@ blitz = "1.0.10"
 
 chuncker = "3.5.2"
 
-coil = "1.4.0"
+coil = "2.3.0"
 
 devrieze-xmlutil = "0.85.0"
 
