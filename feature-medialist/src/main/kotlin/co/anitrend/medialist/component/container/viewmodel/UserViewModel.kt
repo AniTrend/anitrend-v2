@@ -18,8 +18,8 @@
 package co.anitrend.medialist.component.container.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
@@ -43,7 +43,7 @@ class UserViewModel(
 
     val param: MediaListRouter.Param? by savedStateHandle.extra(MediaListRouter.Param.KEY)
 
-    val tabConfigurationListInfo = Transformations.map(state.model) {
+    val tabConfigurationListInfo = state.model.map {
         val user = it as User.Extended
         user.mediaListInfo.filter { mediaListInfo ->
             mediaListInfo.mediaType == requireNotNull(param?.type)
