@@ -32,13 +32,12 @@ class DeviceInfo(context: Context) : IDeviceInfo {
     private fun createUserAgent(context: Context): String {
         val userAgentString = runCatching {
             WebView(context).settings.userAgentString
-        }.getOrDefault("(UNKNOWN)")
+        }.getOrDefault("Android Browser")
 
-        val applicationInfo = "Mozilla/5.0"
         val deviceInfo = "(${Build.MANUFACTURER} ${Build.MODEL})"
         val buildInfo = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
         val cpuArchitecture = Build.SUPPORTED_ABIS.firstOrNull()
 
-        return "$applicationInfo $userAgentString $deviceInfo $buildInfo $cpuArchitecture"
+        return "$userAgentString $deviceInfo $buildInfo $cpuArchitecture"
     }
 }

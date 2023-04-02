@@ -14,7 +14,6 @@ class AppInfo(context: Context) : IAppInfo {
     override val label: String = applicationLabel(context)
     override val buildType: String = BuildConfig.BUILD_TYPE
 
-
     private fun installationSource(context: Context): String {
         val packageManager = context.packageManager
         return when {
