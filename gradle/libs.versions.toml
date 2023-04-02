@@ -56,7 +56,7 @@ jetbrains-kotlinx-datetime = "0.4.0"
 jetbrains-kotlinx-serialization = "1.5.0"
 
 koin = "3.1.6"
-koin-android = "3.1.6"
+koin-android = "3.4.0"
 koin-compose = "3.1.6"
 
 markwon = "4.6.2"
