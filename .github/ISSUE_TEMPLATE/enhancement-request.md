@@ -1,7 +1,7 @@
 ---
-name: Feature Request
-about: Suggest an idea or feature for this project
-labels: [":star2: feature request"]
+name: Enhancement Request
+about: Suggest an improvement for this project
+labels: [":wrench: enhancement request"]
 ---
 
 # AniTrend Issue Guidelines
@@ -12,13 +12,13 @@ Before opening a new issue, please take a moment to review our [**community guid
 https://github.com/AniTrend/anitrend-v2/issues?q=is%3Aissue+is%3Aclosed
 
 
-## Feature Information
-<!-- Is your feature request related to a problem? Please describe and be concise. -->
+## Enhancement Information
+<!-- Is your request related to a problem? Please describe and be concise. -->
 
 
 ## Solution Information
 <!-- 
-If you have any ideas regarding the creation of the feature please list them here, 
+If you have any ideas on how to solve this issue please list them here, 
 and if not please remove this section
 -->
 

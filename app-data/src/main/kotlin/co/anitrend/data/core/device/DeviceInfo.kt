@@ -19,14 +19,8 @@ package co.anitrend.data.core.device
 
 import android.content.Context
 import android.os.Build
-import co.anitrend.data.BuildConfig
+import android.webkit.WebView
 
-/**
- * Device information holder
- *
- *
- * Thanks `danielceinos/Cooper`
- */
 class DeviceInfo(context: Context) : IDeviceInfo {
     override val manufacturer: String = Build.MANUFACTURER
     override val model: String = Build.MODEL
@@ -34,25 +28,16 @@ class DeviceInfo(context: Context) : IDeviceInfo {
     override val releaseVersion: String = Build.VERSION.RELEASE
     override val userAgent: String = createUserAgent(context)
 
+
     private fun createUserAgent(context: Context): String {
-        val applicationInfo = context.applicationInfo
+        val userAgentString = runCatching {
+            WebView(context).settings.userAgentString
+        }.getOrDefault("Android Browser")
 
-        val applicationName = when (val applicationLabelResource = applicationInfo.labelRes) {
-            0x0 -> applicationInfo.nonLocalizedLabel.toString()
-            else -> context.getString(applicationLabelResource)
-        }
+        val deviceInfo = "(${Build.MANUFACTURER} ${Build.MODEL})"
+        val buildInfo = "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
+        val cpuArchitecture = Build.SUPPORTED_ABIS.firstOrNull()
 
-        val packageManager = context.packageManager
-        val source = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->
-                packageManager.getInstallSourceInfo(context.packageName).installingPackageName
-            else ->
-                packageManager.getInstallerPackageName(context.packageName)
-        } ?: "StandAloneInstall"
-
-        val versionName = BuildConfig.versionName
-        val versionCode = BuildConfig.versionCode
-
-        return "$applicationName / $versionName($versionCode); $source; ($manufacturer; $model; SDK $sdkVersion; Android $releaseVersion)"
+        return "$userAgentString $deviceInfo $buildInfo $cpuArchitecture"
     }
 }

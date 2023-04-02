@@ -17,7 +17,6 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.common.Configuration
 import co.anitrend.buildSrc.extensions.*
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
@@ -89,12 +88,12 @@ private fun Project.configureLint() = baseAppExtension().run {
 }
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(Configuration.compileSdk)
+    compileSdkVersion(33)
     defaultConfig {
-        minSdk = Configuration.minSdk
-        targetSdk = Configuration.targetSdk
-        versionCode = Configuration.versionCode
-        versionName = Configuration.versionName
+        minSdk = 23
+        targetSdk = 33
+        versionCode = props[PropertyTypes.CODE].toInt()
+        versionName = props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applyAdditionalConfiguration(project)
     }

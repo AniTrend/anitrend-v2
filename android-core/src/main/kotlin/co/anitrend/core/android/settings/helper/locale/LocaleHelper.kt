@@ -63,6 +63,6 @@ internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelp
         val locale = settings.locale.value
         if (locale.country == null)
             return Locale(locale.language)
-        return Locale(locale.language, locale.language)
+        return Locale(locale.language, locale.country)
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) $YEAR AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,35 +14,3 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-package co.anitrend.buildSrc.common
-
-object Versions {
-
-    const val junit = "4.13.2"
-
-    const val timber = "5.0.1"
-    const val threeTenBp = "1.4.0"
-
-    const val debugDB = "1.0.6"
-    const val treesSence = "1.0.5"
-
-    const val liquidSwipe = "1.3"
-
-    const val prettyTime = "4.0.4.Final"
-    const val scalingImageView = "3.10.0"
-    const val serializationConverter = "0.8.0"
-
-    const val jsoup = "1.15.3"
-
-    const val tmdb = "2.8.1"
-    const val trakt = "6.11.2"
-
-    const val elements = "1.0.1"
-
-    const val ktlint = "0.47.1"
-
-    const val deeplink = "0.4.0"
-
-    const val kotlin = "1.7.10"
-}

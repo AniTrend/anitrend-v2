@@ -24,15 +24,26 @@ import org.gradle.api.Project
 internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     kotlin {
         target("**/*.kt")
-        targetExclude("$buildDir/**/*.kt", "bin/**/*.kt")
-        ktlint(libs.versions.ktlint.get()).userData(
-            mapOf(
-                "android" to "true",
-                "max_line_length" to "150",
-                "no-wildcard-imports" to "true"
-            )
-        )
-        // android studio is currently handling this
-        // licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+        targetExclude("**/build/**/*.kt")
+        ktlint(libs.versions.ktlint.get()).userData(mapOf("android" to "true"))
+        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+    }
+    format("kts") {
+        target("**/*.kts")
+        targetExclude("**/build/**/*.kts")
+        // Look for the first line that doesn't have a block comment (assumed to be the license)
+        licenseHeaderFile(rootProject.file("spotless/copyright.kts"), "(^(?![\\/ ]\\*).*$)")
+    }
+    format("xml") {
+        target("**/*.xml")
+        targetExclude("**/build/**/*.xml")
+        // Look for the first XML tag that isn't a comment (<!--) or the xml declaration (<?xml)
+        licenseHeaderFile(rootProject.file("spotless/copyright.xml"), "(<[^!?])")
+    }
+    format("properties") {
+        target("**/*.properties")
+        targetExclude("**/build/**/*.properties")
+        // Look for the first properties line that isn't a comment (#)
+        licenseHeaderFile(rootProject.file("spotless/copyright.properties"), "(^(#).*\$)")
     }
 }

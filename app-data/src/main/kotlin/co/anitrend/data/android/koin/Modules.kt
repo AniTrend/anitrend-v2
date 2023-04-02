@@ -42,6 +42,8 @@ import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.GraphApiFactory
+import co.anitrend.data.core.app.AppInfo
+import co.anitrend.data.core.app.IAppInfo
 import co.anitrend.data.core.device.DeviceInfo
 import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.core.extensions.store
@@ -80,7 +82,6 @@ import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -96,7 +97,12 @@ private val coreModule = module {
         DeviceInfo(
             context = androidContext()
         )
-    } bind DeviceInfo::class
+    }
+    single<IAppInfo> {
+        AppInfo(
+            context = androidContext()
+        )
+    }
     single {
         GraphApiFactory()
     }
