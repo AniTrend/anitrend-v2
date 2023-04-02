@@ -18,6 +18,7 @@
 package co.anitrend.buildSrc.extensions
 
 import co.anitrend.buildSrc.module.Modules
+import co.anitrend.buildSrc.plugins.components.PropertiesReader
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
@@ -82,6 +83,10 @@ fun Project.hasKaptSupport() =
  */
 fun Project.hasKotlinAndroidExtensionSupport() =
     name != Modules.App.Domain.id
+
+
+internal val Project.props: PropertiesReader
+    get() = PropertiesReader(this)
 
 internal val Project.libs: LibrariesForLibs get() =
     extensions.getByType<LibrariesForLibs>()

@@ -17,7 +17,6 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.common.Configuration
 import co.anitrend.buildSrc.extensions.*
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
@@ -35,13 +34,13 @@ private fun Properties.applyToBuildConfigFor(buildType: LibraryBuildType) {
     }
 }
 
-private fun NamedDomainObjectContainer<LibraryBuildType>.applyVersionProperties() {
+private fun NamedDomainObjectContainer<LibraryBuildType>.applyVersionProperties(project: Project) {
     asMap.forEach { buildTypeEntry ->
         println("Adding version build configuration fields -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
 
-        buildType.buildConfigField("String", "versionName", "\"${Configuration.versionName}\"")
-        buildType.buildConfigField("int", "versionCode", Configuration.versionCode.toString())
+        buildType.buildConfigField("String", "versionName", "\"${project.props[PropertyTypes.VERSION]}\"")
+        buildType.buildConfigField("int", "versionCode", project.props[PropertyTypes.CODE])
     }
 }
 
@@ -50,8 +49,8 @@ private fun NamedDomainObjectContainer<LibraryBuildType>.applyConfigurationPrope
         project.logger.lifecycle("Configuring build type -> ${buildTypeEntry.key}")
         val buildType = buildTypeEntry.value
 
-        buildType.buildConfigField("String", "versionName", "\"${Configuration.versionName}\"")
-        buildType.buildConfigField("int", "versionCode", Configuration.versionCode.toString())
+        buildType.buildConfigField("String", "versionName", "\"${project.props[PropertyTypes.VERSION]}\"")
+        buildType.buildConfigField("int", "versionCode", project.props[PropertyTypes.CODE])
 
         val secretsFile = project.file(".config/secrets.properties")
         if (secretsFile.exists())
@@ -125,7 +124,7 @@ internal fun Project.configureOptions() {
     if (isCoreModule() || isAndroidCoreModule()) {
         libraryExtension().run {
             buildTypes {
-                applyVersionProperties()
+                applyVersionProperties(this@configureOptions)
             }
         }
     }
