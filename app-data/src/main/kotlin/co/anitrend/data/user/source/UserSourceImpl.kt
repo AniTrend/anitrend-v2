@@ -18,9 +18,9 @@
 package co.anitrend.data.user.source
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.paging.FlowPagedListBuilder
-import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.util.PAGING_CONFIGURATION
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
@@ -39,7 +39,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 
 internal class UserSourceImpl {
-    
+
     class Identifier(
         private val remoteSource: UserRemoteSource,
         private val localSource: UserLocalSource,

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.auth.source
 
-import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper

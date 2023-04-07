@@ -20,7 +20,9 @@ package co.anitrend.search.component.screen
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
@@ -30,6 +32,7 @@ import co.anitrend.search.databinding.SearchScreenBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class SearchScreen : AniTrendScreen<SearchScreenBinding>() {
 
@@ -49,23 +52,25 @@ class SearchScreen : AniTrendScreen<SearchScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed {
-            binding?.multiSearch?.searchChangeFlow()
-                ?.filterNotNull()
-                ?.onEach { search ->
-                    when (search) {
-                        is Search.TextChanged -> {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                binding?.multiSearch?.searchChangeFlow()
+                    ?.filterNotNull()
+                    ?.onEach { search ->
+                        when (search) {
+                            is Search.TextChanged -> {
 
-                        }
-                        is Search.Removed -> {
+                            }
+                            is Search.Removed -> {
 
-                        }
-                        is Search.Selected -> {
+                            }
+                            is Search.Selected -> {
 
+                            }
                         }
                     }
-                }
-                ?.collect()
+                    ?.collect()
+            }
         }
         onUpdateUserInterface()
     }

@@ -18,11 +18,11 @@
 package co.anitrend.data.media.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.arch.request.model.Request
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
-import co.anitrend.arch.data.source.live.SupportPagingLiveDataSource
-import co.anitrend.arch.data.source.paging.SupportPagingDataSource
+import co.anitrend.arch.paging.legacy.source.live.SupportPagingLiveDataSource
+import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy

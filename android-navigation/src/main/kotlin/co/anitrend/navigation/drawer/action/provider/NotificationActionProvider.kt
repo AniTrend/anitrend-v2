@@ -20,9 +20,12 @@ package co.anitrend.navigation.drawer.action.provider
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
+import co.anitrend.core.android.extensions.lifecycleOwner
 import co.anitrend.core.android.extensions.lifecycleScope
 import co.anitrend.core.android.extensions.requireLifecycleOwner
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
@@ -34,6 +37,7 @@ import co.anitrend.navigation.drawer.action.provider.viewmodel.NotificationProvi
 import co.anitrend.navigation.extensions.startActivity
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -83,11 +87,13 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
         viewModel.fetchUser()
         setUpVisibility(forItem)
         setUpActionImageView()
-        context.lifecycleScope()?.launchWhenResumed {
-            container.addView(actionImageView)
-            settings.isAuthenticated.flow.collect {
-                toggleVisibility(forItem, it)
-                viewModel.fetchUser()
+        context.lifecycleScope()?.launch {
+            context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                container.addView(actionImageView)
+                settings.isAuthenticated.flow.collect {
+                    toggleVisibility(forItem, it)
+                    viewModel.fetchUser()
+                }
             }
         }
 

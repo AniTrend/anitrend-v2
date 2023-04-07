@@ -17,7 +17,7 @@
 
 package co.anitrend.data.relation.source
 
-import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper

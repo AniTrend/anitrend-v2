@@ -22,7 +22,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.attachComponent
@@ -39,6 +41,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -51,7 +54,7 @@ class MediaListEditorContent(
     private val viewModel by viewModel<MediaListEditorViewModel>()
 
     private val param: MediaListEditorRouter.Param? by argument(MediaListEditorRouter.Param.KEY)
-    
+
     private fun onFetchDataInitialize() {
         requireBinding().stateLayout.assureParamNotMissing(param) {
             viewModelState().invoke(requireNotNull(param))
@@ -69,19 +72,23 @@ class MediaListEditorContent(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
-        lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionFlow
-                .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
-                .onEach {
-                    viewModelState().retry()
-                }
-                .catch { cause: Throwable ->
-                    Timber.e(cause)
-                }
-                .collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                requireBinding().stateLayout.interactionFlow
+                    .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                    .onEach {
+                        viewModelState().retry()
+                    }
+                    .catch { cause: Throwable ->
+                        Timber.e(cause)
+                    }
+                    .collect()
+            }
         }
-        lifecycleScope.launchWhenStarted {
-            onFetchDataInitialize()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                onFetchDataInitialize()
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(
             this, closeSheetOnBackPressed

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.carousel.source.contract
 
-import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity

@@ -19,11 +19,14 @@ package co.anitrend.splash.component.content
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.splash.R
 import co.anitrend.splash.component.presenter.SplashPresenter
 import co.anitrend.splash.databinding.ContentSplashBinding
+import kotlinx.coroutines.launch
 
 class SplashContent(
     private val presenter: SplashPresenter,
@@ -50,9 +53,11 @@ class SplashContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed {
-            presenter.firstRunCheck()
-            activity?.finishAfterTransition()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                presenter.firstRunCheck()
+                activity?.finishAfterTransition()
+            }
         }
     }
 }

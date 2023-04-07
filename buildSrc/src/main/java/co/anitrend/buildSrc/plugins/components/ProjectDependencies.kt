@@ -26,12 +26,14 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     logger.lifecycle("Applying shared dependencies for feature module -> $path")
 
     dependencies.implementation(libs.anitrend.arch.ui)
-    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.extension)
     dependencies.implementation(libs.anitrend.arch.core)
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
+    dependencies.implementation(libs.anitrend.arch.recycler.paging.legacy)
+    dependencies.implementation(libs.anitrend.arch.paging.legacy)
     dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)
@@ -191,7 +193,9 @@ private fun Project.applyDataModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.analytics)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.data)
-    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.request)
+    dependencies.implementation(libs.anitrend.arch.paging.legacy)
+    dependencies.implementation(libs.anitrend.arch.extension)
 
     dependencies.implementation(project(Modules.App.Domain.path()))
 
@@ -240,7 +244,7 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     logger.lifecycle("Applying core feature dependencies for feature module -> $path")
 
     dependencies.implementation(libs.anitrend.arch.ui)
-    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.extension)
     dependencies.implementation(libs.anitrend.arch.core)
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.theme)
@@ -282,12 +286,14 @@ private fun Project.applyCommonModuleGroupDependencies() {
     logger.lifecycle("Applying common feature dependencies for module -> $path")
 
     dependencies.implementation(libs.anitrend.arch.ui)
-    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.extension)
     dependencies.implementation(libs.anitrend.arch.core)
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
+    dependencies.implementation(libs.anitrend.arch.recycler.paging.legacy)
+    dependencies.implementation(libs.anitrend.arch.paging.legacy)
     dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)
@@ -320,7 +326,7 @@ private fun Project.applyCommonModuleGroupDependencies() {
 private fun Project.applyTaskModuleGroupDependencies() {
     logger.lifecycle("Applying task feature dependencies for module -> $path")
 
-    dependencies.implementation(libs.anitrend.arch.ext)
+    dependencies.implementation(libs.anitrend.arch.extension)
     dependencies.implementation(libs.anitrend.arch.core)
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.domain)

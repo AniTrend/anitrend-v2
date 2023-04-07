@@ -19,7 +19,9 @@ package co.anitrend.auth.component.screen
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.databinding.AuthScreenBinding
@@ -61,8 +63,10 @@ class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
         lifecycleScope.launch {
             onUpdateUserInterface()
         }
-        lifecycleScope.launchWhenResumed {
-            checkIntentData()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                checkIntentData()
+            }
         }
     }
 

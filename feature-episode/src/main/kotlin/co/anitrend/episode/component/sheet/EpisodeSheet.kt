@@ -23,7 +23,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.android.helpers.image.using
@@ -38,6 +40,7 @@ import co.anitrend.episode.databinding.EpisodeSheetBinding
 import co.anitrend.navigation.EpisodeRouter
 import coil.request.Disposable
 import io.noties.markwon.Markwon
+import kotlinx.coroutines.launch
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -88,12 +91,14 @@ class EpisodeSheet(
         requireActivity().onBackPressedDispatcher.addCallback(
             this, closeSheetOnBackPressed
         )
-        lifecycleScope.launchWhenResumed {
-            viewModelState().invoke(
-                EpisodeParam.Detail(
-                    requireNotNull(param?.id)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModelState().invoke(
+                    EpisodeParam.Detail(
+                        requireNotNull(param?.id),
+                    ),
                 )
-            )
+            }
         }
     }
 
