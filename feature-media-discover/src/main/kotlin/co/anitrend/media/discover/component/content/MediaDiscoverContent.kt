@@ -19,7 +19,9 @@ package co.anitrend.media.discover.component.content
 
 import android.view.MenuItem
 import androidx.annotation.IntegerRes
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
@@ -35,6 +37,7 @@ import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MediaDiscoverContent(
@@ -109,11 +112,13 @@ class MediaDiscoverContent(
                 viewModel.default
             )
         }
-        lifecycleScope.launchWhenResumed {
-            settings.preferredViewMode.flowUpdating(
-                listPresenter.recyclerView,
-                ::getSpanSizeByPreference
-            )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                settings.preferredViewMode.flowUpdating(
+                    listPresenter.recyclerView,
+                    ::getSpanSizeByPreference,
+                )
+            }
         }
     }
 

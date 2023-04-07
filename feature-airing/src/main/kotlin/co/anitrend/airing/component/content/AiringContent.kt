@@ -19,7 +19,9 @@ package co.anitrend.airing.component.content
 
 import android.view.MenuItem
 import androidx.annotation.IntegerRes
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.arch.recycler.adapter.SupportAdapter
@@ -34,6 +36,7 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.threeten.bp.Instant
 
@@ -117,11 +120,13 @@ class AiringContent(
         listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
             viewModelState().invoke(requireNotNull(viewModel.param))
         }
-        lifecycleScope.launchWhenResumed {
-            settings.preferredViewMode.flowUpdating(
-                listPresenter.recyclerView,
-                ::getSpanSizeByPreference
-            )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                settings.preferredViewMode.flowUpdating(
+                    listPresenter.recyclerView,
+                    ::getSpanSizeByPreference,
+                )
+            }
         }
     }
 

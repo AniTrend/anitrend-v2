@@ -18,9 +18,9 @@
 package co.anitrend.data.review.source
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.paging.FlowPagedListBuilder
-import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.util.PAGING_CONFIGURATION
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
@@ -151,7 +151,7 @@ internal sealed class ReviewSourceImpl {
         private val controller: ReviewSaveController,
         override val dispatcher: ISupportDispatcher
     ) : ReviewSource.Save() {
-        
+
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {

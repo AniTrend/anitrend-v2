@@ -20,7 +20,9 @@ package co.anitrend.deeplink.component.screen
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.screen.AniTrendScreen
@@ -34,6 +36,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
@@ -71,16 +74,20 @@ class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionFlow
-                .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
-                .onEach { finishAfterTransition() }
-                .catch { cause: Throwable ->
-                    Timber.e(cause)
-                }.collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                requireBinding().stateLayout.interactionFlow
+                    .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                    .onEach { finishAfterTransition() }
+                    .catch { cause: Throwable ->
+                        Timber.e(cause)
+                    }.collect()
+            }
         }
-        lifecycleScope.launchWhenResumed {
-            handleIntentData()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                handleIntentData()
+            }
         }
     }
 }

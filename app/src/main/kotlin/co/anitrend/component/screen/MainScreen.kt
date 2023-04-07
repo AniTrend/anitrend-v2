@@ -26,7 +26,9 @@ import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.R
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.component.action.ChangeSettingsMenuStateAction
@@ -176,10 +178,12 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed {
-            navigationDrawer.setCheckedItem(viewModel.state.selectedItem)
-            setUpNavigationDrawer()
-            observeNavigationDrawer()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                navigationDrawer.setCheckedItem(viewModel.state.selectedItem)
+                setUpNavigationDrawer()
+                observeNavigationDrawer()
+            }
         }
         onUpdateUserInterface()
     }

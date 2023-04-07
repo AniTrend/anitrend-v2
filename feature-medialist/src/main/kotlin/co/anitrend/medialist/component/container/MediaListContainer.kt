@@ -22,7 +22,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.component.content.AniTrendContent
@@ -34,6 +36,7 @@ import co.anitrend.medialist.component.container.mediator.MediaListTabConfigurat
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.databinding.MediaListContainerBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import timber.log.Timber
 
@@ -128,9 +131,11 @@ class MediaListContainer(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
-        lifecycleScope.launchWhenStarted {
-            requireBinding().stateLayout.assureParamNotMissing(viewModel.param) {
-                viewModelState().invoke(requireNotNull(viewModel.param))
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                requireBinding().stateLayout.assureParamNotMissing(viewModel.param) {
+                    viewModelState().invoke(requireNotNull(viewModel.param))
+                }
             }
         }
     }

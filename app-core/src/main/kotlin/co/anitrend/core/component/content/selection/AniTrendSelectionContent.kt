@@ -21,8 +21,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -31,7 +33,7 @@ import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
-import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
+import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.extensions.isEmpty
@@ -64,16 +66,18 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected fun ISupportAdapter<*>.registerFlowListener() {
-        lifecycleScope.launchWhenResumed {
-            clickableFlow
-                .debounce(16)
-                .filterIsInstance<ClickableItem.State>()
-                .onEach {
-                    if (it.state !is LoadState.Loading)
-                        viewModelState()?.retry()
-                    else
-                        Timber.d("retry -> state is loading? current state: ${it.state}")
-                }.collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                clickableFlow
+                    .debounce(16)
+                    .filterIsInstance<ClickableItem.State>()
+                    .onEach {
+                        if (it.state !is LoadState.Loading)
+                            viewModelState()?.retry()
+                        else
+                            Timber.d("retry -> state is loading? current state: ${it.state}")
+                    }.collect()
+            }
         }
     }
 
@@ -178,9 +182,11 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
         attachComponent(supportViewAdapter)
-        lifecycleScope.launchWhenResumed {
-            if (supportViewAdapter.isEmpty())
-                onFetchDataInitialize()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                if (supportViewAdapter.isEmpty())
+                    onFetchDataInitialize()
+            }
         }
     }
 

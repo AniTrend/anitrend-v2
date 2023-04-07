@@ -18,7 +18,7 @@
 package co.anitrend.data.android.controller.core
 
 import co.anitrend.arch.data.common.ISupportResponse
-import co.anitrend.arch.data.request.callback.RequestCallback
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
@@ -43,7 +43,7 @@ class DefaultController<S, out D>(
      *
      * @param resource awaiting execution
      * @param requestCallback for the deferred result
-     * @param interceptor allows you to access certain network model fields 
+     * @param interceptor allows you to access certain network model fields
      * which are otherwise unaccessable from the domain/entity level
      *
      * @return resource fetched if present

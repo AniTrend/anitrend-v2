@@ -20,7 +20,9 @@ package co.anitrend.medialist.component.content
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IntegerRes
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
@@ -32,6 +34,7 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.R
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class MediaListContent(
@@ -70,11 +73,13 @@ class MediaListContent(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launchWhenResumed {
-            settings.preferredViewMode.flowUpdating(
-                listPresenter.recyclerView,
-                ::getSpanSizeByPreference
-            )
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                settings.preferredViewMode.flowUpdating(
+                    listPresenter.recyclerView,
+                    ::getSpanSizeByPreference,
+                )
+            }
         }
     }
 

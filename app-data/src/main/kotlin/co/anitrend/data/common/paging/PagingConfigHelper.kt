@@ -17,7 +17,7 @@
 
 package co.anitrend.data.common.paging
 
-import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.request.model.Request
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import timber.log.Timber
 

@@ -17,12 +17,12 @@
 
 package co.anitrend.data.android.extensions
 
-import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.arch.request.model.Request
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
-import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
+import co.anitrend.arch.paging.legacy.source.contract.AbstractPagingDataSource
 import kotlinx.coroutines.launch
 
 

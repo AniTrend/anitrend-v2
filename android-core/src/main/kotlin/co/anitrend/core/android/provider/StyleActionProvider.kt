@@ -20,12 +20,16 @@ package co.anitrend.core.android.provider
 import android.content.Context
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.android.R
+import co.anitrend.core.android.extensions.lifecycleOwner
 import co.anitrend.core.android.extensions.lifecycleScope
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -64,10 +68,12 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
      */
     override fun createWidget(forItem: MenuItem?): View {
         actionImageView.setOnClickListener(::onActionClicked)
-        context.lifecycleScope()?.launchWhenResumed {
-            iconForSetting(settings.preferredViewMode.value)
-            container.addView(actionImageView)
-            settings.preferredViewMode.flow.collect(::iconForSetting)
+        context.lifecycleScope()?.launch {
+            context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                iconForSetting(settings.preferredViewMode.value)
+                container.addView(actionImageView)
+                settings.preferredViewMode.flow.collect(::iconForSetting)
+            }
         }
         return container
     }

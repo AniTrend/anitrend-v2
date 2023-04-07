@@ -18,8 +18,8 @@
 package co.anitrend.data.media.source.factory
 
 import androidx.paging.DataSource
-import co.anitrend.arch.data.source.live.SupportPagingLiveDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.paging.legacy.source.live.SupportPagingLiveDataSource
 import co.anitrend.data.media.MediaNetworkController
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.source.MediaSourceImpl

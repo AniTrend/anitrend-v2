@@ -20,7 +20,9 @@ package co.anitrend.auth.component.content
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
@@ -37,6 +39,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
@@ -75,41 +78,45 @@ class AuthContent(
         requireActivity().onBackPressedDispatcher.addCallback(
             this, resetNetworkStateOnBackPress
         )
-        lifecycleScope.launchWhenResumed {
-            requireBinding().stateLayout.interactionFlow
-                .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
-                .onEach {
-                    viewModelState().retry()
-                }
-                .catch { cause: Throwable ->
-                    Timber.e(cause)
-                }
-                .collect()
-        }
-        lifecycleScope.launchWhenResumed {
-            viewModel.state.authenticationFlow
-                .onEach { state ->
-                    when (state) {
-                        is Authentication.Authenticating -> {
-                            requireBinding().stateLayout.loadStateFlow.value = LoadState.Loading()
-                            viewModelState().invoke(state)
-                        }
-                        is Authentication.Error -> {
-                            requireBinding().stateLayout.loadStateFlow.value =
-                                LoadState.Error(
-                                    RequestError(
-                                        topic = state.title,
-                                        description = state.message
-                                    )
-                                )
-                        }
-                        else -> {
-                            Timber.v("Authentication flow state changed: $state")
-                        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                requireBinding().stateLayout.interactionFlow
+                    .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                    .onEach {
+                        viewModelState().retry()
                     }
-                }.catch { cause: Throwable ->
-                    Timber.e(cause)
-                }.collect()
+                    .catch { cause: Throwable ->
+                        Timber.e(cause)
+                    }
+                    .collect()
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.state.authenticationFlow
+                    .onEach { state ->
+                        when (state) {
+                            is Authentication.Authenticating -> {
+                                requireBinding().stateLayout.loadStateFlow.value = LoadState.Loading()
+                                viewModelState().invoke(state)
+                            }
+                            is Authentication.Error -> {
+                                requireBinding().stateLayout.loadStateFlow.value =
+                                    LoadState.Error(
+                                        RequestError(
+                                            topic = state.title,
+                                            description = state.message,
+                                        ),
+                                    )
+                            }
+                            else -> {
+                                Timber.v("Authentication flow state changed: $state")
+                            }
+                        }
+                    }.catch { cause: Throwable ->
+                        Timber.e(cause)
+                    }.collect()
+            }
         }
     }
 

@@ -25,7 +25,9 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
@@ -222,31 +224,37 @@ class BottomDrawerContent(
         requireActivity().onBackPressedDispatcher.addCallback(
             this, closeDrawerOnBackPressed
         )
-        lifecycleScope.launchWhenResumed {
-            accountViewModel.accountState()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                accountViewModel.accountState()
+            }
         }
-        lifecycleScope.launchWhenResumed {
-            navigationAdapter.clickableFlow
-                .filterIsInstance<ClickableItem.Data<Navigation.Menu>>()
-                .onEach { clickable ->
-                    val model = clickable.data
-                    setCheckedItem(model.id)
-                    mutableNavigationStateFlow.value = model
-                }.catch { cause: Throwable ->
-                    Timber.e(
-                        cause,
-                        "navigationAdapter.clickableStateFlow threw an uncaught exception"
-                    )
-                }.collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                navigationAdapter.clickableFlow
+                    .filterIsInstance<ClickableItem.Data<Navigation.Menu>>()
+                    .onEach { clickable ->
+                        val model = clickable.data
+                        setCheckedItem(model.id)
+                        mutableNavigationStateFlow.value = model
+                    }.catch { cause: Throwable ->
+                        Timber.e(
+                            cause,
+                            "navigationAdapter.clickableStateFlow threw an uncaught exception",
+                        )
+                    }.collect()
+            }
         }
-        lifecycleScope.launchWhenResumed {
-            presenter.settings.isAuthenticated.flow
-                .onEach {
-                    accountViewModel.accountState()
-                    navigationViewModel(it)
-                }.catch { cause: Throwable ->
-                    Timber.e(cause)
-                }.collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                presenter.settings.isAuthenticated.flow
+                    .onEach {
+                        accountViewModel.accountState()
+                        navigationViewModel(it)
+                    }.catch { cause: Throwable ->
+                        Timber.e(cause)
+                    }.collect()
+            }
         }
     }
 

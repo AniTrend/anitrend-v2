@@ -18,7 +18,9 @@
 package co.anitrend.core.component.content
 
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
@@ -26,9 +28,11 @@ import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.core.ui.inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
@@ -40,6 +44,8 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(),
 
     override val scope by fragmentScope()
 
+    private val connectivity by inject<ISupportConnectivity>()
+
     /**
      * Additional initialization to be done in this method, this method will be called in
      * [androidx.fragment.app.FragmentActivity.onCreate].
@@ -50,16 +56,18 @@ abstract class AniTrendContent<B : ViewBinding> : SupportFragment(),
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed {
-            koinOf<ISupportConnectivity>().connectivityStateFlow
-                .onEach { state ->
-                    Timber.v("Connectivity state changed: $state")
-                    if (state == ConnectivityState.Connected) viewModelState()?.retry()
-                }
-                .catch { cause ->
-                    Timber.w(cause, "While collecting connectivity state")
-                }
-                .collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                connectivity.connectivityStateFlow
+                    .onEach { state ->
+                        Timber.v("Connectivity state changed: $state")
+                        if (state == ConnectivityState.Connected) viewModelState()?.retry()
+                    }
+                    .catch { cause ->
+                        Timber.w(cause, "While collecting connectivity state")
+                    }
+                    .collect()
+            }
         }
     }
 

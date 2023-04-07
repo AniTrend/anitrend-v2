@@ -21,7 +21,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.component.content.AniTrendContent
@@ -29,6 +31,7 @@ import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.onboarding.R
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import com.airbnb.lottie.LottieDrawable
+import kotlinx.coroutines.launch
 
 class OnBoardingContent(
     override val inflateLayout: Int = R.layout.onboarding_content
@@ -54,8 +57,10 @@ class OnBoardingContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launchWhenResumed {
-            binding?.onBoardingLottieAnimationView?.playAnimation()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                binding?.onBoardingLottieAnimationView?.playAnimation()
+            }
         }
     }
 
