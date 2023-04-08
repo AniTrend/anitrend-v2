@@ -18,7 +18,7 @@
 package co.anitrend.data.tag.koin
 
 import co.anitrend.data.android.extensions.graphQLController
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.data.tag.TagListRepository
@@ -38,7 +38,7 @@ private val sourceModule = module {
     factory<TagSource> {
         TagSourceImpl(
             localSource = store().tagDao(),
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<TagMapper.Core>()
             ),

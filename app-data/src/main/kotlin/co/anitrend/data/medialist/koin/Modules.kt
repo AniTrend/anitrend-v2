@@ -18,7 +18,7 @@
 package co.anitrend.data.medialist.koin
 
 import co.anitrend.data.android.extensions.graphQLController
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.*
 import co.anitrend.data.medialist.cache.MediaListCache
@@ -35,7 +35,7 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<MediaListSource.Sync> {
         MediaListSourceImpl.Sync(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<MediaListMapper.Collection>()
             ),
@@ -44,7 +44,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.Collection> {
         MediaListSourceImpl.Collection(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().mediaListDao(),
             mediaLocalSource = store().mediaDao(),
             clearDataHelper = get(),
@@ -60,7 +60,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.Paged> {
         MediaListSourceImpl.Paged(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().mediaListDao(),
             mediaLocalSource = store().mediaDao(),
             clearDataHelper = get(),
@@ -76,7 +76,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.DeleteCustomList> {
         MediaListSourceImpl.DeleteCustomList(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().customListDao(),
             userSource = get(),
             clearDataHelper = get(),
@@ -89,7 +89,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.DeleteEntry> {
         MediaListSourceImpl.DeleteEntry(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().mediaListDao(),
             clearDataHelper = get(),
             controller = graphQLController(
@@ -101,7 +101,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.Entry> {
         MediaListSourceImpl.Entry(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().mediaListDao(),
             mediaLocalSource = store().mediaDao(),
             clearDataHelper = get(),
@@ -116,7 +116,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.SaveEntry> {
         MediaListSourceImpl.SaveEntry(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<MediaListMapper.SaveEntry>()
             ),
@@ -125,7 +125,7 @@ private val sourceModule = module {
     }
     factory<MediaListSource.SaveEntries> {
         MediaListSourceImpl.SaveEntries(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<MediaListMapper.SaveEntries>()
             ),

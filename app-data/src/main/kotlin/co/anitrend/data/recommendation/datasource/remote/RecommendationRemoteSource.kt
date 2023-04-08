@@ -18,7 +18,7 @@
 package co.anitrend.data.recommendation.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
-import co.anitrend.data.core.api.factory.contract.EndpointType
+import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.recommendation.model.container.RecommendationModelContainer
 import io.github.wax911.library.annotation.GraphQuery
@@ -30,14 +30,14 @@ import retrofit2.http.POST
 internal interface RecommendationRemoteSource {
 
     @GRAPHQL
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetRecommendationPaged")
     suspend fun getRecommendationPaged(
         @Body queryContainer: QueryContainerBuilder
     ): Response<GraphQLResponse<RecommendationModelContainer.Paged>>
 
     @GRAPHQL
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("SaveRecommendation")
     suspend fun saveRecommendation(
         @Body queryContainer: QueryContainerBuilder

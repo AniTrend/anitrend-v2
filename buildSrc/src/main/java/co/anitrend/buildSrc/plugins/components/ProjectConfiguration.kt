@@ -23,6 +23,8 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.io.File
 
@@ -173,9 +175,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     tasks.withType(KotlinCompile::class.java) {
         val compilerArgumentOptions = mutableListOf(
-            "-opt-in=kotlin.Experimental",
             "-opt-in=kotlin.ExperimentalStdlibApi",
-            "-opt-in=kotlin.Experimental"
         )
 
         if (hasCoroutineSupport()) {
@@ -194,13 +194,21 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 add("-opt-in=org.koin.core.KoinExperimentalAPI")
             }
         }
-		
+
         kotlinOptions {
             allWarningsAsErrors = false
             // Filter out modules that won't be using coroutines
             freeCompilerArgs = compilerArgumentOptions
         }
     }
+
+    // Disabling experimental language version, causing issues with KAPT + Room
+    //tasks.withType(KotlinCompilationTask::class.java)
+    //    .configureEach {
+    //        compilerOptions
+    //            .languageVersion
+    //            .set(KotlinVersion.KOTLIN_1_9)
+    //    }
 
     if (hasComposeSupport()) {
         composeOptions {

@@ -129,6 +129,6 @@ internal class NewsItem(
             viewGroup: ViewGroup
         ) = NewsItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

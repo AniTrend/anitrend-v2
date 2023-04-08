@@ -141,6 +141,6 @@ internal class MediaSummaryItem(
             viewGroup: ViewGroup
         ) = MediaSummaryItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

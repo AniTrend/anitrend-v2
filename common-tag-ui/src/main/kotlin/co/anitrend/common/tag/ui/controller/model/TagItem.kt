@@ -108,6 +108,6 @@ internal class TagItem(
             viewGroup: ViewGroup
         ) = TagItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

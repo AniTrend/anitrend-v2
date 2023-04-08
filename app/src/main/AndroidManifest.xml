@@ -44,7 +44,6 @@
         android:fullBackupContent="@xml/backup_descriptor"
         android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:label"
         tools:targetApi="q">
 
         <activity android:name=".component.screen.MainScreen"

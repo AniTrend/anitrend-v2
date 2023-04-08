@@ -58,6 +58,6 @@ class GroupAccountItem(
             viewGroup: ViewGroup
         ) = AccountGroupItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

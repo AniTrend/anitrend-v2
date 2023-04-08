@@ -67,6 +67,6 @@ class GroupNavigationItem(
             viewGroup: ViewGroup
         ) = NavigationGroupItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

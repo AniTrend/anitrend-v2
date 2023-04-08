@@ -30,6 +30,9 @@ import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.fts.CharacterFtsEntity
 import co.anitrend.data.customlist.entity.CustomListEntity
 import co.anitrend.data.customscore.entity.CustomScoreEntity
+import co.anitrend.data.edge.config.entity.EdgeConfigEntity
+import co.anitrend.data.edge.home.entity.EdgeHomeEntity
+import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.entity.fts.EpisodeFtsEntity
 import co.anitrend.data.feed.news.entity.NewsEntity
@@ -79,7 +82,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         JikanProducerEntity::class, JikanAuthorEntity::class,
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
-        UserNotificationEntity::class
+        UserNotificationEntity::class,
+        EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeHomeEntity::class
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,

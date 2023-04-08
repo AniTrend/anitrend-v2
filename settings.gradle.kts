@@ -6,6 +6,7 @@ include(
     ":app-data",
     ":app-data-android",
     ":app-data-core",
+	":app-data-edge",
     ":app-data-feed",
     ":app-data-imgur",
     ":app-data-jikan",
@@ -80,5 +81,6 @@ include(
     ":task-genre",
     ":task-tag",
     ":task-updater",
-	":task-account"
+	":task-account",
+    "task-config"
 )

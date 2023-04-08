@@ -23,4 +23,8 @@ interface IEndpointType {
     val url: HttpUrl
     val size: Int
         get() = 1
+
+    companion object {
+        const val BASE_ENDPOINT_PATH = "/"
+    }
 }

@@ -360,7 +360,8 @@ private fun Project.applyComposeDependencies() {
     dependencies.implementation(libs.androidx.compose.runtime)
     dependencies.implementation(libs.androidx.compose.runtime.livedata)
     dependencies.implementation(libs.androidx.compose.ui.viewbinding)
-    dependencies.implementation(libs.androidx.compose.ui.tooling)
+    dependencies.debugImplementation(libs.androidx.compose.ui.tooling)
+    dependencies.implementation(libs.androidx.compose.ui.tooling.preview)
     dependencies.androidTest(libs.androidx.compose.ui.test)
     dependencies.implementation(libs.androidx.compose.ui)
 

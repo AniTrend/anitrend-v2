@@ -1,0 +1,15 @@
+query GetConfig {
+  config {
+    settings {
+      analyticsEnabled
+    }
+    defaultImage {
+      banner,
+      default,
+      error,
+      info,
+      loading,
+      poster
+    }
+  }
+}

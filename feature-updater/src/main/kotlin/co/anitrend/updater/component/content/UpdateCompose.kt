@@ -33,20 +33,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import co.anitrend.core.android.compose.AniTrendTheme
-import co.anitrend.core.android.compose.onBackgroundColor
+import co.anitrend.core.android.ui.AniTrendPreview
 import kotlinx.coroutines.launch
 
-@Preview
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
 fun UpdateCompose() {
     AniTrendTheme {
         val scope = rememberCoroutineScope()
-        val context = LocalContext.current
         val selection = remember { mutableStateOf(1) }
         val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
         BackdropScaffold(
@@ -60,7 +55,7 @@ fun UpdateCompose() {
                                 Icon(
                                     Icons.Rounded.Menu,
                                     contentDescription = "Localized description",
-                                    tint = context.onBackgroundColor()
+                                    tint = MaterialTheme.colors.onBackground
                                 )
                             }
                         } else {
@@ -68,7 +63,7 @@ fun UpdateCompose() {
                                 Icon(
                                     Icons.Rounded.Close,
                                     contentDescription = "Localized description",
-                                    tint = context.onBackgroundColor()
+                                    tint = MaterialTheme.colors.onBackground
                                 )
                             }
                         }
@@ -86,7 +81,7 @@ fun UpdateCompose() {
                             Icon(
                                 Icons.Rounded.Favorite,
                                 contentDescription = "Localized description",
-                                tint = context.onBackgroundColor()
+                                tint = MaterialTheme.colors.onBackground
                             )
                         }
                     },
@@ -127,4 +122,11 @@ fun UpdateCompose() {
             }
         )
     }
+}
+
+
+@AniTrendPreview.Mobile
+@Composable
+private fun UpdateComposablePreview() {
+    UpdateCompose()
 }

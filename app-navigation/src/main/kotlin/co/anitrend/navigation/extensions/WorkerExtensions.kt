@@ -50,16 +50,20 @@ inline fun <reified T: IParam> WorkerParameters.fromWorkerParameters(contract: I
  */
 fun <T: IParam> Class<out ListenableWorker>.createOneTimeUniqueWorker(
     context: Context,
-    params: T
+    params: T? = null,
 ): WorkContinuation {
-    val oneTimeRequest = OneTimeWorkRequest.Builder(this)
-        .setInputData(params.toDataBuilder().build())
-        .build()
+    val oneTimeRequestBuilder = OneTimeWorkRequest.Builder(this)
+
+    if (params != null)
+        oneTimeRequestBuilder.setInputData(
+            params.toDataBuilder()
+                .build()
+        )
 
     return WorkManager.getInstance(context)
         .beginUniqueWork(
             simpleName,
             ExistingWorkPolicy.KEEP,
-            oneTimeRequest
+            oneTimeRequestBuilder.build()
         )
 }

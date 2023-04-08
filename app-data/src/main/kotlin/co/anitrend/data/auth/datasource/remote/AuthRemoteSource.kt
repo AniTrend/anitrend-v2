@@ -20,7 +20,7 @@ package co.anitrend.data.auth.datasource.remote
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.JSON
-import co.anitrend.data.core.api.factory.contract.EndpointType
+import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.user.model.container.UserModelContainer
 import io.github.wax911.library.annotation.GraphQuery
@@ -44,7 +44,7 @@ internal interface AuthRemoteSource {
     ): Response<JsonWebToken>
 
     @GRAPHQL
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetUserViewer")
     suspend fun getAuthenticatedUser(
         @Header("Authorization") authToken: String,

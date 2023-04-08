@@ -1120,3 +1120,15 @@ object ReviewTaskRouter : NavigationRouter() {
         }
     }
 }
+
+object ConfigTaskRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun worker(): Class<out ListenableWorker>
+        fun scheduler(): WorkSchedulerController
+    }
+
+    fun forWorker() = provider.worker()
+    fun forScheduler() = provider.scheduler()
+}

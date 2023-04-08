@@ -18,7 +18,7 @@
 package co.anitrend.data.media.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
-import co.anitrend.data.core.api.factory.contract.EndpointType
+import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.model.container.MediaModelContainer
 import io.github.wax911.library.annotation.GraphQuery
@@ -30,14 +30,14 @@ import retrofit2.http.POST
 internal interface MediaRemoteSource {
 
     @GRAPHQL
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaPaged")
     suspend fun getMediaPaged(
         @Body queryContainer: QueryContainerBuilder
     ): Response<GraphQLResponse<MediaModelContainer.Paged>>
 
     @GRAPHQL
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaDetail")
     suspend fun getMediaDetail(
         @Body queryContainer: QueryContainerBuilder

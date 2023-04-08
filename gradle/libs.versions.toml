@@ -27,7 +27,7 @@ androidx-test-espresso = "3.5.1"
 androidx-test-ext = "1.1.5"
 androidx-work = "2.8.1"
 
-anitrend-arch = "1.6.1"
+anitrend-arch = "0cc0f5364a"
 anitrend-emojify = "1.7.0"
 anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
@@ -115,6 +115,7 @@ androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", versio
 androidx-compose-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "androidx-compose" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-compose" }
 androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test", version.ref = "androidx-compose" }
 androidx-compose-ui-viewbinding = { module = "androidx.compose.ui:ui-viewbinding", version.ref = "androidx-compose" }
 

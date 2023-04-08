@@ -19,7 +19,7 @@ package co.anitrend.data.user.koin
 
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.auth.mapper.AuthMapper
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.user.*
 import co.anitrend.data.user.cache.UserCache
@@ -34,7 +34,7 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<UserSource.Identifier> {
         UserSourceImpl.Identifier(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
@@ -47,7 +47,7 @@ private val sourceModule = module {
     }
     factory<UserSource.Viewer> {
         UserSourceImpl.Viewer(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
@@ -61,7 +61,7 @@ private val sourceModule = module {
     }
     factory<UserSource.Search> {
         UserSourceImpl.Search(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
@@ -73,7 +73,7 @@ private val sourceModule = module {
     }
     factory<UserSource.Profile> {
         UserSourceImpl.Profile(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
@@ -86,7 +86,7 @@ private val sourceModule = module {
     }
     factory<UserSource.Statistic> {
         UserSourceImpl.Statistic(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
@@ -99,7 +99,7 @@ private val sourceModule = module {
     }
     factory<UserSource.ToggleFollow> {
         UserSourceImpl.ToggleFollow(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             controller = graphQLController(
                 mapper = get<UserMapper.User>()
@@ -110,7 +110,7 @@ private val sourceModule = module {
     }
     factory<UserSource.Update> {
         UserSourceImpl.Update(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().userDao(),
             controller = graphQLController(
                 mapper = get<UserMapper.Profile>()

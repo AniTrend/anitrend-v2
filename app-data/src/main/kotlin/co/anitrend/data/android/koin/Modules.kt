@@ -15,12 +15,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-@file:Suppress("DEPRECATION")
-
 package co.anitrend.data.android.koin
 
 import android.net.ConnectivityManager
 import android.webkit.CookieManager
+import android.webkit.WebSettings
 import co.anitrend.arch.extension.ext.systemServiceOf
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
@@ -41,14 +40,15 @@ import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
-import co.anitrend.data.core.api.factory.GraphApiFactory
-import co.anitrend.data.core.app.AppInfo
+import co.anitrend.data.core.api.factory.AniListApiFactory
+import co.anitrend.data.android.info.AppInfo
 import co.anitrend.data.core.app.IAppInfo
-import co.anitrend.data.core.device.DeviceInfo
+import co.anitrend.data.android.info.DeviceInfo
 import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.customlist.koin.customListModules
 import co.anitrend.data.customscore.koin.customScoreModules
+import co.anitrend.data.edge.koin.edgeModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.koin.feedModules
 import co.anitrend.data.genre.koin.genreModules
@@ -82,29 +82,26 @@ import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.binds
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.binds
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 private val coreModule = module {
-    single {
-        AniTrendStore.create(
-            applicationContext = androidContext()
-        )
-    } binds IAniTrendStore.BINDINGS
-    single<IDeviceInfo> {
+    singleOf(::AniListApiFactory)
+    singleOf(AniTrendStore::create) {
+        binds(IAniTrendStore.BINDINGS)
+    }
+    single<IDeviceInfo>(createdAtStart = true) {
         DeviceInfo(
-            context = androidContext()
+            platformUserAgent = WebSettings.getDefaultUserAgent(androidContext())
         )
     }
-    single<IAppInfo> {
-        AppInfo(
-            context = androidContext()
-        )
-    }
-    single {
-        GraphApiFactory()
+    singleOf(::AppInfo) {
+        bind<IAppInfo>()
     }
     factory<IAuthenticationHelper> {
         AuthenticationHelper(
@@ -115,11 +112,8 @@ private val coreModule = module {
             cacheLocalSource = store().cacheDao()
         )
     }
-    factory<IClearDataHelper> {
-        ClearDataHelper(
-            connectivity = get(),
-            settings = get()
-        )
+    factoryOf(::ClearDataHelper) {
+        bind<IClearDataHelper>()
     }
 }
 
@@ -258,5 +252,6 @@ val dataModules = module {
         customListModules,
         customScoreModules,
         reviewModules,
+        edgeModules,
     )
 }

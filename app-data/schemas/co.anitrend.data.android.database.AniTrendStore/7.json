@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "faa63bed651d09b9f33a54bbde80e855",
+    "identityHash": "62ececbff9588658819d7f958409935a",
     "entities": [
       {
         "tableName": "cache_log",
@@ -3236,6 +3236,150 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "edge_config",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `settings_analytics_enabled` INTEGER NOT NULL, `image_banner` TEXT NOT NULL, `image_poster` TEXT NOT NULL, `image_loading` TEXT NOT NULL, `image_error` TEXT NOT NULL, `image_info` TEXT NOT NULL, `image_standard` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "settings.analyticsEnabled",
+            "columnName": "settings_analytics_enabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultImage.banner",
+            "columnName": "image_banner",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultImage.poster",
+            "columnName": "image_poster",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultImage.loading",
+            "columnName": "image_loading",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultImage.error",
+            "columnName": "image_error",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultImage.info",
+            "columnName": "image_info",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultImage.standard",
+            "columnName": "image_standard",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "edge_navigation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`destination` TEXT NOT NULL, `label` TEXT NOT NULL, `icon` TEXT NOT NULL, `id` INTEGER NOT NULL, `group_authenticated` INTEGER NOT NULL, `group_label` TEXT NOT NULL, `group_id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "destination",
+            "columnName": "destination",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "group.authenticated",
+            "columnName": "group_authenticated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "group.label",
+            "columnName": "group_label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "group.id",
+            "columnName": "group_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "edge_home",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [
@@ -3250,7 +3394,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'faa63bed651d09b9f33a54bbde80e855')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62ececbff9588658819d7f958409935a')"
     ]
   }
 }
