@@ -46,7 +46,7 @@ coil = "1.4.0"
 
 devrieze-xmlutil = "0.85.0"
 
-google-accompanist = "0.28.0"
+google-accompanist = "0.30.1"
 google-android-material = "1.8.0"
 
 jetbrains-dokka = "1.8.10"
