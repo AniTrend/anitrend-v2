@@ -15,8 +15,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.gradle.accessors.dm.LibrariesForLibs
-
 plugins {
     `kotlin-dsl`
     `version-catalog`
@@ -35,8 +33,6 @@ repositories {
         setUrl("https://plugins.gradle.org/m2/")
     }
 }
-
-val libs = extensions.getByType<LibrariesForLibs>()
 
 
 dependencies {
