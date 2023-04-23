@@ -1,18 +1,18 @@
 [versions]
 ktlint = "0.48.2"
 
-gradle-plugin = "7.4.2"
+gradle-plugin = "8.0.0"
 
-androidx-activity = "1.6.1"
+androidx-activity = "1.7.1"
 androidx-appcompat = "1.6.1"
-androidx-compose = "1.4.1"
+androidx-compose = "1.4.2"
 androidx-compose-compiler = "1.4.5"
 androidx-compose-material3 = "1.0.1"
 androidx-core = "1.10.0"
 androidx-core-animation = "1.10.0"
 androidx-datastore = "1.0.0"
 androidx-emoji = "1.1.0"
-androidx-fragment = "1.5.6"
+androidx-fragment = "1.5.7"
 androidx-glance = "1.0.0-alpha05"
 androidx-lifecycle = "2.6.1"
 androidx-lifecycle-compose = "2.6.1"
@@ -65,7 +65,7 @@ mockk = "1.13.5"
 
 square-kotlinpoet = "1.13.0"
 square-leakcanary = "2.10"
-square-okhttp = "4.10.0"
+square-okhttp = "4.11.0"
 square-retrofit = "2.9.0"
 
 sheets = "2.3.1"
@@ -88,7 +88,7 @@ trakt = { module = "com.uwetrottmann.trakt5:trakt-java", version = "6.11.2" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.15.4" }
 scalingImageView = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version = "3.10.0" }
 prettyTime = { module = "org.ocpsoft.prettytime:prettytime", version = "5.0.4.Final" }
-retrofitSerializer = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "0.8.0" }
+retrofitSerializer = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 deeplink = { module = "com.kingsleyadio.deeplink:deeplink", version = "0.4.0" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
@@ -119,7 +119,7 @@ androidx-core-ktx =  { module = "androidx.core:core-ktx", version.ref = "android
 androidx-core-animation =  { module = "androidx.core:core-ktx", version.ref = "androidx-core-animation" }
 androidx-core-animation-test =  { module = "androidx.core:core-ktx", version.ref = "androidx-core-animation" }
 
-androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.0" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.0.1" }
 
 androidx-constraintlayout =  { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
 androidx-constraintlayout-compose =  { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.0.1" }
@@ -244,10 +244,10 @@ google-android-material = { module = "com.google.android.material:material", ver
 google-android-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter-3", version = "1.1.1" }
 
 google-gms-google-services = { module = "com.google.gms:google-services", version = "4.3.15" }
-google-android-gsm-playServicesOssLicenses = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.0.0" }
+google-android-gsm-playServicesOssLicenses = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.0.1" }
 
 jetbrains-dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "jetbrains-dokka" }
-jetbrains-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "jetbrains-kotlin" }
+jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "jetbrains-kotlin" }
 jetbrains-kotlin-extensions = { module = "org.jetbrains.kotlin:kotlin-android-extensions", version.ref = "jetbrains-kotlin" }

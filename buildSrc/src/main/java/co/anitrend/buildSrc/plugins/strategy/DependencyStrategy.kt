@@ -25,7 +25,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 internal class DependencyStrategy(private val project: Project) {
 
     private fun DependencyHandler.applyDefaultDependencies() {
-        implementation(project.libs.jetbrains.kotlin.stdlib.jdk8)
+        implementation(project.libs.jetbrains.kotlin.stdlib)
         if (!project.isDomainModule())
             implementation(project.libs.timber)
 
