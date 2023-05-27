@@ -286,7 +286,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 saket-betterlinkmovementmethod = { module = "me.saket:better-link-movement-method", version = "2.2.0" }
-saket-cascade = { module = "me.saket.cascade:cascade", version = "2.0.0" }
+saket-cascade = { module = "me.saket.cascade:cascade", version = "2.1.0" }
 
 sheets-calendar = { module = "com.maxkeppeler.sheets:calendar", version.ref = "sheets" }
 sheets-core = { module = "com.maxkeppeler.sheets:core", version.ref = "sheets" }
