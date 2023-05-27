@@ -27,4 +27,6 @@ private val coreModule = module {
     }
 }
 
-val jikanModules = listOf(coreModule) + mediaModules
+val jikanModules = module {
+    includes(coreModule, mediaModules)
+}

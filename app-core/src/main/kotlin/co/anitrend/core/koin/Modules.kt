@@ -161,6 +161,6 @@ private val configurationModule = module {
 }
 
 
-internal val coreModules = listOf(
-    coreModule, configurationModule
-) + androidCoreModules + dataModules
+internal val coreModules = module {
+    includes(coreModule, configurationModule, androidCoreModules, dataModules)
+}

@@ -42,4 +42,6 @@ private val mapperModule = module {
     }
 }
 
-internal val rankModules = listOf(converterModule, mapperModule)
+internal val rankModules = module {
+    includes(converterModule, mapperModule)
+}

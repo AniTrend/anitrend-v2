@@ -107,12 +107,14 @@ private val repositoryModule = module {
     }
 }
 
-internal val tagModules = listOf(
-    sourceModule,
-    filterModule,
-    cacheModule,
-    converterModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val tagModules = module {
+    includes(
+        sourceModule,
+        filterModule,
+        cacheModule,
+        converterModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule
+    )
+}

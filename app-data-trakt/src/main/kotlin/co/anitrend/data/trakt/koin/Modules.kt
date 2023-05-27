@@ -38,4 +38,6 @@ private val coreModule = module {
     }
 }
 
-val traktModules = listOf(coreModule)
+val traktModules = module {
+    includes(coreModule)
+}

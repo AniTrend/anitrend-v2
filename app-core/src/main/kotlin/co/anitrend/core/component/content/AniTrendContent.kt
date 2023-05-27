@@ -33,12 +33,13 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
 
 abstract class AniTrendContent<B : ViewBinding> : SupportFragment(),
-    KoinScopeComponent, IBindingView<B> {
+    AndroidScopeComponent, KoinScopeComponent, IBindingView<B> {
 
     override var binding: B? = null
 

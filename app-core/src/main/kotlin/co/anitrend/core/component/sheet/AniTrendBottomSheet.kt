@@ -52,6 +52,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
@@ -60,7 +61,7 @@ import timber.log.Timber
 abstract class AniTrendBottomSheet<B : ViewBinding>(
     @MenuRes protected open val inflateMenu: Int = SupportFragment.NO_MENU_ITEM,
     @LayoutRes protected open val inflateLayout: Int = SupportFragment.NO_LAYOUT_ITEM
-) : BottomSheetDialogFragment(), KoinScopeComponent, IBindingView<B>,
+) : BottomSheetDialogFragment(), AndroidScopeComponent, KoinScopeComponent, IBindingView<B>,
     CoroutineScope by MainScope(), ILifecycleController {
 
     override var binding: B? = null

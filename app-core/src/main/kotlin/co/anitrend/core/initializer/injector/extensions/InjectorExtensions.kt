@@ -25,10 +25,8 @@ import co.anitrend.core.BuildConfig
 import co.anitrend.core.initializer.injector.factory.WorkManagerFactory
 import co.anitrend.core.initializer.injector.logger.KoinLogger
 import org.koin.core.KoinApplication
-import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.logger.Level
 import org.koin.fileProperties
-
 
 private fun KoinApplication.createWorkManagerFactory() {
     val factory = DelegatingWorkerFactory()
@@ -51,13 +49,12 @@ private fun KoinApplication.createWorkManagerFactory() {
  *
  * @see org.koin.androidx.workmanager.koin.workManagerFactory
  */
-@KoinExperimentalAPI
 internal fun KoinApplication.workManagerFactory() {
     createWorkManagerFactory()
 }
 
 internal fun KoinApplication.koinTimberLogger() {
-    logger(KoinLogger(Level.NONE))
+    logger(KoinLogger(Level.DEBUG))
 }
 
 internal fun KoinApplication.defaultProperties() {

@@ -38,6 +38,6 @@ private val repositoryModule = module {
     }
 }
 
-internal val accountModules = listOf(
-    useCaseModule, repositoryModule
-)
+internal val accountModules = module {
+    includes(useCaseModule, repositoryModule)
+}

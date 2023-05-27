@@ -303,11 +303,13 @@ private val repositoryModule = module {
     }
 }
 
-internal val mediaListModules = listOf(
-    sourceModule,
-    cacheModule,
-    mapperModule,
-    converterModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val mediaListModules = module {
+    includes(
+        sourceModule,
+        cacheModule,
+        mapperModule,
+        converterModule,
+        useCaseModule,
+        repositoryModule
+    )
+}

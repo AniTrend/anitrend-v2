@@ -34,15 +34,14 @@ import co.anitrend.media.discover.component.sheet.adapter.FilterPageAdapter
 import co.anitrend.media.discover.component.sheet.controller.MediaFilterController
 import co.anitrend.media.discover.databinding.MediaDiscoverFilterSheetBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.androidx.viewmodel.ViewModelOwner.Companion.from
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class MediaDiscoverFilterSheet(
     override val inflateLayout: Int = R.layout.media_discover_filter_sheet
 ) : AniTrendBottomSheet<MediaDiscoverFilterSheetBinding>() {
 
-    private val viewModel by sharedViewModel<MediaDiscoverViewModel>(
-        owner = { from(requireParentFragment(), requireParentFragment()) }
+    private val viewModel by activityViewModel<MediaDiscoverViewModel>(
+        ownerProducer = { requireParentFragment() }
     )
 
     private val titles by lazy(UNSAFE) {

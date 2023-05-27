@@ -59,9 +59,9 @@ private val coreModule = module {
         StorageController()
     }
 
-    factory<AbstractSupportDateHelper> {
+    factory {
         AniTrendDateHelper()
-    } bind AniTrendDateHelper::class
+    } bind AbstractSupportDateHelper::class
 
     single {
         /** TODO: On language preference change, destroy and recreate [PrettyTime] */
@@ -114,7 +114,9 @@ private val controllerModule = module {
     }
 }
 
-val androidCoreModules = listOf(coreModule, configurationModule, controllerModule)
+val androidCoreModules = module {
+    includes(coreModule, configurationModule, controllerModule)
+}
 
 enum class MarkdownFlavour {
     STANDARD,

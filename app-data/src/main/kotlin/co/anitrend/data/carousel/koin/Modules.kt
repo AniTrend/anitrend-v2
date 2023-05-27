@@ -78,10 +78,12 @@ private val repositoryModule = module {
     }
 }
 
-internal val carouselModules = listOf(
-    sourceModule,
-    cacheModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val carouselModules = module {
+    includes(
+        sourceModule,
+        cacheModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule
+    )
+}

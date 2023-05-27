@@ -42,4 +42,6 @@ private val mapperModule = module {
     }
 }
 
-internal val linkModules = listOf(converterModule, mapperModule)
+internal val linkModules = module {
+    includes(converterModule, mapperModule)
+}

@@ -42,9 +42,9 @@ internal class ScreenState(
     @StringRes var selectedTitle: Int = R.string.navigation_home
 
     override fun onSaveInstanceState(outState: Bundle) {
-        savedStateHandle.set(ARG_KEY_SELECTED_ITEM, selectedItem)
-        savedStateHandle.set(ARG_KEY_SELECTED_TITLE, selectedTitle)
-        savedStateHandle.set(ARG_KEY_SHOULD_EXIT, shouldExit)
+        savedStateHandle[ARG_KEY_SELECTED_ITEM] = selectedItem
+        savedStateHandle[ARG_KEY_SELECTED_TITLE] = selectedTitle
+        savedStateHandle[ARG_KEY_SHOULD_EXIT] = shouldExit
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

@@ -24,17 +24,14 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import androidx.savedstate.findViewTreeSavedStateRegistryOwner
 import co.anitrend.arch.extension.ext.SYNCHRONIZED
 import co.anitrend.core.R
 import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.model.FragmentItem
+import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.fragment.android.KoinFragmentFactory
-import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.ViewModelOwnerDefinition
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.parameter.ParametersDefinition
@@ -182,20 +179,14 @@ inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
  */
 inline fun <reified T : ViewModel> ViewGroup.viewModel(
     qualifier: Qualifier? = null,
-    noinline owner: ViewModelOwnerDefinition = {
-        ViewModelOwner.from(
-            requireNotNull(findViewTreeViewModelStoreOwner()),
-            findViewTreeSavedStateRegistryOwner()
-        )
-    },
     noinline parameters: ParametersDefinition? = null
 ): Lazy<T> = lazy(SYNCHRONIZED) {
     when (val component = context) {
         is ComponentActivity -> {
             component.getViewModel(
-                qualifier,
-                owner,
-                parameters
+                qualifier = qualifier,
+                extrasProducer = null,
+                parameters = parameters
             )
         }
         else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
@@ -213,17 +204,14 @@ inline fun <reified T : ViewModel> ViewGroup.viewModel(
  */
 inline fun <reified T : ViewModel> AbstractActionProvider.sharedViewModel(
     qualifier: Qualifier? = null,
-    noinline owner: ViewModelOwnerDefinition = {
-        ViewModelOwner.fromAny(context)
-    },
     noinline parameters: ParametersDefinition? = null
 ): Lazy<T> = lazy(SYNCHRONIZED) {
     when (val component = context) {
         is ComponentActivity -> {
             component.getViewModel(
-                qualifier,
-                owner,
-                parameters
+                qualifier = qualifier,
+                extrasProducer = null,
+                parameters = parameters
             )
         }
         else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")

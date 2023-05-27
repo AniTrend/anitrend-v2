@@ -75,9 +75,11 @@ private val repositoryModule = module {
     }
 }
 
-internal val authModules = listOf(
-    sourceModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val authModules = module {
+    includes(
+        sourceModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule
+    )
+}
