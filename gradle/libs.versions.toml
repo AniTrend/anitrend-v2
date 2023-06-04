@@ -57,7 +57,7 @@ jetbrains-kotlinx-serialization = "1.5.1"
 
 koin = "3.1.6"
 koin-android = "3.1.6"
-koin-compose = "3.1.6"
+koin-compose = "3.4.5"
 
 markwon = "4.6.2"
 
