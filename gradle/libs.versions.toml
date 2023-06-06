@@ -55,8 +55,11 @@ jetbrains-kotlinx-coroutines = "1.7.1"
 jetbrains-kotlinx-datetime = "0.4.0"
 jetbrains-kotlinx-serialization = "1.5.1"
 
-koin = "3.4.1"
-koin-android = "3.4.1"
+koin-core = "3.4.2"
+koin-test = "3.4.1"
+koin-android = "3.4.2"
+koin-androidx-navigation = "3.4.1"
+koin-androidx-workManager = "3.4.1"
 koin-android-compose = "3.4.4"
 
 markwon = "4.6.2"
@@ -259,13 +262,13 @@ jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-co
 jetbrains-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "jetbrains-kotlinx-datetime" }
 jetbrains-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "jetbrains-kotlinx-serialization" }
 
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-core" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin-test" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
-koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koin-android" }
-koin-androidx-workManager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-android" }
+koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koin-androidx-navigation" }
+koin-androidx-workManager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-androidx-workManager" }
 
 markwon-core = { module = "io.noties.markwon:core", version.ref = "markwon" }
 markwon-editor = { module = "io.noties.markwon:editor", version.ref = "markwon" }
