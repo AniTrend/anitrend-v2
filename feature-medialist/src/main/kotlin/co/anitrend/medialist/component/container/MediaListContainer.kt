@@ -28,7 +28,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.medialist.R
 import co.anitrend.medialist.component.container.adapter.MediaListPageAdapter
@@ -37,7 +36,7 @@ import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.databinding.MediaListContainerBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MediaListContainer(
@@ -46,9 +45,7 @@ class MediaListContainer(
     override val inflateLayout: Int = R.layout.media_list_container
 ) : AniTrendContent<MediaListContainerBinding>() {
 
-    private val viewModel by stateViewModel<UserViewModel>(
-        state = { arguments.orEmpty() }
-    )
+    private val viewModel by viewModel<UserViewModel>()
 
     private fun updateViewPagerState(mediaListInfo: List<MediaListInfo>) {
         if (requireBinding().viewPager.adapter?.itemCount != mediaListInfo.size) {

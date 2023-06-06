@@ -30,14 +30,13 @@ import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.android.helpers.date.AniTrendDateHelper
 import co.anitrend.core.android.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.core.extensions.orEmpty
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import com.maxkeppeler.sheets.calendar.CalendarSheet
 import com.maxkeppeler.sheets.calendar.SelectionMode
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.threeten.bp.Instant
 
 class AiringContent(
@@ -48,9 +47,7 @@ class AiringContent(
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
-    private val viewModel by stateViewModel<AiringViewModel>(
-        state = { arguments.orEmpty() }
-    )
+    private val viewModel by viewModel<AiringViewModel>()
 
     override val defaultSpanSize: Int
         get() = getSpanSizeByPreference(

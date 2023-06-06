@@ -24,11 +24,10 @@ import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.review.discover.R
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewDiscoverContent(
     override val stateConfig: StateLayoutConfig,
@@ -37,9 +36,7 @@ class ReviewDiscoverContent(
     override val defaultSpanSize: Int = R.integer.column_x1
 ) : AniTrendListContent<Review>() {
 
-    private val viewModel by stateViewModel<ReviewDiscoverViewModel>(
-        state = { arguments.orEmpty() }
-    )
+    private val viewModel by viewModel<ReviewDiscoverViewModel>()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)

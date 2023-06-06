@@ -172,11 +172,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     tasks.withType(KotlinCompile::class.java) {
-        val compilerArgumentOptions = mutableListOf(
-            "-opt-in=kotlin.Experimental",
-            "-opt-in=kotlin.ExperimentalStdlibApi",
-            "-opt-in=kotlin.Experimental"
-        )
+        val compilerArgumentOptions = mutableListOf<String>()
 
         if (hasCoroutineSupport()) {
             compilerArgumentOptions.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
@@ -188,13 +184,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             compilerArgumentOptions.add("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
         }
 
-        if (isAppModule() || isCoreModule()) {
-            compilerArgumentOptions.apply {
-                add("-opt-in=org.koin.core.component.KoinApiExtension")
-                add("-opt-in=org.koin.core.KoinExperimentalAPI")
-            }
-        }
-		
         kotlinOptions {
             allWarningsAsErrors = false
             // Filter out modules that won't be using coroutines
