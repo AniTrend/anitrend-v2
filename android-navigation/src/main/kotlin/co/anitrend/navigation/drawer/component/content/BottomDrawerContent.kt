@@ -28,6 +28,8 @@ import androidx.annotation.IdRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.MutableCreationExtras
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
@@ -38,7 +40,6 @@ import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedAction
 import co.anitrend.core.android.extensions.applySystemBarsWindowInsetsListener
 import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.UpdaterRouter
@@ -58,8 +59,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ViewModelOwner
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.toExtras
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -72,13 +73,12 @@ class BottomDrawerContent(
 
     private val presenter by inject<DrawerPresenter>()
 
-    private val accountViewModel by stateViewModel<AccountViewModel>(
-        owner = { ViewModelOwner.fromAny(requireActivity()) }
+    private val accountViewModel by viewModel<AccountViewModel>(
+        ownerProducer = { requireActivity() }
     )
 
-    private val navigationViewModel by stateViewModel<NavigationViewModel>(
-        state = { arguments.orEmpty() },
-        owner = { ViewModelOwner.fromAny(requireActivity()) }
+    private val navigationViewModel by viewModel<NavigationViewModel>(
+        ownerProducer = { requireActivity() },
     )
 
     private val behavior: BottomSheetBehavior<FrameLayout> by lazy(UNSAFE) {

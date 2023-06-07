@@ -37,7 +37,6 @@ import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.invoke
-import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.koin.scope.AppScope
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.fragmentByTagOrNew
@@ -60,6 +59,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainScreen : AniTrendScreen<MainScreenBinding>() {
@@ -76,9 +76,7 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
             this
         ) as BottomDrawerContent
 
-    private val viewModel by stateViewModel<MainScreenViewModel>(
-        state = { intent.extras.orEmpty() }
-    )
+    private val viewModel by viewModel<MainScreenViewModel>()
 
     private val presenter by inject<MainPresenter>()
 

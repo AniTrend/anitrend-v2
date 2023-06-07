@@ -18,11 +18,12 @@
 package co.anitrend.core.service
 
 import androidx.lifecycle.LifecycleService
+import org.koin.android.scope.AndroidScopeComponent
 import org.koin.core.component.KoinScopeComponent
 import org.koin.core.component.newScope
 import timber.log.Timber
 
-abstract class AniTrendLifecycleService : LifecycleService(), KoinScopeComponent {
+abstract class AniTrendLifecycleService : LifecycleService(), AndroidScopeComponent, KoinScopeComponent {
 
     override val scope by newScope()
 

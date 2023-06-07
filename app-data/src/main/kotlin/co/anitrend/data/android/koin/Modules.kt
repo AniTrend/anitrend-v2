@@ -231,15 +231,32 @@ private val interceptorModules = module {
     }
 }
 
-val dataModules = listOf(
-    coreModule,
-    retrofitModule,
-    networkModule,
-    interceptorModules
-) + airingModules + tagModules + genreModules +
-        sourceModules + mediaModules + carouselModules +
-        authModules + accountModules + userModules +
-        mediaListModules + feedModules + jikanModules +
-        linkModules + rankModules + traktModules + tmdbModules +
-        themesModules + theXemModules + customListModules + customScoreModules +
-        reviewModules
+val dataModules = module {
+    includes(
+        coreModule,
+        retrofitModule,
+        networkModule,
+        interceptorModules,
+        airingModules,
+        tagModules,
+        genreModules,
+        sourceModules,
+        mediaModules,
+        carouselModules,
+        authModules,
+        accountModules,
+        userModules,
+        mediaListModules,
+        feedModules,
+        jikanModules,
+        linkModules,
+        rankModules,
+        traktModules,
+        tmdbModules,
+        themesModules,
+        theXemModules,
+        customListModules,
+        customScoreModules,
+        reviewModules,
+    )
+}

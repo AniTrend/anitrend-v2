@@ -27,7 +27,6 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.android.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.core.extensions.orEmpty
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.settings.customize.ICustomizationSettings
@@ -38,7 +37,7 @@ import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewM
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
@@ -47,9 +46,7 @@ class MediaDiscoverContent(
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
 
-    private val viewModel by stateViewModel<MediaDiscoverViewModel>(
-        state = { arguments.orEmpty() }
-    )
+    private val viewModel by viewModel<MediaDiscoverViewModel>()
 
     override val defaultSpanSize: Int
         get() = getSpanSizeByPreference(

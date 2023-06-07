@@ -117,12 +117,14 @@ private val repositoryModule = module {
     }
 }
 
-internal val airingModules = listOf(
-    sourceModule,
-    filterModule,
-    cacheModule,
-    converterModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val airingModules = module {
+    includes(
+        sourceModule,
+        filterModule,
+        cacheModule,
+        converterModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule
+    )
+}

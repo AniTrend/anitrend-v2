@@ -30,4 +30,6 @@ private val coreModule = module {
     } bind IFeedFactory::class
 }
 
-val feedModules = listOf(coreModule) + episodeModules + newsModules
+val feedModules = module {
+    includes(coreModule, episodeModules, newsModules)
+}

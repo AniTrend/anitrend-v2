@@ -29,4 +29,6 @@ private val mapperModule = module {
     }
 }
 
-internal val customListModules = listOf(mapperModule)
+internal val customListModules = module {
+    includes(mapperModule)
+}

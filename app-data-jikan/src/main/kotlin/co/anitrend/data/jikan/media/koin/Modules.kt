@@ -34,7 +34,7 @@ import co.anitrend.data.jikan.studio.mapper.JikanStudioMapper
 import org.koin.dsl.module
 
 private val sourceModule = module {
-    factory<JikanSource> { 
+    factory<JikanSource> {
         JikanSourceImpl(
             remoteSource = remoteSource(),
             localSource = jikanLocalSource(),
@@ -111,9 +111,11 @@ private val mapperModule = module {
     }
 }
 
-internal val mediaModules = listOf(
-    sourceModule,
-    converterModule,
-    cacheModule,
-    mapperModule
-)
+internal val mediaModules = module {
+    includes(
+        sourceModule,
+        converterModule,
+        cacheModule,
+        mapperModule
+    )
+}

@@ -78,10 +78,12 @@ private val mapperModule = module {
     }
 }
 
-val sourceModules = listOf(
-    coreModule,
-    sourceModule,
-    converterModule,
-    cacheModule,
-    mapperModule
-)
+val sourceModules = module {
+    includes(
+        coreModule,
+        sourceModule,
+        converterModule,
+        cacheModule,
+        mapperModule
+    )
+}

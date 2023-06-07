@@ -32,7 +32,6 @@ import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.fragment.list.SupportFragmentList
 import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
 import co.anitrend.core.R
-import co.anitrend.core.android.koinOf
 import co.anitrend.core.component.adapter.AniTrendLoadStateAdapter
 import co.anitrend.core.component.content.list.presenter.AniTrendListContentPresenter
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
@@ -41,6 +40,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
@@ -48,7 +48,7 @@ import timber.log.Timber
 abstract class AniTrendListContent<M>(
     override val inflateLayout: Int = R.layout.shared_list_content,
     override val listPresenter: SupportListPresenter<M> = AniTrendListContentPresenter()
-) : SupportFragmentList<M>(), KoinScopeComponent {
+) : SupportFragmentList<M>(), AndroidScopeComponent, KoinScopeComponent {
 
     override val scope by fragmentScope()
 

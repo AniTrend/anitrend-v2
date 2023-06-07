@@ -26,4 +26,6 @@ private val coreModule = module {
     }
 }
 
-val theXemModules = listOf(coreModule)
+val theXemModules = module {
+    includes(coreModule)
+}

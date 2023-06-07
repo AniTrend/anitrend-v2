@@ -103,11 +103,13 @@ private val repositoryModule = module {
     }
 }
 
-internal val newsModules = listOf(
-    sourceModule,
-    cacheModule,
-    converterModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val newsModules = module {
+    includes(
+        sourceModule,
+        cacheModule,
+        converterModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule
+    )
+}

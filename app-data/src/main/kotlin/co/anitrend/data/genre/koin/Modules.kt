@@ -105,12 +105,14 @@ private val repositoryModule = module {
     }
 }
 
-internal val genreModules = listOf(
-    converterModule,
-    filterModule,
-    cacheModule,
-    sourceModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val genreModules = module {
+    includes(
+        converterModule,
+        filterModule,
+        cacheModule,
+        sourceModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule
+    )
+}

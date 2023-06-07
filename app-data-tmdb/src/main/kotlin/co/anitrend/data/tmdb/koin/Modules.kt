@@ -35,4 +35,6 @@ private val coreModule = module {
     }
 }
 
-val tmdbModules = listOf(coreModule)
+val tmdbModules = module {
+    includes(coreModule)
+}

@@ -24,6 +24,7 @@ import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.ui.inject
+import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.scope.activityRetainedScope
 import org.koin.core.component.KoinScopeComponent
@@ -36,7 +37,7 @@ import timber.log.Timber
  * @property configurationHelper Configuration driver for this activity
  * @property scope Dependency injection scope for this activity lifecycle
  */
-abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), KoinScopeComponent, IBindingView<B> {
+abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), AndroidScopeComponent, KoinScopeComponent, IBindingView<B> {
 
     protected val configurationHelper by inject<IConfigurationHelper>()
 

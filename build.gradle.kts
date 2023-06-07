@@ -19,8 +19,6 @@ buildscript {
         classpath(libs.jetbrains.kotlin.gradle)
         classpath(libs.jetbrains.kotlin.serialization)
 
-        classpath(libs.koin.gradle.plugin)
-
         classpath(libs.google.gms.google.services)
         classpath(libs.google.firebase.crashlytics.gradle)
     }
@@ -44,8 +42,6 @@ allprojects {
         handleConflicts(this@allprojects)
     }
 }
-
-plugins.apply("koin")
 
 tasks.create("clean", Delete::class) {
     delete(rootProject.buildDir)
