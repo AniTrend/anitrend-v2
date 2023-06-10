@@ -309,6 +309,6 @@ square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "s
 square-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "square-retrofit" }
 square-retrofit-converter-simplexml = { module = "com.squareup.retrofit2:converter-simplexml", version.ref = "square-retrofit" }
 
-gradle-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version = "0.46.0" }
+gradle-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version = "0.47.0" }
 
 spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.19.0" }
