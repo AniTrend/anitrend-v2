@@ -4,14 +4,24 @@ categories:
   - title: '🚀 Features'
     labels:
       - ':star2: feature'
+    collapse-after: 5
+  - title: '✨ Improvements'
+    labels:
       - ':wrench: enhancement'
-  - title: '🐛 Bug Fixes'
+    collapse-after: 5
+  - title: '🛠️ Bug Fixes'
     labels:
       - ':adhesive_bandage: bug fix'
+    collapse-after: 5
   - title: '🧰 Maintenance'
-    labels: 
+    labels:
       - ':hammer_and_wrench: refactor'
+    collapse-after: 5
+  - title: '📦 Dependencies'
+    labels:
       - ':dagger: dependencies'
+    collapse-after: 5
+  - title: '🔖 Other changes'
 autolabeler:
   - label: ':books: docs'
     files:
@@ -30,6 +40,9 @@ autolabeler:
   - label: ':wrench: enhancement'
     branch:
       - '/enhancement\/.+/'
+  - label: ':hammer_and_wrench: refactor'
+    branch:
+      - '/refactor\/.+/'
   - label: ':dagger: dependencies'
     branch:
       - '/dependencies\/.+/'
@@ -39,20 +52,19 @@ change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add
 version-resolver:
   major:
     labels:
-      - 'major'
+      - ':cactus: breaking'
   minor:
     labels:
-      - 'minor'
-      - 'enhancement'
-      - 'feature'
+      - ':wrench: enhancement'
+      - ':star2: feature'
   patch:
     labels:
-      - 'patch'
-      - 'bugfix'
-      - 'hotfix'
-      - 'dependencies'
-      - 'refactor'
-  default: patch 
+      - ':adhesive_bandage: bug fix'
+      - ':dagger: dependencies'
+      - ':hammer_and_wrench: refactor'
+  default: patch
+exclude-labels:
+  - ':skateboard: skip-changelog'
 template: |
   # What's Changed
 
