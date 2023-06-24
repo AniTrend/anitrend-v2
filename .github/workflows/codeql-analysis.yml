@@ -41,6 +41,7 @@ jobs:
       with:
         java-version: 17
         distribution: 'adopt'
+        cache: 'gradle'
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     - name: Configure properties
@@ -75,7 +76,7 @@ jobs:
     - name: Build github variant
       run: |
         chmod +x gradlew
-        ./gradlew assembleGithubDebug --stacktrace
+        ./gradlew assembleGithubDebug --stacktrace --no-daemon
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

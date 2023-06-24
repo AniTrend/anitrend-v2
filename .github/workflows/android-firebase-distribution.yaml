@@ -28,6 +28,7 @@ jobs:
         with:
           java-version: 17
           distribution: 'adopt'
+          cache: 'gradle'
       - name: Wait for tests to succeed
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
@@ -47,7 +48,7 @@ jobs:
       - name: build release
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease --no-daemon
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.5.0
         with:

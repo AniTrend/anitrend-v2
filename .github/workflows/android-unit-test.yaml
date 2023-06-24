@@ -12,6 +12,7 @@ jobs:
       with:
         java-version: 17
         distribution: 'adopt'
+        cache: 'gradle'
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     - name: Configure properties
@@ -19,7 +20,7 @@ jobs:
         chmod +x .github/scripts/staging-config.sh
         bash .github/scripts/staging-config.sh
     - name: Gradle test
-      run: ./gradlew test --stacktrace
+      run: ./gradlew test --stacktrace --no-daemon
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v3
       if: always() # always run even if the previous step fails
