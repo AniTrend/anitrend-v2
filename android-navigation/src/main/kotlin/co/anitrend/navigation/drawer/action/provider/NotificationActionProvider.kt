@@ -29,6 +29,7 @@ import co.anitrend.core.android.extensions.lifecycleOwner
 import co.anitrend.core.android.extensions.lifecycleScope
 import co.anitrend.core.android.extensions.requireLifecycleOwner
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
+import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.sharedViewModel
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.NotificationRouter
@@ -89,7 +90,9 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
         setUpActionImageView()
         context.lifecycleScope()?.launch {
             context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                container.addView(actionImageView)
+                runCatching {
+                    container.addView(actionImageView)
+                }.stackTrace()
                 settings.isAuthenticated.flow.collect {
                     toggleVisibility(forItem, it)
                     viewModel.fetchUser()

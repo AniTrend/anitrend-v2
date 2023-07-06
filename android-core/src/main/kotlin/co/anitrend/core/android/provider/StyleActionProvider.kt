@@ -32,6 +32,7 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import timber.log.Timber
 
 class StyleActionProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
 
@@ -71,7 +72,9 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
         context.lifecycleScope()?.launch {
             context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 iconForSetting(settings.preferredViewMode.value)
-                container.addView(actionImageView)
+                runCatching {
+                    container.addView(actionImageView)
+                }.onFailure(Timber::w)
                 settings.preferredViewMode.flow.collect(::iconForSetting)
             }
         }

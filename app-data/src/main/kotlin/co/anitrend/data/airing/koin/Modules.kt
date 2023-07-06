@@ -30,14 +30,14 @@ import co.anitrend.data.airing.source.AiringScheduleSourceImpl
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.airing.usecase.AiringScheduleInteractor
 import co.anitrend.data.android.extensions.graphQLController
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule = module {
     factory<AiringScheduleSource.Paged> {
         AiringScheduleSourceImpl.Paged(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().airingScheduleDao(),
             mediaLocalSource = store().mediaDao(),
             controller = graphQLController(

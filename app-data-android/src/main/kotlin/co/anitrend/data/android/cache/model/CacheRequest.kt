@@ -38,4 +38,9 @@ enum class CacheRequest(val alias: String) {
     MOE("moe"),
     JIKAN("jikan"),
     XEM("the_xem"),
+    CONFIG("config"),
+    SERIES("series"),
+    PREVIEW("preview"),
+    NETWORK("network"),
+    SEASON("season"),
 }

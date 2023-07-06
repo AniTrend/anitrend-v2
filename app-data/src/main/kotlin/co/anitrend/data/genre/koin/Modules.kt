@@ -18,7 +18,7 @@
 package co.anitrend.data.genre.koin
 
 import co.anitrend.data.android.extensions.graphQLController
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.genre.GenreInteractor
 import co.anitrend.data.genre.GenreListRepository
@@ -37,7 +37,7 @@ private val sourceModule = module {
     factory<GenreSource> {
         GenreSourceImpl(
             localSource = store().genreDao(),
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<GenreMapper.Core>()
             ),

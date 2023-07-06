@@ -24,14 +24,14 @@ import co.anitrend.data.auth.repository.AuthRepositoryImpl
 import co.anitrend.data.auth.source.AuthSourceImpl
 import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.data.auth.usecase.AuthUseCaseImpl
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule = module {
     factory<AuthSource> {
         AuthSourceImpl(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().authDao(),
             clearDataHelper = get(),
             controller = graphQLController(

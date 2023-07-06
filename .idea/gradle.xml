@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/app-data" />
             <option value="$PROJECT_DIR$/app-data-android" />
             <option value="$PROJECT_DIR$/app-data-core" />
+            <option value="$PROJECT_DIR$/app-data-edge" />
             <option value="$PROJECT_DIR$/app-data-feed" />
             <option value="$PROJECT_DIR$/app-data-imgur" />
             <option value="$PROJECT_DIR$/app-data-jikan" />
@@ -79,6 +80,7 @@
             <option value="$PROJECT_DIR$/feature-updater" />
             <option value="$PROJECT_DIR$/task-account" />
             <option value="$PROJECT_DIR$/task-character" />
+            <option value="$PROJECT_DIR$/task-config" />
             <option value="$PROJECT_DIR$/task-episode" />
             <option value="$PROJECT_DIR$/task-feed" />
             <option value="$PROJECT_DIR$/task-forum" />

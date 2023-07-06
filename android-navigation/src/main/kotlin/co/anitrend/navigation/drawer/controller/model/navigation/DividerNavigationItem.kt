@@ -57,6 +57,6 @@ class DividerNavigationItem(
             viewGroup: ViewGroup
         ) = NavigationDividerItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

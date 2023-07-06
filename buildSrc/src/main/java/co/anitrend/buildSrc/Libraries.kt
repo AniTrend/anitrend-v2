@@ -60,6 +60,7 @@ object Libraries {
             val tmdb = Modules.Data.Tmdb.path()
             val trakt = Modules.Data.Trakt.path()
             val settings = Modules.Data.Settings.path()
+            val edge = Modules.Data.Edge.path()
         }
     }
 }

@@ -18,7 +18,7 @@
 package co.anitrend.data.review.koin
 
 import co.anitrend.data.android.extensions.graphQLController
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.review.*
 import co.anitrend.data.review.cache.ReviewCache
@@ -35,7 +35,7 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<ReviewSource.Entry> {
         ReviewSourceImpl.Entry(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().reviewDao(),
             controller = graphQLController(
                 mapper = get<ReviewMapper.Entry>()
@@ -49,7 +49,7 @@ private val sourceModule = module {
     }
     factory<ReviewSource.Save> {
         ReviewSourceImpl.Save(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<ReviewMapper.Save>()
             ),
@@ -58,7 +58,7 @@ private val sourceModule = module {
     }
     factory<ReviewSource.Delete> {
         ReviewSourceImpl.Delete(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().reviewDao(),
             controller = graphQLController(
                 mapper = get<ReviewMapper.Delete>()
@@ -69,7 +69,7 @@ private val sourceModule = module {
     }
     factory<ReviewSource.Rate> {
         ReviewSourceImpl.Rate(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<ReviewMapper.Rate>()
             ),
@@ -78,7 +78,7 @@ private val sourceModule = module {
     }
     factory<ReviewSource.Paged> {
         ReviewSourceImpl.Paged(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().reviewDao(),
             controller = graphQLController(
                 mapper = get<ReviewMapper.Paged>()

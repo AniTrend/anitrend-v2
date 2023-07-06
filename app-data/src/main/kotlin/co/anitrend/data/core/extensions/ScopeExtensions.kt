@@ -18,14 +18,14 @@
 package co.anitrend.data.core.extensions
 
 import co.anitrend.data.android.database.common.IAniTrendStore
-import co.anitrend.data.core.api.factory.GraphApiFactory
+import co.anitrend.data.core.api.factory.AniListApiFactory
 import org.koin.core.scope.Scope
 
 /**
  * Facade for supplying retrofit interface types
  */
-internal inline fun <reified T> Scope.graphApi(): T {
-    val provider = get<GraphApiFactory>()
+internal inline fun <reified T> Scope.aniListApi(): T {
+    val provider = get<AniListApiFactory>()
     return api(provider)
 }
 

@@ -119,6 +119,6 @@ internal class MediaCompactItem(
             viewGroup: ViewGroup
         ) = MediaCompactItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

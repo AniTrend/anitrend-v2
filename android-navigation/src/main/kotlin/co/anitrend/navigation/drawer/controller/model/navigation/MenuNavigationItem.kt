@@ -80,6 +80,6 @@ class MenuNavigationItem(
             viewGroup: ViewGroup
         ) = NavigationMenuItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

@@ -18,7 +18,7 @@
 package co.anitrend.data.genre.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
-import co.anitrend.data.core.api.factory.contract.EndpointType
+import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.genre.model.GenreCollection
 import io.github.wax911.library.annotation.GraphQuery
@@ -30,7 +30,7 @@ import retrofit2.http.POST
 internal interface MediaGenreRemoteSource {
 
     @GRAPHQL
-    @POST(EndpointType.BASE_ENDPOINT_PATH)
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaGenres")
     suspend fun getMediaGenres(
         @Body queryContainer: QueryContainerBuilder

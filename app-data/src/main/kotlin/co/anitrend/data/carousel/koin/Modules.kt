@@ -26,14 +26,14 @@ import co.anitrend.data.carousel.repository.MediaCarouselRepository
 import co.anitrend.data.carousel.source.CarouselSourceImpl
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.carousel.usecase.MediaCarouselUseCaseImpl
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule = module {
     factory<CarouselSource> {
         CarouselSourceImpl(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().carouselDao(),
             controller = graphQLController(
                 mapper = get<CarouselMapper>()

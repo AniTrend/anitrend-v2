@@ -98,6 +98,6 @@ internal class GenreItem(
             viewGroup: ViewGroup
         ) = GenreItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

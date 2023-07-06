@@ -85,6 +85,6 @@ internal class ReviewCompactItem(
             viewGroup: ViewGroup
         ) = ReviewCompactItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

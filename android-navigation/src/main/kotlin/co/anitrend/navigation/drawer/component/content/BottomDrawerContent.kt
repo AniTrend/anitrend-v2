@@ -265,13 +265,11 @@ class BottomDrawerContent(
         accountViewModel.activeAccount.observe(viewLifecycleOwner) { account ->
             presenter.applyProfilePicture(requireBinding().profileImageView, account)
         }
-        lifecycleScope.launch {
-            navigationViewModel.navigationItems.onEach {
-                navigationAdapter.submitList(it)
-            }.catch {
-                Timber.e(it)
-            }.collect()
-        }
+        navigationViewModel.navigationItems.onEach {
+            navigationAdapter.submitList(it)
+        }.catch {
+            Timber.e(it)
+        }.launchIn(lifecycleScope)
         setCheckedItem(R.id.navigation_home)
     }
 

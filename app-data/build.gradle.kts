@@ -16,6 +16,7 @@
  */
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import co.anitrend.buildSrc.Libraries
 
 plugins {
     id("co.anitrend.plugin")
@@ -32,18 +33,13 @@ tasks.withType(KotlinCompile::class.java) {
 }
 
 dependencies {
+    implementation(project(Libraries.AniTrend.Data.edge))
+
     implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation(libs.androidx.startup.runtime)
 
     implementation(libs.anitrend.sync)
     implementation(libs.cash.copper)
-
-    implementation(libs.tmdb) {
-        exclude(group = "org.threeten", module = "threetenbp")
-    }
-    implementation(libs.trakt) {
-        exclude(group = "org.threeten", module = "threetenbp")
-    }
 
     implementation(libs.anitrend.emojify)
 

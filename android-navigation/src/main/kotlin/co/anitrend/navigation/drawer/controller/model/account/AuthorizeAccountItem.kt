@@ -84,6 +84,6 @@ class AuthorizeAccountItem(
             viewGroup: ViewGroup
         ) = AccountAnonymousItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }

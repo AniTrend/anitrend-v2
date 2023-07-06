@@ -18,7 +18,7 @@
 package co.anitrend.data.media.koin
 
 import co.anitrend.data.android.extensions.graphQLController
-import co.anitrend.data.core.extensions.graphApi
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.*
 import co.anitrend.data.media.cache.MediaCache
@@ -37,7 +37,7 @@ import org.koin.dsl.module
 private val sourceModule = module {
     factory<MediaSource.Detail> {
         MediaSourceImpl.Detail(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().mediaDao(),
             controller = graphQLController(
                 mapper = get<MediaMapper.Detail>()
@@ -52,7 +52,7 @@ private val sourceModule = module {
     }
     factory<MediaSource.Paged> {
         MediaSourceImpl.Paged(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             localSource = store().mediaDao(),
             carouselSource = get(),
             controller = graphQLController(
@@ -66,7 +66,7 @@ private val sourceModule = module {
     }
     factory {
         MediaSourceFactory.Network(
-            remoteSource = graphApi(),
+            remoteSource = aniListApi(),
             controller = graphQLController(
                 mapper = get<MediaMapper.Network>()
             ),

@@ -54,7 +54,8 @@ internal object Modules {
         TheXem("app-data-thexem"),
         Tmdb("app-data-tmdb"),
         Trakt("app-data-trakt"),
-        Settings("app-data-settings")
+        Settings("app-data-settings"),
+        Edge("app-data-edge"),
     }
 
     enum class Android(override val id: String) : Module {
@@ -132,6 +133,7 @@ internal object Modules {
         Tag("task-tag"),
         Updater("task-updater"),
         Account("task-account"),
+        Config("task-config"),
     }
 }
 

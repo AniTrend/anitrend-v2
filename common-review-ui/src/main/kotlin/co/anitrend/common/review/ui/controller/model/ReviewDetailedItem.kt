@@ -104,6 +104,6 @@ internal class ReviewDetailedItem(
             viewGroup: ViewGroup
         ) = ReviewDetailedItemBinding.inflate(
             this, viewGroup, false
-        ).let { SupportViewHolder(it) }
+        ).let(::SupportViewHolder)
     }
 }
