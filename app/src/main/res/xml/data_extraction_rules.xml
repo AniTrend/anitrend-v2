@@ -16,22 +16,17 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-	<application
-		android:icon="@mipmap/ic_launcher"
-		android:roundIcon="@mipmap/ic_launcher_round">
-
-		<provider
-			android:name="androidx.startup.InitializationProvider"
-			android:authorities="${applicationId}.androidx-startup"
-			android:exported="false"
-			tools:node="merge"
-            tools:targetApi="n">
-			<meta-data android:name="co.anitrend.initializer.DebugApplicationInitializer"
-				android:value="androidx.startup" />
-		</provider>
-	</application>
-
-</manifest>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- TODO: Use <include> and <exclude> to control what is backed up.
+            <include .../>
+            <exclude .../>
+            -->
+    </cloud-backup>
+    <!--
+      <device-transfer>
+          <include .../>
+          <exclude .../>
+      </device-transfer>
+      -->
+</data-extraction-rules>
