@@ -44,7 +44,8 @@
         android:fullBackupContent="@xml/backup_descriptor"
         android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:targetApi="q">
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        tools:targetApi="TIRAMISU">
 
         <activity android:name=".component.screen.MainScreen"
             android:exported="true"
