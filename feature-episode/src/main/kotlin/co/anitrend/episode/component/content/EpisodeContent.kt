@@ -32,7 +32,7 @@ class EpisodeContent(
     private val settings: ILocaleSettings,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Episode>,
-    override val defaultSpanSize: Int = R.integer.column_x1,
+    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<Episode>() {
 
     private val viewModel by viewModel<EpisodeContentViewModel>()

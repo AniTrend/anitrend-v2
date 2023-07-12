@@ -82,7 +82,7 @@ internal class MediaSummaryItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = MediaSummaryItemBinding.bind(view)
-        val radius = view.resources.getDimensionPixelSize(R.dimen.lg_margin).toFloat()
+        val radius = view.resources.getDimensionPixelSize(co.anitrend.arch.theme.R.dimen.lg_margin).toFloat()
         disposable = requireBinding().mediaImage.using(
             entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
             listOf(
@@ -95,7 +95,7 @@ internal class MediaSummaryItem(
         setUpMediaGenres(view)
         requireBinding().mediaFavourites.setFavouriteState(entity)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
-        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings, R.color.colorBackground)
+        requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings, co.anitrend.arch.theme.R.color.colorBackground)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
         requireBinding().mediaScheduleTitleWidget.setUpAiringSchedule(entity)
         requireBinding().mediaProgressWidget.setupUsingMedia(entity, settings)

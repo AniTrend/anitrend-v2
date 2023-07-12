@@ -46,7 +46,7 @@ class AuthPresenter(
 
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
-        val uri = Uri.parse(context.getString(R.string.app_faq_page_link))
+        val uri = Uri.parse(context.getString(co.anitrend.core.android.R.string.app_faq_page_link))
         runCatching {
             Timber.analytics {
                 logCurrentState(

@@ -112,7 +112,7 @@ internal class MediaCompactItem(
         spanCount: Int,
         position: Int,
         resources: Resources
-    ) = resources.getInteger(R.integer.column_x3)
+    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x3)
 
     companion object {
         internal fun LayoutInflater.createMediaItemViewHolder(

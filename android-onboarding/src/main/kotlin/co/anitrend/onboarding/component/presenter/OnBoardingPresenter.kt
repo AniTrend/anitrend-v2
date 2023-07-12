@@ -44,7 +44,7 @@ class OnBoardingPresenter(
             description = buildSpannedString {
                 append("Let's preview some of the awesome things AniTrend can do! Swipe left or right to get started")
             },
-            textColor = R.color.primaryTextColor
+            textColor = co.anitrend.arch.theme.R.color.primaryTextColor
         ),
         OnBoardingRouter.Param(
             resource = R.raw.bookmark,
@@ -58,7 +58,7 @@ class OnBoardingPresenter(
             description = buildSpannedString {
                 append("Stay up to date with trends in the anime or manga community, keep your lists up to date from one place")
             },
-            textColor = R.color.primaryTextColor
+            textColor = co.anitrend.arch.theme.R.color.primaryTextColor
         ),
         OnBoardingRouter.Param(
             resource = R.raw.search,
@@ -72,7 +72,7 @@ class OnBoardingPresenter(
             description = buildSpannedString {
                 append("Find whatever you're looking for with language agnostic search for anime and manga")
             },
-            textColor = R.color.primaryTextColor
+            textColor = co.anitrend.arch.theme.R.color.primaryTextColor
         ),
         OnBoardingRouter.Param(
             resource = R.raw.rating_system,
@@ -86,7 +86,7 @@ class OnBoardingPresenter(
             description = buildSpannedString {
                 append("Customize your experience using one of the many rating systems for your lists")
             },
-            textColor = R.color.primaryTextColor
+            textColor = co.anitrend.arch.theme.R.color.primaryTextColor
         ),
         OnBoardingRouter.Param(
             resource = R.raw.cartoon_loading,
@@ -100,7 +100,7 @@ class OnBoardingPresenter(
             description = buildSpannedString {
                 append("AniTrend can automatically change it's behaviour based on system wide settings to give you the best experience")
             },
-            textColor = R.color.primaryTextColor
+            textColor = co.anitrend.arch.theme.R.color.primaryTextColor
         ),
         OnBoardingRouter.Param(
             resource = R.raw.open_book,
@@ -114,7 +114,7 @@ class OnBoardingPresenter(
             description = buildSpannedString {
                 append("Feel free to join our discord community and support the development of AniTrend on patreon! ^_^")
             },
-            textColor = R.color.primaryTextColor
+            textColor = co.anitrend.arch.theme.R.color.primaryTextColor
         )
     )
 

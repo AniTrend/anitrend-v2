@@ -35,11 +35,11 @@ private val builderModule = module {
         val context = androidContext()
 
         val radius = context.resources.getDimensionPixelSize(
-            R.dimen.md_margin
+            co.anitrend.arch.theme.R.dimen.md_margin
         ).toFloat()
 
         val duration = context.resources.getInteger(
-            R.integer.motion_duration_long
+            co.anitrend.core.android.R.integer.motion_duration_long
         )
 
         val imageLoader = Coil.imageLoader(context)

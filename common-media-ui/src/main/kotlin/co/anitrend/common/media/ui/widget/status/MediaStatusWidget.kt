@@ -38,22 +38,22 @@ class MediaStatusWidget @JvmOverloads constructor(
         when (mediaStatus) {
             MediaStatus.NOT_YET_RELEASED -> {
                 background = context.getCompatDrawable(
-                    R.drawable.dot_indicator, R.color.orange_A700
+                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.orange_A700
                 )
             }
             MediaStatus.RELEASING -> {
                 background = context.getCompatDrawable(
-                    R.drawable.dot_indicator, R.color.blue_A700
+                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.blue_A700
                 )
             }
             MediaStatus.CANCELLED -> {
                 background = context.getCompatDrawable(
-                    R.drawable.dot_indicator, R.color.red_A700
+                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.red_A700
                 )
             }
             MediaStatus.FINISHED -> {
                 background = context.getCompatDrawable(
-                    R.drawable.dot_indicator, R.color.green_A700
+                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.green_A700
                 )
             }
             else -> background = null

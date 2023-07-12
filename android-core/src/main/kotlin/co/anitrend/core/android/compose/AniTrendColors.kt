@@ -29,22 +29,22 @@ import co.anitrend.core.android.R
 
 
 fun Context.primaryColor() =
-    Color(getCompatColor(R.color.primaryColor))
+    Color(getCompatColor(co.anitrend.arch.theme.R.color.primaryColor))
 
 fun Context.secondaryColor() =
-    Color(getCompatColor(R.color.secondaryColor))
+    Color(getCompatColor(co.anitrend.arch.theme.R.color.secondaryColor))
 
 fun Context.backgroundColor() =
-    Color(getCompatColor(R.color.colorBackground))
+    Color(getCompatColor(co.anitrend.arch.theme.R.color.colorBackground))
 
 fun Context.onBackgroundColor() =
-    Color(getCompatColor(R.color.colorOnBackground))
+    Color(getCompatColor(co.anitrend.arch.theme.R.color.colorOnBackground))
 
 fun Context.primaryTextColor() =
-    Color(getCompatColor(R.color.primaryTextColor))
+    Color(getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor))
 
 fun Context.secondaryTextColor() =
-    Color(getCompatColor(R.color.secondaryTextColor))
+    Color(getCompatColor(co.anitrend.arch.theme.R.color.secondaryTextColor))
 
 
 /**

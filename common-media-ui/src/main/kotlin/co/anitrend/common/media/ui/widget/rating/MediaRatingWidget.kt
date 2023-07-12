@@ -58,11 +58,11 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         ).also { param ->
             param.gravity = Gravity.CENTER_VERTICAL
         }
-        setTextColor(context.getCompatColor(R.color.white_1000))
+        setTextColor(context.getCompatColor(co.anitrend.core.android.R.color.white_1000))
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         setTypeface(typeface, Typeface.BOLD)
     }
-    
+
     private val mediaFavouriteIndicator = AppCompatImageView(context).apply {
         layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
             param.gravity = Gravity.CENTER_VERTICAL
@@ -71,7 +71,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             context.getCompatDrawable(R.drawable.ic_favourite)
         )
     }
-    
+
     private val mediaListStatusIndicator = AppCompatImageView(context).apply {
         layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
             param.gravity = Gravity.CENTER_VERTICAL
@@ -80,7 +80,7 @@ internal class MediaRatingWidget @JvmOverloads constructor(
             context.getCompatDrawable(R.drawable.ic_paused)
         )
     }
-    
+
     private val mediaListNotesIndicator = AppCompatImageView(context).apply {
         layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
             param.gravity = Gravity.CENTER_VERTICAL
@@ -211,13 +211,13 @@ internal class MediaRatingWidget @JvmOverloads constructor(
         settings: IUserSettings,
         @ColorRes tintColor: Int? = null
     ) {
-        val tint = tintColor ?: R.color.white_1000
+        val tint = tintColor ?: co.anitrend.core.android.R.color.white_1000
         setListStatus(media, tint)
         setFavouriteStatus(media.isFavourite, tint)
         media.setMediaRatingDynamically(settings, tint)
         background = if (tintColor == null)
-            context.getCompatDrawable(R.drawable.widget_background, R.color.bubble_color)
-        else context.getCompatDrawable(R.drawable.widget_background)
+            context.getCompatDrawable(co.anitrend.core.android.R.drawable.widget_background, co.anitrend.core.android.R.color.bubble_color)
+        else context.getCompatDrawable(co.anitrend.core.android.R.drawable.widget_background)
     }
 
     /**
@@ -249,10 +249,10 @@ internal class MediaRatingWidget @JvmOverloads constructor(
                     )
                 )
             )
-            setFavouriteStatus(true, R.color.white_1000)
-            setListStatus(media, R.color.white_1000)
+            setFavouriteStatus(true, co.anitrend.core.android.R.color.white_1000)
+            setListStatus(media, co.anitrend.core.android.R.color.white_1000)
             mediaAverageScore.text = media.mediaList?.score?.format(1)
-            background = context.getCompatDrawable(R.drawable.bubble_background)
+            background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.bubble_background)
         }
 
         mediaListStatusIndicator.updateMargins(start = 8.dp)

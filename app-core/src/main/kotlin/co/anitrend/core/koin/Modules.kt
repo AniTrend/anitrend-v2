@@ -64,8 +64,8 @@ private val coreModule = module {
 
     single {
         StateLayoutConfig(
-            loadingDrawable = R.drawable.ic_support_empty_state,
-            errorDrawable = R.drawable.ic_support_empty_state,
+            loadingDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
+            errorDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
             loadingMessage = R.string.label_text_loading,
             defaultMessage = R.string.label_text_end_of_list,
             retryAction = R.string.label_text_action_retry
@@ -75,20 +75,20 @@ private val coreModule = module {
     factory {
         val context = androidContext()
         CustomTabsIntent.Builder()
-            .setStartAnimations(context, R.anim.enter_from_bottom, R.anim.exit_to_bottom)
+            .setStartAnimations(context, co.anitrend.core.android.R.anim.enter_from_bottom, co.anitrend.core.android.R.anim.exit_to_bottom)
             .setExitAnimations(context, android.R.anim.fade_in, android.R.anim.fade_out)
             .setColorSchemeParams(
                 if (context.isEnvironmentNightMode()) CustomTabsIntent.COLOR_SCHEME_DARK
                 else CustomTabsIntent.COLOR_SCHEME_LIGHT,
                 CustomTabColorSchemeParams.Builder()
                     .setToolbarColor(
-                        context.getColorFromAttr(R.attr.colorPrimary)
+                        context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary)
                     )
                     .setNavigationBarColor(
-                        context.getColorFromAttr(R.attr.colorPrimary)
+                        context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary)
                     )
                     .setSecondaryToolbarColor(
-                        context.getColorFromAttr(R.attr.colorSecondary)
+                        context.getColorFromAttr(com.google.android.material.R.attr.colorSecondary)
                     ).build()
             )
     }
@@ -150,7 +150,7 @@ private val configurationModule = module {
         if (!isLowRamDevice)
             loader.crossfade(
                 context.resources.getInteger(
-                    R.integer.motion_duration_medium
+                    co.anitrend.core.android.R.integer.motion_duration_medium
                 )
             )
         else

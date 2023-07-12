@@ -35,7 +35,7 @@ class CarouselContent(
     private val controller: CarouselContentController,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<MediaCarousel>,
-    override val defaultSpanSize: Int = R.integer.single_list_size
+    override val defaultSpanSize: Int = co.anitrend.arch.theme.R.integer.single_list_size
 ) : AniTrendListContent<MediaCarousel>() {
 
     private val viewModel by viewModel<CarouselViewModel>()

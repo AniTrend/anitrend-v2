@@ -58,6 +58,6 @@ class CarouselContentController(
      * Page size depending on the configuration of the form factor in addition to [multiplier]
      */
     fun pageSize(resources: Resources, multiplier: Int) =
-        resources.getInteger(R.integer.grid_list_x3)
+        resources.getInteger(co.anitrend.arch.theme.R.integer.grid_list_x3)
             .times(multiplier)
 }

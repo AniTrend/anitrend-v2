@@ -88,7 +88,7 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
         runCatching {
             val parent = viewParent as View
             val params = parent.layoutParams as CoordinatorLayout.LayoutParams
-            val width = resources.getDimensionPixelSize(R.dimen.bottom_sheet_margin)
+            val width = resources.getDimensionPixelSize(co.anitrend.core.android.R.dimen.bottom_sheet_margin)
             params.setMargins(width, 0, width, 0)
             parent.layoutParams = params
         }.stackTrace()

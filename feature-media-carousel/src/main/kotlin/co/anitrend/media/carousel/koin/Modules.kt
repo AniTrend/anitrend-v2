@@ -37,8 +37,8 @@ import org.koin.dsl.module
 private val coreModule = module {
     factory {
         RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(R.layout.media_carousel_item, 12)
-            setMaxRecycledViews(R.layout.media_comfortable_item, 26)
+            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_carousel_item, 12)
+            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_comfortable_item, 26)
         }
     }
 }

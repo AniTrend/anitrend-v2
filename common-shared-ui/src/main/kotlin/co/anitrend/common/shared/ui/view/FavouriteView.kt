@@ -51,7 +51,7 @@ class FavouriteView @JvmOverloads constructor(
         ).also { param ->
             param.gravity = Gravity.CENTER_VERTICAL
         }
-        setTextColor(context.getCompatColor(R.color.white_1000))
+        setTextColor(context.getCompatColor(co.anitrend.core.android.R.color.white_1000))
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         setTypeface(typeface, Typeface.BOLD)
     }
@@ -76,8 +76,8 @@ class FavouriteView @JvmOverloads constructor(
         addView(favouriteTextView)
 
         background = context.getCompatDrawable(
-            R.drawable.widget_background,
-            R.color.bubble_color
+            co.anitrend.core.android.R.drawable.widget_background,
+            co.anitrend.core.android.R.color.bubble_color
         )
 
         favouriteTextView.updateMargins(start = 8.dp)

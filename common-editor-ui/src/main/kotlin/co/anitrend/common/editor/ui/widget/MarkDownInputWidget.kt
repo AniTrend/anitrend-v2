@@ -136,7 +136,7 @@ class MarkDownInputWidget @JvmOverloads constructor(
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         maxHeight = 200f.dipToPx
         setHintTextColor(
-            context.getCompatColor(R.color.primaryTextColor)
+            context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor)
         )
         isVerticalScrollBarEnabled = true
         inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE or

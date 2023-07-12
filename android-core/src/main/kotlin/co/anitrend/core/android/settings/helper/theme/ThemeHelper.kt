@@ -40,7 +40,7 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun FragmentActivity.applyNightModeDecorations(systemUiOptions: Int) {
-        val primaryColor = getCompatColor(R.color.colorPrimary)
+        val primaryColor = getCompatColor(co.anitrend.arch.theme.R.color.colorPrimary)
         window.navigationBarColor = primaryColor
         window.statusBarColor = primaryColor
 
@@ -59,7 +59,7 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun FragmentActivity.applyDayModeDecorations(systemUiOptions: Int) {
-        val primaryColor = getCompatColor(R.color.colorPrimary)
+        val primaryColor = getCompatColor(co.anitrend.arch.theme.R.color.colorPrimary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val controller = WindowCompat.getInsetsController(window, window.decorView)
             controller.isAppearanceLightNavigationBars = true

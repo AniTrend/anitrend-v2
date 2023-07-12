@@ -126,8 +126,8 @@ abstract class AniTrendListContent<M>(
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         listPresenter.swipeRefreshLayout?.setColorSchemeColors(
-            requireContext().getColorFromAttr(R.attr.colorPrimary),
-            requireContext().getColorFromAttr(R.attr.colorAccent)
+            requireContext().getColorFromAttr(androidx.appcompat.R.attr.colorPrimary),
+            requireContext().getColorFromAttr(androidx.appcompat.R.attr.colorAccent)
         )
         return view
     }

@@ -41,7 +41,7 @@ import org.koin.dsl.module
 private val coreModule = module {
     single(named(MarkdownFlavour.ANILIST)) {
         val context = androidContext()
-        val accent = context.getCompatColor(R.color.colorAccent)
+        val accent = context.getCompatColor(co.anitrend.core.android.R.color.colorAccent)
         val builder = get<Markwon.Builder>()
         builder.usePlugin(MarkdownPlugin.create())
             .usePlugin(CorePlugin.create())

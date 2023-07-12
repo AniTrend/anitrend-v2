@@ -62,7 +62,7 @@ fun HexColor.asColorInt(@ColorInt backgroundColor: Int): Int {
  */
 @ColorInt
 fun HexColor.asColorInt(context: Context): Int {
-    val backgroundColor = context.getCompatColor(R.color.colorBackground)
+    val backgroundColor = context.getCompatColor(co.anitrend.arch.theme.R.color.colorBackground)
     return asColorInt(backgroundColor)
 }
 

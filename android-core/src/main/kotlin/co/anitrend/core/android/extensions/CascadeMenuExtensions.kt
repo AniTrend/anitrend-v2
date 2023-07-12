@@ -39,11 +39,11 @@ fun Context.cascadePopupStyler(): CascadePopupMenu.Styler {
     val rippleDrawable = {
         RippleDrawable(
             ColorStateList.valueOf(
-                getColorFromAttr(R.attr.colorPrimaryDark)
+                getColorFromAttr(androidx.appcompat.R.attr.colorPrimaryDark)
             ),
             null,
             ColorDrawable(
-                getColorFromAttr(R.attr.colorOnBackground)
+                getColorFromAttr(com.google.android.material.R.attr.colorOnBackground)
             )
         )
     }
@@ -51,25 +51,25 @@ fun Context.cascadePopupStyler(): CascadePopupMenu.Styler {
     return CascadePopupMenu.Styler(
         background = {
             RoundedDrawable(
-                color = getColorFromAttr(R.attr.colorPrimaryVariant),
+                color = getColorFromAttr(com.google.android.material.R.attr.colorPrimaryVariant),
                 radius = 8f.dp
             )
         },
         menuTitle = { header ->
             header.titleView.typeface = ResourcesCompat.getFont(
                 this,
-                R.font.product_sans_regular
+                co.anitrend.arch.theme.R.font.product_sans_regular
             )
             header.setBackground(rippleDrawable())
         },
         menuItem = { item ->
             item.titleView.typeface = ResourcesCompat.getFont(
                 this,
-                R.font.product_sans_regular
+                co.anitrend.arch.theme.R.font.product_sans_regular
             )
             item.setBackground(rippleDrawable())
             item.setGroupDividerColor(
-                getColorFromAttr(R.attr.colorOnSurface)
+                getColorFromAttr(com.google.android.material.R.attr.colorOnSurface)
             )
         }
     )

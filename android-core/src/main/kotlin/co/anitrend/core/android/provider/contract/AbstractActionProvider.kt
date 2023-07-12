@@ -33,7 +33,7 @@ abstract class AbstractActionProvider(context: Context) : ActionProvider(context
 
     protected val actionImageView = AppCompatImageView(context).apply {
         background = context.getDrawableAttr(
-            R.attr.selectableItemBackgroundBorderless
+            androidx.appcompat.R.attr.selectableItemBackgroundBorderless
         )
         isClickable = true
         isFocusable = true

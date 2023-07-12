@@ -45,18 +45,18 @@ internal class StatusIconAdapter(
         binding?.statusSpinnerText?.text = mediaListStatusLocalized[position]
 
         val statusIconDrawable = when(getItem(position)) {
-            MediaListStatus.CURRENT -> R.drawable.ic_current
-            MediaListStatus.COMPLETED -> R.drawable.ic_completed
-            MediaListStatus.DROPPED -> R.drawable.ic_dropped
-            MediaListStatus.PAUSED -> R.drawable.ic_paused
-            MediaListStatus.PLANNING -> R.drawable.ic_planning
-            else -> R.drawable.ic_repeat
+            MediaListStatus.CURRENT -> co.anitrend.common.media.ui.R.drawable.ic_current
+            MediaListStatus.COMPLETED -> co.anitrend.common.media.ui.R.drawable.ic_completed
+            MediaListStatus.DROPPED -> co.anitrend.common.media.ui.R.drawable.ic_dropped
+            MediaListStatus.PAUSED -> co.anitrend.common.media.ui.R.drawable.ic_paused
+            MediaListStatus.PLANNING -> co.anitrend.common.media.ui.R.drawable.ic_planning
+            else -> co.anitrend.common.media.ui.R.drawable.ic_repeat
         }
 
         binding?.statusSpinnerIcon?.setImageDrawable(
             context.getCompatDrawableTintAttr(
                 statusIconDrawable,
-                R.attr.colorControlNormal
+                androidx.appcompat.R.attr.colorControlNormal
             )
         )
     }

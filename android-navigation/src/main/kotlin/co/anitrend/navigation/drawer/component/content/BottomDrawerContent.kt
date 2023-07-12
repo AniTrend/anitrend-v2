@@ -158,7 +158,7 @@ class BottomDrawerContent(
             addUpdateListener { sandwichProgress = animatedValue as Float }
             interpolator = sandwichInterpolator
             duration = (abs(newProgress - initialProgress) *
-                    resources.getInteger(R.integer.motion_duration_medium)).toLong()
+                    resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_medium)).toLong()
         }
         sandwichAnimator?.start()
     }
@@ -187,7 +187,7 @@ class BottomDrawerContent(
             // peeked above the BottomAppBar.
             sheetBackgroundContainer.translationY = progress *
                     ((scrimView.bottom - accountRecycler.height
-                            - resources.getDimension(R.dimen.design_bottom_app_bar_height)) -
+                            - resources.getDimension(co.anitrend.core.android.R.dimen.design_bottom_app_bar_height)) -
                             (sheetBackgroundContainer.getTag(R.id.tag_view_top_snapshot) as Int))
         }
 

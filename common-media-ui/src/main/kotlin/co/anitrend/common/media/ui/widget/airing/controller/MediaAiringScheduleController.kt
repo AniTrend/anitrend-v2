@@ -35,7 +35,7 @@ internal class MediaAiringScheduleController(private val entity: Media) {
     */
     @ColorInt fun getColor(context: Context): Int {
         val colour: HexColor? = entity.image.color
-        return colour?.asColorInt(context) ?: context.getCompatColor(R.color.primaryTextColor)
+        return colour?.asColorInt(context) ?: context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor)
     }
 
     /**

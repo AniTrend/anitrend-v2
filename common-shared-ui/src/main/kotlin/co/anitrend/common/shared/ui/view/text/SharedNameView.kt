@@ -54,7 +54,7 @@ class SharedNameView @JvmOverloads constructor(
                     override val native: String = "更科るか"
                 }
             )
-            setTextColor(context.getCompatColor(R.color.primaryTextColor))
+            setTextColor(context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor))
         }
     }
 }

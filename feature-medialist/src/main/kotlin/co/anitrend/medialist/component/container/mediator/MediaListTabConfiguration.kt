@@ -41,7 +41,7 @@ internal class MediaListTabConfiguration(
         val mediaInfo = mediaListInfo[position]
         tab.orCreateBadge.apply {
             backgroundColor = context.getColorFromAttr(
-                R.attr.colorAccent, R.color.colorAccent
+                androidx.appcompat.R.attr.colorAccent, co.anitrend.core.android.R.color.colorAccent
             )
             number = mediaInfo.count
         }

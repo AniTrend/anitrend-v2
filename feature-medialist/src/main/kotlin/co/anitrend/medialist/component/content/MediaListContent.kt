@@ -56,9 +56,9 @@ class MediaListContent(
     private fun getSpanSizeByPreference(
         viewMode: PreferredViewMode
     ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> R.integer.column_x2
-        else -> R.integer.column_x1
+        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+        else -> co.anitrend.core.android.R.integer.column_x1
     }
 
     /**

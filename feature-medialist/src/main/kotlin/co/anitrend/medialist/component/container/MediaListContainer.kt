@@ -42,7 +42,7 @@ import timber.log.Timber
 
 class MediaListContainer(
     private val stateConfig: StateLayoutConfig,
-    override val inflateMenu: Int = R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val inflateLayout: Int = R.layout.media_list_container
 ) : AniTrendContent<MediaListContainerBinding>() {
 
@@ -82,7 +82,7 @@ class MediaListContainer(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_filter -> {
+            co.anitrend.core.android.R.id.action_filter -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)

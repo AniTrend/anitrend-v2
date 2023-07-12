@@ -32,9 +32,9 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class ReviewDiscoverContent(
     override val stateConfig: StateLayoutConfig,
-    override val inflateMenu: Int = R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val supportViewAdapter: SupportAdapter<Review>,
-    override val defaultSpanSize: Int = R.integer.column_x1
+    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1
 ) : AniTrendListContent<Review>() {
 
     private val viewModel by stateViewModel<ReviewDiscoverViewModel>(
@@ -43,7 +43,7 @@ class ReviewDiscoverContent(
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.action_list_style).isVisible = false
+        menu.findItem(co.anitrend.core.android.R.id.action_list_style).isVisible = false
     }
 
     /**
@@ -66,7 +66,7 @@ class ReviewDiscoverContent(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_filter -> {
+            co.anitrend.core.android.R.id.action_filter -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)

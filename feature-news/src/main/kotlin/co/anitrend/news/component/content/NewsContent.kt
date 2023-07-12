@@ -32,7 +32,7 @@ class NewsContent(
     private val presenter: NewsPresenter,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<News>,
-    override val defaultSpanSize: Int = R.integer.column_x1,
+    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<News>() {
 
     private val viewModel by viewModel<NewsContentViewModel>()

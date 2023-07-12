@@ -83,8 +83,8 @@ inline fun FragmentItem<*>.commit(
     context: Context,
     fragmentTransaction: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
-            R.anim.enter_from_bottom,
-            R.anim.exit_to_bottom,
+            co.anitrend.core.android.R.anim.enter_from_bottom,
+            co.anitrend.core.android.R.anim.exit_to_bottom,
             R.anim.popup_enter,
             R.anim.popup_exit
         )
@@ -116,8 +116,8 @@ inline fun <T: Fragment> FragmentItem<T>.commit(
     context: Context,
     action: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
-            R.anim.enter_from_bottom,
-            R.anim.exit_to_bottom,
+            co.anitrend.core.android.R.anim.enter_from_bottom,
+            co.anitrend.core.android.R.anim.exit_to_bottom,
             R.anim.popup_enter,
             R.anim.popup_exit
         )

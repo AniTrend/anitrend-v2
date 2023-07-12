@@ -48,7 +48,7 @@ class ImageViewerScreen : AniTrendScreen<ImageViewerScreenBinding>() {
     private val viewModel by viewModel<ImageViewerViewModel>()
 
     private val stateLayoutConfig = StateLayoutConfig(
-        loadingMessage = R.string.label_text_loading
+        loadingMessage = co.anitrend.core.R.string.label_text_loading
     )
 
     private val permissionResult = registerForActivityResult(
@@ -88,7 +88,7 @@ class ImageViewerScreen : AniTrendScreen<ImageViewerScreenBinding>() {
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
-        val duration = resources.getInteger(R.integer.motion_duration_long)
+        val duration = resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_long)
         requireBinding().subSamplingImageView.setOnClickListener {
             val transparency = requireBinding().downloadAction.alpha
             requireBinding().downloadAction.animate()

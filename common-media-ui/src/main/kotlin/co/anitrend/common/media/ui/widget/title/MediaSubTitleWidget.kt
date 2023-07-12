@@ -42,7 +42,7 @@ class MediaSubTitleWidget @JvmOverloads constructor(
     init { onInit(context, attrs, defStyleAttr) }
 
     private fun buildTextUsing(category: Media.Category, builder: SpannableStringBuilder) {
-        val unknown = context.getString(R.string.label_place_holder_to_be_announced)
+        val unknown = context.getString(co.anitrend.core.R.string.label_place_holder_to_be_announced)
         when(category) {
             is Media.Category.Anime -> {
                 when (category.episodes) {
@@ -82,11 +82,11 @@ class MediaSubTitleWidget @JvmOverloads constructor(
      * > **2018** • Novel • 48 Chapters
      */
     fun setUpSubTitle(media: Media) {
-        val color = media.image.color?.asColorInt(context) ?: context.getCompatColor(R.color.primaryTextColor)
+        val color = media.image.color?.asColorInt(context) ?: context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor)
 
         val builder = SpannableStringBuilder()
         val unknown = context.getString(
-            R.string.label_place_holder_to_be_announced
+            co.anitrend.core.R.string.label_place_holder_to_be_announced
         )
         builder.bold {
             color(color) {

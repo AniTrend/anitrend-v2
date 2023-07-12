@@ -81,7 +81,7 @@ class AuthContent(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 requireBinding().stateLayout.interactionFlow
-                    .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                    .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
                     .onEach {
                         viewModelState().retry()
                     }
@@ -137,7 +137,7 @@ class AuthContent(
                     requireView(),
                     R.string.auth_failed_message,
                     Snackbar.LENGTH_INDEFINITE
-                ).setAction(R.string.label_text_action_ok) {
+                ).setAction(co.anitrend.core.R.string.label_text_action_ok) {
                     presenter.runSignOutWorker()
                     closeScreen()
                 }.show()
