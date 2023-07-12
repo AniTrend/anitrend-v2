@@ -18,15 +18,19 @@
 package co.anitrend.data.user.source
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.common.extension.from
-import co.anitrend.data.user.*
+import co.anitrend.data.user.UserAuthController
+import co.anitrend.data.user.UserController
+import co.anitrend.data.user.UserPagedController
+import co.anitrend.data.user.UserProfileController
+import co.anitrend.data.user.UserProfileStatisticController
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
@@ -36,7 +40,11 @@ import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 internal class UserSourceImpl {
 

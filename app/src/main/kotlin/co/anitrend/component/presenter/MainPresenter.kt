@@ -22,7 +22,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.transition.TransitionManager
 import android.view.View
-import co.anitrend.R
 import co.anitrend.core.android.components.action.FloatingActionMenu
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.extensions.startViewIntent

@@ -30,7 +30,6 @@ import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.model.FragmentItem
-import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.component.KoinScopeComponent

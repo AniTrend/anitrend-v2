@@ -26,7 +26,6 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
-import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.common.theme.IThemeSettings
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
 import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme

@@ -17,7 +17,13 @@
 
 package co.anitrend.buildSrc.plugins.strategy
 
-import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.extensions.androidTest
+import co.anitrend.buildSrc.extensions.hasKoinAndroidSupport
+import co.anitrend.buildSrc.extensions.implementation
+import co.anitrend.buildSrc.extensions.isDomainModule
+import co.anitrend.buildSrc.extensions.isNavigationModule
+import co.anitrend.buildSrc.extensions.libs
+import co.anitrend.buildSrc.extensions.test
 import co.anitrend.buildSrc.module.Modules
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler

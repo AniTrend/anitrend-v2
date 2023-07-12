@@ -26,7 +26,12 @@ import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.support.query.builder.core.criteria.extensions.*
+import co.anitrend.support.query.builder.core.criteria.extensions.equal
+import co.anitrend.support.query.builder.core.criteria.extensions.greaterThan
+import co.anitrend.support.query.builder.core.criteria.extensions.`in`
+import co.anitrend.support.query.builder.core.criteria.extensions.lesserThan
+import co.anitrend.support.query.builder.core.criteria.extensions.notEqual
+import co.anitrend.support.query.builder.core.criteria.extensions.notIn
 import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.from.extentions.join
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
@@ -36,7 +41,7 @@ import co.anitrend.support.query.builder.dsl.where
 import co.anitrend.support.query.builder.dsl.whereAnd
 
 internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
-    
+
     class Paged(
         private val authentication: IAuthenticationSettings
     ) : AiringQueryFilter<AiringParam.Find>() {

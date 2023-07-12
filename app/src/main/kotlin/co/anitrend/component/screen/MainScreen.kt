@@ -46,7 +46,18 @@ import co.anitrend.databinding.MainScreenBinding
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.navigation.*
+import co.anitrend.navigation.EpisodeRouter
+import co.anitrend.navigation.FeedRouter
+import co.anitrend.navigation.ForumRouter
+import co.anitrend.navigation.MediaCarouselRouter
+import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.NavigationDrawerRouter
+import co.anitrend.navigation.NewsRouter
+import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.SettingsRouter
+import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.model.navigation.Navigation
@@ -58,7 +69,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.fragment.android.replace
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 

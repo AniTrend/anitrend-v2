@@ -19,7 +19,11 @@ package co.anitrend.data.core.api.interceptor
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import kotlinx.coroutines.runBlocking
-import okhttp3.*
+import okhttp3.Authenticator
+import okhttp3.Interceptor
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.Route
 
 /**
  * Authentication interceptor add headers dynamically when the application is authenticated.

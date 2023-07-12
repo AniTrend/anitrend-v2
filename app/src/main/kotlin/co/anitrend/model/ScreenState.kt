@@ -21,7 +21,6 @@ import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.SavedStateHandle
-import co.anitrend.R
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.android.state.IScreenState
 import co.anitrend.navigation.NavigationDrawerRouter

@@ -24,7 +24,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.UriCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import co.anitrend.auth.R
 import co.anitrend.core.android.extensions.analytics
 import co.anitrend.core.android.extensions.keys
 import co.anitrend.core.android.extensions.tags

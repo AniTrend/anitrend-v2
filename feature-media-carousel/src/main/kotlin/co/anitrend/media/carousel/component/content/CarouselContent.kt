@@ -26,7 +26,6 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
-import co.anitrend.media.carousel.R
 import co.anitrend.media.carousel.component.content.controller.CarouselContentController
 import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -18,7 +18,22 @@
 package co.anitrend.data.medialist.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.medialist.*
+import co.anitrend.data.medialist.DeleteCustomMediaListInteractor
+import co.anitrend.data.medialist.DeleteCustomMediaListRepository
+import co.anitrend.data.medialist.DeleteMediaListEntryInteractor
+import co.anitrend.data.medialist.GetCollectionMediaListInteractor
+import co.anitrend.data.medialist.GetMediaListEntryInteractor
+import co.anitrend.data.medialist.GetPagedMediaListInteractor
+import co.anitrend.data.medialist.MediaListCollectionRepository
+import co.anitrend.data.medialist.MediaListDeleteEntryRepository
+import co.anitrend.data.medialist.MediaListEntryRepository
+import co.anitrend.data.medialist.MediaListPagedRepository
+import co.anitrend.data.medialist.MediaListSaveEntriesRepository
+import co.anitrend.data.medialist.MediaListSaveEntryRepository
+import co.anitrend.data.medialist.MediaListSyncRepository
+import co.anitrend.data.medialist.SaveMediaListEntriesInteractor
+import co.anitrend.data.medialist.SaveMediaListEntryInteractor
+import co.anitrend.data.medialist.SyncMediaListEntryInteractor
 
 internal interface MediaListInteractor {
 

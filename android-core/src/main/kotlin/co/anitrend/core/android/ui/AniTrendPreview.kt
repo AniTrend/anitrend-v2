@@ -1,7 +1,7 @@
 package co.anitrend.core.android.ui
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.Preview
 
 annotation class AniTrendPreview {

@@ -32,7 +32,6 @@ import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle

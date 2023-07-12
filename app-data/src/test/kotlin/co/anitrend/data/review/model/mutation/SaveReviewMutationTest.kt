@@ -18,7 +18,9 @@
 package co.anitrend.data.review.model.mutation;
 
 import co.anitrend.domain.review.model.ReviewParam
-import org.junit.Assert.*;
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SaveReviewMutationTest {

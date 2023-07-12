@@ -17,8 +17,8 @@
 
 package co.anitrend.data.auth.source
 
-import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.auth.AuthController
@@ -35,7 +35,13 @@ import co.anitrend.domain.account.model.AccountParam
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

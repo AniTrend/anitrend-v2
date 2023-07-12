@@ -18,7 +18,7 @@
 package co.anitrend.core.android.extensions
 
 import android.content.res.Resources
-import java.util.*
+import java.util.Locale
 import kotlin.math.ln
 import kotlin.math.pow
 

@@ -20,7 +20,12 @@ package co.anitrend.data.media.koin
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
-import co.anitrend.data.media.*
+import co.anitrend.data.media.GetDetailMediaInteractor
+import co.anitrend.data.media.GetNetworkMediaInteractor
+import co.anitrend.data.media.GetPagedMediaInteractor
+import co.anitrend.data.media.MediaDetailRepository
+import co.anitrend.data.media.MediaNetworkRepository
+import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter

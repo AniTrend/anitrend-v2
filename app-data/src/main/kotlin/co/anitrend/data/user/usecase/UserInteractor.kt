@@ -18,7 +18,20 @@
 package co.anitrend.data.user.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.user.*
+import co.anitrend.data.user.GetAuthenticatedInteractor
+import co.anitrend.data.user.GetProfileInteractor
+import co.anitrend.data.user.GetProfileStatisticInteractor
+import co.anitrend.data.user.GetUserInteractor
+import co.anitrend.data.user.GetUserPagedInteractor
+import co.anitrend.data.user.ToggleFollowInteractor
+import co.anitrend.data.user.UpdateProfileInteractor
+import co.anitrend.data.user.UserAuthenticatedRepository
+import co.anitrend.data.user.UserFollowRepository
+import co.anitrend.data.user.UserIdentifierRepository
+import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserProfileStatisticRepository
+import co.anitrend.data.user.UserSearchRepository
+import co.anitrend.data.user.UserUpdateRepository
 
 internal interface UserInteractor {
 

@@ -20,7 +20,16 @@ package co.anitrend.data.review.koin
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
-import co.anitrend.data.review.*
+import co.anitrend.data.review.DeleteReviewInteractor
+import co.anitrend.data.review.GetReviewInteractor
+import co.anitrend.data.review.GetReviewPagedInteractor
+import co.anitrend.data.review.RateReviewInteractor
+import co.anitrend.data.review.ReviewDeleteRepository
+import co.anitrend.data.review.ReviewEntryRepository
+import co.anitrend.data.review.ReviewPagedRepository
+import co.anitrend.data.review.ReviewRateRepository
+import co.anitrend.data.review.ReviewSaveRepository
+import co.anitrend.data.review.SaveReviewInteractor
 import co.anitrend.data.review.cache.ReviewCache
 import co.anitrend.data.review.converter.ReviewEntityViewConverter
 import co.anitrend.data.review.converter.ReviewModelConverter

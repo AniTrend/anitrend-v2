@@ -18,10 +18,10 @@
 package co.anitrend.data.feed.news.source
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.feed.news.NewPagedController

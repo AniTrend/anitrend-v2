@@ -22,7 +22,6 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.media.carousel.R
 import org.threeten.bp.Instant
 
 class CarouselContentController(

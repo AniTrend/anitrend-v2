@@ -26,7 +26,6 @@ import co.anitrend.core.android.assureParamNotMissing
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.extensions.orEmpty
 import co.anitrend.domain.review.entity.Review
-import co.anitrend.review.discover.R
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 

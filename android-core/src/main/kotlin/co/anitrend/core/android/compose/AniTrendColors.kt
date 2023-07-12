@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.unit.Dp
 import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.core.android.R
 
 
 fun Context.primaryColor() =

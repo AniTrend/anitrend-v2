@@ -33,7 +33,6 @@ import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.AlphaSlideAction
 import co.anitrend.navigation.drawer.action.ForegroundSheetTransformSlideAction
 import co.anitrend.navigation.drawer.action.ScrollToTopStateAction

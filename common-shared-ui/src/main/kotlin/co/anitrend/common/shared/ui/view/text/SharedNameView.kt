@@ -22,7 +22,6 @@ import android.content.Context
 import android.util.AttributeSet
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.shared.R
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.contract.IEntityName
 import com.google.android.material.textview.MaterialTextView

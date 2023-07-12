@@ -20,7 +20,13 @@ package co.anitrend.domain.media.model
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaLicensor
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaSort
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
 
 sealed class MediaParam {

@@ -26,7 +26,6 @@ import androidx.core.view.setPadding
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.review.R
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.domain.review.entity.Review
 

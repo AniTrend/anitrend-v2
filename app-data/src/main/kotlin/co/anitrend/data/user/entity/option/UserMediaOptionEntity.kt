@@ -17,7 +17,12 @@
 
 package co.anitrend.data.user.entity.option
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import co.anitrend.data.core.common.Identity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.medialist.enums.ScoreFormat

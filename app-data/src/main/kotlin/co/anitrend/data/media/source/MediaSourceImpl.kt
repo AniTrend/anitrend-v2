@@ -18,10 +18,10 @@
 package co.anitrend.data.media.source
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.carousel.source.contract.CarouselSource
@@ -45,7 +45,11 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 internal class MediaSourceImpl {
 

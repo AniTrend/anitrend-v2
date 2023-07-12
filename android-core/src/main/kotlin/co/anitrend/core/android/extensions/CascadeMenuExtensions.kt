@@ -27,7 +27,6 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuCompat
 import co.anitrend.arch.extension.ext.getColorFromAttr
-import co.anitrend.core.android.R
 import co.anitrend.core.android.views.drawable.RoundedDrawable
 import me.saket.cascade.CascadePopupMenu
 import me.saket.cascade.allChildren

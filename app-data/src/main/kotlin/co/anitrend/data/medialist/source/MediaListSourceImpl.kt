@@ -18,10 +18,10 @@
 package co.anitrend.data.medialist.source
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
@@ -30,7 +30,13 @@ import co.anitrend.data.common.extension.from
 import co.anitrend.data.customlist.datasource.CustomListLocalSource
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
-import co.anitrend.data.medialist.*
+import co.anitrend.data.medialist.DeleteCustomListController
+import co.anitrend.data.medialist.MediaListCollectionController
+import co.anitrend.data.medialist.MediaListDeleteEntryController
+import co.anitrend.data.medialist.MediaListEntryController
+import co.anitrend.data.medialist.MediaListPagedController
+import co.anitrend.data.medialist.MediaListSaveEntriesController
+import co.anitrend.data.medialist.MediaListSaveEntryController
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
@@ -42,7 +48,12 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 internal class MediaListSourceImpl {
 

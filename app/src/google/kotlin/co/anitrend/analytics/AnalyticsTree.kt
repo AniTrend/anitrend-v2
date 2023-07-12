@@ -20,7 +20,6 @@ package co.anitrend.analytics
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
 import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.settings.privacy.IPrivacySettings

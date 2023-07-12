@@ -31,6 +31,8 @@ import co.anitrend.data.android.cleaner.ClearDataHelper
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.database.AniTrendStore
 import co.anitrend.data.android.database.common.IAniTrendStore
+import co.anitrend.data.android.info.AppInfo
+import co.anitrend.data.android.info.DeviceInfo
 import co.anitrend.data.android.logger.GraphLogger
 import co.anitrend.data.android.logger.OkHttpLogger
 import co.anitrend.data.android.network.cookie.ApplicationCookieJar
@@ -41,9 +43,7 @@ import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.AniListApiFactory
-import co.anitrend.data.android.info.AppInfo
 import co.anitrend.data.core.app.IAppInfo
-import co.anitrend.data.android.info.DeviceInfo
 import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.customlist.koin.customListModules

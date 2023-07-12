@@ -20,7 +20,12 @@ package co.anitrend.core.android.shortcut.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import co.anitrend.core.android.R
-import co.anitrend.navigation.*
+import co.anitrend.navigation.AiringRouter
+import co.anitrend.navigation.FeedRouter
+import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.NotificationRouter
+import co.anitrend.navigation.ProfileRouter
+import co.anitrend.navigation.SearchRouter
 import co.anitrend.navigation.router.NavigationRouter
 
 /**

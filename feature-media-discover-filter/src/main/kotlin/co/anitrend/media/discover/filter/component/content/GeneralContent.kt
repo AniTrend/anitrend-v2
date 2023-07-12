@@ -25,7 +25,13 @@ import co.anitrend.arch.extension.ext.capitalizeWords
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.android.extensions.createChipChoice
 import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaCountry
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaLicensor
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGeneralBinding
 import co.anitrend.navigation.MediaDiscoverRouter

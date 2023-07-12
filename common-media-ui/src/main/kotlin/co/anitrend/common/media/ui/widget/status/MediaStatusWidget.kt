@@ -22,7 +22,6 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.media.ui.R
 import co.anitrend.domain.media.enums.MediaStatus
 
 class MediaStatusWidget @JvmOverloads constructor(

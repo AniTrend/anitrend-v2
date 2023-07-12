@@ -22,8 +22,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
-import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.episode.ui.controller.helpers.EpisodeDiffUtil

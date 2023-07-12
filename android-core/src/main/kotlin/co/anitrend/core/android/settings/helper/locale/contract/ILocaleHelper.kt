@@ -19,7 +19,7 @@ package co.anitrend.core.android.settings.helper.locale.contract
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import java.util.*
+import java.util.Locale
 
 interface ILocaleHelper {
 

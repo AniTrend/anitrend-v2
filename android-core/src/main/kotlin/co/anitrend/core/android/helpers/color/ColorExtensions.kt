@@ -23,7 +23,6 @@ import android.graphics.drawable.ColorDrawable
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.core.android.R
 import co.anitrend.domain.common.HexColor
 
 /** Checks if a color has enough contrast */

@@ -27,7 +27,6 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
-import co.anitrend.deeplink.R
 import co.anitrend.deeplink.databinding.DeepLinkScreenBinding
 import co.anitrend.deeplink.exception.DeepLinkException
 import com.kingsleyadio.deeplink.DeepLinkParser

@@ -20,7 +20,13 @@ package co.anitrend.data.user.repository
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.data.user.*
+import co.anitrend.data.user.UserAuthenticatedRepository
+import co.anitrend.data.user.UserFollowRepository
+import co.anitrend.data.user.UserIdentifierRepository
+import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserProfileStatisticRepository
+import co.anitrend.data.user.UserSearchRepository
+import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.domain.user.model.UserParam
 

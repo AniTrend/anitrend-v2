@@ -17,8 +17,8 @@
 
 package co.anitrend.data.carousel.source
 
-import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.carousel.MediaCarouselListController
@@ -39,7 +39,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
 
-internal class CarouselSourceImpl(
+ internal class CarouselSourceImpl(
     private val remoteSource: CarouselRemoteSource,
     private val localSource: CarouselLocalSource,
     private val clearDataHelper: IClearDataHelper,

@@ -32,7 +32,6 @@ import co.anitrend.core.extensions.orEmpty
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.medialist.R
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel

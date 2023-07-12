@@ -18,7 +18,7 @@
 package co.anitrend.core.android.settings.helper.locale.model
 
 import co.anitrend.arch.extension.ext.empty
-import java.util.*
+import java.util.Locale
 
 /**
  * Represents application locales, we might have the same locale for different countries so we

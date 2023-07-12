@@ -25,6 +25,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.character))
     implementation(project(Libraries.AniTrend.CommonUi.staff))
     implementation(project(Libraries.AniTrend.CommonUi.media))
+    implementation(project(Libraries.AniTrend.CommonUi.shared))
     implementation(project(Libraries.AniTrend.CommonUi.genre))
     implementation(project(Libraries.AniTrend.CommonUi.tag))
 

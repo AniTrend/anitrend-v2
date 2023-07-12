@@ -23,10 +23,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
-import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.DEFAULT_VIEW_TYPE
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.MediaDiffUtil

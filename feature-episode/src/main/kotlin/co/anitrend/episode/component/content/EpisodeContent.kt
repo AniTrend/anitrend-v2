@@ -24,7 +24,6 @@ import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Comp
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
-import co.anitrend.episode.R
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

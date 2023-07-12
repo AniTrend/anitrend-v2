@@ -17,7 +17,6 @@
 
 package co.anitrend.common.markdown.ui.koin
 
-import co.anitrend.common.markdown.R
 import co.anitrend.common.markdown.ui.plugin.store.CoilStorePlugin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import coil.Coil

@@ -21,7 +21,9 @@ import co.anitrend.common.shared.ui.view.chip.enums.CheckedState
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.navigation.model.sorting.Sorting
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MaterialSortChipControllerTest {

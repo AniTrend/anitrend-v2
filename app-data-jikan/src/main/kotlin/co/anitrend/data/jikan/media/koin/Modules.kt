@@ -25,7 +25,11 @@ import co.anitrend.data.jikan.extensions.jikanLocalSource
 import co.anitrend.data.jikan.extensions.remoteSource
 import co.anitrend.data.jikan.licensor.mapper.JikanLicensorMapper
 import co.anitrend.data.jikan.media.cache.JikanCache
-import co.anitrend.data.jikan.media.converters.*
+import co.anitrend.data.jikan.media.converters.JikanAuthorModelConverter
+import co.anitrend.data.jikan.media.converters.JikanLicensorModelConverter
+import co.anitrend.data.jikan.media.converters.JikanModelConverter
+import co.anitrend.data.jikan.media.converters.JikanProducerModelConverter
+import co.anitrend.data.jikan.media.converters.JikanStudioModelConverter
 import co.anitrend.data.jikan.media.mapper.JikanMapper
 import co.anitrend.data.jikan.media.source.JikanSourceImpl
 import co.anitrend.data.jikan.media.source.contract.JikanSource

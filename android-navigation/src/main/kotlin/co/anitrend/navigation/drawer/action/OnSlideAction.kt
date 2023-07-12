@@ -6,7 +6,6 @@ import androidx.core.view.marginTop
 import androidx.core.view.updatePadding
 import co.anitrend.core.android.animations.normalize
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
-import co.anitrend.navigation.drawer.R
 import com.google.android.material.shape.MaterialShapeDrawable
 
 
