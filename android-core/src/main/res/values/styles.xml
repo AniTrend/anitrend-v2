@@ -22,17 +22,17 @@
         <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
 
-    <style name="AppTheme.ShapeAppearance.Small.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <style name="AppTheme.ShapeAppearance.Small.Rounded" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/lg_margin</item>
     </style>
 
-    <style name="AppTheme.ShapeAppearance.Medium.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <style name="AppTheme.ShapeAppearance.Medium.Rounded" parent="ShapeAppearance.Material3.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/xl_margin</item>
     </style>
 
-    <style name="AppTheme.ShapeAppearance.Large.Rounded" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <style name="AppTheme.ShapeAppearance.Large.Rounded" parent="ShapeAppearance.Material3.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/xl_margin</item>
     </style>
@@ -43,7 +43,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.Material.TabLayout" parent="Widget.MaterialComponents.TabLayout.Colored">
+    <style name="AppTheme.Material.TabLayout" parent="Widget.Material3.TabLayout">
         <item name="tabMode">auto</item>
         <item name="tabGravity">center</item>
         <item name="tabInlineLabel">true</item>
@@ -56,24 +56,24 @@
         <item name="tabTextAppearance">@style/AppTheme.TextAppearance.Material.TabLayout</item>
     </style>
 
-    <style name="AppTheme.Material.MaterialCard" parent="Widget.MaterialComponents.CardView">
+    <style name="AppTheme.Material.MaterialCard" parent="Widget.Material3.CardView.Filled">
         <item name="android:layout_margin">@dimen/lg_margin</item>
-        <item name="cardPreventCornerOverlap">false</item>
+        <!--<item name="cardPreventCornerOverlap">false</item>
         <item name="cardBackgroundColor">?colorPrimary</item>
         <item name="cardElevation">@dimen/size_2dp</item>
-        <item name="cardCornerRadius">@dimen/lg_margin</item>
+        <item name="cardCornerRadius">@dimen/lg_margin</item>-->
     </style>
 
-    <style name="AppTheme.Material.MediaCard" parent="Widget.MaterialComponents.CardView">
+    <style name="AppTheme.Material.MediaCard" parent="Widget.Material3.CardView.Filled">
         <item name="android:layout_margin">@dimen/lg_margin</item>
-        <item name="android:foreground">?selectableItemBackground</item>
+        <!--<item name="android:foreground">?selectableItemBackground</item>
         <item name="cardPreventCornerOverlap">false</item>
         <item name="cardBackgroundColor">?colorPrimary</item>
         <item name="cardElevation">0dp</item>
-        <item name="cardCornerRadius">@dimen/lg_margin</item>
+        <item name="cardCornerRadius">@dimen/lg_margin</item>-->
     </style>
 
-    <style name="AppTheme.Material.UnElevatedButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="AppTheme.Material.UnElevatedButton" parent="Widget.Material3.Button.UnelevatedButton">
         <item name="android:textAppearance">?textAppearanceSubtitle2</item>
         <item name="android:backgroundTint">?colorAccent</item>
         <item name="android:textColor">@color/white_1000</item>
@@ -82,13 +82,13 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AppTheme.Material.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="AppTheme.Material.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textAppearance">?textAppearanceSubtitle2</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AppTheme.Material.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="AppTheme.Material.TextButton" parent="Widget.Material3.Button.TextButton">
         <item name="android:textAppearance">?textAppearanceSubtitle2</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -121,7 +121,7 @@
         <item name="android:maxLines">2</item>
     </style>
 
-    <style name="AppTheme.Material.Chip.Action" parent="Widget.MaterialComponents.Chip.Action">
+    <style name="AppTheme.Material.Chip.Action" parent="Widget.Material3.Chip.Filter">
         <item name="android:textAppearance">?textAppearanceSubtitle2</item>
         <item name="android:textColor">@color/white_1000</item>
         <item name="android:layout_height">wrap_content</item>
@@ -129,7 +129,7 @@
         <item name="chipBackgroundColor">?colorAccent</item>
     </style>
 
-    <style name="AppTheme.Material.Chip.Choice" parent="Widget.MaterialComponents.Chip.Action">
+    <style name="AppTheme.Material.Chip.Choice" parent="Widget.Material3.Chip.Suggestion">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">?textAppearanceSubtitle2</item>
@@ -176,39 +176,39 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="AppTheme.Material.TextInputLayout.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="AppTheme.Material.TextInputLayout.Outlined" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">?colorAccent</item>
         <item name="hintTextColor">?colorOnSurface</item>
     </style>
 
-    <style name="AppTheme.Material.TextInputLayout.Filled" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <style name="AppTheme.Material.TextInputLayout.Filled" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="hintTextColor">?colorOnSurface</item>
     </style>
 
-    <style name="AppTheme.Material.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
+    <style name="AppTheme.Material.BottomAppBar" parent="Widget.Material3.BottomAppBar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:backgroundTint">?colorPrimary</item>
+        <item name="navigationIconTint">@color/md_theme_onPrimary</item>
         <item name="android:layout_gravity">bottom</item>
     </style>
 
-    <style name="AppTheme.Material.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+    <style name="AppTheme.Material.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <!--<item name="tint">@color/white_1000</item>
         <item name="backgroundTint">?colorAccent</item>-->
     </style>
 
-    <style name="AppTheme.Material.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <style name="AppTheme.Material.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Secondary">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <!--<item name="tint">@color/white_1000</item>
         <item name="backgroundTint">?colorAccent</item>-->
     </style>
 
-    <style name="AppTheme.Overlay.DatePicker" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+    <style name="AppTheme.Overlay.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/md_theme_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
 
         <item name="buttonBarPositiveButtonStyle">@style/AppTheme.Material.TextButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/AppTheme.Material.TextButton</item>
@@ -221,14 +221,14 @@
     </style>
 
     <style name="AppTheme.Material.PopupTheme" parent="SupportTheme.PopupTheme">
-        <item name="android:popupBackground">@color/colorPrimary</item>
+        <item name="android:popupBackground">@color/md_theme_primary</item>
     </style>
 
     <style name="AppTheme.AppCompat.Spinner" parent="Base.Widget.AppCompat.Spinner">
         <item name="popupTheme">@style/AppTheme.Material.PopupTheme</item>
     </style>
 
-    <style name="AppTheme.RatingBar.Small" parent="Theme.MaterialComponents">
+    <style name="AppTheme.RatingBar.Small" parent="Theme.Material3.DayNight">
         <item name="ratingBarStyle">@style/Widget.AppCompat.RatingBar.Small</item>
         <item name="colorControlNormal">@color/grey_50</item>
         <item name="colorControlActivated">@color/white_1000</item>

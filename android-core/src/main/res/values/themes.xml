@@ -39,4 +39,16 @@
     <!-- Dark theme will have it's attributes defined in night mode -->
     <style name="AppTheme.Dark"/>
 
+    <style name="AppTheme3" parent="SupportTheme3.AppTheme">
+        <item name="android:textViewStyle">@style/AppTheme.FontFamily</item>
+
+        <item name="bottomAppBarStyle">@style/AppTheme.Material.BottomAppBar</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/AppTheme.ShapeAppearance.Small.Rounded</item>
+        <item name="shapeAppearanceMediumComponent">@style/AppTheme.ShapeAppearance.Medium.Rounded</item>
+        <item name="shapeAppearanceLargeComponent">@style/AppTheme.ShapeAppearance.Large.Rounded</item>
+    </style>
+
+    <style name="AppTheme3.Dark" />
+
 </resources>

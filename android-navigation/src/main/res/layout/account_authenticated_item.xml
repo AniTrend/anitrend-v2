@@ -60,7 +60,7 @@
         android:layout_gravity="end|center_vertical"
         android:text="@string/label_account_sign_out"
         android:textColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
         />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -18,8 +18,8 @@
 
 <resources>
 
-    <style name="Widget.MaterialComponents.Button.TextButton.OnBoardTextButton"
-        parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.Material3.Button.TextButton.OnBoardTextButton"
+        parent="Widget.Material3.Button.TextButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorAccent</item>

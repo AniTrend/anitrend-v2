@@ -54,7 +54,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/onbaording_button_next"
-            style="@style/Widget.MaterialComponents.Button.TextButton.OnBoardTextButton"
+            style="@style/Widget.Material3.Button.TextButton.OnBoardTextButton"
             android:text="@string/onbaording_button_next"
             android:layout_marginBottom="@dimen/xl_margin"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/onbaording_button_skip"
-            style="@style/Widget.MaterialComponents.Button.TextButton.OnBoardTextButton"
+            style="@style/Widget.Material3.Button.TextButton.OnBoardTextButton"
             android:text="@string/onbaording_button_skip"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

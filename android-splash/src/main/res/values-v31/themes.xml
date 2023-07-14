@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="AppTheme.Splash" parent="Theme.SplashScreen">
+    <style name="AppTheme3.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/colorBackground</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
         <item name="windowSplashScreenAnimationDuration">@integer/motion_duration_short</item>

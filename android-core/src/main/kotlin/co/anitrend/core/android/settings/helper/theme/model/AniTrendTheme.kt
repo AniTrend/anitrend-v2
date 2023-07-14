@@ -31,15 +31,15 @@ enum class AniTrendTheme(@StyleRes val styleAttribute: Int, val useNightMode: Bo
         styleAttribute = 0
     ),
     AMOLED(
-        styleAttribute = R.style.AppTheme,
+        styleAttribute = R.style.AppTheme3,
         useNightMode = true
     ),
     LIGHT(
-        styleAttribute = R.style.AppTheme,
+        styleAttribute = R.style.AppTheme3,
         useNightMode = false
     ),
     DARK(
-        styleAttribute = R.style.AppTheme_Dark,
+        styleAttribute = R.style.AppTheme3_Dark,
         useNightMode = true
     )
 }
