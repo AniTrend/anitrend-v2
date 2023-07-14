@@ -18,7 +18,11 @@
 package co.anitrend.data.android.database
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.AutoMigration
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.database.common.IAniTrendStore

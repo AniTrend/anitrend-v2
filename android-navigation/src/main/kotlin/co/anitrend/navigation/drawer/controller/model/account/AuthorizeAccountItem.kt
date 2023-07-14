@@ -62,7 +62,7 @@ class AuthorizeAccountItem(
         disposable = requireBinding().accountProfileImage.load(
             view.context.getCompatDrawable(
                 R.drawable.ic_account_add_24dp,
-                R.color.primaryTextColor
+                co.anitrend.arch.theme.R.color.primaryTextColor
             )
         )
         requireBinding().accountContainer.setOnClickListener(AuthRouter::startActivity)

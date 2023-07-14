@@ -46,7 +46,18 @@ import co.anitrend.databinding.MainScreenBinding
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.navigation.*
+import co.anitrend.navigation.EpisodeRouter
+import co.anitrend.navigation.FeedRouter
+import co.anitrend.navigation.ForumRouter
+import co.anitrend.navigation.MediaCarouselRouter
+import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.NavigationDrawerRouter
+import co.anitrend.navigation.NewsRouter
+import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.SettingsRouter
+import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.navigation.drawer.model.navigation.Navigation
@@ -58,7 +69,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.fragment.android.replace
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -140,8 +150,8 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
 
     private fun onUpdateUserInterface() {
         requireBinding().floatingShortcutButton.apply {
-            setShowMotionSpecResource(R.animator.floating_action_show)
-            setHideMotionSpecResource(R.animator.floating_action_hide)
+            setShowMotionSpecResource(co.anitrend.core.android.R.animator.floating_action_show)
+            setHideMotionSpecResource(co.anitrend.core.android.R.animator.floating_action_hide)
         }
         inflateNavigationBottomDrawer()
     }
@@ -294,14 +304,14 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
 
     private fun navigateToUsing(@IdRes menuId: Int) {
         val fragmentItem = when (menuId) {
-            R.id.navigation_home -> {
-                viewModel.state.selectedTitle = R.string.navigation_home
+            co.anitrend.navigation.drawer.R.id.navigation_home -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_home
                 FragmentItem(
                     fragment = MediaCarouselRouter.forFragment()
                 )
             }
-            R.id.navigation_discover -> {
-                viewModel.state.selectedTitle = R.string.navigation_discover
+            co.anitrend.navigation.drawer.R.id.navigation_discover -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_discover
                 FragmentItem(
                     fragment = MediaDiscoverRouter.forFragment(),
                     parameter = MediaDiscoverRouter.Param(
@@ -314,44 +324,44 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
                     ).asBundle()
                 )
             }
-            R.id.navigation_social -> {
-                viewModel.state.selectedTitle = R.string.navigation_social
+            co.anitrend.navigation.drawer.R.id.navigation_social -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_social
                 FragmentItem(
                     fragment = FeedRouter.forFragment()
                 )
             }
-            R.id.navigation_reviews -> {
-                viewModel.state.selectedTitle = R.string.navigation_review
+            co.anitrend.navigation.drawer.R.id.navigation_reviews -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_review
                 FragmentItem(
                     fragment = ReviewDiscoverRouter.forFragment()
                 )
             }
-            R.id.navigation_suggestions -> {
-                viewModel.state.selectedTitle = R.string.navigation_suggestions
+            co.anitrend.navigation.drawer.R.id.navigation_suggestions -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_suggestions
                 FragmentItem(
                     fragment = SuggestionRouter.forFragment()
                 )
             }
-            R.id.navigation_news -> {
-                viewModel.state.selectedTitle = R.string.navigation_news
+            co.anitrend.navigation.drawer.R.id.navigation_news -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_news
                 FragmentItem(
                     fragment = NewsRouter.forFragment()
                 )
             }
-            R.id.navigation_forum -> {
-                viewModel.state.selectedTitle = R.string.navigation_forums
+            co.anitrend.navigation.drawer.R.id.navigation_forum -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_forums
                 FragmentItem(
                     fragment = ForumRouter.forFragment()
                 )
             }
-            R.id.navigation_episodes -> {
-                viewModel.state.selectedTitle = R.string.navigation_episodes
+            co.anitrend.navigation.drawer.R.id.navigation_episodes -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_episodes
                 FragmentItem(
                     fragment = EpisodeRouter.forFragment()
                 )
             }
-            R.id.navigation_anime_list -> {
-                viewModel.state.selectedTitle = R.string.navigation_anime_list
+            co.anitrend.navigation.drawer.R.id.navigation_anime_list -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_anime_list
                 FragmentItem(
                     fragment = MediaListRouter.forFragment(),
                     parameter = MediaListRouter.Param(
@@ -361,8 +371,8 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
                     tag = MediaType.ANIME.name
                 )
             }
-            R.id.navigation_manga_list -> {
-                viewModel.state.selectedTitle = R.string.navigation_manga_list
+            co.anitrend.navigation.drawer.R.id.navigation_manga_list -> {
+                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_manga_list
                 FragmentItem(
                     fragment = MediaListRouter.forFragment(),
                     parameter = MediaListRouter.Param(
@@ -372,15 +382,15 @@ class MainScreen : AniTrendScreen<MainScreenBinding>() {
                     tag = MediaType.MANGA.name
                 )
             }
-            R.id.navigation_donate -> {
+            co.anitrend.navigation.drawer.R.id.navigation_donate -> {
                 presenter.redirectToPatreon()
                 null
             }
-            R.id.navigation_discord -> {
+            co.anitrend.navigation.drawer.R.id.navigation_discord -> {
                 presenter.redirectToDiscord()
                 null
             }
-            R.id.navigation_faq -> {
+            co.anitrend.navigation.drawer.R.id.navigation_faq -> {
                 presenter.redirectToFAQ()
                 null
             }

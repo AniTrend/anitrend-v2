@@ -19,9 +19,7 @@ package co.anitrend.media.carousel.koin
 
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.common.media.ui.adapter.MediaCarouselAdapter
-import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.media.carousel.R
 import co.anitrend.media.carousel.component.content.CarouselContent
 import co.anitrend.media.carousel.component.content.controller.CarouselContentController
 import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
@@ -31,14 +29,13 @@ import co.anitrend.navigation.MediaCarouselRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.component.getScopeId
 import org.koin.dsl.module
 
 private val coreModule = module {
     factory {
         RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(R.layout.media_carousel_item, 12)
-            setMaxRecycledViews(R.layout.media_comfortable_item, 26)
+            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_carousel_item, 12)
+            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_comfortable_item, 26)
         }
     }
 }

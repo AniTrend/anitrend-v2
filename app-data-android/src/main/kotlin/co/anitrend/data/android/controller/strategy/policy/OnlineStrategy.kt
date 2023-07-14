@@ -17,9 +17,9 @@
 
 package co.anitrend.data.android.controller.strategy.policy
 
-import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.network.model.NetworkMessage
 import timber.log.Timber

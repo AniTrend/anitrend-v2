@@ -24,7 +24,7 @@ import androidx.core.os.LocaleListCompat
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings
 import co.anitrend.core.android.settings.helper.locale.contract.ILocaleHelper
 import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
-import java.util.*
+import java.util.Locale
 
 internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelper {
 

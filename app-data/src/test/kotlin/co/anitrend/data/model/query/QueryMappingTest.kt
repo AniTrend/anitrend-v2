@@ -26,7 +26,9 @@ import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.media.model.MediaParam
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**

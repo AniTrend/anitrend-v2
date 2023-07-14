@@ -22,7 +22,6 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.media.carousel.R
 import org.threeten.bp.Instant
 
 class CarouselContentController(
@@ -58,6 +57,6 @@ class CarouselContentController(
      * Page size depending on the configuration of the form factor in addition to [multiplier]
      */
     fun pageSize(resources: Resources, multiplier: Int) =
-        resources.getInteger(R.integer.grid_list_x3)
+        resources.getInteger(co.anitrend.arch.theme.R.integer.grid_list_x3)
             .times(multiplier)
 }

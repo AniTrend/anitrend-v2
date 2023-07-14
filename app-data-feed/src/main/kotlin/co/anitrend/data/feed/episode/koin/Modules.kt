@@ -19,7 +19,12 @@ package co.anitrend.data.feed.episode.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.defaultController
-import co.anitrend.data.feed.episode.*
+import co.anitrend.data.feed.episode.EpisodeDetailInteractor
+import co.anitrend.data.feed.episode.EpisodeDetailRepository
+import co.anitrend.data.feed.episode.EpisodePagedInteractor
+import co.anitrend.data.feed.episode.EpisodePagedRepository
+import co.anitrend.data.feed.episode.EpisodeSyncInteractor
+import co.anitrend.data.feed.episode.EpisodeSyncRepository
 import co.anitrend.data.feed.episode.cache.EpisodeCache
 import co.anitrend.data.feed.episode.converter.EpisodeEntityConverter
 import co.anitrend.data.feed.episode.converter.EpisodeModelConverter

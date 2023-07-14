@@ -26,14 +26,13 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ActionProvider
 import androidx.core.view.setPadding
 import co.anitrend.arch.extension.ext.getDrawableAttr
-import co.anitrend.core.android.R
 import co.anitrend.core.android.extensions.dp
 
 abstract class AbstractActionProvider(context: Context) : ActionProvider(context) {
 
     protected val actionImageView = AppCompatImageView(context).apply {
         background = context.getDrawableAttr(
-            R.attr.selectableItemBackgroundBorderless
+            androidx.appcompat.R.attr.selectableItemBackgroundBorderless
         )
         isClickable = true
         isFocusable = true

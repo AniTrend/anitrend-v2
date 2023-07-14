@@ -21,7 +21,12 @@ import androidx.room.TypeConverter
 import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.database.extensions.fromEnum
 import co.anitrend.data.android.database.extensions.toEnum
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaRankType
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.enums.ReviewRating

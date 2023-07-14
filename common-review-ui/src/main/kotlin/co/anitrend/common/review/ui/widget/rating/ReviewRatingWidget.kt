@@ -26,7 +26,6 @@ import androidx.core.view.setPadding
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.review.R
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.domain.review.entity.Review
 
@@ -50,7 +49,7 @@ internal class ReviewRatingWidget @JvmOverloads constructor(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         progressDrawable?.setTint(
-            context.getCompatColor(R.color.white_1000)
+            context.getCompatColor(co.anitrend.core.android.R.color.white_1000)
         )
     }
 
@@ -63,7 +62,7 @@ internal class ReviewRatingWidget @JvmOverloads constructor(
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        background = context.getCompatDrawable(R.drawable.bubble_background)
+        background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.bubble_background)
         setPadding(8.dp)
         addView(ratingBar)
         if (isInEditMode) {

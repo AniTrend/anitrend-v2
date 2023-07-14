@@ -64,7 +64,7 @@ internal class NewsItem(
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         binding = NewsItemBinding.bind(view)
-        val radius = view.resources.getDimensionPixelSize(R.dimen.sm_margin).toFloat()
+        val radius = view.resources.getDimensionPixelSize(co.anitrend.arch.theme.R.dimen.sm_margin).toFloat()
         disposable = requireBinding().newsImage.using(
             entity.image.toCoverImage(),
             listOf(

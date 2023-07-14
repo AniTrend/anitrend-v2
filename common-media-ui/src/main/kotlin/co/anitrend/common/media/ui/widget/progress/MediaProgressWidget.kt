@@ -50,7 +50,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         ).also { params ->
             params.gravity = Gravity.CENTER_VERTICAL
         }
-        setTextColor(context.getCompatColor(R.color.colorBackground))
+        setTextColor(context.getCompatColor(co.anitrend.arch.theme.R.color.colorBackground))
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         setTypeface(typeface, Typeface.BOLD)
     }
@@ -62,7 +62,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         setImageDrawable(
             this.context.getCompatDrawable(
                 R.drawable.ic_add,
-                R.color.colorBackground
+                co.anitrend.arch.theme.R.color.colorBackground
             )
         )
     }
@@ -133,11 +133,11 @@ internal class MediaProgressWidget @JvmOverloads constructor(
 
         if (controller.hasCaughtUp())
             progressSpinner.setIndicatorColor(
-                context.getCompatColor(R.color.green_A700)
+                context.getCompatColor(co.anitrend.core.android.R.color.green_A700)
             )
         else
             progressSpinner.setIndicatorColor(
-                context.getCompatColor(R.color.orange_A700)
+                context.getCompatColor(co.anitrend.core.android.R.color.orange_A700)
             )
     }
 
@@ -170,7 +170,7 @@ internal class MediaProgressWidget @JvmOverloads constructor(
         addView(progressIncrement)
 
         progressText.updateMargins(start = 8.dp, end = 8.dp)
-        background = context.getCompatDrawable(R.drawable.widget_background)
+        background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.widget_background)
 
         if (isInEditMode) {
             progressText.text = "5 / 25"

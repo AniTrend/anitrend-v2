@@ -65,7 +65,7 @@ class ProfileContent(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 requireBinding().stateLayout.interactionFlow
-                    .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                    .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
                     .onEach {
                         viewModelState().retry()
                     }

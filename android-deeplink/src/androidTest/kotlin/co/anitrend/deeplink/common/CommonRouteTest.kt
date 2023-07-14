@@ -28,9 +28,8 @@ import co.anitrend.deeplink.environment.AniTrendEnvironment
 import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
 import com.kingsleyadio.deeplink.DeepLinkUri
 import org.junit.Rule
-import org.koin.test.KoinTest
 
-abstract class CommonRouteTest : KoinTest {
+abstract class CommonRouteTest {
 
     private val webBaseUrl = "https://anilist.co"
     private val appBaseUrl = "app.anitrend://"

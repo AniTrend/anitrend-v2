@@ -74,7 +74,7 @@ class MediaAiringScheduleWidget @JvmOverloads constructor(
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (isInEditMode) {
             val builder = SpannableStringBuilder()
-                .color(context.getCompatColor(R.color.orange_A400)) {
+                .color(context.getCompatColor(co.anitrend.core.android.R.color.orange_A400)) {
                     append(
                         context.getString(
                             R.string.label_episode_airing_in_time,
@@ -85,6 +85,6 @@ class MediaAiringScheduleWidget @JvmOverloads constructor(
                 }
             text = builder
         }
-        TextViewCompat.setTextAppearance(this, R.style.TextAppearance_MaterialComponents_Caption)
+        TextViewCompat.setTextAppearance(this, com.google.android.material.R.style.TextAppearance_MaterialComponents_Caption)
     }
 }

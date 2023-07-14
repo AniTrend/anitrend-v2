@@ -32,7 +32,6 @@ import co.anitrend.core.extensions.orEmpty
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.medialist.R
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -56,9 +55,9 @@ class MediaListContent(
     private fun getSpanSizeByPreference(
         viewMode: PreferredViewMode
     ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> R.integer.column_x2
-        else -> R.integer.column_x1
+        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+        else -> co.anitrend.core.android.R.integer.column_x1
     }
 
     /**

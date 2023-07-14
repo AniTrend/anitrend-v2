@@ -18,7 +18,12 @@
 package co.anitrend.data.feed.episode.usecase
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.data.feed.episode.*
+import co.anitrend.data.feed.episode.EpisodeDetailInteractor
+import co.anitrend.data.feed.episode.EpisodeDetailRepository
+import co.anitrend.data.feed.episode.EpisodePagedInteractor
+import co.anitrend.data.feed.episode.EpisodePagedRepository
+import co.anitrend.data.feed.episode.EpisodeSyncInteractor
+import co.anitrend.data.feed.episode.EpisodeSyncRepository
 
 internal sealed class EpisodeInteractor {
 

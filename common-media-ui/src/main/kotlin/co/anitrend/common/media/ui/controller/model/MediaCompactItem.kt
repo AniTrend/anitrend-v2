@@ -25,7 +25,6 @@ import android.view.ViewGroup
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.media.ui.controller.extensions.startMediaScreenFor
 import co.anitrend.common.media.ui.databinding.MediaCompactItemBinding
@@ -112,7 +111,7 @@ internal class MediaCompactItem(
         spanCount: Int,
         position: Int,
         resources: Resources
-    ) = resources.getInteger(R.integer.column_x3)
+    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x3)
 
     companion object {
         internal fun LayoutInflater.createMediaItemViewHolder(

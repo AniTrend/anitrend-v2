@@ -33,10 +33,10 @@ import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
-import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.extensions.isEmpty
+import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.core.android.recycler.decorator.DefaultSpacingDecorator

@@ -28,7 +28,7 @@ import org.koin.core.qualifier.Qualifier
 import org.koin.mp.KoinPlatformTools
 import org.ocpsoft.prettytime.PrettyTime
 import org.threeten.bp.Instant
-import java.util.*
+import java.util.Date
 
 /**
  * Helper to resolve koin dependencies

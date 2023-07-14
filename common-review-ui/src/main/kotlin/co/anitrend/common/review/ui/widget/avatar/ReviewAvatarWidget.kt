@@ -27,7 +27,6 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.common.review.R
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.domain.review.entity.Review
@@ -61,7 +60,7 @@ internal class ReviewAvatarWidget @JvmOverloads constructor(
             it.gravity = Gravity.CENTER_VERTICAL
         }
         setTextColor(
-            context.getCompatColor(R.color.white_1000)
+            context.getCompatColor(co.anitrend.core.android.R.color.white_1000)
         )
     }
 
@@ -80,7 +79,7 @@ internal class ReviewAvatarWidget @JvmOverloads constructor(
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        background = context.getCompatDrawable(R.drawable.bubble_background)
+        background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.bubble_background)
         addView(userImage)
         addView(spacing)
         addView(userName)
@@ -90,7 +89,7 @@ internal class ReviewAvatarWidget @JvmOverloads constructor(
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             userImage.setImageDrawable(
-                context.getCompatDrawable(R.drawable.ic_anitrend_notification_logo)
+                context.getCompatDrawable(co.anitrend.core.R.drawable.ic_anitrend_notification_logo)
             )
             userName.text = "Groenboys"
         }

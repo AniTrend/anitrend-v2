@@ -18,9 +18,9 @@
 package co.anitrend.data.airing.source.contract
 
 import androidx.paging.PagedList
+import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity

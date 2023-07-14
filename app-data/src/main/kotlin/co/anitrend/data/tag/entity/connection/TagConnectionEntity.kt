@@ -17,7 +17,11 @@
 
 package co.anitrend.data.tag.entity.connection
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import co.anitrend.data.core.common.Identity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.tag.entity.TagEntity

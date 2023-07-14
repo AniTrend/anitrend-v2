@@ -32,7 +32,6 @@ import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
@@ -41,7 +40,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
-    override val inflateMenu: Int = R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
@@ -57,9 +56,9 @@ class MediaDiscoverContent(
     @IntegerRes private fun getSpanSizeByPreference(
         viewMode: PreferredViewMode
     ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> R.integer.column_x2
-        else -> R.integer.column_x1
+        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+        else -> co.anitrend.core.android.R.integer.column_x1
     }
 
     /**
@@ -82,7 +81,7 @@ class MediaDiscoverContent(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_filter -> {
+            co.anitrend.core.android.R.id.action_filter -> {
                 val fragmentItem = FragmentItem(
                     fragment = MediaDiscoverRouter.forSheet(),
                     parameter = viewModel.default.asBundle()

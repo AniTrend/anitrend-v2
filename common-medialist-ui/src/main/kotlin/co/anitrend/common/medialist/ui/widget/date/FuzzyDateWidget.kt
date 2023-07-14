@@ -53,16 +53,16 @@ class FuzzyDateWidget @JvmOverloads constructor(
         setImageDrawable(
             context.getCompatDrawable(
                 R.drawable.ic_edit_calendar,
-                R.color.colorAccent
+                co.anitrend.core.android.R.color.colorAccent
             )
         )
     }
 
     private val fuzzyDateTextView = MaterialTextView(context).apply {
-        style(R.style.Widget_MaterialComponents_TextView)
+        style(com.google.android.material.R.style.Widget_MaterialComponents_TextView)
         TextViewCompat.setTextAppearance(
             this,
-            R.style.TextAppearance_MaterialComponents_Subtitle1
+            com.google.android.material.R.style.TextAppearance_MaterialComponents_Subtitle1
         )
         layoutParams = LayoutParams(
             LayoutParams.WRAP_CONTENT,

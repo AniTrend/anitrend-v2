@@ -17,10 +17,10 @@
 
 package co.anitrend.data.android.cache.extensions
 
+import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.contract.IRequestHelper
 import co.anitrend.arch.request.model.Request
-import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import kotlinx.coroutines.CoroutineScope

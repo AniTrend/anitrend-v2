@@ -101,7 +101,7 @@ internal class EpisodeItem(
         spanCount: Int,
         position: Int,
         resources: Resources
-    ) = resources.getInteger(R.integer.column_x1)
+    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x1)
 
 
     companion object {

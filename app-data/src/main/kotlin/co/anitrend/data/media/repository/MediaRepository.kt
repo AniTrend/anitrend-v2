@@ -18,12 +18,12 @@
 package co.anitrend.data.media.repository
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
+import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository

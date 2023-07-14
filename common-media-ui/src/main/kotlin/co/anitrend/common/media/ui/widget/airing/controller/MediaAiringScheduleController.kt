@@ -20,7 +20,6 @@ package co.anitrend.common.media.ui.widget.airing.controller
 import android.content.Context
 import androidx.annotation.ColorInt
 import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.common.media.ui.R
 import co.anitrend.core.android.helpers.color.asColorInt
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.common.HexColor
@@ -35,7 +34,7 @@ internal class MediaAiringScheduleController(private val entity: Media) {
     */
     @ColorInt fun getColor(context: Context): Int {
         val colour: HexColor? = entity.image.color
-        return colour?.asColorInt(context) ?: context.getCompatColor(R.color.primaryTextColor)
+        return colour?.asColorInt(context) ?: context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor)
     }
 
     /**

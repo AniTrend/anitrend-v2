@@ -26,7 +26,9 @@ import org.threeten.bp.LocalDate.from
 import org.threeten.bp.LocalTime
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class AniTrendDateHelper : AbstractSupportDateHelper() {
 

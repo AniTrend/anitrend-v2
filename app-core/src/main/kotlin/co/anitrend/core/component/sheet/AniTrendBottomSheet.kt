@@ -36,11 +36,9 @@ import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.common.ILifecycleController
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.core.R
 import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
 import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.koinOf
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
@@ -88,7 +86,7 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
         runCatching {
             val parent = viewParent as View
             val params = parent.layoutParams as CoordinatorLayout.LayoutParams
-            val width = resources.getDimensionPixelSize(R.dimen.bottom_sheet_margin)
+            val width = resources.getDimensionPixelSize(co.anitrend.core.android.R.dimen.bottom_sheet_margin)
             params.setMargins(width, 0, width, 0)
             parent.layoutParams = params
         }.stackTrace()

@@ -31,7 +31,7 @@ internal class UsersToAccountsMapper(settings: IAuthenticationSettings) {
         ),
         Account.Anonymous(
             titleRes = R.string.label_account_anonymous,
-            imageRes = R.mipmap.ic_launcher,
+            imageRes = co.anitrend.core.R.mipmap.ic_launcher,
             isActiveUser = true
         ),
         Account.Group(

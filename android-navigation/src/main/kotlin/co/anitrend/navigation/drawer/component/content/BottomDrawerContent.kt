@@ -28,8 +28,6 @@ import androidx.annotation.IdRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.MutableCreationExtras
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
@@ -57,9 +55,15 @@ import co.anitrend.navigation.drawer.model.state.SandwichState
 import co.anitrend.navigation.extensions.startActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.toExtras
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.math.abs
@@ -158,7 +162,7 @@ class BottomDrawerContent(
             addUpdateListener { sandwichProgress = animatedValue as Float }
             interpolator = sandwichInterpolator
             duration = (abs(newProgress - initialProgress) *
-                    resources.getInteger(R.integer.motion_duration_medium)).toLong()
+                    resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_medium)).toLong()
         }
         sandwichAnimator?.start()
     }
@@ -187,7 +191,7 @@ class BottomDrawerContent(
             // peeked above the BottomAppBar.
             sheetBackgroundContainer.translationY = progress *
                     ((scrimView.bottom - accountRecycler.height
-                            - resources.getDimension(R.dimen.design_bottom_app_bar_height)) -
+                            - resources.getDimension(co.anitrend.core.android.R.dimen.design_bottom_app_bar_height)) -
                             (sheetBackgroundContainer.getTag(R.id.tag_view_top_snapshot) as Int))
         }
 

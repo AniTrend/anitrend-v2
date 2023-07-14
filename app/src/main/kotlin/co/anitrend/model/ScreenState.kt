@@ -21,7 +21,6 @@ import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.SavedStateHandle
-import co.anitrend.R
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.android.state.IScreenState
 import co.anitrend.navigation.NavigationDrawerRouter
@@ -39,7 +38,7 @@ internal class ScreenState(
 
     @IdRes var selectedItem: Int = navigationDestination.toNavId()
 
-    @StringRes var selectedTitle: Int = R.string.navigation_home
+    @StringRes var selectedTitle: Int = co.anitrend.navigation.drawer.R.string.navigation_home
 
     override fun onSaveInstanceState(outState: Bundle) {
         savedStateHandle[ARG_KEY_SELECTED_ITEM] = selectedItem
@@ -67,16 +66,16 @@ internal class ScreenState(
          */
         @IdRes
         internal fun NavigationDrawerRouter.Destination.toNavId() = when (this) {
-            NavigationDrawerRouter.Destination.HOME -> R.id.navigation_home
-            NavigationDrawerRouter.Destination.DISCOVER -> R.id.navigation_discover
-            NavigationDrawerRouter.Destination.SOCIAL -> R.id.navigation_social
-            NavigationDrawerRouter.Destination.REVIEWS -> R.id.navigation_reviews
-            NavigationDrawerRouter.Destination.SUGGESTIONS -> R.id.navigation_suggestions
-            NavigationDrawerRouter.Destination.ANIME_LIST -> R.id.navigation_anime_list
-            NavigationDrawerRouter.Destination.MANGA_LIST -> R.id.navigation_manga_list
-            NavigationDrawerRouter.Destination.NEWS -> R.id.navigation_news
-            NavigationDrawerRouter.Destination.FORUMS -> R.id.navigation_forum
-            NavigationDrawerRouter.Destination.EPISODES -> R.id.navigation_episodes
+            NavigationDrawerRouter.Destination.HOME -> co.anitrend.navigation.drawer.R.id.navigation_home
+            NavigationDrawerRouter.Destination.DISCOVER -> co.anitrend.navigation.drawer.R.id.navigation_discover
+            NavigationDrawerRouter.Destination.SOCIAL -> co.anitrend.navigation.drawer.R.id.navigation_social
+            NavigationDrawerRouter.Destination.REVIEWS -> co.anitrend.navigation.drawer.R.id.navigation_reviews
+            NavigationDrawerRouter.Destination.SUGGESTIONS -> co.anitrend.navigation.drawer.R.id.navigation_suggestions
+            NavigationDrawerRouter.Destination.ANIME_LIST -> co.anitrend.navigation.drawer.R.id.navigation_anime_list
+            NavigationDrawerRouter.Destination.MANGA_LIST -> co.anitrend.navigation.drawer.R.id.navigation_manga_list
+            NavigationDrawerRouter.Destination.NEWS -> co.anitrend.navigation.drawer.R.id.navigation_news
+            NavigationDrawerRouter.Destination.FORUMS -> co.anitrend.navigation.drawer.R.id.navigation_forum
+            NavigationDrawerRouter.Destination.EPISODES -> co.anitrend.navigation.drawer.R.id.navigation_episodes
         }
     }
 }

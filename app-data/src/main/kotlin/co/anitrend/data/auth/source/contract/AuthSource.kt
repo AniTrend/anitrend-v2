@@ -17,8 +17,8 @@
 
 package co.anitrend.data.auth.source.contract
 
-import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.domain.account.model.AccountParam

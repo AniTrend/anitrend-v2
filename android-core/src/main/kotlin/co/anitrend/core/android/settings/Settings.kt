@@ -20,7 +20,11 @@ package co.anitrend.core.android.settings
 import android.content.Context
 import co.anitrend.arch.extension.preference.SupportPreference
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
-import co.anitrend.arch.extension.settings.*
+import co.anitrend.arch.extension.settings.BooleanSetting
+import co.anitrend.arch.extension.settings.EnumSetting
+import co.anitrend.arch.extension.settings.FloatSetting
+import co.anitrend.arch.extension.settings.IntSetting
+import co.anitrend.arch.extension.settings.LongSetting
 import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.common.IConfigurationSettings
 import co.anitrend.core.android.settings.common.locale.ILocaleSettings

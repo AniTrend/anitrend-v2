@@ -2,7 +2,7 @@ package co.anitrend.buildSrc.plugins.components
 
 import org.gradle.api.Project
 import java.io.File
-import java.util.*
+import java.util.Properties
 
 
 enum class PropertyTypes(val key: String) {

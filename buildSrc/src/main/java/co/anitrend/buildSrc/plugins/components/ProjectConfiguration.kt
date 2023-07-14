@@ -23,8 +23,6 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.io.File
 

@@ -17,7 +17,11 @@
 
 package co.anitrend.data.android.source
 
-import androidx.room.*
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Update
+import androidx.room.Upsert
 
 abstract class AbstractLocalSource<T> {
     abstract suspend fun count(): Int

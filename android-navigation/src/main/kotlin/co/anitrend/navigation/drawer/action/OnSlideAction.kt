@@ -6,7 +6,6 @@ import androidx.core.view.marginTop
 import androidx.core.view.updatePadding
 import co.anitrend.core.android.animations.normalize
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
-import co.anitrend.navigation.drawer.R
 import com.google.android.material.shape.MaterialShapeDrawable
 
 
@@ -67,7 +66,7 @@ class ForegroundSheetTransformSlideAction(
         // applied. Lazily evaluate to ensure we get a value, even if we've already started slide
         // changes.
         if (systemTopInset == 0) {
-            systemTopInset = foregroundView.getTag(R.id.tag_system_window_inset_top) as? Int? ?: 0
+            systemTopInset = foregroundView.getTag(co.anitrend.core.android.R.id.tag_system_window_inset_top) as? Int? ?: 0
         }
         return systemTopInset
     }

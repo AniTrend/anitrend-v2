@@ -34,28 +34,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
-import co.anitrend.core.android.R
 
 object AniTrendTheme {
 
     private val defaultFontFamily = FontFamily(
         Font(
-            resId = R.font.product_sans_bold,
+            resId = co.anitrend.arch.theme.R.font.product_sans_bold,
             style = FontStyle.Normal,
             weight = FontWeight.Bold
         ),
         Font(
-            resId = R.font.product_sans_bold_italic,
+            resId = co.anitrend.arch.theme.R.font.product_sans_bold_italic,
             style = FontStyle.Italic,
             weight = FontWeight.Bold
         ),
         Font(
-            resId = R.font.product_sans_italic,
+            resId = co.anitrend.arch.theme.R.font.product_sans_italic,
             style = FontStyle.Italic,
             weight = FontWeight.Normal
         ),
         Font(
-            resId = R.font.product_sans_regular,
+            resId = co.anitrend.arch.theme.R.font.product_sans_regular,
             style = FontStyle.Normal,
             weight = FontWeight.Normal
         )
@@ -76,18 +75,18 @@ object AniTrendTheme {
         @Composable get() {
             val context = LocalContext.current
             return Colors(
-                primary = Color(context.getCompatColor(R.color.primaryColor)),
-                primaryVariant = Color(context.getCompatColor(R.color.primaryDarkColor)),
-                secondary = Color(context.getCompatColor(R.color.secondaryColor)),
-                secondaryVariant = Color(context.getCompatColor(R.color.secondaryDarkColor)),
-                background = Color(context.getCompatColor(R.color.colorBackground)),
-                surface = Color(context.getCompatColor(R.color.colorSurface)),
-                error = Color(context.getCompatColor(R.color.colorError)),
-                onPrimary = Color(context.getCompatColor(R.color.colorOnPrimary)),
-                onSecondary = Color(context.getCompatColor(R.color.colorOnSecondary)),
-                onBackground = Color(context.getCompatColor(R.color.colorOnBackground)),
-                onSurface = Color(context.getCompatColor(R.color.colorOnSurface)),
-                onError = Color(context.getCompatColor(R.color.colorOnError)),
+                primary = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.primaryColor)),
+                primaryVariant = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.primaryDarkColor)),
+                secondary = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.secondaryColor)),
+                secondaryVariant = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.secondaryDarkColor)),
+                background = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorBackground)),
+                surface = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorSurface)),
+                error = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorError)),
+                onPrimary = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorOnPrimary)),
+                onSecondary = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorOnSecondary)),
+                onBackground = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorOnBackground)),
+                onSurface = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorOnSurface)),
+                onError = Color(context.getCompatColor(co.anitrend.arch.theme.R.color.colorOnError)),
                 isLight = !context.isEnvironmentNightMode()
             )
         }

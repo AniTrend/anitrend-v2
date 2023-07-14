@@ -38,7 +38,7 @@ private val fragmentModule = module {
         fragment {
             AuthContent(
                 stateLayoutConfig = StateLayoutConfig(
-                    errorDrawable = R.drawable.ic_support_empty_state,
+                    errorDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
                     loadingMessage = R.string.label_text_loading,
                     retryAction = R.string.label_text_action_retry
                 )

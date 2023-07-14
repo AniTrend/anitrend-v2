@@ -43,7 +43,7 @@ import org.threeten.bp.Instant
 class AiringContent(
     private val settings: ICustomizationSettings,
     private val dateHelper: AniTrendDateHelper,
-    override val inflateMenu: Int = R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Media>
 ) : AniTrendListContent<Media>() {
@@ -61,9 +61,9 @@ class AiringContent(
     private fun getSpanSizeByPreference(
         viewMode: PreferredViewMode
     ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> R.integer.column_x2
-        else -> R.integer.column_x1
+        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+        else -> co.anitrend.core.android.R.integer.column_x1
     }
 
     /**
@@ -86,7 +86,7 @@ class AiringContent(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_filter -> {
+            co.anitrend.core.android.R.id.action_filter -> {
                 CalendarSheet().show(requireContext()) {
                     title(R.string.label_calendar_airing_select_date)
                     selectionMode(SelectionMode.DATE)

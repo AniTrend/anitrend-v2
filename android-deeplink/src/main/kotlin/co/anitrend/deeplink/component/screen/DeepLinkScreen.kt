@@ -27,7 +27,6 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
-import co.anitrend.deeplink.R
 import co.anitrend.deeplink.databinding.DeepLinkScreenBinding
 import co.anitrend.deeplink.exception.DeepLinkException
 import com.kingsleyadio.deeplink.DeepLinkParser
@@ -68,7 +67,7 @@ class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
         binding = DeepLinkScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
         requireBinding().stateLayout.stateConfigFlow.value =
-            stateLayoutConfig.copy(retryAction = R.string.label_text_action_ok)
+            stateLayoutConfig.copy(retryAction = co.anitrend.core.R.string.label_text_action_ok)
         requireBinding().stateLayout.loadStateFlow.value =
             LoadState.Loading()
     }
@@ -77,7 +76,7 @@ class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 requireBinding().stateLayout.interactionFlow
-                    .debounce(resources.getInteger(R.integer.debounce_duration_short).toLong())
+                    .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
                     .onEach { finishAfterTransition() }
                     .catch { cause: Throwable ->
                         Timber.e(cause)

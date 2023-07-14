@@ -20,7 +20,11 @@ package co.anitrend.data.review.repository
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.data.review.*
+import co.anitrend.data.review.ReviewDeleteRepository
+import co.anitrend.data.review.ReviewEntryRepository
+import co.anitrend.data.review.ReviewPagedRepository
+import co.anitrend.data.review.ReviewRateRepository
+import co.anitrend.data.review.ReviewSaveRepository
 import co.anitrend.data.review.source.contract.ReviewSource
 import co.anitrend.domain.review.model.ReviewParam
 

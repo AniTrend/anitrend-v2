@@ -31,7 +31,11 @@ import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
 import co.anitrend.domain.media.entity.contract.IMedia
-import co.anitrend.domain.media.enums.*
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.tag.entity.Tag
 

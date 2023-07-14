@@ -17,7 +17,7 @@
 
 package co.anitrend.core.android.storage.extensions
 
-import java.util.*
+import java.util.Locale
 import kotlin.math.ln
 import kotlin.math.pow
 

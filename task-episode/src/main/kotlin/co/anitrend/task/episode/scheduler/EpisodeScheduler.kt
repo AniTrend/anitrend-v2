@@ -18,7 +18,12 @@
 package co.anitrend.task.episode.scheduler
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ListenableWorker
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import co.anitrend.navigation.work.WorkSchedulerController
 import java.util.concurrent.TimeUnit
 

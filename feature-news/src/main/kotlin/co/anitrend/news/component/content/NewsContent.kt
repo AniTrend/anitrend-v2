@@ -23,7 +23,6 @@ import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Comp
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
-import co.anitrend.news.R
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
 import co.anitrend.news.presenter.NewsPresenter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,7 +31,7 @@ class NewsContent(
     private val presenter: NewsPresenter,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<News>,
-    override val defaultSpanSize: Int = R.integer.column_x1,
+    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<News>() {
 
     private val viewModel by viewModel<NewsContentViewModel>()

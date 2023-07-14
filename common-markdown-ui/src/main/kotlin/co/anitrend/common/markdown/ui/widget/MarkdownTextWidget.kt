@@ -61,7 +61,7 @@ class MarkdownTextWidget @JvmOverloads constructor(
         ellipsize = TextUtils.TruncateAt.END
         setTextIsSelectable(true)
         Linkify.addLinks(this, Linkify.ALL)
-        val textAppearance = context.themeStyle(R.attr.textAppearanceCaption)
+        val textAppearance = context.themeStyle(com.google.android.material.R.attr.textAppearanceCaption)
         TextViewCompat.setTextAppearance(this, textAppearance)
         movementMethod = BetterLinkMovementMethod.newInstance().apply {
             setOnLinkClickListener { view, url ->

@@ -43,8 +43,8 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
 ) : ContourLayout(context, attrs), CustomView {
 
     private val markdownTextWidget = MarkdownTextWidget(context).apply {
-        style(R.style.AppTheme_Material_TextBody_Secondary)
-        setTextColor(this.context.getColorFromAttr(R.attr.colorSecondaryText))
+        style(co.anitrend.core.android.R.style.AppTheme_Material_TextBody_Secondary)
+        setTextColor(this.context.getColorFromAttr(co.anitrend.arch.theme.R.attr.colorSecondaryText))
         setTextIsSelectable(false)
         includeFontPadding = false
     }
@@ -72,7 +72,7 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
         if (isExpanded) {
             markdownTextWidget.setTextIsSelectable(true)
             markdownTextWidget.setTextColor(
-                context.getColorFromAttr(R.attr.colorPrimaryText)
+                context.getColorFromAttr(co.anitrend.arch.theme.R.attr.colorPrimaryText)
             )
             expandImageView.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_arrow_up)
@@ -80,7 +80,7 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
         } else {
             markdownTextWidget.setTextIsSelectable(false)
             markdownTextWidget.setTextColor(
-                context.getColorFromAttr(R.attr.colorSecondaryText)
+                context.getColorFromAttr(co.anitrend.arch.theme.R.attr.colorSecondaryText)
             )
             expandImageView.setImageDrawable(
                 context.getCompatDrawable(R.drawable.ic_arrow_down)
@@ -90,7 +90,7 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        val color = context.getColorFromAttr(R.attr.colorPrimaryVariant)
+        val color = context.getColorFromAttr(com.google.android.material.R.attr.colorPrimaryVariant)
         background = PaintDrawable(color).also { it.setCornerRadius(16f) }
         clipToOutline = true
         elevation = 16f.dip

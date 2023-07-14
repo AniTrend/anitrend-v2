@@ -33,7 +33,6 @@ import co.anitrend.core.android.helpers.image.toRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.AlphaSlideAction
 import co.anitrend.navigation.drawer.action.ForegroundSheetTransformSlideAction
 import co.anitrend.navigation.drawer.action.ScrollToTopStateAction
@@ -53,12 +52,12 @@ class DrawerPresenter(
         container: ViewGroup
     ): MaterialShapeDrawable {
         val shapeDrawable = MaterialShapeDrawable(
-            container.context, null, R.attr.bottomSheetStyle,0
+            container.context, null, com.google.android.material.R.attr.bottomSheetStyle,0
         )
 
         with (shapeDrawable) {
             fillColor = ColorStateList.valueOf(
-                container.context.getColorFromAttr(R.attr.colorPrimary)
+                container.context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary)
             )
             elevation = 16f.dp
             shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_NEVER
@@ -79,15 +78,15 @@ class DrawerPresenter(
 
     fun createBackgroundShape(container: FrameLayout): MaterialShapeDrawable {
         val shapeDrawable = MaterialShapeDrawable(
-            container.context, null, R.attr.bottomSheetStyle,0
+            container.context, null, com.google.android.material.R.attr.bottomSheetStyle,0
         )
 
         with (shapeDrawable) {
             fillColor = ColorStateList.valueOf(
                 if (container.context.isEnvironmentNightMode())
-                    container.context.getCompatColor(R.color.colorSurface)
+                    container.context.getCompatColor(co.anitrend.arch.theme.R.color.colorSurface)
                 else
-                    container.context.getCompatColor(R.color.anitrendDrawerSelector)
+                    container.context.getCompatColor(co.anitrend.core.android.R.color.anitrendDrawerSelector)
             )
             elevation = 8f.dp
 

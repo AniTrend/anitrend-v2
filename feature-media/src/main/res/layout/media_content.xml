@@ -15,9 +15,7 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<co.anitrend.arch.ui.view.widget.SupportStateLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<co.anitrend.arch.ui.view.widget.SupportStateLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/stateLayout"
     android:layout_width="match_parent"

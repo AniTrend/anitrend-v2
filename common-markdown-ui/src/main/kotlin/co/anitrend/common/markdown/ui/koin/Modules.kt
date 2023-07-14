@@ -17,7 +17,6 @@
 
 package co.anitrend.common.markdown.ui.koin
 
-import co.anitrend.common.markdown.R
 import co.anitrend.common.markdown.ui.plugin.store.CoilStorePlugin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import coil.Coil
@@ -35,11 +34,11 @@ private val builderModule = module {
         val context = androidContext()
 
         val radius = context.resources.getDimensionPixelSize(
-            R.dimen.md_margin
+            co.anitrend.arch.theme.R.dimen.md_margin
         ).toFloat()
 
         val duration = context.resources.getInteger(
-            R.integer.motion_duration_long
+            co.anitrend.core.android.R.integer.motion_duration_long
         )
 
         val imageLoader = Coil.imageLoader(context)

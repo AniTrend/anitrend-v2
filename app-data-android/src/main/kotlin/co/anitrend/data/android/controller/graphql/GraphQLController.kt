@@ -18,8 +18,8 @@
 package co.anitrend.data.android.controller.graphql
 
 import co.anitrend.arch.data.common.ISupportResponse
-import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.domain.entities.RequestError
+import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient

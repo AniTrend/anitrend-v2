@@ -30,7 +30,6 @@ import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.android.provider.contract.AbstractActionProvider
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.model.FragmentItem
-import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.fragment.android.KoinFragmentFactory
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.component.KoinScopeComponent
@@ -83,8 +82,8 @@ inline fun FragmentItem<*>.commit(
     context: Context,
     fragmentTransaction: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
-            R.anim.enter_from_bottom,
-            R.anim.exit_to_bottom,
+            co.anitrend.core.android.R.anim.enter_from_bottom,
+            co.anitrend.core.android.R.anim.exit_to_bottom,
             R.anim.popup_enter,
             R.anim.popup_exit
         )
@@ -116,8 +115,8 @@ inline fun <T: Fragment> FragmentItem<T>.commit(
     context: Context,
     action: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
-            R.anim.enter_from_bottom,
-            R.anim.exit_to_bottom,
+            co.anitrend.core.android.R.anim.enter_from_bottom,
+            co.anitrend.core.android.R.anim.exit_to_bottom,
             R.anim.popup_enter,
             R.anim.popup_exit
         )

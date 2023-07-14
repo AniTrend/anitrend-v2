@@ -20,7 +20,6 @@ package co.anitrend.medialist.component.container.mediator
 import android.content.Context
 import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.domain.user.entity.attribute.MediaListInfo
-import co.anitrend.medialist.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -41,7 +40,7 @@ internal class MediaListTabConfiguration(
         val mediaInfo = mediaListInfo[position]
         tab.orCreateBadge.apply {
             backgroundColor = context.getColorFromAttr(
-                R.attr.colorAccent, R.color.colorAccent
+                androidx.appcompat.R.attr.colorAccent, co.anitrend.core.android.R.color.colorAccent
             )
             number = mediaInfo.count
         }

@@ -23,7 +23,6 @@ import android.graphics.drawable.ColorDrawable
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import co.anitrend.arch.extension.ext.getCompatColor
-import co.anitrend.core.android.R
 import co.anitrend.domain.common.HexColor
 
 /** Checks if a color has enough contrast */
@@ -62,7 +61,7 @@ fun HexColor.asColorInt(@ColorInt backgroundColor: Int): Int {
  */
 @ColorInt
 fun HexColor.asColorInt(context: Context): Int {
-    val backgroundColor = context.getCompatColor(R.color.colorBackground)
+    val backgroundColor = context.getCompatColor(co.anitrend.arch.theme.R.color.colorBackground)
     return asColorInt(backgroundColor)
 }
 

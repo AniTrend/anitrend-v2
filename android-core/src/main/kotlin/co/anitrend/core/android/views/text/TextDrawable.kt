@@ -40,7 +40,7 @@ class TextDrawable(
     private val materialTextView = MaterialTextView(context).also { textView ->
         textView.text = text
         textView.background = textView.context.getCompatDrawable(
-            R.drawable.indicator_background, R.color.colorBackground
+            R.drawable.indicator_background, co.anitrend.arch.theme.R.color.colorBackground
         )
         textView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -48,7 +48,7 @@ class TextDrawable(
         )
         textView.setTextColor(
             textView.context.getCompatColor(
-                R.color.colorOnBackground
+                co.anitrend.arch.theme.R.color.colorOnBackground
             )
         )
         val padding = textView.resources

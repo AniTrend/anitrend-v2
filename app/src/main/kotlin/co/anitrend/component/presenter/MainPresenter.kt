@@ -22,7 +22,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.transition.TransitionManager
 import android.view.View
-import co.anitrend.R
 import co.anitrend.core.android.components.action.FloatingActionMenu
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.extensions.startViewIntent
@@ -68,17 +67,17 @@ internal class MainPresenter(
     }
 
     fun redirectToFAQ() {
-        val faq = context.getString(R.string.app_faq_page_link)
+        val faq = context.getString(co.anitrend.core.android.R.string.app_faq_page_link)
         context.startViewIntent(Uri.parse(faq))
     }
 
     fun redirectToPatreon() {
-        val patreon = context.getString(R.string.app_patreon_page_link)
+        val patreon = context.getString(co.anitrend.core.android.R.string.app_patreon_page_link)
         context.startViewIntent(Uri.parse(patreon))
     }
 
     fun redirectToDiscord() {
-        val discord = context.getString(R.string.app_discord_page_link)
+        val discord = context.getString(co.anitrend.core.android.R.string.app_discord_page_link)
         context.startViewIntent(Uri.parse(discord))
     }
 }

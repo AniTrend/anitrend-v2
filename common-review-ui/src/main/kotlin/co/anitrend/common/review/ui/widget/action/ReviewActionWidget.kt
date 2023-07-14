@@ -55,7 +55,7 @@ internal class ReviewActionWidget @JvmOverloads constructor(
                 downVote.setDrawable(
                     context.getCompatDrawable(
                         R.drawable.ic_thumb_down,
-                        R.color.orange_A700
+                        co.anitrend.core.android.R.color.orange_A700
                     )
                 )
                 upVote.setDrawable(
@@ -68,7 +68,7 @@ internal class ReviewActionWidget @JvmOverloads constructor(
                 upVote.setDrawable(
                     context.getCompatDrawable(
                         R.drawable.ic_thumb_up,
-                        R.color.green_A700
+                        co.anitrend.core.android.R.color.green_A700
                     )
                 )
                 downVote.setDrawable(
