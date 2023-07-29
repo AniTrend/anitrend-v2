@@ -56,7 +56,7 @@ jetbrains-kotlinx-datetime = "0.4.0"
 jetbrains-kotlinx-serialization = "1.5.1"
 
 koin-core = "3.4.2"
-koin-test = "3.4.1"
+koin-test = "3.4.3"
 koin-android = "3.4.2"
 koin-androidx-navigation = "3.4.3"
 koin-androidx-workManager = "3.4.3"
