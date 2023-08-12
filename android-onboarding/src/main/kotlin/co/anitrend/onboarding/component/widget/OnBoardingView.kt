@@ -19,11 +19,11 @@ package co.anitrend.onboarding.component.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import com.jem.liquidswipe.layout.LiquidSwipeFrameLayout
+import android.widget.FrameLayout
 
 class OnBoardingView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : LiquidSwipeFrameLayout(context, attrs, defStyleAttr, defStyleRes)
+) : FrameLayout(context, attrs, defStyleAttr, defStyleRes)
