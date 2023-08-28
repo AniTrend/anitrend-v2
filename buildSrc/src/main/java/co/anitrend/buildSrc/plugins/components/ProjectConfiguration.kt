@@ -88,10 +88,10 @@ private fun Project.configureLint() = baseAppExtension().run {
 }
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(33)
+    compileSdkVersion(34)
     defaultConfig {
         minSdk = 23
-        targetSdk = 33
+        targetSdk = 34
         versionCode = props[PropertyTypes.CODE].toInt()
         versionName = props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

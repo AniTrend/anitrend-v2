@@ -66,12 +66,17 @@ internal class DependencyStrategy(private val project: Project) {
 
         test(project.libs.cash.turbine)
         test(project.libs.jetbrains.kotlinx.coroutines.test)
+
+        androidTest(project.libs.cash.turbine)
+        androidTest(project.libs.jetbrains.kotlinx.coroutines.test)
     }
 
     private fun DependencyHandler.applyKoinDependencies() {
         implementation(project.libs.koin.core)
         test(project.libs.koin.test)
         test(project.libs.koin.test.junit4)
+        androidTest(project.libs.koin.test)
+        androidTest(project.libs.koin.test.junit4)
         if (project.hasKoinAndroidSupport()) {
             implementation(project.libs.koin.android)
             implementation(project.libs.koin.androidx.navigation)
