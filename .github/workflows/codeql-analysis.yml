@@ -34,6 +34,14 @@ jobs:
         language: [ 'kotlin' ]
 
     steps:
+    - name: Increase swapfile
+      run: |
+        sudo swapoff -a
+        sudo fallocate -l 6G /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        sudo swapon --show
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: set up JDK 17
@@ -76,7 +84,7 @@ jobs:
     - name: Build github variant
       run: |
         chmod +x gradlew
-        ./gradlew assembleGithubDebug --stacktrace --no-daemon
+        ./gradlew assembleGithubDebug --stacktrace
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
