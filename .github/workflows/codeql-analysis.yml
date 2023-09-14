@@ -36,12 +36,8 @@ jobs:
     steps:
     - name: Increase swapfile
       run: |
-        sudo swapoff -a
-        sudo fallocate -l 6G /swapfile
-        sudo chmod 600 /swapfile
-        sudo mkswap /swapfile
-        sudo swapon /swapfile
-        sudo swapon --show
+        chmod +x .github/scripts/action-swap-increase.sh
+        bash .github/scripts/action-swap-increase.sh
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: set up JDK 17
@@ -49,7 +45,7 @@ jobs:
       with:
         java-version: 17
         distribution: 'adopt'
-        cache: 'gradle'
+        # cache: 'gradle'
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     - name: Configure properties
