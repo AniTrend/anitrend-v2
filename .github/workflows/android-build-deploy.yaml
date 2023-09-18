@@ -22,7 +22,7 @@ jobs:
       GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
       GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Increase swapfile
         run: |
           chmod +x .github/scripts/action-swap-increase.sh
