@@ -1,4 +1,4 @@
-rootProject.name= "anitrend"
+rootProject.name= "anitrend-v2"
 include(
     ":app",
     ":app-core",

@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.androidx.collection.ktx)
 
     implementation(libs.anitrend.querybuilder.core)
+    implementation(libs.anitrend.querybuilder.core.ext)
 }
 
 android {
