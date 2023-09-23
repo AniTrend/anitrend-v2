@@ -60,7 +60,7 @@ koin-test = "3.4.3"
 koin-android = "3.4.3"
 koin-androidx-navigation = "3.4.3"
 koin-androidx-workManager = "3.4.3"
-koin-android-compose = "3.4.6"
+koin-android-compose = "3.5.0"
 
 markwon = "4.6.2"
 
