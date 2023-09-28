@@ -58,7 +58,7 @@ jetbrains-kotlinx-serialization = "1.6.0"
 koin-core = "3.5.0"
 koin-test = "3.4.3"
 koin-android = "3.5.0"
-koin-androidx-navigation = "3.4.3"
+koin-androidx-navigation = "3.5.0"
 koin-androidx-workManager = "3.4.3"
 koin-android-compose = "3.5.0"
 
