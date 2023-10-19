@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.core.content.edit
 import co.anitrend.core.android.R
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.android.storage.StorageController
 
 internal object Migrations {
     private val FROM_v2_0_0_28_TO_v2_0_0_30 = object : Migration(20290, 20300) {
@@ -49,11 +50,20 @@ internal object Migrations {
             settings.edit(commit = true) { remove("_syncInterval") }
         }
     }
+
+    private val FROM_v2_0_0_39_TO_v2_0_0_41 = object : Migration(2_000_000_039, 2_000_000_041) {
+        override fun invoke(context: Context, settings: Settings) {
+            // clear image cache along with migration of coil
+            StorageController().getImageCache(context = context)
+                .deleteRecursively()
+        }
+    }
     
     val ALL = listOf(
         FROM_v2_0_0_28_TO_v2_0_0_30,
         FROM_v2_0_0_31_TO_v2_0_0_32,
         FROM_v2_0_0_32_TO_v2_0_0_33,
-        FROM_v2_0_0_33_TO_v2_0_0_39
+        FROM_v2_0_0_33_TO_v2_0_0_39,
+        FROM_v2_0_0_39_TO_v2_0_0_41
     )
 }

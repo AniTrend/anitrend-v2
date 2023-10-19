@@ -17,33 +17,41 @@
 
 package co.anitrend.common.markdown.ui.plugin.store
 
+import android.content.Context
+import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.android.helpers.image.toCoverImage
 import coil.request.Disposable
 import coil.request.ImageRequest
-import coil.size.OriginalSize
-import coil.size.PixelSize
+import coil.size.Size
+import coil.transform.RoundedCornersTransformation
+import coil.transition.CrossfadeTransition
 import io.noties.markwon.image.AsyncDrawable
 import io.noties.markwon.image.coil.CoilImagesPlugin
 
 internal class CoilStorePlugin private constructor(
-    private val requestBuilder: ImageRequest.Builder
+    private val context: Context
 ) : CoilImagesPlugin.CoilStore {
 
     override fun load(drawable: AsyncDrawable): ImageRequest {
         // TODO: Applying a custom non-string data item does not trigger our mapper
         val coverImage = drawable.destination.toCoverImage()
-        val builder = requestBuilder
+        val builder = ImageRequest.Builder(context)
+            .transformations(RoundedCornersTransformation(4f.dp))
+            .transitionFactory { target, result ->
+                CrossfadeTransition(target, result, 300, true)
+            }
+            .crossfade(true)
             .data(drawable.destination)
 
         val width = drawable.imageSize?.width
         val height = drawable.imageSize?.height
 
         val size = if (width?.value != null && height?.value != null) {
-            PixelSize(
+            Size(
                 width = width.value.toInt(),
                 height = height.value.toInt()
             )
-        } else OriginalSize
+        } else Size.ORIGINAL
 
          builder.size(size)
 
@@ -56,8 +64,6 @@ internal class CoilStorePlugin private constructor(
     }
 
     companion object {
-        fun create(
-            requestBuilder: ImageRequest.Builder
-        ) = CoilStorePlugin(requestBuilder)
+        fun create(context: Context) = CoilStorePlugin(context)
     }
 }

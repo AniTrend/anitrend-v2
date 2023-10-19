@@ -20,29 +20,33 @@ package co.anitrend.medialist.editor.component.sheet.compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import co.anitrend.core.android.compose.AniTrendTheme
-import co.anitrend.core.android.koinOf
+import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 import coil.ImageLoader
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
+import org.koin.androidx.compose.get
 
 
 @Composable
-fun BackgroundHeader(
-    mediaState: State<Media?>,
-    imageLoader: ImageLoader = koinOf()
+private fun BackgroundHeader(
+    mediaCover: LiveData<IMediaCover>,
+    modifier: Modifier = Modifier,
+    imageLoader: ImageLoader = get()
 ) {
-    Row(modifier = Modifier.aspectRatio(1.7f)) {
+    val mediaCoverState = mediaCover.observeAsState()
+    Row(modifier = modifier.aspectRatio(1.7f)) {
         Image(
-            painter = rememberImagePainter(
-                mediaState.value?.image?.banner,
-                imageLoader = imageLoader,
+            painter = rememberAsyncImagePainter(
+                model = mediaCoverState.value?.banner,
+                imageLoader = imageLoader
             ),
             contentDescription = null
         )
@@ -52,8 +56,8 @@ fun BackgroundHeader(
 @Composable
 fun MediaListEditorComponent(state: MediaListEditorState) {
     AniTrendTheme {
-        val scope = rememberCoroutineScope()
-        val mediaState = state.model.observeAsState()
-        BackgroundHeader(mediaState)
+        Surface {
+            BackgroundHeader(state.model.map(Media::image))
+        }
     }
 }

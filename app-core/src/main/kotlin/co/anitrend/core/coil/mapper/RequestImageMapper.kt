@@ -21,6 +21,7 @@ import co.anitrend.core.android.controller.power.contract.IPowerController
 import co.anitrend.core.android.controller.power.contract.PowerSaverState
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import coil.map.Mapper
+import coil.request.Options
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
@@ -50,11 +51,13 @@ class RequestImageMapper(
         }.toString()
     }
 
-    /** Return true if this can convert [data]. */
-    override fun handles(data: RequestImage<*>) = true
-
-    /** Convert [data] into [HttpUrl]. */
-    override fun map(data: RequestImage<*>): HttpUrl {
+    /**
+     * Convert [data] into [V]. Return 'null' if this mapper cannot convert [data].
+     *
+     * @param data The data to convert.
+     * @param options The options for this request.
+     */
+    override fun map(data: RequestImage<*>, options: Options): HttpUrl {
         val url = getImageUrlUsing(data)
         return url.toHttpUrl()
     }

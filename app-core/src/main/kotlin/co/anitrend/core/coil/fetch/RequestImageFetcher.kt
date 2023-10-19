@@ -20,35 +20,27 @@ package co.anitrend.core.coil.fetch
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.mapper.RequestImageMapper
-import coil.bitmap.BitmapPool
+import coil.ImageLoader
 import coil.decode.DataSource
-import coil.decode.Options
 import coil.fetch.FetchResult
 import coil.fetch.Fetcher
 import coil.fetch.SourceResult
-import coil.size.Size
+import coil.key.Keyer
+import coil.request.Options
+import okhttp3.HttpUrl
 
-internal class RequestImageFetcher(
+internal class RequestImageFetcher private constructor(
     private val client: CoilRequestClient,
-    private val mapper: RequestImageMapper
-) : Fetcher<RequestImage<*>> {
+    private val mapper: RequestImageMapper,
+    private val httpUrl: HttpUrl
+) : Fetcher, Keyer<RequestImage<*>> {
 
     /**
-     * Load the [data] into memory. Perform any necessary fetching operations.
-     *
-     * @param pool A [BitmapPool] which can be used to request [Bitmap] instances.
-     * @param data The data to load.
-     * @param size The requested dimensions for the image.
-     * @param options A set of configuration options for this request.
+     * Fetch the data provided by [Factory.create] or return 'null' to delegate to the next
+     * [Factory] in the component registry.
      */
-    override suspend fun fetch(
-        pool: BitmapPool,
-        data: RequestImage<*>,
-        size: Size,
-        options: Options
-    ): FetchResult {
-        val url = mapper.map(data)
-        val result = client.fetch(url)
+    override suspend fun fetch(): FetchResult {
+        val result = client.fetch(httpUrl)
         return SourceResult(
             source = result.source,
             mimeType = result.contentType,
@@ -57,13 +49,35 @@ internal class RequestImageFetcher(
     }
 
     /**
-     * Compute the memory cache key for [data].
+     * Convert [data] into a string key. Return 'null' if this keyer cannot convert [data].
      *
-     * Items with the same cache key will be treated as equivalent by the [MemoryCache].
-     *
-     * Returning null will prevent the result of [fetch] from being added to the memory cache.
+     * @param data The data to convert.
+     * @param options The options for this request.
      */
-    override fun key(data: RequestImage<*>): String {
+    override fun key(data: RequestImage<*>, options: Options): String {
         return mapper.getImageUrlUsing(data)
+    }
+
+    class Factory(
+        private val client: CoilRequestClient,
+        private val mapper: RequestImageMapper
+    ) : Fetcher.Factory<RequestImage<*>> {
+
+        /**
+         * Return a [Fetcher] that can fetch [data] or 'null' if this factory cannot create a
+         * fetcher for the data.
+         *
+         * @param data The data to fetch.
+         * @param options A set of configuration options for this request.
+         * @param imageLoader The [ImageLoader] that's executing this request.
+         */
+        override fun create(
+            data: RequestImage<*>,
+            options: Options,
+            imageLoader: ImageLoader
+        ): Fetcher {
+            val url = mapper.map(data, options)
+            return RequestImageFetcher(client, mapper, url)
+        }
     }
 }

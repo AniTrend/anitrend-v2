@@ -19,10 +19,7 @@ package co.anitrend.common.markdown.ui.koin
 
 import co.anitrend.common.markdown.ui.plugin.store.CoilStorePlugin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import coil.Coil
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
-import coil.transition.CrossfadeTransition
+import coil.ImageLoader
 import io.noties.markwon.Markwon
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.coil.CoilImagesPlugin
@@ -33,28 +30,12 @@ private val builderModule = module {
     factory {
         val context = androidContext()
 
-        val radius = context.resources.getDimensionPixelSize(
-            co.anitrend.arch.theme.R.dimen.md_margin
-        ).toFloat()
-
-        val duration = context.resources.getInteger(
-            co.anitrend.core.android.R.integer.motion_duration_long
-        )
-
-        val imageLoader = Coil.imageLoader(context)
-
         Markwon.builder(context)
             .usePlugin(HtmlPlugin.create())
             .usePlugin(
                 CoilImagesPlugin.create(
-                    CoilStorePlugin.create(
-                        ImageRequest.Builder(context)
-                            .defaults(imageLoader.defaults)
-                            .transformations(RoundedCornersTransformation(radius))
-                            .transition(CrossfadeTransition(duration))
-                            .crossfade(true)
-                    ),
-                    imageLoader
+                    CoilStorePlugin.create(context),
+                    get()
                 )
             )
     }
