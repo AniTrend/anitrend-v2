@@ -97,11 +97,9 @@ fun RequestImage<*>.toRequestBuilder(
     }
 
     return requestBuilder
-        .transition(
-            CrossfadeTransition(
-                context.resources.getInteger(
-                    R.integer.motion_duration_long
-                )
+        .crossfade(
+            context.resources.getInteger(
+                R.integer.motion_duration_long
             )
         ).data(this)
 }
@@ -135,11 +133,9 @@ fun AppCompatImageView.using(
     }
 
     val request = requestBuilder
-        .transition(
-            CrossfadeTransition(
-                resources.getInteger(
-                    R.integer.motion_duration_long
-                )
+        .crossfade(
+            context.resources.getInteger(
+                R.integer.motion_duration_long
             )
         )
         .data(requestImage)
@@ -168,9 +164,9 @@ fun AppCompatImageView.using(
         requestBuilder.transformations(transformations)
 
     val request = requestBuilder
-        .transition(
-            CrossfadeTransition(
-                resources.getInteger(R.integer.motion_duration_long)
+        .crossfade(
+            context.resources.getInteger(
+                R.integer.motion_duration_long
             )
         )
         .data(resource)
@@ -216,9 +212,9 @@ fun <T: ICoverImage> AppCompatImageView.using(
         requestBuilder.transformations(transformations)
 
     val request = requestBuilder
-        .transition(
-            CrossfadeTransition(
-                resources.getInteger(R.integer.motion_duration_long)
+        .crossfade(
+            context.resources.getInteger(
+                R.integer.motion_duration_long
             )
         )
         .data(resource?.toRequestImage())
@@ -248,9 +244,9 @@ fun <T: ICoverImage> Target.using(
         requestBuilder.transformations(transformations)
 
     val request = requestBuilder
-        .transition(
-            CrossfadeTransition(
-                context.resources.getInteger(R.integer.motion_duration_long)
+        .crossfade(
+            context.resources.getInteger(
+                R.integer.motion_duration_long
             )
         )
         .data(resource?.toRequestImage())

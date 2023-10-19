@@ -18,18 +18,20 @@
 package co.anitrend.core.coil.client
 
 import co.anitrend.data.android.network.client.OkHttpCallNetworkClient
+import coil.decode.ImageSource
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okio.BufferedSource
 import timber.log.Timber
+import java.io.File
 
 internal class CoilRequestClient(
-    private val client: OkHttpClient
+    private val client: OkHttpClient,
+    private val imageCache: File
 ) : OkHttpCallNetworkClient() {
 
     data class DataResult(
-        val source: BufferedSource,
+        val source: ImageSource,
         val contentType: String?
     )
 
@@ -61,6 +63,12 @@ internal class CoilRequestClient(
 
         val body = response.bodyOrThrow()
 
-        return DataResult(body.source(), contentType)
+        return DataResult(
+            ImageSource(
+                source = body.source(),
+                cacheDirectory = imageCache
+            ),
+            contentType
+        )
     }
 }

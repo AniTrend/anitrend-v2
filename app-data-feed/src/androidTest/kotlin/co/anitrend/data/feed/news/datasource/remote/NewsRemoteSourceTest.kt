@@ -28,7 +28,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -71,7 +70,7 @@ internal class NewsRemoteSourceTest {
                 """.trimIndent()
             }
 
-        newsFlow.test(timeout = Duration.seconds(15)) {
+        newsFlow.test {
             val news = awaitItem()
             Assert.assertTrue(news.isNotEmpty())
             Assert.assertEquals(15, news.size)

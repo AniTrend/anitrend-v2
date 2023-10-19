@@ -35,7 +35,6 @@ import co.anitrend.navigation.NewsRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
-import coil.transform.RoundedCornersTransformation
 import com.perfomer.blitz.cancelTimeAgoUpdates
 import com.perfomer.blitz.setTimeAgo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,15 +65,7 @@ internal class NewsItem(
         binding = NewsItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(co.anitrend.arch.theme.R.dimen.sm_margin).toFloat()
         disposable = requireBinding().newsImage.using(
-            entity.image.toCoverImage(),
-            listOf(
-                RoundedCornersTransformation(
-                    topLeft = radius,
-                    topRight = radius,
-                    bottomLeft = radius,
-                    bottomRight = radius
-                )
-            )
+            entity.image.toCoverImage()
         )
 
         requireBinding().newsTitle.text = entity.title

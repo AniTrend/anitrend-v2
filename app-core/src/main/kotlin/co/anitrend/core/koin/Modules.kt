@@ -40,11 +40,11 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.decode.SvgDecoder
-import coil.fetch.VideoFrameFileFetcher
-import coil.fetch.VideoFrameUriFetcher
+import coil.decode.VideoFrameDecoder
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
 import io.wax911.emojify.initializer.EmojiInitializer
 import io.wax911.emojify.manager.IEmojiManager
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -113,38 +113,44 @@ private val configurationModule = module {
 
         val client = get<OkHttpClient.Builder> {
             parametersOf(HttpLoggingInterceptor.Level.BASIC)
-        }.cache(
-            Cache(
-                storageController.getImageCache(
-                    context = androidContext()
-                ),
-                storageController.getStorageUsageLimit(
-                    context = androidContext(),
-                    type = StorageType.CACHE,
-                    settings = get()
-                )
-            )
-        ).build()
+        }.build()
+
+        val imageCache = storageController.getImageCache(
+            context = androidContext()
+        )
 
         val loader = ImageLoader.Builder(context)
-            .availableMemoryPercentage(memoryLimit)
-            .bitmapPoolPercentage(memoryLimit)
+            .memoryCache {
+                MemoryCache.Builder(context)
+                    .maxSizePercent(memoryLimit)
+                    .build()
+            }
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(imageCache)
+                    .maxSizeBytes(
+                        storageController.getStorageUsageLimit(
+                            context = androidContext(),
+                            type = StorageType.CACHE,
+                            settings = get()
+                        )
+                    ).build()
+            }
             .dispatcher(get<ISupportDispatcher>().io)
             .okHttpClient { client }
-            .componentRegistry {
+            .components {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-                    add(ImageDecoderDecoder(context))
+                    add(ImageDecoderDecoder.Factory())
                 else
-                    add(GifDecoder())
+                    add(GifDecoder.Factory())
                 add(
-                    RequestImageFetcher(
-                        client = CoilRequestClient(client),
+                    RequestImageFetcher.Factory(
+                        client = CoilRequestClient(client, imageCache),
                         mapper = get()
                     )
                 )
-                add(SvgDecoder(context = context))
-                add(VideoFrameFileFetcher(context = context))
-                add(VideoFrameUriFetcher(context = context))
+                add(SvgDecoder.Factory())
+                add(VideoFrameDecoder.Factory())
             }
 
         if (!isLowRamDevice)
