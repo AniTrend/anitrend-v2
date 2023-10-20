@@ -25,7 +25,8 @@ jobs:
         bash .github/scripts/staging-config.sh
     - name: Post setup clean up
       run: |
-        sudo rm -rf /home/runner/work/_temp/*
+        chmod +x .github/scripts/cleanup-temp-directory.sh
+        bash .github/scripts/cleanup-temp-directory.sh
     - name: Check Disk Space
       run: df -h
     - name: Gradle test

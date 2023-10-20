@@ -51,8 +51,8 @@ jobs:
           bash .github/scripts/pre-deploy.sh
       - name: Post setup clean up
         run: |
-          chmod +x .github/scripts/cleanup-temp-direcoty.sh
-          bash .github/scripts/cleanup-temp-direcoty.sh
+          chmod +x .github/scripts/cleanup-temp-directory.sh
+          bash .github/scripts/cleanup-temp-directory.sh
       - name: Fetch tags
         run: git fetch --tags --force
       - name: build release APKs
