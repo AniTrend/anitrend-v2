@@ -10,34 +10,23 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: List Cache Items
+      - name: Cleanup
         run: |
           gh extension install actions/gh-actions-cache
           
           REPO=${{ github.repository }}
           BRANCH="refs/heads/develop"
 
-          echo "Fetching list of cache keys"
+          echo "Fetching list of cache key"
           cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
 
-          # Log the cache keys before clearing them
-          echo "Cache keys to be cleared:"
-          for cacheKey in $cacheKeysForPR
-          do
-              echo "$cacheKey"
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Cleanup
-        run: |
-          REPO=${{ github.repository }}
-          BRANCH="refs/heads/develop"
-
+          ## Setting this to not fail the workflow while deleting cache keys. 
+          set +e
           echo "Deleting caches..."
           for cacheKey in $cacheKeysForPR
           do
               gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+              echo "$cacheKey"
           done
           echo "Done"
         env:
