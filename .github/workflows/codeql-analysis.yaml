@@ -54,7 +54,10 @@ jobs:
         chmod +x .github/scripts/staging-config.sh
         bash .github/scripts/pre-config.sh
         bash .github/scripts/staging-config.sh
-
+    - name: Post setup clean up
+      run: |
+        chmod +x .github/scripts/cleanup-temp-direcoty.sh
+        bash .github/scripts/cleanup-temp-direcoty.sh
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
@@ -80,7 +83,7 @@ jobs:
     - name: Build github variant
       run: |
         chmod +x gradlew
-        ./gradlew assembleGithubDebug --stacktrace
+        ./gradlew --stacktrace
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
