@@ -228,7 +228,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 devrieze-xmlutil-android-core = { module = "io.github.pdvrieze.xmlutil:core-android", version.ref = "devrieze-xmlutil" }
 devrieze-xmlutil-android-serialization = { module = "io.github.pdvrieze.xmlutil:serialization-android", version.ref = "devrieze-xmlutil" }
 
-google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "google-accompanist" }
+google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets-ui", version.ref = "google-accompanist" }
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 google-accompanist-appcompat-theme = { module = "com.google.accompanist:accompanist-appcompat-theme", version.ref = "google-accompanist" }
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "google-accompanist" }
