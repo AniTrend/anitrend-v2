@@ -27,7 +27,7 @@ androidx-test-espresso = "3.5.1"
 androidx-test-ext = "1.1.5"
 androidx-work = "2.8.1"
 
-anitrend-arch = "1.7.0"
+anitrend-arch = "1.7.1"
 anitrend-emojify = "1.7.0"
 anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
