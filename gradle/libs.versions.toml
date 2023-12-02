@@ -1,7 +1,7 @@
 [versions]
 ktlint = "0.50.0"
 
-gradle-plugin = "8.1.4"
+gradle-plugin = "8.2.0"
 
 androidx-activity = "1.8.1"
 androidx-appcompat = "1.6.1"
