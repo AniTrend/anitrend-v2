@@ -58,5 +58,6 @@ open class CorePlugin : Plugin<Project> {
         target.configureAdditionalPlugins()
         target.availableComponents()
         target.availableExtensions()
+        //target.configureSpotless()
     }
 }

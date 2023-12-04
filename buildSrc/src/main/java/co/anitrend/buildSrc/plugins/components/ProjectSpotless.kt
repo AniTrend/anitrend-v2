@@ -20,30 +20,33 @@ package co.anitrend.buildSrc.plugins.components
 import co.anitrend.buildSrc.extensions.libs
 import co.anitrend.buildSrc.extensions.spotlessExtension
 import org.gradle.api.Project
+import java.io.File
 
 internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
+    val withLicenseHeader: (String) -> File = { extension ->
+        rootProject.file("spotless/copyright$extension")
+    }
     kotlin {
         target("**/*.kt")
         targetExclude("**/build/**/*.kt")
-        ktlint(libs.versions.ktlint.get()).userData(mapOf("android" to "true"))
-        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+        ktlint(libs.versions.ktlint.get())
+        licenseHeaderFile(
+            withLicenseHeader(".kt")
+        )
     }
-    format("kts") {
+    kotlinGradle {
         target("**/*.kts")
         targetExclude("**/build/**/*.kts")
-        // Look for the first line that doesn't have a block comment (assumed to be the license)
-        licenseHeaderFile(rootProject.file("spotless/copyright.kts"), "(^(?![\\/ ]\\*).*$)")
+        licenseHeaderFile(withLicenseHeader(".kts"), "(^(?![\\/ ]\\*).*$)")
     }
     format("xml") {
         target("**/*.xml")
         targetExclude("**/build/**/*.xml")
-        // Look for the first XML tag that isn't a comment (<!--) or the xml declaration (<?xml)
-        licenseHeaderFile(rootProject.file("spotless/copyright.xml"), "(<[^!?])")
+        licenseHeaderFile(withLicenseHeader(".xml"), "(<[^!?])")
     }
     format("properties") {
         target("**/*.properties")
         targetExclude("**/build/**/*.properties")
-        // Look for the first properties line that isn't a comment (#)
-        licenseHeaderFile(rootProject.file("spotless/copyright.properties"), "(^(#).*\$)")
+        licenseHeaderFile(withLicenseHeader(".properties"), "(^(#).*\$)")
     }
 }
