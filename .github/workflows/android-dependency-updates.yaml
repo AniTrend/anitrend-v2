@@ -30,7 +30,7 @@ jobs:
     - name: Gradle check for updates
       run: ./gradlew dependencyUpdates --stacktrace
     - name: Upload dependency updates report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dependency-report
         path: build/dependencyUpdates/report.json
