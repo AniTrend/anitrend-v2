@@ -34,7 +34,7 @@ jobs:
           distribution: 'adopt'
           # cache: 'gradle'
       - name: Wait for tests to succeed
-        uses: lewagon/wait-on-check-action@v1.3.1
+        uses: lewagon/wait-on-check-action@v1.3.3
         with:
           ref: ${{ github.ref }}
           running-workflow-name: android-firebase-distribution
