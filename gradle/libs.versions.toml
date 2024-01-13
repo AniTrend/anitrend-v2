@@ -64,7 +64,7 @@ koin-android-compose = "3.5.3"
 
 markwon = "4.6.2"
 
-mockk = "1.13.8"
+mockk = "1.13.9"
 
 square-kotlinpoet = "1.15.3"
 square-leakcanary = "2.13"
