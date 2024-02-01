@@ -32,8 +32,6 @@ autolabeler:
     branch:
       - '/bugfix\/.+/'
       - '/hotfix\/.+/'
-    title:
-      - '/fix/i'
   - label: ':star2: feature'
     branch:
       - '/feature\/.+/'
