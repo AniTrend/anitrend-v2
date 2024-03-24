@@ -50,7 +50,7 @@ google-accompanist = "0.34.0"
 google-android-material = "1.11.0"
 
 jetbrains-dokka = "1.9.20"
-jetbrains-kotlin = "1.9.22"
+jetbrains-kotlin = "1.9.23"
 jetbrains-kotlinx-coroutines = "1.8.0"
 jetbrains-kotlinx-datetime = "0.5.0"
 jetbrains-kotlinx-serialization = "1.6.3"
