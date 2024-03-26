@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import timber.log.Timber
 
 class AuthContent(
@@ -50,7 +50,7 @@ class AuthContent(
 
     private val presenter by inject<AuthPresenter>()
 
-    private val viewModel by sharedViewModel<AuthViewModel>()
+    private val viewModel by activityViewModel<AuthViewModel>()
 
     private val resetNetworkStateOnBackPress =
         object : OnBackPressedCallback(true) {
