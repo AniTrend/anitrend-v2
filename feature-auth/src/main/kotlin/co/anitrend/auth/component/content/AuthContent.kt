@@ -129,10 +129,9 @@ class AuthContent(
             requireBinding().stateLayout.loadStateFlow.value = it
         }
         viewModelState().model.observeOnce(viewLifecycleOwner) { user ->
-            if (user != null) {
+            runCatching {
                 presenter.runSignInWorker(user.id)
-                activity?.finish()
-            } else {
+            }.onFailure {
                 Snackbar.make(
                     requireView(),
                     R.string.auth_failed_message,
@@ -141,6 +140,8 @@ class AuthContent(
                     presenter.runSignOutWorker()
                     closeScreen()
                 }.show()
+            }.onSuccess {
+                activity?.onBackPressed()
             }
         }
     }
