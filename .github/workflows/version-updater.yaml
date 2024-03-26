@@ -1,23 +1,28 @@
 name: version-update
 
 on:
-  push:
-    tags:
-      - '*'
+  repository_dispatch:
+    types: [version-update-and-push]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  version-update:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: develop
 
-      - name: Extract version
-        id: version
-        run: echo "${GITHUB_REF#refs/tags/}" > VERSION
+      - name: Extract version information to file
+        run: echo "${{ github.event.client_payload.version }}" > VERSION
 
-      - name: Calculate version code
-        id: code
+      - name: Create version.properties using extracted version
         run: |
           IFS='.' read -ra VER <<< "$(cat VERSION)"
           MAJOR=$((VER[0] * 1000000000))
@@ -28,19 +33,24 @@ jobs:
           echo "code=$CODE" >> gradle/version.properties
           echo "name=v$(cat VERSION)" >> gradle/version.properties
 
-      - name: Show version
+      - name: Clean up version information file
+        run: rm VERSION
+
+      - name: Preview created version.properties
         run: cat gradle/version.properties
 
-      - name: Commit version.properties
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add gradle/version.properties
-          git commit -m "Bump version to $(cat VERSION)"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: develop
-          directory: .
+          token: ${{ secrets.GITHUB_TOKEN }}
+          signoff: true
+          delete-branch: true
+          commit-message: "automation: update version.properties"
+          author: "Author <actions@github.com>"
+          title: "platform: automated version update"
+          body: |
+            This PR was automatically generated to update `version.properties`
+          branch: platform/update-version-meta-data
+          labels: ":skateboard: skip-changelog"
+          assignees: "wax911"
+          reviewers: "wax911"

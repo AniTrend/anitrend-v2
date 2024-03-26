@@ -26,33 +26,10 @@ jobs:
           commitish: develop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Extract version
-        id: version
-        run: echo "${{ steps.release_drafter.outputs.resolved_version }}" > VERSION
-      - name: Calculate code
-        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
-        id: code
-        run: |
-          IFS='.' read -ra VER <<< "$(cat VERSION)"
-          MAJOR=$((VER[0] * 1000000000))
-          MINOR=$((VER[1] * 1000000))
-          PATCH=$((VER[2] * 1000))
-          CODE=$((MAJOR + MINOR + PATCH))
-          echo "version=$(cat VERSION)" > gradle/version.properties
-          echo "code=$CODE" >> gradle/version.properties
-          echo "name=v$(cat VERSION)" >> gradle/version.properties
-
-      - name: Show version
-        run: cat gradle/version.properties
-
-      - name: Push auto generated version file
-        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
         with:
-          commit_message: Update version.properties
-          commit_options: '--no-verify --signoff'
-          file_pattern: 'gradle/version.properties'
-          repository: .
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: version-update-and-push
+          client-payload: '{"version": "${{ steps.release_drafter.outputs.resolved_version }}"}'
 
