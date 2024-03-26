@@ -37,10 +37,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
+    private val authRouterParam by extra<AuthRouter.Param>(AuthRouter.Param.KEY)
 
     private fun checkIntentData() {
-        val key = AuthRouter.Param.KEY
-        val authRouterParam by extra<AuthRouter.Param>(key)
         viewModel.onIntentData(
             applicationContext,
             authRouterParam
@@ -62,11 +61,6 @@ class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             onUpdateUserInterface()
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                checkIntentData()
-            }
         }
     }
 

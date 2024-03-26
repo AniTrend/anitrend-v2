@@ -174,25 +174,26 @@ internal object OAuthRoute : Route(
         return runCatching {
             AuthRouter.Param(
                 accessToken =
-                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
-                        "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
-                    },
+                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
+                    "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
+                },
                 tokenType =
-                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
-                        "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $fullyQualifiedUrl"
-                    },
+                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
+                    "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $fullyQualifiedUrl"
+                },
                 expiresIn =
-                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
-                        "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $fullyQualifiedUrl"
-                    }.toLong(),
-            )
-        }.getOrElse {
-            Timber.w(it)
-            AuthRouter.Param(
-                errorTitle = queryParameter(CALLBACK_QUERY_ERROR_KEY),
-                errorDescription = queryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY),
+                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
+                    "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $fullyQualifiedUrl"
+                }.toLong(),
             )
         }
+            .onFailure(Timber::w)
+            .getOrDefault(
+                AuthRouter.Param(
+                    errorTitle = queryParameter(CALLBACK_QUERY_ERROR_KEY),
+                    errorDescription = queryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY),
+                )
+            )
     }
 
     private fun DeepLinkUri.normalize(): Uri {
