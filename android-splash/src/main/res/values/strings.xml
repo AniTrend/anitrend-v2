@@ -1,25 +1,274 @@
-<!--
-  ~ Copyright (C) 2019  AniTrend
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU General Public License as published by
-  ~     the Free Software Foundation, either version 3 of the License, or
-  ~     (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU General Public License for more details.
-  ~
-  ~     You should have received a copy of the GNU General Public License
-  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="action_search">"Search"</string>
+    <string name="label_episode_singular">"Episode"</string>
+    <string name="label_episode_plural">"Episodes"</string>
+    <string name="label_chapter_singular">"Chapter"</string>
+    <string name="label_chapter_plural">"Chapters"</string>
+    <string name="action_account">"Accounts"</string>
 
-    <string name="splash_label_powered_by" translatable="false">Powered by</string>
-    <string name="splash_label_provider" translatable="false">AniList</string>
+    <!-- Menu action on the app bar to open notifications screen -->
+    <string name="action_notifications">"Notifications"</string>
 
-    <string name="splash_label_segment_first" translatable="false">Ani</string>
-    <string name="splash_label_segment_second" translatable="false">Trend</string>
+    <!-- Menu action on the app bar to open app updates screen -->
+    <string name="action_updates">"Updates"</string>
+
+    <!-- Navigation -->
+    <string name="navigation_home">"Home"</string>
+
+    <!-- Navigation drawer entry under the General category -->
+    <string name="navigation_social">"Social"</string>
+
+    <!-- Navigation drawer entry under the General category -->
+    <string name="navigation_discover">"Discover"</string>
+
+    <!-- Navigation drawer entry under the General category -->
+    <string name="navigation_review">"Reviews"</string>
+
+    <!-- Navigation drawer entry under the General category -->
+    <string name="navigation_suggestions">"Suggestions"</string>
+
+    <!-- Manage -->
+    <string name="navigation_anime_list">"Anime List"</string>
+
+    <!-- Navigation drawer entry under the Manage category -->
+    <string name="navigation_manga_list">"Manga List"</string>
+
+    <!-- Catalogs -->
+    <string name="navigation_news">"News"</string>
+
+    <!-- Navigation drawer entry under the Catalogs category -->
+    <string name="navigation_forums">"Forums"</string>
+
+    <!-- Navigation drawer entry under the Catalogs category -->
+    <string name="navigation_episodes">"Episodes"</string>
+
+    <!-- Support -->
+    <string name="navigation_donate">"Donate"</string>
+
+    <!-- Navigation item for opening discord page -->
+    <string name="navigation_discord">"Discord"</string>
+
+    <!-- Navigation item for opening far page -->
+    <string name="navigation_faq">"FAQ"</string>
+
+    <!-- Navigation category for navigation items that fall under the general category -->
+    <string name="navigation_header_general">"General"</string>
+
+    <!-- Navigation category for navigation items that fall under the manage category, e.c.t anime list, manga list e.t.c -->
+    <string name="navigation_header_manage">"Manage"</string>
+    <string name="navigation_header_catalogs">"Catalogs"</string>
+
+    <!-- Navigation category for navigation items that fall under the support category -->
+    <string name="navigation_header_support">"Support"</string>
+
+    <!-- Label for adding a new account, this is for authentication purposes. We might want to support multiple accounts -->
+    <string name="label_account_add_new">"Add new account"</string>
+
+    <!-- Label for using the app without authentication -->
+    <string name="label_account_anonymous">"Anonymous"</string>
+
+    <!-- Label for signing out -->
+    <string name="label_account_sign_out">"Sign out"</string>
+
+    <!-- Category for the current active account, e.g. user has multiple AL login accounts and this is to show which one is being used -->
+    <string name="account_header_active">"Active account"</string>
+
+    <!-- Category for inactive accounts -->
+    <string name="account_header_inactive">"Inactive accounts"</string>
+
+    <!-- Category for other accounts accounts which may not be related to AL -->
+    <string name="account_header_other">"Other accounts"</string>
+    <string name="application_name">"AniTrend"</string>
+    <string name="title_app_about">"About"</string>
+    <string name="title_app_account">"Account"</string>
+    <string name="title_app_news">"News"</string>
+    <string name="title_app_profile">"Profile"</string>
+    <string name="title_app_search">"Search"</string>
+    <string name="title_app_settings">"Settings"</string>
+    <string name="title_app_splash">"Splash"</string>
+    <string name="action_about">"About"</string>
+    <string name="action_settings">"Settings"</string>
+
+    <!-- A label that is shown along with a loading spinner -->
+    <string name="label_text_loading">"Loading, please wait.."</string>
+
+    <!-- A default label for retrying failed operations -->
+    <string name="label_text_action_retry">"Reload"</string>
+
+    <!-- Place holder text for when something is not available -->
+    <string name="label_place_holder_to_be_announced">"TBA"</string>
+    <string name="error_message_no_connection_title">"No active connection"</string>
+    <string name="error_message_no_connection_message">"Please make sure you have an working internet connection"</string>
+    <string name="error_message_unrecoverable">"Unrecoverable error occurred"</string>
+    <string name="search_place_holder_text">@string/action_search</string>
+    <string name="title_activity_search_screen">@string/action_search</string>
+
+    <!-- Ep 5 • 3 days from now -->
+    <string name="label_episode_airing_in_time" translatable="false">"Ep %d • %s"</string>
+
+    <!-- Airs October 21st -->
+    <string name="label_episode_airing_on_date">"Airs %s"</string>
+
+    <!-- Carousel see all button -->
+    <string name="label_carousel_see_all">"See All"</string>
+
+    <!-- Catalog Anime titles and descriptions -->
+    <string name="label_carousel_airing_anime">"Airing Soon"</string>
+    <string name="label_carousel_airing_anime_description">"Shows that will be airing soon."</string>
+    <string name="label_carousel_popular_anime">"All Time Popular • Anime"</string>
+    <string name="label_carousel_popular_anime_description">"Most popular anime of all time."</string>
+    <string name="label_carousel_trending_anime">"Trending Right Now • Anime"</string>
+    <string name="label_carousel_trending_anime_description">"Shows that are getting a lot of attention."</string>
+    <string name="label_carousel_popular_season_anime">"Popular This Season • Anime"</string>
+    <string name="label_carousel_popular_season_anime_description">"Shows with the most popularity this season."</string>
+    <string name="label_carousel_recently_added_anime">"Recently Added • Anime"</string>
+    <string name="label_carousel_recently_added_anime_description">"Shows that have been recently added."</string>
+    <string name="label_carousel_anticipated_anime">"Anticipated Next Season • Anime"</string>
+    <string name="label_carousel_anticipated_anime_description">"Shows to look forward to next season"</string>
+
+    <!-- Catalog Manga titles and descriptions -->
+    <string name="label_carousel_popular_manga">"All Time Popular • Manga"</string>
+    <string name="label_carousel_popular_manga_description">"Most popular manga of all time."</string>
+    <string name="label_carousel_trending_manga">"Trending Right Now • Manga"</string>
+    <string name="label_carousel_trending_manga_description">"Manga that are getting a lot of attention."</string>
+    <string name="label_carousel_popular_manhwa">"Popular Manhwa"</string>
+    <string name="label_carousel_popular_manhwa_description">"Popular comics from Korea."</string>
+    <string name="label_carousel_recently_added_manga">"Recently Added • Manga"</string>
+    <string name="label_carousel_recently_added_manga_description">"Manga that has been recently added."</string>
+    <string name="title_activity_settings_screen">@string/action_settings</string>
+
+    <!-- Preference Categories Titles -->
+    <string name="preference_group_title_application_behavior">"Application Behavior"</string>
+    <string name="preference_category_title_user_interface">"User Experience"</string>
+    <string name="preference_category_title_updates_and_storage">"Updates &amp; Storage"</string>
+    <string name="preference_category_title_notifications_and_sync_settings">"Notifications &amp; Sync"</string>
+
+    <!-- Preference Titles -->
+    <string name="preference_title_accounts">"Accounts"</string>
+    <string name="preference_title_locale">"Locale"</string>
+    <string name="preference_title_privacy">"Privacy"</string>
+    <string name="preference_title_theme">"Themes"</string>
+    <string name="preference_title_content_filtering">"Filters"</string>
+    <string name="preference_title_presentation">"Presentation"</string>
+    <string name="preference_title_updates">"Updates"</string>
+    <string name="preference_title_sync">"Synchronization"</string>
+    <string name="preference_title_notifications">"Notifications"</string>
+    <string name="preference_title_storage">"Storage"</string>
+
+    <!-- Preference Summaries -->
+    <string name="preference_summary_accounts">"Access information about your accounts"</string>
+    <string name="preference_summary_locale">"Change the application language"</string>
+    <string name="preference_summary_privacy">"Dial in the right level of privacy for you"</string>
+    <string name="preference_summary_theme">"Change the application theme"</string>
+    <string name="preference_summary_content_filtering">"Configure how content is filtered"</string>
+    <string name="preference_summary_presentation">"Change the general user interface style"</string>
+    <string name="preference_summary_notifications">"Configure how notifications behave"</string>
+    <string name="preference_summary_sync">"Configure how data sync'd between services"</string>
+    <string name="preference_summary_updates">"Configure how and which updates to receive"</string>
+    <string name="preference_summary_storage">"Configure how the app should use storage space"</string>
+
+    <!-- Preference Entries Title -->
+    <string name="preference_title_locale_config">"Application language"</string>
+    <string name="preference_title_privacy_analytics_config">"Usage analytics"</string>
+    <string name="preference_title_privacy_crash_analytics_config">"Crash reporting"</string>
+    <string name="preference_title_cache_config">"Cache usage limit"</string>
+    <string name="preference_title_refresh_behavior_config">"Clear database on refresh"</string>
+
+    <!-- Preference Entries Summary -->
+    <string name="preference_summary_privacy_analytics_config">"Allows usage statistics to be sent to the developer"</string>
+    <string name="preference_summary_privacy_crash_analytics_config">"Allows crashes to be reported automatically as they happen"</string>
+    <string name="preference_summary_refresh_behavior_config">"Typically the database is cleared when you pull to refresh"</string>
+    <string name="auth_label_authorize">"Authorize"</string>
+    <string name="auth_label_segment_first" translatable="false">"Ani"</string>
+    <string name="auth_label_segment_second" translatable="false">"Trend"</string>
+    <string name="label_allow_authorization">"Please login using your anilist account"</string>
+    <string name="auth_label_alternative_account">"Or use anonymous account, please note that some features my not be available in this mode."</string>
+    <string name="auth_label_action_start_anonymous_account">"Use anonymous account"</string>
+    <string name="auth_label_having_trouble_logging_in">"Having trouble logging in?"</string>
+    <string name="auth_error_default_title">"Authentication failed"</string>
+    <string name="auth_error_default_message">"AniTrend was unable to get a response from AniList. No detailed error was provided, please try again."</string>
+    <string name="splash_label_description">"Powered by AniList"</string>
+    <string name="splash_label_powered_by" translatable="false">"Powered by"</string>
+    <string name="splash_label_provider" translatable="false">"AniList"</string>
+    <string name="splash_label_segment_first" translatable="false">"Ani"</string>
+    <string name="splash_label_segment_second" translatable="false">"Trend"</string>
+    <string name="onbaording_button_get_started">"Get started"</string>
+    <string name="onbaording_button_next">"Next"</string>
+    <string name="onbaording_button_skip">"Skip"</string>
+
+    <!-- A confirmation notice to prompt use to tap the back button again to exit the application -->
+    <string name="message_confirm_exit_app">"Press back again to exit the app"</string>
+    <plurals name="label_number_of_episodes">
+        <item quantity="one">"%d Episode"</item>
+        <item quantity="other">"%d Episodes"</item>
+    </plurals>
+    <plurals name="label_number_of_chapters">
+        <item quantity="one">"%d Chapter"</item>
+        <item quantity="other">"%d Chapters"</item>
+    </plurals>
+
+    <!-- Carousel see more button -->
+    <string name="label_carousel_see_more">"More"</string>
+
+    <!-- Navigation item for opening support/donation page -->
+    <string name="navigation_support">"Support"</string>
+
+    <!-- Place holder for general description items such as staff, character or media descriptions -->
+    <string name="label_place_holder_no_description">"No description available yet."</string>
+
+    <!-- Filter content headers -->
+    <string name="label_discover_filter_sheet_title">"Filter"</string>
+    <string name="label_discover_filter_action_reset">"Reset"</string>
+    <string name="label_discover_filter_action_info">"Info"</string>
+    <string name="label_discover_filter_genre_title">"Filter by genres"</string>
+    <string name="label_discover_filter_genre_sub_title">"Select one or more genres"</string>
+    <string name="label_discover_filter_tag_title">"Filter by tags"</string>
+    <string name="label_discover_filter_tag_sub_title">"Select one or more tags"</string>
+    <string name="label_discover_filter_media_type_title">"Filter by media type"</string>
+    <string name="label_discover_filter_media_type_sub_title">"Select a media type to show"</string>
+    <string name="label_discover_filter_season_title">"Filter by season"</string>
+    <string name="label_discover_filter_season_sub_title">"Select a season to filter by"</string>
+    <string name="label_discover_filter_year_title">"Filter by year"</string>
+    <string name="label_discover_filter_year_title_by_range">"Use range"</string>
+    <string name="label_discover_filter_status_title">"Filter by status"</string>
+    <string name="label_discover_filter_status_sub_title">"Select a status to filter by"</string>
+    <string name="label_discover_filter_format_title">"Filter by format"</string>
+    <string name="label_discover_filter_format_sub_title">"Select a format to filter by"</string>
+    <string name="label_discover_filter_country_title">"Filter by country"</string>
+    <string name="label_discover_filter_country_sub_title">"Select a country to filter by"</string>
+    <string name="label_discover_filter_source_title">"Filter by source"</string>
+    <string name="label_discover_filter_source_sub_title">"Select a source type to filter by"</string>
+    <string name="label_discover_filter_streaming_title">"Filter by streaming"</string>
+    <string name="label_discover_filter_streaming_sub_title">"Select a streaming provider to filter by"</string>
+    <string name="label_discover_filter_on_list_title">"Filter by on list"</string>
+    <string name="label_discover_filter_on_list_sub_title">"Include or exclude items on your list"</string>
+    <string name="label_discover_filter_sort_title">"Sort by"</string>
+    <string name="label_discover_filter_sort_sub_title">"Sort by what criteria"</string>
+    <string name="label_discover_filter_sort_order_switch">"Ascending"</string>
+    <string name="label_discover_filter_hide_adult_content_title">"Exclude adult content"</string>
+    <string name="label_discover_filter_choice_show_on_list_title">"Include on my list"</string>
+    <string name="label_discover_filter_choice_hide_on_list_title">"Exclude on my list"</string>
+
+    <!-- Form of action button to open something in the browser -->
+    <string name="action_title_open_in_browser">"Open in browser"</string>
+    <string name="action_read_more">"Read More"</string>
+
+    <!-- A label that will be shown at the end of a list when there are no more items to show (paging) -->
+    <string name="label_text_end_of_list">"No more entries to display"</string>
+
+    <!-- A default label for various use-cases -->
+    <string name="label_text_action_ok">"OK"</string>
+
+    <!-- A default authentication requirement message -->
+    <string name="label_text_authentication_required">"Authentication required to access feature."</string>
+    <string name="auth_failed_message">"Authentication succeeded but could not fetch your user account"</string>
+    <string name="media_list_editor_hint_enter_your_notes">"Enter your notes"</string>
+    <string name="media_list_editor_label_end_date">"End Date"</string>
+    <string name="media_list_editor_label_start_date">"Start Date"</string>
+    <string name="media_list_editor_label_repeat_count">"Repeat Count"</string>
+    <string name="media_list_editor_label_progress_volumes">"Progress Volumes"</string>
+    <string name="media_list_editor_label_progress">"Progress"</string>
+    <string name="media_list_editor_label_score">"Score"</string>
+    <string name="media_list_editor_label_status">"Status"</string>
 </resources>
