@@ -131,7 +131,10 @@ private fun TitleWidget(
 }
 
 @Composable
-private fun ReleaseStatusWidget(media: Media, modifier: Modifier = Modifier) {
+private fun ReleaseStatusWidget(
+    media: Media,
+    modifier: Modifier = Modifier,
+) {
     Spacer(Modifier.height(8.dp))
     when (val category = media.category) {
         is Media.Category.Anime -> {
@@ -161,7 +164,7 @@ private fun ReleaseStatusWidget(media: Media, modifier: Modifier = Modifier) {
             Text(
                 text = textTemplate,
                 fontWeight = FontWeight.Bold,
-                color = media.rememberAccentColor(),
+                color = media.image.rememberAccentColor(),
                 style = AniTrendTheme.typography.caption,
                 modifier = Modifier.padding(4.dp)
             )
@@ -238,34 +241,37 @@ private fun MediaSubTitle(
 }
 
 @Composable
-fun SummarySection(media: Media, accentColor: Color, modifier: Modifier = Modifier) {
-    media as Media.Extended
-
-    val context = LocalContext.current
-
-    Row(modifier = modifier) {
+fun SummarySection(
+    media: Media,
+    accentColor: Color,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+    ) {
         MediaCover(
             cover = media.image,
             modifier = Modifier.height(series_image_lg)
                 .aspectRatio(series_aspect_ration)
         )
-        Spacer(Modifier.width(8.dp))
-        Column(Modifier.offset(y = 24.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.offset(y = 24.dp)
+        ) {
             TitleWidget(
                 title = media.title,
-                extraInfo = media.extraInfo
+                extraInfo = (media as Media.Extended).extraInfo
             )
             ReleaseStatusWidget(media)
-            Spacer(Modifier.height(8.dp))
             MediaSubTitle(
                 media = media
             )
-            Spacer(Modifier.height(8.dp))
             InfoWidget(
                 accentColor = accentColor,
                 meanScore = media.meanScore,
             )
-            Spacer(Modifier.height(8.dp))
             RankingItems(
                 accentColor = accentColor,
                 rankings = media.rankings.toList(),
@@ -281,16 +287,15 @@ fun SummarySection(media: Media, accentColor: Color, modifier: Modifier = Modifi
                         )
                     }
 
-                    MediaDiscoverRouter.startActivity(
-                        context = context,
-                        navPayload = MediaDiscoverRouter.Param(
+                    onMediaDiscoverableItemClick(
+                        MediaDiscoverRouter.Param(
                             type = media.category.type,
                             format = media.format,
                             season = media.season,
                             seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
                             startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
                             sort = listOf(sorting)
-                        ).asNavPayload()
+                        )
                     )
                 }
             )
