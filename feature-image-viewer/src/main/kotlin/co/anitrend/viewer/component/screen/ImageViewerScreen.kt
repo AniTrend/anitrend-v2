@@ -31,7 +31,7 @@ import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.android.helpers.image.toCoverImage
 import co.anitrend.core.android.helpers.image.using
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.viewer.R
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
@@ -41,7 +41,7 @@ import coil.target.Target
 import com.davemorrissey.labs.subscaleview.ImageSource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ImageViewerScreen : AniTrendScreen<ImageViewerScreenBinding>() {
+class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
 
     private val param: ImageViewerRouter.Param? by extra(ImageViewerRouter.Param.KEY)
 

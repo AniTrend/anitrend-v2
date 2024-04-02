@@ -18,10 +18,14 @@
 package co.anitrend.account.component.screen
 
 import android.os.Bundle
-import co.anitrend.account.databinding.AboutScreenBinding
+import androidx.activity.compose.setContent
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.model.common.IParam
 
-class AccountScreen : AniTrendScreen<AboutScreenBinding>() {
+class AccountScreen : AniTrendScreen() {
 
     /**
      * Additional initialization to be done in this method, this is called in during
@@ -35,7 +39,14 @@ class AccountScreen : AniTrendScreen<AboutScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = AboutScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper<IParam>(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    onClick = {},
+                ) {}
+            }
+        }
     }
 }

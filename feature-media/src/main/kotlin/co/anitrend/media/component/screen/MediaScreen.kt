@@ -17,23 +17,39 @@
 
 package co.anitrend.media.component.screen
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.viewbinding.ViewBinding
+import androidx.core.app.ShareCompat
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.shared.ui.extension.shareContent
 import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.extensions.runIfAuthenticated
+import co.anitrend.core.extensions.stackTrace
+import co.anitrend.core.extensions.startViewIntent
+import co.anitrend.core.ui.inject
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.media.component.compose.MediaScreenContent
 import co.anitrend.media.component.viewmodel.MediaViewModel
+import co.anitrend.navigation.FavouriteTaskRouter
+import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
+import co.anitrend.navigation.extensions.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaScreen : AniTrendScreen<ViewBinding>() {
+class MediaScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<MediaViewModel>()
 
     private val mediaRouterParam: MediaRouter.Param? by extra(MediaRouter.Param.KEY)
+
+    private val settings by inject<IUserSettings>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +63,41 @@ class MediaScreen : AniTrendScreen<ViewBinding>() {
                 ) {
                     MediaScreenContent(
                         mediaState = viewModelState(),
+                        onMyAnimeListButtonClick = { url ->
+                            startViewIntent(Uri.parse(url))
+                        },
+                        onBookmarkButtonClick = { view, media ->
+                            view.openMediaListSheetFor(media, settings)
+                        },
+                        onFavouriteButtonClick = { view, params ->
+                            view.runIfAuthenticated(settings) {
+                                FavouriteTaskRouter.forWorker()
+                                    .createOneTimeUniqueWorker(
+                                        context = view.context,
+                                        params = params,
+                                    ).enqueue()
+                            }
+                        },
+                        onFloatingActionButtonClick = { media ->
+                            shareContent {
+                                setType("text/plain")
+                                setText(media.siteUrl.aniList)
+                                setSubject(media.title.userPreferred?.toString())
+                            }
+                        },
+                        onMediaDiscoverableItemClick = { param ->
+                            MediaDiscoverRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload()
+                            )
+                        },
+                        onBannerClick = { param ->
+                            ImageViewerRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload()
+                            )
+                        },
+                        onBackClick = ::onBackPressed,
                     )
                 }
             }

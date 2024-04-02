@@ -19,9 +19,9 @@ package co.anitrend.character.component.screen
 
 import android.os.Bundle
 import co.anitrend.character.databinding.CharacterScreenBinding
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 
-class CharacterScreen : AniTrendScreen<CharacterScreenBinding>() {
+class CharacterScreen : AniTrendBoundScreen<CharacterScreenBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during

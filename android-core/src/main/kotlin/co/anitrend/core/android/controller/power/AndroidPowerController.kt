@@ -89,7 +89,6 @@ internal class AndroidPowerController(
         else -> PowerSaverState.Disabled
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun disableBatteryOptimization() {
         val packageUri = "package:${context.packageName}"
         val ignoresOptimization = powerManager?.isIgnoringBatteryOptimizations(packageUri)
@@ -100,9 +99,7 @@ internal class AndroidPowerController(
                     data = packageUri.toUri()
                 }
                 context.startActivity(intent)
-            }.onFailure {
-                Timber.w(it)
-            }
+            }.onFailure(Timber::w)
         }
     }
 

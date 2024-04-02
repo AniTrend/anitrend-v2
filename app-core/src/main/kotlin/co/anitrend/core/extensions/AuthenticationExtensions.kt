@@ -26,26 +26,34 @@ import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.UserTaskRouter
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.work.WorkSchedulerController
 import com.google.android.material.snackbar.Snackbar
+
+private inline fun taskSchedulersForAuthentication(
+    action: (WorkSchedulerController) -> Unit
+) = setOf(
+    UserTaskRouter.forAccountSyncScheduler(),
+    UserTaskRouter.forStatisticSyncScheduler(),
+    MediaListTaskRouter.forAnimeScheduler(),
+    MediaListTaskRouter.forMangaScheduler(),
+).forEach(action)
 
 /**
  * Fires off worker schedules that should run when a user is signed in
  */
 fun Context.scheduleAuthenticationWorkers() {
-    UserTaskRouter.forAccountSyncScheduler().schedule(this)
-    UserTaskRouter.forStatisticSyncScheduler().schedule(this)
-    MediaListTaskRouter.forAnimeScheduler().schedule(this)
-    MediaListTaskRouter.forMangaScheduler().schedule(this)
+    taskSchedulersForAuthentication { controller ->
+        controller.schedule(this)
+    }
 }
 
 /**
  * Fires off worker schedules that should cancel scheduled workers
  */
 fun Context.cancelAuthenticationWorkers() {
-    UserTaskRouter.forAccountSyncScheduler().cancel(this)
-    UserTaskRouter.forStatisticSyncScheduler().cancel(this)
-    MediaListTaskRouter.forAnimeScheduler().cancel(this)
-    MediaListTaskRouter.forMangaScheduler().cancel(this)
+    taskSchedulersForAuthentication { controller ->
+        controller.cancel(this)
+    }
 }
 
 /**
@@ -63,9 +71,9 @@ fun View.runIfAuthenticated(
             text = R.string.label_text_authentication_required,
             duration = Snackbar.LENGTH_INDEFINITE,
             actionText = R.string.action_login
-        ) {
-            AuthRouter.startActivity(it.context)
-            it.dismiss()
+        ) { snackBar ->
+            AuthRouter.startActivity(snackBar.context)
+            snackBar.dismiss()
         }.show()
     } else {
         runCatching(action).stackTrace()

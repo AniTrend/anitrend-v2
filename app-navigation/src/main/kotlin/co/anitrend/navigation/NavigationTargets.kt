@@ -1135,15 +1135,27 @@ object ConfigTaskRouter : NavigationRouter() {
     fun forScheduler() = provider.scheduler()
 }
 
-
 object FavouriteTaskRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
         fun worker(): Class<out ListenableWorker>
-        fun scheduler(): WorkSchedulerController
     }
 
     fun forWorker() = provider.worker()
-    fun forScheduler() = provider.scheduler()
+
+    sealed class Param : IParam {
+        @Parcelize
+        data class ToggleFavouriteState(
+            val id: Long,
+            val mediaType: MediaType,
+        ) : Param() {
+            @IgnoredOnParcel
+            override val idKey: String = KEY
+
+            companion object : IParam.IKey {
+                override val KEY = "FavouriteTaskRouter#Param"
+            }
+        }
+    }
 }

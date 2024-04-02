@@ -18,11 +18,11 @@
 package co.anitrend.review.discover.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.review.discover.databinding.DiscoverScreenBinding
 
-class ReviewDiscoverScreen : AniTrendScreen<DiscoverScreenBinding>() {
-    
+class ReviewDiscoverScreen : AniTrendBoundScreen<DiscoverScreenBinding>() {
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

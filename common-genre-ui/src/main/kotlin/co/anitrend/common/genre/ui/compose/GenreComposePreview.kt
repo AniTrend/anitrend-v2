@@ -51,9 +51,11 @@ private fun genreListPreviewData() =
         )
     }
 
-@Suppress("FunctionName")
 @Preview
 @Composable
 private fun GenresListComponentPreview() {
-    GenresListComponent(genres = genreListPreviewData())
+    GenresListComponent(
+        genres = genreListPreviewData(),
+        onMediaDiscoverableItemClick = {},
+    )
 }

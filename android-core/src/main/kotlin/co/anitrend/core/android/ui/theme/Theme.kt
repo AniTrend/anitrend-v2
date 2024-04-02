@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -141,9 +142,13 @@ private val DarkColorScheme = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
-private val AniTrendShapes = Shapes()
-
-typealias AniTrendIcons = Icons.Rounded
+private val AniTrendShapes = Shapes(
+    extraSmall = ShapeDefaults.ExtraLarge,
+    small = ShapeDefaults.ExtraLarge,
+    medium = ShapeDefaults.ExtraLarge,
+    large = ShapeDefaults.ExtraLarge,
+    extraLarge = ShapeDefaults.ExtraLarge,
+)
 
 
 @Composable

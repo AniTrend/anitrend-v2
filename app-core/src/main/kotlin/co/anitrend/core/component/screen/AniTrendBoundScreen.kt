@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2019  AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,32 +15,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.core.android.controller.power.contract
+package co.anitrend.core.component.screen
 
-import kotlinx.coroutines.flow.Flow
+import androidx.viewbinding.ViewBinding
+import co.anitrend.core.android.binding.IBindingView
 
 /**
- * Power management controller
+ * Abstract over [AniTrendScreen] bound to view binding definition
  */
-interface IPowerController {
-    fun powerSaverStateFlow(
-        ignorePreference: Boolean
-    ): Flow<PowerSaverState>
+abstract class AniTrendBoundScreen<B : ViewBinding> : AniTrendScreen(), IBindingView<B> {
 
-    fun powerSaverState(): PowerSaverState
+    override var binding: B? = null
 
-    fun disableBatteryOptimization()
-}
-
-sealed class PowerSaverState {
-    data object Disabled : PowerSaverState()
-    data class Enabled(
-        val reason: Reason
-    ) : PowerSaverState()
-
-    enum class Reason {
-        PREFERENCE,
-        SYSTEM_DATA_SAVER,
-        SYSTEM_POWER_SAVER
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

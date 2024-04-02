@@ -45,7 +45,7 @@ val roundedBottomCornersTransformation =
 /**
  * String to cover image converter
  */
-fun String?.toCoverImage(): ICoverImage {
+fun CharSequence?.toCoverImage(): ICoverImage {
     val resource = this
     return object : ICoverImage {
         override val large: CharSequence? = resource

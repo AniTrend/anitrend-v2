@@ -22,11 +22,9 @@ import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.activity.SupportActivity
-import co.anitrend.core.android.binding.IBindingView
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.ui.inject
@@ -47,13 +45,12 @@ import timber.log.Timber
  * @property configurationHelper Configuration driver for this activity
  * @property scope Dependency injection scope for this activity lifecycle
  */
-abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), AndroidScopeComponent, KoinScopeComponent, IBindingView<B> {
+abstract class AniTrendScreen : SupportActivity(), AndroidScopeComponent, KoinScopeComponent {
 
     protected val configurationHelper by inject<IConfigurationHelper>()
 
     override val scope by activityRetainedScope()
 
-    override var binding: B? = null
 
     private val connectivity by inject<ISupportConnectivity>()
 
@@ -112,9 +109,4 @@ abstract class AniTrendScreen<B : ViewBinding> : SupportActivity(), AndroidScope
      * Proxy for a view model state if one exists
      */
     override fun viewModelState(): AniTrendViewModelState<*>? = null
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
-    }
 }

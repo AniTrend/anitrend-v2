@@ -17,6 +17,8 @@
 
 package co.anitrend.domain.user.entity.contract
 
+import co.anitrend.domain.common.entity.contract.ISynopsis
+
 /**
  * A users status
  *

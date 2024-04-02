@@ -21,10 +21,10 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.viewbinding.ViewBinding
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.updater.component.compose.UpdateScreenContent
 
-class UpdateScreen : AniTrendScreen<ViewBinding>() {
+class UpdateScreen : AniTrendBoundScreen<ViewBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -38,6 +38,7 @@ import co.anitrend.domain.common.entity.contract.ISynopsis
 import com.airbnb.paris.extensions.style
 import com.squareup.contour.ContourLayout
 
+@Deprecated(message = "Experimental widget, no longer in use", level = DeprecationLevel.ERROR)
 class MarkdownSynopsisWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ContourLayout(context, attrs), CustomView {
@@ -63,7 +64,7 @@ class MarkdownSynopsisWidget @JvmOverloads constructor(
     init { onInit(context, attrs) }
 
     fun setSynopsis(synopsis: ISynopsis) {
-        markdownTextWidget.setText(synopsis)
+        markdownTextWidget.setContent(synopsis.description)
         markdownTextWidget.maxLines = collapsedLines
     }
 
