@@ -64,6 +64,7 @@ internal class ConfigurationHelper(
         applicationTheme = settings.theme.value
         applicationLocale = settings.locale.value
         themeHelper.applyApplicationTheme(activity, themeOverride)
+        activity.enableEdgeToEdge()
     }
 
     /**

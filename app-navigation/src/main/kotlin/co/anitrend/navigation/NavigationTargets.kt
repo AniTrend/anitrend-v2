@@ -196,11 +196,7 @@ object AiringRouter : NavigationRouter() {
 object AuthRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
+    interface Provider : INavigationProvider
 
     @Parcelize
     data class AuthParam(

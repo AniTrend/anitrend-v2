@@ -35,19 +35,24 @@ class AuthViewModel(
             return
         }
 
-        runCatching {
-            state.authenticationFlow.value = Authentication.Authenticating(
+        Timber.d("AuthRouter.Param change triggered from on new intent: $param")
+
+        val authenticationState = runCatching {
+            Authentication.Authenticate(
                 requireNotNull(param.accessToken),
                 requireNotNull(param.tokenType),
                 requireNotNull(param.expiresIn)
             )
         }.onFailure {
-            state.authenticationFlow.value = Authentication.Error(
+            Authentication.Error(
                 title = param.errorTitle
                     ?: context.getString(R.string.auth_error_default_title),
                 message = param.errorDescription
                     ?: context.getString(R.string.auth_error_default_message)
             )
-        }
+        }.getOrDefault(Authentication.Idle)
+
+        state.authenticationFlow.value = authenticationState
+        state(authenticationState)
     }
 }

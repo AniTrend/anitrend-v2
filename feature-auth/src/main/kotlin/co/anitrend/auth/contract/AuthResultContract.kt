@@ -54,7 +54,7 @@ class AuthResultContract(
         val uri = Uri.parse(data.toString().replaceFirst('#', '?'))
 
         return runCatching {
-            Authentication.Authenticating(
+            Authentication.Authenticate(
                 requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
                     "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $uri"
                 },
