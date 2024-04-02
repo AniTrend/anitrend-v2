@@ -18,7 +18,7 @@
 package co.anitrend.auth.model
 
 sealed class Authentication {
-    class Authenticating(
+    data class Authenticate(
         val accessToken: String,
         val tokenType: String,
         val expiresIn: Long
@@ -28,6 +28,6 @@ sealed class Authentication {
         val title: String,
         val message: String
     ): Authentication()
-    
-    object Idle : Authentication()
+
+    data object Idle : Authentication()
 }

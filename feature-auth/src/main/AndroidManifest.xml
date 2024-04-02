@@ -24,7 +24,6 @@
         </intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
-            <!--suppress AndroidElementNotAllowed -->
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
         </intent>

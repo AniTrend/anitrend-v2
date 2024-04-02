@@ -19,13 +19,10 @@ package co.anitrend.auth.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.auth.component.content.AuthContent
 import co.anitrend.auth.component.screen.AuthScreen
 import co.anitrend.navigation.AuthRouter
 
 class FeatureProvider : AuthRouter.Provider {
     override fun activity(context: Context?) =
         context?.let { Intent(it, AuthScreen::class.java) }
-
-    override fun fragment() = AuthContent::class.java
 }

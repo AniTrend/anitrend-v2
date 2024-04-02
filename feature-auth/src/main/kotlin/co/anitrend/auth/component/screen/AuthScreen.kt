@@ -19,26 +19,35 @@ package co.anitrend.auth.component.screen
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
+import android.widget.Toast
+import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.auth.R
+import co.anitrend.auth.component.compose.AuthScreenContent
 import co.anitrend.auth.component.viewmodel.AuthViewModel
-import co.anitrend.auth.databinding.AuthScreenBinding
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.auth.presenter.AuthPresenter
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.extensions.observeOnce
+import co.anitrend.core.android.extensions.requireLifecycleOwner
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.extensions.forActivity
 import co.anitrend.navigation.extensions.nameOf
-import kotlinx.coroutines.launch
+import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
-class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
+class AuthScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<AuthViewModel>()
     private val authRouterParam by extra<AuthRouter.AuthParam>(
         key = nameOf<AuthRouter.AuthParam>(),
     )
+
+    private val presenter by inject<AuthPresenter>()
 
     private fun checkIntentData() {
         viewModel.onIntentData(
@@ -49,8 +58,30 @@ class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = AuthScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = viewModelState().loadState,
+                    param = IParam.None,
+                    onLoad = {},
+                    onClick = viewModelState()::retry,
+                ) {
+                    AuthScreenContent(
+                        onAuthorizeClick = {
+                            presenter.authorizeWithAniList(this)
+                        },
+                        onAuthorizationHelpClick = {
+                            presenter.authorizationIssues(this)
+                        },
+                        onAuthorizationAnonymousClick = {
+                            presenter.runSignOutWorker()
+                            onBackPressed()
+                        },
+                        onBackPress = ::onBackPressed
+                    )
+                }
+            }
+        }
     }
 
     /**
@@ -60,10 +91,20 @@ class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launch {
-            onUpdateUserInterface()
+        viewModelState().model.observeOnce(requireLifecycleOwner()) { user ->
+            runCatching {
+                presenter.runSignInWorker(user.id)
+            }.onSuccess {
+                onBackPressed()
+            }.onFailure {
+                Timber.e(it)
+                Toast.makeText(applicationContext, R.string.auth_failed_message, Toast.LENGTH_LONG).show()
+                presenter.runSignOutWorker()
+            }
         }
     }
+
+
 
     /**
      * {@inheritDoc}
@@ -100,8 +141,8 @@ class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
         )
     }
 
-    private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(AuthRouter.forFragment())
-            .commit(requireBinding().splashFrame, this)
-    }
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
 }

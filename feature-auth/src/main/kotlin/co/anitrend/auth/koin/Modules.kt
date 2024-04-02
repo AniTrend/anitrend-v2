@@ -19,7 +19,6 @@ package co.anitrend.auth.koin
 
 import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.auth.component.content.AuthContent
 import co.anitrend.auth.component.screen.AuthScreen
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.component.viewmodel.state.AuthState
@@ -29,23 +28,8 @@ import co.anitrend.core.R
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AuthRouter
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-
-private val fragmentModule = module {
-    scope<AuthScreen> {
-        fragment {
-            AuthContent(
-                stateLayoutConfig = StateLayoutConfig(
-                    errorDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
-                    loadingMessage = R.string.label_text_loading,
-                    retryAction = R.string.label_text_action_retry
-                )
-            )
-        }
-    }
-}
 
 private val viewModelModule = module {
     viewModel {
@@ -56,7 +40,7 @@ private val viewModelModule = module {
 }
 
 private val presenterModule = module {
-    scope<AuthContent> {
+    scope<AuthScreen> {
         scoped {
             AuthPresenter(
                 context = androidContext(),
@@ -75,5 +59,5 @@ private val featureModule = module {
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, presenterModule, featureModule)
+    listOf(viewModelModule, presenterModule, featureModule)
 )
