@@ -43,7 +43,7 @@ class MediaDiscoverScreen : AniTrendBoundScreen<MediaDiscoverScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-		binding = MediaDiscoverScreenBinding.inflate(layoutInflater)
+        binding = MediaDiscoverScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
         setSupportActionBar(requireBinding().bottomAppBar)
     }

@@ -18,7 +18,6 @@
 package co.anitrend.core.android.extensions
 
 import android.content.Context
-import co.anitrend.core.android.R
 import com.airbnb.paris.extensions.style
 import com.google.android.material.chip.Chip
 
@@ -26,9 +25,9 @@ import com.google.android.material.chip.Chip
  * Themes and styles chip for choice selection
  */
 fun Chip.asChoice() {
-    style(R.style.AppTheme_Material_Chip_Choice)
+    style(co.anitrend.core.android.R.style.AppTheme_Material_Chip_Choice)
     setChipBackgroundColorResource(
-        R.color.selector_chip_background
+        co.anitrend.core.android.R.color.selector_chip_background
     )
     isCheckedIconVisible = false
     isCheckable = true
