@@ -1,5 +1,3 @@
-import co.anitrend.buildSrc.Libraries
-
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -17,15 +15,20 @@ import co.anitrend.buildSrc.Libraries
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("co.anitrend.plugin")
-}
+package co.anitrend.core.component.screen
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.shared))
-    implementation(project(Libraries.AniTrend.CommonUi.markdown))
-}
+import androidx.viewbinding.ViewBinding
+import co.anitrend.core.android.binding.IBindingView
 
-android {
-    namespace = "co.anitrend.profile"
+/**
+ * Abstract over [AniTrendScreen] bound to view binding definition
+ */
+abstract class AniTrendBoundScreen<B : ViewBinding> : AniTrendScreen(), IBindingView<B> {
+
+    override var binding: B? = null
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }

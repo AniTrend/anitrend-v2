@@ -40,7 +40,7 @@ internal class SortingContent(
 
 
     private fun initializeViewsWithOptions() {
-        MediaSort.values().forEach { mediaSort ->
+        MediaSort.entries.forEach { mediaSort ->
             val sort = param.sort?.firstOrNull { sorting ->
                 sorting.sortable == mediaSort
             }

@@ -18,35 +18,67 @@
 package co.anitrend.profile.component.screen
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import co.anitrend.arch.extension.ext.extra
+import co.anitrend.common.shared.ui.extension.shareContent
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.profile.component.content.ProfileContent
-import co.anitrend.profile.databinding.ProfileScreenBinding
+import co.anitrend.core.ui.inject
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.ProfileRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.profile.component.compose.ProfileScreenContent
+import co.anitrend.profile.component.viewmodel.ProfileViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ProfileScreen : AniTrendScreen<ProfileScreenBinding>() {
+class ProfileScreen : AniTrendScreen() {
 
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        onUpdateUserInterface()
-    }
+    private val viewModel by viewModel<ProfileViewModel>()
+    private val settings by inject<IAuthenticationSettings>()
+    private val param by extra<ProfileRouter.Param>(ProfileRouter.Param.KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ProfileScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = viewModelState().combinedLoadState,
+                    param = param,
+                    onLoad = viewModelState()::invoke,
+                    onClick = viewModelState()::retry,
+                ) {
+                    ProfileScreenContent(
+                        profileState = viewModelState(),
+                        onImageClick = { param ->
+                            ImageViewerRouter.startActivity(
+                                context = this@ProfileScreen,
+                                navPayload = param.asNavPayload()
+                            )
+                        },
+                        onFloatingActionButtonClick = { url ->
+                            shareContent {
+                                setType("text/plain")
+                                setText(url)
+                            }
+                        },
+                        onInboxButtonClick = {
+
+                        },
+                        onNotificationsButtonClick = {
+
+                        },
+                        onBackClick = ::onBackPressed,
+                    )
+                }
+            }
+        }
     }
 
-    private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = ProfileContent::class.java,
-            parameter = intent.extras
-        ).commit(requireBinding().profileContent, this)
-    }
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
 }

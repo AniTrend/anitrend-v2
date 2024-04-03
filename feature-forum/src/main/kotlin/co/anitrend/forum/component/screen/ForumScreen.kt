@@ -18,14 +18,14 @@
 package co.anitrend.forum.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.forum.databinding.ForumScreenBinding
 import co.anitrend.navigation.ForumRouter
 
-class ForumScreen : AniTrendScreen<ForumScreenBinding>() {
-    
+class ForumScreen : AniTrendBoundScreen<ForumScreenBinding>() {
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

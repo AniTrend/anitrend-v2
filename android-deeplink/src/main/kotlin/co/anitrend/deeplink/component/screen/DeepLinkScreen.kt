@@ -24,7 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.deeplink.databinding.DeepLinkScreenBinding
 import co.anitrend.deeplink.exception.DeepLinkException
@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DeepLinkScreen : AniTrendScreen<DeepLinkScreenBinding>() {
+class DeepLinkScreen : AniTrendBoundScreen<DeepLinkScreenBinding>() {
     private val stateLayoutConfig by inject<StateLayoutConfig>()
     private val router by inject<DeepLinkParser<Intent?>>()
 

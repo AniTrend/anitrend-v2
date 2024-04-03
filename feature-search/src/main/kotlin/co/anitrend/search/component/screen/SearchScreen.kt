@@ -20,64 +20,44 @@ package co.anitrend.search.component.screen
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.activity.compose.setContent
+import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureReady
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.multisearch.model.Search
-import co.anitrend.search.component.content.SearchContent
-import co.anitrend.search.databinding.SearchScreenBinding
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import co.anitrend.core.ui.inject
+import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.model.common.IParam
+import co.anitrend.search.component.compose.SearchScreenContent
+import co.anitrend.search.component.presenter.SearchPresenter
 
-class SearchScreen : AniTrendScreen<SearchScreenBinding>() {
+class SearchScreen : AniTrendScreen() {
+
+    private val presenter by inject<SearchPresenter>()
+    private val param by extra<SearchRouter.Param>(SearchRouter.Param.KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = SearchScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
-    }
-
-    /**
-     * Additional initialization to be done in this method, if the overriding class is type of
-     * [androidx.fragment.app.Fragment] then this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
-     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                binding?.multiSearch?.searchChangeFlow()
-                    ?.filterNotNull()
-                    ?.onEach { search ->
-                        when (search) {
-                            is Search.TextChanged -> {
-
-                            }
-                            is Search.Removed -> {
-
-                            }
-                            is Search.Selected -> {
-
-                            }
-                        }
-                    }
-                    ?.collect()
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper<IParam>(
+                    stateFlow = FeatureReady.loadState,
+                    config = FeatureReady.config,
+                    param = param ?: SearchRouter.Param(),
+                    onClick = {},
+                ) {
+                    SearchScreenContent(
+                        query = param?.query.orEmpty(),
+                        onQueryChange = {},
+                        onSearch = {},
+                        active = false,
+                        onActiveChange = {},
+                        onBackClick = ::onBackPressed,
+                    )
+                }
             }
         }
-        onUpdateUserInterface()
-    }
-
-    private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(fragment = SearchContent::class.java)
-            .commit(requireBinding().searchContent, this)
     }
 
     /**
@@ -94,12 +74,13 @@ class SearchScreen : AniTrendScreen<SearchScreenBinding>() {
      */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        setIntent(intent)
         when (intent?.action) {
             Intent.ACTION_SEARCH, GOOGLE_ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY)
-                if (query != null && query.isNotEmpty()) {
-                    // TODO: Add support in multi-search to search programmatically
-                    //requireBinding().multiSearch.addIfNotExists(query)
+                if (!query.isNullOrEmpty()) {
+                    // TODO: Add view model event to emit to for a new search query
+                    return
                 }
             }
         }

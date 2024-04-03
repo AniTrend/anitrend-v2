@@ -1,193 +1,267 @@
 package co.anitrend.media.discover.filter.component.compose
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import co.anitrend.arch.extension.ext.capitalizeWords
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
-import co.anitrend.media.discover.filter.R
+import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.domain.common.enums.contract.IAliasable
+import co.anitrend.domain.media.enums.MediaCountry
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaLicensor
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaSource
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.MediaDiscoverRouter
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun <T> FilterChipGroup(
+    entries: List<T>,
+    @StringRes title: Int,
+    @StringRes subTitle: Int,
+    labelFormatter: (T) -> String,
+    isSelected: ((T) -> Boolean?) = { null },
+    selectedItemIcon: ImageVector = Icons.Filled.Done,
+    onSelectionChange : (T, Boolean) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(
+            text = stringResource(title),
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = stringResource(subTitle),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+
+    FlowRow {
+        entries.forEach { entry ->
+            val labelText = labelFormatter(entry)
+            val selected = isSelected(entry) ?: false
+
+            FilterChip(
+                modifier = Modifier.padding(end = 8.dp),
+                selected = selected,
+                onClick = {
+                    onSelectionChange(entry, !selected)
+                },
+                label = { Text(text = labelText) },
+                leadingIcon = {
+                    if (selected) {
+                        Icon(
+                            imageVector = selectedItemIcon,
+                            contentDescription = labelText,
+                            modifier = Modifier.size(FilterChipDefaults.IconSize)
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FilterYearSection(
+    dateHelper: AbstractSupportDateHelper,
+    onSelectionChange: () -> Unit,
+) {
+    val upperYearBound = dateHelper.getCurrentYear(2).toFloat()
+    var isYearRangeSelected by remember { mutableStateOf(false) }
+    Text(
+        text = stringResource(co.anitrend.media.discover.filter.R.string.label_discover_filter_year_title),
+        style = MaterialTheme.typography.bodyMedium
+    )
+
+    FilterChip(
+        selected = isYearRangeSelected,
+        onClick = {
+            isYearRangeSelected = !isYearRangeSelected
+        },
+        label = {
+            Text(text = stringResource(co.anitrend.media.discover.filter.R.string.label_discover_filter_year_title_by_range))
+        }
+    )
+
+    if (isYearRangeSelected) {
+        RangeSlider(
+            value = 1970f..upperYearBound,
+            onValueChange = {
+
+            }
+        )
+    } else {
+        Slider(
+            state = SliderState(
+                value = upperYearBound,
+                steps = 1,
+                valueRange = 1970f..upperYearBound,
+            )
+        )
+    }
+}
 
 @Composable
 fun MediaDiscoverFilterScreen(
     dateHelper: AbstractSupportDateHelper,
     param: MediaDiscoverRouter.Param,
+    onParamChange: (MediaDiscoverRouter.Param) -> Unit
 ) {
-    val isAdultChecked by remember { mutableStateOf(param.isAdult ?: false) }
-    val yearRangeValue by remember { mutableIntStateOf(param.seasonYear ?: 0) }
-
+    val state by remember { mutableStateOf(param) }
+    val titleFormatter: (IAliasable) -> String = { it.alias.toString() }
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Switch(
-            checked = isAdultChecked,
-            onCheckedChange = { /*isAdultChecked = it*/ },
-            modifier = Modifier.fillMaxWidth()
-        )
+        FilterYearSection(
+            dateHelper = dateHelper,
+            onSelectionChange = {
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Discover Filter On List Section
-        Column {
-            Text(text = stringResource(id = R.string.label_discover_filter_on_list_title), style = MaterialTheme.typography.headlineSmall)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(id = R.string.label_discover_filter_on_list_sub_title))
-            Spacer(modifier = Modifier.height(24.dp))
-            // Add ChipGroup for on-list options here
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Discover Filter Media Type Section
-        Column {
-            Text(text = stringResource(id = R.string.label_discover_filter_media_type_title), style = MaterialTheme.typography.headlineSmall)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(id = R.string.label_discover_filter_media_type_title))
-            Spacer(modifier = Modifier.height(24.dp))
-            // Add ChipGroup for media types here
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Discover Filter Season Section
-        Column {
-            Text(text = stringResource(id = R.string.label_discover_filter_season_title), style = MaterialTheme.typography.headlineSmall)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(id = R.string.label_discover_filter_season_sub_title))
-            Spacer(modifier = Modifier.height(24.dp))
-            // Add ChipGroup for seasons here
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Discover Filter Year Section
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = stringResource(id = R.string.label_discover_filter_year_title), style = MaterialTheme.typography.headlineSmall)
-                Slider(
-                    value = yearRangeValue.toFloat(),
-                    onValueChange = { /*yearRangeValue = it*/ },
-                    valueRange = 1970f..(dateHelper.getCurrentYear() + 2).toFloat(),
-                    steps = (dateHelper.getCurrentYear() + 2 - 1970),
-                    modifier = Modifier.fillMaxWidth(),
-                )
             }
-        }
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Status Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_status_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_status_sub_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for status options here
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Media Type Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_media_type_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_media_type_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for media types here
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Season Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_season_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_season_sub_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for seasons here
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Format Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_format_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_format_sub_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for format options here
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Source Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_source_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_source_sub_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for source options here
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Country Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_country_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_country_sub_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for country options here
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Discover Filter Streaming Section
-    Column {
-        Text(text = stringResource(id = R.string.label_discover_filter_streaming_title), style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(id = R.string.label_discover_filter_streaming_sub_title))
-        Spacer(modifier = Modifier.height(24.dp))
-        // Add ChipGroup for streaming options here
+        )
+        FilterChipGroup(
+            entries = MediaStatus.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_status_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_status_sub_title,
+            labelFormatter = titleFormatter,
+            isSelected = {
+                param.status_in?.contains(it) == true || param.status == it
+            },
+            onSelectionChange = { item, _ ->
+                state.status = item
+                onParamChange(state)
+            }
+        )
+        FilterChipGroup(
+            entries = MediaType.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_media_type_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_media_type_sub_title,
+            labelFormatter = titleFormatter,
+            isSelected = {
+                param.type == it
+            },
+            onSelectionChange = { item, _ ->
+                state.type = item
+                onParamChange(state)
+            }
+        )
+        FilterChipGroup(
+            entries = MediaSeason.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_season_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_season_sub_title,
+            labelFormatter = titleFormatter,
+            isSelected = {
+                param.season == it
+            },
+            onSelectionChange = { item, _ ->
+                state.season = item
+                onParamChange(state)
+            }
+        )
+        FilterChipGroup(
+            entries = MediaFormat.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_format_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_format_sub_title,
+            labelFormatter = titleFormatter,
+            isSelected = {
+                param.format_in?.contains(it) == true || param.format == it
+            },
+            onSelectionChange = { item, _ ->
+                state.format = item
+                onParamChange(state)
+            }
+        )
+        FilterChipGroup(
+            entries = MediaSource.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_source_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_source_sub_title,
+            labelFormatter = titleFormatter,
+            isSelected = {
+                param.source_in?.contains(it) == true || param.source == it
+            },
+            onSelectionChange = { item, _ ->
+                state.source = item
+                onParamChange(state)
+            }
+        )
+        FilterChipGroup(
+            entries = MediaCountry.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_source_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_source_sub_title,
+            labelFormatter = { it.name.lowercase().capitalizeWords() },
+            isSelected = {
+                param.countryOfOrigin == it.alias
+            },
+            onSelectionChange = { item, _ ->
+                state.countryOfOrigin = item.alias
+                onParamChange(state)
+            },
+        )
+        FilterChipGroup(
+            entries = MediaLicensor.entries,
+            title = co.anitrend.media.discover.filter.R.string.label_discover_filter_streaming_title,
+            subTitle = co.anitrend.media.discover.filter.R.string.label_discover_filter_streaming_sub_title,
+            labelFormatter = { it.title.toString() },
+            isSelected = {
+                param.licensedBy_in?.contains(it) == true || param.licensedBy == it
+            },
+            onSelectionChange = { item, _ ->
+                state.licensedBy = item
+                onParamChange(state)
+            },
+        )
     }
 }
 
 @AniTrendPreview.Mobile
 @Composable
 fun MediaDiscoverFilterScreenPreview() {
-    AniTrendTheme3 {
+    PreviewTheme {
         MediaDiscoverFilterScreen(
             dateHelper = object : AbstractSupportDateHelper() {
                 override val currentSeason: SeasonType = SeasonType.FALL
                 override fun getCurrentYear(delta: Int) = 2023 + delta
             },
-            param = MediaDiscoverRouter.Param()
+            param = MediaDiscoverRouter.Param(
+                status = MediaStatus.FINISHED,
+                type = MediaType.ANIME,
+                season = MediaSeason.SPRING,
+            ),
+            onParamChange = {},
         )
     }
 }

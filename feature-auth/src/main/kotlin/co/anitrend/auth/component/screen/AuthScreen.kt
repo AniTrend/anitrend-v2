@@ -19,13 +19,11 @@ package co.anitrend.auth.component.screen
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.databinding.AuthScreenBinding
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AuthRouter
@@ -34,7 +32,7 @@ import co.anitrend.navigation.extensions.forActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AuthScreen : AniTrendScreen<AuthScreenBinding>() {
+class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
     private val authRouterParam by extra<AuthRouter.Param>(AuthRouter.Param.KEY)

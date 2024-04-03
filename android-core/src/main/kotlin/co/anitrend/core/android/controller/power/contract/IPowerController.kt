@@ -17,8 +17,6 @@
 
 package co.anitrend.core.android.controller.power.contract
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -31,12 +29,11 @@ interface IPowerController {
 
     fun powerSaverState(): PowerSaverState
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun disableBatteryOptimization()
 }
 
 sealed class PowerSaverState {
-    object Disabled : PowerSaverState()
+    data object Disabled : PowerSaverState()
     data class Enabled(
         val reason: Reason
     ) : PowerSaverState()

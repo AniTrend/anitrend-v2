@@ -21,9 +21,9 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.viewbinding.ViewBinding
 import co.anitrend.about.component.content.AboutContent
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 
-class AboutScreen : AniTrendScreen<ViewBinding>() {
+class AboutScreen : AniTrendBoundScreen<ViewBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during

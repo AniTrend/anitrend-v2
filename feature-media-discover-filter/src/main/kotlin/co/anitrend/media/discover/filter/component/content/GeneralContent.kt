@@ -61,7 +61,7 @@ internal class GeneralContent(
     }
 
     private fun initializeViewsWithOptions() {
-        MediaStatus.values().forEach {
+        MediaStatus.entries.forEach {
             requireBinding().statusChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.alias
@@ -69,7 +69,7 @@ internal class GeneralContent(
                 }
             )
         }
-        MediaType.values().forEach {
+        MediaType.entries.forEach {
             requireBinding().mediaTypeChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.alias
@@ -77,7 +77,7 @@ internal class GeneralContent(
                 }
             )
         }
-        MediaSeason.values().forEach {
+        MediaSeason.entries.forEach {
             requireBinding().seasonChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.alias
@@ -85,7 +85,7 @@ internal class GeneralContent(
                 }
             )
         }
-        MediaFormat.values().forEach {
+        MediaFormat.entries.forEach {
             requireBinding().formatChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.alias
@@ -93,7 +93,7 @@ internal class GeneralContent(
                 }
             )
         }
-        MediaSource.values().forEach {
+        MediaSource.entries.forEach {
             requireBinding().sourceChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.alias
@@ -101,7 +101,7 @@ internal class GeneralContent(
                 }
             )
         }
-        MediaCountry.values().forEach {
+        MediaCountry.entries.forEach {
             requireBinding().countryChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.name.lowercase().capitalizeWords()
@@ -109,7 +109,7 @@ internal class GeneralContent(
                 }
             )
         }
-        MediaLicensor.values().forEach {
+        MediaLicensor.entries.forEach {
             requireBinding().streamingChipGroup.addView(
                 requireContext().createChipChoice {
                     text = it.title

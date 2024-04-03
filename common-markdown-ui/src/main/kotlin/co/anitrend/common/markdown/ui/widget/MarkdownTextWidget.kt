@@ -41,19 +41,16 @@ class MarkdownTextWidget @JvmOverloads constructor(
 
     init { onInit(context, attrs, defStyleAttr) }
 
-    fun setText(synopsis: ISynopsis, entity: IEntityName) {
-        val markwon = koinOf<Markwon>(named(MarkdownFlavour.ANILIST))
-        maxLines = if (entity.alternative.isEmpty()) 7 else 4
-        val description = synopsis.description?.toString()
+    fun setContent(text: CharSequence?, flavour: MarkdownFlavour = MarkdownFlavour.ANILIST) {
+        val markwon = koinOf<Markwon>(named(flavour))
+        val content = text?.toString()
             ?: context.getString(R.string.label_place_holder_no_description)
-        markwon.setMarkdown(this, description)
+        markwon.setMarkdown(this, content)
     }
 
-    fun setText(synopsis: ISynopsis) {
-        val markwon = koinOf<Markwon>(named(MarkdownFlavour.ANILIST))
-        val description = synopsis.description?.toString()
-            ?: context.getString(R.string.label_place_holder_no_description)
-        markwon.setMarkdown(this, description)
+    fun setContent(text: CharSequence?, entity: IEntityName, flavour: MarkdownFlavour = MarkdownFlavour.ANILIST) {
+        maxLines = if (entity.alternative.isEmpty()) 7 else 4
+        setContent(text, flavour)
     }
 
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
@@ -61,7 +58,7 @@ class MarkdownTextWidget @JvmOverloads constructor(
         ellipsize = TextUtils.TruncateAt.END
         setTextIsSelectable(true)
         Linkify.addLinks(this, Linkify.ALL)
-        val textAppearance = context.themeStyle(com.google.android.material.R.attr.textAppearanceCaption)
+        val textAppearance = context.themeStyle(com.google.android.material.R.attr.textAppearanceBody2)
         TextViewCompat.setTextAppearance(this, textAppearance)
         movementMethod = BetterLinkMovementMethod.newInstance().apply {
             setOnLinkClickListener { view, url ->

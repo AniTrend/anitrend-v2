@@ -40,19 +40,19 @@
             app:defaultValue="false"
             app:key="@string/settings_auto_heap_dump" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        app:title="@string/preference_group_title_application_behavior"
-        app:iconSpaceReserved="false"
-        app:allowDividerAbove="true">
-
         <SwitchPreference
             app:title="@string/preference_title_refresh_behavior_config"
             app:summary="@string/preference_summary_refresh_behavior_config"
             app:icon="@drawable/ic_layers_clear_24dp"
             app:defaultValue="false"
             app:key="@string/settings_clear_on_swipe_refresh" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/preference_group_title_application_behavior"
+        app:iconSpaceReserved="false"
+        app:allowDividerAbove="true">
 
         <!-- TODO: Add preference fragment to change what kind of data to display, exclude things like hentai or ecchi -->
         <Preference

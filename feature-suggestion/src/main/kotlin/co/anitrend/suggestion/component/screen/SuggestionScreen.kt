@@ -18,14 +18,14 @@
 package co.anitrend.suggestion.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.suggestion.databinding.SuggestionScreenBinding
 
-class SuggestionScreen : AniTrendScreen<SuggestionScreenBinding>() {
-    
+class SuggestionScreen : AniTrendBoundScreen<SuggestionScreenBinding>() {
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

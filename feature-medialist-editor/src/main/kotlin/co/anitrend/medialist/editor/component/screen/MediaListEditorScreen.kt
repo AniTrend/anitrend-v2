@@ -18,11 +18,11 @@
 package co.anitrend.medialist.editor.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.medialist.editor.databinding.MediaListEditorScreenBinding
 
-class MediaListEditorScreen : AniTrendScreen<MediaListEditorScreenBinding>() {
-    
+class MediaListEditorScreen : AniTrendBoundScreen<MediaListEditorScreenBinding>() {
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

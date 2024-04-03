@@ -17,64 +17,68 @@
 
 package co.anitrend.common.genre.ui.compose
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ElevatedSuggestionChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SuggestionChipDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import co.anitrend.core.android.views.text.TextDrawable
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.forActivity
-import co.anitrend.navigation.extensions.startActivity
-import com.google.android.material.chip.Chip
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @Composable
 private fun GenreItem(
+    genre: Genre,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
     modifier: Modifier = Modifier,
-    genre: Genre
 ) {
-    AndroidView(
-        factory = ::Chip,
-        modifier = modifier,
-    ) { chip ->
-        chip.setOnClickListener {
-            MediaDiscoverRouter.startActivity(
-                view = it,
-                navPayload = MediaDiscoverRouter.Param(
-                    genre = genre.name
-                ).asNavPayload()
+    val context = LocalContext.current
+    ElevatedSuggestionChip(
+        icon = {
+            Icon(
+                painter = rememberDrawablePainter(TextDrawable(context, genre.emoji)),
+                contentDescription = null
             )
-        }
-
-        chip.text = genre.name
-        chip.chipIcon = TextDrawable(
-            chip.context,
-            genre.emoji
-        )
-    }
+        },
+        label = { Text(text = genre.name) },
+        onClick = {
+            onMediaDiscoverableItemClick(
+                MediaDiscoverRouter.Param(genre = genre.name),
+            )
+        },
+        shape = SuggestionChipDefaults.shape,
+        modifier = modifier
+    )
 }
 
 @Composable
 fun GenresListComponent(
     genres: List<Genre>,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
         state = rememberLazyListState(),
         contentPadding = PaddingValues(all = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier
     ) {
-        items(genres.size) { index ->
+        items(
+            count = genres.size,
+            key = { genres[it].id },
+            contentType = { "Genre" }
+        ) { index ->
             GenreItem(
-                genre = genres[index]
+                genre = genres[index],
+                onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             )
         }
     }

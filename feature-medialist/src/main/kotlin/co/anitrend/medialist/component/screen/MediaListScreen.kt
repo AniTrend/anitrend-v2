@@ -18,13 +18,13 @@
 package co.anitrend.medialist.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.medialist.databinding.MediaListScreenBinding
 import co.anitrend.navigation.MediaListRouter
 
-class MediaListScreen : AniTrendScreen<MediaListScreenBinding>() {
+class MediaListScreen : AniTrendBoundScreen<MediaListScreenBinding>() {
 
     /**
      * Additional initialization to be done in this method, this is called in during

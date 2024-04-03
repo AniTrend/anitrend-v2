@@ -17,22 +17,21 @@
 
 package co.anitrend.common.media.ui.compose.extensions
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
-import co.anitrend.common.media.ui.R
+import androidx.compose.ui.graphics.toArgb
 import co.anitrend.core.android.helpers.color.asColorInt
-import co.anitrend.domain.media.entity.contract.IMedia
+import co.anitrend.domain.common.entity.contract.IMediaCover
 
 @Composable
-fun IMedia.rememberAccentColor(): Color {
-    val context = LocalContext.current
-    val defaultColor = colorResource(co.anitrend.arch.theme.R.color.primaryTextColor)
-    val accent = remember(image.color) {
-        image.color
-            ?.asColorInt(context)
+fun IMediaCover.rememberAccentColor(): Color {
+    val defaultColor = MaterialTheme.colorScheme.onBackground
+    val surface = MaterialTheme.colorScheme.background
+    val accent = remember(color) {
+        color
+            ?.asColorInt(surface.toArgb())
             ?.let(::Color)
             ?: defaultColor
     }
