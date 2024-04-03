@@ -72,6 +72,7 @@ square-okhttp = "4.12.0"
 square-retrofit = "2.10.0"
 
 sheets = "2.3.1"
+sheets-compose = "1.3.0"
 
 
 [plugins]
@@ -302,6 +303,19 @@ sheets-options = { module = "com.maxkeppeler.sheets:options", version.ref = "she
 sheets-simple = { module = "com.maxkeppeler.sheets:simple", version.ref = "sheets" }
 sheets-time = { module = "com.maxkeppeler.sheets:time", version.ref = "sheets" }
 sheets-time-clock = { module = "com.maxkeppeler.sheets:time-clock", version.ref = "sheets" }
+
+sheets-compose-core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "sheets-compose" }
+sheets-compose-info = { module = "com.maxkeppeler.sheets-compose-dialogs:info", version.ref = "sheets-compose" }
+sheets-compose-calendar = { module = "com.maxkeppeler.sheets:calendar", version.ref = "sheets-compose" }
+sheets-compose-rating = { module = "com.maxkeppeler.sheets-compose-dialogs:rating", version.ref = "sheets-compose" }
+sheets-compose-clock = { module = "com.maxkeppeler.sheets-compose-dialogs:clock", version.ref = "sheets-compose" }
+sheets-compose-duration = { module = "com.maxkeppeler.sheets-compose-dialogs:duration", version.ref = "sheets-compose" }
+sheets-compose-date-time = { module = "com.maxkeppeler.sheets-compose-dialogs:date-time", version.ref = "sheets-compose" }
+sheets-compose-option = { module = "com.maxkeppeler.sheets-compose-dialogs:option", version.ref = "sheets-compose" }
+sheets-compose-list = { module = "com.maxkeppeler.sheets-compose-dialogs:list", version.ref = "sheets-compose" }
+sheets-compose-input = { module = "com.maxkeppeler.sheets-compose-dialogs:input", version.ref = "sheets-compose" }
+sheets-compose-emoji = { module = "com.maxkeppeler.sheets-compose-dialogs:emoji", version.ref = "sheets-compose" }
+sheets-compose-state = { module = "com.maxkeppeler.sheets-compose-dialogs:state", version.ref = "sheets-compose" }
 
 square-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "square-kotlinpoet" }
 square-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "square-leakcanary" }
