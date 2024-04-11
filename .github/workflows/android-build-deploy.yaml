@@ -42,7 +42,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
       - name: set up pre-deploy configurations
         run: |
           bash .github/scripts/pre-config.sh
