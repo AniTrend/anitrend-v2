@@ -41,9 +41,9 @@ class AccountSignInWorker(
 ) : SupportCoroutineWorker(context, parameters) {
 
     private val param by lazy(UNSAFE) {
-        val data: AccountTaskRouter.Param =
+        val data: AccountTaskRouter.AccountParam =
             parameters.fromWorkerParameters(
-                AccountTaskRouter.Param
+                AccountTaskRouter.AccountParam
             )
 
         AccountParam.Activate(

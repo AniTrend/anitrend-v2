@@ -30,7 +30,7 @@ import co.anitrend.navigation.extensions.asBundle
 import timber.log.Timber
 
 internal class FilterPageAdapter(
-    private val param: MediaDiscoverRouter.Param?,
+    private val param: MediaDiscoverRouter.MediaDiscoverParam?,
     private val titles: List<String>,
     private val fragmentActivity: FragmentActivity,
     fragmentManager: FragmentManager,

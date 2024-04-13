@@ -37,7 +37,7 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 @Composable
 private fun GenreItem(
     genre: Genre,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -51,7 +51,7 @@ private fun GenreItem(
         label = { Text(text = genre.name) },
         onClick = {
             onMediaDiscoverableItemClick(
-                MediaDiscoverRouter.Param(genre = genre.name),
+                MediaDiscoverRouter.MediaDiscoverParam(genre = genre.name),
             )
         },
         shape = SuggestionChipDefaults.shape,
@@ -62,7 +62,7 @@ private fun GenreItem(
 @Composable
 fun GenresListComponent(
     genres: List<Genre>,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(

@@ -78,7 +78,7 @@ internal class NewsItem(
         requireBinding().container.setOnClickListener {
             NewsRouter.startActivity(
                 context = it.context,
-                navPayload = NewsRouter.Param(
+                navPayload = NewsRouter.NewsParam(
                     link = entity.link,
                     title = entity.title,
                     subTitle = entity.subTitle,

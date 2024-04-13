@@ -35,7 +35,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
-    private val authRouterParam by extra<AuthRouter.Param>(AuthRouter.Param.KEY)
+    private val authRouterParam by extra<AuthRouter.AuthParam>(AuthRouter.AuthParam.KEY)
 
     private fun checkIntentData() {
         viewModel.onIntentData(

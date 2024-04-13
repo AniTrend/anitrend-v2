@@ -29,7 +29,7 @@ class MediaDiscoverState(
     //private val networkInteractor: GetNetworkMediaInteractor
 ) : AniTrendViewModelState<PagedList<Media>>() {
 
-    operator fun invoke(param: MediaDiscoverRouter.Param) {
+    operator fun invoke(param: MediaDiscoverRouter.MediaDiscoverParam) {
         val query = MediaParam.Find() builder {
             averageScore = param.averageScore
             averageScore_greater = param.averageScore_greater

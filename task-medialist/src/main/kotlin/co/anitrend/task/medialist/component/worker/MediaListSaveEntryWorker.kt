@@ -26,6 +26,7 @@ import co.anitrend.data.medialist.SaveMediaListEntryInteractor
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class MediaListSaveEntryWorker(
@@ -34,29 +35,28 @@ class MediaListSaveEntryWorker(
     private val interactor: SaveMediaListEntryInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val saveEntry by lazy(UNSAFE) {
-        val data: MediaListTaskRouter.Param.SaveEntry = parameters.fromWorkerParameters(
-            MediaListTaskRouter.Param.SaveEntry
-        )
-
+    private val saveEntry by parameters.transform<
+        MediaListTaskRouter.Param.SaveEntry,
+        MediaListParam.SaveEntry
+    > {
         MediaListParam.SaveEntry(
-            id = data.id,
-            mediaId = data.mediaId,
-            status = data.status,
-            score = data.score,
-            scoreRaw = data.scoreRaw,
-            progress = data.progress,
-            progressVolumes = data.progressVolumes,
-            repeat = data.repeat,
-            priority = data.priority,
-            private = data.private,
-            notes = data.notes,
-            hiddenFromStatusLists = data.hiddenFromStatusLists,
-            customLists = data.customLists,
-            advancedScores = data.advancedScores,
-            startedAt = data.startedAt,
-            completedAt = data.completedAt,
-            scoreFormat = data.scoreFormat
+            id = it.id,
+            mediaId = it.mediaId,
+            status = it.status,
+            score = it.score,
+            scoreRaw = it.scoreRaw,
+            progress = it.progress,
+            progressVolumes = it.progressVolumes,
+            repeat = it.repeat,
+            priority = it.priority,
+            private = it.private,
+            notes = it.notes,
+            hiddenFromStatusLists = it.hiddenFromStatusLists,
+            customLists = it.customLists,
+            advancedScores = it.advancedScores,
+            startedAt = it.startedAt,
+            completedAt = it.completedAt,
+            scoreFormat = it.scoreFormat
         )
     }
 

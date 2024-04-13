@@ -29,7 +29,7 @@ object AniTrendImageDefaults {
  * @param imageType The type of image, this will make some behavioural changes
  * @param transformations Image transformations for Coil
  * @param contentScale [ContentScale] defaulted to [ContentScale.Crop]
- * @param onClick Callback with a receiver of [ImageViewerRouter.Param]
+ * @param onClick Callback with a receiver of [ImageViewerRouter.ImageSourceParam]
  *
  * @see [co.anitrend.core.android.helpers.image]
  */
@@ -40,7 +40,7 @@ fun AniTrendImage(
     modifier: Modifier = Modifier,
     transformations: List<Transformation> = emptyList(),
     contentScale: ContentScale = ContentScale.Crop,
-    onClick: (ImageViewerRouter.Param) -> Unit,
+    onClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
 ) {
     val context = LocalContext.current
     val requestImageBuilder = rememberRequestImage(
@@ -62,7 +62,7 @@ fun AniTrendImage(
             } ?: return@clickable
 
             onClick(
-                ImageViewerRouter.Param(source as String)
+                ImageViewerRouter.ImageSourceParam(source as String)
             )
         },
     )

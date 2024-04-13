@@ -28,7 +28,7 @@ class AiringState(
     override val interactor: GetPagedAiringScheduleInteractor
 ) : AniTrendViewModelState<PagedList<Media>>() {
 
-    operator fun invoke(param: AiringRouter.Param) {
+    operator fun invoke(param: AiringRouter.AiringParam) {
         val query = AiringParam.Find() builder {
             id = param.id
             mediaId = param.mediaId

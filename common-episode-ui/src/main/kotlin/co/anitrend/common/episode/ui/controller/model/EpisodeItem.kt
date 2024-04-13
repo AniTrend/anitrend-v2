@@ -70,7 +70,7 @@ internal class EpisodeItem(
             view.runIfActivityContext {
                 val fragmentItem = FragmentItem(
                     fragment = EpisodeRouter.forSheet(),
-                    parameter = EpisodeRouter.Param(id = entity.id).asBundle()
+                    parameter = EpisodeRouter.EpisodeParam(id = entity.id).asBundle()
                 )
                 val dialog = fragmentItem.fragmentByTagOrNew(this)
                 dialog.show(supportFragmentManager, fragmentItem.tag())

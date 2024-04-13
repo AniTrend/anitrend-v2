@@ -43,8 +43,8 @@ internal class GeneralContent(
 ) : AniTrendContent<MediaDiscoverFilterGeneralBinding>() {
 
     private val param by argument(
-        MediaDiscoverRouter.Param.KEY,
-        MediaDiscoverRouter.Param()
+        MediaDiscoverRouter.MediaDiscoverParam.KEY,
+        MediaDiscoverRouter.MediaDiscoverParam()
     )
 
     private fun bindModelToViews() {

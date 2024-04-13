@@ -82,5 +82,6 @@ include(
     ":task-tag",
     ":task-updater",
 	":task-account",
-    "task-config"
+    "task-config",
+    "task-favourite"
 )

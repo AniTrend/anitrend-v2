@@ -38,8 +38,8 @@ class ReviewDiscoverState(
 ): AniTrendViewModelState<PagedList<Review>>() {
 
     val default by savedStateHandle.extra(
-        ReviewDiscoverRouter.Param.KEY,
-        ReviewDiscoverRouter.Param(
+        ReviewDiscoverRouter.ReviewDiscoverParam.KEY,
+        ReviewDiscoverRouter.ReviewDiscoverParam(
             mediaType = MediaType.ANIME,
             sort = listOf(
                 Sorting(
@@ -50,8 +50,8 @@ class ReviewDiscoverState(
             scoreFormat = settings.scoreFormat.value
         )
     )
-    
-    operator fun invoke(param: ReviewDiscoverRouter.Param) {
+
+    operator fun invoke(param: ReviewDiscoverRouter.ReviewDiscoverParam) {
         val query = ReviewParam.Paged(
             mediaId = param.mediaId,
             userId = param.userId,

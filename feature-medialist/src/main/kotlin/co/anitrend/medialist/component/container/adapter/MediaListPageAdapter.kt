@@ -33,7 +33,7 @@ import co.anitrend.navigation.extensions.asBundle
 import java.util.*
 
 internal class MediaListPageAdapter(
-    private val param: MediaListRouter.Param?,
+    private val param: MediaListRouter.MediaListParam?,
     private val mediaListInfo: List<MediaListInfo>,
     private val fragmentActivity: FragmentActivity,
     fragmentManager: FragmentManager,

@@ -83,7 +83,7 @@ class AuthPresenter(
     }
 
     fun runSignOutWorker() {
-        val param = AccountTaskRouter.Param(
+        val param = AccountTaskRouter.AccountParam(
             settings.authenticatedUserId.value
         )
         AccountTaskRouter.forSignOutWorker()
@@ -92,7 +92,7 @@ class AuthPresenter(
     }
 
     fun runSignInWorker(id: Long) {
-        val param = AccountTaskRouter.Param(id)
+        val param = AccountTaskRouter.AccountParam(id)
         AccountTaskRouter.forSignInWorker()
             .createOneTimeUniqueWorker(context, param)
             .enqueue()

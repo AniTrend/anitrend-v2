@@ -35,7 +35,7 @@ class MediaDiscoverViewModel(
 
     init {
         viewModelScope.launch {
-            savedStateHandle.getLiveData<MediaDiscoverRouter.Param>(
+            savedStateHandle.getLiveData<MediaDiscoverRouter.MediaDiscoverParam>(
                 MediaDiscoverFilterRouter.Action.KEY
             ).asFlow().collect { param ->
                 state(param)
@@ -44,8 +44,8 @@ class MediaDiscoverViewModel(
     }
 
     val default by savedStateHandle.extra(
-        MediaDiscoverRouter.Param.KEY,
-        MediaDiscoverRouter.Param()
+        MediaDiscoverRouter.MediaDiscoverParam.KEY,
+        MediaDiscoverRouter.MediaDiscoverParam()
     )
 
     val filter = MutableLiveData(default)
@@ -53,7 +53,7 @@ class MediaDiscoverViewModel(
     /**
      * Handle param changes by settings the new [param] to the [state]
      */
-    fun setParam(param: MediaDiscoverRouter.Param) {
+    fun setParam(param: MediaDiscoverRouter.MediaDiscoverParam) {
         savedStateHandle[MediaDiscoverFilterRouter.Action.KEY] = param
     }
 }

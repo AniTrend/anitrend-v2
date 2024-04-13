@@ -30,7 +30,7 @@ class NewsPresenter(
 ) : CorePresenter(context, settings) {
 
     fun createShareContent(
-        param: NewsRouter.Param,
+        param: NewsRouter.NewsParam,
         screen: NewsScreen
     ): ShareCompat.IntentBuilder {
         val payloadContent = StringBuilder(

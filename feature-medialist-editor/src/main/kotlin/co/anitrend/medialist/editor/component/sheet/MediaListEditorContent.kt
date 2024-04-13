@@ -53,7 +53,7 @@ class MediaListEditorContent(
 
     private val viewModel by viewModel<MediaListEditorViewModel>()
 
-    private val param: MediaListEditorRouter.Param? by argument(MediaListEditorRouter.Param.KEY)
+    private val param: MediaListEditorRouter.MediaListEditorParam? by argument(MediaListEditorRouter.MediaListEditorParam.KEY)
 
     private fun onFetchDataInitialize() {
         requireBinding().stateLayout.assureParamNotMissing(param) {

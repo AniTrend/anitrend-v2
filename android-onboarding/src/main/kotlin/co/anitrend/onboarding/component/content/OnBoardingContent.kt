@@ -35,8 +35,8 @@ import kotlinx.coroutines.launch
 class OnBoardingContent(
     override val inflateLayout: Int = R.layout.onboarding_content,
 ) : AniTrendContent<OnboardingContentBinding>() {
-    private val param by argument<OnBoardingRouter.Param>(
-        OnBoardingRouter.Param.KEY,
+    private val param by argument<OnBoardingRouter.OnboardingParam>(
+        OnBoardingRouter.OnboardingParam.KEY,
     )
 
     /**

@@ -43,7 +43,7 @@ class ProfileContent(
 
     private val viewModel by viewModel<ProfileViewModel>()
 
-    private val param: ProfileRouter.Param? by argument(ProfileRouter.Param.KEY)
+    private val param: ProfileRouter.ProfileParam? by argument(ProfileRouter.ProfileParam.KEY)
 
     /**
      * Additional initialization to be done in this method, this method will be called in

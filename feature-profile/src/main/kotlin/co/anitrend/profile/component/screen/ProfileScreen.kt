@@ -38,7 +38,7 @@ class ProfileScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<ProfileViewModel>()
     private val settings by inject<IAuthenticationSettings>()
-    private val param by extra<ProfileRouter.Param>(ProfileRouter.Param.KEY)
+    private val param by extra<ProfileRouter.ProfileParam>(ProfileRouter.ProfileParam.KEY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

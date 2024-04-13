@@ -49,7 +49,7 @@ internal object DiscoverRoute : Route("discover") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.DISCOVER,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -64,7 +64,7 @@ internal object SocialRoute : Route("social") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.SOCIAL,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -79,7 +79,7 @@ internal object SuggestionsRoute : Route("suggestions") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.SUGGESTIONS,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -106,7 +106,7 @@ internal object ProfileRoute : Route("profile") {
         super.run(uri, params, env)
         env as IAniTrendEnvironment
         val payload =
-            ProfileRouter.Param(
+            ProfileRouter.ProfileParam(
                 userId = env.userId,
             ).asNavPayload()
         return ProfileRouter.forActivity(env.context, payload)
@@ -143,7 +143,7 @@ internal object NewsRoute : Route("news") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.NEWS,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -158,7 +158,7 @@ internal object EpisodesRoute : Route("episodes") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.EPISODES,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -169,10 +169,10 @@ internal object OAuthRoute : Route(
     "oauth/v2/anilist",
     "oauth/v2/trakt",
 ) {
-    private fun DeepLinkUri.getAuthRouterParam(): AuthRouter.Param {
+    private fun DeepLinkUri.getAuthRouterParam(): AuthRouter.AuthParam {
         val fullyQualifiedUrl = UriCompat.toSafeString(toAndroidUri())
         return runCatching {
-            AuthRouter.Param(
+            AuthRouter.AuthParam(
                 accessToken =
                 requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
                     "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
@@ -189,7 +189,7 @@ internal object OAuthRoute : Route(
         }
             .onFailure(Timber::w)
             .getOrDefault(
-                AuthRouter.Param(
+                AuthRouter.AuthParam(
                     errorTitle = queryParameter(CALLBACK_QUERY_ERROR_KEY),
                     errorDescription = queryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY),
                 )

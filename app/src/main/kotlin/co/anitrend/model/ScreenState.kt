@@ -30,7 +30,7 @@ internal class ScreenState(
 ) : IScreenState {
 
     private val navigationDestination by savedStateHandle.extra(
-        NavigationDrawerRouter.Param.KEY,
+        NavigationDrawerRouter.NavigationDrawerParam.KEY,
         NavigationDrawerRouter.Destination.HOME
     )
 

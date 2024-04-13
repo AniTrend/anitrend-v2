@@ -31,7 +31,7 @@ class OnBoardingPresenter(
 ) : CorePresenter(context, settings) {
     val onBoardingItems =
         listOf(
-            OnBoardingRouter.Param(
+            OnBoardingRouter.OnboardingParam(
                 resource = R.raw.anitrend,
                 background = R.drawable.gradient_slide_01,
                 title =
@@ -48,7 +48,7 @@ class OnBoardingPresenter(
                     },
                 textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
             ),
-            OnBoardingRouter.Param(
+            OnBoardingRouter.OnboardingParam(
                 resource = R.raw.bookmark,
                 background = R.drawable.gradient_slide_02,
                 title =
@@ -65,7 +65,7 @@ class OnBoardingPresenter(
                     },
                 textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
             ),
-            OnBoardingRouter.Param(
+            OnBoardingRouter.OnboardingParam(
                 resource = R.raw.search,
                 background = R.drawable.gradient_slide_01,
                 title =
@@ -82,7 +82,7 @@ class OnBoardingPresenter(
                     },
                 textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
             ),
-            OnBoardingRouter.Param(
+            OnBoardingRouter.OnboardingParam(
                 resource = R.raw.rating_system,
                 background = R.drawable.gradient_slide_02,
                 title =
@@ -99,7 +99,7 @@ class OnBoardingPresenter(
                     },
                 textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
             ),
-            OnBoardingRouter.Param(
+            OnBoardingRouter.OnboardingParam(
                 resource = R.raw.cartoon_loading,
                 background = R.drawable.gradient_slide_01,
                 title =
@@ -116,7 +116,7 @@ class OnBoardingPresenter(
                     },
                 textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
             ),
-            OnBoardingRouter.Param(
+            OnBoardingRouter.OnboardingParam(
                 resource = R.raw.open_book,
                 background = R.drawable.gradient_slide_02,
                 title =

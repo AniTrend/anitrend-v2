@@ -17,7 +17,7 @@
 
 package co.anitrend.domain.favourite.model
 
-sealed class FavouriteParam {
+sealed class FavouriteInput {
 
     /** [ToggleFavourite mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -28,7 +28,7 @@ sealed class FavouriteParam {
     data class ToggleAnime(
         val animeId: Long? = null,
         val animeIds: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [ToggleFavourite mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -39,7 +39,7 @@ sealed class FavouriteParam {
     data class ToggleManga(
         val mangaId: Long? = null,
         val mangaIds: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [ToggleFavourite mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -50,7 +50,7 @@ sealed class FavouriteParam {
     data class ToggleCharacter(
         val characterId: Long? = null,
         val characterIds: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [ToggleFavourite mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -61,7 +61,7 @@ sealed class FavouriteParam {
     data class ToggleStaff(
         val staffId: Long? = null,
         val staffIds: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [ToggleFavourite mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -72,7 +72,7 @@ sealed class FavouriteParam {
     data class ToggleStudio(
         val studioId: Long? = null,
         val studioIds: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [UpdateFavouriteOrder mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -82,7 +82,7 @@ sealed class FavouriteParam {
      */
     data class UpdateOrderAnime(
         val animeOrder: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [UpdateFavouriteOrder mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -92,7 +92,7 @@ sealed class FavouriteParam {
      */
     data class UpdateOrderManga(
         val mangaOrder: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [UpdateFavouriteOrder mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -102,7 +102,7 @@ sealed class FavouriteParam {
      */
     data class UpdateOrderCharacter(
         val characterOrder: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [UpdateFavouriteOrder mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -112,7 +112,7 @@ sealed class FavouriteParam {
      */
     data class UpdateOrderStaff(
         val staffOrder: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 
     /** [UpdateFavouriteOrder mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -122,5 +122,5 @@ sealed class FavouriteParam {
      */
     data class UpdateOrderStudio(
         val studioOrder: List<Long>? = null
-    ) : FavouriteParam()
+    ) : FavouriteInput()
 }

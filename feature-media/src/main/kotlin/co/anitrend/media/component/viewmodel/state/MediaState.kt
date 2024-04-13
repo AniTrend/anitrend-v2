@@ -29,7 +29,7 @@ class MediaState(
     private val settings: IUserSettings
 ) : AniTrendViewModelState<Media>() {
 
-    operator fun invoke(parameter: MediaRouter.Param) {
+    operator fun invoke(parameter: MediaRouter.MediaParam) {
         val param = MediaParam.Detail(
             id = parameter.id,
             type = parameter.type,

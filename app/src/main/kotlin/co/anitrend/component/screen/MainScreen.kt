@@ -314,7 +314,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                 viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_discover
                 FragmentItem(
                     fragment = MediaDiscoverRouter.forFragment(),
-                    parameter = MediaDiscoverRouter.Param(
+                    parameter = MediaDiscoverRouter.MediaDiscoverParam(
                         sort = listOf(
                             Sorting(
                                 MediaSort.TRENDING,
@@ -364,7 +364,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                 viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_anime_list
                 FragmentItem(
                     fragment = MediaListRouter.forFragment(),
-                    parameter = MediaListRouter.Param(
+                    parameter = MediaListRouter.MediaListParam(
                         userId = presenter.settings.authenticatedUserId.value,
                         type = MediaType.ANIME
                     ).asBundle(),
@@ -375,7 +375,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                 viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_manga_list
                 FragmentItem(
                     fragment = MediaListRouter.forFragment(),
-                    parameter = MediaListRouter.Param(
+                    parameter = MediaListRouter.MediaListParam(
                         userId = presenter.settings.authenticatedUserId.value,
                         type = MediaType.MANGA
                     ).asBundle(),

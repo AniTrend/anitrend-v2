@@ -97,7 +97,7 @@ private fun MediaCover(
         contentScale = ContentScale.Fit,
         modifier = modifier.clickable {
             val coverXL = cover.extraLarge ?: return@clickable
-            val param = ImageViewerRouter.Param(coverXL)
+            val param = ImageViewerRouter.ImageSourceParam(coverXL)
             ImageViewerRouter.startActivity(
                 context = context,
                 navPayload = param.asNavPayload()
@@ -244,7 +244,7 @@ private fun MediaSubTitle(
 fun SummarySection(
     media: Media,
     accentColor: Color,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -288,7 +288,7 @@ fun SummarySection(
                     }
 
                     onMediaDiscoverableItemClick(
-                        MediaDiscoverRouter.Param(
+                        MediaDiscoverRouter.MediaDiscoverParam(
                             type = media.category.type,
                             format = media.format,
                             season = media.season,

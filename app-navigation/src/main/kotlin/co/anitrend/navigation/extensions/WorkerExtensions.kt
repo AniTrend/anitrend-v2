@@ -18,9 +18,9 @@ import com.google.gson.reflect.TypeToken
  *
  * @see IParam
  */
-fun <T : IParam> T.toDataBuilder(): Data.Builder {
+inline fun <reified T : IParam> T.toDataBuilder(): Data.Builder {
     val map = mapOf(
-        idKey to Gson().toJson(this)
+        T::class.java.simpleName to Gson().toJson(this)
     )
     return Data.Builder().putAll(map)
 }
@@ -32,10 +32,10 @@ fun <T : IParam> T.toDataBuilder(): Data.Builder {
  *
  * @see IParam
  */
-inline fun <reified T: IParam> WorkerParameters.fromWorkerParameters(contract: IParam.IKey): T {
+inline fun <reified T: IParam> WorkerParameters.fromWorkerParameters(): T {
     val map = inputData.keyValueMap
     return Gson().fromJson(
-        map[contract.KEY] as String,
+        map[T::class.java.simpleName] as String,
         object : TypeToken<T>(){}.type
     )
 }
@@ -48,7 +48,7 @@ inline fun <reified T: IParam> WorkerParameters.fromWorkerParameters(contract: I
  *
  * @return [WorkContinuation]
  */
-fun <T: IParam> Class<out ListenableWorker>.createOneTimeUniqueWorker(
+inline fun <reified T: IParam> Class<out ListenableWorker>.createOneTimeUniqueWorker(
     context: Context,
     params: T? = null,
 ): WorkContinuation {
@@ -66,4 +66,10 @@ fun <T: IParam> Class<out ListenableWorker>.createOneTimeUniqueWorker(
             ExistingWorkPolicy.KEEP,
             oneTimeRequestBuilder.build()
         )
+}
+
+inline fun <reified R : IParam, P> WorkerParameters.transform(
+    crossinline transformer: (R) -> P,
+): Lazy<P> = lazy(LazyThreadSafetyMode.NONE) {
+    fromWorkerParameters<R>().let(transformer)
 }

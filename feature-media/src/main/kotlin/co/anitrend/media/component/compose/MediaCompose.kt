@@ -80,7 +80,7 @@ private fun TagListItems(
     accentColor: Color,
     modifier: Modifier = Modifier,
     tags: List<Tag> = emptyList(),
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
     LazyRow(
         state = rememberLazyListState(),
@@ -96,7 +96,7 @@ private fun TagListItems(
                 ElevatedSuggestionChip(
                     onClick = {
                         onMediaDiscoverableItemClick(
-                            MediaDiscoverRouter.Param(tag = tag.name),
+                            MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
                         )
                     },
                     colors = SuggestionChipDefaults.suggestionChipColors(
@@ -121,8 +121,8 @@ private fun TagListItems(
 private fun MediaDetailContent(
     media: Media,
     accentColor: Color,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
-    onBannerClick: (ImageViewerRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onBannerClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -182,8 +182,8 @@ fun MediaScreenContent(
     onBookmarkButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
     onFloatingActionButtonClick: (Media) -> Unit,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
-    onBannerClick: (ImageViewerRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onBannerClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val state = mediaState.model.observeAsState()
@@ -211,7 +211,7 @@ fun MediaScreenContent(
                         )
                     }
                     IconButton(onClick = {
-                        val param = FavouriteTaskRouter.Param.ToggleFavouriteState(
+                        val param = FavouriteTaskRouter.Param.MediaToggleParam(
                             id = media.id,
                             mediaType = media.category.type
                         )
