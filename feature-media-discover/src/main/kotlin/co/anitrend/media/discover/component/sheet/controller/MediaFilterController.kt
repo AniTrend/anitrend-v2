@@ -23,7 +23,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.LiveData
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.navigation.MediaDiscoverFilterRouter.Action
-import co.anitrend.navigation.MediaDiscoverRouter.Param
+import co.anitrend.navigation.MediaDiscoverRouter.MediaDiscoverParam
 import com.google.android.material.tabs.TabLayout
 
 internal class MediaFilterController(tabLayout: TabLayout) {
@@ -33,7 +33,7 @@ internal class MediaFilterController(tabLayout: TabLayout) {
     private val genreTab by lazy(UNSAFE) { tabLayout.getTabAt(2) }
     private val tagTab by lazy(UNSAFE) { tabLayout.getTabAt(3) }
 
-    private fun onTagFilters(tag: Action.Tag?, filter: LiveData<Param>) {
+    private fun onTagFilters(tag: Action.Tag?, filter: LiveData<MediaDiscoverParam>) {
         if (tag?.isDefault() == true)
             tagTab?.orCreateBadge
         else tagTab?.removeBadge()
@@ -43,7 +43,7 @@ internal class MediaFilterController(tabLayout: TabLayout) {
         filter.value?.tag_not_in = tag?.tag_not_in
     }
 
-    private fun onGenreFilters(genre: Action.Genre?, filter: LiveData<Param>) {
+    private fun onGenreFilters(genre: Action.Genre?, filter: LiveData<MediaDiscoverParam>) {
         if (genre?.isDefault() == true)
             genreTab?.orCreateBadge
         else genreTab?.removeBadge()
@@ -51,13 +51,13 @@ internal class MediaFilterController(tabLayout: TabLayout) {
         filter.value?.genre_not_in = genre?.genre_not_in
     }
 
-    private fun onGeneralFilter(general: Action.General?, filter: LiveData<Param>) {
+    private fun onGeneralFilter(general: Action.General?, filter: LiveData<MediaDiscoverParam>) {
         if (general?.isDefault() == true)
             generalTab?.orCreateBadge
         else generalTab?.removeBadge()
     }
 
-    private fun onSortFilter(general: Action.Sort?, filter: LiveData<Param>) {
+    private fun onSortFilter(general: Action.Sort?, filter: LiveData<MediaDiscoverParam>) {
         if (general?.isDefault() == true)
             sortTab?.orCreateBadge
         else sortTab?.removeBadge()
@@ -67,23 +67,23 @@ internal class MediaFilterController(tabLayout: TabLayout) {
     /**
      * Listens in for results on [setFragmentResultListener]
      */
-    fun registerResultCallbacks(fragment: Fragment, filter: LiveData<Param>) {
-        fragment.setFragmentResultListener(Action.Sort.KEY) {
+    fun registerResultCallbacks(fragment: Fragment, filter: LiveData<MediaDiscoverParam>) {
+        fragment.setFragmentResultListener(Action.Sort::class.java.simpleName) {
                 key: String, bundle: Bundle ->
             val sort = bundle.getParcelable<Action.Sort>(key)
             onSortFilter(sort, filter)
         }
-        fragment.setFragmentResultListener(Action.General.KEY) {
+        fragment.setFragmentResultListener(Action.General::class.java.simpleName) {
                 key: String, bundle: Bundle ->
             val general = bundle.getParcelable<Action.General>(key)
             onGeneralFilter(general, filter)
         }
-        fragment.setFragmentResultListener(Action.Tag.KEY) {
+        fragment.setFragmentResultListener(Action.Tag::class.java.simpleName) {
                 key: String, bundle: Bundle ->
             val tag = bundle.getParcelable<Action.Tag>(key)
             onTagFilters(tag, filter)
         }
-        fragment.setFragmentResultListener(Action.Genre.KEY) {
+        fragment.setFragmentResultListener(Action.Genre::class.java.simpleName) {
                 key: String, bundle: Bundle ->
             val genre = bundle.getParcelable<Action.Genre>(key)
             onGenreFilters(genre, filter)

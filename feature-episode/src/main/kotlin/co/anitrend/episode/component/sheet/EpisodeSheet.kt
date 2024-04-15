@@ -51,7 +51,7 @@ class EpisodeSheet(
 
     private val viewModel by viewModel<EpisodeSheetViewModel>()
 
-    private val param: EpisodeRouter.Param? by argument(EpisodeRouter.Param.KEY)
+    private val param by argument<EpisodeRouter.EpisodeParam>()
 
     private var disposable: Disposable? = null
 

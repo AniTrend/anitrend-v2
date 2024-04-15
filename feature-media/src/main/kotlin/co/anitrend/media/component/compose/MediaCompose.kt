@@ -80,7 +80,7 @@ private fun TagListItems(
     accentColor: Color,
     modifier: Modifier = Modifier,
     tags: List<Tag> = emptyList(),
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
     LazyRow(
         state = rememberLazyListState(),
@@ -96,7 +96,7 @@ private fun TagListItems(
                 ElevatedSuggestionChip(
                     onClick = {
                         onMediaDiscoverableItemClick(
-                            MediaDiscoverRouter.Param(tag = tag.name),
+                            MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
                         )
                     },
                     colors = SuggestionChipDefaults.suggestionChipColors(
@@ -121,15 +121,15 @@ private fun TagListItems(
 private fun MediaDetailContent(
     media: Media,
     accentColor: Color,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
-    onBannerClick: (ImageViewerRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         AniTrendImage(
             image = media.image,
             imageType = RequestImage.Media.ImageType.BANNER,
-            onClick = onBannerClick,
+            onClick = onImageClick,
             modifier = AniTrendImageDefaults.BANNER_SIZE
         )
         Box(
@@ -154,6 +154,7 @@ private fun MediaDetailContent(
                     media = media,
                     accentColor = accentColor,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    onCoverClick = onImageClick,
                     modifier = Modifier
                         .absoluteOffset(y = (-16).dp)
                 )
@@ -182,8 +183,8 @@ fun MediaScreenContent(
     onBookmarkButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
     onFloatingActionButtonClick: (Media) -> Unit,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.Param) -> Unit,
-    onBannerClick: (ImageViewerRouter.Param) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val state = mediaState.model.observeAsState()
@@ -211,7 +212,7 @@ fun MediaScreenContent(
                         )
                     }
                     IconButton(onClick = {
-                        val param = FavouriteTaskRouter.Param.ToggleFavouriteState(
+                        val param = FavouriteTaskRouter.Param.MediaToggleParam(
                             id = media.id,
                             mediaType = media.category.type
                         )
@@ -239,7 +240,7 @@ fun MediaScreenContent(
             media = media,
             accentColor = accentColor,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
-            onBannerClick = onBannerClick,
+            onImageClick = onImageClick,
             modifier = Modifier.padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         )
@@ -254,7 +255,7 @@ private fun MediaDetailComponentPreview() {
             media = Media.Extended.empty(),
             accentColor = Color.DarkGray,
             onMediaDiscoverableItemClick = {},
-            onBannerClick = {}
+            onImageClick = {}
         )
     }
 }

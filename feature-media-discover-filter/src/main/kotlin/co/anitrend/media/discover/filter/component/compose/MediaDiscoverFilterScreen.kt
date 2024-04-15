@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -138,8 +136,8 @@ private fun FilterYearSection(
 @Composable
 fun MediaDiscoverFilterScreen(
     dateHelper: AbstractSupportDateHelper,
-    param: MediaDiscoverRouter.Param,
-    onParamChange: (MediaDiscoverRouter.Param) -> Unit
+    param: MediaDiscoverRouter.MediaDiscoverParam,
+    onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit
 ) {
     val state by remember { mutableStateOf(param) }
     val titleFormatter: (IAliasable) -> String = { it.alias.toString() }
@@ -256,7 +254,7 @@ fun MediaDiscoverFilterScreenPreview() {
                 override val currentSeason: SeasonType = SeasonType.FALL
                 override fun getCurrentYear(delta: Int) = 2023 + delta
             },
-            param = MediaDiscoverRouter.Param(
+            param = MediaDiscoverRouter.MediaDiscoverParam(
                 status = MediaStatus.FINISHED,
                 type = MediaType.ANIME,
                 season = MediaSeason.SPRING,

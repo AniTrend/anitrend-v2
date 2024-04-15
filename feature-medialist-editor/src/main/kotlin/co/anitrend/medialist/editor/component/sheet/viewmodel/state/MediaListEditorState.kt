@@ -26,8 +26,8 @@ import co.anitrend.navigation.MediaListEditorRouter
 class MediaListEditorState(
     override val interactor: GetDetailMediaInteractor
 ): AniTrendViewModelState<Media>() {
-    
-    operator fun invoke(param: MediaListEditorRouter.Param) {
+
+    operator fun invoke(param: MediaListEditorRouter.MediaListEditorParam) {
         val query = MediaParam.Detail(
             id = param.mediaId,
             type = param.mediaType,

@@ -41,7 +41,6 @@ import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.toCoverImage
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.profile.component.viewmodel.state.ProfileState
@@ -50,7 +49,7 @@ import coil.transform.CircleCropTransformation
 @Composable
 private fun ProfileSections(
     user: User,
-    onImageClick: (ImageViewerRouter.Param) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -99,7 +98,7 @@ private fun ProfileSections(
 @Composable
 private fun ProfileContent(
     user: User,
-    onImageClick: (ImageViewerRouter.Param) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -130,7 +129,7 @@ private fun ProfileContent(
 @Composable
 fun ProfileScreenContent(
     profileState: ProfileState,
-    onImageClick: (ImageViewerRouter.Param) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onFloatingActionButtonClick: (CharSequence?) -> Unit,
     onInboxButtonClick: () -> Unit,
     onNotificationsButtonClick: () -> Unit,

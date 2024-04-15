@@ -26,6 +26,7 @@ import co.anitrend.data.review.DeleteReviewInteractor
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class ReviewDeleteEntryWorker(
@@ -34,16 +35,11 @@ class ReviewDeleteEntryWorker(
     private val interactor: DeleteReviewInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val param by lazy(UNSAFE) {
-        val data: ReviewTaskRouter.Param.DeleteEntry =
-            parameters.fromWorkerParameters(
-                ReviewTaskRouter.Param.DeleteEntry
-            )
+    private val param by parameters.transform<
+        ReviewTaskRouter.Param.DeleteEntry,
+        ReviewParam.Delete
+    > { ReviewParam.Delete(id = it.id) }
 
-        ReviewParam.Delete(
-            id = data.id
-        )
-    }
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].

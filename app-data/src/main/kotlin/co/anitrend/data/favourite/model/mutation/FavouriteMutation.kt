@@ -18,12 +18,12 @@
 package co.anitrend.data.favourite.model.mutation
 
 import co.anitrend.data.common.model.graph.IGraphPayload
-import co.anitrend.domain.favourite.model.FavouriteParam
+import co.anitrend.domain.favourite.model.FavouriteInput
 
 internal sealed class FavouriteMutation {
 
     data class ToggleAnime(
-        val param: FavouriteParam.ToggleAnime
+        val param: FavouriteInput.ToggleAnime
     ) : IGraphPayload {
 
         /**
@@ -36,7 +36,7 @@ internal sealed class FavouriteMutation {
     }
 
     data class ToggleManga(
-        val param: FavouriteParam.ToggleManga
+        val param: FavouriteInput.ToggleManga
     ) : IGraphPayload {
 
         /**
@@ -49,7 +49,7 @@ internal sealed class FavouriteMutation {
     }
 
     data class ToggleCharacter(
-        val param: FavouriteParam.ToggleCharacter
+        val param: FavouriteInput.ToggleCharacter
     ) : IGraphPayload {
 
         /**
@@ -62,7 +62,7 @@ internal sealed class FavouriteMutation {
     }
 
     data class ToggleStaff(
-        val param: FavouriteParam.ToggleStaff
+        val param: FavouriteInput.ToggleStaff
     ) : IGraphPayload {
 
         /**
@@ -75,7 +75,7 @@ internal sealed class FavouriteMutation {
     }
 
     data class ToggleStudio(
-        val param: FavouriteParam.ToggleStudio
+        val param: FavouriteInput.ToggleStudio
     ) : IGraphPayload {
 
         /**
@@ -88,7 +88,7 @@ internal sealed class FavouriteMutation {
     }
 
     internal data class UpdateOrderAnime(
-        val param: FavouriteParam.UpdateOrderAnime
+        val param: FavouriteInput.UpdateOrderAnime
     ) : IGraphPayload {
 
         /**
@@ -100,7 +100,7 @@ internal sealed class FavouriteMutation {
     }
 
     internal data class UpdateOrderManga(
-        val param: FavouriteParam.UpdateOrderManga
+        val param: FavouriteInput.UpdateOrderManga
     ) : IGraphPayload {
 
         /**
@@ -112,7 +112,7 @@ internal sealed class FavouriteMutation {
     }
 
     internal data class UpdateOrderCharacter(
-        val param: FavouriteParam.UpdateOrderCharacter
+        val param: FavouriteInput.UpdateOrderCharacter
     ) : IGraphPayload {
 
         /**
@@ -124,7 +124,7 @@ internal sealed class FavouriteMutation {
     }
 
     internal data class UpdateOrderStaff(
-        val param: FavouriteParam.UpdateOrderStaff
+        val param: FavouriteInput.UpdateOrderStaff
     ) : IGraphPayload {
 
         /**
@@ -136,7 +136,7 @@ internal sealed class FavouriteMutation {
     }
 
     internal data class UpdateOrderStudio(
-        val param: FavouriteParam.UpdateOrderStudio
+        val param: FavouriteInput.UpdateOrderStudio
     ) : IGraphPayload {
 
         /**

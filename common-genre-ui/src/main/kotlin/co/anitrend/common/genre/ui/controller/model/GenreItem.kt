@@ -74,7 +74,7 @@ internal class GenreItem(
             if (!isSelectable) {
                 MediaDiscoverRouter.startActivity(
                     context = it.context,
-                    navPayload = MediaDiscoverRouter.Param(
+                    navPayload = MediaDiscoverRouter.MediaDiscoverParam(
                         genre = entity.name
                     ).asNavPayload()
                 )

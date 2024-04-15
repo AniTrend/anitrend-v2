@@ -11,8 +11,8 @@ import co.anitrend.navigation.model.common.IParam
  *
  * @return [Bundle]
  */
-fun IParam.asBundle() =
-    bundleOf(idKey to this)
+inline fun <reified T : IParam> T.asBundle() =
+    bundleOf(T::class.java.simpleName to this)
 
 
 /**
@@ -20,4 +20,5 @@ fun IParam.asBundle() =
  *
  * @return [NavPayload]
  */
-fun IParam.asNavPayload() = NavPayload(idKey, this)
+inline fun <reified T : IParam> T.asNavPayload() =
+    NavPayload(T::class.java.simpleName, this)

@@ -20,7 +20,6 @@ package co.anitrend.media.component.screen
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.core.app.ShareCompat
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.shared.ui.extension.shareContent
@@ -28,7 +27,6 @@ import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.runIfAuthenticated
-import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.extensions.startViewIntent
 import co.anitrend.core.ui.inject
 import co.anitrend.data.user.settings.IUserSettings
@@ -47,7 +45,7 @@ class MediaScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<MediaViewModel>()
 
-    private val mediaRouterParam: MediaRouter.Param? by extra(MediaRouter.Param.KEY)
+    private val mediaRouterParam by extra<MediaRouter.MediaParam>()
 
     private val settings by inject<IUserSettings>()
 
@@ -91,7 +89,7 @@ class MediaScreen : AniTrendScreen() {
                                 navPayload = param.asNavPayload()
                             )
                         },
-                        onBannerClick = { param ->
+                        onImageClick = { param ->
                             ImageViewerRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload()

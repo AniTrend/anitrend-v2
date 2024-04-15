@@ -84,7 +84,7 @@ internal class TagItem(
             if (!isSelectable) {
                 MediaDiscoverRouter.startActivity(
                     context = it.context,
-                    navPayload = MediaDiscoverRouter.Param(
+                    navPayload = MediaDiscoverRouter.MediaDiscoverParam(
                         tag = entity.name
                     ).asNavPayload()
                 )

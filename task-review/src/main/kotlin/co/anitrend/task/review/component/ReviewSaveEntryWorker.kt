@@ -26,6 +26,7 @@ import co.anitrend.data.review.SaveReviewInteractor
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class ReviewSaveEntryWorker(
@@ -34,19 +35,17 @@ class ReviewSaveEntryWorker(
     private val interactor: SaveReviewInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val param by lazy(UNSAFE) {
-        val data: ReviewTaskRouter.Param.SaveEntry =
-            parameters.fromWorkerParameters(
-                ReviewTaskRouter.Param.SaveEntry
-            )
-
+    private val param by parameters.transform<
+        ReviewTaskRouter.Param.SaveEntry,
+        ReviewParam.Save
+    > {
         ReviewParam.Save(
-            id = data.id,
-            mediaId = data.mediaId,
-            body = data.body,
-            summary = data.summary,
-            score = data.score,
-            private = data.private,
+            id = it.id,
+            mediaId = it.mediaId,
+            body = it.body,
+            summary = it.summary,
+            score = it.score,
+            private = it.private,
         )
     }
 

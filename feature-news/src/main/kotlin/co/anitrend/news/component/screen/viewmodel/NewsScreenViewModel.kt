@@ -28,7 +28,7 @@ class NewsScreenViewModel : ViewModel() {
 
     val model = MutableLiveData<String>()
 
-    private fun buildHtml(param: NewsRouter.Param) {
+    private fun buildHtml(param: NewsRouter.NewsParam) {
         val template = """
                 <p><h3>${param.title}</h3></p>
                 <h5>${param.subTitle}</h5>
@@ -38,7 +38,7 @@ class NewsScreenViewModel : ViewModel() {
         model.postValue(document.html())
     }
 
-    operator fun invoke(param: NewsRouter.Param) {
+    operator fun invoke(param: NewsRouter.NewsParam) {
         viewModelScope.launch {
             buildHtml(param)
         }

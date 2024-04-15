@@ -29,7 +29,7 @@ class AuthViewModel(
     val state: AuthState
 ) : AniTrendViewModel(state) {
 
-    fun onIntentData(context: Context, param: AuthRouter.Param?) {
+    fun onIntentData(context: Context, param: AuthRouter.AuthParam?) {
         if (param == null) {
             Timber.d("AuthRouter.Param is null, no new intent data available. Skipping checks")
             return

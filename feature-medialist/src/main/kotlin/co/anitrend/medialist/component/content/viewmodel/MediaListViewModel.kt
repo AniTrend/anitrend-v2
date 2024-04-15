@@ -29,7 +29,7 @@ class MediaListViewModel(
     savedStateHandle: SavedStateHandle
 ) : AniTrendViewModel(state) {
 
-    val param: MediaListRouter.Param? by savedStateHandle.extra(MediaListRouter.Param.KEY)
+    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>()
 
     val filter = MutableLiveData(param)
 }

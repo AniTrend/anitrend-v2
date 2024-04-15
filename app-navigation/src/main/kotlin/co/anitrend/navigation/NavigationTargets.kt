@@ -46,7 +46,6 @@ import co.anitrend.navigation.model.sorting.Sorting
 import co.anitrend.navigation.provider.INavigationProvider
 import co.anitrend.navigation.router.NavigationRouter
 import co.anitrend.navigation.work.WorkSchedulerController
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import org.koin.core.component.inject
@@ -80,16 +79,9 @@ object NavigationDrawerRouter : NavigationRouter() {
     }
 
     @Parcelize
-    data class Param(
+    data class NavigationDrawerParam(
         val destination: Destination
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY: String = "NavigationDrawerRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object SplashRouter : NavigationRouter() {
@@ -108,21 +100,14 @@ object OnBoardingRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class OnboardingParam(
         @RawRes val resource: Int,
         @DrawableRes val background: Int,
         val title: @RawValue SpannedString,
         val subTitle: @RawValue SpannedString,
         val description: @RawValue SpannedString,
         @ColorRes val textColor: Int
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY: String = "OnBoardingRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object SearchRouter : NavigationRouter() {
@@ -131,21 +116,14 @@ object SearchRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class SearchParam(
         val query: String? = null,
         val genres: List<String>? = null,
         val year: Int? = null,
         val season: MediaSeason? = null,
         val format: MediaFormat? = null,
         val status: MediaStatus? = null,
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY: String = "SearchRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object SettingsRouter : NavigationRouter() {
@@ -192,7 +170,7 @@ object AiringRouter : NavigationRouter() {
      * @param sort The order the results will be returned in
      */
     @Parcelize
-    data class Param(
+    data class AiringParam(
         var id: Long? = null,
         var mediaId: Long? = null,
         var episode: Int? = null,
@@ -212,19 +190,7 @@ object AiringRouter : NavigationRouter() {
         var airingAt_greater: Int? = null,
         var airingAt_lesser: Int? = null,
         var sort: List<Sorting<AiringSort>>? = null
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        infix fun builder(param: Param.() -> Unit): Param {
-            this.param()
-            return this
-        }
-
-        companion object : IParam.IKey {
-            override val KEY: String = "AiringRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object AuthRouter : NavigationRouter() {
@@ -237,20 +203,13 @@ object AuthRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class AuthParam(
         val accessToken: String? = null,
         val tokenType: String? = null,
         val expiresIn: Long? = null,
         val errorTitle: String? = null,
         val errorDescription: String? = null
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "AuthRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object MediaRouter : NavigationRouter() {
@@ -259,17 +218,10 @@ object MediaRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class MediaParam(
         val id: Long,
         val type: MediaType,
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "MediaRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object MediaDiscoverRouter : NavigationRouter() {
@@ -284,7 +236,7 @@ object MediaDiscoverRouter : NavigationRouter() {
     fun forSheet() = provider.sheet()
 
     @Parcelize
-    data class Param(
+    data class MediaDiscoverParam(
         var averageScore: Int? = null,
         var averageScore_greater: Int? = null,
         var averageScore_lesser: Int? = null,
@@ -351,19 +303,7 @@ object MediaDiscoverRouter : NavigationRouter() {
         var volumes: Int? = null,
         var volumes_greater: Int? = null,
         var volumes_lesser: Int? = null
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "MediaDiscoverRouter#Param"
-        }
-
-        infix fun builder(param: Param.() -> Unit): Param {
-            this.param()
-            return this
-        }
-    }
+    ) : IParam
 }
 
 object MediaDiscoverFilterRouter : NavigationRouter() {
@@ -399,38 +339,22 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
         data class Sort(
             var sort: List<Sorting<MediaSort>>
         ) : Action() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
             /**
              * @return true if this current action impl has not been changed
              */
             override fun isDefault() =
-                sort.isNullOrEmpty()
-
-            companion object : IParam.IKey {
-                override val KEY = "Sort"
-            }
+                sort.isEmpty()
         }
 
         @Parcelize
         data class General(
             var id: Long?
         ) : Action() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
             /**
              * @return true if this current action impl has not been changed
              */
             override fun isDefault() =
                 id == null
-
-            companion object : IParam.IKey {
-                override val KEY = "General"
-            }
         }
 
         @Parcelize
@@ -438,19 +362,11 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             var genre_in: List<String>? = null,
             var genre_not_in: List<String>? = null,
         ) : Action() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
             /**
              * @return true if this current action impl has not been changed
              */
             override fun isDefault() =
                 genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
-
-            companion object : IParam.IKey {
-                override val KEY = "Genre"
-            }
         }
 
         @Parcelize
@@ -460,10 +376,6 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             var tag_in: List<String>? = null,
             var tag_not_in: List<String>? = null
         ) : Action() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
             /**
              * @return true if this current action impl has not been changed
              */
@@ -472,10 +384,6 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
                         tagCategory_not_in.isNullOrEmpty() &&
                         tag_in.isNullOrEmpty() &&
                         tag_not_in.isNullOrEmpty()
-
-            companion object : IParam.IKey {
-                override val KEY = "Tag"
-            }
         }
     }
 }
@@ -496,17 +404,10 @@ object CharacterRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class CharacterParam(
         val id: Long?,
         val name: String?
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "CharacterRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object CharacterDiscoverRouter : NavigationRouter() {
@@ -515,16 +416,9 @@ object CharacterDiscoverRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class CharacterDiscoverParam(
         val id: Long
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "CharacterDiscoverRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object StudioRouter : NavigationRouter() {
@@ -533,16 +427,9 @@ object StudioRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class StudioParam(
         val id: Long,
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "StudioRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object StaffRouter : NavigationRouter() {
@@ -551,17 +438,10 @@ object StaffRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class StaffParam(
         val id: Long?,
         val name: String?
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "StaffRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object StaffDiscoverRouter : NavigationRouter() {
@@ -570,17 +450,10 @@ object StaffDiscoverRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
+    data class StaffDiscoverParam(
         val id: Long?,
         val name: String?
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "StaffDiscoverRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object ProfileRouter : NavigationRouter() {
@@ -593,17 +466,10 @@ object ProfileRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class ProfileParam(
         val userId: Long? = null,
         val userName: String? = null
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "ProfileRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object ForumRouter : NavigationRouter() {
@@ -646,20 +512,13 @@ object ReviewDiscoverRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class ReviewDiscoverParam(
         val mediaId: Long? = null,
         val userId: Long? = null,
         val mediaType: MediaType? = null,
         val sort: List<Sorting<ReviewSort>>? = null,
         val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "ReviewDiscoverRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object RecommendationDiscoverRouter : NavigationRouter() {
@@ -672,7 +531,7 @@ object RecommendationDiscoverRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class RecommendationDiscoverParam(
         val id: Int? = null,
         val mediaId: Int? = null,
         val mediaRecommendationId: Int? = null,
@@ -682,14 +541,7 @@ object RecommendationDiscoverRouter : NavigationRouter() {
         val ratingLessThan: Int? = null,
         val sort: List<Sorting<RecommendationSort>>? = null,
         val userId: Int? = null
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "RecommendationDiscoverRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object NotificationRouter : NavigationRouter() {
@@ -712,20 +564,13 @@ object NewsRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class NewsParam(
         val link: String,
         val title: String,
         val subTitle: String,
         val description: String?,
         val content: String
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "NewsRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object EpisodeRouter : NavigationRouter() {
@@ -740,16 +585,9 @@ object EpisodeRouter : NavigationRouter() {
     fun forSheet() = provider.sheet()
 
     @Parcelize
-    data class Param(
+    data class EpisodeParam(
         val id: Long
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "EpisodeRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object SuggestionRouter : NavigationRouter() {
@@ -782,7 +620,7 @@ object MediaListRouter : NavigationRouter() {
     fun forFragment() = provider.fragment()
 
     @Parcelize
-    data class Param(
+    data class MediaListParam(
         val customListName: String? = null,
         val mediaId_in: List<Int>? = null,
         val mediaId_not_in: List<Int>? = null,
@@ -808,14 +646,7 @@ object MediaListRouter : NavigationRouter() {
         val status_in: List<MediaListStatus>? = null,
         val status_not: MediaListStatus? = null,
         val status_not_in: List<MediaListStatus>? = null,
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "MediaListRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object MediaListEditorRouter : NavigationRouter() {
@@ -828,19 +659,11 @@ object MediaListEditorRouter : NavigationRouter() {
     fun forSheet() = provider.sheet()
 
     @Parcelize
-    data class Param(
+    data class MediaListEditorParam(
         val mediaId: Long,
         val mediaType: MediaType,
         val scoreFormat: ScoreFormat,
-    ) : IParam {
-
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "MediaListEditorRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object ImageViewerRouter : NavigationRouter() {
@@ -849,16 +672,9 @@ object ImageViewerRouter : NavigationRouter() {
     interface Provider : INavigationProvider
 
     @Parcelize
-    data class Param(
-        val imageSrc: String
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "ImageViewerRouter#Param"
-        }
-    }
+    data class ImageSourceParam(
+        val imageSrc: CharSequence
+    ) : IParam
 }
 
 object GenreTaskRouter : NavigationRouter() {
@@ -897,16 +713,9 @@ object AccountTaskRouter : NavigationRouter() {
     fun forSignInWorker() = provider.signInWorker()
 
     @Parcelize
-    data class Param(
+    data class AccountParam(
         val id: Long
-    ) : IParam {
-        @IgnoredOnParcel
-        override val idKey = KEY
-
-        companion object : IParam.IKey {
-            override val KEY = "AccountTaskRouter#Param"
-        }
-    }
+    ) : IParam
 }
 
 object UserTaskRouter : NavigationRouter() {
@@ -976,14 +785,7 @@ object MediaListTaskRouter : NavigationRouter() {
             var advancedScores: List<Float>? = null,
             var startedAt: @RawValue FuzzyDate? = null,
             var completedAt: @RawValue FuzzyDate? = null,
-        ) : Param() {
-            @IgnoredOnParcel
-            override val idKey = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "MediaListTaskRouter#SaveEntry"
-            }
-        }
+        ) : Param()
 
         @Parcelize
         data class SaveEntries(
@@ -1002,41 +804,18 @@ object MediaListTaskRouter : NavigationRouter() {
             val advancedScores: List<Float>? = null,
             val startedAt: @RawValue FuzzyDate? = null,
             val completedAt: @RawValue FuzzyDate? = null,
-        ) : Param() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "MediaListTaskRouter#SaveEntries"
-            }
-        }
+        ) : Param()
 
         @Parcelize
         data class DeleteEntry(
             val id: Long
-        ) : Param() {
-            @IgnoredOnParcel
-            override val idKey = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "MediaListTaskRouter#DeleteEntry"
-            }
-        }
+        ) : Param()
 
         @Parcelize
         data class DeleteCustomList(
             val customList: String,
             val type: MediaType
-        ) : Param() {
-
-            @IgnoredOnParcel
-            override val idKey = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "MediaListTaskRouter#DeleteCustomList"
-            }
-        }
+        ) : Param()
     }
 }
 
@@ -1087,39 +866,18 @@ object ReviewTaskRouter : NavigationRouter() {
             val summary: String,
             val score: Int,
             val private: Boolean
-        ) : Param() {
-            @IgnoredOnParcel
-            override val idKey = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "ReviewTaskRouter#SaveEntry"
-            }
-        }
+        ) : Param()
 
         @Parcelize
         data class RateEntry(
             val id: Long,
             val rating: ReviewRating
-        ) : Param() {
-            @IgnoredOnParcel
-            override val idKey: String = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "ReviewTaskRouter#RateEntry"
-            }
-        }
+        ) : Param()
 
         @Parcelize
         data class DeleteEntry(
             val id: Long
-        ) : Param() {
-            @IgnoredOnParcel
-            override val idKey: String = KEY
-
-            companion object : IParam.IKey {
-                override val KEY = "ReviewTaskRouter#DeleteEntry"
-            }
-        }
+        ) : Param()
     }
 }
 
@@ -1146,16 +904,15 @@ object FavouriteTaskRouter : NavigationRouter() {
 
     sealed class Param : IParam {
         @Parcelize
-        data class ToggleFavouriteState(
+        data class MediaToggleParam(
             val id: Long,
             val mediaType: MediaType,
-        ) : Param() {
-            @IgnoredOnParcel
-            override val idKey: String = KEY
+        ) : Param()
 
-            companion object : IParam.IKey {
-                override val KEY = "FavouriteTaskRouter#Param"
-            }
-        }
+        @Parcelize
+        data class CharacterToggleParam(val id: Long) : Param()
+
+        @Parcelize
+        data class StaffToggleParam(val id: Long) : Param()
     }
 }

@@ -29,7 +29,7 @@ class AiringViewModel(
     stateHandle: SavedStateHandle
 ) : AniTrendViewModel(state) {
 
-    val param: AiringRouter.Param? by stateHandle.extra(AiringRouter.Param.KEY)
+    val param by stateHandle.extra<AiringRouter.AiringParam>()
 
-    val filter = MutableLiveData<AiringRouter.Param>(param)
+    val filter = MutableLiveData<AiringRouter.AiringParam>(param)
 }

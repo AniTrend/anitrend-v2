@@ -34,7 +34,7 @@ import co.anitrend.navigation.extensions.startActivity
 internal fun View.startMediaScreenFor(entity: Media) {
     MediaRouter.startActivity(
         context = context,
-        navPayload = MediaRouter.Param(
+        navPayload = MediaRouter.MediaParam(
             id = entity.id,
             type = entity.category.type
         ).asNavPayload()
@@ -49,7 +49,7 @@ fun View.openMediaListSheetFor(
         runIfAuthenticated(settings) {
             val fragmentItem = FragmentItem(
                 fragment = MediaListEditorRouter.forSheet(),
-                parameter = MediaListEditorRouter.Param(
+                parameter = MediaListEditorRouter.MediaListEditorParam(
                     mediaId = entity.id,
                     mediaType = entity.category.type,
                     scoreFormat = settings.scoreFormat.value

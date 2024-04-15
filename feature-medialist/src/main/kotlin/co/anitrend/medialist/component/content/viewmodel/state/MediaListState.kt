@@ -30,7 +30,7 @@ class MediaListState(
     private val settings: IUserSettings
 ) : AniTrendViewModelState<PagedList<Media>>() {
 
-    operator fun invoke(param: MediaListRouter.Param) {
+    operator fun invoke(param: MediaListRouter.MediaListParam) {
         val query = MediaListParam.Paged(
             customListName = param.customListName,
             mediaId_in = param.mediaId_in,

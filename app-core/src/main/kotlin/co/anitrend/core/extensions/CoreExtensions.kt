@@ -120,7 +120,7 @@ fun View.handleViewIntent(url: String) {
         ViewCompat.setTransitionName(this, url)
         ImageViewerRouter.startActivity(
             context = context,
-            navPayload = ImageViewerRouter.Param(url).asNavPayload()
+            navPayload = ImageViewerRouter.ImageSourceParam(url).asNavPayload()
         )
     } else {
         runCatching {

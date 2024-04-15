@@ -20,15 +20,6 @@ package co.anitrend.navigation.model.common
 import android.os.Parcelable
 
 /**
- * Parameter contract
- *
- * @property idKey Identifier for this param
+ * Router parameter contract
  */
-interface IParam : Parcelable {
-    val idKey: String
-
-    interface IKey {
-        @Suppress("PropertyName")
-        val KEY: String
-    }
-}
+interface IParam : Parcelable

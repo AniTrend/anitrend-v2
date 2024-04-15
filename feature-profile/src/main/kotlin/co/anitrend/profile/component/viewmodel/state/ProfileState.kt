@@ -27,7 +27,7 @@ class ProfileState(
     override val interactor: GetProfileInteractor
 ) : AniTrendViewModelState<User>() {
 
-    operator fun invoke(parameter: ProfileRouter.Param) {
+    operator fun invoke(parameter: ProfileRouter.ProfileParam) {
         val param = UserParam.Profile(
             id = parameter.userId,
             name = parameter.userName

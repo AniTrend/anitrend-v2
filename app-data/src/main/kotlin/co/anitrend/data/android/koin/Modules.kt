@@ -93,7 +93,7 @@ import java.util.concurrent.TimeUnit
 private val coreModule = module {
     singleOf(::AniListApiFactory)
     singleOf(AniTrendStore::create) {
-        binds(IAniTrendStore.BINDINGS)
+        binds(IAniTrendStore.BINDINGS.toList())
     }
     single<IDeviceInfo>(createdAtStart = true) {
         DeviceInfo(

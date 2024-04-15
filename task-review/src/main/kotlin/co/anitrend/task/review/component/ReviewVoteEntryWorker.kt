@@ -26,6 +26,7 @@ import co.anitrend.data.review.RateReviewInteractor
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class ReviewVoteEntryWorker(
@@ -34,15 +35,13 @@ class ReviewVoteEntryWorker(
     private val interactor: RateReviewInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val param by lazy(UNSAFE) {
-        val data: ReviewTaskRouter.Param.RateEntry =
-            parameters.fromWorkerParameters(
-                ReviewTaskRouter.Param.RateEntry
-            )
-
+    private val param by parameters.transform<
+        ReviewTaskRouter.Param.RateEntry,
+        ReviewParam.Rate
+    > {
         ReviewParam.Rate(
-            id = data.id,
-            rating = data.rating
+            id = it.id,
+            rating = it.rating
         )
     }
     /**

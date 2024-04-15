@@ -26,7 +26,7 @@ import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.navigation.extensions.asBundle
 
 class OnBoardingPageAdapter(
-    private val pages: List<OnBoardingRouter.Param>,
+    private val pages: List<OnBoardingRouter.OnboardingParam>,
     private val fragmentActivity: FragmentActivity,
     fragmentManager: FragmentManager,
 ) : SupportPageAdapter(fragmentManager) {

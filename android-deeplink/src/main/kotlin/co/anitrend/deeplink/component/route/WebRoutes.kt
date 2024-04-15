@@ -50,7 +50,7 @@ internal object MainRoute : Route("home") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.HOME,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -68,7 +68,7 @@ internal object ForumDiscoverRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.Param(
+            NavigationDrawerRouter.NavigationDrawerParam(
                 destination = NavigationDrawerRouter.Destination.FORUMS,
             ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
@@ -88,7 +88,7 @@ internal object ActivityRoute : Route(
         val id = params["id"]
         return if (id == null) {
             val payload =
-                NavigationDrawerRouter.Param(
+                NavigationDrawerRouter.NavigationDrawerParam(
                     destination = NavigationDrawerRouter.Destination.SOCIAL,
                 ).asNavPayload()
             MainRouter.forActivity(env.context, payload)
@@ -145,7 +145,7 @@ internal object CharacterRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            CharacterRouter.Param(
+            CharacterRouter.CharacterParam(
                 id = params["id"]?.toLong(),
                 name = params["name"],
             ).asNavPayload()
@@ -164,7 +164,7 @@ internal object StudioRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            StudioRouter.Param(
+            StudioRouter.StudioParam(
                 id = requireNotNull(params["id"]?.toLong()),
             ).asNavPayload()
         return StudioRouter.forActivity(env.context, payload)
@@ -184,7 +184,7 @@ internal object StaffRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            StaffRouter.Param(
+            StaffRouter.StaffParam(
                 id = params["id"]?.toLong(),
                 name = params["name"],
             ).asNavPayload()
@@ -209,7 +209,7 @@ internal object MediaRoute : Route(
                 .uppercase()
 
         val payload =
-            MediaRouter.Param(
+            MediaRouter.MediaParam(
                 id = requireNotNull(params["id"]).toLong(),
                 type = MediaType.valueOf(mediaType),
             ).asNavPayload()
@@ -228,7 +228,7 @@ internal object SearchRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            SearchRouter.Param(
+            SearchRouter.SearchParam(
                 query = uri.queryParameter("search"),
                 genres = uri.queryParameter("genres")?.split(","),
                 year = uri.queryParameter("year")?.toInt(),
@@ -259,12 +259,12 @@ internal object MediaListRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    MediaListRouter.Param(
+                    MediaListRouter.MediaListParam(
                         userId = identifier.toLong(),
                         type = mediaType,
                     ).asNavPayload()
                 else ->
-                    MediaListRouter.Param(
+                    MediaListRouter.MediaListParam(
                         userName = identifier,
                         type = mediaType,
                     ).asNavPayload()
@@ -286,11 +286,11 @@ internal object UserRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userId = identifier.toLong(),
                     ).asNavPayload()
                 else ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userName = identifier,
                     ).asNavPayload()
             }
@@ -312,11 +312,11 @@ internal object UserStatsRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userId = identifier.toLong(),
                     ).asNavPayload()
                 else ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userName = identifier,
                     ).asNavPayload()
             }
@@ -337,11 +337,11 @@ internal object UserFavouritesRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userId = identifier.toLong(),
                     ).asNavPayload()
                 else ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userName = identifier,
                     ).asNavPayload()
             }
@@ -362,11 +362,11 @@ internal object UserReviewRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userId = identifier.toLong(),
                     ).asNavPayload()
                 else ->
-                    ProfileRouter.Param(
+                    ProfileRouter.ProfileParam(
                         userName = identifier,
                     ).asNavPayload()
             }

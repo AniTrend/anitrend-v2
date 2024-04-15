@@ -71,7 +71,7 @@ class AuthenticatedAccountItem(
         if (entity.isActiveUser) {
             requireBinding().accountSignOut.visible()
             requireBinding().accountSignOut.setOnClickListener {
-                val params = AccountTaskRouter.Param(id = entity.id)
+                val params = AccountTaskRouter.AccountParam(id = entity.id)
                 AccountTaskRouter.forSignOutWorker()
                     .createOneTimeUniqueWorker(it.context, params)
                     .enqueue()
@@ -84,13 +84,13 @@ class AuthenticatedAccountItem(
             if (entity.isActiveUser) {
                 ProfileRouter.startActivity(
                     context = it.context,
-                    navPayload = ProfileRouter.Param(
+                    navPayload = ProfileRouter.ProfileParam(
                         userId = entity.id
                     ).asNavPayload()
                 )
             }
             else {
-                val params = AccountTaskRouter.Param(id = entity.id)
+                val params = AccountTaskRouter.AccountParam(id = entity.id)
                 AccountTaskRouter.forSignInWorker()
                     .createOneTimeUniqueWorker(it.context, params)
                     .enqueue()

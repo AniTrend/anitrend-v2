@@ -27,7 +27,7 @@ class UserState(
     override val interactor: GetProfileInteractor
 ) : AniTrendViewModelState<User>() {
 
-    operator fun invoke(param: MediaListRouter.Param) {
+    operator fun invoke(param: MediaListRouter.MediaListParam) {
         val query = UserParam.Profile(
             id = param.userId,
             name = param.userName
