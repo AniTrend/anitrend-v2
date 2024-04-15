@@ -50,7 +50,7 @@ internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
     companion object {
 
         /** Binding types for [IAniTrendStore] */
-        val BINDINGS = listOf(
+        val BINDINGS = arrayOf(
             IMediaStore::class, ITagStore::class, IGenreStore::class,
             IRelationStore::class, IAuthStore::class, IAiringStore::class,
             ICarouselStore::class, ICacheStore::class, IUserStore::class,

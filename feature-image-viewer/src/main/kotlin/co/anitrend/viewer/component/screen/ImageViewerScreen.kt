@@ -43,7 +43,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
 
-    private val param: ImageViewerRouter.ImageSourceParam? by extra(ImageViewerRouter.ImageSourceParam.KEY)
+    private val param by extra<ImageViewerRouter.ImageSourceParam>()
 
     private val viewModel by viewModel<ImageViewerViewModel>()
 

@@ -62,7 +62,7 @@ fun AniTrendImage(
             } ?: return@clickable
 
             onClick(
-                ImageViewerRouter.ImageSourceParam(source as String)
+                ImageViewerRouter.ImageSourceParam(source)
             )
         },
     )

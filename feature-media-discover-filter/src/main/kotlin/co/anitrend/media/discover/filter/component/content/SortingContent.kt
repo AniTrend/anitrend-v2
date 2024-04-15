@@ -33,10 +33,7 @@ internal class SortingContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_sorting
 ) : AniTrendContent<MediaDiscoverFilterSortingBinding>() {
 
-    private val param by argument(
-        MediaDiscoverRouter.MediaDiscoverParam.KEY,
-        MediaDiscoverRouter.MediaDiscoverParam()
-    )
+    private val param by argument(MediaDiscoverRouter.MediaDiscoverParam())
 
 
     private fun initializeViewsWithOptions() {

@@ -35,7 +35,7 @@ import co.anitrend.search.component.presenter.SearchPresenter
 class SearchScreen : AniTrendScreen() {
 
     private val presenter by inject<SearchPresenter>()
-    private val param by extra<SearchRouter.SearchParam>(SearchRouter.SearchParam.KEY)
+    private val param by extra<SearchRouter.SearchParam>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

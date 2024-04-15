@@ -42,10 +42,7 @@ internal class GeneralContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_general
 ) : AniTrendContent<MediaDiscoverFilterGeneralBinding>() {
 
-    private val param by argument(
-        MediaDiscoverRouter.MediaDiscoverParam.KEY,
-        MediaDiscoverRouter.MediaDiscoverParam()
-    )
+    private val param by argument(MediaDiscoverRouter.MediaDiscoverParam())
 
     private fun bindModelToViews() {
         requireBinding().excludeAdultContent.isChecked = param.isAdult == true

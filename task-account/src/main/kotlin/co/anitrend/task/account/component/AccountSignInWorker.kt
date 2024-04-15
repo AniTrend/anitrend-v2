@@ -32,6 +32,7 @@ import co.anitrend.data.account.AccountInteractor
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.navigation.AccountTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import timber.log.Timber
 
 class AccountSignInWorker(
@@ -40,16 +41,10 @@ class AccountSignInWorker(
     private val interactor: AccountInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val param by lazy(UNSAFE) {
-        val data: AccountTaskRouter.AccountParam =
-            parameters.fromWorkerParameters(
-                AccountTaskRouter.AccountParam
-            )
-
-        AccountParam.Activate(
-            userId = data.id
-        )
-    }
+    private val param by parameters.transform<
+        AccountTaskRouter.AccountParam,
+        AccountParam.Activate
+    > { AccountParam.Activate(userId = it.id) }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
     private fun createShortcuts() {

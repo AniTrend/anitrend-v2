@@ -47,8 +47,7 @@ private val store = module {
         Room.inMemoryDatabaseBuilder(
             androidContext(),
             AniTrendStore::class.java,
-        ).allowMainThreadQueries()
-            .build()
+        ).build()
     } binds IAniTrendStore.BINDINGS
 }
 

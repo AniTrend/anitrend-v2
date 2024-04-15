@@ -26,6 +26,7 @@ import co.anitrend.data.medialist.DeleteCustomMediaListInteractor
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class MediaListDeleteCustomListWorker(
@@ -34,15 +35,13 @@ class MediaListDeleteCustomListWorker(
     private val interactor: DeleteCustomMediaListInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val param by lazy(UNSAFE) {
-        val data: MediaListTaskRouter.Param.DeleteCustomList =
-            parameters.fromWorkerParameters(
-                MediaListTaskRouter.Param.DeleteCustomList
-            )
-
+    private val param by parameters.transform<
+        MediaListTaskRouter.Param.DeleteCustomList,
+        MediaListParam.DeleteCustomList
+    > {
         MediaListParam.DeleteCustomList(
-            customList = data.customList,
-            type = data.type
+            customList = it.customList,
+            type = it.type,
         )
     }
 

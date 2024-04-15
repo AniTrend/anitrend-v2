@@ -36,12 +36,12 @@ class UserViewModel(
     init {
         viewModelScope.launch {
             savedStateHandle.getLiveData<MediaListRouter.MediaListParam>(
-                MediaListRouter.MediaListParam.KEY
+                key = "MediaListRouter.MediaListParam"
             ).asFlow().collect(state::invoke)
         }
     }
 
-    val param: MediaListRouter.MediaListParam? by savedStateHandle.extra(MediaListRouter.MediaListParam.KEY)
+    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>()
 
     val tabConfigurationListInfo = state.model.map {
         val user = it as User.Extended

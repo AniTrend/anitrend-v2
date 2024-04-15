@@ -26,8 +26,8 @@ class ImageViewerViewModel(
     private val downloadManager: DownloadManager?
 ) : ViewModel() {
 
-    fun downloadImage(imageSource: String?) {
-        val imageUri = Uri.parse(imageSource)
+    fun downloadImage(imageSource: CharSequence?) {
+        val imageUri = Uri.parse(imageSource as? String)
         val request = DownloadManager.Request(imageUri)
         request.setDestinationInExternalPublicDir(
             Environment.DIRECTORY_DOWNLOADS,

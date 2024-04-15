@@ -673,7 +673,7 @@ object ImageViewerRouter : NavigationRouter() {
 
     @Parcelize
     data class ImageSourceParam(
-        val imageSrc: String
+        val imageSrc: CharSequence
     ) : IParam
 }
 

@@ -26,6 +26,7 @@ import co.anitrend.data.medialist.DeleteMediaListEntryInteractor
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class MediaListDeleteEntryWorker(
@@ -34,15 +35,10 @@ class MediaListDeleteEntryWorker(
     private val interactor: DeleteMediaListEntryInteractor
 ) : SupportCoroutineWorker(context, parameters) {
 
-    private val param by lazy(UNSAFE) {
-        val data: MediaListTaskRouter.Param.DeleteEntry =
-            parameters.fromWorkerParameters(
-                MediaListTaskRouter.Param.DeleteEntry
-            )
-        MediaListParam.DeleteEntry(
-            id = data.id
-        )
-    }
+    private val param by parameters.transform<
+        MediaListTaskRouter.Param.DeleteEntry,
+        MediaListParam.DeleteEntry
+    > { MediaListParam.DeleteEntry(id = it.id) }
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified

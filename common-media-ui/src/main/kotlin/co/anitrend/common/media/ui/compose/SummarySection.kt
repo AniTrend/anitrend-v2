@@ -17,8 +17,6 @@
 
 package co.anitrend.common.media.ui.compose
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,11 +34,8 @@ import androidx.compose.material.ChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,12 +47,11 @@ import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
 import co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
 import co.anitrend.core.android.compose.AniTrendTheme
+import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.compose.series_aspect_ration
 import co.anitrend.core.android.compose.series_image_lg
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.roundedCornersTransformation
-import co.anitrend.core.android.helpers.image.toMediaRequestImage
-import co.anitrend.core.android.helpers.image.toRequestBuilder
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.sort.order.SortOrder
@@ -69,40 +63,21 @@ import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.sorting.Sorting
-import coil.compose.rememberImagePainter
 
 
 @Composable
 private fun MediaCover(
     cover: IMediaCover,
+    onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-
-    val requestImage = remember(cover) {
-        cover.toMediaRequestImage(
-            RequestImage.Media.ImageType.POSTER
-        ).toRequestBuilder(
-            context,
-            listOf(roundedCornersTransformation)
-        ).build()
-    }
-
-    Image(
-        painter = rememberImagePainter(requestImage),
-        contentDescription = "Media cover image",
-        contentScale = ContentScale.Fit,
-        modifier = modifier.clickable {
-            val coverXL = cover.extraLarge ?: return@clickable
-            val param = ImageViewerRouter.ImageSourceParam(coverXL)
-            ImageViewerRouter.startActivity(
-                context = context,
-                navPayload = param.asNavPayload()
-            )
-        }
+    AniTrendImage(
+        image = cover,
+        imageType = RequestImage.Media.ImageType.POSTER,
+        modifier = modifier,
+        transformations = listOf(roundedCornersTransformation),
+        onClick = onCoverClick,
     )
 }
 
@@ -245,6 +220,7 @@ fun SummarySection(
     media: Media,
     accentColor: Color,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -254,7 +230,8 @@ fun SummarySection(
         MediaCover(
             cover = media.image,
             modifier = Modifier.height(series_image_lg)
-                .aspectRatio(series_aspect_ration)
+                .aspectRatio(series_aspect_ration),
+            onCoverClick = onCoverClick,
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),

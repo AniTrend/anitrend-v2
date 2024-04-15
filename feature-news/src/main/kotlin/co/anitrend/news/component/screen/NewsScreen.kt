@@ -46,7 +46,7 @@ class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
         named(MarkdownFlavour.STANDARD)
     )
 
-    private val param: NewsRouter.NewsParam? by extra(NewsRouter.NewsParam.KEY)
+    private val param by extra<NewsRouter.NewsParam>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

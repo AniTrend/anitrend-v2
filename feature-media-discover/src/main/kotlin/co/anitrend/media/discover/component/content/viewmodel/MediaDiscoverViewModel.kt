@@ -44,7 +44,6 @@ class MediaDiscoverViewModel(
     }
 
     val default by savedStateHandle.extra(
-        MediaDiscoverRouter.MediaDiscoverParam.KEY,
         MediaDiscoverRouter.MediaDiscoverParam()
     )
 

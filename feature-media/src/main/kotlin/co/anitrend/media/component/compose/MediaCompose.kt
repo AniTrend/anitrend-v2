@@ -122,14 +122,14 @@ private fun MediaDetailContent(
     media: Media,
     accentColor: Color,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
-    onBannerClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         AniTrendImage(
             image = media.image,
             imageType = RequestImage.Media.ImageType.BANNER,
-            onClick = onBannerClick,
+            onClick = onImageClick,
             modifier = AniTrendImageDefaults.BANNER_SIZE
         )
         Box(
@@ -154,6 +154,7 @@ private fun MediaDetailContent(
                     media = media,
                     accentColor = accentColor,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    onCoverClick = onImageClick,
                     modifier = Modifier
                         .absoluteOffset(y = (-16).dp)
                 )
@@ -183,7 +184,7 @@ fun MediaScreenContent(
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
     onFloatingActionButtonClick: (Media) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
-    onBannerClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val state = mediaState.model.observeAsState()
@@ -239,7 +240,7 @@ fun MediaScreenContent(
             media = media,
             accentColor = accentColor,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
-            onBannerClick = onBannerClick,
+            onImageClick = onImageClick,
             modifier = Modifier.padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         )
@@ -254,7 +255,7 @@ private fun MediaDetailComponentPreview() {
             media = Media.Extended.empty(),
             accentColor = Color.DarkGray,
             onMediaDiscoverableItemClick = {},
-            onBannerClick = {}
+            onImageClick = {}
         )
     }
 }

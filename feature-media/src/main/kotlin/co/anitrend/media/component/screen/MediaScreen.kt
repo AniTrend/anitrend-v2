@@ -45,7 +45,7 @@ class MediaScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<MediaViewModel>()
 
-    private val mediaRouterParam: MediaRouter.MediaParam? by extra(MediaRouter.MediaParam.KEY)
+    private val mediaRouterParam by extra<MediaRouter.MediaParam>()
 
     private val settings by inject<IUserSettings>()
 
@@ -89,7 +89,7 @@ class MediaScreen : AniTrendScreen() {
                                 navPayload = param.asNavPayload()
                             )
                         },
-                        onBannerClick = { param ->
+                        onImageClick = { param ->
                             ImageViewerRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload()
