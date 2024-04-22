@@ -74,7 +74,7 @@ class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
      * perform fragment operations at that point will throw IllegalStateException
      * because the fragment manager thinks the state is still saved.
      */
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         checkIntentData()

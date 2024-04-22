@@ -72,10 +72,10 @@ class SearchScreen : AniTrendScreen() {
      * perform fragment operations at that point will throw IllegalStateException
      * because the fragment manager thinks the state is still saved.
      */
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        when (intent?.action) {
+        when (intent.action) {
             Intent.ACTION_SEARCH, GOOGLE_ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY)
                 if (!query.isNullOrEmpty()) {
