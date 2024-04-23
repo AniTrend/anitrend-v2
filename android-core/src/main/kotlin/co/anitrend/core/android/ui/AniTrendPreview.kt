@@ -7,6 +7,11 @@ import androidx.compose.ui.tooling.preview.Preview
 annotation class AniTrendPreview {
 
     @Preview(
+        name = "Default"
+    )
+    annotation class Default
+
+    @Preview(
         uiMode = UI_MODE_NIGHT_NO,
         name = "Light"
     )

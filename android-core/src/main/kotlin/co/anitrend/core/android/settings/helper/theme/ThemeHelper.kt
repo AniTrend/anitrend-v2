@@ -37,6 +37,10 @@ import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
  */
 internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper {
 
+    /** Indicates weather the current theme is dynamic or static */
+    override val dynamicColor: Boolean
+        get() = settings.theme.value == AniTrendTheme.DYNAMIC
+
     @TargetApi(Build.VERSION_CODES.O)
     private fun FragmentActivity.applyNightModeDecorations(systemUiOptions: Int) {
         val primaryColor = getCompatColor(co.anitrend.arch.theme.R.color.colorPrimary)
