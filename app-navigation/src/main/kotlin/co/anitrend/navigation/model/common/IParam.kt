@@ -18,8 +18,12 @@
 package co.anitrend.navigation.model.common
 
 import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 /**
  * Router parameter contract
  */
 interface IParam : Parcelable
+
+    @Parcelize
+    data class None(override val idKey: String = "") : IParam

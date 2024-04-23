@@ -56,7 +56,7 @@ private val viewModelModule = module {
 }
 
 private val presenterModule = module {
-    scope<AuthContent> {
+    scope<AuthScreen> {
         scoped {
             AuthPresenter(
                 context = androidContext(),

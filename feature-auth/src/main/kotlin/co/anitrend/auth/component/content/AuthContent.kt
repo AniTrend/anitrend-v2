@@ -131,6 +131,7 @@ class AuthContent(
         viewModelState().model.observeOnce(viewLifecycleOwner) { user ->
             runCatching {
                 presenter.runSignInWorker(user.id)
+                closeScreen()
             }.onFailure {
                 Snackbar.make(
                     requireView(),

@@ -28,6 +28,6 @@ sealed class Authentication {
         val title: String,
         val message: String
     ): Authentication()
-    
-    object Idle : Authentication()
+
+    data object Idle : Authentication()
 }
