@@ -97,7 +97,6 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.implementation(libs.androidx.fragment.ktx)
     dependencies.implementation(libs.androidx.startup.runtime)
     dependencies.implementation(libs.androidx.constraintlayout)
-    dependencies.implementation(libs.androidx.compose.compiler)
 
     dependencies.implementation(libs.coil)
     dependencies.implementation(libs.saket.cascade)
