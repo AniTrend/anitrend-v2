@@ -18,6 +18,7 @@
 package co.anitrend.data.user.koin
 
 import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
@@ -53,7 +54,8 @@ private val sourceModule = module {
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<UserMapper.User>()
+                mapper = get<UserMapper.User>(),
+                strategy = offline(),
             ),
             converter = get(),
             cachePolicy = get<UserCache.Identifier>(),
@@ -66,7 +68,8 @@ private val sourceModule = module {
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<AuthMapper>()
+                mapper = get<AuthMapper>(),
+                strategy = offline(),
             ),
             converter = get(),
             settings = get(),
@@ -80,7 +83,8 @@ private val sourceModule = module {
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<UserMapper.Paged>()
+                mapper = get<UserMapper.Paged>(),
+                strategy = offline(),
             ),
             converter = get(),
             dispatcher = get()
@@ -92,7 +96,8 @@ private val sourceModule = module {
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<UserMapper.Profile>()
+                mapper = get<UserMapper.Profile>(),
+                strategy = offline(),
             ),
             converter = get(),
             cachePolicy = get<UserCache.Profile>(),
@@ -105,7 +110,8 @@ private val sourceModule = module {
             localSource = store().userDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<UserMapper.Statistic>()
+                mapper = get<UserMapper.Statistic>(),
+                strategy = offline(),
             ),
             converter = get(),
             cachePolicy = get<UserCache.Statistic>(),

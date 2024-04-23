@@ -18,6 +18,7 @@
 package co.anitrend.data.medialist.koin
 
 import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.DeleteCustomMediaListInteractor
@@ -52,7 +53,7 @@ private val sourceModule = module {
         MediaListSourceImpl.Sync(
             remoteSource = aniListApi(),
             controller = graphQLController(
-                mapper = get<MediaListMapper.Collection>()
+                mapper = get<MediaListMapper.Collection>(),
             ),
             dispatcher = get()
         )
@@ -80,7 +81,8 @@ private val sourceModule = module {
             mediaLocalSource = store().mediaDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<MediaListMapper.Paged>()
+                mapper = get<MediaListMapper.Paged>(),
+                strategy = offline(),
             ),
             filter = MediaListQueryFilter.Paged(
                 authentication = get()
@@ -121,7 +123,8 @@ private val sourceModule = module {
             mediaLocalSource = store().mediaDao(),
             clearDataHelper = get(),
             controller = graphQLController(
-                mapper = get<MediaListMapper.Entry>()
+                mapper = get<MediaListMapper.Entry>(),
+                strategy = offline(),
             ),
             filter = MediaListQueryFilter.Entry(),
             cachePolicy = get<MediaListCache>(),
