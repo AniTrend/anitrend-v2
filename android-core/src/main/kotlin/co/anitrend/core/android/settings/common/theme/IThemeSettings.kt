@@ -21,6 +21,5 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
 
 interface IThemeSettings {
-
     val theme: AbstractSetting<AniTrendTheme>
 }

@@ -30,6 +30,10 @@ enum class AniTrendTheme(@StyleRes val styleAttribute: Int, val useNightMode: Bo
     SYSTEM(
         styleAttribute = 0
     ),
+    DYNAMIC(
+        styleAttribute = R.style.AppTheme,
+        useNightMode = true
+    ),
     AMOLED(
         styleAttribute = R.style.AppTheme,
         useNightMode = true
