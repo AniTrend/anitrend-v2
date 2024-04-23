@@ -240,3 +240,5 @@ fabric.properties
 .directory
 
 jacoco.exec
+
+.idea/
