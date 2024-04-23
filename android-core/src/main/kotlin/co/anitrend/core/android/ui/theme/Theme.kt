@@ -155,19 +155,16 @@ private val AniTrendShapes = Shapes(
 fun AniTrendTheme3(
     darkTheme: Boolean = isSystemInDarkTheme(),
     themeHelper: IThemeHelper = koinInject(),
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val view = LocalView.current
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        themeHelper.dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            if (darkTheme) dynamicDarkColorScheme(view.context) else dynamicLightColorScheme(view.context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             themeHelper.applyApplicationTheme(view.context as FragmentActivity)

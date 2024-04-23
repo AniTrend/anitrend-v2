@@ -22,6 +22,9 @@ import androidx.fragment.app.FragmentActivity
 
 interface IThemeHelper {
 
+    /** Indicates weather the current theme is dynamic or static */
+    val dynamicColor: Boolean
+
     /**
      * Sets the default night mode based on the theme set in settings
      */

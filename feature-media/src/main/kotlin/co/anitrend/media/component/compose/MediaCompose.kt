@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.genre.ui.compose.GenresListComponent
 import co.anitrend.common.markdown.ui.compose.MarkdownText
@@ -65,6 +66,7 @@ import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.compose.design.image.AniTrendImageDefaults
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -247,10 +249,12 @@ fun MediaScreenContent(
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Default
 @Composable
-private fun MediaDetailComponentPreview() {
-    PreviewTheme {
+private fun MediaDetailComponentPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
+) {
+    PreviewTheme(darkTheme = darkTheme) {
         MediaDetailContent(
             media = Media.Extended.empty(),
             accentColor = Color.DarkGray,

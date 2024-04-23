@@ -21,7 +21,10 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.FULL_SPAN_SIZE
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -29,10 +32,12 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.adapter.MediaCompactAdapter
+import co.anitrend.common.media.ui.compose.MediaCompactItemList
 import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
 import co.anitrend.common.shared.ui.extension.setUpWith
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.common.sort.order.SortOrder
@@ -54,19 +59,30 @@ internal class MediaCarouselItem(
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
 
     private fun setUpCarouselItems(view: View) {
-        val mediaItemAdapter = MediaCompactAdapter(
-            settings = settings,
-            resources = view.resources,
-            customSupportAnimator = null,
-            stateConfiguration = StateLayoutConfig()
-        )
+        //val mediaItemAdapter = MediaCompactAdapter(
+        //    settings = settings,
+        //    resources = view.resources,
+        //    customSupportAnimator = null,
+        //    stateConfiguration = StateLayoutConfig()
+        //)
+        requireBinding().mediaCarouselRecycler.gone()
+        //requireBinding().mediaCarouselRecycler.setUpWith(
+        //    supportAdapter = mediaItemAdapter,
+        //    recyclerViewPool = viewPool
+        //)
+        with (requireBinding().mediaCarouselCompose) {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                AniTrendTheme3 {
+                    MediaCompactItemList(
+                        mediaItems = entity.mediaItems,
+                        settings = settings,
+                    )
+                }
+            }
+        }
 
-        requireBinding().mediaCarouselRecycler.setUpWith(
-            supportAdapter = mediaItemAdapter,
-            recyclerViewPool = viewPool
-        )
-
-        mediaItemAdapter.submitList(entity.mediaItems)
+        //mediaItemAdapter.submitList(entity.mediaItems)
     }
 
     private fun createQueryParam(): IParam = when (entity.carouselType) {

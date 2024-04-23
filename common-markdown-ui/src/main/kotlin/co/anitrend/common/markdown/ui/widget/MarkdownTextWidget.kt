@@ -42,10 +42,14 @@ class MarkdownTextWidget @JvmOverloads constructor(
     init { onInit(context, attrs, defStyleAttr) }
 
     fun setContent(text: CharSequence?, flavour: MarkdownFlavour = MarkdownFlavour.ANILIST) {
-        val markwon = koinOf<Markwon>(named(flavour))
-        val content = text?.toString()
-            ?: context.getString(R.string.label_place_holder_no_description)
-        markwon.setMarkdown(this, content)
+        if (!isInEditMode) {
+            val markwon = koinOf<Markwon>(named(flavour))
+            val content = text?.toString()
+                ?: context.getString(R.string.label_place_holder_no_description)
+            markwon.setMarkdown(this, content)
+        } else {
+            setText(text?.toString() ?: context.getString(R.string.label_place_holder_no_description))
+        }
     }
 
     fun setContent(text: CharSequence?, entity: IEntityName, flavour: MarkdownFlavour = MarkdownFlavour.ANILIST) {
@@ -57,7 +61,9 @@ class MarkdownTextWidget @JvmOverloads constructor(
         /** Ellipsize won't work in this context probably because some of the characters will have /n */
         ellipsize = TextUtils.TruncateAt.END
         setTextIsSelectable(true)
-        Linkify.addLinks(this, Linkify.ALL)
+        if (!isInEditMode) {
+            Linkify.addLinks(this, Linkify.ALL)
+        }
         val textAppearance = context.themeStyle(com.google.android.material.R.attr.textAppearanceBody2)
         TextViewCompat.setTextAppearance(this, textAppearance)
         movementMethod = BetterLinkMovementMethod.newInstance().apply {
