@@ -138,7 +138,7 @@ class TextDrawable(
      * Note that the returned value does not necessarily take into account a
      * custom alpha or color filter that has been applied by the client through
      * the [.setAlpha] or [.setColorFilter] methods. Some subclasses,
-     * such as [BitmapDrawable], [ColorDrawable], and [GradientDrawable],
+     * such as [android.graphics.drawable.BitmapDrawable], [android.graphics.drawable.ColorDrawable], and [android.graphics.drawable.GradientDrawable],
      * do account for the value of [.setAlpha], but the general behavior is dependent
      * upon the implementation of the subclass.
      *
@@ -146,6 +146,7 @@ class TextDrawable(
      *
      * @see android.graphics.PixelFormat
      */
+    @Deprecated("Deprecated in Java", ReplaceWith("PixelFormat.UNKNOWN", "android.graphics.PixelFormat"))
     override fun getOpacity(): Int {
         return PixelFormat.UNKNOWN
     }
