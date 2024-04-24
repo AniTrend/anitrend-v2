@@ -31,11 +31,20 @@ class DarkThemeProvider: PreviewParameterProvider<Boolean> {
 fun PreviewTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     themeHelper: IThemeHelper = PreviewThemeHelper,
+    wrapInSurface: Boolean = false,
     content: @Composable () -> Unit
 ) {
     AniTrendTheme3(
         darkTheme = darkTheme,
         themeHelper = themeHelper,
-        content = content,
+        content = {
+            if (wrapInSurface) {
+                Surface {
+                    content()
+                }
+            } else {
+                content()
+            }
+        },
     )
 }
