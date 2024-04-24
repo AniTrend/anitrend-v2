@@ -1,6 +1,5 @@
-package co.anitrend.common.media.ui.compose
+package co.anitrend.common.media.ui.compose.airing
 
-import androidx.compose.material3.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +13,7 @@ import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.media.entity.Media
 
 @Composable
-fun MediaAiringSchedule(
+fun AiringSchedule(
     category: Media.Category,
     modifier: Modifier = Modifier,
 ) {
@@ -29,17 +28,15 @@ fun MediaAiringSchedule(
 @AniTrendPreview.Default
 @Composable
 private fun MediaAiringSchedulePreview() {
-    PreviewTheme {
-        Surface {
-            MediaAiringSchedule(
-                category = Media.Category.Anime(
-                    episodes = 12,
-                    duration = 24,
-                    broadcast = null,
-                    premiered = null,
-                    schedule = null
-                )
+    PreviewTheme(wrapInSurface = true) {
+        AiringSchedule(
+            category = Media.Category.Anime(
+                episodes = 12,
+                duration = 24,
+                broadcast = null,
+                premiered = null,
+                schedule = null
             )
-        }
+        )
     }
 }

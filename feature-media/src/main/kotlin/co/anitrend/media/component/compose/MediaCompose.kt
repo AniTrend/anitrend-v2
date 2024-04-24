@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -38,29 +36,26 @@ import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChipDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.genre.ui.compose.GenresListComponent
 import co.anitrend.common.markdown.ui.compose.MarkdownText
 import co.anitrend.common.media.ui.compose.SummarySection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.core.android.compose.AniTrendTheme
+import co.anitrend.common.media.ui.compose.ranking.RankingItems
+import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.core.android.compose.design.BackIconButton
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.compose.design.image.AniTrendImageDefaults
@@ -70,54 +65,13 @@ import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.media.R
 import co.anitrend.media.component.viewmodel.state.MediaState
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-
-@Composable
-private fun TagListItems(
-    accentColor: Color,
-    modifier: Modifier = Modifier,
-    tags: List<Tag> = emptyList(),
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
-) {
-    LazyRow(
-        state = rememberLazyListState(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
-    ) {
-        items(
-            count = tags.size,
-            key = { tags[it].id },
-            contentType = { "Tag" }
-        ) { index ->
-            tags[index].also { tag ->
-                ElevatedSuggestionChip(
-                    onClick = {
-                        onMediaDiscoverableItemClick(
-                            MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
-                        )
-                    },
-                    colors = SuggestionChipDefaults.suggestionChipColors(
-                        containerColor = accentColor,
-                    ),
-                    label = {
-                        Text(
-                            text = tag.name,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            style = AniTrendTheme.typography.caption,
-                        )
-                    }
-                )
-            }
-        }
-    }
-}
-
 
 @Composable
 private fun MediaDetailContent(
@@ -155,10 +109,25 @@ private fun MediaDetailContent(
                 SummarySection(
                     media = media,
                     accentColor = accentColor,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                     onCoverClick = onImageClick,
                     modifier = Modifier
                         .absoluteOffset(y = (-16).dp)
+                )
+                RankingItems(
+                    accentColor = accentColor,
+                    rankings = media.rankings.toList(),
+                    onClick = { rank, sorting ->
+                        onMediaDiscoverableItemClick(
+                            MediaDiscoverRouter.MediaDiscoverParam(
+                                type = media.category.type,
+                                format = media.format,
+                                season = media.season,
+                                seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
+                                startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
+                                sort = sorting
+                            )
+                        )
+                    }
                 )
                 GenresListComponent(
                     genres = media.genres as List<Genre>,

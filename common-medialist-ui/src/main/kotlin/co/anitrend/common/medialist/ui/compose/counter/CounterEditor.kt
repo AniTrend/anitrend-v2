@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandCircleDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,11 +59,9 @@ fun CounterEditor(modifier: Modifier = Modifier) {
 @AniTrendPreview.Light
 @Composable
 private fun CounterEditorPreview() {
-    PreviewTheme {
-        Surface {
-            CounterEditor(
-                modifier = Modifier.padding(8.dp)
-            )
-        }
+    PreviewTheme(wrapInSurface = true) {
+        CounterEditor(
+            modifier = Modifier.padding(8.dp)
+        )
     }
 }
