@@ -250,15 +250,13 @@ class BottomDrawerContent(
             }
         }
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                presenter.settings.isAuthenticated.flow
-                    .onEach {
-                        accountViewModel.accountState()
-                        navigationViewModel(it)
-                    }.catch { cause: Throwable ->
-                        Timber.e(cause)
-                    }.collect()
-            }
+            presenter.settings.isAuthenticated.flow
+                .onEach { isAuthenticated ->
+                    accountViewModel.accountState()
+                    navigationViewModel(isAuthenticated)
+                }.catch { cause: Throwable ->
+                    Timber.e(cause)
+                }.collect()
         }
     }
 
@@ -274,7 +272,9 @@ class BottomDrawerContent(
         }.catch {
             Timber.e(it)
         }.launchIn(lifecycleScope)
-        setCheckedItem(R.id.navigation_home)
+        lifecycleScope.launch {
+            setCheckedItem(R.id.navigation_home)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -389,7 +389,7 @@ class BottomDrawerContent(
         bottomSheetCallback.removeOnStateChangedAction(action)
     }
 
-    override fun setCheckedItem(@IdRes selectedItem: Int) {
+    override suspend fun setCheckedItem(@IdRes selectedItem: Int) {
         navigationViewModel.setNavigationMenuItemChecked(selectedItem)
     }
 

@@ -82,9 +82,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
     }
 
     private val navigationDrawer: INavigationDrawer
-        get() = drawerFragmentItem.fragmentByTagOrNew(
-            this
-        ) as BottomDrawerContent
+        get() = drawerFragmentItem.fragmentByTagOrNew(this) as INavigationDrawer
 
     private val viewModel by viewModel<MainScreenViewModel>()
 

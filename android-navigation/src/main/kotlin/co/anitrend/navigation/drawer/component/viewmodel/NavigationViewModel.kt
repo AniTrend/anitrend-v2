@@ -20,13 +20,11 @@ package co.anitrend.navigation.drawer.component.viewmodel
 import androidx.annotation.IdRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import co.anitrend.arch.extension.ext.UNSAFE
+import co.anitrend.core.extensions.mutableStateFlow
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class NavigationViewModel(
@@ -34,9 +32,8 @@ internal class NavigationViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val navigationItems by lazy(UNSAFE) {
-        val initialState = createNavigationItems(settings.isAuthenticated.value)
-        MutableStateFlow(initialState)
+    val navigationItems: MutableStateFlow<List<Navigation>> by mutableStateFlow {
+        createNavigationItems(settings.isAuthenticated.value)
     }
 
     private fun createNavigationItems(authenticated: Boolean): List<Navigation> {
@@ -143,15 +140,15 @@ internal class NavigationViewModel(
         return navigationItems
     }
 
-    operator fun invoke(isAuthenticated: Boolean) {
-        viewModelScope.launch {
-            val checkedId: Int? = savedStateHandle[CHECKED_ITEM_ID]
-            navigationItems.emit(createNavigationItems(isAuthenticated))
-            if (checkedId != null) {
-                Timber.v("Updating check menu item")
-                setNavigationMenuItemChecked(checkedId)
-            } else
-                Timber.v("There is no last checked item")
+    suspend operator fun invoke(isAuthenticated: Boolean) {
+        val checkedId: Int? = savedStateHandle[CHECKED_ITEM_ID]
+        navigationItems.emit(createNavigationItems(isAuthenticated))
+        if (checkedId != null) {
+            // TODO: force navigate away from a selection that maybe have been removed
+            Timber.i("Updating navigation selected item")
+            setNavigationMenuItemChecked(checkedId)
+        } else {
+            Timber.w("SavedStateHandle did not have a valid state saved for: $CHECKED_ITEM_ID")
         }
     }
 
@@ -160,22 +157,21 @@ internal class NavigationViewModel(
      *
      * @return true if the currently selected item has changed.
      */
-    fun setNavigationMenuItemChecked(@IdRes id: Int) {
-        viewModelScope.launch {
-            var updated = false
-            val snapshot = mutableListOf<Navigation>()
-            snapshot.addAll(navigationItems.value)
-            snapshot.filterIsInstance<Navigation.Menu>()
-                .onEach {
-                    val shouldCheck = it.id == id
-                    if (it.isChecked != shouldCheck)
-                        updated = true
-                    it.isChecked = shouldCheck
+    suspend fun setNavigationMenuItemChecked(@IdRes id: Int) {
+        var updated = false
+        val snapshot = mutableListOf<Navigation>()
+        snapshot.addAll(navigationItems.value)
+        snapshot.filterIsInstance<Navigation.Menu>()
+            .onEach { menu ->
+                val shouldCheck = menu.id == id
+                if (menu.isChecked != shouldCheck) {
+                    updated = true
                 }
-            savedStateHandle[CHECKED_ITEM_ID] = id
-            if (updated)
-                navigationItems.emit(snapshot)
-        }
+                menu.isChecked = shouldCheck
+            }
+        savedStateHandle[CHECKED_ITEM_ID] = id
+        if (updated)
+            navigationItems.emit(snapshot)
     }
 
     private companion object {

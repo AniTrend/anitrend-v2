@@ -37,6 +37,6 @@ interface INavigationDrawer {
     fun addOnStateChangedAction(action: OnStateChangedAction)
     fun removeOnStateChangedAction(action: OnStateChangedAction)
 
-    fun setCheckedItem(@IdRes selectedItem: Int)
+    suspend fun setCheckedItem(@IdRes selectedItem: Int)
     fun toggleMenuVisibility(showDrawerMenu: Boolean)
 }
