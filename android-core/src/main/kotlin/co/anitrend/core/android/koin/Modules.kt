@@ -99,17 +99,15 @@ private val controllerModule = module {
             context = context,
             powerManager = context.systemServiceOf<PowerManager>(),
             connectivityManager = context.systemServiceOf<ConnectivityManager>(),
-            connectivitySettings = get(),
-            powerSettings = get()
+            settings = get()
         )
     }
 
     factory<IShortcutController> {
         val context = androidContext()
-        val manager = context.systemServiceOf<ShortcutManager>()
         ShortcutController(
             context = context,
-            shortcutManager = manager
+            shortcutManager = context.systemServiceOf<ShortcutManager>()
         )
     }
 }

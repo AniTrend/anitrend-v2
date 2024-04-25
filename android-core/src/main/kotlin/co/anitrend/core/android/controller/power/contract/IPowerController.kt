@@ -20,7 +20,9 @@ package co.anitrend.core.android.controller.power.contract
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Power management controller
+ * Power management controller, provide information regarding app and device power profiles/settings
+ *
+ * @see [co.anitrend.data.settings.power.IPowerSettings]
  */
 interface IPowerController {
     fun powerSaverStateFlow(
@@ -41,6 +43,6 @@ sealed class PowerSaverState {
     enum class Reason {
         PREFERENCE,
         SYSTEM_DATA_SAVER,
-        SYSTEM_POWER_SAVER
+        SYSTEM_POWER_SAVER,
     }
 }

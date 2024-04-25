@@ -26,13 +26,13 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class RequestImageMapper(
-    private val powerController: IPowerController
+    powerController: IPowerController
 ) : Mapper<RequestImage<*>, HttpUrl> {
+    private val powerSaverState = powerController.powerSaverState()
 
     internal fun getImageUrlUsing(
         requestImage: RequestImage<*>
     ): String {
-        val powerSaverState = powerController.powerSaverState()
         return when (requestImage) {
             is RequestImage.Media -> when (requestImage.type) {
                 RequestImage.Media.ImageType.BANNER -> requestImage.image?.banner

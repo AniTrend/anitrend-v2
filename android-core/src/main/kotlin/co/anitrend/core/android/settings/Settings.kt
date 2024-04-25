@@ -130,13 +130,6 @@ class Settings(context: Context) : SupportPreference(context), IConfigurationSet
         preference = this
     )
 
-    override val isDataSaverOn = BooleanSetting(
-        key = R.string.settings_data_saver,
-        default = false,
-        resources = context.resources,
-        preference = this
-    )
-
     override val isPowerSaverOn = BooleanSetting(
         key = R.string.settings_power_saver,
         default = false,

@@ -40,7 +40,7 @@ internal class RequestImageFetcher private constructor(
      * [Factory] in the component registry.
      */
     override suspend fun fetch(): FetchResult {
-        val result = client.fetch(httpUrl)
+        val result = client(httpUrl)
         return SourceResult(
             source = result.source,
             mimeType = result.contentType,

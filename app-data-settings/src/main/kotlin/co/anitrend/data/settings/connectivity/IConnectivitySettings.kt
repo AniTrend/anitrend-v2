@@ -16,8 +16,5 @@
  */
 package co.anitrend.data.settings.connectivity
 
-import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
-interface IConnectivitySettings {
-    val isDataSaverOn: AbstractSetting<Boolean>
-}
+interface IConnectivitySettings

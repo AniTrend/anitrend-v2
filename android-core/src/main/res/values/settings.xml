@@ -35,7 +35,6 @@
     <string name="settings_version_code" translatable="false">_versionCode</string>
     <string name="settings_clear_on_swipe_refresh" translatable="false">_clearOnRefresh</string>
     <string name="settings_view_mode_preferred" translatable="false">_viewMode</string>
-    <string name="settings_data_saver" translatable="false">_dataSaver</string>
     <string name="settings_power_saver" translatable="false">_powerSaver</string>
     <string name="settings_battery_optimization" translatable="false">_batteryOptimization</string>
 

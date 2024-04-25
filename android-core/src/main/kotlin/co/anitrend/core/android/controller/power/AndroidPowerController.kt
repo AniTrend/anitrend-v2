@@ -18,7 +18,6 @@
 package co.anitrend.core.android.controller.power
 
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
@@ -29,7 +28,7 @@ import androidx.core.net.toUri
 import co.anitrend.arch.extension.ext.flowOfBroadcast
 import co.anitrend.core.android.controller.power.contract.IPowerController
 import co.anitrend.core.android.controller.power.contract.PowerSaverState
-import co.anitrend.data.settings.connectivity.IConnectivitySettings
+import co.anitrend.core.android.extensions.intentOf
 import co.anitrend.data.settings.power.IPowerSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -44,8 +43,7 @@ internal class AndroidPowerController(
     private val context: Context,
     private val powerManager: PowerManager?,
     private val connectivityManager: ConnectivityManager?,
-    private val connectivitySettings: IConnectivitySettings,
-    private val powerSettings: IPowerSettings,
+    private val settings: IPowerSettings,
 ) : IPowerController {
 
     override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> {
@@ -77,7 +75,7 @@ internal class AndroidPowerController(
     }
 
     override fun powerSaverState(): PowerSaverState = when {
-        connectivitySettings.isDataSaverOn.value -> {
+        settings.isPowerSaverOn.value -> {
             PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
         }
         powerManager?.isPowerSaveMode == true -> {
@@ -91,15 +89,15 @@ internal class AndroidPowerController(
 
     override fun disableBatteryOptimization() {
         val packageUri = "package:${context.packageName}"
-        val ignoresOptimization = powerManager?.isIgnoringBatteryOptimizations(packageUri)
-        if (ignoresOptimization == true) {
+        if (powerManager?.isIgnoringBatteryOptimizations(packageUri) == true) {
             runCatching {
-                val intent = Intent().apply {
-                    action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-                    data = packageUri.toUri()
-                }
-                context.startActivity(intent)
-            }.onFailure(Timber::w)
+                context.startActivity(
+                    intentOf {
+                        action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                        data = packageUri.toUri()
+                    }
+                )
+            }.onFailure(Timber::e)
         }
     }
 
