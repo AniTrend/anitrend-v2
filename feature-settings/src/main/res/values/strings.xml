@@ -38,6 +38,7 @@
     <string name="preference_title_notifications">Notifications</string>
     <string name="preference_title_storage">Storage</string>
     <string name="preference_title_heap_dump">Auto Heap Dump</string>
+    <string name="preference_title_power_management">Power Management</string>
 
     <!-- Preference Summaries -->
     <string name="preference_summary_accounts">Access information about your accounts</string>
@@ -52,6 +53,7 @@
     <string name="preference_summary_updates">Configure how and which updates to receive</string>
     <string name="preference_summary_storage">Configure how the app should use storage space</string>
     <string name="preference_summary_heap">Dump heap automatically when leak is detected</string>
+    <string name="preference_summary_power_management">Fine tune how the application uses your battery</string>
 
 
     <!-- Preference Entries Title -->

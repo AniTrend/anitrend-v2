@@ -60,6 +60,13 @@
             app:summary="@string/preference_summary_content_filtering"
             app:icon="@drawable/ic_filter_list_24dp"
             app:fragment=""/>
+
+        <!-- TODO: Add preference fragment to change various power related factors, including entrypoint to disable power optimization -->
+        <Preference
+            app:title="@string/preference_title_power_management"
+            app:summary="@string/preference_summary_power_management"
+            app:icon="@drawable/ic_power_24"
+            app:fragment=""/>
     </PreferenceCategory>
 
     <PreferenceCategory
