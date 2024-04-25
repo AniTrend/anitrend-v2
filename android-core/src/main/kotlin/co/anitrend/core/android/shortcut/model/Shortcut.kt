@@ -26,6 +26,7 @@ import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.NotificationRouter
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.model.NavPayload
 import co.anitrend.navigation.router.NavigationRouter
 
 /**
@@ -34,6 +35,7 @@ import co.anitrend.navigation.router.NavigationRouter
 sealed class Shortcut {
     abstract val id: String
     abstract val router: NavigationRouter
+    abstract val navPayload: NavPayload?
 
     @get:StringRes abstract val label: Int
     @get:DrawableRes abstract val icon: Int
@@ -44,7 +46,8 @@ sealed class Shortcut {
         override val router: NavigationRouter = AiringRouter,
         override val label: Int = R.string.shortcut_label_airing_schedule,
         override val icon: Int = R.drawable.ic_shortcut_airing_schedule,
-        override val disabledMessage: Int = R.string.shortcut_label_airing_schedule
+        override val disabledMessage: Int = R.string.shortcut_label_airing_schedule,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 
     data class AnimeList(
@@ -52,7 +55,8 @@ sealed class Shortcut {
         override val router: NavigationRouter = MediaListRouter,
         override val label: Int = R.string.shortcut_label_anime_list,
         override val icon: Int = R.drawable.ic_shortcut_anime_list,
-        override val disabledMessage: Int = R.string.shortcut_label_anime_list
+        override val disabledMessage: Int = R.string.shortcut_label_anime_list,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 
     data class MangaList(
@@ -60,7 +64,8 @@ sealed class Shortcut {
         override val router: NavigationRouter = MediaListRouter,
         override val label: Int = R.string.shortcut_label_manga_list,
         override val icon: Int = R.drawable.ic_shortcut_manga_list,
-        override val disabledMessage: Int = R.string.shortcut_label_manga_list
+        override val disabledMessage: Int = R.string.shortcut_label_manga_list,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 
     data class Notification(
@@ -68,7 +73,8 @@ sealed class Shortcut {
         override val router: NavigationRouter = NotificationRouter,
         override val label: Int = R.string.shortcut_label_notifications,
         override val icon: Int = R.drawable.ic_shortcut_notifications,
-        override val disabledMessage: Int = R.string.shortcut_label_notifications
+        override val disabledMessage: Int = R.string.shortcut_label_notifications,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 
     data class Profile(
@@ -76,7 +82,8 @@ sealed class Shortcut {
         override val router: NavigationRouter = ProfileRouter,
         override val label: Int = R.string.shortcut_label_profile,
         override val icon: Int = R.drawable.ic_shortcut_profile,
-        override val disabledMessage: Int = R.string.shortcut_label_profile
+        override val disabledMessage: Int = R.string.shortcut_label_profile,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 
     data class Feed(
@@ -84,7 +91,8 @@ sealed class Shortcut {
         override val router: NavigationRouter = FeedRouter,
         override val label: Int = R.string.shortcut_label_activity,
         override val icon: Int = R.drawable.ic_shortcut_activity,
-        override val disabledMessage: Int = R.string.shortcut_label_activity
+        override val disabledMessage: Int = R.string.shortcut_label_activity,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 
     data class Search(
@@ -92,6 +100,7 @@ sealed class Shortcut {
         override val router: NavigationRouter = SearchRouter,
         override val label: Int = R.string.shortcut_label_search,
         override val icon: Int = R.drawable.ic_shortcut_search,
-        override val disabledMessage: Int = R.string.shortcut_label_search
+        override val disabledMessage: Int = R.string.shortcut_label_search,
+        override val navPayload: NavPayload? = null,
     ) : Shortcut()
 }
