@@ -22,23 +22,27 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.extension.ext.UNSAFE
-import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.extensions.cancelAuthenticationWorkers
 import co.anitrend.core.extensions.scheduleAuthenticationWorkers
 import co.anitrend.data.account.AccountInteractor
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.account.model.AccountParam
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.AccountTaskRouter
-import co.anitrend.navigation.extensions.fromWorkerParameters
+import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.transform
+import kotlinx.coroutines.flow.firstOrNull
 import timber.log.Timber
 
 class AccountSignInWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: AccountInteractor
+    private val interactor: AccountInteractor,
+    private val shortcutController: IShortcutController,
+    private val settings: IUserSettings,
 ) : SupportCoroutineWorker(context, parameters) {
 
     private val param by parameters.transform<
@@ -47,20 +51,30 @@ class AccountSignInWorker(
     > { AccountParam.Activate(userId = it.id) }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
-    private fun createShortcuts() {
+    private suspend fun createShortcuts() {
+        val scoreFormat = settings.scoreFormat.flow.firstOrNull() ?: IUserSettings.DEFAULT_SCORE_FORMAT
         runCatching {
-            val shortcutManager = koinOf<IShortcutController>()
-            shortcutManager.removeAllDynamicShortcuts()
-            shortcutManager.createShortcuts(
-                Shortcut.AnimeList(),
-                Shortcut.MangaList(),
+            shortcutController.removeAllDynamicShortcuts()
+            shortcutController.createShortcuts(
+                Shortcut.AnimeList(
+                    navPayload = MediaListRouter.MediaListParam(
+                        scoreFormat = scoreFormat,
+                        type = MediaType.ANIME,
+                        userId = param.userId,
+                    ).asNavPayload()
+                ),
+                Shortcut.MangaList(
+                    navPayload = MediaListRouter.MediaListParam(
+                        scoreFormat = scoreFormat,
+                        type = MediaType.MANGA,
+                        userId = param.userId,
+                    ).asNavPayload()
+                ),
                 Shortcut.Notification(),
                 Shortcut.Profile(),
                 Shortcut.Search()
             )
-        }.onFailure { cause: Throwable ->
-            Timber.w(cause)
-        }
+        }.onFailure(Timber::w)
     }
 
     /**
@@ -75,12 +89,12 @@ class AccountSignInWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            createShortcuts()
-        }
         applicationContext.cancelAuthenticationWorkers()
         interactor.signIn(param)
         applicationContext.scheduleAuthenticationWorkers()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            createShortcuts()
+        }
         return Result.success()
     }
 }

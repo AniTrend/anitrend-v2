@@ -32,7 +32,7 @@ import timber.log.Timber
 @SuppressLint("NewApi")
 internal class ShortcutController(
     private val context: Context,
-    private val shortcutManager: ShortcutManager?
+    private val shortcutManager: ShortcutManager?,
 ) : IShortcutController {
 
     /**
@@ -46,7 +46,10 @@ internal class ShortcutController(
     override fun createShortcuts(vararg shortcuts: Shortcut): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             val shortcutInfo = shortcuts.mapNotNull { shortcut ->
-                val intent = shortcut.router.forActivity(context)
+                val intent = shortcut.router.forActivity(
+                    context = context,
+                    navPayload = shortcut.navPayload,
+                )
                 if (intent == null) {
                     Timber.w("Intent for shortcut: `${shortcut.id}` returned null")
                     null

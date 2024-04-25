@@ -38,7 +38,9 @@ private val workManagerModule = module {
         AccountSignInWorker(
             context = androidContext(),
             parameters = scope.get(),
-            interactor = get()
+            interactor = get(),
+            shortcutController = get(),
+            settings = get(),
         )
     }
 }
