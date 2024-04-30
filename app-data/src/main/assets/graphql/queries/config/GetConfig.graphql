@@ -2,14 +2,29 @@ query GetConfig {
   config {
     settings {
       analyticsEnabled
+      platformSource
     }
-    defaultImage {
+    image {
       banner,
       default,
       error,
       info,
       loading,
       poster
+    }
+    genres {
+      mediaId
+      name
+    }
+    navigation {
+      criteria
+      destination
+      group {
+        authenticated
+        i18n
+      }
+      icon
+      i18n
     }
   }
 }

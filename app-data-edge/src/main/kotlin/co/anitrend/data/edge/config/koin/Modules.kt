@@ -2,13 +2,15 @@ package co.anitrend.data.edge.config.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.edge.config.ConfigRepository
 import co.anitrend.data.edge.config.GetConfigInteractor
 import co.anitrend.data.edge.config.cache.EdgeConfigCache
 import co.anitrend.data.edge.config.converters.EdgeConfigEntityConverter
 import co.anitrend.data.edge.config.converters.EdgeConfigModelConverter
+import co.anitrend.data.edge.config.converters.EdgeConfigViewEntityConverter
 import co.anitrend.data.edge.config.extensions.configStore
-import co.anitrend.data.edge.config.extensions.homeStore
+import co.anitrend.data.edge.config.extensions.genreStore
 import co.anitrend.data.edge.config.extensions.navigationStore
 import co.anitrend.data.edge.config.mapper.EdgeConfigMapper
 import co.anitrend.data.edge.config.repository.EdgeConfigRepository
@@ -16,7 +18,7 @@ import co.anitrend.data.edge.config.source.EdgeConfigSourceImpl
 import co.anitrend.data.edge.config.source.contract.EdgeConfigSource
 import co.anitrend.data.edge.config.usecase.EdgeConfigInteractor
 import co.anitrend.data.edge.core.extensions.aniTrendApi
-import co.anitrend.data.edge.home.mapper.EdgeHomeGenreMapper
+import co.anitrend.data.edge.genre.mapper.EdgeGenreMapper
 import co.anitrend.data.edge.navigation.mapper.EdgeNavigationMapper
 import org.koin.dsl.module
 
@@ -26,7 +28,8 @@ private val sourceModule = module {
             remoteSource = aniTrendApi(),
             localSource = configStore().edgeConfigDao(),
             controller = graphQLController(
-                mapper = get<EdgeConfigMapper>()
+                mapper = get<EdgeConfigMapper>(),
+                strategy = offline()
             ),
             converter = get(),
             clearDataHelper = get(),
@@ -39,6 +42,9 @@ private val sourceModule = module {
 private val converterModule = module {
     factory {
         EdgeConfigModelConverter()
+    }
+    factory {
+        EdgeConfigViewEntityConverter()
     }
     factory {
         EdgeConfigEntityConverter()
@@ -56,6 +62,8 @@ private val cacheModule = module {
 private val mapperModule = module {
     factory {
         EdgeConfigMapper(
+            genreMapper = get(),
+            navigationMapper = get(),
             localSource = configStore().edgeConfigDao(),
             converter = get(),
         )
@@ -67,8 +75,9 @@ private val mapperModule = module {
         )
     }
     factory {
-        EdgeHomeGenreMapper(
-            localSource = homeStore().edgeHomeDao(),
+        EdgeGenreMapper(
+            localSource = genreStore().edgeGenreDao(),
+            converter = get(),
         )
     }
 }

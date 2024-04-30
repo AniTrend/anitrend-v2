@@ -17,6 +17,7 @@
 
 package co.anitrend.common.media.ui.controller.extensions
 
+import android.content.Context
 import android.view.View
 import co.anitrend.core.android.extensions.fragmentManager
 import co.anitrend.core.extensions.runIfActivityContext
@@ -26,6 +27,7 @@ import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.MediaListEditorRouter
+import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.asNavPayload
@@ -42,18 +44,14 @@ internal fun View.startMediaScreenFor(entity: Media) {
 }
 
 fun View.openMediaListSheetFor(
-    entity: Media,
-    settings: IUserSettings
+    mediaListParam: MediaListEditorRouter.MediaListEditorParam,
+    settings: IUserSettings,
 ): Boolean {
     runIfActivityContext {
         runIfAuthenticated(settings) {
             val fragmentItem = FragmentItem(
                 fragment = MediaListEditorRouter.forSheet(),
-                parameter = MediaListEditorRouter.MediaListEditorParam(
-                    mediaId = entity.id,
-                    mediaType = entity.category.type,
-                    scoreFormat = settings.scoreFormat.value
-                ).asBundle()
+                parameter = mediaListParam.asBundle()
             )
             val dialog = fragmentItem.fragmentByTagOrNew(this)
             dialog.show(fragmentManager(), fragmentItem.tag())
@@ -61,3 +59,15 @@ fun View.openMediaListSheetFor(
     }
     return true
 }
+
+fun View.openMediaListSheetFor(
+    entity: Media,
+    settings: IUserSettings
+): Boolean = openMediaListSheetFor(
+    mediaListParam = MediaListEditorRouter.MediaListEditorParam(
+        mediaId = entity.id,
+        mediaType = entity.category.type,
+        scoreFormat = settings.scoreFormat.value
+    ),
+    settings = settings,
+)

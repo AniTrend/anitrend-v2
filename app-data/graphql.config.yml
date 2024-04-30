@@ -1,4 +1,7 @@
-schema: schema.graphql
+schema:
+  - anilist.schema.graphql
+  - anitrend.schema.graphql
+documents: 'src/main/assets/graphql/*.graphql'
 extensions:
   endpoints:
     AniList:
@@ -7,8 +10,7 @@ extensions:
         user-agent: JS GraphQL
       introspect: true
     AniTrend:
-      #url: https://graphql.anitrend.co
-      url: http://api.anitrend.docker.localhost/graphql
+      url: https://graphql.anitrend.co/graphql/
       headers:
         User-Agent: "JS GraphQL"
         Accept: "*/*"

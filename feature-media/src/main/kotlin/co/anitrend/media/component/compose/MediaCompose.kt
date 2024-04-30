@@ -52,9 +52,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.genre.ui.compose.GenresListComponent
 import co.anitrend.common.markdown.ui.compose.MarkdownText
-import co.anitrend.common.media.ui.compose.SummarySection
+import co.anitrend.common.media.ui.compose.section.MediaSummarySection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.common.media.ui.compose.ranking.RankingItems
+import co.anitrend.common.media.ui.compose.widget.ranking.RankingItems
 import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.core.android.compose.design.BackIconButton
 import co.anitrend.core.android.compose.design.image.AniTrendImage
@@ -72,12 +72,13 @@ import co.anitrend.media.component.viewmodel.state.MediaState
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.model.common.IParam
 
 @Composable
 private fun MediaDetailContent(
     media: Media,
     accentColor: Color,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onMediaDiscoverableItemClick: (IParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,7 +107,7 @@ private fun MediaDetailContent(
                     ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                SummarySection(
+                MediaSummarySection(
                     media = media,
                     accentColor = accentColor,
                     onCoverClick = onImageClick,
@@ -154,7 +155,7 @@ fun MediaScreenContent(
     onBookmarkButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
     onFloatingActionButtonClick: (Media) -> Unit,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onMediaDiscoverableItemClick: (IParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onBackClick: () -> Unit,
 ) {

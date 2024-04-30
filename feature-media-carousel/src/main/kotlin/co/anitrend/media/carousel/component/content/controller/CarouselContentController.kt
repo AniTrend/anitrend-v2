@@ -21,11 +21,13 @@ import android.content.res.Resources
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
+import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.enums.MediaSeason
 import org.threeten.bp.Instant
 
 class CarouselContentController(
-    dateHelper: AbstractSupportDateHelper
+    dateHelper: AbstractSupportDateHelper,
 ): SupportLifecycle {
 
     val year: Int = dateHelper.getCurrentYear()
@@ -59,4 +61,10 @@ class CarouselContentController(
     fun pageSize(resources: Resources, multiplier: Int) =
         resources.getInteger(co.anitrend.arch.theme.R.integer.grid_list_x3)
             .times(multiplier)
+
+    fun mediaPreferenceData(
+        settings: IUserSettings
+    ): MediaPreferenceData = MediaPreferenceData(
+        scoreFormat = settings.scoreFormat.value
+    )
 }

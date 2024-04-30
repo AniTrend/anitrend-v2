@@ -34,13 +34,14 @@ import co.anitrend.core.android.helpers.image.toMediaRequestImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.android.recycler.model.RecyclerItemBinding
 import co.anitrend.core.android.settings.Settings
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MediaCompactItem(
     private val entity: Media,
-    private val settings: Settings
+    private val settings: IUserSettings
 ) : RecyclerItemBinding<MediaCompactItemBinding>(entity.id) {
 
     private var disposable: Disposable? = null
