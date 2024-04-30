@@ -16,7 +16,6 @@
  */
 package co.anitrend.deeplink.component.screen
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
@@ -28,8 +27,7 @@ import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.deeplink.databinding.DeepLinkScreenBinding
 import co.anitrend.deeplink.exception.DeepLinkException
-import com.kingsleyadio.deeplink.DeepLinkParser
-import com.kingsleyadio.deeplink.DeepLinkUri
+import co.anitrend.navigation.DeepLinkRouter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
@@ -39,7 +37,6 @@ import timber.log.Timber
 
 class DeepLinkScreen : AniTrendBoundScreen<DeepLinkScreenBinding>() {
     private val stateLayoutConfig by inject<StateLayoutConfig>()
-    private val router by inject<DeepLinkParser<Intent?>>()
 
     private fun handleIntentData() {
         when (val uri = intent.data) {
@@ -48,8 +45,7 @@ class DeepLinkScreen : AniTrendBoundScreen<DeepLinkScreenBinding>() {
                     LoadState.Error(DeepLinkException.MissingIntentData())
             }
             else -> {
-                val deepLinkUri = DeepLinkUri.parse(uri.toString())
-                val intent = router.parse(deepLinkUri)
+                val intent = DeepLinkRouter.forMatchingIntent(uri.toString())
                 if (intent == null) {
                     requireBinding().stateLayout.loadStateFlow.value =
                         LoadState.Error(DeepLinkException.InvalidScreenIntent())

@@ -17,6 +17,7 @@
 package co.anitrend.deeplink.component.route.contract
 
 import android.content.Intent
+import androidx.core.net.UriCompat
 import androidx.core.os.bundleOf
 import co.anitrend.core.android.extensions.analytics
 import co.anitrend.core.android.extensions.keys
@@ -24,6 +25,7 @@ import co.anitrend.core.android.extensions.tags
 import com.kingsleyadio.deeplink.BaseRoute
 import com.kingsleyadio.deeplink.DeepLinkUri
 import com.kingsleyadio.deeplink.Environment
+import com.kingsleyadio.deeplink.extension.toAndroidUri
 import timber.log.Timber
 
 /**
@@ -37,17 +39,18 @@ abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
      * @param params Variables available in the uri path e.g `segment/:param`
      * @param env Application environment
      */
-    override fun run(
-        uri: DeepLinkUri,
-        params: Map<String, String>,
-        env: Environment,
-    ): Intent? {
-        Timber.d("Deep link matcher found!")
+    override fun run(uri: DeepLinkUri, params: Map<String, String>, env: Environment): Intent? {
+        Timber.d("DeepLinkUri match hit: $uri")
         val entries = params.entries.joinToString()
         Timber.analytics {
             logCurrentState(
                 Timber.tags.view("deep_link"),
-                bundleOf(Timber.keys.DATA to uri.toString()),
+                bundleOf(
+                    Timber.keys.DATA to
+                    UriCompat.toSafeString(
+                        uri.toAndroidUri()
+                    )
+                ),
             )
         }
         Timber.d("Attempting to resolve -> uri: $uri | params: $entries")
