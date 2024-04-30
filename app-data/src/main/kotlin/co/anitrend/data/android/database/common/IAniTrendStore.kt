@@ -26,6 +26,8 @@ import co.anitrend.data.character.datasource.local.ICharacterStore
 import co.anitrend.data.customlist.datasource.ICustomListStore
 import co.anitrend.data.customscore.datasource.ICustomScoreStore
 import co.anitrend.data.edge.config.datasource.local.IEdgeConfigStore
+import co.anitrend.data.edge.genre.datasource.IEdgeGenreStore
+import co.anitrend.data.edge.navigation.datasource.IEdgeNavigationStore
 import co.anitrend.data.feed.episode.datasource.local.IEpisodeStore
 import co.anitrend.data.feed.news.datasource.local.INewsStore
 import co.anitrend.data.genre.datasource.local.IGenreStore
@@ -45,7 +47,7 @@ internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
     IRelationStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore, IUserStore,
     IMediaListStore, INewsStore, IEpisodeStore, ICharacterStore, IStaffStore, IStudioStore,
     ILinkStore, IRankStore, IJikanStore, ICustomListStore, ICustomScoreStore, IReviewStore,
-    IEdgeConfigStore {
+    IEdgeConfigStore, IEdgeGenreStore, IEdgeNavigationStore {
 
     companion object {
 
@@ -58,7 +60,8 @@ internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
             ICharacterStore::class, IStaffStore::class, IStudioStore::class,
             ILinkStore::class, IRankStore::class, IJikanStore::class,
             ICustomListStore::class, ICustomScoreStore::class,
-            IReviewStore::class, IEdgeConfigStore::class, RoomDatabase::class
+            IReviewStore::class, IEdgeConfigStore::class,
+            IEdgeGenreStore::class, IEdgeNavigationStore::class, RoomDatabase::class
         )
     }
 }

@@ -47,11 +47,11 @@ class SearchScreen : AniTrendScreen() {
                 ContentWrapper<IParam>(
                     stateFlow = FeatureReady.loadState,
                     config = FeatureReady.config,
-                    param = param ?: SearchRouter.SearchParam(),
+                    param = param,
                     onClick = {},
                 ) {
                     SearchScreenContent(
-                        query = param?.query.orEmpty(),
+                        query = param.query.orEmpty(),
                         onQueryChange = {},
                         onSearch = {},
                         active = false,

@@ -396,6 +396,19 @@ object MediaCarouselRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class MediaCarouselRouterParam(
+        val season: MediaSeason,
+        val seasonYear: Int,
+        val nextSeason: MediaSeason,
+        val nextSeasonYear: Int,
+        val isAdult: Boolean? = false,
+        val currentTime: Long,
+        val scoreFormat: ScoreFormat? = null,
+        val type: MediaType? = null,
+        val pageSize: Int
+    ) : IParam
 }
 
 object CharacterRouter : NavigationRouter() {
@@ -459,11 +472,7 @@ object StaffDiscoverRouter : NavigationRouter() {
 object ProfileRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
+    interface Provider : INavigationProvider
 
     @Parcelize
     data class ProfileParam(
@@ -607,7 +616,7 @@ object UpdaterRouter : NavigationRouter() {
         fun fragment(): Class<out Fragment>
     }
 
-    fun forFragment() = ProfileRouter.provider.fragment()
+    fun forFragment() = provider.fragment()
 }
 
 object MediaListRouter : NavigationRouter() {

@@ -6,16 +6,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EdgeNavigationModel(
-    @SerialName("id") val id: Long,
+    @SerialName("criteria") val criteria: String,
     @SerialName("destination") val destination: String,
-    @SerialName("i18n") val label: String,
+    @SerialName("group") val group: NavigationGroup,
+    @SerialName("i18n") val i18n: String,
     @SerialName("icon") val icon: String,
-    @SerialName("group") val group: Group,
 ) {
     @Serializable
-    data class Group(
+    data class NavigationGroup(
         @SerialName("authenticated") val authenticated: Boolean,
-        @SerialName("i18n") val label: String,
-        @SerialName("id") val id: Long,
+        @SerialName("i18n") val i18n: String,
     )
 }

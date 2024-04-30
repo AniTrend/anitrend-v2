@@ -28,6 +28,7 @@ import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.medialist.model.MediaListModel
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media

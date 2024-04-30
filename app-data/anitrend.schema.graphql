@@ -1,0 +1,231 @@
+# This file was generated. Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutations
+}
+
+"Airing information about the media"
+type Airing {
+  "Season the media was aired"
+  season: SeasonType!
+  "Url of the related item of this media"
+  status: StatusType
+  "Year the media was aired"
+  year: Int
+}
+
+"Other non-standard information for the media"
+type Attribute {
+  "Platform / Studio that produced this media"
+  contentProvider: String
+  "The number of episodes for this season"
+  episodeCount: Int
+  "If this media is considered to be for an adult audience"
+  isMature: Boolean
+  "The season number of this media entry"
+  seasonNumber: Int
+}
+
+"Client configuration"
+type Configuration {
+  "Genre and media connections"
+  genres: [Genre]
+  "Default image resources"
+  image: ImageResource
+  "Navigation configurations"
+  navigation: [Navigation]
+  "Configuration settings"
+  settings: Settings
+}
+
+type CreateMediaMutation {
+  media: Media
+}
+
+"Genre and media ID relation"
+type Genre {
+  "Related media ID"
+  mediaId: Int
+  "Genre title"
+  name: String
+}
+
+"Images for media items"
+type Image {
+  "Highest quality of banner image"
+  bannerExtraLarge: String
+  "Standard quality of banner image"
+  bannerLarge: String
+  "Highest quality of poster image"
+  poster: String
+}
+
+"Image resource properties"
+type ImageResource {
+  "Banner image URL"
+  banner: String
+  "Default image URL"
+  default: String
+  "Error image URL"
+  error: String
+  "Info image URL"
+  info: String
+  "Loading image URL"
+  loading: String
+  "Poster image URL"
+  poster: String
+}
+
+"Additional information for the media"
+type Information {
+  "Other titles"
+  alternativeTitles: [String]!
+  "Age ratings"
+  maturityRatings: [String]!
+  "Slug for the media, typically anime-planet or crunchyroll"
+  slug: String
+  "Synopsis for the media"
+  synopsis: String
+}
+
+"A representation of a media item"
+type Media {
+  "Airing information for the media"
+  airing: Airing!
+  attribute: Attribute!
+  id: ID!
+  "Images available for the media"
+  image: Image!
+  "Additional information for the media"
+  information: Information!
+  "Related media urls"
+  related: [String]!
+  "Other sources"
+  source: Source!
+  "Tags"
+  tags: [String]!
+  "Title of the media"
+  title: String!
+  "Media type"
+  type: MediaType!
+  "Last updated time"
+  updatedAt: DateTime!
+}
+
+type Mutations {
+  "Create a media entry"
+  createMedia(mediaData: MediaInput!): CreateMediaMutation
+}
+
+"Navigation configuration for an entry"
+type Navigation {
+  "Display criteria as semver"
+  criteria: String
+  "Target destination"
+  destination: String
+  "Associated group for this navigation item"
+  group: NavigationGroup
+  "Language resource associated with grouping"
+  i18n: String
+  "Image resource associated with the navigation item"
+  icon: String
+}
+
+"Category for a navigation item"
+type NavigationGroup {
+  "Should only display when viewer is authenticated"
+  authenticated: Boolean
+  "Language resource associated with grouping"
+  i18n: String
+}
+
+type Query {
+  "Client configuration"
+  config: Configuration
+  "Find a media item by filtering with an id"
+  media(
+    "AniDB Id"
+    anidb: Int,
+    "AniList Id"
+    anilist: Int,
+    "AnimePlanet Slug"
+    animeplanet: String,
+    "Media Id"
+    id: ID,
+    "Kitsu Id"
+    kitsu: Int,
+    "Mal Id"
+    mal: Int,
+    "Notify.moe Id"
+    notify: String,
+    "TVDB Id"
+    tvdb: Int
+  ): Media
+}
+
+"Client default settings"
+type Settings {
+  "Analytics enabled status"
+  analyticsEnabled: Boolean
+  "Upstream platform for additional services"
+  platformSource: String
+}
+
+"Other source ids of where this media can be found"
+type Source {
+  "Identifier for anidb"
+  anidb: Int
+  "Identifier for anilist"
+  anilist: Int
+  "Identifier for animeplanet"
+  animeplanet: String
+  "Identifier for crunchyroll"
+  crunchy: String
+  "Identifier for kitsu"
+  kitsu: Int
+  "Identifier for mal"
+  mal: Int
+  "Identifier for notify"
+  notify: String
+  "Identifier for trakt"
+  trakt: Int
+  "Identifier for tvdb"
+  tvdb: Int
+}
+
+"An enumeration."
+enum MediaType {
+  MOVIE
+  ONA
+  OVA
+  SPECIAL
+  TV
+}
+
+"An enumeration."
+enum SeasonType {
+  FALL
+  SPRING
+  SUMMER
+  WINTER
+}
+
+"An enumeration."
+enum StatusType {
+  FINISHED
+  NOT_YET_RELEASED
+  RELEASING
+}
+
+"""
+
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+input MediaInput {
+  id: ID
+}
