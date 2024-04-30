@@ -17,10 +17,11 @@
 package co.anitrend.deeplink.environment
 
 import android.content.Context
-import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
+import co.anitrend.core.android.environment.IAniTrendEnvironment
+import com.kingsleyadio.deeplink.Environment
 
 data class AniTrendEnvironment(
     override val context: Context,
     override val isAuthenticated: Boolean,
     override val userId: Long,
-) : IAniTrendEnvironment
+) : Environment, IAniTrendEnvironment
