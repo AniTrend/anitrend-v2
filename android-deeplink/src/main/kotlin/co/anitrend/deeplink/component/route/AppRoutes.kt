@@ -19,13 +19,13 @@ package co.anitrend.deeplink.component.route
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.UriCompat
+import co.anitrend.core.android.environment.IAniTrendEnvironment
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_ERROR_DESCRIPTION_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_ERROR_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_TYPE_KEY
 import co.anitrend.deeplink.component.route.contract.Route
-import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MainRouter
@@ -104,10 +104,9 @@ internal object ProfileRoute : Route("profile") {
         env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        env as IAniTrendEnvironment
         val payload =
             ProfileRouter.ProfileParam(
-                userId = env.userId,
+                userId = (env as IAniTrendEnvironment).userId,
             ).asNavPayload()
         return ProfileRouter.forActivity(env.context, payload)
     }

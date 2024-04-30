@@ -23,7 +23,10 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.status.enums.StatusType
 import co.anitrend.navigation.CharacterRouter
+import co.anitrend.navigation.FeedRouter
+import co.anitrend.navigation.ForumRouter
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.MediaRouter
@@ -61,6 +64,7 @@ internal object ForumDiscoverRoute : Route(
     "forum/:category",
     "forum/recent/:category",
 ) {
+
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
@@ -93,8 +97,10 @@ internal object ActivityRoute : Route(
                 ).asNavPayload()
             MainRouter.forActivity(env.context, payload)
         } else {
-            TODO("Feed details deep linking not supported yet")
-            // FeedRouter.forActivity(env.context)
+            val payload = FeedRouter.FeedParam(
+                id = id.toLongOrNull()
+            ).asNavPayload()
+            FeedRouter.forActivity(env.context, payload)
         }
     }
 }
@@ -108,7 +114,10 @@ internal object ForumRoute : Route(
         env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        TODO("Forum detail deep linking not yet supported yet")
+        val payload = ForumRouter.ForumParam(
+            id = params["id"]?.toLongOrNull(),
+        ).asNavPayload()
+        return ForumRouter.forActivity(env.context, payload)
     }
 }
 
@@ -146,7 +155,7 @@ internal object CharacterRoute : Route(
         super.run(uri, params, env)
         val payload =
             CharacterRouter.CharacterParam(
-                id = params["id"]?.toLong(),
+                id = params["id"]?.toLongOrNull(),
                 name = params["name"],
             ).asNavPayload()
         return CharacterRouter.forActivity(env.context, payload)
@@ -165,7 +174,7 @@ internal object StudioRoute : Route(
         super.run(uri, params, env)
         val payload =
             StudioRouter.StudioParam(
-                id = requireNotNull(params["id"]?.toLong()),
+                id = params["id"]?.toLongOrNull(),
             ).asNavPayload()
         return StudioRouter.forActivity(env.context, payload)
     }
@@ -185,7 +194,7 @@ internal object StaffRoute : Route(
         super.run(uri, params, env)
         val payload =
             StaffRouter.StaffParam(
-                id = params["id"]?.toLong(),
+                id = params["id"]?.toLongOrNull(),
                 name = params["name"],
             ).asNavPayload()
         return StaffRouter.forActivity(env.context, payload)
@@ -260,7 +269,7 @@ internal object MediaListRoute : Route(
             when (identifier?.isDigitsOnly()) {
                 true ->
                     MediaListRouter.MediaListParam(
-                        userId = identifier.toLong(),
+                        userId = identifier.toLongOrNull(),
                         type = mediaType,
                     ).asNavPayload()
                 else ->
@@ -287,7 +296,7 @@ internal object UserRoute : Route(
             when (identifier?.isDigitsOnly()) {
                 true ->
                     ProfileRouter.ProfileParam(
-                        userId = identifier.toLong(),
+                        userId = identifier.toLongOrNull(),
                     ).asNavPayload()
                 else ->
                     ProfileRouter.ProfileParam(
@@ -313,7 +322,7 @@ internal object UserStatsRoute : Route(
             when (identifier?.isDigitsOnly()) {
                 true ->
                     ProfileRouter.ProfileParam(
-                        userId = identifier.toLong(),
+                        userId = identifier.toLongOrNull(),
                     ).asNavPayload()
                 else ->
                     ProfileRouter.ProfileParam(
@@ -338,7 +347,7 @@ internal object UserFavouritesRoute : Route(
             when (identifier?.isDigitsOnly()) {
                 true ->
                     ProfileRouter.ProfileParam(
-                        userId = identifier.toLong(),
+                        userId = identifier.toLongOrNull(),
                     ).asNavPayload()
                 else ->
                     ProfileRouter.ProfileParam(
@@ -363,7 +372,7 @@ internal object UserReviewRoute : Route(
             when (identifier?.isDigitsOnly()) {
                 true ->
                     ProfileRouter.ProfileParam(
-                        userId = identifier.toLong(),
+                        userId = identifier.toLongOrNull(),
                     ).asNavPayload()
                 else ->
                     ProfileRouter.ProfileParam(
