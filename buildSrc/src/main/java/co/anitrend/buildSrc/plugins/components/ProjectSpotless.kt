@@ -26,27 +26,28 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     val withLicenseHeader: (String) -> File = { extension ->
         rootProject.file("spotless/copyright$extension")
     }
+    val buildDirectory = layout.buildDirectory.get()
     kotlin {
         target("**/*.kt")
-        targetExclude("**/build/**/*.kt")
-        ktlint(libs.versions.ktlint.get())
+        targetExclude("${buildDirectory}/**/*.kt",)
+        ktlint(libs.pintrest.ktlint.get().version)
         licenseHeaderFile(
             withLicenseHeader(".kt")
         )
     }
     kotlinGradle {
         target("**/*.kts")
-        targetExclude("**/build/**/*.kts")
+        targetExclude("${buildDirectory}/**/*.kts")
         licenseHeaderFile(withLicenseHeader(".kts"), "(^(?![\\/ ]\\*).*$)")
     }
     format("xml") {
         target("**/*.xml")
-        targetExclude("**/build/**/*.xml")
+        targetExclude("${buildDirectory}/**/*.xml")
         licenseHeaderFile(withLicenseHeader(".xml"), "(<[^!?])")
     }
     format("properties") {
         target("**/*.properties")
-        targetExclude("**/build/**/*.properties")
+        targetExclude("${buildDirectory}/*.properties")
         licenseHeaderFile(withLicenseHeader(".properties"), "(^(#).*\$)")
     }
 }
