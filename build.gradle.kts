@@ -41,5 +41,5 @@ allprojects {
 }
 
 tasks.create("clean", Delete::class) {
-    delete(rootProject.layout.buildDirectory)
+    delete(rootProject.layout.buildDirectory.get())
 }

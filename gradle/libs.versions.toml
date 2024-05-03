@@ -1,5 +1,5 @@
 [versions]
-ktlint = "1.0.1"
+ktlint = "1.1.1"
 
 gradle-plugin = "8.5.1"
 
@@ -335,3 +335,5 @@ square-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gs
 square-retrofit-converter-simplexml = { module = "com.squareup.retrofit2:converter-simplexml", version.ref = "square-retrofit" }
 
 spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.25.0" }
+
+pintrest-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
