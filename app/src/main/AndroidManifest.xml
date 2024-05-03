@@ -68,9 +68,6 @@
             tools:node="merge">
             <meta-data  android:name="co.anitrend.initializer.ApplicationInitializer"
                 android:value="androidx.startup" />
-            <!-- Disable automatic startup for emojify -->
-            <meta-data android:name="io.wax911.emojify.initializer.EmojiInitializer"
-                tools:node="remove" />
             <meta-data android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />

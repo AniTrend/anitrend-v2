@@ -24,8 +24,6 @@ dependencies {
     /** Material Design */
     implementation(libs.google.android.material)
 
-    implementation(libs.anitrend.emojify)
-
     googleImplementation(libs.google.android.gsm.playServicesOssLicenses)
     googleImplementation(libs.google.firebase.messaging.ktx)
 }

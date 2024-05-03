@@ -28,7 +28,7 @@ androidx-test-ext = "1.1.5"
 androidx-work = "2.9.0"
 
 anitrend-arch = "1.7.7"
-anitrend-emojify = "1.7.1"
+anitrend-emojify = "1.9.1"
 anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
 anitrend-retrofit = "0.11.0-beta03"
@@ -195,7 +195,9 @@ anitrend-arch-request = { module = "com.github.anitrend.support-arch:request", v
 anitrend-arch-paging-legacy = { module = "com.github.anitrend.support-arch:paging-legacy", version.ref = "anitrend-arch" }
 anitrend-arch-recycler-paging-legacy = { module = "com.github.anitrend.support-arch:recycler-paging-legacy", version.ref = "anitrend-arch" }
 
-anitrend-emojify = { module = "com.github.anitrend:android-emojify", version.ref = "anitrend-emojify" }
+anitrend-emojify = { module = "com.github.anitrend.android-emojify:emojify", version.ref = "anitrend-emojify" }
+anitrend-emojify-contract = { module = "com.github.anitrend.android-emojify:contract", version.ref = "anitrend-emojify" }
+anitrend-emojify-kotlinx = { module = "com.github.anitrend.android-emojify:kotlinx", version.ref = "anitrend-emojify" }
 anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.ref = "anitrend-markdown" }
 anitrend-material = { module = "com.github.anitrend:material-multi-search", version.ref = "anitrend-material" }
 anitrend-retrofit-graphql = { module = "com.github.anitrend:retrofit-graphql", version.ref = "anitrend-retrofit" }

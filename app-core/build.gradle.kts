@@ -30,6 +30,9 @@ dependencies {
     implementation(libs.androidx.browser)
 
     implementation(libs.anitrend.emojify)
+    implementation(libs.anitrend.emojify.contract)
+    implementation(libs.anitrend.emojify.kotlinx)
+
 
     implementation(libs.square.okhttp.logging)
 

@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.cash.copper)
 
     implementation(libs.anitrend.emojify)
+    implementation(libs.anitrend.emojify.contract)
 
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
