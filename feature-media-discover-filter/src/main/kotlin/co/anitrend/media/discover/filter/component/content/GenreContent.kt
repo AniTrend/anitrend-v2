@@ -44,7 +44,7 @@ internal class GenreContent(
     }
 ) : AniTrendSelectionContent<MediaDiscoverFilterGenreBinding, Genre>() {
 
-    private val param by argument(MediaDiscoverRouter.MediaDiscoverParam())
+    private val param by argument(MediaDiscoverRouter::MediaDiscoverParam)
 
     private val viewModel by viewModel<GenreViewModel>()
 
