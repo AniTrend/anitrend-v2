@@ -30,7 +30,7 @@ internal class ScreenState(
 ) : IScreenState {
 
     private val navigationDestination by savedStateHandle.extra(
-        NavigationDrawerRouter.Destination.HOME
+        default = { NavigationDrawerRouter.Destination.HOME }
     )
 
     var shouldExit: Boolean = false

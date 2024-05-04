@@ -44,7 +44,7 @@ internal class TagContent(
     }
 ) : AniTrendSelectionContent<MediaDiscoverFilterTagBinding, Tag>() {
 
-    private val param by argument(MediaDiscoverRouter.MediaDiscoverParam())
+    private val param by argument(MediaDiscoverRouter::MediaDiscoverParam)
 
     private val viewModel by viewModel<TagViewModel>()
 

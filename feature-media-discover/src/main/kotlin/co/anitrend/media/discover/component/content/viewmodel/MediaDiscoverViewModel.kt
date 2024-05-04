@@ -44,7 +44,7 @@ class MediaDiscoverViewModel(
     }
 
     val default by savedStateHandle.extra(
-        MediaDiscoverRouter.MediaDiscoverParam()
+        MediaDiscoverRouter::MediaDiscoverParam
     )
 
     val filter = MutableLiveData(default)
