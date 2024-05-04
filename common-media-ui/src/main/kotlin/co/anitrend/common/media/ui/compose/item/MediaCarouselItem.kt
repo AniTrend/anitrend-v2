@@ -111,7 +111,7 @@ fun MediaCarouselItem(
     ) {
         items(
             count = carouselItems.size,
-            key = { carouselItems[it].id },
+            key = { carouselItems[it].hashCode() },
             contentType = { carouselItems[it].carouselType },
         ) { index ->
             val carouselItem = carouselItems[index]

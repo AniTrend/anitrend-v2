@@ -8,6 +8,7 @@ import co.anitrend.common.media.ui.compose.item.MediaCarouselItem
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
 import co.anitrend.navigation.model.common.IParam
 
@@ -32,10 +33,10 @@ fun CarouselScreen(
 @Composable
 private fun CarouselScreenPreview() {
     PreviewTheme(wrapInSurface = true) {
-        //MediaCarouselItem(
-        //    carouselItems = emptyList(),
-        //    settings = settings,
-        //    headerSeeMoreClick = {},
-        //)
+        MediaCarouselItem(
+            carouselItems = emptyList(),
+            mediaPreferenceData = MediaPreferenceData(scoreFormat = ScoreFormat.POINT_100),
+            carouselItemClick = {},
+        )
     }
 }
