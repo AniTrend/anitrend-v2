@@ -33,7 +33,7 @@ anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
 anitrend-retrofit = "0.11.0-beta03"
 anitrend-sync = "0.1.0-alpha01"
-anitrend-querybuilder = "0.2.3"
+anitrend-querybuilder = "0.2.4"
 
 airbnb-lottie = "6.4.0"
 airbnb-paris = "2.0.2"
