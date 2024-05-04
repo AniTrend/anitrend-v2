@@ -1,6 +1,4 @@
-schema:
-  - anilist.schema.graphql
-  - anitrend.schema.graphql
+schema: schema.graphql
 documents: 'src/main/assets/graphql/*.graphql'
 extensions:
   endpoints:
