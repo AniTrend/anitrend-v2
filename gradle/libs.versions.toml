@@ -243,7 +243,7 @@ google-firebase-core = { module = "com.google.firebase:firebase-core", version =
 google-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.0.0" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "19.0.0" }
 google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "3.0.0" }
-google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "23.4.1" }
+google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "24.0.0" }
 
 google-flexbox = { module = "com.google.android:flexbox", version = "2.0.1" }
 
