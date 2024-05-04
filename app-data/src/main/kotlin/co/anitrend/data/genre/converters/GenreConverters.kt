@@ -22,7 +22,7 @@ import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.domain.genre.entity.Genre
-import io.wax911.emojify.manager.IEmojiManager
+import io.wax911.emojify.EmojiManager
 
 internal class GenreEntityConverter(
     override val fromType: (GenreEntity) -> Genre = ::transform,
@@ -38,19 +38,19 @@ internal class GenreEntityConverter(
 }
 
 internal class GenreModelConverter(
-    emojiManager: IEmojiManager,
+    emojiManager: EmojiManager,
     override val fromType: (GenreCollection.GenreModel) -> GenreEntity = { transform(it, emojiManager) },
     override val toType: (GenreEntity) -> GenreCollection.GenreModel = { throw NotImplementedError() }
 ) : SupportConverter<GenreCollection.GenreModel, GenreEntity>() {
 
     private companion object {
 
-        fun IEmojiManager.withAlias(alias: String): String {
+        fun EmojiManager.withAlias(alias: String): String {
             val emoji = getForAlias(alias)
             return emoji?.emoji.orEmpty()
         }
 
-        fun IEmojiManager.getEmojiFor(genre: String): String {
+        fun EmojiManager.getEmojiFor(genre: String): String {
             return when (genre) {
                 "Action" -> withAlias("cowboy")
                 "Adventure" -> withAlias("rocket")
@@ -75,7 +75,7 @@ internal class GenreModelConverter(
             }
         }
 
-        fun transform(source: GenreCollection.GenreModel, emojiManager: IEmojiManager) = GenreEntity(
+        fun transform(source: GenreCollection.GenreModel, emojiManager: EmojiManager) = GenreEntity(
             id = source.id,
             genre = source.genre,
             emoji = emojiManager.getEmojiFor(

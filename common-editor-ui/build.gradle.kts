@@ -23,6 +23,7 @@ dependencies {
 	implementation(libs.markwon.core)
 	implementation(libs.markwon.editor)
 	implementation(libs.anitrend.emojify)
+    implementation(libs.anitrend.emojify.contract)
 }
 
 android {

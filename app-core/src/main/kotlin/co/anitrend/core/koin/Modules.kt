@@ -43,8 +43,8 @@ import coil.decode.SvgDecoder
 import coil.decode.VideoFrameDecoder
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
-import io.wax911.emojify.initializer.EmojiInitializer
-import io.wax911.emojify.manager.IEmojiManager
+import io.wax911.emojify.EmojiManager
+import io.wax911.emojify.serializer.kotlinx.KotlinxDeserializer
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -93,9 +93,11 @@ private val coreModule = module {
             )
     }
     factory {
-        AppInitializer.getInstance(androidContext())
-            .initializeComponent(EmojiInitializer::class.java)
-    } bind IEmojiManager::class
+        EmojiManager.create(
+            context = androidContext(),
+            serializer = KotlinxDeserializer()
+        )
+    }
 }
 
 private val configurationModule = module {
