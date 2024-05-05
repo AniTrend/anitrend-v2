@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.controller.model
 
 import android.content.res.Resources
@@ -50,118 +49,125 @@ import org.threeten.bp.Instant
 internal class MediaCarouselItem(
     private val entity: MediaCarousel,
     private val settings: Settings,
-    private val viewPool: RecyclerView.RecycledViewPool
+    private val viewPool: RecyclerView.RecycledViewPool,
 ) : RecyclerItemBinding<MediaCarouselItemBinding>(entity.id) {
-
     private fun setUpCarouselItems(view: View) {
-        val mediaItemAdapter = MediaCompactAdapter(
-            settings = settings,
-            resources = view.resources,
-            customSupportAnimator = null,
-            stateConfiguration = StateLayoutConfig()
-        )
+        val mediaItemAdapter =
+            MediaCompactAdapter(
+                settings = settings,
+                resources = view.resources,
+                customSupportAnimator = null,
+                stateConfiguration = StateLayoutConfig(),
+            )
 
         requireBinding().mediaCarouselRecycler.setUpWith(
             supportAdapter = mediaItemAdapter,
-            recyclerViewPool = viewPool
+            recyclerViewPool = viewPool,
         )
 
         mediaItemAdapter.submitList(entity.mediaItems)
     }
 
-    private fun createQueryParam(): IParam = when (entity.carouselType) {
-        MediaCarousel.CarouselType.AIRING_SOON -> {
-            binding?.mediaCarouselTitle?.setText(R.string.label_carousel_airing_anime)
-            binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
-            AiringRouter.AiringParam(
-                airingAt_greater = (Instant.now().epochSecond).toInt(),
-                sort = listOf(AiringSort.TIME,).map {
-                    Sorting(it, SortOrder.ASC)
-                },
-            )
-        }
-        MediaCarousel.CarouselType.ALL_TIME_POPULAR -> {
-            if (entity.mediaType == MediaType.ANIME) {
-                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_anime)
-                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_anime_description)
-            } else {
-                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manga)
-                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manga_description)
+    private fun createQueryParam(): IParam =
+        when (entity.carouselType) {
+            MediaCarousel.CarouselType.AIRING_SOON -> {
+                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_airing_anime)
+                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_airing_anime_description)
+                AiringRouter.AiringParam(
+                    airingAt_greater = (Instant.now().epochSecond).toInt(),
+                    sort =
+                        listOf(AiringSort.TIME).map {
+                            Sorting(it, SortOrder.ASC)
+                        },
+                )
             }
-            MediaDiscoverRouter.MediaDiscoverParam(
-                type = entity.mediaType,
-                sort = listOf(MediaSort.POPULARITY).map {
-                    Sorting(it, SortOrder.DESC)
-                },
-            )
-        }
-        MediaCarousel.CarouselType.TRENDING_RIGHT_NOW -> {
-            if (entity.mediaType == MediaType.ANIME) {
-                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_trending_anime)
-                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_trending_anime_description)
-            } else {
-                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_trending_manga)
-                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_trending_manga_description)
-
+            MediaCarousel.CarouselType.ALL_TIME_POPULAR -> {
+                if (entity.mediaType == MediaType.ANIME) {
+                    binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_anime)
+                    binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_anime_description)
+                } else {
+                    binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manga)
+                    binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manga_description)
+                }
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    type = entity.mediaType,
+                    sort =
+                        listOf(MediaSort.POPULARITY).map {
+                            Sorting(it, SortOrder.DESC)
+                        },
+                )
             }
-            MediaDiscoverRouter.MediaDiscoverParam(
-                type = entity.mediaType,
-                sort = listOf(MediaSort.TRENDING).map {
-                    Sorting(it, SortOrder.DESC)
-                },
-            )
-        }
-        MediaCarousel.CarouselType.POPULAR_THIS_SEASON -> {
-            binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_season_anime)
-            binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_season_anime_description)
-            MediaDiscoverRouter.MediaDiscoverParam(
-                type = entity.mediaType,
-                sort = listOf(MediaSort.POPULARITY).map {
-                    Sorting(it, SortOrder.DESC)
-                },
-                season = entity.mediaItems.firstOrNull()?.season,
-                seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
-            )
-        }
-        MediaCarousel.CarouselType.RECENTLY_ADDED -> {
-            if (entity.mediaType == MediaType.ANIME) {
-                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_recently_added_anime)
-                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_anime_description)
-            } else {
-                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_recently_added_manga)
-                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_manga_description)
+            MediaCarousel.CarouselType.TRENDING_RIGHT_NOW -> {
+                if (entity.mediaType == MediaType.ANIME) {
+                    binding?.mediaCarouselTitle?.setText(R.string.label_carousel_trending_anime)
+                    binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_trending_anime_description)
+                } else {
+                    binding?.mediaCarouselTitle?.setText(R.string.label_carousel_trending_manga)
+                    binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_trending_manga_description)
+                }
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    type = entity.mediaType,
+                    sort =
+                        listOf(MediaSort.TRENDING).map {
+                            Sorting(it, SortOrder.DESC)
+                        },
+                )
             }
-            MediaDiscoverRouter.MediaDiscoverParam(
-                type = entity.mediaType,
-                sort = listOf(MediaSort.ID).map {
-                    Sorting(it, SortOrder.DESC)
-                },
-            )
+            MediaCarousel.CarouselType.POPULAR_THIS_SEASON -> {
+                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_season_anime)
+                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_season_anime_description)
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    type = entity.mediaType,
+                    sort =
+                        listOf(MediaSort.POPULARITY).map {
+                            Sorting(it, SortOrder.DESC)
+                        },
+                    season = entity.mediaItems.firstOrNull()?.season,
+                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
+                )
+            }
+            MediaCarousel.CarouselType.RECENTLY_ADDED -> {
+                if (entity.mediaType == MediaType.ANIME) {
+                    binding?.mediaCarouselTitle?.setText(R.string.label_carousel_recently_added_anime)
+                    binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_anime_description)
+                } else {
+                    binding?.mediaCarouselTitle?.setText(R.string.label_carousel_recently_added_manga)
+                    binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_recently_added_manga_description)
+                }
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    type = entity.mediaType,
+                    sort =
+                        listOf(MediaSort.ID).map {
+                            Sorting(it, SortOrder.DESC)
+                        },
+                )
+            }
+            MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON -> {
+                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_anticipated_anime)
+                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_anticipated_anime_description)
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    type = entity.mediaType,
+                    sort =
+                        listOf(MediaSort.POPULARITY).map {
+                            Sorting(it, SortOrder.DESC)
+                        },
+                    season = entity.mediaItems.firstOrNull()?.season,
+                    seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
+                )
+            }
+            MediaCarousel.CarouselType.POPULAR_MANHWA -> {
+                binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manhwa)
+                binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manhwa_description)
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    type = entity.mediaType,
+                    sort =
+                        listOf(MediaSort.POPULARITY).map {
+                            Sorting(it, SortOrder.DESC)
+                        },
+                    countryOfOrigin = entity.mediaItems.firstOrNull()?.countryCode,
+                )
+            }
         }
-        MediaCarousel.CarouselType.ANTICIPATED_NEXT_SEASON -> {
-            binding?.mediaCarouselTitle?.setText(R.string.label_carousel_anticipated_anime)
-            binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_anticipated_anime_description)
-            MediaDiscoverRouter.MediaDiscoverParam(
-                type = entity.mediaType,
-                sort = listOf(MediaSort.POPULARITY).map {
-                    Sorting(it, SortOrder.DESC)
-                },
-                season = entity.mediaItems.firstOrNull()?.season,
-                seasonYear = entity.mediaItems.firstOrNull()?.startDate?.year,
-            )
-        }
-        MediaCarousel.CarouselType.POPULAR_MANHWA -> {
-            binding?.mediaCarouselTitle?.setText(R.string.label_carousel_popular_manhwa)
-            binding?.mediaCarouselSubTitle?.setText(R.string.label_carousel_popular_manhwa_description)
-            MediaDiscoverRouter.MediaDiscoverParam(
-                type = entity.mediaType,
-                sort = listOf(MediaSort.POPULARITY).map {
-                    Sorting(it, SortOrder.DESC)
-                },
-                countryOfOrigin = entity.mediaItems.firstOrNull()?.countryCode,
-            )
-        }
-    }
 
     private fun setUpHeadings() {
         val query: IParam = createQueryParam()
@@ -170,13 +176,13 @@ internal class MediaCarouselItem(
                 is MediaDiscoverRouter.MediaDiscoverParam -> {
                     MediaDiscoverRouter.startActivity(
                         context = it.context,
-                        navPayload = query.asNavPayload()
+                        navPayload = query.asNavPayload(),
                     )
                 }
                 is AiringRouter.AiringParam -> {
                     AiringRouter.startActivity(
                         context = it.context,
-                        navPayload = query.asNavPayload()
+                        navPayload = query.asNavPayload(),
                     )
                 }
             }
@@ -198,7 +204,7 @@ internal class MediaCarouselItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = MediaCarouselItemBinding.bind(view)
         setUpHeadings()
@@ -215,7 +221,7 @@ internal class MediaCarouselItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ): Int = FULL_SPAN_SIZE
 
     /**
@@ -228,10 +234,11 @@ internal class MediaCarouselItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createCarouselViewHolder(
-            viewGroup: ViewGroup
-        ) = MediaCarouselItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createCarouselViewHolder(viewGroup: ViewGroup) =
+            MediaCarouselItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

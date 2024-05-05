@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.components.sheet.action.contract
 
 import android.view.View
@@ -23,5 +22,8 @@ import android.view.View
  * An action to be performed when a bottom sheet's state is changed.
  */
 interface OnStateChangedAction {
-    fun onStateChanged(sheet: View, newState: Int)
+    fun onStateChanged(
+        sheet: View,
+        newState: Int,
+    )
 }

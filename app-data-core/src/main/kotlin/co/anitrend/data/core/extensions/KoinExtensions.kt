@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.extensions
 
 import co.anitrend.data.core.BuildConfig
@@ -39,7 +38,7 @@ import org.koin.mp.KoinPlatformTools
  */
 inline fun <reified T> koinOf(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ): T {
     val context = KoinPlatformTools.defaultContext()
     val koin = context.get()
@@ -49,25 +48,28 @@ inline fun <reified T> koinOf(
 /**
  * Facade for supplying retrofit interface types
  */
-inline fun <reified T> Scope.api(factory: IEndpointFactory): T =
-    RetrofitProvider.provide(this, factory).create(T::class.java)
+inline fun <reified T> Scope.api(factory: IEndpointFactory): T = RetrofitProvider.provide(this, factory).create(T::class.java)
 
 /**
  * Facade for [OkHttpClient.Builder]
  */
 fun Scope.defaultBuilder(excludeHeaders: Set<String> = emptySet()): OkHttpClient.Builder {
-    val builder = get<OkHttpClient.Builder> {
-        parametersOf(
-            if (BuildConfig.DEBUG)
-                HttpLoggingInterceptor.Level.HEADERS
-            else HttpLoggingInterceptor.Level.NONE
-        )
-    }
-    if (BuildConfig.DEBUG)
+    val builder =
+        get<OkHttpClient.Builder> {
+            parametersOf(
+                if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.HEADERS
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
+                },
+            )
+        }
+    if (BuildConfig.DEBUG) {
         builder.addInterceptor(
             get<ChuckerInterceptor> {
                 parametersOf(excludeHeaders)
-            }
+            },
         )
+    }
     return builder
 }

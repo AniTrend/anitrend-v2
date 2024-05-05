@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.provider
 
 import android.content.Context
@@ -23,6 +22,5 @@ import co.anitrend.about.component.screen.AboutScreen
 import co.anitrend.navigation.AboutRouter
 
 internal class FeatureProvider : AboutRouter.Provider {
-    override fun activity(context: Context?) =
-        Intent(context, AboutScreen::class.java)
+    override fun activity(context: Context?) = Intent(context, AboutScreen::class.java)
 }

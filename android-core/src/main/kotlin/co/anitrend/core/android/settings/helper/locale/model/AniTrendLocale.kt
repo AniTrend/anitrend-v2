@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.helper.locale.model
 
 import co.anitrend.arch.extension.ext.empty
@@ -36,26 +35,28 @@ enum class AniTrendLocale(val language: String, val country: String? = null) {
     AUTOMATIC(String.empty()),
     GERMAN_GERMANY(
         language = Locale.GERMAN.language,
-        country = Locale.GERMAN.country
+        country = Locale.GERMAN.country,
     ),
     ITALIAN_ITALY(
         language = Locale.ITALY.language,
-        country = Locale.ITALY.country
+        country = Locale.ITALY.country,
     ),
     FRENCH_FRANCE(
         language = Locale.FRANCE.language,
-        country = Locale.FRANCE.country
-    );
+        country = Locale.FRANCE.country,
+    ),
+    ;
 
     companion object {
         fun Locale.asLocaleString() = "$language$country"
 
-        fun AniTrendLocale.asLocaleString() = when (this) {
-            AUTOMATIC -> {
-                val default = Locale.getDefault()
-                default.asLocaleString()
+        fun AniTrendLocale.asLocaleString() =
+            when (this) {
+                AUTOMATIC -> {
+                    val default = Locale.getDefault()
+                    default.asLocaleString()
+                }
+                else -> "$language$country"
             }
-            else -> "$language$country"
-        }
     }
 }

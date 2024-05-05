@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
@@ -42,7 +41,7 @@ internal class GenreContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_genre,
     override val bindingMapper: (View) -> MediaDiscoverFilterGenreBinding = {
         MediaDiscoverFilterGenreBinding.bind(it)
-    }
+    },
 ) : AniTrendSelectionContent<MediaDiscoverFilterGenreBinding, Genre>() {
 
     private val param by argument(
@@ -57,9 +56,10 @@ internal class GenreContent(
         if (supportViewAdapter.isEmpty()) {
             val items = param.genre_in.combine(param.genre)
 
-            val selectedIds = genres.union(items) { p, s ->
-                s == p.name
-            }.map(Genre::id)
+            val selectedIds =
+                genres.union(items) { p, s ->
+                    s == p.name
+                }.map(Genre::id)
 
             supportViewAdapter.supportAction?.selectAllItems(selectedIds)
         }
@@ -100,7 +100,10 @@ internal class GenreContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         requireBinding().genresRecyclerSelection.configure()
     }

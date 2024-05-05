@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.initializer.injector.extensions
 
 import android.util.Log
@@ -29,17 +28,21 @@ import org.koin.core.logger.Level
 import org.koin.fileProperties
 
 private fun KoinApplication.createWorkManagerFactory() {
-    val factory = DelegatingWorkerFactory()
-        .apply {
-            addFactory(WorkManagerFactory())
-        }
+    val factory =
+        DelegatingWorkerFactory()
+            .apply {
+                addFactory(WorkManagerFactory())
+            }
 
-    val configuration = Configuration.Builder()
-        .setWorkerFactory(factory)
+    val configuration =
+        Configuration.Builder()
+            .setWorkerFactory(factory)
 
-    if (BuildConfig.DEBUG)
+    if (BuildConfig.DEBUG) {
         configuration.setMinimumLoggingLevel(Log.VERBOSE)
-    else configuration.setMinimumLoggingLevel(Log.WARN)
+    } else {
+        configuration.setMinimumLoggingLevel(Log.WARN)
+    }
 
     WorkManager.initialize(koin.get(), configuration.build())
 }

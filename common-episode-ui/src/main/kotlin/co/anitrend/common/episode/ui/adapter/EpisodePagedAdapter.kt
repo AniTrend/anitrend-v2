@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.episode.ui.adapter
 
 import android.content.res.Resources
@@ -36,9 +35,8 @@ class EpisodePagedAdapter(
     override val stateConfiguration: IStateLayoutConfig,
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Episode) -> IRecyclerItem = { EpisodeItem(it) },
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportPagedListAdapter<Episode>(EpisodeDiffUtil) {
-
     /**
      * Should provide the required view holder, this function is a substitute for
      * [androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder] which now
@@ -47,6 +45,6 @@ class EpisodePagedAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ) = layoutInflater.createViewHolder(parent)
 }

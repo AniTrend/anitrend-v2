@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.analytics
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import co.anitrend.data.settings.privacy.IPrivacySettings
 import co.anitrend.arch.analytics.contract.ISupportAnalytics
+import co.anitrend.data.settings.privacy.IPrivacySettings
 import timber.log.Timber
 
 /**
@@ -29,35 +27,37 @@ import timber.log.Timber
  */
 class AnalyticsTree(
     context: Context,
-    settings: IPrivacySettings
+    settings: IPrivacySettings,
 ) : ISupportAnalytics, Timber.Tree() {
-
     /**
      * Clears any set parameters used for logging
      */
     override fun clearCrashAnalyticsSession() {
-
     }
 
     /**
      * Handles logging of an analytic service with the [priority] defaulted to [Log.WARN]
      */
-    override fun log(priority: Int, tag: String?, message: String) {
-
+    override fun log(
+        priority: Int,
+        tag: String?,
+        message: String,
+    ) {
     }
 
     /**
      * Handles logging the current state of a visited screen using an explicit [bundle]
      */
-    override fun logCurrentState(tag: String, bundle: Bundle?) {
-
+    override fun logCurrentState(
+        tag: String,
+        bundle: Bundle?,
+    ) {
     }
 
     /**
      * Handles logging of exceptions to an analytic service
      */
     override fun logException(throwable: Throwable) {
-
     }
 
     /**
@@ -65,7 +65,6 @@ class AnalyticsTree(
      * associated with a user name or some other identifier
      */
     override fun setCrashAnalyticIdentifier(identifier: String) {
-
     }
 
     /**
@@ -76,7 +75,11 @@ class AnalyticsTree(
      * @param message Formatted log message. May be `null`, but then `t` will not be.
      * @param t Accompanying exceptions. May be `null`, but then `message` will not be.
      */
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-
+    override fun log(
+        priority: Int,
+        tag: String?,
+        message: String,
+        t: Throwable?,
+    ) {
     }
 }

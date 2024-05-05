@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import android.content.Intent
@@ -29,11 +28,12 @@ import androidx.viewpager2.widget.ViewPager2
 import timber.log.Timber
 
 fun View.startViewIntent(url: String) {
-    val intent = Intent().apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        action = Intent.ACTION_VIEW
-        data = url.toUri()
-    }
+    val intent =
+        Intent().apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            action = Intent.ACTION_VIEW
+            data = url.toUri()
+        }
     runCatching {
         context.startActivity(intent)
     }.onFailure { Timber.w(it) }
@@ -53,7 +53,9 @@ fun View.setTooltip(tooltipText: String) {
  *
  * @param tooltipText the tooltip text
  */
-fun View.setTooltip(@StringRes tooltipText: Int) {
+fun View.setTooltip(
+    @StringRes tooltipText: Int,
+) {
     setTooltip(context.getString(tooltipText))
 }
 

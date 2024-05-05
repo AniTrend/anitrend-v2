@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.review.ui.controller.model
 
 import android.content.res.Resources
@@ -32,9 +31,8 @@ import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ReviewCompactItem(
-    private val entity: Review
+    private val entity: Review,
 ) : RecyclerItemBinding<ReviewCompactItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -52,7 +50,7 @@ internal class ReviewCompactItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = ReviewCompactItemBinding.bind(view)
     }
@@ -77,14 +75,15 @@ internal class ReviewCompactItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x1)
 
     companion object {
-        internal fun LayoutInflater.createReviewCompatItemViewHolder(
-            viewGroup: ViewGroup
-        ) = ReviewCompactItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createReviewCompatItemViewHolder(viewGroup: ViewGroup) =
+            ReviewCompactItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

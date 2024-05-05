@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.component.container
 
 import android.os.Bundle
@@ -43,22 +42,22 @@ import timber.log.Timber
 class MediaListContainer(
     private val stateConfig: StateLayoutConfig,
     override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
-    override val inflateLayout: Int = R.layout.media_list_container
+    override val inflateLayout: Int = R.layout.media_list_container,
 ) : AniTrendContent<MediaListContainerBinding>() {
-
     private val viewModel by stateViewModel<UserViewModel>(
-        state = { arguments.orEmpty() }
+        state = { arguments.orEmpty() },
     )
 
     private fun updateViewPagerState(mediaListInfo: List<MediaListInfo>) {
         if (requireBinding().viewPager.adapter?.itemCount != mediaListInfo.size) {
-            requireBinding().viewPager.adapter = MediaListPageAdapter(
-                param = viewModel.param,
-                mediaListInfo = mediaListInfo,
-                fragmentActivity = requireActivity(),
-                fragmentManager = childFragmentManager,
-                lifecycle = lifecycle
-            )
+            requireBinding().viewPager.adapter =
+                MediaListPageAdapter(
+                    param = viewModel.param,
+                    mediaListInfo = mediaListInfo,
+                    fragmentActivity = requireActivity(),
+                    fragmentManager = childFragmentManager,
+                    lifecycle = lifecycle,
+                )
         }
     }
 
@@ -95,16 +94,17 @@ class MediaListContainer(
      */
     override fun setUpViewModelObserver() {
         viewModel.tabConfigurationListInfo.observe(viewLifecycleOwner) {
-            val tabLayoutMediator = TabLayoutMediator(
-                requireBinding().materialTabsLayout,
-                requireBinding().viewPager,
-                true,
-                true,
-                MediaListTabConfiguration(
-                    context = requireContext(),
-                    mediaListInfo = it
+            val tabLayoutMediator =
+                TabLayoutMediator(
+                    requireBinding().materialTabsLayout,
+                    requireBinding().viewPager,
+                    true,
+                    true,
+                    MediaListTabConfiguration(
+                        context = requireContext(),
+                        mediaListInfo = it,
+                    ),
                 )
-            )
 
             updateViewPagerState(it)
 
@@ -163,7 +163,7 @@ class MediaListContainer(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = MediaListContainerBinding.bind(requireNotNull(view))
@@ -181,7 +181,10 @@ class MediaListContainer(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         requireBinding().viewPager.offscreenPageLimit = 3
         requireBinding().stateLayout.stateConfigFlow.value = stateConfig

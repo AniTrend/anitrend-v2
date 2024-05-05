@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.crash
 
 import android.annotation.SuppressLint
@@ -24,10 +23,12 @@ import timber.log.Timber
 import kotlin.system.exitProcess
 
 internal class ExceptionCrashHandler(
-    private val handler: Thread.UncaughtExceptionHandler?
+    private val handler: Thread.UncaughtExceptionHandler?,
 ) : IExceptionCrashHandler {
-
-    private fun handleUncaughtCrashException(thread: Thread, throwable: Throwable) {
+    private fun handleUncaughtCrashException(
+        thread: Thread,
+        throwable: Throwable,
+    ) {
         Timber.i("Caught exception from thread: ${thread.name}")
         Timber.e(throwable)
     }
@@ -37,12 +38,19 @@ internal class ExceptionCrashHandler(
      * @param throwable Exception that was unhandled
      */
     @SuppressLint("LogNotTimber")
-    override fun onException(thread: Thread, throwable: Throwable) {
+    override fun onException(
+        thread: Thread,
+        throwable: Throwable,
+    ) {
         try {
             handleUncaughtCrashException(thread, throwable)
         } catch (e: Exception) {
             // Timber may not have been initialized, so will log into the android logger
-            Log.w("ExceptionCrashHandler", "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete", e)
+            Log.w(
+                "ExceptionCrashHandler",
+                "Timber may not have been initialized yet, perhaps this crash happened before any DI configuration was complete",
+                e,
+            )
             Log.e("ExceptionCrashHandler", "Original exception before timber threw -> ${thread.name} threw an exception which was unhandled", e)
         } finally {
             // terminate process after intercepting crash

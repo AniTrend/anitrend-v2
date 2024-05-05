@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.account.component
 
 import android.content.Context
@@ -44,10 +43,9 @@ class AccountSignInWorker(
     private val shortcutController: IShortcutController,
     private val settings: IUserSettings,
 ) : SupportCoroutineWorker(context, parameters) {
-
     private val param by parameters.transform<
         AccountTaskRouter.AccountParam,
-        AccountParam.Activate
+        AccountParam.Activate,
     > { AccountParam.Activate(userId = it.id) }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
@@ -57,22 +55,24 @@ class AccountSignInWorker(
             shortcutController.removeAllDynamicShortcuts()
             shortcutController.createShortcuts(
                 Shortcut.AnimeList(
-                    navPayload = MediaListRouter.MediaListParam(
-                        scoreFormat = scoreFormat,
-                        type = MediaType.ANIME,
-                        userId = param.userId,
-                    ).asNavPayload()
+                    navPayload =
+                        MediaListRouter.MediaListParam(
+                            scoreFormat = scoreFormat,
+                            type = MediaType.ANIME,
+                            userId = param.userId,
+                        ).asNavPayload(),
                 ),
                 Shortcut.MangaList(
-                    navPayload = MediaListRouter.MediaListParam(
-                        scoreFormat = scoreFormat,
-                        type = MediaType.MANGA,
-                        userId = param.userId,
-                    ).asNavPayload()
+                    navPayload =
+                        MediaListRouter.MediaListParam(
+                            scoreFormat = scoreFormat,
+                            type = MediaType.MANGA,
+                            userId = param.userId,
+                        ).asNavPayload(),
                 ),
                 Shortcut.Notification(),
                 Shortcut.Profile(),
-                Shortcut.Search()
+                Shortcut.Search(),
             )
         }.onFailure(Timber::w)
     }

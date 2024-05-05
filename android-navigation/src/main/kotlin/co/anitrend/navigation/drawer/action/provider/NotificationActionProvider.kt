@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.action.provider
 
 import android.content.Context
@@ -44,21 +43,26 @@ import org.koin.core.component.inject
 import timber.log.Timber
 
 class NotificationActionProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
-
     private val viewModel by sharedViewModel<NotificationProviderViewModel>()
 
-    private val notificationBadge = BadgeDrawable.create(context).apply {
-        badgeGravity = BadgeDrawable.TOP_END
-        maxCharacterCount = 2
-    }
+    private val notificationBadge =
+        BadgeDrawable.create(context).apply {
+            badgeGravity = BadgeDrawable.TOP_END
+            maxCharacterCount = 2
+        }
 
     private val settings by inject<IAuthenticationSettings>()
 
-    private fun toggleVisibility(forItem: MenuItem?, shouldShow: Boolean) {
+    private fun toggleVisibility(
+        forItem: MenuItem?,
+        shouldShow: Boolean,
+    ) {
         forItem?.isVisible = shouldShow
-        if (!shouldShow)
+        if (!shouldShow) {
             container.gone()
-        else container.visible()
+        } else {
+            container.visible()
+        }
     }
 
     private fun setUpVisibility(forItem: MenuItem?) {
@@ -68,11 +72,11 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
     }
 
     private fun setUpActionImageView() {
-        with (actionImageView) {
+        with(actionImageView) {
             setImageDrawable(
                 context.getCompatDrawable(
-                    R.drawable.ic_notifications_24
-                )
+                    R.drawable.ic_notifications_24,
+                ),
             )
         }
     }
@@ -88,8 +92,9 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
         setUpVisibility(forItem)
         setUpActionImageView()
         context.lifecycleScope()?.launch {
-            if (!actionImageView.hasOnClickListeners())
+            if (!actionImageView.hasOnClickListeners()) {
                 actionImageView.setOnClickListener(NotificationRouter::startActivity)
+            }
             context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 runCatching {
                     container.addView(actionImageView)
@@ -106,11 +111,14 @@ class NotificationActionProvider(context: Context) : AbstractActionProvider(cont
             if (unread > 0) {
                 notificationBadge.number = unread
                 BadgeUtils.attachBadgeDrawable(
-                    notificationBadge, actionImageView, container
+                    notificationBadge,
+                    actionImageView,
+                    container,
                 )
             } else {
                 BadgeUtils.detachBadgeDrawable(
-                    notificationBadge, actionImageView
+                    notificationBadge,
+                    actionImageView,
                 )
             }
         }

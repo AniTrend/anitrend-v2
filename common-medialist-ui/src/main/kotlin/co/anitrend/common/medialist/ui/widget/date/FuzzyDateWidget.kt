@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.date
 
 import android.content.Context
@@ -41,85 +40,102 @@ import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class FuzzyDateWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView, KoinComponent {
-
-    private val thumbnailImageView = AppCompatImageView(context).apply {
-        layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        )
-        setImageDrawable(
-            context.getCompatDrawable(
-                R.drawable.ic_edit_calendar,
-                co.anitrend.core.android.R.color.colorAccent
-            )
-        )
-    }
-
-    private val fuzzyDateTextView = MaterialTextView(context).apply {
-        style(com.google.android.material.R.style.Widget_MaterialComponents_TextView)
-        TextViewCompat.setTextAppearance(
-            this,
-            com.google.android.material.R.style.TextAppearance_MaterialComponents_Subtitle1
-        )
-        layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        ).also {
-            it.gravity = Gravity.CENTER_VERTICAL
-        }
-    }
-
-    private val dateHelper by inject<AniTrendDateHelper>()
-
-    private val controller by lazy (UNSAFE) {
-        FuzzyDateController(dateHelper)
-    }
-
-    private val presenter by lazy (UNSAFE) {
-        FuzzyDatePresenter(
-            fuzzyDateTextView,
-            controller,
-            dateHelper
-        )
-    }
-
-    val dateChangeFlow: Flow<FuzzyDate> = presenter.model
-
-    init { onInit(context, attrs, defStyleAttr) }
-
-    fun setUpUsing(fuzzyDate: FuzzyDate?) {
-        presenter.updateFuzzyDate(fuzzyDate.orEmpty())
-    }
-
-    /**
-     * Callable in view constructors to perform view inflation and attribute initialization
-     *
-     * @param context view context
-     * @param attrs view attributes if applicable
-     * @param styleAttr style attribute if applicable
-     */
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        setPadding(8.dp)
-        addView(thumbnailImageView)
-        addView(
-            Space(context).apply {
-                this.layoutParams = LayoutParams(
-                    8.dp, LayoutParams.WRAP_CONTENT
+class FuzzyDateWidget
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView, KoinComponent {
+        private val thumbnailImageView =
+            AppCompatImageView(context).apply {
+                layoutParams =
+                    LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT,
+                    )
+                setImageDrawable(
+                    context.getCompatDrawable(
+                        R.drawable.ic_edit_calendar,
+                        co.anitrend.core.android.R.color.colorAccent,
+                    ),
                 )
             }
-        )
-        addView(fuzzyDateTextView)
 
-        background = context.getCompatDrawable(
-            R.drawable.outline_button_frame
-        )
+        private val fuzzyDateTextView =
+            MaterialTextView(context).apply {
+                style(com.google.android.material.R.style.Widget_MaterialComponents_TextView)
+                TextViewCompat.setTextAppearance(
+                    this,
+                    com.google.android.material.R.style.TextAppearance_MaterialComponents_Subtitle1,
+                )
+                layoutParams =
+                    LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT,
+                    ).also {
+                        it.gravity = Gravity.CENTER_VERTICAL
+                    }
+            }
 
-        setOnClickListener(presenter::createDatePicker)
+        private val dateHelper by inject<AniTrendDateHelper>()
 
-        if (isInEditMode)
-            fuzzyDateTextView.text = "---"
+        private val controller by lazy(UNSAFE) {
+            FuzzyDateController(dateHelper)
+        }
+
+        private val presenter by lazy(UNSAFE) {
+            FuzzyDatePresenter(
+                fuzzyDateTextView,
+                controller,
+                dateHelper,
+            )
+        }
+
+        val dateChangeFlow: Flow<FuzzyDate> = presenter.model
+
+        init {
+            onInit(context, attrs, defStyleAttr)
+        }
+
+        fun setUpUsing(fuzzyDate: FuzzyDate?) {
+            presenter.updateFuzzyDate(fuzzyDate.orEmpty())
+        }
+
+        /**
+         * Callable in view constructors to perform view inflation and attribute initialization
+         *
+         * @param context view context
+         * @param attrs view attributes if applicable
+         * @param styleAttr style attribute if applicable
+         */
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            setPadding(8.dp)
+            addView(thumbnailImageView)
+            addView(
+                Space(context).apply {
+                    this.layoutParams =
+                        LayoutParams(
+                            8.dp,
+                            LayoutParams.WRAP_CONTENT,
+                        )
+                },
+            )
+            addView(fuzzyDateTextView)
+
+            background =
+                context.getCompatDrawable(
+                    R.drawable.outline_button_frame,
+                )
+
+            setOnClickListener(presenter::createDatePicker)
+
+            if (isInEditMode) {
+                fuzzyDateTextView.text = "---"
+            }
+        }
     }
-}

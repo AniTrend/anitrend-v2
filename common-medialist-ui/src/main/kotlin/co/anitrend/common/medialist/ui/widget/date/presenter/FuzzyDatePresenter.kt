@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.date.presenter
 
 import android.view.View
@@ -30,27 +29,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 internal class FuzzyDatePresenter(
     private val fuzzyDateTextView: MaterialTextView,
     private val controller: FuzzyDateController,
-    private val dateHelper: AniTrendDateHelper
+    private val dateHelper: AniTrendDateHelper,
 ) {
-
     val model = MutableStateFlow(FuzzyDate.empty())
 
     fun updateFuzzyDate(fuzzyDate: FuzzyDate) {
         model.value = fuzzyDate
-        fuzzyDateTextView.text = controller.asDateFormatted(
-            "---", fuzzyDate
-        )
+        fuzzyDateTextView.text =
+            controller.asDateFormatted(
+                "---",
+                fuzzyDate,
+            )
     }
 
     fun createDatePicker(view: View) {
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(R.string.label_dialog_select_date)
-            .setSelection(
-                if (model.value.isDateNotSet())
-                    MaterialDatePicker.todayInUtcMilliseconds()
-                else dateHelper.convertToUnixTimeStamp(model.value)
-            )
-            .build()
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.label_dialog_select_date)
+                .setSelection(
+                    if (model.value.isDateNotSet()) {
+                        MaterialDatePicker.todayInUtcMilliseconds()
+                    } else {
+                        dateHelper.convertToUnixTimeStamp(model.value)
+                    },
+                )
+                .build()
 
         datePicker.addOnPositiveButtonClickListener {
             val fuzzyDate = dateHelper.convertToFuzzyDate(it)
@@ -58,12 +61,11 @@ internal class FuzzyDatePresenter(
         }
 
         datePicker.addOnNegativeButtonClickListener {
-
         }
 
         datePicker.show(
             view.fragmentManager(),
-            "FuzzyDatePicker"
+            "FuzzyDatePicker",
         )
     }
 }

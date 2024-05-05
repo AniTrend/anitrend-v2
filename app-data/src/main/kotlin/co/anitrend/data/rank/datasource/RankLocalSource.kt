@@ -17,7 +17,8 @@
 
 package co.anitrend.data.rank.datasource
 
-import androidx.room.*
+import androidx.room.Query
+import androidx.room.Dao
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.rank.entity.RankEntity
 

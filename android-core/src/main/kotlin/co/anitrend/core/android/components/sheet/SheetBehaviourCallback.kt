@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.components.sheet
 
 import android.view.View
@@ -43,25 +42,32 @@ class SheetBehaviourCallback : BottomSheetBehavior.BottomSheetCallback() {
     private var lastSlideOffset = -1.0F
     private var halfExpandedSlideOffset = Float.MAX_VALUE
 
-
-    override fun onSlide(sheet: View, slideOffset: Float) {
-        if (halfExpandedSlideOffset == Float.MAX_VALUE)
+    override fun onSlide(
+        sheet: View,
+        slideOffset: Float,
+    ) {
+        if (halfExpandedSlideOffset == Float.MAX_VALUE) {
             calculateInitialHalfExpandedSlideOffset(sheet)
+        }
 
         lastSlideOffset = slideOffset
         // Correct for the fact that the slideOffset is not zero when half expanded
-        val trueOffset = if (slideOffset <= halfExpandedSlideOffset) {
-            slideOffset.normalize(-1F, halfExpandedSlideOffset, -1F, 0F)
-        } else {
-            slideOffset.normalize(halfExpandedSlideOffset, 1F, 0F, 1F)
-        }
+        val trueOffset =
+            if (slideOffset <= halfExpandedSlideOffset) {
+                slideOffset.normalize(-1F, halfExpandedSlideOffset, -1F, 0F)
+            } else {
+                slideOffset.normalize(halfExpandedSlideOffset, 1F, 0F, 1F)
+            }
 
         onSlideActions.forEach {
             it.onSlide(sheet, trueOffset)
         }
     }
 
-    override fun onStateChanged(sheet: View, newState: Int) {
+    override fun onStateChanged(
+        sheet: View,
+        newState: Int,
+    ) {
         if (newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
             halfExpandedSlideOffset = lastSlideOffset
             onSlide(sheet, lastSlideOffset)
@@ -91,14 +97,16 @@ class SheetBehaviourCallback : BottomSheetBehavior.BottomSheetCallback() {
         val behavior = BottomSheetBehavior.from(sheet)
 
         val halfExpandedOffset = parent.height * (1 - behavior.halfExpandedRatio)
-        val peekHeightMin = parent.resources.getDimensionPixelSize(
-            R.dimen.design_bottom_sheet_peek_height_min
-        )
+        val peekHeightMin =
+            parent.resources.getDimensionPixelSize(
+                R.dimen.design_bottom_sheet_peek_height_min,
+            )
         val peek = max(peekHeightMin, parent.height - parent.width * 9 / 16)
-        val collapsedOffset = max(
-            parent.height - peek,
-            max(0, parent.height - sheet.height)
-        )
+        val collapsedOffset =
+            max(
+                parent.height - peek,
+                max(0, parent.height - sheet.height),
+            )
         halfExpandedSlideOffset =
             (collapsedOffset - halfExpandedOffset) / (parent.height - collapsedOffset)
     }

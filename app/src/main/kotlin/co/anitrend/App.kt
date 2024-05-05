@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend
 
 import androidx.startup.AppInitializer
@@ -23,7 +22,6 @@ import co.anitrend.core.initializer.injector.InjectorInitializer
 import org.koin.core.context.stopKoin
 
 class App : AniTrendApplication() {
-
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
      * Initializes dependencies for the entire application, this function is automatically called

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android
 
 import android.view.ViewGroup
@@ -40,7 +39,7 @@ import java.util.Date
  */
 inline fun <reified T> koinOf(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ): T {
     val context = KoinPlatformTools.defaultContext()
     val koin = context.get()
@@ -55,7 +54,7 @@ inline fun <reified T> koinOf(
 fun AiringSchedule.asPrettyTime(): String {
     val prettyTime = koinOf<PrettyTime>()
     return prettyTime.format(
-        Date(airingAt * 1000)
+        Date(airingAt * 1000),
     )
 }
 
@@ -72,15 +71,20 @@ fun Instant.asPrettyTime(): String {
 /**
  * Displays an error message for missing parameters otherwise runs [block]
  */
-inline fun ISupportStateLayout.assureParamNotMissing(param: IParam?, block: () -> Unit) {
+inline fun ISupportStateLayout.assureParamNotMissing(
+    param: IParam?,
+    block: () -> Unit,
+) {
     if (param == null) {
         this as ViewGroup
-        loadStateFlow.value = LoadState.Error(
-            RequestError(
-                topic = context.getString(R.string.app_controller_heading_missing_param),
-                description = context.getString(R.string.app_controller_message_missing_param),
+        loadStateFlow.value =
+            LoadState.Error(
+                RequestError(
+                    topic = context.getString(R.string.app_controller_heading_missing_param),
+                    description = context.getString(R.string.app_controller_message_missing_param),
+                ),
             )
-        )
+    } else {
+        block()
     }
-    else block()
 }

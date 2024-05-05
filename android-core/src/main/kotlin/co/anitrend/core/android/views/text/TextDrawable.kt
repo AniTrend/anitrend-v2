@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.views.text
 
 import android.content.Context
@@ -34,42 +33,53 @@ import com.google.android.material.textview.MaterialTextView
  */
 class TextDrawable(
     context: Context,
-    private val text: String?
+    private val text: String?,
 ) : Drawable() {
-
-    private val materialTextView = MaterialTextView(context).also { textView ->
-        textView.text = text
-        textView.background = textView.context.getCompatDrawable(
-            R.drawable.indicator_background, co.anitrend.arch.theme.R.color.colorBackground
-        )
-        textView.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        textView.setTextColor(
-            textView.context.getCompatColor(
-                co.anitrend.arch.theme.R.color.colorOnBackground
+    private val materialTextView =
+        MaterialTextView(context).also { textView ->
+            textView.text = text
+            textView.background =
+                textView.context.getCompatDrawable(
+                    R.drawable.indicator_background,
+                    co.anitrend.arch.theme.R.color.colorBackground,
+                )
+            textView.layoutParams =
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                )
+            textView.setTextColor(
+                textView.context.getCompatColor(
+                    co.anitrend.arch.theme.R.color.colorOnBackground,
+                ),
             )
-        )
-        val padding = textView.resources
-            .getDimensionPixelSize(R.dimen.text_drawable_margin)
-        textView.setPadding(padding, padding, padding, padding)
-    }
+            val padding =
+                textView.resources
+                    .getDimensionPixelSize(R.dimen.text_drawable_margin)
+            textView.setPadding(padding, padding, padding, padding)
+        }
 
     /**
      * Specify a bounding rectangle for the Drawable. This is where the drawable
      * will draw when its draw() method is called.
      */
-    override fun setBounds(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun setBounds(
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+    ) {
         super.setBounds(left, top, right, bottom)
-        val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-            right - left,
-            View.MeasureSpec.EXACTLY
-        )
-        val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-            bottom - top,
-            View.MeasureSpec.EXACTLY
-        )
+        val widthMeasureSpec =
+            View.MeasureSpec.makeMeasureSpec(
+                right - left,
+                View.MeasureSpec.EXACTLY,
+            )
+        val heightMeasureSpec =
+            View.MeasureSpec.makeMeasureSpec(
+                bottom - top,
+                View.MeasureSpec.EXACTLY,
+            )
         materialTextView.measure(widthMeasureSpec, heightMeasureSpec)
         materialTextView.layout(left, top, right, bottom)
     }
@@ -89,7 +99,7 @@ class TextDrawable(
      * 255 means fully opaque.
      */
     override fun setAlpha(alpha: Int) {
-        materialTextView.alpha = alpha/255f
+        materialTextView.alpha = alpha / 255f
     }
 
     /**

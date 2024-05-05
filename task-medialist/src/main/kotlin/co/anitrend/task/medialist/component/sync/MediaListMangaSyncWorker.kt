@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.medialist.component.sync
 
 import android.content.Context
@@ -32,9 +31,8 @@ class MediaListMangaSyncWorker(
     context: Context,
     parameters: WorkerParameters,
     private val interactor: SyncMediaListEntryInteractor,
-    private val settings: Settings
+    private val settings: Settings,
 ) : SupportCoroutineWorker(context, parameters) {
-
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
@@ -47,17 +45,19 @@ class MediaListMangaSyncWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val param = MediaListParam.Collection(
-            scoreFormat = settings.scoreFormat.value,
-            type = MediaType.MANGA,
-            sort = emptyList(),
-            userId = settings.authenticatedUserId.value
-        )
+        val param =
+            MediaListParam.Collection(
+                scoreFormat = settings.scoreFormat.value,
+                type = MediaType.MANGA,
+                sort = emptyList(),
+                userId = settings.authenticatedUserId.value,
+            )
         val dataState = interactor(param)
 
-        val networkState = dataState.loadState.first { state ->
-            state is LoadState.Success || state is LoadState.Error
-        }
+        val networkState =
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
 
         return when (networkState) {
             is LoadState.Success -> Result.success()

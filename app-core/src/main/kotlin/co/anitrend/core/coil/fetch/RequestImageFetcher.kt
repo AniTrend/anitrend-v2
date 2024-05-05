@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.coil.fetch
 
 import co.anitrend.core.android.helpers.image.model.RequestImage
@@ -32,9 +31,8 @@ import okhttp3.HttpUrl
 internal class RequestImageFetcher private constructor(
     private val client: CoilRequestClient,
     private val mapper: RequestImageMapper,
-    private val httpUrl: HttpUrl
+    private val httpUrl: HttpUrl,
 ) : Fetcher, Keyer<RequestImage<*>> {
-
     /**
      * Fetch the data provided by [Factory.create] or return 'null' to delegate to the next
      * [Factory] in the component registry.
@@ -44,7 +42,7 @@ internal class RequestImageFetcher private constructor(
         return SourceResult(
             source = result.source,
             mimeType = result.contentType,
-            dataSource = DataSource.NETWORK
+            dataSource = DataSource.NETWORK,
         )
     }
 
@@ -54,15 +52,17 @@ internal class RequestImageFetcher private constructor(
      * @param data The data to convert.
      * @param options The options for this request.
      */
-    override fun key(data: RequestImage<*>, options: Options): String {
+    override fun key(
+        data: RequestImage<*>,
+        options: Options,
+    ): String {
         return mapper.getImageUrlUsing(data)
     }
 
     class Factory(
         private val client: CoilRequestClient,
-        private val mapper: RequestImageMapper
+        private val mapper: RequestImageMapper,
     ) : Fetcher.Factory<RequestImage<*>> {
-
         /**
          * Return a [Fetcher] that can fetch [data] or 'null' if this factory cannot create a
          * fetcher for the data.
@@ -74,7 +74,7 @@ internal class RequestImageFetcher private constructor(
         override fun create(
             data: RequestImage<*>,
             options: Options,
-            imageLoader: ImageLoader
+            imageLoader: ImageLoader,
         ): Fetcher {
             val url = mapper.map(data, options)
             return RequestImageFetcher(client, mapper, url)

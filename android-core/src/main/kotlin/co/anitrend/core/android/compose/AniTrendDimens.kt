@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,34 +14,33 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.compose
 
 import androidx.compose.ui.unit.dp
 
-val bottom_sheet_margin = 0.dp
+val BOTTOM_SHEET_MARGIN = 0.dp
 
-val design_bottom_app_bar_height = 56.dp
-val design_bottom_app_status_bar_height = 24.dp
-val design_bottom_sheet_peek_height_min = 64.dp
+val DESIGN_BOTTOM_APP_BAR_HEIGHT = 56.dp
+val DESIGN_BOTTOM_APP_STATUS_BAR_HEIGHT = 24.dp
+val DESIGN_BOTTOM_SHEET_PEEK_HEIGHT_MIN = 64.dp
 
-val design_bottom_sheet_nav_divider_width = 120.dp
-val design_tab_layout_min_width = 145.dp
+val DESIGN_BOTTOM_SHEET_NAV_DIVIDER_WIDTH = 120.dp
+val DESIGN_TAB_LAYOUT_MIN_WIDTH = 145.dp
 
-val nav_item_selector_margin = 100.dp
-val text_drawable_margin = 3.dp
+val NAV_ITEM_SELECTOR_MARGIN = 100.dp
+val TEXT_DRAWABLE_MARGIN = 3.dp
 
-val avatar_xs = 8.dp
-val avatar_sm = 12.dp
-val avatar_md = 16.dp
-val avatar_lg = 24.dp
-val avatar_xl = 36.dp
-val avatar_xx = 48.dp
+val AVATAR_XS = 8.dp
+val AVATAR_SM = 12.dp
+val AVATAR_MD = 16.dp
+val AVATAR_LG = 24.dp
+val AVATAR_XL = 36.dp
+val AVATAR_XX = 48.dp
 
-val series_image_lg = 165.dp
-val series_image_md = 145.dp
-val series_image_sm = 125.dp
-val series_image_xl = 185.dp
-val series_image_xs = 100.dp
+val SERIES_IMAGE_LG = 165.dp
+val SERIES_IMAGE_MD = 145.dp
+val SERIES_IMAGE_SM = 125.dp
+val SERIES_IMAGE_XL = 185.dp
+val SERIES_IMAGE_XS = 100.dp
 
-const val series_aspect_ration = 0.65f
+const val SERIES_ASPECT_RATIO = 0.65f

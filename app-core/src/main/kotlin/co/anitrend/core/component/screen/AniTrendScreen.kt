@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.screen
 
 import android.content.Context
@@ -46,11 +45,9 @@ import timber.log.Timber
  * @property scope Dependency injection scope for this activity lifecycle
  */
 abstract class AniTrendScreen : SupportActivity(), AndroidScopeComponent, KoinScopeComponent {
-
     protected val configurationHelper by inject<IConfigurationHelper>()
 
     override val scope by activityRetainedScope()
-
 
     private val connectivity by inject<ISupportConnectivity>()
 

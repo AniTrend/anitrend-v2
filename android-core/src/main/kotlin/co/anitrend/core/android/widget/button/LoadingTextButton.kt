@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.widget.button
 
 import android.content.Context
@@ -40,103 +39,121 @@ import com.google.android.material.textview.MaterialTextView
  *
  * @param icon Optional icon for this text button
  */
-class LoadingTextButton @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    icon: Int? = null,
-) : ViewFlipper(context, attrs), CustomView {
-
-    private val indicator = CircularProgressIndicator(context).apply {
-        layoutParams = LayoutParams(
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT
-        ).also { params ->
-            params.gravity = Gravity.CENTER_VERTICAL
-            params.marginEnd = 8.dp
-        }
-        indicatorSize = 16.dp
-        trackCornerRadius = 8.dp
-        trackThickness = 4.dp
-        isIndeterminate = true
-    }
-
-    private val primaryText = MaterialTextView(context).apply {
-        applyDefaultTextStyle {
-            setCompoundDrawablesWithIntrinsicBounds(
-                icon?.let { context.getCompatDrawable(it) },
-                null, null, null
-            )
-        }
-    }
-
-    init { onInit(context, attrs) }
-
-    /**
-     * @see MaterialTextView.setText
-     */
-    fun setText(text: CharSequence?) {
-        primaryText.text = text
-        showContent()
-    }
-
-    /**
-     * @see MaterialTextView.setCompoundDrawables
-     */
-    fun setDrawable(drawable: Drawable?) {
-        primaryText.setCompoundDrawablesWithIntrinsicBounds(
-            drawable, null, null, null
-        )
-        showContent()
-    }
-
-    fun showLoading() {
-        if (displayedChild != LOADING_INDEX)
-            displayedChild = LOADING_INDEX
-    }
-
-    fun showContent() {
-        if (displayedChild != CONTENT_INDEX)
-            displayedChild = CONTENT_INDEX
-    }
-
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        inAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
-        outAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
-        layoutParams = LayoutParams(
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
-            LinearLayoutCompat.LayoutParams.WRAP_CONTENT
-        )
-        addView(primaryText)
-        addView(indicator)
-
-        if (isInEditMode)
-            displayedChild = CONTENT_INDEX
-    }
-
-    override fun onViewRecycled() {
-        super.onViewRecycled()
-        displayedChild = CONTENT_INDEX
-        setOnClickListener(null)
-    }
-
-    private companion object {
-        const val CONTENT_INDEX = 0
-        const val LOADING_INDEX = 1
-
-        fun MaterialTextView.applyDefaultTextStyle(
-            unit: MaterialTextView.() -> Unit
-        ) {
-            layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also { param ->
-                param.gravity = Gravity.CENTER_VERTICAL
+class LoadingTextButton
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        icon: Int? = null,
+    ) : ViewFlipper(context, attrs), CustomView {
+        private val indicator =
+            CircularProgressIndicator(context).apply {
+                layoutParams =
+                    LayoutParams(
+                        LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+                        LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+                    ).also { params ->
+                        params.gravity = Gravity.CENTER_VERTICAL
+                        params.marginEnd = 8.dp
+                    }
+                indicatorSize = 16.dp
+                trackCornerRadius = 8.dp
+                trackThickness = 4.dp
+                isIndeterminate = true
             }
-            compoundDrawablePadding = 8.dp
-            style(R.style.AppTheme_Material_TextBody_Primary)
-            setTypeface(typeface, Typeface.BOLD)
-            setTextColor(context.getCompatColor(R.color.white_1000))
-            unit()
+
+        private val primaryText =
+            MaterialTextView(context).apply {
+                applyDefaultTextStyle {
+                    setCompoundDrawablesWithIntrinsicBounds(
+                        icon?.let { context.getCompatDrawable(it) },
+                        null,
+                        null,
+                        null,
+                    )
+                }
+            }
+
+        init {
+            onInit(context, attrs)
+        }
+
+        /**
+         * @see MaterialTextView.setText
+         */
+        fun setText(text: CharSequence?) {
+            primaryText.text = text
+            showContent()
+        }
+
+        /**
+         * @see MaterialTextView.setCompoundDrawables
+         */
+        fun setDrawable(drawable: Drawable?) {
+            primaryText.setCompoundDrawablesWithIntrinsicBounds(
+                drawable,
+                null,
+                null,
+                null,
+            )
+            showContent()
+        }
+
+        fun showLoading() {
+            if (displayedChild != LOADING_INDEX) {
+                displayedChild = LOADING_INDEX
+            }
+        }
+
+        fun showContent() {
+            if (displayedChild != CONTENT_INDEX) {
+                displayedChild = CONTENT_INDEX
+            }
+        }
+
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            inAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
+            outAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_out)
+            layoutParams =
+                LayoutParams(
+                    LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+                    LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
+                )
+            addView(primaryText)
+            addView(indicator)
+
+            if (isInEditMode) {
+                displayedChild = CONTENT_INDEX
+            }
+        }
+
+        override fun onViewRecycled() {
+            super.onViewRecycled()
+            displayedChild = CONTENT_INDEX
+            setOnClickListener(null)
+        }
+
+        private companion object {
+            const val CONTENT_INDEX = 0
+            const val LOADING_INDEX = 1
+
+            fun MaterialTextView.applyDefaultTextStyle(unit: MaterialTextView.() -> Unit) {
+                layoutParams =
+                    LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ).also { param ->
+                        param.gravity = Gravity.CENTER_VERTICAL
+                    }
+                compoundDrawablePadding = 8.dp
+                style(R.style.AppTheme_Material_TextBody_Primary)
+                setTypeface(typeface, Typeface.BOLD)
+                setTextColor(context.getCompatColor(R.color.white_1000))
+                unit()
+            }
         }
     }
-}

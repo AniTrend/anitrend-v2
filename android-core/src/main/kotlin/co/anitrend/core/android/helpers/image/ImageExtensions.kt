@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.helpers.image
 
 import android.content.Context
@@ -34,7 +33,6 @@ import coil.request.ImageRequest
 import coil.target.Target
 import coil.transform.RoundedCornersTransformation
 import coil.transform.Transformation
-import coil.transition.CrossfadeTransition
 
 val roundedCornersTransformation =
     RoundedCornersTransformation(8f.dp)
@@ -67,9 +65,7 @@ fun ICoverImage.toRequestImage() = RequestImage.Cover(this)
  * @see using for usage from multiple receiver types
  * @see toRequestBuilder to build a coil image request builder
  */
-fun IMediaCover.toMediaRequestImage(
-    type: RequestImage.Media.ImageType
-) = RequestImage.Media(this, type)
+fun IMediaCover.toMediaRequestImage(type: RequestImage.Media.ImageType) = RequestImage.Media(this, type)
 
 /**
  * A request image builder for coil
@@ -79,12 +75,13 @@ fun IMediaCover.toMediaRequestImage(
  */
 fun RequestImage<*>.toRequestBuilder(
     context: Context,
-    transformations: List<Transformation> = emptyList()
+    transformations: List<Transformation> = emptyList(),
 ): ImageRequest.Builder {
     val requestBuilder = ImageRequest.Builder(context)
 
-    if (transformations.isNotEmpty())
+    if (transformations.isNotEmpty()) {
         requestBuilder.transformations(transformations)
+    }
 
     if (this is RequestImage.Media) {
         val color = image?.color
@@ -99,8 +96,8 @@ fun RequestImage<*>.toRequestBuilder(
     return requestBuilder
         .crossfade(
             context.resources.getInteger(
-                R.integer.motion_duration_long
-            )
+                R.integer.motion_duration_long,
+            ),
         ).data(this)
 }
 
@@ -115,12 +112,13 @@ fun RequestImage<*>.toRequestBuilder(
  */
 fun AppCompatImageView.using(
     requestImage: RequestImage<*>,
-    transformations: List<Transformation> = emptyList()
+    transformations: List<Transformation> = emptyList(),
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
 
-    if (transformations.isNotEmpty())
+    if (transformations.isNotEmpty()) {
         requestBuilder.transformations(transformations)
+    }
 
     if (requestImage is RequestImage.Media) {
         val color = requestImage.image?.color
@@ -132,15 +130,16 @@ fun AppCompatImageView.using(
         }
     }
 
-    val request = requestBuilder
-        .crossfade(
-            context.resources.getInteger(
-                R.integer.motion_duration_long
+    val request =
+        requestBuilder
+            .crossfade(
+                context.resources.getInteger(
+                    R.integer.motion_duration_long,
+                ),
             )
-        )
-        .data(requestImage)
-        .target(this)
-        .build()
+            .data(requestImage)
+            .target(this)
+            .build()
 
     return Coil.imageLoader(context).enqueue(request)
 }
@@ -156,22 +155,24 @@ fun AppCompatImageView.using(
  */
 fun AppCompatImageView.using(
     resource: Drawable?,
-    transformations: List<Transformation> = emptyList()
+    transformations: List<Transformation> = emptyList(),
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
 
-    if (transformations.isNotEmpty())
+    if (transformations.isNotEmpty()) {
         requestBuilder.transformations(transformations)
+    }
 
-    val request = requestBuilder
-        .crossfade(
-            context.resources.getInteger(
-                R.integer.motion_duration_long
+    val request =
+        requestBuilder
+            .crossfade(
+                context.resources.getInteger(
+                    R.integer.motion_duration_long,
+                ),
             )
-        )
-        .data(resource)
-        .target(this)
-        .build()
+            .data(resource)
+            .target(this)
+            .build()
 
     return Coil.imageLoader(context).enqueue(request)
 }
@@ -187,7 +188,7 @@ fun AppCompatImageView.using(
  */
 fun AppCompatImageView.using(
     @DrawableRes resource: Int,
-    transformations: List<Transformation> = emptyList()
+    transformations: List<Transformation> = emptyList(),
 ): Disposable {
     val drawable = context.getCompatDrawable(resource)
     return using(resource = drawable, transformations)
@@ -202,24 +203,26 @@ fun AppCompatImageView.using(
  *
  * @return A [Disposable] contract
  */
-fun <T: ICoverImage> AppCompatImageView.using(
+fun <T : ICoverImage> AppCompatImageView.using(
     resource: T?,
-    transformations: List<Transformation> = emptyList()
+    transformations: List<Transformation> = emptyList(),
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
 
-    if (transformations.isNotEmpty())
+    if (transformations.isNotEmpty()) {
         requestBuilder.transformations(transformations)
+    }
 
-    val request = requestBuilder
-        .crossfade(
-            context.resources.getInteger(
-                R.integer.motion_duration_long
+    val request =
+        requestBuilder
+            .crossfade(
+                context.resources.getInteger(
+                    R.integer.motion_duration_long,
+                ),
             )
-        )
-        .data(resource?.toRequestImage())
-        .target(this)
-        .build()
+            .data(resource?.toRequestImage())
+            .target(this)
+            .build()
 
     return Coil.imageLoader(context).enqueue(request)
 }
@@ -233,25 +236,27 @@ fun <T: ICoverImage> AppCompatImageView.using(
  *
  * @return A [Disposable] contract
  */
-fun <T: ICoverImage> Target.using(
+fun <T : ICoverImage> Target.using(
     resource: T?,
     context: Context,
-    transformations: List<Transformation> = emptyList()
+    transformations: List<Transformation> = emptyList(),
 ): Disposable {
     val requestBuilder = ImageRequest.Builder(context)
 
-    if (transformations.isNotEmpty())
+    if (transformations.isNotEmpty()) {
         requestBuilder.transformations(transformations)
+    }
 
-    val request = requestBuilder
-        .crossfade(
-            context.resources.getInteger(
-                R.integer.motion_duration_long
+    val request =
+        requestBuilder
+            .crossfade(
+                context.resources.getInteger(
+                    R.integer.motion_duration_long,
+                ),
             )
-        )
-        .data(resource?.toRequestImage())
-        .target(this)
-        .build()
+            .data(resource?.toRequestImage())
+            .target(this)
+            .build()
 
     return Coil.imageLoader(context).enqueue(request)
 }

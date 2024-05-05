@@ -17,3 +17,6 @@
 
 package co.anitrend.data.status
 
+typealias StatusType = String
+
+typealias GetStatusType = String

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2024 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.media.discover.filter.component.compose
 
 import androidx.annotation.StringRes
@@ -53,16 +69,16 @@ private fun <T> FilterChipGroup(
     labelFormatter: (T) -> String,
     isSelected: ((T) -> Boolean?) = { null },
     selectedItemIcon: ImageVector = Icons.Filled.Done,
-    onSelectionChange : (T, Boolean) -> Unit
+    onSelectionChange: (T, Boolean) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
             text = stringResource(title),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Text(
             text = stringResource(subTitle),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 
@@ -83,10 +99,10 @@ private fun <T> FilterChipGroup(
                         Icon(
                             imageVector = selectedItemIcon,
                             contentDescription = labelText,
-                            modifier = Modifier.size(FilterChipDefaults.IconSize)
+                            modifier = Modifier.size(FilterChipDefaults.IconSize),
                         )
                     }
-                }
+                },
             )
         }
     }
@@ -102,7 +118,7 @@ private fun FilterYearSection(
     var isYearRangeSelected by remember { mutableStateOf(false) }
     Text(
         text = stringResource(co.anitrend.media.discover.filter.R.string.label_discover_filter_year_title),
-        style = MaterialTheme.typography.bodyMedium
+        style = MaterialTheme.typography.bodyMedium,
     )
 
     FilterChip(
@@ -112,23 +128,23 @@ private fun FilterYearSection(
         },
         label = {
             Text(text = stringResource(co.anitrend.media.discover.filter.R.string.label_discover_filter_year_title_by_range))
-        }
+        },
     )
 
     if (isYearRangeSelected) {
         RangeSlider(
             value = 1970f..upperYearBound,
             onValueChange = {
-
-            }
+            },
         )
     } else {
         Slider(
-            state = SliderState(
-                value = upperYearBound,
-                steps = 1,
-                valueRange = 1970f..upperYearBound,
-            )
+            state =
+                SliderState(
+                    value = upperYearBound,
+                    steps = 1,
+                    valueRange = 1970f..upperYearBound,
+                ),
         )
     }
 }
@@ -137,19 +153,18 @@ private fun FilterYearSection(
 fun MediaDiscoverFilterScreen(
     dateHelper: AbstractSupportDateHelper,
     param: MediaDiscoverRouter.MediaDiscoverParam,
-    onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit
+    onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
     val state by remember { mutableStateOf(param) }
     val titleFormatter: (IAliasable) -> String = { it.alias.toString() }
     Column(
         modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         FilterYearSection(
             dateHelper = dateHelper,
             onSelectionChange = {
-
-            }
+            },
         )
         FilterChipGroup(
             entries = MediaStatus.entries,
@@ -162,7 +177,7 @@ fun MediaDiscoverFilterScreen(
             onSelectionChange = { item, _ ->
                 state.status = item
                 onParamChange(state)
-            }
+            },
         )
         FilterChipGroup(
             entries = MediaType.entries,
@@ -175,7 +190,7 @@ fun MediaDiscoverFilterScreen(
             onSelectionChange = { item, _ ->
                 state.type = item
                 onParamChange(state)
-            }
+            },
         )
         FilterChipGroup(
             entries = MediaSeason.entries,
@@ -188,7 +203,7 @@ fun MediaDiscoverFilterScreen(
             onSelectionChange = { item, _ ->
                 state.season = item
                 onParamChange(state)
-            }
+            },
         )
         FilterChipGroup(
             entries = MediaFormat.entries,
@@ -201,7 +216,7 @@ fun MediaDiscoverFilterScreen(
             onSelectionChange = { item, _ ->
                 state.format = item
                 onParamChange(state)
-            }
+            },
         )
         FilterChipGroup(
             entries = MediaSource.entries,
@@ -214,7 +229,7 @@ fun MediaDiscoverFilterScreen(
             onSelectionChange = { item, _ ->
                 state.source = item
                 onParamChange(state)
-            }
+            },
         )
         FilterChipGroup(
             entries = MediaCountry.entries,
@@ -250,15 +265,18 @@ fun MediaDiscoverFilterScreen(
 fun MediaDiscoverFilterScreenPreview() {
     PreviewTheme {
         MediaDiscoverFilterScreen(
-            dateHelper = object : AbstractSupportDateHelper() {
-                override val currentSeason: SeasonType = SeasonType.FALL
-                override fun getCurrentYear(delta: Int) = 2023 + delta
-            },
-            param = MediaDiscoverRouter.MediaDiscoverParam(
-                status = MediaStatus.FINISHED,
-                type = MediaType.ANIME,
-                season = MediaSeason.SPRING,
-            ),
+            dateHelper =
+                object : AbstractSupportDateHelper() {
+                    override val currentSeason: SeasonType = SeasonType.FALL
+
+                    override fun getCurrentYear(delta: Int) = 2023 + delta
+                },
+            param =
+                MediaDiscoverRouter.MediaDiscoverParam(
+                    status = MediaStatus.FINISHED,
+                    type = MediaType.ANIME,
+                    season = MediaSeason.SPRING,
+                ),
             onParamChange = {},
         )
     }

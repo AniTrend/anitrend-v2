@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.adapter
 
 import android.content.res.Resources
@@ -43,9 +42,8 @@ class AccountAdapter(
     override val stateConfiguration: IStateLayoutConfig,
     override val mapper: (Account) -> IRecyclerItem = ::invoke,
     override val customSupportAnimator: AbstractAnimator? = null,
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportListAdapter<Account>(AccountDiffUtil) {
-
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.
      *
@@ -75,7 +73,7 @@ class AccountAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ) = when (viewType) {
         Account.ANONYMOUS -> layoutInflater.createAnonymousAccountViewHolder(parent)
         Account.AUTHENTICATED -> layoutInflater.createAuthenticatedAccountViewHolder(parent)
@@ -84,11 +82,12 @@ class AccountAdapter(
     }
 
     private companion object : (Account) -> IRecyclerItem {
-        override fun invoke(account: Account): IRecyclerItem = when (account) {
-            is Account.Authenticated -> AuthenticatedAccountItem(account)
-            is Account.Anonymous -> AnonymousAccountItem(account)
-            is Account.Authorize -> AuthorizeAccountItem(account)
-            is Account.Group -> GroupAccountItem(account)
-        }
+        override fun invoke(account: Account): IRecyclerItem =
+            when (account) {
+                is Account.Authenticated -> AuthenticatedAccountItem(account)
+                is Account.Anonymous -> AnonymousAccountItem(account)
+                is Account.Authorize -> AuthorizeAccountItem(account)
+                is Account.Group -> GroupAccountItem(account)
+            }
     }
 }

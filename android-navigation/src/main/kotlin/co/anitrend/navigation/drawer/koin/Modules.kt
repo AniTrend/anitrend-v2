@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -38,16 +37,17 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-private val presenterModule = module {
-	scope<BottomDrawerContent> {
-		scoped {
-			DrawerPresenter(
-				context = androidContext(),
-				settings = get()
-			)
-		}
-	}
-}
+private val presenterModule =
+    module {
+        scope<BottomDrawerContent> {
+            scoped {
+                DrawerPresenter(
+                    context = androidContext(),
+                    settings = get(),
+                )
+            }
+        }
+    }
 
 private val viewModelModule = module {
 	viewModel {
@@ -75,28 +75,32 @@ private val viewModelModule = module {
 	}
 }
 
-private val fragmentModule = module {
-	scope(AppScope.BOTTOM_NAV_DRAWER.qualifier) {
-		fragment {
-			BottomDrawerContent(
-				navigationAdapter = NavigationAdapter(
-					resources = androidContext().resources,
-					stateConfiguration = get()
-				),
-				accountAdapter = AccountAdapter(
-					resources = androidContext().resources,
-					stateConfiguration = get()
-				),
-			)
-		} bind INavigationDrawer::class
-	}
-}
+private val fragmentModule =
+    module {
+        scope(AppScope.BOTTOM_NAV_DRAWER.qualifier) {
+            fragment {
+                BottomDrawerContent(
+                    navigationAdapter =
+                        NavigationAdapter(
+                            resources = androidContext().resources,
+                            stateConfiguration = get(),
+                        ),
+                    accountAdapter =
+                        AccountAdapter(
+                            resources = androidContext().resources,
+                            stateConfiguration = get(),
+                        ),
+                )
+            } bind INavigationDrawer::class
+        }
+    }
 
-private val featureModule = module {
-	factory<NavigationDrawerRouter.Provider> {
-		FeatureProvider()
-	}
-}
+private val featureModule =
+    module {
+        factory<NavigationDrawerRouter.Provider> {
+            FeatureProvider()
+        }
+    }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
 	listOf(presenterModule, viewModelModule, fragmentModule, featureModule)

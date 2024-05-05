@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.controller.strategy.policy
 
 import co.anitrend.arch.domain.entities.RequestError
@@ -29,9 +28,8 @@ import timber.log.Timber
  * the origin server.
  */
 class OfflineStrategy<D> private constructor(
-    override val networkMessage: NetworkMessage
+    override val networkMessage: NetworkMessage,
 ) : ControllerStrategy<D>() {
-
     /**
      * Execute a task under an implementation strategy
      *
@@ -40,11 +38,11 @@ class OfflineStrategy<D> private constructor(
      */
     override suspend fun invoke(
         callback: RequestCallback,
-        block: suspend () -> D?
+        block: suspend () -> D?,
     ): D? {
         runCatching {
             block()
-        }.onSuccess {result ->
+        }.onSuccess { result ->
             callback.recordSuccess()
             return result
         }.onFailure { exception ->
@@ -59,8 +57,6 @@ class OfflineStrategy<D> private constructor(
     }
 
     companion object {
-        fun <T> create(
-            networkMessage: NetworkMessage
-        ) = OfflineStrategy<T>(networkMessage)
+        fun <T> create(networkMessage: NetworkMessage) = OfflineStrategy<T>(networkMessage)
     }
 }

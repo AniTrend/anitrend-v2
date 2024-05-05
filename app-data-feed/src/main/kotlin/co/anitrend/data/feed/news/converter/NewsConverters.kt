@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -28,7 +27,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 
 internal class NewsModelConverter(
     override val fromType: (NewsModelItem) -> NewsEntity = ::transform,
-    override val toType: (NewsEntity) -> NewsModelItem = { throw NotImplementedError() }
+    override val toType: (NewsEntity) -> NewsModelItem = { throw NotImplementedError() },
 ) : SupportConverter<NewsModelItem, NewsEntity>() {
     private companion object : ISupportTransformer<NewsModelItem, NewsEntity> {
         private val imageRegex = Regex("<img src\\s*=\\s*\\\\*\"(.+?)\\\\*\"\\s*/>")
@@ -36,8 +35,9 @@ internal class NewsModelConverter(
 
         fun getImageSrc(content: String): String? {
             val matchResult = imageRegex.find(content)
-            if (matchResult != null)
+            if (matchResult != null) {
                 return matchResult.groupValues[1]
+            }
             return null
         }
 
@@ -49,25 +49,27 @@ internal class NewsModelConverter(
         fun getSubTitle(content: List<String>): String {
             return content.firstOrNull()?.replace(
                 breakLineRegex,
-                String.empty()
+                String.empty(),
             ) ?: String.empty()
         }
 
         fun getShortDescription(content: List<String>): String {
-            return if (content.size == 2)
+            return if (content.size == 2) {
                 content[1].replace(imageRegex, String.empty())
-            else
+            } else {
                 String.empty()
+            }
         }
 
         fun generateId(referenceLink: String): String {
             val url = referenceLink.toHttpUrl()
             val segments = url.pathSegments
-            if (segments.size >= 4)
+            if (segments.size >= 4) {
                 return url.pathSegments[4]
+            }
             throw UnsupportedOperationException(
                 "Path segments are less than 4",
-                Throwable(referenceLink)
+                Throwable(referenceLink),
             )
         }
 
@@ -86,7 +88,7 @@ internal class NewsModelConverter(
                 description = getShortDescription(content),
                 content = source.contentEncoded,
                 originalLink = source.referenceLink,
-                publishedOn = source.publishedOn.rcf822ToUnixTime()
+                publishedOn = source.publishedOn.rcf822ToUnixTime(),
             )
         }
     }
@@ -94,23 +96,24 @@ internal class NewsModelConverter(
 
 internal class NewsEntityConverter(
     override val fromType: (NewsEntity) -> News = ::transform,
-    override val toType: (News) -> NewsEntity = { throw NotImplementedError() }
+    override val toType: (News) -> NewsEntity = { throw NotImplementedError() },
 ) : SupportConverter<NewsEntity, News>() {
     private companion object : ISupportTransformer<NewsEntity, News> {
         /**
          * Transforms the the [source] to the target type
          */
-        override fun transform(source: NewsEntity) = News(
-            id = source.id.hashCode().toLong(),
-            guid = source.id,
-            link = source.originalLink,
-            title = source.title,
-            image = source.image,
-            author = source.author,
-            subTitle = source.subTitle,
-            description = source.description,
-            content = source.content,
-            publishedOn = source.publishedOn
-        )
+        override fun transform(source: NewsEntity) =
+            News(
+                id = source.id.hashCode().toLong(),
+                guid = source.id,
+                link = source.originalLink,
+                title = source.title,
+                image = source.image,
+                author = source.author,
+                subTitle = source.subTitle,
+                description = source.description,
+                content = source.content,
+                publishedOn = source.publishedOn,
+            )
     }
 }

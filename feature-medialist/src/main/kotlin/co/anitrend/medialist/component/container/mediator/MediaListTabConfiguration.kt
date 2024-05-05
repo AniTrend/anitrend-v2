@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.component.container.mediator
 
 import android.content.Context
@@ -25,9 +24,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 internal class MediaListTabConfiguration(
     private val context: Context,
-    private val mediaListInfo: List<MediaListInfo>
+    private val mediaListInfo: List<MediaListInfo>,
 ) : TabLayoutMediator.TabConfigurationStrategy {
-
     /**
      * Called to configure the tab for the page at the specified position.
      * Typically calls [TabLayout.Tab.setText], but any form of styling can be applied.
@@ -36,12 +34,17 @@ internal class MediaListTabConfiguration(
      * position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
-    override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
+    override fun onConfigureTab(
+        tab: TabLayout.Tab,
+        position: Int,
+    ) {
         val mediaInfo = mediaListInfo[position]
         tab.orCreateBadge.apply {
-            backgroundColor = context.getColorFromAttr(
-                androidx.appcompat.R.attr.colorAccent, co.anitrend.core.android.R.color.colorAccent
-            )
+            backgroundColor =
+                context.getColorFromAttr(
+                    androidx.appcompat.R.attr.colorAccent,
+                    co.anitrend.core.android.R.color.colorAccent,
+                )
             number = mediaInfo.count
         }
         tab.text = mediaInfo.name

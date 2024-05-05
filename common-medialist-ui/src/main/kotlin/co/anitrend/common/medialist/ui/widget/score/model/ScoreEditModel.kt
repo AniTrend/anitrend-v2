@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.score.model
 
 import co.anitrend.common.medialist.ui.widget.contract.model.AbstractEditModel
 
 data class ScoreEditModel(
     override var current: Float,
-    override var maximum: Float = -1f
+    override var maximum: Float = -1f,
 ) : AbstractEditModel<Float>()

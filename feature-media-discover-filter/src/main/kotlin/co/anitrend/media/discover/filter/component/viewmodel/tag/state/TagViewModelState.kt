@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.component.viewmodel.tag.state
 
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
@@ -25,7 +24,6 @@ import co.anitrend.domain.tag.model.TagParam
 class TagViewModelState(
     private val interactor: TagInteractor
 ) : AniTrendViewModelState<List<Tag>>() {
-
     operator fun invoke(param: TagParam) {
         val result = interactor.getMediaTags(param)
         state.postValue(result)

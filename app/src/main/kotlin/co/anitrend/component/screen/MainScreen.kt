@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.component.screen
 
 import android.os.Bundle
@@ -73,11 +72,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
-
     private val drawerFragmentItem by lazy(UNSAFE) {
         FragmentItem(
             fragment = NavigationDrawerRouter.forFragment(),
-            parameter = intent.extras
+            parameter = intent.extras,
         )
     }
 
@@ -90,7 +88,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
 
     private val showHideFabStateAction by lazy(UNSAFE) {
         ShowHideFabStateAction(
-            requireBinding().floatingShortcutButton
+            requireBinding().floatingShortcutButton,
         )
     }
 
@@ -127,10 +125,11 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
      * Replaces the current content with that in the selected fragment
      */
     private fun attachSelectedNavigationItem(fragmentItem: FragmentItem<Fragment>?) {
-        currentFragmentTag = fragmentItem?.commit(
-            requireBinding().contentMain,
-            this
-        )
+        currentFragmentTag =
+            fragmentItem?.commit(
+                requireBinding().contentMain,
+                this,
+            )
     }
 
     private fun setUpNavigationDrawer() {
@@ -141,7 +140,6 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
             navigationDrawer.dismiss()
         }
         requireBinding().floatingShortcutButton.setOnClickListener {
-
         }
         navigateToUsing(viewModel.state.selectedItem)
     }
@@ -159,7 +157,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
             replace<BottomDrawerContent>(
                 R.id.bottomNavigation,
                 drawerFragmentItem.parameter,
-                drawerFragmentItem.tag()
+                drawerFragmentItem.tag(),
             )
         }
     }
@@ -179,7 +177,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
         setSupportActionBar(requireBinding().bottomAppBar)
         onBackPressedDispatcher.addCallback(
             this,
-            onBackPressedCallback
+            onBackPressedCallback,
         )
     }
 
@@ -254,9 +252,9 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
             requireBinding().bottomAppBar.performShow()
             return
         }
-        if (viewModel.state.shouldExit)
+        if (viewModel.state.shouldExit) {
             ActivityCompat.finishAfterTransition(this)
-        else {
+        } else {
             Toast.makeText(this, R.string.message_confirm_exit_app, Toast.LENGTH_LONG).show()
             viewModel.state.shouldExit = true
         }
@@ -300,100 +298,107 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
         }
     }
 
-    private fun navigateToUsing(@IdRes menuId: Int) {
-        val fragmentItem = when (menuId) {
-            co.anitrend.navigation.drawer.R.id.navigation_home -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_home
-                FragmentItem(
-                    fragment = MediaCarouselRouter.forFragment()
-                )
+    private fun navigateToUsing(
+        @IdRes menuId: Int,
+    ) {
+        val fragmentItem =
+            when (menuId) {
+                co.anitrend.navigation.drawer.R.id.navigation_home -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_home
+                    FragmentItem(
+                        fragment = MediaCarouselRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_discover -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_discover
+                    FragmentItem(
+                        fragment = MediaDiscoverRouter.forFragment(),
+                        parameter =
+                            MediaDiscoverRouter.MediaDiscoverParam(
+                                sort =
+                                    listOf(
+                                        Sorting(
+                                            MediaSort.TRENDING,
+                                            SortOrder.DESC,
+                                        ),
+                                    ),
+                            ).asBundle(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_social -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_social
+                    FragmentItem(
+                        fragment = FeedRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_reviews -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_review
+                    FragmentItem(
+                        fragment = ReviewDiscoverRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_suggestions -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_suggestions
+                    FragmentItem(
+                        fragment = SuggestionRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_news -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_news
+                    FragmentItem(
+                        fragment = NewsRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_forum -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_forums
+                    FragmentItem(
+                        fragment = ForumRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_episodes -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_episodes
+                    FragmentItem(
+                        fragment = EpisodeRouter.forFragment(),
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_anime_list -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_anime_list
+                    FragmentItem(
+                        fragment = MediaListRouter.forFragment(),
+                        parameter =
+                            MediaListRouter.MediaListParam(
+                                userId = presenter.settings.authenticatedUserId.value,
+                                type = MediaType.ANIME,
+                            ).asBundle(),
+                        tag = MediaType.ANIME.name,
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_manga_list -> {
+                    viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_manga_list
+                    FragmentItem(
+                        fragment = MediaListRouter.forFragment(),
+                        parameter =
+                            MediaListRouter.MediaListParam(
+                                userId = presenter.settings.authenticatedUserId.value,
+                                type = MediaType.MANGA,
+                            ).asBundle(),
+                        tag = MediaType.MANGA.name,
+                    )
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_donate -> {
+                    presenter.redirectToPatreon()
+                    null
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_discord -> {
+                    presenter.redirectToDiscord()
+                    null
+                }
+                co.anitrend.navigation.drawer.R.id.navigation_faq -> {
+                    presenter.redirectToFAQ()
+                    null
+                }
+                else -> null
             }
-            co.anitrend.navigation.drawer.R.id.navigation_discover -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_discover
-                FragmentItem(
-                    fragment = MediaDiscoverRouter.forFragment(),
-                    parameter = MediaDiscoverRouter.MediaDiscoverParam(
-                        sort = listOf(
-                            Sorting(
-                                MediaSort.TRENDING,
-                                SortOrder.DESC
-                            )
-                        )
-                    ).asBundle()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_social -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_social
-                FragmentItem(
-                    fragment = FeedRouter.forFragment()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_reviews -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_review
-                FragmentItem(
-                    fragment = ReviewDiscoverRouter.forFragment()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_suggestions -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_suggestions
-                FragmentItem(
-                    fragment = SuggestionRouter.forFragment()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_news -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_news
-                FragmentItem(
-                    fragment = NewsRouter.forFragment()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_forum -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_forums
-                FragmentItem(
-                    fragment = ForumRouter.forFragment()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_episodes -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_episodes
-                FragmentItem(
-                    fragment = EpisodeRouter.forFragment()
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_anime_list -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_anime_list
-                FragmentItem(
-                    fragment = MediaListRouter.forFragment(),
-                    parameter = MediaListRouter.MediaListParam(
-                        userId = presenter.settings.authenticatedUserId.value,
-                        type = MediaType.ANIME
-                    ).asBundle(),
-                    tag = MediaType.ANIME.name
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_manga_list -> {
-                viewModel.state.selectedTitle = co.anitrend.navigation.drawer.R.string.navigation_manga_list
-                FragmentItem(
-                    fragment = MediaListRouter.forFragment(),
-                    parameter = MediaListRouter.MediaListParam(
-                        userId = presenter.settings.authenticatedUserId.value,
-                        type = MediaType.MANGA
-                    ).asBundle(),
-                    tag = MediaType.MANGA.name
-                )
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_donate -> {
-                presenter.redirectToPatreon()
-                null
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_discord -> {
-                presenter.redirectToDiscord()
-                null
-            }
-            co.anitrend.navigation.drawer.R.id.navigation_faq -> {
-                presenter.redirectToFAQ()
-                null
-            }
-            else -> null
-        }
 
         lifecycleScope.launch {
             attachSelectedNavigationItem(fragmentItem)

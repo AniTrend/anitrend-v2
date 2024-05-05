@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.updater.component.compose
 
 import androidx.compose.foundation.layout.Column
@@ -33,9 +32,8 @@ import co.anitrend.core.android.ui.theme.AniTrendTheme3
 @Composable
 private fun UpdateContent(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
-
     }
 }
 
@@ -48,19 +46,18 @@ fun UpdateScreenContent(onBackPress: () -> Unit) {
                     IconButton(onClick = onBackPress) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
                         )
                     }
-                }
+                },
             )
-        }
+        },
     ) { innerPadding ->
         UpdateContent(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }
-
 
 @AniTrendPreview.Mobile
 @Composable

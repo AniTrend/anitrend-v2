@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-package co.anitrend.common.genre.ui.controller.helpers
+package co.anitrend.common.episode.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
-import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.episode.entity.Episode
 
-internal object GenreDiffUtil : DiffUtil.ItemCallback<Genre>() {
+internal object EpisodeDiffUtil : DiffUtil.ItemCallback<Episode>() {
     override fun areItemsTheSame(
-        oldItem: Genre,
-        newItem: Genre
+        oldItem: Episode,
+        newItem: Episode,
     ) = oldItem.id == newItem.id
 
     override fun areContentsTheSame(
-        oldItem: Genre,
-        newItem: Genre
+        oldItem: Episode,
+        newItem: Episode,
     ) = oldItem.hashCode() == newItem.hashCode()
 }

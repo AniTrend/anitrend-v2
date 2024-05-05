@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.episode.entity.fts
 
 import androidx.room.ColumnInfo
@@ -27,5 +26,5 @@ import co.anitrend.data.feed.episode.entity.EpisodeEntity
 data class EpisodeFtsEntity(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "description") val description: String?,
-    @ColumnInfo(name = "series_title") val seriesTitle: String
+    @ColumnInfo(name = "series_title") val seriesTitle: String,
 )

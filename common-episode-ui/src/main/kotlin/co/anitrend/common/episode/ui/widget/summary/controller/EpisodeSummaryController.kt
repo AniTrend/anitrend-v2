@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.episode.ui.widget.summary.controller
 
 import co.anitrend.core.android.controller.widget.WidgetController
@@ -22,22 +21,25 @@ import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.episode.entity.Episode
 
 internal class EpisodeSummaryController(
-    private val entity: Episode
+    private val entity: Episode,
 ) : WidgetController() {
-
     private fun seasonNumber(): String {
         val season = entity.series.seriesSeason
-        if (!season.isNullOrBlank())
-            if (season.length < 2)
+        if (!season.isNullOrBlank()) {
+            if (season.length < 2) {
                 return "0$season"
+            }
+        }
         return season ?: "--"
     }
 
     private fun episodeNumber(): String {
         val episode = entity.about.episodeNumber
-        if (!episode.isNullOrBlank())
-            if (episode.length < 2)
+        if (!episode.isNullOrBlank()) {
+            if (episode.length < 2) {
                 return "0$episode"
+            }
+        }
         return episode ?: "00"
     }
 

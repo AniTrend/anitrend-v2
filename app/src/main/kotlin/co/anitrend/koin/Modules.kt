@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.koin
 
 import co.anitrend.analytics.AnalyticsTree
@@ -29,40 +28,45 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private val analyticsModule = module {
-    single<ISupportAnalytics> {
-        AnalyticsTree(
-            context = androidContext(),
-            settings = get()
-        )
-    }
-}
-
-private val presenterModule = module {
-    scope<MainScreen> {
-        scoped {
-            MainPresenter(
+private val analyticsModule =
+    module {
+        single<ISupportAnalytics> {
+            AnalyticsTree(
                 context = androidContext(),
-                settings = get()
+                settings = get(),
             )
         }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        MainScreenViewModel(
-            savedStateHandle = get()
-        )
+private val presenterModule =
+    module {
+        scope<MainScreen> {
+            scoped {
+                MainPresenter(
+                    context = androidContext(),
+                    settings = get(),
+                )
+            }
+        }
     }
-}
 
-private val featureModule = module {
-    factory<MainRouter.Provider> {
-        FeatureProvider()
+private val viewModelModule =
+    module {
+        viewModel {
+            MainScreenViewModel(
+                savedStateHandle = get(),
+            )
+        }
     }
-}
 
-internal val appModules = DynamicFeatureModuleHelper(
-    listOf(analyticsModule, presenterModule, viewModelModule, featureModule)
-)
+private val featureModule =
+    module {
+        factory<MainRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val appModules =
+    DynamicFeatureModuleHelper(
+        listOf(analyticsModule, presenterModule, viewModelModule, featureModule),
+    )

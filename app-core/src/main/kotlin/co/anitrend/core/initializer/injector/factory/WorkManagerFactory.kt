@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.initializer.injector.factory
 
 import android.content.Context
@@ -31,13 +30,13 @@ import timber.log.Timber
  * Custom application worker factory
  */
 internal class WorkManagerFactory : WorkerFactory(), KoinComponent {
-
     private fun resolveDependency(
         workerClassName: String,
-        workerParameters: WorkerParameters
-    ): ListenableWorker = get(
-        qualifier = named(workerClassName)
-    ) { parametersOf(workerParameters) }
+        workerParameters: WorkerParameters,
+    ): ListenableWorker =
+        get(
+            qualifier = named(workerClassName),
+        ) { parametersOf(workerParameters) }
 
     /**
      * Override this method to implement your custom worker-creation logic.  Use
@@ -62,7 +61,7 @@ internal class WorkManagerFactory : WorkerFactory(), KoinComponent {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
-        workerParameters: WorkerParameters
+        workerParameters: WorkerParameters,
     ): ListenableWorker? {
         return runCatching {
             Timber.d("Resolving requested worker: $workerClassName")

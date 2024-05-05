@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.episode.ui.controller.model
 
 import android.content.res.Resources
@@ -38,9 +37,8 @@ import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class EpisodeItem(
-    private val entity: Episode
+    private val entity: Episode,
 ) : RecyclerItemBinding<EpisodeItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -58,7 +56,7 @@ internal class EpisodeItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = EpisodeItemBinding.bind(view)
         disposable = requireBinding().episodeThumbnail.using(entity.thumbnail)
@@ -68,10 +66,11 @@ internal class EpisodeItem(
 
         requireBinding().container.setOnClickListener {
             view.runIfActivityContext {
-                val fragmentItem = FragmentItem(
-                    fragment = EpisodeRouter.forSheet(),
-                    parameter = EpisodeRouter.EpisodeParam(id = entity.id).asBundle()
-                )
+                val fragmentItem =
+                    FragmentItem(
+                        fragment = EpisodeRouter.forSheet(),
+                        parameter = EpisodeRouter.EpisodeParam(id = entity.id).asBundle(),
+                    )
                 val dialog = fragmentItem.fragmentByTagOrNew(this)
                 dialog.show(supportFragmentManager, fragmentItem.tag())
             }
@@ -99,15 +98,15 @@ internal class EpisodeItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x1)
 
-
     companion object {
-        internal fun LayoutInflater.createViewHolder(
-            viewGroup: ViewGroup
-        ) = EpisodeItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createViewHolder(viewGroup: ViewGroup) =
+            EpisodeItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

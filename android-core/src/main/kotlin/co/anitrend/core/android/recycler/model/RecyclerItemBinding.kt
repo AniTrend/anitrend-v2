@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.recycler.model
 
 import android.content.res.Resources
@@ -26,9 +25,8 @@ import co.anitrend.core.android.R
 import co.anitrend.core.android.binding.IBindingView
 
 abstract class RecyclerItemBinding<B : ViewBinding>(
-    override val id: Long
+    override val id: Long,
 ) : IRecyclerItem, IBindingView<B> {
-
     override var binding: B? = null
 
     /**
@@ -63,6 +61,6 @@ abstract class RecyclerItemBinding<B : ViewBinding>(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
-    )= resources.getInteger(co.anitrend.arch.theme.R.integer.single_list_size)
+        resources: Resources,
+    ) = resources.getInteger(co.anitrend.arch.theme.R.integer.single_list_size)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.component.action
 
 import android.view.View
@@ -27,12 +26,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * used.
  */
 internal class ChangeSettingsMenuStateAction(
-    private val onShouldShowSettingsMenu: (showSettings: Boolean) -> Unit
+    private val onShouldShowSettingsMenu: (showSettings: Boolean) -> Unit,
 ) : OnStateChangedAction {
-
     private var hasCalledShowSettingsMenu: Boolean = false
 
-    override fun onStateChanged(sheet: View, newState: Int) {
+    override fun onStateChanged(
+        sheet: View,
+        newState: Int,
+    ) {
         if (newState == BottomSheetBehavior.STATE_HIDDEN) {
             hasCalledShowSettingsMenu = false
             onShouldShowSettingsMenu(false)
@@ -50,12 +51,16 @@ internal class ChangeSettingsMenuStateAction(
  * when the sheet is not hidden.
  */
 class ShowHideFabStateAction(
-    private val fab: FloatingActionButton
+    private val fab: FloatingActionButton,
 ) : OnStateChangedAction {
-    override fun onStateChanged(sheet: View, newState: Int) {
-        if (newState == BottomSheetBehavior.STATE_HIDDEN)
+    override fun onStateChanged(
+        sheet: View,
+        newState: Int,
+    ) {
+        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
             fab.show()
-        else
+        } else {
             fab.hide()
+        }
     }
 }

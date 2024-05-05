@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.tag.ui.controller.model
 
 import android.text.SpannableStringBuilder
@@ -41,9 +40,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class TagItem(
     private val entity: Tag,
-    override val supportsSelectionMode: Boolean = true
+    override val supportsSelectionMode: Boolean = true,
 ) : RecyclerItemBinding<TagItemBinding>(entity.id) {
-
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
      * assign text, load images, e.t.c
@@ -59,7 +57,7 @@ internal class TagItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = TagItemBinding.bind(view)
         val builder = SpannableStringBuilder(entity.name)
@@ -75,8 +73,9 @@ internal class TagItem(
             }
         }
 
-        if (isSelectable)
+        if (isSelectable) {
             requireBinding().tag.asChoice()
+        }
 
         requireBinding().tag.text = builder
 
@@ -84,9 +83,10 @@ internal class TagItem(
             if (!isSelectable) {
                 MediaDiscoverRouter.startActivity(
                     context = it.context,
-                    navPayload = MediaDiscoverRouter.MediaDiscoverParam(
-                        tag = entity.name
-                    ).asNavPayload()
+                    navPayload =
+                        MediaDiscoverRouter.MediaDiscoverParam(
+                            tag = entity.name,
+                        ).asNavPayload(),
                 )
             } else {
                 selectionMode?.isSelectionClickable(it, decorator, id)
@@ -104,10 +104,11 @@ internal class TagItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createViewHolder(
-            viewGroup: ViewGroup
-        ) = TagItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createViewHolder(viewGroup: ViewGroup) =
+            TagItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

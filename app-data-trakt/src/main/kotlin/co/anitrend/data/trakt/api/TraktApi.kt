@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.trakt.api
 
 import co.anitrend.data.core.extensions.koinOf
@@ -31,9 +30,8 @@ internal class TraktApi(
     clientSecret: String,
     redirectUri: String,
     isStaging: Boolean = false,
-    private val cache: Cache
+    private val cache: Cache,
 ) : TraktV2(apiKey, clientSecret, redirectUri, isStaging) {
-
     /**
      * Adds [TraktV2Interceptor] as an application interceptor and [TraktV2Authenticator] as an authenticator.
      */

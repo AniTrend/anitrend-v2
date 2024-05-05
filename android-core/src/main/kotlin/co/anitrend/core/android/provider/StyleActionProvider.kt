@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.provider
 
 import android.content.Context
@@ -35,7 +34,6 @@ import org.koin.core.component.inject
 import timber.log.Timber
 
 class StyleActionProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
-
     private val settings by inject<ICustomizationSettings>()
 
     private val viewModes = PreferredViewMode.values()
@@ -43,21 +41,23 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
     private fun onActionClicked(view: View) {
         val current = settings.preferredViewMode.value
         val currentIndex = viewModes.indexOf(current)
-        settings.preferredViewMode.value = when (currentIndex) {
-            PreferredViewMode.DETAILED.ordinal -> PreferredViewMode.SUMMARY
-            PreferredViewMode.SUMMARY.ordinal -> PreferredViewMode.COMPACT
-            PreferredViewMode.COMPACT.ordinal -> PreferredViewMode.COMFORTABLE
-            else -> PreferredViewMode.DETAILED
-        }
+        settings.preferredViewMode.value =
+            when (currentIndex) {
+                PreferredViewMode.DETAILED.ordinal -> PreferredViewMode.SUMMARY
+                PreferredViewMode.SUMMARY.ordinal -> PreferredViewMode.COMPACT
+                PreferredViewMode.COMPACT.ordinal -> PreferredViewMode.COMFORTABLE
+                else -> PreferredViewMode.DETAILED
+            }
     }
 
     private fun iconForSetting(preferredViewMode: PreferredViewMode) {
-        val resource = when (preferredViewMode) {
-            PreferredViewMode.DETAILED -> R.drawable.ic_view_detailed
-            PreferredViewMode.SUMMARY -> R.drawable.ic_view_summary
-            PreferredViewMode.COMPACT -> R.drawable.ic_view_compact
-            else -> R.drawable.ic_view_comfortable
-        }
+        val resource =
+            when (preferredViewMode) {
+                PreferredViewMode.DETAILED -> R.drawable.ic_view_detailed
+                PreferredViewMode.SUMMARY -> R.drawable.ic_view_summary
+                PreferredViewMode.COMPACT -> R.drawable.ic_view_compact
+                else -> R.drawable.ic_view_comfortable
+            }
         val drawable = context.getCompatDrawable(resource)
         actionImageView.setImageDrawable(drawable)
     }
@@ -68,8 +68,9 @@ class StyleActionProvider(context: Context) : AbstractActionProvider(context), K
      * @param forItem Optional menu item to create view for
      */
     override fun createWidget(forItem: MenuItem?): View {
-        if (!actionImageView.hasOnClickListeners())
+        if (!actionImageView.hasOnClickListeners()) {
             actionImageView.setOnClickListener(::onActionClicked)
+        }
 
         context.lifecycleScope()?.launch {
             context.lifecycleOwner()?.repeatOnLifecycle(Lifecycle.State.RESUMED) {

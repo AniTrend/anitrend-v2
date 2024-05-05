@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2024 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.data.edge.config.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -8,7 +24,7 @@ import org.threeten.bp.Instant
 
 internal class EdgeConfigCache(
     override val localSource: CacheLocalSource,
-    override val request: CacheRequest = CacheRequest.CONFIG
+    override val request: CacheRequest = CacheRequest.CONFIG,
 ) : CacheStorePolicy() {
     /**
      * Check if a resource with a given [identity] is permitted to refresh
@@ -18,11 +34,11 @@ internal class EdgeConfigCache(
      */
     override suspend fun shouldRefresh(
         identity: CacheIdentity,
-        expiresAfter: Instant
+        expiresAfter: Instant,
     ): Boolean = isRequestBefore(identity, expiresAfter)
 
     class Identity(
         override val id: Long = 1,
-        override val key: String = "edge_config"
+        override val key: String = "edge_config",
     ) : CacheIdentity
 }

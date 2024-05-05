@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.cache.repository
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -30,24 +29,22 @@ import org.threeten.bp.temporal.TemporalAmount
 import timber.log.Timber
 
 abstract class CacheStorePolicy : ICacheStorePolicy {
-
     protected abstract val localSource: CacheLocalSource
     protected abstract val request: CacheRequest
 
-    private suspend fun getRequestInstant(
-        entityId: Long
-    ): Instant? = withContext(Dispatchers.IO) {
-        val entity = localSource.getCacheLog(request, entityId)
-        Timber.v("getRequestInstant(entityId: $entityId) -> $entity")
-        entity?.timestamp
-    }
+    private suspend fun getRequestInstant(entityId: Long): Instant? =
+        withContext(Dispatchers.IO) {
+            val entity = localSource.getCacheLog(request, entityId)
+            Timber.v("getRequestInstant(entityId: $entityId) -> $entity")
+            entity?.timestamp
+        }
 
     /**
      * Checks if the given [identity] has been requested before a certain time [instant]
      */
     override suspend fun isRequestBefore(
         identity: CacheIdentity,
-        instant: Instant
+        instant: Instant,
     ): Boolean {
         val lastRequestInstant = getRequestInstant(identity.id)
         val isBefore = lastRequestInstant?.isBefore(instant)
@@ -62,7 +59,7 @@ abstract class CacheStorePolicy : ICacheStorePolicy {
      */
     override suspend fun isRequestExpired(
         identity: CacheIdentity,
-        threshold: TemporalAmount
+        threshold: TemporalAmount,
     ): Boolean {
         Timber.v("isRequestExpired(identity: $identity, threshold: $threshold)")
         return isRequestBefore(identity, threshold.inPast())
@@ -71,25 +68,28 @@ abstract class CacheStorePolicy : ICacheStorePolicy {
     /**
      * Checks if the given [identity] has been requested before, regardless of when
      */
-    override suspend fun hasBeenRequested(
-        identity: CacheIdentity
-    ): Boolean = withContext(Dispatchers.IO) {
-        val requestCount = localSource.countMatching(request, identity.id)
-        val exists = requestCount > 0
-        Timber.v("hasBeenRequested(identity: $identity) -> $exists")
-        exists
-    }
+    override suspend fun hasBeenRequested(identity: CacheIdentity): Boolean =
+        withContext(Dispatchers.IO) {
+            val requestCount = localSource.countMatching(request, identity.id)
+            val exists = requestCount > 0
+            Timber.v("hasBeenRequested(identity: $identity) -> $exists")
+            exists
+        }
 
     /**
      * Updates the last request [timestamp] for the given [identity]
      */
-    override suspend fun updateLastRequest(identity: CacheIdentity, timestamp: Instant) {
+    override suspend fun updateLastRequest(
+        identity: CacheIdentity,
+        timestamp: Instant,
+    ) {
         withContext(Dispatchers.IO) {
-            val entity = CacheEntity(
-                request = request,
-                cacheItemId = identity.id,
-                timestamp = timestamp
-            )
+            val entity =
+                CacheEntity(
+                    request = request,
+                    cacheItemId = identity.id,
+                    timestamp = timestamp,
+                )
             Timber.v("updateLastRequest(identity: $identity, timestamp: $timestamp)")
             localSource.insertOrUpdate(entity)
         }

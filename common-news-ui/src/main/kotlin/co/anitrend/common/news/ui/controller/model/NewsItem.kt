@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.news.ui.controller.model
 
 import android.content.res.Resources
@@ -40,9 +39,8 @@ import com.perfomer.blitz.setTimeAgo
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class NewsItem(
-    private val entity: News
+    private val entity: News,
 ) : RecyclerItemBinding<NewsItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -60,13 +58,14 @@ internal class NewsItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = NewsItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(co.anitrend.arch.theme.R.dimen.sm_margin).toFloat()
-        disposable = requireBinding().newsImage.using(
-            entity.image.toCoverImage()
-        )
+        disposable =
+            requireBinding().newsImage.using(
+                entity.image.toCoverImage(),
+            )
 
         requireBinding().newsTitle.text = entity.title
         requireBinding().newsSubTitle.text = entity.subTitle
@@ -78,14 +77,14 @@ internal class NewsItem(
         requireBinding().container.setOnClickListener {
             NewsRouter.startActivity(
                 context = it.context,
-                navPayload = NewsRouter.NewsParam(
-                    link = entity.link,
-                    title = entity.title,
-                    subTitle = entity.subTitle,
-                    description = entity.description,
-                    content = entity.content
-                ).asNavPayload()
-
+                navPayload =
+                    NewsRouter.NewsParam(
+                        link = entity.link,
+                        title = entity.title,
+                        subTitle = entity.subTitle,
+                        description = entity.description,
+                        content = entity.content,
+                    ).asNavPayload(),
             )
         }
     }
@@ -112,14 +111,15 @@ internal class NewsItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.column_x1)
 
     companion object {
-        internal fun LayoutInflater.createViewHolder(
-            viewGroup: ViewGroup
-        ) = NewsItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createViewHolder(viewGroup: ViewGroup) =
+            NewsItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

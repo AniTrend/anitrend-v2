@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.controller.model.navigation
 
 import android.view.LayoutInflater
@@ -30,9 +29,8 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MenuNavigationItem(
-    private val entity: Navigation.Menu
+    private val entity: Navigation.Menu,
 ) : RecyclerItemBinding<NavigationMenuItemBinding>(entity.hashCode().toLong()) {
-
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
      * assign text, load images, e.t.c
@@ -48,14 +46,16 @@ class MenuNavigationItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = NavigationMenuItemBinding.bind(view)
         requireBinding().navMenuTitle.setText(entity.titleRes)
         requireBinding().navMenuTitle.isChecked = entity.isChecked
         requireBinding().navMenuTitle.setCompoundDrawablesWithIntrinsicBounds(
             view.context.getCompatDrawable(entity.icon),
-            null, null, null
+            null,
+            null,
+            null,
         )
         requireBinding().navMenuTitle.setOnClickListener {
             stateFlow.value =
@@ -75,10 +75,11 @@ class MenuNavigationItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createNavMenuViewHolder(
-            viewGroup: ViewGroup
-        ) = NavigationMenuItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createNavMenuViewHolder(viewGroup: ViewGroup) =
+            NavigationMenuItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

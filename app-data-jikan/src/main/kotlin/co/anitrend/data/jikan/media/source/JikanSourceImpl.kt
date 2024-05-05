@@ -32,7 +32,6 @@ import co.anitrend.data.jikan.media.source.contract.JikanSource
 import co.anitrend.data.jikan.model.JikanWrapper
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -40,7 +39,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import timber.log.Timber
-import java.util.*
 
 internal class JikanSourceImpl(
     private val remoteSource: JikanRemoteSource,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.migration.model
 
 import android.content.Context
@@ -22,12 +21,15 @@ import co.anitrend.core.android.settings.Settings
 
 internal abstract class Migration(
     val startVersion: Int,
-    val endVersion: Int
+    val endVersion: Int,
 ) {
     /**
      * Applies migration using optional settings provided
      */
-    abstract operator fun invoke(context: Context, settings: Settings)
+    abstract operator fun invoke(
+        context: Context,
+        settings: Settings,
+    )
 
     /**
      * Indicates whether some other object is "equal to" this one. Implementations must fulfil the following

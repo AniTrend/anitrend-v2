@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -47,9 +46,9 @@ import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
 import co.anitrend.common.media.ui.widget.title.MediaSubTitleWidget
 import co.anitrend.core.android.compose.AniTrendTheme
+import co.anitrend.core.android.compose.SERIES_ASPECT_RATIO
+import co.anitrend.core.android.compose.SERIES_IMAGE_LG
 import co.anitrend.core.android.compose.design.image.AniTrendImage
-import co.anitrend.core.android.compose.series_aspect_ration
-import co.anitrend.core.android.compose.series_image_lg
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.roundedCornersTransformation
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
@@ -65,12 +64,11 @@ import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.model.sorting.Sorting
 
-
 @Composable
 private fun MediaCover(
     cover: IMediaCover,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AniTrendImage(
         image = cover,
@@ -116,32 +114,36 @@ private fun ReleaseStatusWidget(
             Spacer(Modifier.height(8.dp))
             AndroidView(
                 factory = ::MediaAiringScheduleWidget,
-                modifier = modifier
+                modifier = modifier,
             ) { widget ->
                 widget.setUpAiringSchedule(media)
             }
         }
         is Media.Category.Manga -> {
-            val chapters = pluralStringResource(
-                R.plurals.label_number_of_chapters,
-                category.chapters
-            ).format(category.chapters)
-            val volumes = pluralStringResource(
-                R.plurals.label_number_of_volumes,
-                category.volumes
-            ).format(category.volumes)
+            val chapters =
+                pluralStringResource(
+                    R.plurals.label_number_of_chapters,
+                    category.chapters,
+                ).format(category.chapters)
+            val volumes =
+                pluralStringResource(
+                    R.plurals.label_number_of_volumes,
+                    category.volumes,
+                ).format(category.volumes)
 
-            val textTemplate = if (category.volumes > 0)
-                "$volumes $CHARACTER_SEPARATOR $chapters"
-            else
-                "${media.status?.alias.toString()} $CHARACTER_SEPARATOR $chapters"
+            val textTemplate =
+                if (category.volumes > 0) {
+                    "$volumes $CHARACTER_SEPARATOR $chapters"
+                } else {
+                    "${media.status?.alias} $CHARACTER_SEPARATOR $chapters"
+                }
 
             Text(
                 text = textTemplate,
                 fontWeight = FontWeight.Bold,
                 color = media.image.rememberAccentColor(),
                 style = AniTrendTheme.typography.caption,
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(4.dp),
             )
         }
     }
@@ -158,21 +160,22 @@ private fun RankingItems(
         state = rememberLazyListState(),
         contentPadding = PaddingValues(all = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(
             count = rankings.size,
             key = { rankings[it].id },
-            contentType = { rankings[it].type }
+            contentType = { rankings[it].type },
         ) { index ->
             val item = rankings[index]
             Chip(
                 onClick = { onClick(item) },
-                colors = ChipDefaults.chipColors(
-                    backgroundColor = accentColor,
-                    contentColor = Color.White,
-                ),
-                modifier = Modifier
+                colors =
+                    ChipDefaults.chipColors(
+                        backgroundColor = accentColor,
+                        contentColor = Color.White,
+                    ),
+                modifier = Modifier,
             ) {
                 Text(
                     text = "# ${item.rank} ${item.context}".capitalizeWords(),
@@ -193,10 +196,10 @@ private fun InfoWidget(
 ) {
     Row(modifier = modifier) {
         Text(
-            text = "${meanScore}%",
+            text = "$meanScore%",
             color = accentColor,
             fontWeight = FontWeight.Bold,
-            style = AniTrendTheme.typography.h6
+            style = AniTrendTheme.typography.h6,
         )
         Spacer(Modifier.width(8.dp))
     }
@@ -205,11 +208,11 @@ private fun InfoWidget(
 @Composable
 private fun MediaSubTitle(
     media: Media,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AndroidView(
         factory = ::MediaSubTitleWidget,
-        modifier = modifier
+        modifier = modifier,
     ) {
         it.setUpSubTitle(media)
     }
@@ -221,29 +224,30 @@ fun SummarySection(
     accentColor: Color,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         MediaCover(
             cover = media.image,
-            modifier = Modifier.height(series_image_lg)
-                .aspectRatio(series_aspect_ration),
+            modifier =
+                Modifier.height(SERIES_IMAGE_LG)
+                    .aspectRatio(SERIES_ASPECT_RATIO),
             onCoverClick = onCoverClick,
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.offset(y = 24.dp)
+            modifier = Modifier.offset(y = 24.dp),
         ) {
             TitleWidget(
                 title = media.title,
-                extraInfo = (media as Media.Extended).extraInfo
+                extraInfo = (media as Media.Extended).extraInfo,
             )
             ReleaseStatusWidget(media)
             MediaSubTitle(
-                media = media
+                media = media,
             )
             InfoWidget(
                 accentColor = accentColor,
@@ -253,16 +257,19 @@ fun SummarySection(
                 accentColor = accentColor,
                 rankings = media.rankings.toList(),
                 onClick = { rank ->
-                    val sorting = when (rank.type) {
-                        MediaRankType.RATED -> Sorting(
-                            sortable = MediaSort.SCORE,
-                            order = SortOrder.DESC
-                        )
-                        else -> Sorting(
-                            sortable = MediaSort.POPULARITY,
-                            order = SortOrder.DESC
-                        )
-                    }
+                    val sorting =
+                        when (rank.type) {
+                            MediaRankType.RATED ->
+                                Sorting(
+                                    sortable = MediaSort.SCORE,
+                                    order = SortOrder.DESC,
+                                )
+                            else ->
+                                Sorting(
+                                    sortable = MediaSort.POPULARITY,
+                                    order = SortOrder.DESC,
+                                )
+                        }
 
                     onMediaDiscoverableItemClick(
                         MediaDiscoverRouter.MediaDiscoverParam(
@@ -271,10 +278,10 @@ fun SummarySection(
                             season = media.season,
                             seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
                             startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
-                            sort = listOf(sorting)
-                        )
+                            sort = listOf(sorting),
+                        ),
                     )
-                }
+                },
             )
         }
     }

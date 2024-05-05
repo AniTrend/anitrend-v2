@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.widget.status
 
 import android.content.Context
@@ -24,50 +23,68 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.domain.media.enums.MediaStatus
 
-class MediaStatusWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), CustomView {
+class MediaStatusWidget
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : FrameLayout(context, attrs, defStyleAttr), CustomView {
+        init {
+            onInit(context, attrs, defStyleAttr)
+        }
 
-    init { onInit(context, attrs, defStyleAttr) }
+        /**
+         * Sets the background of the view using a color from [mediaStatus]
+         */
+        fun setBackgroundUsing(mediaStatus: MediaStatus?) {
+            when (mediaStatus) {
+                MediaStatus.NOT_YET_RELEASED -> {
+                    background =
+                        context.getCompatDrawable(
+                            co.anitrend.core.android.R.drawable.dot_indicator,
+                            co.anitrend.core.android.R.color.orange_A700,
+                        )
+                }
+                MediaStatus.RELEASING -> {
+                    background =
+                        context.getCompatDrawable(
+                            co.anitrend.core.android.R.drawable.dot_indicator,
+                            co.anitrend.core.android.R.color.blue_A700,
+                        )
+                }
+                MediaStatus.CANCELLED -> {
+                    background =
+                        context.getCompatDrawable(
+                            co.anitrend.core.android.R.drawable.dot_indicator,
+                            co.anitrend.core.android.R.color.red_A700,
+                        )
+                }
+                MediaStatus.FINISHED -> {
+                    background =
+                        context.getCompatDrawable(
+                            co.anitrend.core.android.R.drawable.dot_indicator,
+                            co.anitrend.core.android.R.color.green_A700,
+                        )
+                }
+                else -> background = null
+            }
+        }
 
-    /**
-     * Sets the background of the view using a color from [mediaStatus]
-     */
-    fun setBackgroundUsing(mediaStatus: MediaStatus?) {
-        when (mediaStatus) {
-            MediaStatus.NOT_YET_RELEASED -> {
-                background = context.getCompatDrawable(
-                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.orange_A700
-                )
+        /**
+         * Callable in view constructors to perform view inflation and attribute initialization
+         *
+         * @param context view context
+         * @param attrs view attributes if applicable
+         * @param styleAttr style attribute if applicable
+         */
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            if (isInEditMode) {
+                setBackgroundUsing(MediaStatus.NOT_YET_RELEASED)
             }
-            MediaStatus.RELEASING -> {
-                background = context.getCompatDrawable(
-                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.blue_A700
-                )
-            }
-            MediaStatus.CANCELLED -> {
-                background = context.getCompatDrawable(
-                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.red_A700
-                )
-            }
-            MediaStatus.FINISHED -> {
-                background = context.getCompatDrawable(
-                    co.anitrend.core.android.R.drawable.dot_indicator, co.anitrend.core.android.R.color.green_A700
-                )
-            }
-            else -> background = null
         }
     }
-
-    /**
-     * Callable in view constructors to perform view inflation and attribute initialization
-     *
-     * @param context view context
-     * @param attrs view attributes if applicable
-     * @param styleAttr style attribute if applicable
-     */
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        if (isInEditMode)
-            setBackgroundUsing(MediaStatus.NOT_YET_RELEASED)
-    }
-}

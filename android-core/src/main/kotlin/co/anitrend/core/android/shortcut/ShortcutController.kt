@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.shortcut
 
 import android.annotation.SuppressLint
@@ -34,7 +33,6 @@ internal class ShortcutController(
     private val context: Context,
     private val shortcutManager: ShortcutManager?,
 ) : IShortcutController {
-
     /**
      * Publish the list of dynamic [shortcuts]. If there are already dynamic or
      * pinned shortcuts with the same IDs, each mutable shortcut is updated.
@@ -45,27 +43,29 @@ internal class ShortcutController(
      */
     override fun createShortcuts(vararg shortcuts: Shortcut): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            val shortcutInfo = shortcuts.mapNotNull { shortcut ->
-                val intent = shortcut.router.forActivity(
-                    context = context,
-                    navPayload = shortcut.navPayload,
-                )
-                if (intent == null) {
-                    Timber.w("Intent for shortcut: `${shortcut.id}` returned null")
-                    null
-                } else {
-                    ShortcutInfo.Builder(context, shortcut.id)
-                        .setShortLabel(context.getString(shortcut.label))
-                        .setDisabledMessage(context.getString(shortcut.disabledMessage))
-                        .setIcon(Icon.createWithResource(context, shortcut.icon))
-                        .setIntent(intent)
-                        .build()
+            val shortcutInfo =
+                shortcuts.mapNotNull { shortcut ->
+                    val intent =
+                        shortcut.router.forActivity(
+                            context = context,
+                            navPayload = shortcut.navPayload,
+                        )
+                    if (intent == null) {
+                        Timber.w("Intent for shortcut: `${shortcut.id}` returned null")
+                        null
+                    } else {
+                        ShortcutInfo.Builder(context, shortcut.id)
+                            .setShortLabel(context.getString(shortcut.label))
+                            .setDisabledMessage(context.getString(shortcut.disabledMessage))
+                            .setIcon(Icon.createWithResource(context, shortcut.icon))
+                            .setIntent(intent)
+                            .build()
+                    }
                 }
-            }
             shortcutManager?.addDynamicShortcuts(shortcutInfo) ?: false
-        }
-        else
+        } else {
             false
+        }
     }
 
     /**
@@ -77,8 +77,9 @@ internal class ShortcutController(
      */
     @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun enableShortcuts(vararg shortcuts: Shortcut) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             shortcutManager?.enableShortcuts(shortcuts.map(Shortcut::id))
+        }
     }
 
     /**
@@ -90,8 +91,9 @@ internal class ShortcutController(
      */
     @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun disableShortcuts(vararg shortcuts: Shortcut) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             shortcutManager?.disableShortcuts(shortcuts.map(Shortcut::id))
+        }
     }
 
     /**
@@ -103,8 +105,9 @@ internal class ShortcutController(
      */
     @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun reportShortcutUsage(shortcut: Shortcut) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             shortcutManager?.reportShortcutUsed(shortcut.id)
+        }
     }
 
     /**
@@ -114,7 +117,8 @@ internal class ShortcutController(
      */
     @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.N_MR1, lambda = 1)
     override fun removeAllDynamicShortcuts() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             shortcutManager?.removeAllDynamicShortcuts()
+        }
     }
 }

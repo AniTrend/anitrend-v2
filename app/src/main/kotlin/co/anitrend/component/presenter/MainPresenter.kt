@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.component.presenter
 
 import android.content.Context
@@ -32,12 +31,14 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 
 internal class MainPresenter(
     context: Context,
-    settings: Settings
+    settings: Settings,
 ) : CorePresenter(context, settings) {
-
-    private fun createContainerTransform(start: View, end: View): MaterialContainerTransform {
+    private fun createContainerTransform(
+        start: View,
+        end: View,
+    ): MaterialContainerTransform {
         val containerTransform = MaterialContainerTransform()
-        with (containerTransform) {
+        with(containerTransform) {
             duration = 250
             pathMotion = MaterialArcMotion()
             startView = start
@@ -50,12 +51,13 @@ internal class MainPresenter(
     fun startActionMenuTransformation(
         floatingActionButton: FloatingActionButton,
         actionMenu: FloatingActionMenu,
-        reveal: Boolean
+        reveal: Boolean,
     ) {
-        val transform = when {
-            reveal -> createContainerTransform(floatingActionButton, actionMenu)
-            else -> createContainerTransform(actionMenu, floatingActionButton)
-        }
+        val transform =
+            when {
+                reveal -> createContainerTransform(floatingActionButton, actionMenu)
+                else -> createContainerTransform(actionMenu, floatingActionButton)
+            }
         TransitionManager.beginDelayedTransition(actionMenu, transform)
         if (reveal) {
             floatingActionButton.hide()

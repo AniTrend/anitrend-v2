@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation
 
 import android.text.SpannedString
@@ -75,12 +74,12 @@ object NavigationDrawerRouter : NavigationRouter() {
         MANGA_LIST(true),
         NEWS(false),
         FORUMS(false),
-        EPISODES(false)
+        EPISODES(false),
     }
 
     @Parcelize
     data class NavigationDrawerParam(
-        val destination: Destination
+        val destination: Destination,
     ) : IParam
 }
 
@@ -106,7 +105,7 @@ object OnBoardingRouter : NavigationRouter() {
         val title: @RawValue SpannedString,
         val subTitle: @RawValue SpannedString,
         val description: @RawValue SpannedString,
-        @ColorRes val textColor: Int
+        @ColorRes val textColor: Int,
     ) : IParam
 }
 
@@ -189,7 +188,7 @@ object AiringRouter : NavigationRouter() {
         var episode_lesser: Int? = null,
         var airingAt_greater: Int? = null,
         var airingAt_lesser: Int? = null,
-        var sort: List<Sorting<AiringSort>>? = null
+        var sort: List<Sorting<AiringSort>>? = null,
     ) : IParam
 }
 
@@ -208,7 +207,7 @@ object AuthRouter : NavigationRouter() {
         val tokenType: String? = null,
         val expiresIn: Long? = null,
         val errorTitle: String? = null,
-        val errorDescription: String? = null
+        val errorDescription: String? = null,
     ) : IParam
 }
 
@@ -229,10 +228,12 @@ object MediaDiscoverRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun fragment(): Class<out Fragment>
+
         fun sheet(): Class<out DialogFragment>
     }
 
     fun forFragment() = provider.fragment()
+
     fun forSheet() = provider.sheet()
 
     @Parcelize
@@ -302,7 +303,7 @@ object MediaDiscoverRouter : NavigationRouter() {
         var type: MediaType? = null,
         var volumes: Int? = null,
         var volumes_greater: Int? = null,
-        var volumes_lesser: Int? = null
+        var volumes_lesser: Int? = null,
     ) : IParam
 }
 
@@ -311,21 +312,26 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun sorting(): Class<out Fragment>
+
         fun general(): Class<out Fragment>
+
         fun genre(): Class<out Fragment>
+
         fun tag(): Class<out Fragment>
     }
 
     fun forSorting() = provider.sorting()
+
     fun forGeneral() = provider.general()
+
     fun forGenre() = provider.genre()
+
     fun forTag() = provider.tag()
 
     /**
      * Filter action models
      */
     sealed class Action : IParam {
-
         /**
          * @return true if this current action impl has not been changed
          */
@@ -337,24 +343,22 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
 
         @Parcelize
         data class Sort(
-            var sort: List<Sorting<MediaSort>>
+            var sort: List<Sorting<MediaSort>>,
         ) : Action() {
             /**
              * @return true if this current action impl has not been changed
              */
-            override fun isDefault() =
-                sort.isEmpty()
+            override fun isDefault() = sort.isEmpty()
         }
 
         @Parcelize
         data class General(
-            var id: Long?
+            var id: Long?,
         ) : Action() {
             /**
              * @return true if this current action impl has not been changed
              */
-            override fun isDefault() =
-                id == null
+            override fun isDefault() = id == null
         }
 
         @Parcelize
@@ -365,8 +369,7 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             /**
              * @return true if this current action impl has not been changed
              */
-            override fun isDefault() =
-                genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
+            override fun isDefault() = genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
         }
 
         @Parcelize
@@ -374,16 +377,16 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
             var tagCategory_in: List<String>? = null,
             var tagCategory_not_in: List<String>? = null,
             var tag_in: List<String>? = null,
-            var tag_not_in: List<String>? = null
+            var tag_not_in: List<String>? = null,
         ) : Action() {
             /**
              * @return true if this current action impl has not been changed
              */
             override fun isDefault() =
                 tagCategory_in.isNullOrEmpty() &&
-                        tagCategory_not_in.isNullOrEmpty() &&
-                        tag_in.isNullOrEmpty() &&
-                        tag_not_in.isNullOrEmpty()
+                    tagCategory_not_in.isNullOrEmpty() &&
+                    tag_in.isNullOrEmpty() &&
+                    tag_not_in.isNullOrEmpty()
         }
     }
 }
@@ -406,7 +409,7 @@ object CharacterRouter : NavigationRouter() {
     @Parcelize
     data class CharacterParam(
         val id: Long?,
-        val name: String?
+        val name: String?,
     ) : IParam
 }
 
@@ -417,7 +420,7 @@ object CharacterDiscoverRouter : NavigationRouter() {
 
     @Parcelize
     data class CharacterDiscoverParam(
-        val id: Long
+        val id: Long,
     ) : IParam
 }
 
@@ -440,7 +443,7 @@ object StaffRouter : NavigationRouter() {
     @Parcelize
     data class StaffParam(
         val id: Long?,
-        val name: String?
+        val name: String?,
     ) : IParam
 }
 
@@ -452,7 +455,7 @@ object StaffDiscoverRouter : NavigationRouter() {
     @Parcelize
     data class StaffDiscoverParam(
         val id: Long?,
-        val name: String?
+        val name: String?,
     ) : IParam
 }
 
@@ -468,7 +471,7 @@ object ProfileRouter : NavigationRouter() {
     @Parcelize
     data class ProfileParam(
         val userId: Long? = null,
-        val userName: String? = null
+        val userName: String? = null,
     ) : IParam
 }
 
@@ -517,7 +520,7 @@ object ReviewDiscoverRouter : NavigationRouter() {
         val userId: Long? = null,
         val mediaType: MediaType? = null,
         val sort: List<Sorting<ReviewSort>>? = null,
-        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
+        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
     ) : IParam
 }
 
@@ -540,7 +543,7 @@ object RecommendationDiscoverRouter : NavigationRouter() {
         val ratingGreatThan: Int? = null,
         val ratingLessThan: Int? = null,
         val sort: List<Sorting<RecommendationSort>>? = null,
-        val userId: Int? = null
+        val userId: Int? = null,
     ) : IParam
 }
 
@@ -569,7 +572,7 @@ object NewsRouter : NavigationRouter() {
         val title: String,
         val subTitle: String,
         val description: String?,
-        val content: String
+        val content: String,
     ) : IParam
 }
 
@@ -578,15 +581,17 @@ object EpisodeRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun fragment(): Class<out Fragment>
+
         fun sheet(): Class<out DialogFragment>
     }
 
     fun forFragment() = provider.fragment()
+
     fun forSheet() = provider.sheet()
 
     @Parcelize
     data class EpisodeParam(
-        val id: Long
+        val id: Long,
     ) : IParam
 }
 
@@ -673,7 +678,7 @@ object ImageViewerRouter : NavigationRouter() {
 
     @Parcelize
     data class ImageSourceParam(
-        val imageSrc: CharSequence
+        val imageSrc: CharSequence,
     ) : IParam
 }
 
@@ -682,10 +687,12 @@ object GenreTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun worker(): Class<out ListenableWorker>
+
         fun scheduler(): WorkSchedulerController
     }
 
     fun forWorker() = provider.worker()
+
     fun forScheduler() = provider.scheduler()
 }
 
@@ -694,10 +701,12 @@ object TagTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun worker(): Class<out ListenableWorker>
+
         fun scheduler(): WorkSchedulerController
     }
 
     fun forWorker() = provider.worker()
+
     fun forScheduler() = provider.scheduler()
 }
 
@@ -706,15 +715,17 @@ object AccountTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun signOutWorker(): Class<out ListenableWorker>
+
         fun signInWorker(): Class<out ListenableWorker>
     }
 
     fun forSignOutWorker() = provider.signOutWorker()
+
     fun forSignInWorker() = provider.signInWorker()
 
     @Parcelize
     data class AccountParam(
-        val id: Long
+        val id: Long,
     ) : IParam
 }
 
@@ -723,18 +734,24 @@ object UserTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun accountSyncWorker(): Class<out ListenableWorker>
+
         fun followToggleWorker(): Class<out ListenableWorker>
+
         fun statisticSyncWorker(): Class<out ListenableWorker>
 
         fun accountSyncScheduler(): WorkSchedulerController
+
         fun statisticSyncScheduler(): WorkSchedulerController
     }
 
     fun forAccountSyncWorker() = provider.accountSyncWorker()
+
     fun forFollowToggleWorker() = provider.followToggleWorker()
+
     fun forStatisticSyncWorker() = provider.statisticSyncWorker()
 
     fun forAccountSyncScheduler() = provider.accountSyncScheduler()
+
     fun forStatisticSyncScheduler() = provider.accountSyncScheduler()
 }
 
@@ -743,29 +760,39 @@ object MediaListTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun mediaListSaveEntryWorker(): Class<out ListenableWorker>
+
         fun mediaListSaveEntriesWorker(): Class<out ListenableWorker>
+
         fun mediaListDeleteEntryWorker(): Class<out ListenableWorker>
+
         fun mediaListDeleteCustomListWorker(): Class<out ListenableWorker>
+
         fun animeSyncWorker(): Class<out ListenableWorker>
+
         fun mangaSyncWorker(): Class<out ListenableWorker>
 
         fun animeSyncScheduler(): WorkSchedulerController
+
         fun mangaSyncScheduler(): WorkSchedulerController
     }
 
     fun forMediaListSaveEntryWorker() = provider.mediaListSaveEntryWorker()
+
     fun forMediaListSaveEntriesWorker() = provider.mediaListSaveEntriesWorker()
+
     fun forMediaListDeleteEntryWorker() = provider.mediaListDeleteEntryWorker()
+
     fun forMediaListDeleteCustomListWorker() = provider.mediaListDeleteCustomListWorker()
 
     fun forMediaListAnimeSyncWorker() = provider.animeSyncWorker()
+
     fun forMediaListMangaSyncWorker() = provider.mangaSyncWorker()
 
     fun forAnimeScheduler() = provider.animeSyncScheduler()
+
     fun forMangaScheduler() = provider.mangaSyncScheduler()
 
     sealed class Param : IParam {
-
         @Parcelize
         data class SaveEntry(
             var id: Long? = null,
@@ -808,13 +835,13 @@ object MediaListTaskRouter : NavigationRouter() {
 
         @Parcelize
         data class DeleteEntry(
-            val id: Long
+            val id: Long,
         ) : Param()
 
         @Parcelize
         data class DeleteCustomList(
             val customList: String,
-            val type: MediaType
+            val type: MediaType,
         ) : Param()
     }
 }
@@ -824,10 +851,12 @@ object NewsTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun worker(): Class<out ListenableWorker>
+
         fun scheduler(): WorkSchedulerController
     }
 
     fun forWorker() = provider.worker()
+
     fun forScheduler() = provider.scheduler()
 }
 
@@ -836,10 +865,12 @@ object EpisodeTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun worker(): Class<out ListenableWorker>
+
         fun scheduler(): WorkSchedulerController
     }
 
     fun forWorker() = provider.worker()
+
     fun forScheduler() = provider.scheduler()
 }
 
@@ -848,16 +879,19 @@ object ReviewTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun reviewVoteEntryWorker(): Class<out ListenableWorker>
+
         fun reviewSaveEntryWorker(): Class<out ListenableWorker>
+
         fun reviewDeleteEntryWorker(): Class<out ListenableWorker>
     }
 
     fun forReviewRateWorker() = provider.reviewVoteEntryWorker()
+
     fun forReviewSaveWorker() = provider.reviewSaveEntryWorker()
+
     fun forReviewDeleteWorker() = provider.reviewDeleteEntryWorker()
 
     sealed class Param : IParam {
-
         @Parcelize
         data class SaveEntry(
             val id: Long? = null,
@@ -865,18 +899,18 @@ object ReviewTaskRouter : NavigationRouter() {
             val body: String,
             val summary: String,
             val score: Int,
-            val private: Boolean
+            val private: Boolean,
         ) : Param()
 
         @Parcelize
         data class RateEntry(
             val id: Long,
-            val rating: ReviewRating
+            val rating: ReviewRating,
         ) : Param()
 
         @Parcelize
         data class DeleteEntry(
-            val id: Long
+            val id: Long,
         ) : Param()
     }
 }
@@ -886,10 +920,12 @@ object ConfigTaskRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun worker(): Class<out ListenableWorker>
+
         fun scheduler(): WorkSchedulerController
     }
 
     fun forWorker() = provider.worker()
+
     fun forScheduler() = provider.scheduler()
 }
 

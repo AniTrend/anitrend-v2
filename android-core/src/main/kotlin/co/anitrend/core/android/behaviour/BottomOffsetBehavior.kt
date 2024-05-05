@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.behaviour
 
 import android.content.Context
@@ -29,10 +28,9 @@ import co.anitrend.core.android.R
  */
 class BottomOffsetBehavior(
     private val context: Context,
-    private val attributeSet: AttributeSet
+    private val attributeSet: AttributeSet,
 ) : CoordinatorLayout.Behavior<View>() {
-
-    //TODO: Offsets don't seem to be getting applied on the bottom, not entirely sure what could be missing
+    // TODO: Offsets don't seem to be getting applied on the bottom, not entirely sure what could be missing
 
     private lateinit var viewOffsetHelper: ViewOffsetHelper
 
@@ -60,33 +58,34 @@ class BottomOffsetBehavior(
     override fun onLayoutChild(
         parent: CoordinatorLayout,
         child: View,
-        layoutDirection: Int
+        layoutDirection: Int,
     ): Boolean {
         parent.onLayoutChild(child, layoutDirection)
 
-        if (!::viewOffsetHelper.isInitialized)
+        if (!::viewOffsetHelper.isInitialized) {
             viewOffsetHelper = ViewOffsetHelper(child)
+        }
 
         viewOffsetHelper.doOnInit()
         viewOffsetHelper.applyOffsets()
 
         return setBottomOffset(
             context.resources.getDimensionPixelSize(
-                R.dimen.design_bottom_app_bar_height
-            )
+                R.dimen.design_bottom_app_bar_height,
+            ),
         )
     }
 
     private fun setBottomOffset(offset: Int): Boolean {
         val offsetHelper = viewOffsetHelper
-        if (::viewOffsetHelper.isInitialized)
+        if (::viewOffsetHelper.isInitialized) {
             return offsetHelper.setBottomOffset(offset)
+        }
 
         return false
     }
 
     private class ViewOffsetHelper(private val view: View) {
-
         private var layoutBottom = 0
         private var offsetBottom = 0
 

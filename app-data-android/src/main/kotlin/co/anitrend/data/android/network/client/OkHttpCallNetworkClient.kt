@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.client
 
 import co.anitrend.arch.domain.entities.RequestError
@@ -28,11 +27,10 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 
 abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>() {
-
     class OkHttpException(
         val response: Response,
-        val code: Int = response.code
-    ): RuntimeException(response.message)
+        val code: Int = response.code,
+    ) : RuntimeException(response.message)
 
     /**
      * @return [Response.body] of the response
@@ -50,12 +48,14 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
     /**
      * @return [Boolean] whether or not the request should be retried based on the [exception] received
      */
-    override fun defaultShouldRetry(exception: Throwable) = when (exception) {
-        is OkHttpException -> exception.code == 429
-        is SocketTimeoutException,
-        is IOException -> true
-        else -> false
-    }
+    override fun defaultShouldRetry(exception: Throwable) =
+        when (exception) {
+            is OkHttpException -> exception.code == 429
+            is SocketTimeoutException,
+            is IOException,
+            -> true
+            else -> false
+        }
 
     /**
      * Executes the request
@@ -67,7 +67,7 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
     override suspend fun Call.execute(
         defaultDelay: Long,
         maxAttempts: Int,
-        shouldRetry: (Throwable) -> Boolean
+        shouldRetry: (Throwable) -> Boolean,
     ): Response {
         var lastKnownException: Throwable? = null
 
@@ -78,22 +78,23 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
             }.onSuccess { response ->
                 return response
             }.onFailure { exception ->
-                if (lastKnownException != exception)
+                if (lastKnownException != exception) {
                     lastKnownException = exception
+                }
                 delay(
                     exception.getNextDelay(
                         attempt,
                         maxAttempts,
                         defaultDelay,
-                        shouldRetry
-                    )
+                        shouldRetry,
+                    ),
                 )
             }
         }
 
         throw lastKnownException ?: RequestError(
             "Unable to recover from unknown error",
-            "Maximum retry attempts exhausted without success"
+            "Maximum retry attempts exhausted without success",
         )
     }
 
@@ -116,6 +117,6 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
     ) = call.execute(
         firstDelay,
         maxAttempts,
-        shouldRetry
+        shouldRetry,
     ).bodyOrThrow()
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.controller.model
 
 import android.content.res.Resources
@@ -39,9 +38,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaComfortableItem(
     private val entity: Media,
-    private val settings: Settings
+    private val settings: Settings,
 ) : RecyclerItemBinding<MediaComfortableItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -59,12 +57,13 @@ internal data class MediaComfortableItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = MediaComfortableItemBinding.bind(view)
-        disposable = requireBinding().mediaImage.using(
-            entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER)
-        )
+        disposable =
+            requireBinding().mediaImage.using(
+                entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
+            )
         requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
@@ -100,14 +99,15 @@ internal data class MediaComfortableItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x2)
 
     companion object {
-        internal fun LayoutInflater.createGridViewHolder(
-            viewGroup: ViewGroup
-        ) = MediaComfortableItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createGridViewHolder(viewGroup: ViewGroup) =
+            MediaComfortableItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

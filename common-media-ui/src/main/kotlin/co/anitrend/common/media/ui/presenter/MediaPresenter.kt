@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.presenter
 
 import android.content.Context
@@ -33,9 +32,8 @@ import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 internal class MediaPresenter(
     context: Context,
     settings: Settings,
-    entity: IMedia
+    entity: IMedia,
 ) : CorePresenter(context, settings) {
-
     val controller by lazy(UNSAFE) {
         MediaProgressController(entity, settings)
     }
@@ -48,10 +46,11 @@ internal class MediaPresenter(
         val builder = SpannableStringBuilder()
         builder.append("${controller.getCurrentProgress()}")
         builder.append(" / ")
-        if (maximum == 0)
+        if (maximum == 0) {
             builder.append("?")
-        else
+        } else {
             builder.append("${controller.getMaximumProgress()}")
+        }
         return builder
     }
 
@@ -59,9 +58,10 @@ internal class MediaPresenter(
      * Enqueues work to be performed
      */
     operator fun invoke(): Operation {
-        val params = controller.createParams(
-            dateHelper = koinOf()
-        )
+        val params =
+            controller.createParams(
+                dateHelper = koinOf(),
+            )
 
         return MediaListTaskRouter.forMediaListSaveEntryWorker()
             .createOneTimeUniqueWorker(context, params)

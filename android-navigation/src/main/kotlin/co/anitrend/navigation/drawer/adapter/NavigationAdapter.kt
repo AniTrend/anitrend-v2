@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.adapter
 
 import android.content.res.Resources
@@ -47,9 +46,8 @@ class NavigationAdapter(
         }
     },
     override val customSupportAnimator: AbstractAnimator? = null,
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportListAdapter<Navigation>(NavigationDiffUtil, true) {
-
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
      * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
@@ -90,7 +88,7 @@ class NavigationAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ) = when (viewType) {
         Navigation.MENU -> layoutInflater.createNavMenuViewHolder(parent)
         Navigation.GROUP -> layoutInflater.createNavGroupViewHolder(parent)

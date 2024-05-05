@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.editor.component.screen
 
 import android.os.Bundle
@@ -22,7 +21,6 @@ import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.medialist.editor.databinding.MediaListEditorScreenBinding
 
 class MediaListEditorScreen : AniTrendBoundScreen<MediaListEditorScreenBinding>() {
-
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

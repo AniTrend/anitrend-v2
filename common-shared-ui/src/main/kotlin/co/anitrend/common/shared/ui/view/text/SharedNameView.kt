@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.view.text
 
 import android.annotation.SuppressLint
@@ -27,33 +26,45 @@ import co.anitrend.domain.common.entity.contract.IEntityName
 import com.google.android.material.textview.MaterialTextView
 
 @SuppressLint("SetTextI18n")
-class SharedNameView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
+class SharedNameView
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
+        init {
+            onInit(context, attrs, defStyleAttr)
+        }
 
-    init { onInit(context, attrs, defStyleAttr) }
-
-    fun setEntityName(entity: IEntityName) {
-        text = if (!entity.native.isNullOrBlank())
-            "${entity.full} $CHARACTER_SEPARATOR ${entity.native}"
-        else entity.full
-    }
-
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        if (isInEditMode) {
-            setEntityName(
-                object : IEntityName {
-                    override val alternative: List<String> = emptyList()
-                    override val alternativeSpoiler: List<String> = emptyList()
-                    override val userPreferred: String = "更科るか"
-                    override val first: String = "Ruka"
-                    override val full: String = "Ruka Sarashina"
-                    override val last: String = "Sarashina"
-                    override val middle: String? = null
-                    override val native: String = "更科るか"
+        fun setEntityName(entity: IEntityName) {
+            text =
+                if (!entity.native.isNullOrBlank()) {
+                    "${entity.full} $CHARACTER_SEPARATOR ${entity.native}"
+                } else {
+                    entity.full
                 }
-            )
-            setTextColor(context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor))
+        }
+
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            if (isInEditMode) {
+                setEntityName(
+                    object : IEntityName {
+                        override val alternative: List<String> = emptyList()
+                        override val alternativeSpoiler: List<String> = emptyList()
+                        override val userPreferred: String = "更科るか"
+                        override val first: String = "Ruka"
+                        override val full: String = "Ruka Sarashina"
+                        override val last: String = "Sarashina"
+                        override val middle: String? = null
+                        override val native: String = "更科るか"
+                    },
+                )
+                setTextColor(context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor))
+            }
         }
     }
-}

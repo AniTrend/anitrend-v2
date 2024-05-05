@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.helpers.color
 
 import android.content.Context
@@ -27,10 +26,10 @@ import co.anitrend.domain.common.HexColor
 
 /** Checks if a color has enough contrast */
 fun Int.hasEnoughContrastFor(
-    @ColorInt backgroundColor: Int
+    @ColorInt backgroundColor: Int,
 ) = ColorUtils.calculateContrast(
     this,
-    backgroundColor
+    backgroundColor,
 ) > 1.8f
 
 /** Decreases the lightness of the color by the [factor] */
@@ -47,11 +46,15 @@ fun Int.increaseContrastBy(factor: Float): Int {
  * @param backgroundColor Current background color to allow auto adjusting contrast
  */
 @ColorInt
-fun HexColor.asColorInt(@ColorInt backgroundColor: Int): Int {
+fun HexColor.asColorInt(
+    @ColorInt backgroundColor: Int,
+): Int {
     val foregroundColor = Color.parseColor(toString())
-    return if (foregroundColor.hasEnoughContrastFor(backgroundColor))
+    return if (foregroundColor.hasEnoughContrastFor(backgroundColor)) {
         foregroundColor
-    else foregroundColor.increaseContrastBy(0.5f)
+    } else {
+        foregroundColor.increaseContrastBy(0.5f)
+    }
 }
 
 /**
@@ -70,5 +73,4 @@ fun HexColor.asColorInt(context: Context): Int {
  *
  * @param context Used to retrieve current theme background color for contrast fixes
  */
-fun HexColor.asDrawable(context: Context) =
-    ColorDrawable(asColorInt(context))
+fun HexColor.asDrawable(context: Context) = ColorDrawable(asColorInt(context))

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2024 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.navigation.drawer.action
 
 import android.view.View
@@ -8,22 +24,24 @@ import co.anitrend.core.android.animations.normalize
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 import com.google.android.material.shape.MaterialShapeDrawable
 
-
 /**
  * A slide action which rotates a view counterclockwise by 180 degrees between the hidden state
  * and the half expanded state.
  */
 internal class HalfClockwiseRotateSlideAction(
-    private val view: View
+    private val view: View,
 ) : OnSlideAction {
-
-    override fun onSlide(sheet: View, slideOffset: Float) {
-        view.rotation = slideOffset.normalize(
-            -1F,
-            0F,
-            0F,
-            180F
-        )
+    override fun onSlide(
+        sheet: View,
+        slideOffset: Float,
+    ) {
+        view.rotation =
+            slideOffset.normalize(
+                -1F,
+                0F,
+                0F,
+                180F,
+            )
     }
 }
 
@@ -31,15 +49,16 @@ internal class HalfClockwiseRotateSlideAction(
  * Rotate the given [view] counter-clockwise by 180 degrees.
  */
 internal class HalfCounterClockwiseRotateSlideAction(
-    private val view: View
+    private val view: View,
 ) : OnSandwichSlideAction {
     override fun onSlide(slideOffset: Float) {
-        view.rotation = slideOffset.normalize(
-            0F,
-            1F,
-            180F,
-            0F
-        )
+        view.rotation =
+            slideOffset.normalize(
+                0F,
+                1F,
+                180F,
+                0F,
+            )
     }
 }
 
@@ -53,9 +72,8 @@ internal class HalfCounterClockwiseRotateSlideAction(
 class ForegroundSheetTransformSlideAction(
     private val foregroundView: View,
     private val foregroundShapeDrawable: MaterialShapeDrawable,
-    private val profileImageView: ImageView
+    private val profileImageView: ImageView,
 ) : OnSlideAction {
-
     private val foregroundMarginTop = foregroundView.marginTop
     private var systemTopInset: Int = 0
     private val foregroundZ = foregroundView.z
@@ -71,7 +89,10 @@ class ForegroundSheetTransformSlideAction(
         return systemTopInset
     }
 
-    override fun onSlide(sheet: View, slideOffset: Float) {
+    override fun onSlide(
+        sheet: View,
+        slideOffset: Float,
+    ) {
         val progress = slideOffset.normalize(0F, 0.25F, 1F, 0F)
         profileImageView.scaleX = progress
         profileImageView.scaleY = progress
@@ -101,10 +122,12 @@ class ForegroundSheetTransformSlideAction(
  */
 class AlphaSlideAction(
     private val view: View,
-    private val reverse: Boolean = false
+    private val reverse: Boolean = false,
 ) : OnSlideAction {
-
-    override fun onSlide(sheet: View, slideOffset: Float) {
+    override fun onSlide(
+        sheet: View,
+        slideOffset: Float,
+    ) {
         val alpha = slideOffset.normalize(-1F, 0F, 0F, 1F)
         view.alpha = if (!reverse) alpha else 1F - alpha
     }

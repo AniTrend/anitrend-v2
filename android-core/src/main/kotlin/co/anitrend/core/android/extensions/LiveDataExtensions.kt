@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import androidx.lifecycle.LifecycleOwner
@@ -30,11 +29,17 @@ import androidx.lifecycle.Observer
  * @param owner The [LifecycleOwner] which controls the observer
  * @param observer The observer that will receive the events
  */
-fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: (T) -> Unit) {
-    observe(owner, object: Observer<T> {
-        override fun onChanged(value: T) {
-            removeObserver(this)
-            observer(value)
-        }
-    })
+fun <T> LiveData<T>.observeOnce(
+    owner: LifecycleOwner,
+    observer: (T) -> Unit,
+) {
+    observe(
+        owner,
+        object : Observer<T> {
+            override fun onChanged(value: T) {
+                removeObserver(this)
+                observer(value)
+            }
+        },
+    )
 }

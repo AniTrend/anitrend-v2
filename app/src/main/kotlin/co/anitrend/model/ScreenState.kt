@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.model
 
 import android.os.Bundle
@@ -27,9 +26,8 @@ import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.extensions.nameOf
 
 internal class ScreenState(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
 ) : IScreenState {
-
     private val navigationDestination by savedStateHandle.extra(
         key = nameOf<NavigationDrawerRouter.NavigationDrawerParam>(),
         default = { NavigationDrawerRouter.Destination.HOME }
@@ -48,12 +46,15 @@ internal class ScreenState(
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        if (savedStateHandle.contains(ARG_KEY_SELECTED_ITEM))
+        if (savedStateHandle.contains(ARG_KEY_SELECTED_ITEM)) {
             selectedItem = requireNotNull(savedStateHandle.get<Int>(ARG_KEY_SELECTED_ITEM))
-        if (savedStateHandle.contains(ARG_KEY_SELECTED_TITLE))
+        }
+        if (savedStateHandle.contains(ARG_KEY_SELECTED_TITLE)) {
             selectedTitle = requireNotNull(savedStateHandle.get<Int>(ARG_KEY_SELECTED_TITLE))
-        if (savedStateHandle.contains(ARG_KEY_SHOULD_EXIT))
+        }
+        if (savedStateHandle.contains(ARG_KEY_SHOULD_EXIT)) {
             shouldExit = requireNotNull(savedStateHandle.get<Boolean>(ARG_KEY_SHOULD_EXIT))
+        }
     }
 
     companion object {
@@ -66,17 +67,18 @@ internal class ScreenState(
          * Converts [NavigationDrawerRouter.Destination] to a navigation [IdRes]
          */
         @IdRes
-        internal fun NavigationDrawerRouter.Destination.toNavId() = when (this) {
-            NavigationDrawerRouter.Destination.HOME -> co.anitrend.navigation.drawer.R.id.navigation_home
-            NavigationDrawerRouter.Destination.DISCOVER -> co.anitrend.navigation.drawer.R.id.navigation_discover
-            NavigationDrawerRouter.Destination.SOCIAL -> co.anitrend.navigation.drawer.R.id.navigation_social
-            NavigationDrawerRouter.Destination.REVIEWS -> co.anitrend.navigation.drawer.R.id.navigation_reviews
-            NavigationDrawerRouter.Destination.SUGGESTIONS -> co.anitrend.navigation.drawer.R.id.navigation_suggestions
-            NavigationDrawerRouter.Destination.ANIME_LIST -> co.anitrend.navigation.drawer.R.id.navigation_anime_list
-            NavigationDrawerRouter.Destination.MANGA_LIST -> co.anitrend.navigation.drawer.R.id.navigation_manga_list
-            NavigationDrawerRouter.Destination.NEWS -> co.anitrend.navigation.drawer.R.id.navigation_news
-            NavigationDrawerRouter.Destination.FORUMS -> co.anitrend.navigation.drawer.R.id.navigation_forum
-            NavigationDrawerRouter.Destination.EPISODES -> co.anitrend.navigation.drawer.R.id.navigation_episodes
-        }
+        internal fun NavigationDrawerRouter.Destination.toNavId() =
+            when (this) {
+                NavigationDrawerRouter.Destination.HOME -> co.anitrend.navigation.drawer.R.id.navigation_home
+                NavigationDrawerRouter.Destination.DISCOVER -> co.anitrend.navigation.drawer.R.id.navigation_discover
+                NavigationDrawerRouter.Destination.SOCIAL -> co.anitrend.navigation.drawer.R.id.navigation_social
+                NavigationDrawerRouter.Destination.REVIEWS -> co.anitrend.navigation.drawer.R.id.navigation_reviews
+                NavigationDrawerRouter.Destination.SUGGESTIONS -> co.anitrend.navigation.drawer.R.id.navigation_suggestions
+                NavigationDrawerRouter.Destination.ANIME_LIST -> co.anitrend.navigation.drawer.R.id.navigation_anime_list
+                NavigationDrawerRouter.Destination.MANGA_LIST -> co.anitrend.navigation.drawer.R.id.navigation_manga_list
+                NavigationDrawerRouter.Destination.NEWS -> co.anitrend.navigation.drawer.R.id.navigation_news
+                NavigationDrawerRouter.Destination.FORUMS -> co.anitrend.navigation.drawer.R.id.navigation_forum
+                NavigationDrawerRouter.Destination.EPISODES -> co.anitrend.navigation.drawer.R.id.navigation_episodes
+            }
     }
 }

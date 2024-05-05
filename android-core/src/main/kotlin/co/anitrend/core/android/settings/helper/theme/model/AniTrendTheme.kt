@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.helper.theme.model
 
 import androidx.annotation.StyleRes
@@ -26,20 +25,23 @@ import co.anitrend.core.android.R
  * @param styleAttribute The style resource attribute that will be applied
  * @param useNightMode If the current theme should also change the system to use night mode
  */
-enum class AniTrendTheme(@StyleRes val styleAttribute: Int, val useNightMode: Boolean = false) {
+enum class AniTrendTheme(
+    @StyleRes val styleAttribute: Int,
+    val useNightMode: Boolean = false,
+) {
     SYSTEM(
-        styleAttribute = 0
+        styleAttribute = 0,
     ),
     AMOLED(
         styleAttribute = R.style.AppTheme,
-        useNightMode = true
+        useNightMode = true,
     ),
     LIGHT(
         styleAttribute = R.style.AppTheme,
-        useNightMode = false
+        useNightMode = false,
     ),
     DARK(
         styleAttribute = R.style.AppTheme_Dark,
-        useNightMode = true
-    )
+        useNightMode = true,
+    ),
 }

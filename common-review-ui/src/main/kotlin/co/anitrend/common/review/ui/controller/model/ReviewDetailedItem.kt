@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.review.ui.controller.model
 
 import android.content.res.Resources
@@ -37,9 +36,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class ReviewDetailedItem(
     private val entity: Review,
-    private val settings: Settings
+    private val settings: Settings,
 ) : RecyclerItemBinding<ReviewDetailedItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -57,13 +55,14 @@ internal class ReviewDetailedItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = ReviewDetailedItemBinding.bind(view)
         entity as Review.Extended
-        disposable = requireBinding().reviewMediaBanner.using(
-            entity.media.image.toMediaRequestImage(RequestImage.Media.ImageType.BANNER),
-        )
+        disposable =
+            requireBinding().reviewMediaBanner.using(
+                entity.media.image.toMediaRequestImage(RequestImage.Media.ImageType.BANNER),
+            )
         requireBinding().reviewTextBody.text = entity.summary
         requireBinding().reviewAvatarWidget.updateUsing(entity)
         requireBinding().reviewRatingWidget.updateUsing(entity)
@@ -96,14 +95,15 @@ internal class ReviewDetailedItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.column_x1)
 
     companion object {
-        internal fun LayoutInflater.createReviewDetailItemViewHolder(
-            viewGroup: ViewGroup
-        ) = ReviewDetailedItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createReviewDetailItemViewHolder(viewGroup: ViewGroup) =
+            ReviewDetailedItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

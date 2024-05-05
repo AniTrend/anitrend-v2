@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024  AniTrend
+ * Copyright (C) 2024 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.favourite.koin
 
-import org.koin.dsl.module
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.task.favourite.provider.FeatureProvider
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.task.favourite.component.MediaFavouriteWorker
+import co.anitrend.task.favourite.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
+import org.koin.dsl.module
 
 private val workManagerModule = module {
     worker { scope ->
@@ -34,12 +33,14 @@ private val workManagerModule = module {
     }
 }
 
-private val featureModule = module {
-    factory<FavouriteTaskRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<FavouriteTaskRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(workManagerModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(workManagerModule, featureModule),
+    )

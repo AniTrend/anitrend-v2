@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.railway
 
 /**
@@ -25,13 +24,13 @@ sealed class OutCome<T> {
      * Represent the success of an expression
      */
     data class Pass<T>(
-        val result: T
+        val result: T,
     ) : OutCome<T>()
 
     /**
      * Represent the failure of an expression
      */
     data class Fail<T>(
-        val errors: List<Throwable>
+        val errors: List<Throwable>,
     ) : OutCome<T>()
 }

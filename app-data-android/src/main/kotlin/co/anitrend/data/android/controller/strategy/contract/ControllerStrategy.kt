@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.controller.strategy.contract
 
 import co.anitrend.arch.domain.entities.RequestError
@@ -27,37 +26,39 @@ import java.net.SocketTimeoutException
  * Contract for controller strategy
  */
 abstract class ControllerStrategy<D> {
-
     protected abstract val networkMessage: NetworkMessage
 
     /**
      * Creates human readable exceptions from a given exception
      */
-    protected fun Throwable.generateForError() = when (this) {
-        is SocketTimeoutException -> {
-            RequestError(
-                networkMessage.connectivityErrorTittle,
-                networkMessage.connectivityErrorMessage,
-                cause
-            )
-        }
-        is HttpException -> {
-            // TODO: inspect a range of error codes and provide the user with an appropriate message
-            RequestError(
-                networkMessage.unrecoverableErrorTittle,
-                message,
-                cause
-            )
-        }
-        else -> {
-            if (cause == null)
+    protected fun Throwable.generateForError() =
+        when (this) {
+            is SocketTimeoutException -> {
                 RequestError(
-                    topic = javaClass.simpleName,
-                    description = message
+                    networkMessage.connectivityErrorTittle,
+                    networkMessage.connectivityErrorMessage,
+                    cause,
                 )
-            else RequestError(cause)
+            }
+            is HttpException -> {
+                // TODO: inspect a range of error codes and provide the user with an appropriate message
+                RequestError(
+                    networkMessage.unrecoverableErrorTittle,
+                    message,
+                    cause,
+                )
+            }
+            else -> {
+                if (cause == null) {
+                    RequestError(
+                        topic = javaClass.simpleName,
+                        description = message,
+                    )
+                } else {
+                    RequestError(cause)
+                }
+            }
         }
-    }
 
     /**
      * Execute a task under an implementation strategy
@@ -67,6 +68,6 @@ abstract class ControllerStrategy<D> {
      */
     internal abstract suspend operator fun invoke(
         callback: RequestCallback,
-        block: suspend () -> D?
+        block: suspend () -> D?,
     ): D?
 }

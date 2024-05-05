@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.model
 
 sealed class Authentication {
     class Authenticating(
         val accessToken: String,
         val tokenType: String,
-        val expiresIn: Long
-    ): Authentication()
+        val expiresIn: Long,
+    ) : Authentication()
 
     class Error(
         val title: String,
-        val message: String
-    ): Authentication()
-    
+        val message: String,
+    ) : Authentication()
+
     object Idle : Authentication()
 }

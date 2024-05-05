@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.component.content
 
 import androidx.compose.foundation.layout.Column
@@ -32,7 +31,7 @@ fun AboutContent() {
     AniTrendTheme3 {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Hello People"
+                text = "Hello People",
             )
         }
     }

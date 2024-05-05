@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.cookie
 
 import android.webkit.CookieManager
@@ -24,9 +23,8 @@ import okhttp3.HttpUrl
 import timber.log.Timber
 
 class ApplicationCookieJar(
-    override val cookieManager: CookieManager
+    override val cookieManager: CookieManager,
 ) : AndroidCookieJar() {
-
     /**
      * Load cookies from the jar for an HTTP request to [url]. This method returns a possibly
      * empty list of cookies for the network request.
@@ -45,8 +43,11 @@ class ApplicationCookieJar(
      * includes a trailer. For this obscure HTTP feature, [cookies] contains only the trailer's
      * cookies.
      */
-    override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-        cookieManager.setCookies(url ,cookies)
+    override fun saveFromResponse(
+        url: HttpUrl,
+        cookies: List<Cookie>,
+    ) {
+        cookieManager.setCookies(url, cookies)
     }
 
     override fun purge() {

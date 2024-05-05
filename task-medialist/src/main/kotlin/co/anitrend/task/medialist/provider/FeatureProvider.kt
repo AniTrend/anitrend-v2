@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.medialist.provider
 
 import co.anitrend.core.android.koinOf
@@ -29,10 +28,12 @@ import co.anitrend.task.medialist.scheduler.AnimeSyncScheduler
 import co.anitrend.task.medialist.scheduler.MangaSyncScheduler
 
 internal class FeatureProvider : MediaListTaskRouter.Provider {
-
     override fun mediaListSaveEntryWorker() = MediaListSaveEntryWorker::class.java
+
     override fun mediaListSaveEntriesWorker() = MediaListSaveEntriesWorker::class.java
+
     override fun mediaListDeleteEntryWorker() = MediaListDeleteEntryWorker::class.java
+
     override fun mediaListDeleteCustomListWorker() = MediaListDeleteCustomListWorker::class.java
 
     override fun animeSyncWorker() = MediaListAnimeSyncWorker::class.java
@@ -42,12 +43,12 @@ internal class FeatureProvider : MediaListTaskRouter.Provider {
     override fun animeSyncScheduler() =
         AnimeSyncScheduler(
             worker = animeSyncWorker(),
-            settings = koinOf()
+            settings = koinOf(),
         )
 
     override fun mangaSyncScheduler() =
         MangaSyncScheduler(
             worker = mangaSyncWorker(),
-            settings = koinOf()
+            settings = koinOf(),
         )
 }

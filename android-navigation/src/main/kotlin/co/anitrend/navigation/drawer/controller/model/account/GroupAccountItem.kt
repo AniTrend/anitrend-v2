@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.controller.model.account
 
 import android.view.LayoutInflater
@@ -29,9 +28,8 @@ import co.anitrend.navigation.drawer.model.account.Account
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class GroupAccountItem(
-    private val entity: Account.Group
+    private val entity: Account.Group,
 ) : RecyclerItemBinding<AccountGroupItemBinding>(entity.id) {
-
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
      * assign text, load images, e.t.c
@@ -47,17 +45,18 @@ class GroupAccountItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = AccountGroupItemBinding.bind(view)
         requireBinding().accountGroupTitle.setText(entity.titleRes)
     }
 
     companion object {
-        internal fun LayoutInflater.createAccountGroupViewHolder(
-            viewGroup: ViewGroup
-        ) = AccountGroupItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createAccountGroupViewHolder(viewGroup: ViewGroup) =
+            AccountGroupItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

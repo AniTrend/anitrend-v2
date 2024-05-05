@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
@@ -31,7 +30,7 @@ import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.launch
 
 internal class SortingContent(
-    override val inflateLayout: Int = R.layout.media_discover_filter_sorting
+    override val inflateLayout: Int = R.layout.media_discover_filter_sorting,
 ) : AniTrendContent<MediaDiscoverFilterSortingBinding>() {
 
     private val param by argument(
@@ -39,18 +38,19 @@ internal class SortingContent(
         default = MediaDiscoverRouter::MediaDiscoverParam,
     )
 
-
     private fun initializeViewsWithOptions() {
         MediaSort.entries.forEach { mediaSort ->
-            val sort = param.sort?.firstOrNull { sorting ->
-                sorting.sortable == mediaSort
-            }
+            val sort =
+                param.sort?.firstOrNull { sorting ->
+                    sorting.sortable == mediaSort
+                }
             requireBinding().sortChipGroup.addView(
                 requireContext().createMaterialSortChip {
                     text = mediaSort.alias
-                    if (sort != null)
+                    if (sort != null) {
                         updateSortOrder(sort)
-                }
+                    }
+                },
             )
         }
     }
@@ -65,7 +65,6 @@ internal class SortingContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
     }
 
     /**
@@ -73,7 +72,6 @@ internal class SortingContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -87,7 +85,10 @@ internal class SortingContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = MediaDiscoverFilterSortingBinding.bind(view)
         lifecycleScope.launch {

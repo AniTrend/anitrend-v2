@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.graphql
 
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
@@ -35,9 +34,8 @@ import timber.log.Timber
  */
 class GraphNetworkClient<R>(
     private val gson: Gson,
-    override val dispatcher: CoroutineDispatcher
+    override val dispatcher: CoroutineDispatcher,
 ) : DeferrableNetworkClient<GraphQLResponse<R>>() {
-
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
         val type = typeToken<GraphQLResponse<R>>().type
@@ -46,12 +44,13 @@ class GraphNetworkClient<R>(
         }.onFailure(Timber::w)
         .getOrDefault(
             GraphQLResponse(
-                errors = listOf(
-                    GraphQLError(
-                        message = body
-                    )
-                )
-            )
+                errors =
+                    listOf(
+                        GraphQLError(
+                            message = body,
+                        ),
+                    ),
+            ),
         )
     }
 
@@ -64,11 +63,12 @@ class GraphNetworkClient<R>(
         }.onFailure { exception ->
             Timber.w(exception)
             return GraphQLResponse(
-                errors = listOf(
-                    GraphQLError(
-                        message = exception.message.orEmpty()
-                    )
-                )
+                errors =
+                    listOf(
+                        GraphQLError(
+                            message = exception.message.orEmpty(),
+                        ),
+                    ),
             )
         }
 
@@ -81,8 +81,9 @@ class GraphNetworkClient<R>(
      * @throws HttpException When the request was not successful
      */
     override fun Response<GraphQLResponse<R>>.bodyOrThrow(): GraphQLResponse<R> {
-        if (!isSuccessful)
+        if (!isSuccessful) {
             return responseErrors()
+        }
 
         return requireNotNull(body()) {
             "Response<T>.bodyOrThrow() -> response body was null"

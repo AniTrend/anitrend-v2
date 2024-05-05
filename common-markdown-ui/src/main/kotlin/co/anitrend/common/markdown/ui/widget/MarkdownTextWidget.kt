@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.markdown.ui.widget
 
 import android.content.Context
@@ -29,72 +28,89 @@ import co.anitrend.core.android.extensions.startViewIntent
 import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.android.koinOf
 import co.anitrend.domain.common.entity.contract.IEntityName
-import co.anitrend.domain.common.entity.contract.ISynopsis
 import com.google.android.material.textview.MaterialTextView
 import io.noties.markwon.Markwon
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.core.qualifier.named
 
-class MarkdownTextWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
+class MarkdownTextWidget
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
+        init {
+            onInit(context, attrs, defStyleAttr)
+        }
 
-    init { onInit(context, attrs, defStyleAttr) }
+        fun setContent(
+            text: CharSequence?,
+            flavour: MarkdownFlavour = MarkdownFlavour.ANILIST,
+        ) {
+            val markwon = koinOf<Markwon>(named(flavour))
+            val content =
+                text?.toString()
+                    ?: context.getString(R.string.label_place_holder_no_description)
+            markwon.setMarkdown(this, content)
+        }
 
-    fun setContent(text: CharSequence?, flavour: MarkdownFlavour = MarkdownFlavour.ANILIST) {
-        val markwon = koinOf<Markwon>(named(flavour))
-        val content = text?.toString()
-            ?: context.getString(R.string.label_place_holder_no_description)
-        markwon.setMarkdown(this, content)
-    }
+        fun setContent(
+            text: CharSequence?,
+            entity: IEntityName,
+            flavour: MarkdownFlavour = MarkdownFlavour.ANILIST,
+        ) {
+            maxLines = if (entity.alternative.isEmpty()) 7 else 4
+            setContent(text, flavour)
+        }
 
-    fun setContent(text: CharSequence?, entity: IEntityName, flavour: MarkdownFlavour = MarkdownFlavour.ANILIST) {
-        maxLines = if (entity.alternative.isEmpty()) 7 else 4
-        setContent(text, flavour)
-    }
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            /** Ellipsize won't work in this context probably because some of the characters will have /n */
+            ellipsize = TextUtils.TruncateAt.END
+            setTextIsSelectable(true)
+            Linkify.addLinks(this, Linkify.ALL)
+            val textAppearance = context.themeStyle(com.google.android.material.R.attr.textAppearanceBody2)
+            TextViewCompat.setTextAppearance(this, textAppearance)
+            movementMethod =
+                BetterLinkMovementMethod.newInstance().apply {
+                    setOnLinkClickListener { view, url ->
+                        view.startViewIntent(url)
+                        true
+                    }
+                    setOnLinkLongClickListener { _, _ ->
+                        // Handle long-click or return false to let the framework handle this link.
+                        false
+                    }
+                }
+        }
 
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        /** Ellipsize won't work in this context probably because some of the characters will have /n */
-        ellipsize = TextUtils.TruncateAt.END
-        setTextIsSelectable(true)
-        Linkify.addLinks(this, Linkify.ALL)
-        val textAppearance = context.themeStyle(com.google.android.material.R.attr.textAppearanceBody2)
-        TextViewCompat.setTextAppearance(this, textAppearance)
-        movementMethod = BetterLinkMovementMethod.newInstance().apply {
-            setOnLinkClickListener { view, url ->
-                view.startViewIntent(url)
-                true
-            }
-            setOnLinkLongClickListener { _, _ ->
-                // Handle long-click or return false to let the framework handle this link.
-                false
+        /**
+         * Should be called on a view's detach from window to unbind or release object references
+         * and cancel all running coroutine jobs if the current view
+         *
+         * Consider calling this in [android.view.View.onDetachedFromWindow]
+         */
+        override fun onViewRecycled() {
+            with(movementMethod) {
+                if (this is BetterLinkMovementMethod) {
+                    setOnLinkClickListener(null)
+                    setOnLinkLongClickListener(null)
+                }
             }
         }
-    }
 
-    /**
-     * Should be called on a view's detach from window to unbind or release object references
-     * and cancel all running coroutine jobs if the current view
-     *
-     * Consider calling this in [android.view.View.onDetachedFromWindow]
-     */
-    override fun onViewRecycled() {
-        with (movementMethod) {
-            if (this is BetterLinkMovementMethod) {
-                setOnLinkClickListener(null)
-                setOnLinkLongClickListener(null)
-            }
+        /**
+         * This is called when the view is detached from a window.  At this point it
+         * no longer has a surface for drawing.
+         *
+         * @see .onAttachedToWindow
+         */
+        override fun onDetachedFromWindow() {
+            onViewRecycled()
+            super.onDetachedFromWindow()
         }
     }
-
-    /**
-     * This is called when the view is detached from a window.  At this point it
-     * no longer has a surface for drawing.
-     *
-     * @see .onAttachedToWindow
-     */
-    override fun onDetachedFromWindow() {
-        onViewRecycled()
-        super.onDetachedFromWindow()
-    }
-}

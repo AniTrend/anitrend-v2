@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.views.scroll
 
 import android.content.Context
@@ -23,28 +22,35 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
 
-class FillNestedScrollView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : NestedScrollView(context, attrs, defStyleAttr) {
+class FillNestedScrollView
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : NestedScrollView(context, attrs, defStyleAttr) {
+        var maxHeight = -1
 
-    var maxHeight = -1
+        private fun getBottomHeight(): Int {
+            val insets = ViewCompat.getRootWindowInsets(this)
+            val systemBars = WindowInsetsCompat.Type.systemBars()
+            return insets?.getInsets(systemBars)?.bottom ?: 0
+        }
 
-    private fun getBottomHeight(): Int {
-        val insets = ViewCompat.getRootWindowInsets(this)
-        val systemBars = WindowInsetsCompat.Type.systemBars()
-        return insets?.getInsets(systemBars)?.bottom ?: 0
+        override fun onMeasure(
+            widthMeasureSpec: Int,
+            heightMeasureSpec: Int,
+        ) {
+            var heightSpec =
+                if (maxHeight > 0) {
+                    MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST)
+                } else {
+                    heightMeasureSpec
+                }
+
+            if (maxHeight < height + getBottomHeight()) {
+                heightSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST)
+            }
+            super.onMeasure(widthMeasureSpec, heightSpec)
+        }
     }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var heightSpec = if (maxHeight > 0)
-            MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST)
-        else
-            heightMeasureSpec
-
-        if (maxHeight < height + getBottomHeight())
-            heightSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.AT_MOST)
-        super.onMeasure(widthMeasureSpec, heightSpec)
-    }
-}

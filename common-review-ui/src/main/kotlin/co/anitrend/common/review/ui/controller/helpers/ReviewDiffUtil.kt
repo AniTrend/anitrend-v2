@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,22 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.review.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
 import co.anitrend.domain.review.entity.Review
 
 internal object ReviewDiffUtil : DiffUtil.ItemCallback<Review>() {
-    override fun areItemsTheSame(oldItem: Review, newItem: Review): Boolean {
+    override fun areItemsTheSame(
+        oldItem: Review,
+        newItem: Review,
+    ): Boolean {
         return oldItem.id == newItem.id && oldItem.mediaId == newItem.mediaId
     }
 
     override fun areContentsTheSame(
         oldItem: Review,
-        newItem: Review
+        newItem: Review,
     ): Boolean {
         return oldItem.hashCode() == newItem.hashCode()
     }
@@ -46,9 +48,14 @@ internal object ReviewDiffUtil : DiffUtil.ItemCallback<Review>() {
      *
      * @see Callback.getChangePayload
      */
-    override fun getChangePayload(oldItem: Review, newItem: Review): Any? {
-        return if (oldItem.userRating == newItem.userRating)
+    override fun getChangePayload(
+        oldItem: Review,
+        newItem: Review,
+    ): Any? {
+        return if (oldItem.userRating == newItem.userRating) {
             super.getChangePayload(oldItem, newItem)
-        else newItem
+        } else {
+            newItem
+        }
     }
 }

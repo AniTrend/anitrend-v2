@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.component.presenter
 
 import android.content.Context
@@ -45,49 +44,58 @@ import timber.log.Timber
 
 class DrawerPresenter(
     context: Context,
-    settings: Settings
+    settings: Settings,
 ) : CorePresenter(context, settings) {
-
-    fun createForegroundShape(
-        container: ViewGroup
-    ): MaterialShapeDrawable {
-        val shapeDrawable = MaterialShapeDrawable(
-            container.context, null, com.google.android.material.R.attr.bottomSheetStyle,0
-        )
-
-        with (shapeDrawable) {
-            fillColor = ColorStateList.valueOf(
-                container.context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary)
+    fun createForegroundShape(container: ViewGroup): MaterialShapeDrawable {
+        val shapeDrawable =
+            MaterialShapeDrawable(
+                container.context,
+                null,
+                com.google.android.material.R.attr.bottomSheetStyle,
+                0,
             )
+
+        with(shapeDrawable) {
+            fillColor =
+                ColorStateList.valueOf(
+                    container.context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary),
+                )
             elevation = 16f.dp
             shadowCompatibilityMode = MaterialShapeDrawable.SHADOW_COMPAT_MODE_NEVER
             initializeElevationOverlay(context)
-            shapeAppearanceModel = shapeAppearanceModel.toBuilder()
-                .setTopEdge(
-                    SemiCircleCutout(
-                        8f.dp,
-                        24f.dp,
-                        0f.dp,
-                        32f.dp
-                    )
-                ).build()
+            shapeAppearanceModel =
+                shapeAppearanceModel.toBuilder()
+                    .setTopEdge(
+                        SemiCircleCutout(
+                            8f.dp,
+                            24f.dp,
+                            0f.dp,
+                            32f.dp,
+                        ),
+                    ).build()
         }
 
         return shapeDrawable
     }
 
     fun createBackgroundShape(container: FrameLayout): MaterialShapeDrawable {
-        val shapeDrawable = MaterialShapeDrawable(
-            container.context, null, com.google.android.material.R.attr.bottomSheetStyle,0
-        )
-
-        with (shapeDrawable) {
-            fillColor = ColorStateList.valueOf(
-                if (container.context.isEnvironmentNightMode())
-                    container.context.getCompatColor(co.anitrend.arch.theme.R.color.colorSurface)
-                else
-                    container.context.getCompatColor(co.anitrend.core.android.R.color.anitrendDrawerSelector)
+        val shapeDrawable =
+            MaterialShapeDrawable(
+                container.context,
+                null,
+                com.google.android.material.R.attr.bottomSheetStyle,
+                0,
             )
+
+        with(shapeDrawable) {
+            fillColor =
+                ColorStateList.valueOf(
+                    if (container.context.isEnvironmentNightMode()) {
+                        container.context.getCompatColor(co.anitrend.arch.theme.R.color.colorSurface)
+                    } else {
+                        container.context.getCompatColor(co.anitrend.core.android.R.color.anitrendDrawerSelector)
+                    },
+                )
             elevation = 8f.dp
 
             initializeElevationOverlay(context)
@@ -99,7 +107,7 @@ class DrawerPresenter(
     fun applyStateAndSlideActions(
         binding: BottomNavigationDrawerBinding,
         callback: SheetBehaviourCallback,
-        foregroundShapeDrawable: MaterialShapeDrawable
+        foregroundShapeDrawable: MaterialShapeDrawable,
     ) {
         // Scrim view transforms
         callback.addOnSlideAction(AlphaSlideAction(binding.scrimView))
@@ -109,24 +117,29 @@ class DrawerPresenter(
             ForegroundSheetTransformSlideAction(
                 binding.sheetForegroundContainer,
                 foregroundShapeDrawable,
-                binding.profileImageView
-            )
+                binding.profileImageView,
+            ),
         )
         // Recycler transforms
         callback.addOnStateChangedAction(
-            ScrollToTopStateAction(binding.navigationRecyclerView)
+            ScrollToTopStateAction(binding.navigationRecyclerView),
         )
     }
 
-    fun applyProfilePicture(imageView: AppCompatImageView, model: Account?) {
+    fun applyProfilePicture(
+        imageView: AppCompatImageView,
+        model: Account?,
+    ) {
         when (model) {
-            is Account.Authenticated -> imageView.using(
-                model.coverImage.toRequestImage(),
-                listOf(CircleCropTransformation())
-            )
-            is Account.Anonymous -> imageView.using(
-                imageView.context.getCompatDrawable(model.imageRes)
-            )
+            is Account.Authenticated ->
+                imageView.using(
+                    model.coverImage.toRequestImage(),
+                    listOf(CircleCropTransformation()),
+                )
+            is Account.Anonymous ->
+                imageView.using(
+                    imageView.context.getCompatDrawable(model.imageRes),
+                )
             else -> Timber.v("No authenticated account found")
         }
     }

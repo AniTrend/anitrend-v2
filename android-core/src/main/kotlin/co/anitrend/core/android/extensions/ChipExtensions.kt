@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import android.content.Context
@@ -27,7 +26,7 @@ import com.google.android.material.chip.Chip
 fun Chip.asChoice() {
     style(co.anitrend.core.android.R.style.AppTheme_Material_Chip_Choice)
     setChipBackgroundColorResource(
-        co.anitrend.core.android.R.color.selector_chip_background
+        co.anitrend.core.android.R.color.selector_chip_background,
     )
     isCheckedIconVisible = false
     isCheckable = true
@@ -40,9 +39,7 @@ fun Chip.asChoice() {
  *
  * @see asChoice
  */
-inline fun Chip.asChoice(
-    action: Chip.() -> Unit
-): Chip {
+inline fun Chip.asChoice(action: Chip.() -> Unit): Chip {
     asChoice()
     action(this)
     return this
@@ -53,6 +50,4 @@ inline fun Chip.asChoice(
  *
  * @param action Delegate to access the chip
  */
-inline fun Context.createChipChoice(
-    action: Chip.() -> Unit
-): Chip = Chip(this).asChoice(action)
+inline fun Context.createChipChoice(action: Chip.() -> Unit): Chip = Chip(this).asChoice(action)

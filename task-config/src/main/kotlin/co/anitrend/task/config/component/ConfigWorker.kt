@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2024 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.task.config.component
 
 import android.content.Context
@@ -10,9 +26,8 @@ import kotlinx.coroutines.flow.first
 class ConfigWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: GetConfigInteractor
+    private val interactor: GetConfigInteractor,
 ) : SupportCoroutineWorker(context, parameters) {
-
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
@@ -27,12 +42,15 @@ class ConfigWorker(
     override suspend fun doWork(): Result {
         val dataState = interactor()
 
-        val loadState = dataState.loadState.first { state ->
-            state is LoadState.Success || state is LoadState.Error
-        }
+        val loadState =
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
 
-        return if (loadState is LoadState.Success)
+        return if (loadState is LoadState.Success) {
             Result.success()
-        else Result.failure()
+        } else {
+            Result.failure()
+        }
     }
 }

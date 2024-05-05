@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.initializer.logger
 
 import android.content.Context
@@ -27,7 +26,6 @@ import timber.log.Timber
 import java.io.IOException
 
 class TimberInitializer : AbstractCoreInitializer<Unit>() {
-
     @Throws(IOException::class)
     private fun createFileLoggingTree(context: Context): Timber.Tree {
         val loggingFile = StorageController().getLogsCache(context)
@@ -48,8 +46,9 @@ class TimberInitializer : AbstractCoreInitializer<Unit>() {
      */
     override fun create(context: Context) {
         Timber.plant(createFileLoggingTree(context))
-        if (BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
     }
 
     companion object {

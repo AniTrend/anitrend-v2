@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.initializer.contract
 
 import androidx.startup.Initializer
@@ -23,7 +22,6 @@ import androidx.startup.Initializer
  * Contract for initializer
  */
 abstract class AbstractCoreInitializer<T> : Initializer<T> {
-
     /**
      * @return A list of dependencies that this [Initializer] depends on. This is
      * used to determine initialization order of [Initializer]s.

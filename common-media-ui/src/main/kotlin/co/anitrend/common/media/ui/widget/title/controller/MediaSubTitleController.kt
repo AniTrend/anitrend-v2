@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.widget.title.controller
 
 import co.anitrend.core.android.controller.widget.WidgetController
 import co.anitrend.domain.media.entity.Media
 
 internal class MediaSubTitleController(
-    private val entity: Media
-) : WidgetController() {
-
-}
+    private val entity: Media,
+) : WidgetController()

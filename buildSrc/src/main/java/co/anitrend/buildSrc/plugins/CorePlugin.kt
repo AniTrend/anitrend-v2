@@ -54,8 +54,8 @@ open class CorePlugin : Plugin<Project> {
         target.configureOptions()
         target.configureDependencies()
         target.configureAdditionalPlugins()
+        target.configureSpotless()
         target.availableComponents()
         target.availableExtensions()
-        //target.configureSpotless()
     }
 }

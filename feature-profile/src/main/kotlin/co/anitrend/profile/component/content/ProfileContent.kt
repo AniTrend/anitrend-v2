@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.profile.component.content
 
 import android.os.Bundle
@@ -39,9 +38,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileContent(
     private val stateLayoutConfig: StateLayoutConfig,
-    override val inflateLayout: Int = R.layout.profile_content
+    override val inflateLayout: Int = R.layout.profile_content,
 ) : AniTrendContent<ProfileContentBinding>() {
-
     private val viewModel by viewModel<ProfileViewModel>()
 
     private val param by argument<ProfileRouter.ProfileParam>(
@@ -71,7 +69,6 @@ class ProfileContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -85,7 +82,10 @@ class ProfileContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = ProfileContentBinding.bind(view)
         requireBinding().root.setContent {
@@ -96,7 +96,6 @@ class ProfileContent(
                     onClick = viewModelState()::retry,
                 ) {
                     Column {
-
                     }
                 }
             }

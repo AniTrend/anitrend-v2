@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.cache
 
 import android.content.Context
@@ -27,10 +26,13 @@ import timber.log.Timber
 import java.io.File
 
 object CacheHelper {
-
     private const val MAX_CACHE_SIZE = (1024 * 1024 * 25).toLong()
 
-    fun createCache(context: Context, name: String, maxSize: Long = MAX_CACHE_SIZE): Cache {
+    fun createCache(
+        context: Context,
+        name: String,
+        maxSize: Long = MAX_CACHE_SIZE,
+    ): Cache {
         val destination = context.externalCacheDir ?: context.cacheDir
         val cacheLocation = File(destination, name)
         if (!cacheLocation.exists()) cacheLocation.mkdirs()
@@ -57,34 +59,33 @@ object CacheHelper {
         connectivity: ISupportConnectivity,
         cacheAge: TimeSpecification,
         staleAge: TimeSpecification,
-        request: Request
+        request: Request,
     ): Request.Builder {
         val host = request.url.host
         return if (connectivity.isConnected) {
             Timber.v(
-                "Online cache control applied on request to host: $host"
+                "Online cache control applied on request to host: $host",
             )
             // "public, max-age=MAX_CACHE_AGE"
             request.newBuilder().cacheControl(
                 CacheControl.Builder()
                     .maxAge(
                         cacheAge.time,
-                        cacheAge.unit
-                    ).build()
+                        cacheAge.unit,
+                    ).build(),
             )
-        }
-        else {
+        } else {
             Timber.v(
-                "Offline cache control applied on request to host: $host"
+                "Offline cache control applied on request to host: $host",
             )
             // "public, only-if-cached, max-stale=MAX_STALE_TIME"
             request.newBuilder().cacheControl(
                 CacheControl.Builder()
                     .maxStale(
                         staleAge.time,
-                        staleAge.unit
+                        staleAge.unit,
                     ).onlyIfCached()
-                    .build()
+                    .build(),
             )
         }
     }

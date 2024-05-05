@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.component.content
 
 import android.os.Bundle
@@ -39,26 +38,25 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class MediaListContent(
     private val settings: ICustomizationSettings,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<Media>
+    override val supportViewAdapter: SupportAdapter<Media>,
 ) : AniTrendListContent<Media>() {
-
     private val viewModel by stateViewModel<MediaListViewModel>(
-        state = { arguments.orEmpty() }
+        state = { arguments.orEmpty() },
     )
 
     override val defaultSpanSize: Int
-        get() = getSpanSizeByPreference(
-            settings.preferredViewMode.value
-        )
+        get() =
+            getSpanSizeByPreference(
+                settings.preferredViewMode.value,
+            )
 
     @IntegerRes
-    private fun getSpanSizeByPreference(
-        viewMode: PreferredViewMode
-    ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
-        else -> co.anitrend.core.android.R.integer.column_x1
-    }
+    private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
+        when (viewMode) {
+            PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+            PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+            else -> co.anitrend.core.android.R.integer.column_x1
+        }
 
     /**
      * Called immediately after [onCreateView] has returned, but before any saved state has been
@@ -70,7 +68,10 @@ class MediaListContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -105,8 +106,9 @@ class MediaListContent(
             onPostModelChange(it)
         }
         viewModel.filter.observe(viewLifecycleOwner) {
-            if (it != null)
+            if (it != null) {
                 viewModelState().invoke(it)
+            }
         }
     }
 

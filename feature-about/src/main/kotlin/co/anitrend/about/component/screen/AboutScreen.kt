@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.component.screen
 
 import android.os.Bundle
@@ -24,7 +23,6 @@ import co.anitrend.about.component.content.AboutContent
 import co.anitrend.core.component.screen.AniTrendBoundScreen
 
 class AboutScreen : AniTrendBoundScreen<ViewBinding>() {
-
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -43,6 +41,5 @@ class AboutScreen : AniTrendBoundScreen<ViewBinding>() {
     }
 
     private fun updateUserInterface() {
-
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.episode.koin
 
 import co.anitrend.common.episode.ui.adapter.EpisodePagedAdapter
@@ -34,47 +33,54 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    fragment {
-        EpisodeContent(
-            settings = get(),
-            stateConfig = get(),
-            supportViewAdapter = EpisodePagedAdapter(
-                resources = androidContext().resources,
-                stateConfiguration = get()
+private val fragmentModule =
+    module {
+        fragment {
+            EpisodeContent(
+                settings = get(),
+                stateConfig = get(),
+                supportViewAdapter =
+                    EpisodePagedAdapter(
+                        resources = androidContext().resources,
+                        stateConfiguration = get(),
+                    ),
             )
-        )
-    }
-    fragment {
-        EpisodeSheet(
-            markwon = get(named(MarkdownFlavour.STANDARD))
-        )
-    }
-}
-
-private val viewModelModule = module {
-    viewModel {
-        EpisodeContentViewModel(
-            state = EpisodeContentState(
-                interactor = get()
+        }
+        fragment {
+            EpisodeSheet(
+                markwon = get(named(MarkdownFlavour.STANDARD)),
             )
-        )
+        }
     }
-    viewModel {
-        EpisodeSheetViewModel(
-            state = EpisodeSheetState(
-                interactor = get()
+
+private val viewModelModule =
+    module {
+        viewModel {
+            EpisodeContentViewModel(
+                state =
+                    EpisodeContentState(
+                        interactor = get(),
+                    ),
             )
-        )
+        }
+        viewModel {
+            EpisodeSheetViewModel(
+                state =
+                    EpisodeSheetState(
+                        interactor = get(),
+                    ),
+            )
+        }
     }
-}
 
-private val featureModule = module {
-    factory<EpisodeRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<EpisodeRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

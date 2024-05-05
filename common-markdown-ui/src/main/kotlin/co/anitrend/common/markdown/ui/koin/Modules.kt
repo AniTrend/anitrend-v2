@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,31 +14,30 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.markdown.ui.koin
 
 import co.anitrend.common.markdown.ui.plugin.store.CoilStorePlugin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import coil.ImageLoader
 import io.noties.markwon.Markwon
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.coil.CoilImagesPlugin
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-private val builderModule = module {
-    factory {
-        val context = androidContext()
+private val builderModule =
+    module {
+        factory {
+            val context = androidContext()
 
-        Markwon.builder(context)
-            .usePlugin(HtmlPlugin.create())
-            .usePlugin(
-                CoilImagesPlugin.create(
-                    CoilStorePlugin.create(context),
-                    get()
+            Markwon.builder(context)
+                .usePlugin(HtmlPlugin.create())
+                .usePlugin(
+                    CoilImagesPlugin.create(
+                        CoilStorePlugin.create(context),
+                        get(),
+                    ),
                 )
-            )
+        }
     }
-}
 
 internal val moduleHelper = DynamicFeatureModuleHelper(listOf(builderModule))

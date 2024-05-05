@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.review.ui.widget.action.presenter
 
 import android.content.Context
@@ -30,10 +29,9 @@ import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 
 internal class ReviewActionPresenter(
     context: Context,
-    settings : Settings,
-    entity: IReview
+    settings: Settings,
+    entity: IReview,
 ) : CorePresenter(context, settings) {
-
     val controller by lazy(UNSAFE) {
         ReviewActionController(entity)
     }
@@ -43,20 +41,22 @@ internal class ReviewActionPresenter(
     }
 
     fun rateReview(rating: ReviewRating): Operation {
-        val params = ReviewTaskRouter.Param.RateEntry(
-            id = controller.entity.id,
-            rating = rating
-        )
+        val params =
+            ReviewTaskRouter.Param.RateEntry(
+                id = controller.entity.id,
+                rating = rating,
+            )
 
         return ReviewTaskRouter.forReviewRateWorker()
             .createOneTimeUniqueWorker(context, params)
             .enqueue()
     }
 
-    fun deleteReview(): Operation  {
-        val params = ReviewTaskRouter.Param.DeleteEntry(
-            id = controller.entity.id
-        )
+    fun deleteReview(): Operation {
+        val params =
+            ReviewTaskRouter.Param.DeleteEntry(
+                id = controller.entity.id,
+            )
 
         return ReviewTaskRouter.forReviewDeleteWorker()
             .createOneTimeUniqueWorker(context, params)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -174,17 +174,17 @@ internal object OAuthRoute : Route(
         return runCatching {
             AuthRouter.AuthParam(
                 accessToken =
-                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
-                },
+                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
+                        "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
+                    },
                 tokenType =
-                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $fullyQualifiedUrl"
-                },
+                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
+                        "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $fullyQualifiedUrl"
+                    },
                 expiresIn =
-                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $fullyQualifiedUrl"
-                }.toLong(),
+                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
+                        "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $fullyQualifiedUrl"
+                    }.toLong(),
             )
         }
             .onFailure(Timber::w)
@@ -192,7 +192,7 @@ internal object OAuthRoute : Route(
                 AuthRouter.AuthParam(
                     errorTitle = queryParameter(CALLBACK_QUERY_ERROR_KEY),
                     errorDescription = queryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY),
-                )
+                ),
             )
     }
 
