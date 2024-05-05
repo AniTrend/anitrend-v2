@@ -44,7 +44,7 @@ class OfflineStrategy<D> private constructor(
     ): D? {
         runCatching {
             block()
-        }.onSuccess {result ->
+        }.onSuccess { result ->
             callback.recordSuccess()
             return result
         }.onFailure { exception ->

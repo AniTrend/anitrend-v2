@@ -32,7 +32,6 @@ import co.anitrend.data.feed.news.datasource.remote.NewsRemoteSource
 import co.anitrend.data.feed.news.source.contract.NewsSource
 import co.anitrend.domain.news.entity.News
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 
 internal class NewsSourceImpl(

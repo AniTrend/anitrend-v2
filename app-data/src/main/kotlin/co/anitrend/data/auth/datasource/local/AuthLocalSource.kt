@@ -39,7 +39,7 @@ internal abstract class AuthLocalSource : AbstractLocalSource<AuthEntity>() {
         delete from auth
         where user_id = :userId
         """)
-    abstract fun clearByUserId(userId: Long)
+    abstract suspend fun clearByUserId(userId: Long)
 
     @Query("""
             select * from auth

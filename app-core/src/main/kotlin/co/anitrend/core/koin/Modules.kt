@@ -35,7 +35,9 @@ import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import co.anitrend.data.android.koin.dataModules
+import co.anitrend.data.android.network.cache.CacheHelper
 import co.anitrend.data.android.network.model.NetworkMessage
+import co.anitrend.data.core.extensions.defaultBuilder
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -45,6 +47,7 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import io.wax911.emojify.EmojiManager
 import io.wax911.emojify.serializer.kotlinx.KotlinxDeserializer
+import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -113,9 +116,15 @@ private val configurationModule = module {
         val memoryLimit = if (isLowRamDevice) 0.15 else 0.35
         val storageController = get<IStorageController>()
 
-        val client = get<OkHttpClient.Builder> {
-            parametersOf(HttpLoggingInterceptor.Level.BASIC)
-        }.build()
+        val client = defaultBuilder()
+            .cookieJar(get<CookieJar>())
+            .cache(
+                CacheHelper.createCache(
+                    androidContext(),
+                    "coil-okhttp"
+                )
+            )
+            .build()
 
         val imageCache = storageController.getImageCache(
             context = androidContext()
