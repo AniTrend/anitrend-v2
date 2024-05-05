@@ -45,6 +45,6 @@ internal class EdgeApiFactory(
     }
 
     companion object {
-        const val BASE_ENDPOINT_PATH = "/graphql/"
+        const val BASE_ENDPOINT_PATH = "/graphql"
     }
 }

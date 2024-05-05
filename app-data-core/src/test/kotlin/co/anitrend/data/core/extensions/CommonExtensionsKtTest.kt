@@ -22,8 +22,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
 class CommonExtensionsKtTest {
-
-    //@Test
+    @Test
     fun `test hash for word action`() {
         val given = "Action"
         val actual = given.toHashId()
@@ -31,7 +30,7 @@ class CommonExtensionsKtTest {
         assertEquals(expected, actual)
     }
 
-    //@Test
+    @Test
     fun `test hash for word adventure`() {
         val given = "Adventure"
         val actual = given.toHashId()
@@ -39,7 +38,7 @@ class CommonExtensionsKtTest {
         assertEquals(expected, actual)
     }
 
-    //@Test
+    @Test
     fun `test hash for word comedy`() {
         val given = "Comedy"
         val actual = given.toHashId()
@@ -47,7 +46,7 @@ class CommonExtensionsKtTest {
         assertEquals(expected, actual)
     }
 
-    //@Test
+    @Test
     fun `test hash for word drama`() {
         val given = "Drama"
         val actual = given.toHashId()

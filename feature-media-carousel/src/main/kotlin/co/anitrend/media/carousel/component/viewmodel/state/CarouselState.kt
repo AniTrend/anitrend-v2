@@ -27,7 +27,7 @@ data class CarouselState(
     private val interactor: GetCarouselInteractor
 ) : AniTrendViewModelState<List<MediaCarousel>>() {
 
-    operator fun invoke(param: MediaCarouselRouter.MediaCarouselRouterParam) {
+    suspend operator fun invoke(param: MediaCarouselRouter.MediaCarouselRouterParam) {
         val input = CarouselParam.Find(
             season = param.season,
             seasonYear = param.seasonYear,

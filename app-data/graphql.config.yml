@@ -8,12 +8,11 @@ extensions:
         user-agent: JS GraphQL
       introspect: true
     AniTrend:
-      url: https://graphql.anitrend.co/graphql/
+      url: https://api.anitrend.co/graphql
       headers:
         User-Agent: "JS GraphQL"
         Accept: "*/*"
         HOST: "graphql.anitrend.co"
         Accept-Encoding: "gzip, deflate, br"
-        Accept-Language: "en-GB,en-US;q=0.9,en;q=0.8"
         Content-Type: "application/json"
       introspect: true

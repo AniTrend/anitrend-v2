@@ -20,6 +20,8 @@ package co.anitrend.media.carousel.component.content
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.liveData
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.core.android.compose.design.ContentWrapper
@@ -36,6 +38,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.extensions.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -46,7 +49,9 @@ class CarouselContent(
 ) : AniTrendComposition() {
 
     private val viewModel by viewModel<CarouselViewModel>()
-    private val param by argument<MediaCarouselRouter.MediaCarouselRouterParam>()
+    private val param by argument<MediaCarouselRouter.MediaCarouselRouterParam>(
+        key = nameOf<MediaCarouselRouter.MediaCarouselRouterParam>()
+    )
 
     private fun paramOrDefault(): MediaCarouselRouter.MediaCarouselRouterParam {
         return param ?: MediaCarouselRouter.MediaCarouselRouterParam(
@@ -89,9 +94,9 @@ class CarouselContent(
     ) = composable(context = inflater.context) {
         AniTrendTheme3 {
             ContentWrapper(
-                stateFlow = viewModelState().combinedLoadState,
+                stateFlow = liveData { emit(LoadState.Idle()) },
                 param = paramOrDefault(),
-                onLoad = viewModelState()::invoke,
+                onLoad = viewModel::invoke,
                 onClick = viewModelState()::retry,
             ) {
                 CarouselScreen(

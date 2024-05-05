@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -74,25 +75,28 @@ private fun LoadingContent(
     config: IStateLayoutConfig,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ContentImage(drawableResource = config.loadingDrawable)
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+    Surface {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(24.dp).align(alignment = Alignment.CenterVertically),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                strokeWidth = 4.dp,
-                trackColor = MaterialTheme.colorScheme.secondary,
-            )
-            config.loadingMessage?.also {
-                ContentText(text = stringResource(it))
+            ContentImage(drawableResource = config.loadingDrawable)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(16.dp)
+                        .align(alignment = Alignment.CenterVertically),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    strokeWidth = 2.dp,
+                    trackColor = MaterialTheme.colorScheme.secondary,
+                )
+                config.loadingMessage?.also {
+                    ContentText(text = stringResource(it))
+                }
             }
         }
     }
@@ -106,22 +110,24 @@ private fun ErrorContent(
     onClick: suspend () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ContentImage(drawableResource = config.errorDrawable)
-        Spacer(modifier = Modifier.height(16.dp))
-        state.details.message?.also {
-            ContentText(text = it)
-        }
-        config.retryAction?.also {
+    Surface {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ContentImage(drawableResource = config.errorDrawable)
             Spacer(modifier = Modifier.height(16.dp))
-            FilledTonalButton(
-                onClick = { scope.launch { onClick() } },
-            ) {
-                Text(text = stringResource(it))
+            state.details.message?.also {
+                ContentText(text = it)
+            }
+            config.retryAction?.also {
+                Spacer(modifier = Modifier.height(16.dp))
+                FilledTonalButton(
+                    onClick = { scope.launch { onClick() } },
+                ) {
+                    Text(text = stringResource(it))
+                }
             }
         }
     }
@@ -174,7 +180,8 @@ fun <P: IParam> ContentWrapper(
 }
 
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun ContentWrapperPreview(
     @PreviewParameter(provider = ContentWrapperPreviewParameter::class) loadState: LoadState
@@ -187,7 +194,7 @@ private fun ContentWrapperPreview(
         defaultMessage = co.anitrend.core.android.R.string.app_controller_message_missing_param,
         retryAction = co.anitrend.core.android.R.string.action_share
     )
-    PreviewTheme(wrapInSurface = true) {
+    PreviewTheme {
         when (loadState) {
             is LoadState.Error -> ErrorContent(
                 config = config,
