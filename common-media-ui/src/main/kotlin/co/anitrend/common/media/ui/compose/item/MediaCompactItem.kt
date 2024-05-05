@@ -150,7 +150,7 @@ fun MediaCompactItemList(
         items(
             count = mediaItems.size,
             key = { mediaItems[it].hashCode() },
-            contentType = { mediaItems[it].category.type }
+            contentType = { mediaItems[it].category }
         ) { index ->
             MediaCompactItem(
                 media = mediaItems[index],
@@ -185,7 +185,13 @@ private fun MediaCompactItemPreview() {
             mediaPreferenceData = MediaPreferenceData(
                 ScoreFormat.POINT_10_DECIMAL,
             ),
-            mediaItemClick = {}
+            mediaItemClick = {},
+            modifier = Modifier
+                .padding(8.dp)
+                .size(
+                    height = 265.dp,
+                    width = 150.dp,
+                ),
         )
     }
 }
