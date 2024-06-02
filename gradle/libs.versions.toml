@@ -252,7 +252,7 @@ google-flexbox = { module = "com.google.android:flexbox", version = "2.0.1" }
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-android-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter-3", version = "1.1.1" }
 
-google-gms-google-services = { module = "com.google.gms:google-services", version = "4.4.1" }
+google-gms-google-services = { module = "com.google.gms:google-services", version = "4.4.2" }
 google-android-gsm-playServicesOssLicenses = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.0.1" }
 
 jetbrains-dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "jetbrains-dokka" }
