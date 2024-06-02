@@ -31,7 +31,7 @@ anitrend-arch = "1.7.7"
 anitrend-emojify = "1.9.2"
 anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
-anitrend-retrofit = "0.11.0-beta03"
+anitrend-retrofit = "0.11.1"
 anitrend-sync = "0.1.0-alpha01"
 anitrend-querybuilder = "0.2.4"
 
