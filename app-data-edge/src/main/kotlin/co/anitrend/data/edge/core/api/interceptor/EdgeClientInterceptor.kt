@@ -11,7 +11,7 @@ internal class EdgeClientInterceptor : Interceptor {
         val contentLength = original.body?.contentLength() ?: 0
         val requestBuilder = original.newBuilder()
 
-        requestBuilder.header(CONTENT_TYPE, GraphConverter.MimeType)
+        requestBuilder.header(CONTENT_TYPE, GraphConverter.MIME_TYPE)
             .header(ACCEPT, ACCEPT_TYPE)
             .header(CONTENT_LENGTH, contentLength.toString())
             .method(original.method, original.body)
