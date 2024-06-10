@@ -17,22 +17,18 @@
 
 package co.anitrend.data.feed.episode.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.feed.episode.EpisodeDetailRepository
 import co.anitrend.data.feed.episode.EpisodePagedRepository
 import co.anitrend.data.feed.episode.EpisodeSyncRepository
 import co.anitrend.data.feed.episode.source.contract.EpisodeSource
 import co.anitrend.domain.episode.model.EpisodeParam
 
-internal sealed class EpisodeRepository(
-    source: ISupportCoroutine
-) : SupportRepository(source) {
+internal sealed class EpisodeRepository {
 
     class Detail(
         private val source: EpisodeSource.Detail
-    ) : EpisodeRepository(source), EpisodeDetailRepository {
+    ) : EpisodeRepository(), EpisodeDetailRepository {
         override fun getEpisode(
             param: EpisodeParam.Detail
         ) = source create source(param)
@@ -40,7 +36,7 @@ internal sealed class EpisodeRepository(
 
     class Paged(
         private val source: EpisodeSource.Paged
-    ) : EpisodeRepository(source), EpisodePagedRepository {
+    ) : EpisodeRepository(), EpisodePagedRepository {
         override fun getPagedEpisode(
             param: EpisodeParam.Paged
         ) = source create source(param)
@@ -48,7 +44,7 @@ internal sealed class EpisodeRepository(
 
     class Sync(
         private val source: EpisodeSource.Paged
-    ) : EpisodeRepository(source), EpisodeSyncRepository {
+    ) : EpisodeRepository(), EpisodeSyncRepository {
         override fun sync(
             param: EpisodeParam.Paged
         ) = source create source.sync(param)

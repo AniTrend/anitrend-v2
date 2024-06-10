@@ -17,12 +17,11 @@
 
 package co.anitrend.domain.media.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.domain.media.repository.IMediaRepository
 
-sealed class MediaUseCase : IUseCase {
+sealed class MediaUseCase {
 
     abstract class GetDetail<State: UiState<*>>(
         protected val repository: IMediaRepository.Detail<State>

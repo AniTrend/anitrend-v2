@@ -55,7 +55,7 @@ private val viewModelModule = module {
 			mapper = UsersToAccountsMapper(
 				settings = get()
 			),
-			accountState = AccountState(
+			state = AccountState(
 				interactor = get()
 			),
 		)
@@ -100,4 +100,4 @@ private val featureModule = module {
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
 	listOf(presenterModule, viewModelModule, fragmentModule, featureModule)
-) 
+)

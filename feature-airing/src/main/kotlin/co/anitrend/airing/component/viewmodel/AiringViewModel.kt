@@ -23,13 +23,16 @@ import co.anitrend.airing.component.viewmodel.state.AiringState
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.navigation.AiringRouter
+import co.anitrend.navigation.extensions.nameOf
 
 class AiringViewModel(
-    val state: AiringState,
+    override val state: AiringState,
     stateHandle: SavedStateHandle
-) : AniTrendViewModel(state) {
+) : AniTrendViewModel() {
 
-    val param by stateHandle.extra<AiringRouter.AiringParam>()
+    val param by stateHandle.extra<AiringRouter.AiringParam>(
+        key = nameOf<AiringRouter.AiringParam>()
+    )
 
     val filter = MutableLiveData<AiringRouter.AiringParam>(param)
 }

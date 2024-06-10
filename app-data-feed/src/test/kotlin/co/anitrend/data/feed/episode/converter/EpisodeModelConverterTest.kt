@@ -23,15 +23,15 @@ import co.anitrend.data.feed.episode.entity.EpisodeEntity.CoverImage
 import co.anitrend.data.feed.episode.model.EpisodeModelItem
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
 
 class EpisodeModelConverterTest {
 
     private val item = mockk<EpisodeModelItem>()
 
-    @Before
+    @BeforeEach
     fun setup() {
         every { item.duration } returns 1405
         every { item.thumbnails } returns listOf(

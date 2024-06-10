@@ -23,13 +23,16 @@ import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.medialist.component.content.viewmodel.state.MediaListState
 import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.extensions.nameOf
 
 class MediaListViewModel(
-    val state: MediaListState,
+    override val state: MediaListState,
     savedStateHandle: SavedStateHandle
-) : AniTrendViewModel(state) {
+) : AniTrendViewModel() {
 
-    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>()
+    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>(
+        key = nameOf<MediaListRouter.MediaListParam>(),
+    )
 
     val filter = MutableLiveData(param)
 }

@@ -17,7 +17,6 @@
 
 package co.anitrend.data.review.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.review.DeleteReviewInteractor
 import co.anitrend.data.review.GetReviewInteractor
 import co.anitrend.data.review.GetReviewPagedInteractor
@@ -33,61 +32,21 @@ internal interface ReviewInteractor {
 
     class Entry(
         repository: ReviewEntryRepository
-    ) : GetReviewInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetReviewInteractor(repository)
 
     class Delete(
         repository: ReviewDeleteRepository
-    ) : DeleteReviewInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : DeleteReviewInteractor(repository)
 
     class Rate(
         repository: ReviewRateRepository
-    ) : RateReviewInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : RateReviewInteractor(repository)
 
     class Save(
         repository: ReviewSaveRepository
-    ) : SaveReviewInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : SaveReviewInteractor(repository)
 
     class Paged(
         repository: ReviewPagedRepository
-    ) : GetReviewPagedInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetReviewPagedInteractor(repository)
 }

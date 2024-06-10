@@ -21,6 +21,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.auth.AuthController
 import co.anitrend.data.auth.datasource.local.AuthLocalSource
 import co.anitrend.data.auth.datasource.remote.AuthRemoteSource
@@ -109,7 +110,7 @@ internal class AuthSourceImpl(
     }
 
     override suspend fun getAuthorizedUser(param: AccountAction.SignIn, callback: RequestCallback) {
-        val deferred = async {
+        val deferred = deferred {
             remoteSource.getAuthenticatedUser(
                 param.accessTokenBearer,
                 QueryContainerBuilder()

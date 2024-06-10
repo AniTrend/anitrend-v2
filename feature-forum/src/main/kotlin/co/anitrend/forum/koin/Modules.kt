@@ -39,9 +39,7 @@ private val fragmentModule = module {
 private val viewModelModule = module {
     viewModel {
         ForumViewModel(
-            state = ForumState(
-                interactor = get()
-            )
+            state = ForumState()
         )
     }
 }

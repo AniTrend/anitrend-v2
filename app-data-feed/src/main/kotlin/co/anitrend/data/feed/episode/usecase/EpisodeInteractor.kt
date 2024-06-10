@@ -17,7 +17,6 @@
 
 package co.anitrend.data.feed.episode.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.feed.episode.EpisodeDetailInteractor
 import co.anitrend.data.feed.episode.EpisodeDetailRepository
 import co.anitrend.data.feed.episode.EpisodePagedInteractor
@@ -29,37 +28,13 @@ internal sealed class EpisodeInteractor {
 
     class Detail(
         repository: EpisodeDetailRepository
-    ) : EpisodeDetailInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : EpisodeDetailInteractor(repository)
 
     class Paged(
         repository: EpisodePagedRepository
-    ) : EpisodePagedInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : EpisodePagedInteractor(repository)
 
     class Sync(
         repository: EpisodeSyncRepository
-    ) : EpisodeSyncInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : EpisodeSyncInteractor(repository)
 }

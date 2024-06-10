@@ -19,8 +19,8 @@ package co.anitrend.deeplink.component.route
 import android.content.Intent
 import co.anitrend.deeplink.common.CommonRouteTest
 import com.kingsleyadio.deeplink.DeepLinkParser
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class WebRouteTest : CommonRouteTest() {
     private val deepLinkParser: DeepLinkParser<Intent?> by lazy {

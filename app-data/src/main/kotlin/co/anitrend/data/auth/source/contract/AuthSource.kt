@@ -17,7 +17,7 @@
 
 package co.anitrend.data.auth.source.contract
 
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.android.extensions.invoke
@@ -25,7 +25,7 @@ import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.Flow
 
-internal abstract class AuthSource : SupportCoreDataSource() {
+internal abstract class AuthSource : AbstractCoreDataSource() {
 
     protected abstract val observable: Flow<User>
     protected abstract val observables: Flow<List<User>>
@@ -44,11 +44,9 @@ internal abstract class AuthSource : SupportCoreDataSource() {
     }
 
     internal operator fun invoke(param: AccountParam.SignIn): Flow<User> {
-        invoke(
-            block = {
-                getAuthorizedUser(AccountAction.SignIn(param), it)
-            }
-        )
+        invoke {
+            getAuthorizedUser(AccountAction.SignIn(param), it)
+        }
         return observable
     }
 }

@@ -24,9 +24,9 @@ import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
 
 class MediaProgressControllerTest {
 
@@ -34,7 +34,7 @@ class MediaProgressControllerTest {
     private val settings = mockk<Settings>()
     private lateinit var controller: MediaProgressController
 
-    @Before
+    @BeforeEach
     fun setUp() {
         every { media.mediaList } returns MediaList.Core.empty().copy(
             progress = MediaListProgress.Anime(

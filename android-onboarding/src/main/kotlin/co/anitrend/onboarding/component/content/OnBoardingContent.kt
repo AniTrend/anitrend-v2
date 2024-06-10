@@ -27,6 +27,7 @@ import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.navigation.OnBoardingRouter
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.onboarding.R
 import co.anitrend.onboarding.databinding.OnboardingContentBinding
 import com.airbnb.lottie.LottieDrawable
@@ -35,7 +36,9 @@ import kotlinx.coroutines.launch
 class OnBoardingContent(
     override val inflateLayout: Int = R.layout.onboarding_content,
 ) : AniTrendContent<OnboardingContentBinding>() {
-    private val param by argument<OnBoardingRouter.OnboardingParam>()
+    private val param by argument<OnBoardingRouter.OnboardingParam>(
+        key = nameOf<OnBoardingRouter.OnboardingParam>(),
+    )
 
     /**
      * Invoke view model observer to watch for changes

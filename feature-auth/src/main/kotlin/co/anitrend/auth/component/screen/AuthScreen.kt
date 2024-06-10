@@ -29,13 +29,16 @@ import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.extensions.forActivity
+import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
 
     private val viewModel by viewModel<AuthViewModel>()
-    private val authRouterParam by extra<AuthRouter.AuthParam>()
+    private val authRouterParam by extra<AuthRouter.AuthParam>(
+        key = nameOf<AuthRouter.AuthParam>(),
+    )
 
     private fun checkIntentData() {
         viewModel.onIntentData(

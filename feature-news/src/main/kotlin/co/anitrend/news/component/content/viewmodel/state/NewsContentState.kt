@@ -24,7 +24,7 @@ import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
 
 class NewsContentState(
-    override val interactor: NewsPagedInteractor
+    private val interactor: NewsPagedInteractor
 ) : AniTrendViewModelState<PagedList<News>>() {
 
     operator fun invoke(param: NewsParam) {

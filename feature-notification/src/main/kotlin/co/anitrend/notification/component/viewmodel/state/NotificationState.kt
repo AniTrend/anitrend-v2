@@ -17,12 +17,9 @@
 
 package co.anitrend.notification.component.viewmodel.state
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-class NotificationState(
-    override val interactor: IUseCase
-): AniTrendViewModelState<Any>() {
+class NotificationState(): AniTrendViewModelState<Any>() {
 
     operator fun invoke() {
         // val result = interactor()

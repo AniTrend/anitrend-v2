@@ -21,6 +21,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.network.default.DefaultNetworkClient
 import co.anitrend.data.jikan.media.JikanController
 import co.anitrend.data.jikan.media.datasource.local.JikanLocalSource
@@ -60,7 +61,7 @@ internal class JikanSourceImpl(
 
     private suspend fun getMediaInfo(): JikanWrapper<JikanMediaModel.MoreInfo>? = runCatching {
         val mediaType = query.type.name.uppercase()
-        val deferred = async {
+        val deferred = deferred {
             remoteSource.getExtraInfo(query.id, mediaType)
         }
         DefaultNetworkClient<JikanWrapper<JikanMediaModel.MoreInfo>>(dispatcher.io)
@@ -70,7 +71,7 @@ internal class JikanSourceImpl(
     }.getOrNull()
 
     override suspend fun getMedia(callback: RequestCallback): Boolean {
-        val deferred = async {
+        val deferred = deferred {
             @Suppress("UNCHECKED_CAST")
             when (query.type) {
                 MediaType.ANIME -> remoteSource.getAnimeDetails(query.id)

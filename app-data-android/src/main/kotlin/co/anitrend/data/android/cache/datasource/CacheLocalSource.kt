@@ -22,7 +22,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.cache.model.CacheRequest
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import org.threeten.bp.Instant
 
 @Dao
@@ -46,21 +46,21 @@ abstract class CacheLocalSource : AbstractLocalSource<CacheEntity>() {
 
     @Query("""
         select count(id)
-        from cache_log 
+        from cache_log
         where request = :request and cache_item_id = :itemId
         """)
     abstract suspend fun countMatching(request: CacheRequest, itemId: Long): Int
 
     @Query("""
-        select * 
-        from cache_log 
+        select *
+        from cache_log
         where request = :request and cache_item_id = :itemId
         """)
     abstract suspend fun getCacheLog(request: CacheRequest, itemId: Long): CacheEntity?
 
     @Query("""
         select id
-        from cache_log 
+        from cache_log
         where request = :request and cache_item_id = :itemId
         """)
     abstract suspend fun getCacheLogId(request: CacheRequest, itemId: Long): Long?

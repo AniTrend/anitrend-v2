@@ -2,7 +2,7 @@ package co.anitrend.data.edge.config.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import kotlinx.coroutines.flow.Flow
 

@@ -17,19 +17,9 @@
 
 package co.anitrend.data.auth.usecase
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.data.auth.repository.AuthRepositoryImpl
 
 internal class AuthUseCaseImpl(
     repository: AuthRepositoryImpl
-) : AuthUserInteractor(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as SupportRepository
-        repository.onCleared()
-    }
-}
+) : AuthUserInteractor(repository)

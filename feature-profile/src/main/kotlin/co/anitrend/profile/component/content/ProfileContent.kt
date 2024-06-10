@@ -29,6 +29,7 @@ import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.navigation.ProfileRouter
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.profile.R
 import co.anitrend.profile.component.viewmodel.ProfileViewModel
@@ -43,7 +44,9 @@ class ProfileContent(
 
     private val viewModel by viewModel<ProfileViewModel>()
 
-    private val param by argument<ProfileRouter.ProfileParam>()
+    private val param by argument<ProfileRouter.ProfileParam>(
+        key = nameOf<ProfileRouter.ProfileParam>()
+    )
 
     /**
      * Additional initialization to be done in this method, this method will be called in
@@ -58,7 +61,7 @@ class ProfileContent(
         super.initializeComponents(savedInstanceState)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                param?.let(viewModelState()::invoke)
+                param?.let(viewModel::invoke)
             }
         }
     }

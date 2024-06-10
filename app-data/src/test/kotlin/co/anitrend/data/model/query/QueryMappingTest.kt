@@ -26,10 +26,10 @@ import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.media.model.MediaParam
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import kotlin.test.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -47,10 +47,10 @@ class QueryMappingTest {
 
         val mappedQuery = pageQuery.toMap()
 
-        assertNotNull("Conversion is not null", mappedQuery)
+        assertNotNull(mappedQuery, "Conversion is not null")
 
-        assertTrue("Map contains key `page`", mappedQuery.containsKey("page"))
-        assertTrue("Map contains key `perPage`", mappedQuery.containsKey("perPage"))
+        assertTrue(mappedQuery.containsKey("page"), "Map contains key `page`")
+        assertTrue(mappedQuery.containsKey("perPage"), "Map contains key `perPage`")
 
         assertEquals(1, mappedQuery["page"])
         assertEquals(15, mappedQuery["perPage"])
@@ -66,7 +66,7 @@ class QueryMappingTest {
                     month = 5
                 ).toFuzzyDateInt()
                 season = MediaSeason.FALL
-                format_in = MediaFormat.values().asList()
+                format_in = MediaFormat.entries
                 onList = true
                 status_in = listOf(
                     MediaStatus.FINISHED,
@@ -77,14 +77,14 @@ class QueryMappingTest {
 
         val mappedQuery = mediaQuery.toMap()
 
-        assertNotNull("Conversion is not null", mappedQuery)
+        assertNotNull(mappedQuery, "Conversion is not null")
 
-        assertTrue("Map contains key `type`", mappedQuery.containsKey("type"))
-        assertTrue("Map contains key `endDate`", mappedQuery.containsKey("endDate"))
-        assertTrue("Map contains key `season`", mappedQuery.containsKey("season"))
-        assertTrue("Map contains key `format_in`", mappedQuery.containsKey("format_in"))
-        assertTrue("Map contains key `onList`", mappedQuery.containsKey("onList"))
-        assertTrue("Map contains key `status_in`", mappedQuery.containsKey("status_in"))
+        assertTrue(mappedQuery.containsKey("type"), "Map contains key `type`")
+        assertTrue(mappedQuery.containsKey("endDate"), "Map contains key `endDate`")
+        assertTrue(mappedQuery.containsKey("season"), "Map contains key `season`")
+        assertTrue(mappedQuery.containsKey("format_in"), "Map contains key `format_in`")
+        assertTrue(mappedQuery.containsKey("onList"), "Map contains key `onList`")
+        assertTrue(mappedQuery.containsKey("status_in"), "Map contains key `status_in`")
 
         assertEquals(MediaType.ANIME, mappedQuery["type"])
         assertEquals("20180500", mappedQuery["endDate"])

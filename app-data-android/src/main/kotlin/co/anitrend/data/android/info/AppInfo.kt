@@ -9,11 +9,30 @@ import java.util.Locale
 class AppInfo(context: Context) : IAppInfo {
     override val locale: String
         get() = Locale.getDefault().toLanguageTag()
-    override val version: String = BuildConfig.versionName
+    override val version: String = versionName(context)
     override val source: String = installationSource(context)
-    override val code: String = BuildConfig.versionCode.toString()
+    override val code: String = versionCode(context)
     override val label: String = applicationLabel(context)
     override val buildType: String = BuildConfig.BUILD_TYPE
+
+    private fun versionCode(context: Context): String {
+        val packageManager = context.packageManager
+        val packageName = context.packageName
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode.toString()
+        } else {
+            @Suppress("DEPRECATION")
+            packageInfo.versionCode.toString()
+        }
+    }
+
+    private fun versionName(context: Context): String {
+        val packageManager = context.packageManager
+        val packageName = context.packageName
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        return packageInfo.versionName
+    }
 
     private fun installationSource(context: Context): String {
         val packageManager = context.packageManager

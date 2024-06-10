@@ -19,7 +19,7 @@ package co.anitrend.data.customscore.datasource
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.customscore.entity.CustomScoreEntity
 
 @Dao

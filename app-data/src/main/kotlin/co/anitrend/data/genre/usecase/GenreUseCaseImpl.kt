@@ -17,19 +17,9 @@
 
 package co.anitrend.data.genre.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.genre.GenreInteractor
 import co.anitrend.data.genre.GenreListRepository
 
 internal class GenreUseCaseImpl(
     repository: GenreListRepository
-) : GenreInteractor(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as ISupportRepository
-        repository.onCleared()
-    }
-}
+) : GenreInteractor(repository)

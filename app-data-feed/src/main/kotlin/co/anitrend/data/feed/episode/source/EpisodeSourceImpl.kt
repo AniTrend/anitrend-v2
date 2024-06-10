@@ -24,6 +24,7 @@ import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.feed.episode.EpisodePagedController
 import co.anitrend.data.feed.episode.converter.EpisodeEntityConverter
 import co.anitrend.data.feed.episode.datasource.local.EpisodeLocalSource
@@ -90,7 +91,7 @@ internal sealed class EpisodeSourceImpl {
         }
 
         override suspend fun getEpisodes(requestCallback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 remoteSource.getLatestEpisodes(query.param.locale)
             }
 

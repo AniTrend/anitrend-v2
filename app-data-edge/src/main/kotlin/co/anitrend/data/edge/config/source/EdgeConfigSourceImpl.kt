@@ -4,6 +4,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.edge.config.EdgeConfigController
 import co.anitrend.data.edge.config.converters.EdgeConfigEntityConverter
 import co.anitrend.data.edge.config.datasource.local.EdgeConfigLocalSource
@@ -40,7 +41,7 @@ internal class EdgeConfigSourceImpl(
     }
 
     override suspend fun getConfig(callback: RequestCallback): Boolean {
-        val deferred = async {
+        val deferred = deferred {
             remoteSource.getConfig(
                 QueryContainerBuilder()
             )

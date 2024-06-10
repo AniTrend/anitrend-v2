@@ -17,19 +17,9 @@
 
 package co.anitrend.data.tag.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.data.tag.TagListRepository
 
 internal class TagUseCaseImpl(
     repository: TagListRepository
-) : TagInteractor(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as ISupportRepository
-        repository.onCleared()
-    }
-}
+) : TagInteractor(repository)

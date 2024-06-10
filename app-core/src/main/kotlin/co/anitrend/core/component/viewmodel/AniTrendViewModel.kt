@@ -20,18 +20,6 @@ package co.anitrend.core.component.viewmodel
 import androidx.lifecycle.ViewModel
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-abstract class AniTrendViewModel(
-    private val state: AniTrendViewModelState<*>
-) : ViewModel() {
-
-    /**
-     * This method will be called when this ViewModel is no longer used and will be destroyed.
-     *
-     * It is useful when ViewModel observes some data and you need to clear this subscription to
-     * prevent a leak of this ViewModel.
-     */
-    override fun onCleared() {
-        state.onCleared()
-        super.onCleared()
-    }
+abstract class AniTrendViewModel : ViewModel() {
+    abstract val state: AniTrendViewModelState<*>
 }

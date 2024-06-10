@@ -18,19 +18,19 @@
 package co.anitrend.data.airing.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.flow.Flow
 
 internal class AiringScheduleSource {
 
-    abstract class Paged : SupportPagingDataSource<Media>() {
+    abstract class Paged : AbstractPagingSource<Media>() {
 
         protected lateinit var query: AiringScheduleQuery
 
@@ -64,24 +64,6 @@ internal class AiringScheduleSource {
         }
 
         /**
-         * Called when the item at the front of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be prepended to the PagedList before this item.
-         *
-         * @param itemAtFront The first item of PagedList
-         */
-        override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            /*cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.BEFORE,
-                block = ::getAiringSchedule,
-            )*/
-        }
-
-        /**
          * Called when zero items are returned from an initial load of the PagedList's data source.
          */
         override fun onZeroItemsLoaded() {
@@ -89,6 +71,7 @@ internal class AiringScheduleSource {
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
+                requestType = Request.Type.INITIAL,
                 block = ::getAiringSchedule,
             )
         }

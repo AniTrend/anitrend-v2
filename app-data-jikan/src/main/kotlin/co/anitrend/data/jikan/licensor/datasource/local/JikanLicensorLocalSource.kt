@@ -19,7 +19,7 @@ package co.anitrend.data.jikan.licensor.datasource.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
 
 @Dao

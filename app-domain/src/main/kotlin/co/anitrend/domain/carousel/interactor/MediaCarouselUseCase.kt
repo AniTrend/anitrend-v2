@@ -17,14 +17,13 @@
 
 package co.anitrend.domain.carousel.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.carousel.model.CarouselParam
 import co.anitrend.domain.carousel.repository.IMediaCarouselRepository
 
 abstract class MediaCarouselUseCase<State: UiState<*>>(
     protected val repository: IMediaCarouselRepository<State>
-) : IUseCase {
-    operator fun invoke(param: CarouselParam.Find) =
+) {
+    suspend operator fun invoke(param: CarouselParam.Find) =
         repository.getMediaCarousel(param)
 }

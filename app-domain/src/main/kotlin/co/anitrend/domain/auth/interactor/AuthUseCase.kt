@@ -17,14 +17,13 @@
 
 package co.anitrend.domain.auth.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.auth.repository.AuthRepository
 
 abstract class AuthUseCase<State: UiState<*>>(
     protected val repository: AuthRepository<State>
-) : IUseCase {
+) {
 
     /**
      * @param param Auth query

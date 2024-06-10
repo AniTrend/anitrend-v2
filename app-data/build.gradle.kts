@@ -27,7 +27,8 @@ tasks.withType(KotlinCompile::class.java) {
     kotlinOptions {
         freeCompilerArgs = listOf(
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-opt-in=kotlin.RequiresOptIn"
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=androidx.paging.ExperimentalPagingApi"
         )
     }
 }

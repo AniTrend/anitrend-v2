@@ -19,7 +19,7 @@ package co.anitrend.data.tag.datasource.local
 
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +39,7 @@ internal abstract class TagLocalSource : AbstractLocalSource<TagEntity>() {
     abstract override suspend fun clear()
 
     @Query("""
-        select * from tag 
+        select * from tag
         order by category, name asc
         """
     )

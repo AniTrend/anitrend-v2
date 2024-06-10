@@ -21,17 +21,16 @@ import android.content.Context
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.migration.model.Migration
 import io.mockk.mockk
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
 
-@Suppress("LocalVariableName")
 class MigrationManagerTest {
 
     private val manager = MigrationManager(mockk())
     private val migrations = mutableListOf<Migration>()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         migrations += listOf(
             object : Migration(20290, 20300){

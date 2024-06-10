@@ -38,6 +38,7 @@ import co.anitrend.episode.R
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
 import co.anitrend.episode.databinding.EpisodeSheetBinding
 import co.anitrend.navigation.EpisodeRouter
+import co.anitrend.navigation.extensions.nameOf
 import coil.request.Disposable
 import io.noties.markwon.Markwon
 import kotlinx.coroutines.launch
@@ -51,7 +52,9 @@ class EpisodeSheet(
 
     private val viewModel by viewModel<EpisodeSheetViewModel>()
 
-    private val param by argument<EpisodeRouter.EpisodeParam>()
+    private val param by argument<EpisodeRouter.EpisodeParam>(
+        key = nameOf<EpisodeRouter.EpisodeParam>()
+    )
 
     private var disposable: Disposable? = null
 

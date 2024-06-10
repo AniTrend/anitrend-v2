@@ -17,14 +17,13 @@
 
 package co.anitrend.domain.genre.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.genre.model.GenreParam
 import co.anitrend.domain.genre.repository.IGenreRepository
 
 abstract class GenreUseCase<State: UiState<*>>(
     protected val repository: IGenreRepository<State>
-) : IUseCase {
+) {
 
     /**
      * @return media genres user interface state

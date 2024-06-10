@@ -22,10 +22,10 @@ import co.anitrend.data.account.AccountInteractor
 import co.anitrend.domain.user.entity.User
 
 internal class AccountState(
-    override val interactor: AccountInteractor
+    private val interactor: AccountInteractor
 ) : AniTrendViewModelState<List<User>>() {
 
-    operator fun invoke() {
+    suspend operator fun invoke() {
         val result = interactor.getAuthorizedAccounts()
         state.postValue(result)
     }

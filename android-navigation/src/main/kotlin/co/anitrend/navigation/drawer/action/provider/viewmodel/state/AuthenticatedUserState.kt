@@ -22,10 +22,10 @@ import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.domain.user.entity.User
 
 internal class AuthenticatedUserState(
-    override val interactor: GetAuthenticatedInteractor
+    private val interactor: GetAuthenticatedInteractor
 ) : AniTrendViewModelState<User>() {
 
-    operator fun invoke() {
+    suspend operator fun invoke() {
         val result = interactor()
         state.postValue(result)
     }

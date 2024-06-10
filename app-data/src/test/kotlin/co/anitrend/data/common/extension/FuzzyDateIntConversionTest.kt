@@ -18,8 +18,8 @@
 package co.anitrend.data.common.extension
 
 import co.anitrend.data.common.model.date.FuzzyDateModel
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).

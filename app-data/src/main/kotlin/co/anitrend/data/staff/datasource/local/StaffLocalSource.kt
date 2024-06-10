@@ -20,7 +20,7 @@ package co.anitrend.data.staff.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.staff.entity.StaffEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -62,9 +62,9 @@ internal abstract class StaffLocalSource : AbstractLocalSource<StaffEntity>() {
 
     @Query("""
         select * from staff
-        where name_first match :term 
-        or name_full match :term 
-        or name_last match :term 
+        where name_first match :term
+        or name_full match :term
+        or name_last match :term
         or name_original match :term
         or name_alternative match :term
     """)

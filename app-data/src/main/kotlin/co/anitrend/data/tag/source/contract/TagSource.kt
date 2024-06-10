@@ -17,7 +17,7 @@
 
 package co.anitrend.data.tag.source.contract
 
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
@@ -27,7 +27,7 @@ import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
 import kotlinx.coroutines.flow.Flow
 
-internal abstract class TagSource : SupportCoreDataSource() {
+internal abstract class TagSource : AbstractCoreDataSource() {
 
     protected lateinit var param: TagParam
 

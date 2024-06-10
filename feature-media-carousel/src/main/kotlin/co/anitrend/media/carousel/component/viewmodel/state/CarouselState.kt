@@ -23,10 +23,10 @@ import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
 
 data class CarouselState(
-    override val interactor: GetCarouselInteractor
+    private val interactor: GetCarouselInteractor
 ) : AniTrendViewModelState<List<MediaCarousel>>() {
 
-    operator fun invoke(parameter: CarouselParam.Find) {
+    suspend operator fun invoke(parameter: CarouselParam.Find) {
         val result = interactor(parameter)
         state.postValue(result)
     }

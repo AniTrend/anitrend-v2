@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.review.component.viewmodel.state.ReviewState
 
 class ReviewViewModel(
-    val state: ReviewState
-) : AniTrendViewModel(state)
+    override val state: ReviewState
+) : AniTrendViewModel()

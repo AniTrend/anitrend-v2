@@ -17,52 +17,51 @@
 
 package co.anitrend.domain.user.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.user.model.UserParam
 import co.anitrend.domain.user.repository.IUserRepository
 
-sealed class UserUseCase : IUseCase {
+sealed class UserUseCase {
 
     abstract class GetUser<State: UiState<*>>(
         protected val repository: IUserRepository.User<State>
     ) : UserUseCase() {
-        operator fun invoke(param: UserParam.Identifier) = repository.getUser(param)
+        suspend operator fun invoke(param: UserParam.Identifier) = repository.getUser(param)
     }
 
     abstract class GetAuthenticated<State: UiState<*>>(
         protected val repository: IUserRepository.Authenticated<State>
     ) : UserUseCase() {
-        operator fun invoke() = repository.getProfile()
+        suspend operator fun invoke() = repository.getProfile()
     }
 
     abstract class GetPaged<State: UiState<*>>(
         protected val repository: IUserRepository.Search<State>
     ) : UserUseCase() {
-        operator fun invoke(param: UserParam.Search) = repository.getPaged(param)
+        suspend operator fun invoke(param: UserParam.Search) = repository.getPaged(param)
     }
 
     abstract class GetProfile<State: UiState<*>>(
         protected val repository: IUserRepository.Profile<State>
     ) : UserUseCase() {
-        operator fun invoke(param: UserParam.Profile) = repository.getProfile(param)
+        suspend operator fun invoke(param: UserParam.Profile) = repository.getProfile(param)
     }
 
     abstract class ToggleFollow<State: UiState<*>>(
         protected val repository: IUserRepository.ToggleFollow<State>
     ) : UserUseCase() {
-        operator fun invoke(param: UserParam.ToggleFollow) = repository.toggleFollow(param)
+        suspend operator fun invoke(param: UserParam.ToggleFollow) = repository.toggleFollow(param)
     }
 
     abstract class Update<State: UiState<*>>(
         protected val repository: IUserRepository.Update<State>
     ) : UserUseCase() {
-        operator fun invoke(param: UserParam.Update) = repository.updateProfile(param)
+        suspend operator fun invoke(param: UserParam.Update) = repository.updateProfile(param)
     }
 
     abstract class Statistic<State: UiState<*>>(
         protected val repository: IUserRepository.Statistic<State>
     ) : UserUseCase() {
-        operator fun invoke(param: UserParam.Statistic) = repository.getProfileStatistic(param)
+        suspend operator fun invoke(param: UserParam.Statistic) = repository.getProfileStatistic(param)
     }
 }

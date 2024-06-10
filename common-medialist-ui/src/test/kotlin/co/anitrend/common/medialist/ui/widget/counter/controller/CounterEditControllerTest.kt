@@ -18,8 +18,8 @@
 package co.anitrend.common.medialist.ui.widget.counter.controller
 
 import co.anitrend.common.medialist.ui.widget.counter.model.CounterEditModel
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 class CounterEditControllerTest {
 
@@ -30,7 +30,7 @@ class CounterEditControllerTest {
         controller.incrementCount()
         val expected = 8
         val actual = given.current
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -40,7 +40,7 @@ class CounterEditControllerTest {
         controller.decrementCount()
         val expected = 0
         val actual = given.current
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -50,7 +50,7 @@ class CounterEditControllerTest {
         controller.incrementCount()
         val expected = 8
         val actual = given.current
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
 
     }
 
@@ -61,7 +61,7 @@ class CounterEditControllerTest {
         controller.decrementCount()
         val expected = 0
         val actual = given.current
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -71,7 +71,7 @@ class CounterEditControllerTest {
         controller.incrementCount()
         val expected = 6
         val actual = given.current
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -81,6 +81,6 @@ class CounterEditControllerTest {
         controller.decrementCount()
         val expected = 4
         val actual = given.current
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 }

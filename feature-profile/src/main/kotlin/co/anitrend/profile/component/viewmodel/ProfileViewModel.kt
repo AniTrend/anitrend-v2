@@ -17,9 +17,19 @@
 
 package co.anitrend.profile.component.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.navigation.ProfileRouter
 import co.anitrend.profile.component.viewmodel.state.ProfileState
+import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    val state: ProfileState
-) : AniTrendViewModel(state)
+    override val state: ProfileState
+) : AniTrendViewModel() {
+
+    operator fun invoke(param: ProfileRouter.ProfileParam) {
+        viewModelScope.launch {
+            state(param)
+        }
+    }
+}

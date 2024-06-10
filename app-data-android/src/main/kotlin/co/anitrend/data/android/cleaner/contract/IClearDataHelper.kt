@@ -34,4 +34,13 @@ interface IClearDataHelper {
         context: CoroutineContext,
         action: suspend () -> Unit
     )
+
+    /**
+     * Executes an [action]
+     *
+     * @param action The task that needs to be run
+     */
+    suspend operator fun invoke(
+        action: suspend () -> Unit
+    )
 }

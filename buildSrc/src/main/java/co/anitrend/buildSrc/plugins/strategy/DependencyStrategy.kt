@@ -35,7 +35,7 @@ internal class DependencyStrategy(private val project: Project) {
         if (!project.isDomainModule())
             implementation(project.libs.timber)
 
-        test(project.libs.junit)
+        test(project.libs.jetbrains.kotlin.test)
         test(project.libs.mockk)
 
         /** Work around for crashing tests when startup. initializer is not found in *.test packages */
@@ -43,6 +43,7 @@ internal class DependencyStrategy(private val project: Project) {
     }
 
     private fun DependencyHandler.applyAndroidTestDependencies() {
+        androidTest(project.libs.jetbrains.kotlin.test)
         androidTest(project.libs.androidx.test.core.ktx)
         androidTest(project.libs.androidx.test.rules)
         androidTest(project.libs.androidx.test.runner)

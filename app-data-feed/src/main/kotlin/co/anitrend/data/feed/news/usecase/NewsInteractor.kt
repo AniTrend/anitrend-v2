@@ -17,7 +17,6 @@
 
 package co.anitrend.data.feed.news.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.feed.news.NewsPagedInteractor
 import co.anitrend.data.feed.news.NewsPagedRepository
 import co.anitrend.data.feed.news.NewsSyncInteractor
@@ -27,25 +26,9 @@ internal interface NewsInteractor {
 
     class Paged(
         repository: NewsPagedRepository
-    ) : NewsPagedInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : NewsPagedInteractor(repository)
 
     class Sync(
         repository: NewsSyncRepository
-    ) : NewsSyncInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : NewsSyncInteractor(repository)
 }

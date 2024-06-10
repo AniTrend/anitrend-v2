@@ -17,7 +17,6 @@
 
 package co.anitrend.data.media.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagedMediaInteractor
@@ -29,37 +28,13 @@ internal interface MediaInteractor {
 
     class Detail(
         repository: MediaDetailRepository
-    ) : GetDetailMediaInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetDetailMediaInteractor(repository)
 
     class Paged(
         repository: MediaPagedRepository
-    ) : GetPagedMediaInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetPagedMediaInteractor(repository)
 
     class Network(
         repository: MediaNetworkRepository
-    ) : GetNetworkMediaInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetNetworkMediaInteractor(repository)
 }

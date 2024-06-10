@@ -39,9 +39,7 @@ private val fragmentModule = module {
 private val viewModelModule = module {
     viewModel {
         FeedViewModel(
-            state = FeedState(
-                interactor = get()
-            )
+            state = FeedState()
         )
     }
 }

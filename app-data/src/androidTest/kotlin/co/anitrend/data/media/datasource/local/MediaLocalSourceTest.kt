@@ -25,12 +25,12 @@ import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 import org.junit.runner.RunWith
 import org.koin.test.get
+import kotlin.test.DefaultAsserter.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -44,7 +44,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
     private suspend fun populateDatabase(model: MediaModelContainer.Paged) {
         val mapper = get<MediaMapper.Paged>()
         val entities = mapper.onResponseMapFrom(model)
-        assertEquals(model.page.media.size, entities.size)
+        assertEquals("", model.page.media.size, entities.size)
         mapper.onResponseDatabaseInsert(entities)
     }
 
@@ -71,10 +71,10 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
         entityFlow.test {
             val entity = expectMostRecentItem()
             // for some reason tests clear the native field
-            assertEquals(title, entity?.media?.title)
+            assertEquals("", title, entity?.media?.title)
 
             val total = store.mediaDao().count()
-            assertEquals(50, total)
+            assertEquals("", 50, total)
         }
     }
 
@@ -93,7 +93,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
         entityFlow.test {
             val entity = expectMostRecentItem()
             // for some reason tests clear the native field
-            assertEquals(title, entity?.media?.title)
+            assertEquals("", title, entity?.media?.title)
 
             assertNotNull(entity?.nextAiring)
         }

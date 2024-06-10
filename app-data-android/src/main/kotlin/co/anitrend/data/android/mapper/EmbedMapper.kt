@@ -18,7 +18,7 @@
 package co.anitrend.data.android.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 
 abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
 

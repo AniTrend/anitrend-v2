@@ -18,21 +18,29 @@
 package co.anitrend.navigation.drawer.component.viewmodel
 
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.navigation.drawer.component.viewmodel.mapper.UsersToAccountsMapper
 import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
 import co.anitrend.navigation.drawer.model.account.Account
+import kotlinx.coroutines.launch
 
 internal class AccountViewModel(
     mapper: UsersToAccountsMapper,
-    val accountState: AccountState,
-) : AniTrendViewModel(accountState) {
+    override val state: AccountState,
+) : AniTrendViewModel() {
 
-    val userAccounts = accountState.model.map {
+    val userAccounts = state.model.map {
         mapper(it)
     }
 
     val activeAccount = userAccounts.map {
         it.singleOrNull(Account::isActiveUser)
+    }
+
+    operator fun invoke() {
+        viewModelScope.launch {
+            state()
+        }
     }
 }

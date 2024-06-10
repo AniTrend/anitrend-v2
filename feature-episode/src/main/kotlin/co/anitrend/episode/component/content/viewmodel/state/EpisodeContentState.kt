@@ -24,7 +24,7 @@ import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 
 class EpisodeContentState(
-    override val interactor: EpisodePagedInteractor
+    private val interactor: EpisodePagedInteractor
 ) : AniTrendViewModelState<PagedList<Episode>>() {
 
     operator fun invoke(param: EpisodeParam.Paged) {

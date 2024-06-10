@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.forum.component.viewmodel.state.ForumState
 
 class ForumViewModel(
-    val state: ForumState
-) : AniTrendViewModel(state)
+    override val state: ForumState
+) : AniTrendViewModel()

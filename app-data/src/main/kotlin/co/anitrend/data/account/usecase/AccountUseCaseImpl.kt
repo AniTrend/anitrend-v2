@@ -17,19 +17,9 @@
 
 package co.anitrend.data.account.usecase
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.data.account.AccountInteractor
 import co.anitrend.data.account.repository.AccountRepositoryImpl
 
 internal class AccountUseCaseImpl(
     repository: AccountRepositoryImpl
-) : AccountInteractor(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as SupportRepository
-        repository.onCleared()
-    }
-}
+) : AccountInteractor(repository)

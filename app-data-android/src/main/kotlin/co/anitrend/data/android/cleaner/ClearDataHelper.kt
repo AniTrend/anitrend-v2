@@ -36,6 +36,23 @@ class ClearDataHelper(
 ) : IClearDataHelper {
 
     /**
+     * Executes an [action]
+     *
+     * @param action The task that needs to be run
+     */
+    override suspend fun invoke(action: suspend () -> Unit) {
+        if (settings.clearDataOnSwipeRefresh.value) {
+            if (connectivity.isConnected)
+                runCatching {
+                    action()
+                }.onFailure(Timber::e)
+            return
+        }
+
+        Timber.v("Action will not be ran, settings prohibiting operation")
+    }
+
+    /**
      * Executes an [action] in the provided [context]
      *
      * @param context A coroutine context to run the [action] in
@@ -45,18 +62,8 @@ class ClearDataHelper(
         context: CoroutineContext,
         action: suspend () -> Unit
     ) {
-        if (settings.clearDataOnSwipeRefresh.value) {
-            if (connectivity.isConnected)
-                runCatching {
-                    withContext(context) {
-                        action()
-                    }
-                }.onFailure {
-                    Timber.e(it)
-                }
-            return
+        withContext(context) {
+            invoke(action)
         }
-
-        Timber.v("Action will not be ran, settings prohibiting operation")
     }
 }

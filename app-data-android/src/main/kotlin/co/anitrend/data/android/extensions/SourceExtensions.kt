@@ -17,12 +17,12 @@
 
 package co.anitrend.data.android.extensions
 
-import co.anitrend.arch.data.source.core.contract.AbstractDataSource
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
-import co.anitrend.arch.paging.legacy.source.contract.AbstractPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
+import co.anitrend.data.android.paging.AbstractPagingSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import kotlinx.coroutines.launch
 
 
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
  * @param requestType Type of request that is being run
  * @param block Unit of work to execute
  */
-operator fun AbstractPagingDataSource<*>.invoke(
+operator fun AbstractPagingSource<*>.invoke(
     key: String = String.empty(),
     paging: SupportPagingHelper,
     requestType: Request.Type = Request.Type.INITIAL,
@@ -69,7 +69,7 @@ operator fun AbstractPagingDataSource<*>.invoke(
  * @param requestType Type of request that is being run
  * @param block Unit of work to execute
  */
-operator fun AbstractDataSource.invoke(
+operator fun AbstractCoreDataSource.invoke(
     key: String = String.empty(),
     requestType: Request.Type = Request.Type.INITIAL,
     block: suspend (RequestCallback) -> Unit

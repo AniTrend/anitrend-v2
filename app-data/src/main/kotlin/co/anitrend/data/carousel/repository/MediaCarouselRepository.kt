@@ -17,7 +17,6 @@
 
 package co.anitrend.data.carousel.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.carousel.MediaCarouselListRepository
 import co.anitrend.data.carousel.source.contract.CarouselSource
@@ -26,8 +25,8 @@ import co.anitrend.domain.carousel.model.CarouselParam
 
 internal class MediaCarouselRepository(
     private val source: CarouselSource
-) : SupportRepository(source), MediaCarouselListRepository {
-    override fun getMediaCarousel(
+) : MediaCarouselListRepository {
+    override suspend fun getMediaCarousel(
         param: CarouselParam.Find
     ) = source create source(param)
 }

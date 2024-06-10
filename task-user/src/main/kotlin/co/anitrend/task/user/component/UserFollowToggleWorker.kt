@@ -25,6 +25,7 @@ import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.user.ToggleFollowInteractor
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 /** Worker for toggling following state */
 class UserFollowToggleWorker(
@@ -56,11 +57,13 @@ class UserFollowToggleWorker(
     override suspend fun doWork(): Result {
         val dataState = toggleFollow(param)
 
-        val networkState = dataState.loadState.first { state ->
-            state is LoadState.Success || state is LoadState.Error
-        }
+        val result = runCatching {
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
+        }.onFailure(Timber::w)
 
-        return if (networkState is LoadState.Success)
+        return if (result.getOrNull() is LoadState.Success)
             Result.success()
         else Result.failure()
     }

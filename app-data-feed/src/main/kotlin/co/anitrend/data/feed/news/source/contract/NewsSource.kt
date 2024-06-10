@@ -24,13 +24,14 @@ import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.feed.news.cache.NewsCache
 import co.anitrend.data.feed.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.*
 
-internal abstract class NewsSource : SupportPagingDataSource<News>() {
+internal abstract class NewsSource : AbstractPagingSource<News>() {
 
     protected lateinit var query: NewsQuery
 

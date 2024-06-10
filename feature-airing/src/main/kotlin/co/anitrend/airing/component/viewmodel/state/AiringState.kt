@@ -25,7 +25,7 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.AiringRouter
 
 class AiringState(
-    override val interactor: GetPagedAiringScheduleInteractor
+    private val interactor: GetPagedAiringScheduleInteractor
 ) : AniTrendViewModelState<PagedList<Media>>() {
 
     operator fun invoke(param: AiringRouter.AiringParam) {

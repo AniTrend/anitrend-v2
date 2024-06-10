@@ -39,9 +39,7 @@ private val fragmentModule = module {
 private val viewModelModule = module {
     viewModel {
         NotificationViewModel(
-            state = NotificationState(
-                interactor = get()
-            )
+            state = NotificationState()
         )
     }
 }

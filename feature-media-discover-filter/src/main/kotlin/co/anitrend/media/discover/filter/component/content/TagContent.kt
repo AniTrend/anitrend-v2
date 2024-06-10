@@ -33,6 +33,7 @@ import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterTagBinding
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.nameOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class TagContent(
@@ -44,7 +45,10 @@ internal class TagContent(
     }
 ) : AniTrendSelectionContent<MediaDiscoverFilterTagBinding, Tag>() {
 
-    private val param by argument(MediaDiscoverRouter::MediaDiscoverParam)
+    private val param by argument(
+        key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
+        default = MediaDiscoverRouter::MediaDiscoverParam,
+    )
 
     private val viewModel by viewModel<TagViewModel>()
 

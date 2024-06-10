@@ -17,16 +17,12 @@
 
 package co.anitrend.data.airing.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.airing.AiringSchedulePagedRepository
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.domain.airing.model.AiringParam
 
-internal sealed class AiringScheduleRepository(
-    source: ISupportCoroutine? = null
-) : SupportRepository(source) {
+internal sealed class AiringScheduleRepository {
 
     class Paged(
         private val source: AiringScheduleSource.Paged

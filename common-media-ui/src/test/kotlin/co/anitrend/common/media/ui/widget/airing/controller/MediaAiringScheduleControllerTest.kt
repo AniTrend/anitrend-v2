@@ -21,14 +21,14 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
 
 class MediaAiringScheduleControllerTest {
 
     private val entity = mockk<Media>()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         every { entity.category } returns Media.Category.Anime.empty()
         every { entity.image } returns MediaImage.empty().copy(color = "#902F3A")

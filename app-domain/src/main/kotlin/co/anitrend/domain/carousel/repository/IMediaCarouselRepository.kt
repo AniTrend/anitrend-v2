@@ -22,5 +22,5 @@ import co.anitrend.domain.carousel.model.CarouselParam
 
 
 interface IMediaCarouselRepository<State: UiState<*>> {
-    fun getMediaCarousel(param: CarouselParam.Find): State
+    suspend fun getMediaCarousel(param: CarouselParam.Find): State
 }

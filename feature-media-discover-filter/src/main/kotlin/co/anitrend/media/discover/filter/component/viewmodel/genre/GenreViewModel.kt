@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.media.discover.filter.component.viewmodel.genre.state.GenreViewModelState
 
 class GenreViewModel(
-    val state: GenreViewModelState
-) : AniTrendViewModel(state)
+    override val state: GenreViewModelState
+) : AniTrendViewModel()

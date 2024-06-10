@@ -17,13 +17,10 @@
 
 package co.anitrend.review.component.viewmodel.state
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-class ReviewState(
-    override val interactor: IUseCase
-): AniTrendViewModelState<Any>() {
-    
+class ReviewState(): AniTrendViewModelState<Any>() {
+
     operator fun invoke() {
         // val result = interactor()
         // state.postValue(result)

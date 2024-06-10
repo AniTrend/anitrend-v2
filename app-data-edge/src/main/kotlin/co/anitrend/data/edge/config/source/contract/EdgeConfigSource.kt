@@ -1,6 +1,6 @@
 package co.anitrend.data.edge.config.source.contract
 
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
@@ -9,7 +9,7 @@ import co.anitrend.data.edge.config.cache.EdgeConfigCache
 import co.anitrend.domain.config.entity.Config
 import kotlinx.coroutines.flow.Flow
 
-abstract class EdgeConfigSource : SupportCoreDataSource() {
+abstract class EdgeConfigSource : AbstractCoreDataSource() {
 
     protected lateinit var cacheIdentity: CacheIdentity
 

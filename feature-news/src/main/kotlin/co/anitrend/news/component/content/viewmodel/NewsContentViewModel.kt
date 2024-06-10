@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.news.component.content.viewmodel.state.NewsContentState
 
 class NewsContentViewModel(
-    val state: NewsContentState
-) : AniTrendViewModel(state)
+    override val state: NewsContentState
+) : AniTrendViewModel()

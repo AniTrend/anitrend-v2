@@ -43,9 +43,8 @@ class GraphNetworkClient<R>(
         val type = typeToken<GraphQLResponse<R>>().type
         return runCatching {
             gson.fromJson<GraphQLResponse<R>>(body, type)
-        }.onFailure {
-            Timber.d(it)
-        }.getOrDefault(
+        }.onFailure(Timber::w)
+        .getOrDefault(
             GraphQLResponse(
                 errors = listOf(
                     GraphQLError(

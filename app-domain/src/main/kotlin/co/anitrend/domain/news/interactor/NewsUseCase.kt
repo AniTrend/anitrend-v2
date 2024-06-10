@@ -17,12 +17,11 @@
 
 package co.anitrend.domain.news.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.news.model.NewsParam
 import co.anitrend.domain.news.repository.INewsRepository
 
-sealed class NewsUseCase : IUseCase {
+sealed class NewsUseCase {
 
     abstract class GetPaged<State : UiState<*>>(
         protected val repository: INewsRepository.Paged<State>

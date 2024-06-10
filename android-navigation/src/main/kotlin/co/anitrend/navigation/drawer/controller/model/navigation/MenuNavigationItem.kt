@@ -61,7 +61,6 @@ class MenuNavigationItem(
             stateFlow.value =
                 ClickableItem.Data(
                     data = entity,
-                    view = it
                 )
         }
     }

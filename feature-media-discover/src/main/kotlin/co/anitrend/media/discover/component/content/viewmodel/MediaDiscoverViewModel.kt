@@ -26,12 +26,13 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.media.discover.component.content.viewmodel.state.MediaDiscoverState
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.launch
 
 class MediaDiscoverViewModel(
-    val state: MediaDiscoverState,
+    override val state: MediaDiscoverState,
     private val savedStateHandle: SavedStateHandle,
-) : AniTrendViewModel(state) {
+) : AniTrendViewModel() {
 
     init {
         viewModelScope.launch {
@@ -44,7 +45,8 @@ class MediaDiscoverViewModel(
     }
 
     val default by savedStateHandle.extra(
-        MediaDiscoverRouter::MediaDiscoverParam
+        key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
+        default = MediaDiscoverRouter::MediaDiscoverParam,
     )
 
     val filter = MutableLiveData(default)

@@ -25,6 +25,7 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.customlist.datasource.CustomListLocalSource
@@ -47,7 +48,6 @@ import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -66,7 +66,7 @@ internal class MediaListSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getMediaListCollection(queryBuilder)
             }
@@ -108,7 +108,7 @@ internal class MediaListSourceImpl {
         }
 
         override suspend fun getEntry(requestCallback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getMediaListEntry(queryBuilder)
             }
@@ -161,7 +161,7 @@ internal class MediaListSourceImpl {
         }
 
         override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )
@@ -220,7 +220,7 @@ internal class MediaListSourceImpl {
         }
 
         override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )
@@ -258,7 +258,7 @@ internal class MediaListSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun saveEntry(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.saveMediaListEntry(queryBuilder)
             }
@@ -286,7 +286,7 @@ internal class MediaListSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun saveEntries(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.saveMediaListEntries(queryBuilder)
             }
@@ -317,7 +317,7 @@ internal class MediaListSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.deleteMediaListEntry(queryBuilder)
             }
@@ -358,7 +358,7 @@ internal class MediaListSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteCustomList(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.deleteCustomList(queryBuilder)
             }

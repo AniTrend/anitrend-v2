@@ -17,13 +17,10 @@
 
 package co.anitrend.feed.component.viewmodel.state
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-class FeedState(
-    override val interactor: IUseCase
-): AniTrendViewModelState<Any>() {
-    
+class FeedState(): AniTrendViewModelState<Any>() {
+
     operator fun invoke() {
         // val result = interactor()
         // state.postValue(result)

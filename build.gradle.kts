@@ -1,16 +1,13 @@
 import co.anitrend.buildSrc.Libraries.Repositories
 import co.anitrend.buildSrc.resolver.handleConflicts
-import co.anitrend.buildSrc.resolver.handleDependencySelection
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("com.github.ben-manes.versions")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 buildscript {
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
 
@@ -45,21 +42,4 @@ allprojects {
 
 tasks.create("clean", Delete::class) {
     delete(rootProject.layout.buildDirectory)
-}
-
-tasks.named(
-    "dependencyUpdates",
-    DependencyUpdatesTask::class.java
-).configure {
-    checkForGradleUpdate = false
-    outputFormatter = "json"
-    outputDir = "build/dependencyUpdates"
-    reportfileName = "report"
-    resolutionStrategy {
-        componentSelection {
-            all {
-                handleDependencySelection()
-            }
-        }
-    }
 }

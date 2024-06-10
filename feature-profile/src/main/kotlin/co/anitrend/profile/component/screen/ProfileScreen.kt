@@ -18,6 +18,7 @@
 package co.anitrend.profile.component.screen
 
 import android.os.Bundle
+import android.provider.ContactsContract.Profile
 import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.common.shared.ui.extension.shareContent
@@ -29,6 +30,7 @@ import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.profile.component.compose.ProfileScreenContent
 import co.anitrend.profile.component.viewmodel.ProfileViewModel
@@ -38,16 +40,18 @@ class ProfileScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<ProfileViewModel>()
     private val settings by inject<IAuthenticationSettings>()
-    private val param by extra<ProfileRouter.ProfileParam>()
+    private val param by extra<ProfileRouter.ProfileParam>(
+        key = nameOf<ProfileRouter.ProfileParam>()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
                 ContentWrapper(
-                    stateFlow = viewModelState().combinedLoadState,
+                    stateFlow = viewModelState().loadState,
                     param = param,
-                    onLoad = viewModelState()::invoke,
+                    onLoad = viewModel::invoke,
                     onClick = viewModelState()::retry,
                 ) {
                     ProfileScreenContent(
