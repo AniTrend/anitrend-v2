@@ -25,7 +25,7 @@ import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class AuthState(
-    override val interactor: AuthUserInteractor
+    private val interactor: AuthUserInteractor
 ) : AniTrendViewModelState<User>() {
 
     val authenticationFlow =

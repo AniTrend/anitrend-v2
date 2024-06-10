@@ -24,10 +24,10 @@ import co.anitrend.domain.user.model.UserParam
 import co.anitrend.navigation.MediaListRouter
 
 class UserState(
-    override val interactor: GetProfileInteractor
+    private val interactor: GetProfileInteractor
 ) : AniTrendViewModelState<User>() {
 
-    operator fun invoke(param: MediaListRouter.MediaListParam) {
+    suspend operator fun invoke(param: MediaListRouter.MediaListParam) {
         val query = UserParam.Profile(
             id = param.userId,
             name = param.userName

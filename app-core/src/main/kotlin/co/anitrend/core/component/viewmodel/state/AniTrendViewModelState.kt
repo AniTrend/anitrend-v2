@@ -18,54 +18,28 @@
 package co.anitrend.core.component.viewmodel.state
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.data.state.DataState
-import co.anitrend.arch.domain.common.IUseCase
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.coroutine.extension.Default
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.cancel
 import timber.log.Timber
+import java.util.concurrent.CancellationException
 
-abstract class AniTrendViewModelState<T> : ISupportViewModelState<T>,
-    ISupportCoroutine by Default() {
+abstract class AniTrendViewModelState<T> : ViewModel(), ISupportViewModelState<T> {
 
     protected val state = MutableLiveData<DataState<T>>()
 
-    protected abstract val interactor: IUseCase
-
     override val model = state.switchMap {
-        Timber.i("Performing `model` switch map using $coroutineContext on $this")
-        it.model.asLiveData(coroutineContext)
+        Timber.i("Performing `model` switch map using ${viewModelScope.coroutineContext} on $this")
+        it.model.asLiveData(viewModelScope.coroutineContext)
     }
 
     override val loadState = state.switchMap {
-        Timber.i("Performing `loadState` switch map using $coroutineContext on $this")
-        it.loadState.asLiveData(coroutineContext)
-    }
-
-    override val refreshState = state.switchMap {
-        Timber.i("Performing `refreshState` switch map using $coroutineContext on $this")
-        it.refreshState.asLiveData(coroutineContext)
-    }
-
-    val combinedLoadState = state.switchMap {
-        Timber.i("Performing `combinedLoadState` switch map using $coroutineContext on $this")
-        val result = merge(it.loadState, it.refreshState)
-        result.asLiveData(coroutineContext)
-    }
-
-    /**
-     * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally
-     * call cancellation of any ongoing jobs.
-     *
-     * If your use case source is of type [co.anitrend.arch.domain.common.IUseCase]
-     * then you could optionally call [co.anitrend.arch.domain.common.IUseCase.onCleared] here
-     */
-    override fun onCleared() {
-        interactor.onCleared()
-        cancelAllChildren()
+        Timber.i("Performing `loadState` switch map using ${viewModelScope.coroutineContext} on $this")
+        it.loadState.asLiveData(viewModelScope.coroutineContext)
     }
 
     /**
@@ -82,5 +56,12 @@ abstract class AniTrendViewModelState<T> : ISupportViewModelState<T>,
     override suspend fun retry() {
         val uiModel = state.value
         uiModel?.retry?.invoke()
+    }
+
+    override fun onCleared() {
+        viewModelScope.cancel(
+            cause = CancellationException("onCleared")
+        )
+        super.onCleared()
     }
 }

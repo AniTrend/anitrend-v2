@@ -25,7 +25,7 @@ import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.MediaDiscoverRouter
 
 class MediaDiscoverState(
-    override val interactor: GetPagedMediaInteractor,
+    private val interactor: GetPagedMediaInteractor,
     //private val networkInteractor: GetNetworkMediaInteractor
 ) : AniTrendViewModelState<PagedList<Media>>() {
 

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.jikan.media.source.contract
 
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
@@ -27,7 +27,7 @@ import co.anitrend.data.jikan.media.entity.projection.JikanWithConnection
 import co.anitrend.data.jikan.media.model.query.JikanQuery
 import kotlinx.coroutines.flow.Flow
 
-abstract class JikanSource : SupportCoreDataSource() {
+abstract class JikanSource : AbstractCoreDataSource() {
 
     protected lateinit var query: JikanQuery
 

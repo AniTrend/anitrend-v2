@@ -17,7 +17,6 @@
 
 package co.anitrend.data.airing.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.airing.AiringSchedulePagedRepository
 import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
 
@@ -25,13 +24,5 @@ internal interface AiringScheduleInteractor {
 
     class Paged(
         repository: AiringSchedulePagedRepository
-    ) : GetPagedAiringScheduleInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetPagedAiringScheduleInteractor(repository)
 }

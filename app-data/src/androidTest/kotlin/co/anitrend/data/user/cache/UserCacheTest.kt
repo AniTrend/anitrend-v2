@@ -25,7 +25,7 @@ import org.junit.Before
 import org.junit.runner.RunWith
 import org.koin.test.inject
 import org.threeten.bp.Instant
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -44,7 +44,7 @@ internal class UserCacheTest : CoreTestSuite() {
     }
 
     fun testUserViewCache() = runBlocking(dispatchers.io) {
-        assertEquals(true, viewCache.hasBeenRequested(identity))
-        assertEquals(true, viewCache.shouldRefresh(identity, instantInFuture(minutes = 6)))
+        assertTrue(viewCache.hasBeenRequested(identity))
+        assertTrue(viewCache.shouldRefresh(identity, instantInFuture(minutes = 6)))
     }
 }

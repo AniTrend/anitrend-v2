@@ -24,10 +24,10 @@ import co.anitrend.domain.user.model.UserParam
 import co.anitrend.navigation.ProfileRouter
 
 class ProfileState(
-    override val interactor: GetProfileInteractor
+    private val interactor: GetProfileInteractor
 ) : AniTrendViewModelState<User>() {
 
-    operator fun invoke(parameter: ProfileRouter.ProfileParam) {
+    suspend operator fun invoke(parameter: ProfileRouter.ProfileParam) {
         val param = UserParam.Profile(
             id = parameter.userId,
             name = parameter.userName

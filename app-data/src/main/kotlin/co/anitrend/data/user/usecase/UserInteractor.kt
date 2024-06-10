@@ -17,7 +17,6 @@
 
 package co.anitrend.data.user.usecase
 
-import co.anitrend.arch.data.repository.contract.ISupportRepository
 import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
@@ -37,86 +36,29 @@ internal interface UserInteractor {
 
     class Identifier(
         repository: UserIdentifierRepository
-    ) : GetUserInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-
-    }
+    ) : GetUserInteractor(repository)
 
     class Paged(
         repository: UserSearchRepository
-    ) : GetUserPagedInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetUserPagedInteractor(repository)
 
     class Profile(
         repository: UserProfileRepository
-    ) : GetProfileInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetProfileInteractor(repository)
 
     class Statistic(
         repository: UserProfileStatisticRepository
-    ) : GetProfileStatisticInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetProfileStatisticInteractor(repository)
 
     class Authenticated(
         repository: UserAuthenticatedRepository
-    ) : GetAuthenticatedInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : GetAuthenticatedInteractor(repository)
 
     class ToggleFollow(
         repository: UserFollowRepository
-    ) : ToggleFollowInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : ToggleFollowInteractor(repository)
 
     class Update(
         repository: UserUpdateRepository
-    ) : UpdateProfileInteractor(repository) {
-        /**
-         * Informs underlying repositories or related components running background operations to stop
-         */
-        override fun onCleared() {
-            repository as ISupportRepository
-            repository.onCleared()
-        }
-    }
+    ) : UpdateProfileInteractor(repository)
 }

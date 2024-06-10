@@ -2,7 +2,7 @@ package co.anitrend.data.edge.home.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.edge.home.entity.EdgeHomeEntity
 
 internal class EdgeHomeGenreMapper(

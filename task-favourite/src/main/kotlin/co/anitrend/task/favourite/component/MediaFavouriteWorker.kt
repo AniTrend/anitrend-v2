@@ -4,7 +4,6 @@ package co.anitrend.task.favourite.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.domain.favourite.model.FavouriteInput
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.FavouriteTaskRouter
@@ -13,7 +12,6 @@ import co.anitrend.navigation.extensions.transform
 class MediaFavouriteWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: IUseCase,
 ) : SupportCoroutineWorker(context, parameters) {
 
     private val param by parameters.transform<

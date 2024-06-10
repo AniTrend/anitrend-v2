@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.episode.component.content.viewmodel.state.EpisodeContentState
 
 class EpisodeContentViewModel(
-    val state: EpisodeContentState
-) : AniTrendViewModel(state)
+    override val state: EpisodeContentState
+) : AniTrendViewModel()

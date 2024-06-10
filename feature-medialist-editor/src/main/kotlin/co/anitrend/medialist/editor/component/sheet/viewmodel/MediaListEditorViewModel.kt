@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 
 class MediaListEditorViewModel(
-    val state: MediaListEditorState
-) : AniTrendViewModel(state)
+    override val state: MediaListEditorState
+) : AniTrendViewModel()

@@ -17,19 +17,9 @@
 
 package co.anitrend.data.carousel.usecase
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.data.carousel.GetCarouselInteractor
 import co.anitrend.data.carousel.MediaCarouselListRepository
 
 internal class MediaCarouselUseCaseImpl(
     repository: MediaCarouselListRepository
-) : GetCarouselInteractor(repository) {
-
-    /**
-     * Informs underlying repositories or related components running background operations to stop
-     */
-    override fun onCleared() {
-        repository as SupportRepository
-        repository.onCleared()
-    }
-}
+) : GetCarouselInteractor(repository)

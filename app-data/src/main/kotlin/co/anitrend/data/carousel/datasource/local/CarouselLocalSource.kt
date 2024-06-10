@@ -20,7 +20,7 @@ package co.anitrend.data.carousel.datasource.local
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.common.CountryCode
 import co.anitrend.data.common.FuzzyDateLike
 import co.anitrend.data.media.entity.MediaEntity
@@ -83,8 +83,8 @@ internal abstract class CarouselLocalSource : AbstractLocalSource<MediaEntity>()
 
     @Query("""
         select * from media
-        where media_type = :mediaType 
-        and season = :season 
+        where media_type = :mediaType
+        and season = :season
         and start_date like :seasonYear
         order by popularity desc
         limit :pageSize

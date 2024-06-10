@@ -23,7 +23,7 @@ import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
 
 class TagViewModelState(
-    override val interactor: TagInteractor
+    private val interactor: TagInteractor
 ) : AniTrendViewModelState<List<Tag>>() {
 
     operator fun invoke(param: TagParam) {

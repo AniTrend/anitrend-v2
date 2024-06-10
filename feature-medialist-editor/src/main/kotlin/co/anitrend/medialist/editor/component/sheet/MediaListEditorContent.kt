@@ -37,6 +37,7 @@ import co.anitrend.medialist.editor.component.sheet.controller.MediaListEditorCo
 import co.anitrend.medialist.editor.component.sheet.viewmodel.MediaListEditorViewModel
 import co.anitrend.medialist.editor.databinding.MediaListEditorContentBinding
 import co.anitrend.navigation.MediaListEditorRouter
+import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
@@ -53,7 +54,9 @@ class MediaListEditorContent(
 
     private val viewModel by viewModel<MediaListEditorViewModel>()
 
-    private val param by argument<MediaListEditorRouter.MediaListEditorParam>()
+    private val param by argument<MediaListEditorRouter.MediaListEditorParam>(
+        key = nameOf<MediaListEditorRouter.MediaListEditorParam>()
+    )
 
     private fun onFetchDataInitialize() {
         requireBinding().stateLayout.assureParamNotMissing(param) {

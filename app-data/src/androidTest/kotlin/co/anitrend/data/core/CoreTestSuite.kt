@@ -23,16 +23,15 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.initializeKoin
 import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.koin.core.KoinApplication
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import java.io.InputStreamReader
+import kotlin.test.assertNotNull
 
 /**
  * Instrumented test, which will execute on an Android device.

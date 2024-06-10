@@ -20,6 +20,7 @@ package co.anitrend.data.android.controller.core
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
+import co.anitrend.data.android.extensions.Async
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
@@ -36,7 +37,7 @@ class DefaultController<S, out D>(
     private val strategy: ControllerStrategy<D>,
     private val dispatcher: CoroutineDispatcher,
     private val client: DeferrableNetworkClient<S>
-) : ISupportResponse<Deferred<Response<S>>, D> {
+) : ISupportResponse<Async<Response<S>>, D> {
 
     /**
      * Response handler for coroutine contexts which need to observe [LoadState]
@@ -49,7 +50,7 @@ class DefaultController<S, out D>(
      * @return resource fetched if present
      */
     suspend operator fun invoke(
-        resource: Deferred<Response<S>>,
+        resource: Async<Response<S>>,
         requestCallback: RequestCallback,
         interceptor: (S) -> S
     ) = strategy(requestCallback) {
@@ -71,7 +72,7 @@ class DefaultController<S, out D>(
      * @return resource fetched if present
      */
     override suspend fun invoke(
-        resource: Deferred<Response<S>>,
+        resource: Async<Response<S>>,
         requestCallback: RequestCallback
     ) = invoke(resource, requestCallback) { it }
 }

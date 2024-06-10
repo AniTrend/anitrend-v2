@@ -38,6 +38,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.extensions.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,7 +46,9 @@ class MediaScreen : AniTrendScreen() {
 
     private val viewModel by viewModel<MediaViewModel>()
 
-    private val mediaRouterParam by extra<MediaRouter.MediaParam>()
+    private val mediaRouterParam by extra<MediaRouter.MediaParam>(
+        key = nameOf<MediaRouter.MediaParam>()
+    )
 
     private val settings by inject<IUserSettings>()
 
@@ -54,7 +57,7 @@ class MediaScreen : AniTrendScreen() {
         setContent {
             AniTrendTheme3 {
                 ContentWrapper(
-                    stateFlow = viewModelState().combinedLoadState,
+                    stateFlow = viewModelState().loadState,
                     param = mediaRouterParam,
                     onLoad = viewModelState()::invoke,
                     onClick = viewModelState()::retry,

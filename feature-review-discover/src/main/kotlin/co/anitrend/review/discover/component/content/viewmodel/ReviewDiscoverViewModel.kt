@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.review.discover.component.content.viewmodel.state.ReviewDiscoverState
 
 class ReviewDiscoverViewModel(
-    val state: ReviewDiscoverState
-) : AniTrendViewModel(state)
+    override val state: ReviewDiscoverState
+) : AniTrendViewModel()

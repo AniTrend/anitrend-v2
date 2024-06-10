@@ -20,7 +20,7 @@ package co.anitrend.data.user.mapper
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.converter.*
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource

@@ -18,7 +18,7 @@
 package co.anitrend.data.user.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
@@ -26,6 +26,7 @@ import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.model.mutation.UserMutation
@@ -37,7 +38,7 @@ import kotlinx.coroutines.flow.Flow
 
 internal class UserSource {
 
-    abstract class Identifier : SupportCoreDataSource() {
+    abstract class Identifier : AbstractCoreDataSource() {
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -62,7 +63,7 @@ internal class UserSource {
         }
     }
 
-    abstract class Viewer : SupportCoreDataSource() {
+    abstract class Viewer : AbstractCoreDataSource() {
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -99,7 +100,7 @@ internal class UserSource {
         }
     }
 
-    abstract class Search : SupportPagingDataSource<User>() {
+    abstract class Search : AbstractPagingSource<User>() {
 
         protected lateinit var query: UserQuery.Search
 
@@ -155,7 +156,7 @@ internal class UserSource {
         }
     }
 
-    abstract class Profile : SupportCoreDataSource() {
+    abstract class Profile : AbstractCoreDataSource() {
 
         protected lateinit var query: UserQuery.Profile
 
@@ -167,7 +168,7 @@ internal class UserSource {
 
         protected abstract suspend fun getProfile(callback: RequestCallback): Boolean
 
-        operator fun invoke(param: UserParam.Profile): Flow<User> {
+        suspend operator fun invoke(param: UserParam.Profile): Flow<User> {
             query = UserQuery.Profile(param)
             cacheIdentity = UserCache.Profile.Identity(param)
             cachePolicy(
@@ -180,7 +181,7 @@ internal class UserSource {
         }
     }
 
-    abstract class Statistic : SupportCoreDataSource() {
+    abstract class Statistic : AbstractCoreDataSource() {
 
         protected lateinit var query: UserQuery.Statistic
 
@@ -192,7 +193,7 @@ internal class UserSource {
 
         protected abstract suspend fun getProfileStatistic(callback: RequestCallback): Boolean
 
-        operator fun invoke(param: UserParam.Statistic): Flow<User.WithStats> {
+        suspend operator fun invoke(param: UserParam.Statistic): Flow<User.WithStats> {
             query = UserQuery.Statistic(param)
             cacheIdentity = UserCache.Statistic.Identity(param)
             cachePolicy(
@@ -205,7 +206,7 @@ internal class UserSource {
         }
     }
 
-    abstract class ToggleFollow : SupportCoreDataSource() {
+    abstract class ToggleFollow : AbstractCoreDataSource() {
 
         protected lateinit var query: UserMutation.ToggleFollow
 
@@ -229,7 +230,7 @@ internal class UserSource {
         }
     }
 
-    abstract class Update : SupportCoreDataSource() {
+    abstract class Update : AbstractCoreDataSource() {
 
         protected lateinit var query: UserMutation.Update
 

@@ -18,7 +18,7 @@
 package co.anitrend.data.review.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
@@ -26,6 +26,7 @@ import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.review.cache.ReviewCache
 import co.anitrend.data.review.model.mutation.ReviewMutation
 import co.anitrend.data.review.model.query.ReviewQuery
@@ -36,7 +37,7 @@ import kotlinx.coroutines.flow.filterNotNull
 
 internal class ReviewSource {
 
-    abstract class Entry : SupportCoreDataSource() {
+    abstract class Entry : AbstractCoreDataSource() {
 
         protected lateinit var query: ReviewQuery.Entry
 
@@ -63,7 +64,7 @@ internal class ReviewSource {
         }
     }
 
-    abstract class Rate : SupportCoreDataSource() {
+    abstract class Rate : AbstractCoreDataSource() {
 
         protected lateinit var mutation: ReviewMutation.Rate
 
@@ -80,7 +81,7 @@ internal class ReviewSource {
         }
     }
 
-    abstract class Delete : SupportCoreDataSource() {
+    abstract class Delete : AbstractCoreDataSource() {
 
         protected lateinit var mutation: ReviewMutation.Delete
 
@@ -97,7 +98,7 @@ internal class ReviewSource {
         }
     }
 
-    abstract class Save : SupportCoreDataSource() {
+    abstract class Save : AbstractCoreDataSource() {
 
         protected lateinit var mutation: ReviewMutation.Save
 
@@ -114,7 +115,7 @@ internal class ReviewSource {
         }
     }
 
-    abstract class Paged : SupportPagingDataSource<Review>() {
+    abstract class Paged : AbstractPagingSource<Review>() {
 
         protected lateinit var query: ReviewQuery.Paged
 

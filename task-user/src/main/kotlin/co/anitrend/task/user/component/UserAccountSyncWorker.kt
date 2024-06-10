@@ -23,6 +23,7 @@ import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.data.user.GetAuthenticatedInteractor
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 class UserAccountSyncWorker(
     context: Context,
@@ -44,11 +45,13 @@ class UserAccountSyncWorker(
     override suspend fun doWork(): Result {
         val dataState = getAuthenticated()
 
-        val networkState = dataState.loadState.first { state ->
-            state is LoadState.Success || state is LoadState.Error
-        }
+        val result = runCatching {
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
+        }.onFailure(Timber::w)
 
-        return if (networkState is LoadState.Success)
+        return if (result.getOrNull() is LoadState.Success)
             Result.success()
         else Result.failure()
     }

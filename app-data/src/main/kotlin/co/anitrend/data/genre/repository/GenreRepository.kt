@@ -17,7 +17,6 @@
 
 package co.anitrend.data.genre.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.genre.GenreListRepository
 import co.anitrend.data.genre.source.contract.GenreSource
@@ -25,7 +24,7 @@ import co.anitrend.domain.genre.model.GenreParam
 
 internal class GenreRepository(
     private val source: GenreSource
-) : SupportRepository(source), GenreListRepository {
+) : GenreListRepository {
 
     /**
      * @return media genres

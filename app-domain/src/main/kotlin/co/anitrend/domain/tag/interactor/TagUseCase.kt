@@ -17,14 +17,13 @@
 
 package co.anitrend.domain.tag.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.tag.model.TagParam
 import co.anitrend.domain.tag.repository.ITagRepository
 
 abstract class TagUseCase<R: UiState<*>>(
     protected val repository: ITagRepository<R>
-) : IUseCase {
+) {
 
     /**
      * @return media tags user interface state

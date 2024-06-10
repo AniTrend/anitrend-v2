@@ -28,7 +28,7 @@ import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.properties.Delegates
 
-internal sealed class MediaSourceFactory<Key, Value> : DataSource.Factory<Key, Value>() {
+internal sealed class MediaSourceFactory<Key : Any, Value : Any> : DataSource.Factory<Key, Value>() {
 
     protected abstract val stateSourceFlow: MutableStateFlow<SupportPagingLiveDataSource<Key, Value>?>
 

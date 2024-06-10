@@ -17,7 +17,6 @@
 
 package co.anitrend.data.auth.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.auth.source.contract.AuthSource
@@ -27,7 +26,7 @@ import co.anitrend.domain.user.entity.User
 
 internal class AuthRepositoryImpl(
     private val source: AuthSource
-) : SupportRepository(source), AuthRepository<DataState<User>>{
+) : AuthRepository<DataState<User>>{
 
     override fun getAuthenticatedUser(
         param: AccountParam.SignIn

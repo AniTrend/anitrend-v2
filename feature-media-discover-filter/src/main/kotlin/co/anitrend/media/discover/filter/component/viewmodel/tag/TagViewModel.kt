@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.media.discover.filter.component.viewmodel.tag.state.TagViewModelState
 
 class TagViewModel(
-    val state: TagViewModelState
-): AniTrendViewModel(state)
+    override val state: TagViewModelState
+): AniTrendViewModel()

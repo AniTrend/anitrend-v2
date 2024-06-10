@@ -17,7 +17,6 @@
 
 package co.anitrend.data.review.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.review.ReviewDeleteRepository
@@ -28,41 +27,39 @@ import co.anitrend.data.review.ReviewSaveRepository
 import co.anitrend.data.review.source.contract.ReviewSource
 import co.anitrend.domain.review.model.ReviewParam
 
-internal sealed class ReviewRepository(
-    source: ISupportCoroutine
-) : SupportRepository(source) {
+internal sealed class ReviewRepository {
 
     class Entry(
         private val source: ReviewSource.Entry
-    ) : ReviewRepository(source), ReviewEntryRepository {
+    ) : ReviewRepository(), ReviewEntryRepository {
         override fun getEntry(param: ReviewParam.Entry) =
             source create source(param)
     }
 
     class Paged(
         private val source: ReviewSource.Paged
-    ) : ReviewRepository(source), ReviewPagedRepository {
+    ) : ReviewRepository(), ReviewPagedRepository {
         override fun getPaged(param: ReviewParam.Paged) =
             source create source(param)
     }
 
     class Rate(
         private val source: ReviewSource.Rate
-    ) : ReviewRepository(source), ReviewRateRepository {
+    ) : ReviewRepository(), ReviewRateRepository {
         override fun rate(param: ReviewParam.Rate) =
             source create source(param)
     }
 
     class Save(
         private val source: ReviewSource.Save
-    ) : ReviewRepository(source), ReviewSaveRepository {
+    ) : ReviewRepository(), ReviewSaveRepository {
         override fun save(param: ReviewParam.Save) =
             source create source(param)
     }
 
     class Delete(
         private val source: ReviewSource.Delete
-    ) : ReviewRepository(source), ReviewDeleteRepository {
+    ) : ReviewRepository(), ReviewDeleteRepository {
         override fun delete(param: ReviewParam.Delete) =
             source create source(param)
     }

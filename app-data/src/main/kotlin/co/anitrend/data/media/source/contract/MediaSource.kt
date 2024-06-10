@@ -18,7 +18,9 @@
 package co.anitrend.data.media.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.arch.extension.coroutine.extension.Default
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.paging.legacy.source.live.SupportPagingLiveDataSource
 import co.anitrend.arch.request.callback.RequestCallback
@@ -26,6 +28,7 @@ import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
@@ -34,7 +37,7 @@ import kotlinx.coroutines.flow.Flow
 
 internal class MediaSource {
 
-    abstract class Detail : SupportCoreDataSource() {
+    abstract class Detail : AbstractCoreDataSource() {
 
         protected lateinit var query: MediaQuery.Detail
 
@@ -59,7 +62,7 @@ internal class MediaSource {
         }
     }
 
-    abstract class Paged : SupportPagingDataSource<Media>() {
+    abstract class Paged : AbstractPagingSource<Media>() {
 
         protected lateinit var query: MediaQuery.Find
 
@@ -123,7 +126,7 @@ internal class MediaSource {
         }
     }
 
-    abstract class Network : SupportPagingLiveDataSource<MediaParam.Find, Media>() {
+    abstract class Network : SupportPagingLiveDataSource<MediaParam.Find, Media>(), ISupportCoroutine by Default() {
 
         protected abstract val cacheIdentity: CacheIdentity
 

@@ -21,7 +21,7 @@ import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.account.model.AccountParam
 
 interface AccountRepository<State: UiState<*>> {
-    fun getAccountUsers(): State
-    fun signOut(param: AccountParam.SignOut)
-    fun signIn(param: AccountParam.Activate)
+    suspend fun getAccountUsers(): State
+    suspend fun signOut(param: AccountParam.SignOut)
+    suspend fun signIn(param: AccountParam.Activate)
 }

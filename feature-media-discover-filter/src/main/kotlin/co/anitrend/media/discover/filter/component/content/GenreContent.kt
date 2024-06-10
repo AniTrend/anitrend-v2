@@ -33,6 +33,7 @@ import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGenreBinding
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.nameOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class GenreContent(
@@ -44,7 +45,10 @@ internal class GenreContent(
     }
 ) : AniTrendSelectionContent<MediaDiscoverFilterGenreBinding, Genre>() {
 
-    private val param by argument(MediaDiscoverRouter::MediaDiscoverParam)
+    private val param by argument(
+        key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
+        default = MediaDiscoverRouter::MediaDiscoverParam,
+    )
 
     private val viewModel by viewModel<GenreViewModel>()
 

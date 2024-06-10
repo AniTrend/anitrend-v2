@@ -26,9 +26,9 @@ import co.anitrend.domain.common.sort.SortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.medialist.enums.MediaListSort
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import kotlin.test.Test
 
 
 class GraphUtilTest {

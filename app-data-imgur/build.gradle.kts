@@ -15,16 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
 }
 
-tasks.withType(KotlinCompile::class.java) {
-    kotlinOptions {
-        freeCompilerArgs = listOf(
+tasks.withType(KotlinCompilationTask::class.java) {
+    compilerOptions {
+        freeCompilerArgs.addAll(
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-opt-in=kotlin.RequiresOptIn"
         )

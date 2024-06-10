@@ -18,7 +18,6 @@
 package co.anitrend.buildSrc.resolver
 
 import co.anitrend.buildSrc.extensions.libs
-import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 
@@ -26,12 +25,8 @@ fun Configuration.handleConflicts(project: Project): Unit = with(project) {
     resolutionStrategy.eachDependency {
         when (requested.group) {
             "org.jetbrains.kotlin" -> {
-                when (requested.name) {
-                    "kotlin-reflect",
-                    "kotlin-stdlib",
-                    "kotlin-stdlib-common",
-                    "kotlin-stdlib-jdk8",
-                    "kotlin-stdlib-jdk7" -> useVersion(libs.versions.jetbrains.kotlin.get())
+                if (requested.name.matches(Regex("kotlin-.*"))) {
+                    useVersion(libs.versions.jetbrains.kotlin.get())
                 }
             }
         }
@@ -51,15 +46,4 @@ fun Configuration.handleConflicts(project: Project): Unit = with(project) {
             useTarget(libs.androidx.startup.runtime)
         }
     }
-}
-
-fun ComponentSelectionWithCurrent.handleDependencySelection() {
-    val reject = listOf("preview", "m", "rc", "alpha", "beta")
-        .map { qualifier ->
-            val pattern = "(?i).*[.-]$qualifier[.\\d-]*"
-            Regex(pattern, RegexOption.IGNORE_CASE)
-        }
-        .any { it.matches(candidate.version) }
-    if (reject)
-        reject("$candidate version does not fit acceptance criteria")
 }

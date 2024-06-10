@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.notification.component.viewmodel.state.NotificationState
 
 class NotificationViewModel(
-    val state: NotificationState
-) : AniTrendViewModel(state)
+    override val state: NotificationState
+) : AniTrendViewModel()

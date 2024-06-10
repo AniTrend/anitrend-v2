@@ -22,10 +22,10 @@ import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.extensions.Async
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
 import co.anitrend.data.core.api.model.GraphQLResponse
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import timber.log.Timber
@@ -39,7 +39,7 @@ class GraphQLController<S, out D>(
     private val strategy: ControllerStrategy<D>,
     private val dispatcher: CoroutineDispatcher,
     private val client: DeferrableNetworkClient<GraphQLResponse<S>>
-) : ISupportResponse<Deferred<Response<GraphQLResponse<S>>>, D> {
+) : ISupportResponse<Async<Response<GraphQLResponse<S>>>, D> {
 
     /**
      * Response handler for coroutine contexts which need to observe [LoadState]
@@ -47,12 +47,12 @@ class GraphQLController<S, out D>(
      * @param resource awaiting execution
      * @param requestCallback for the deferred result
      * @param interceptor allows you to access certain network model fields
-     * which are otherwise unaccessable from the domain/entity level
+     * which are otherwise inaccessible from the domain/entity level
      *
      * @return resource fetched if present
      */
     suspend operator fun invoke(
-        resource: Deferred<Response<GraphQLResponse<S>>>,
+        resource: Async<Response<GraphQLResponse<S>>>,
         requestCallback: RequestCallback,
         interceptor: (S) -> S
     ) = strategy(requestCallback) {
@@ -93,7 +93,7 @@ class GraphQLController<S, out D>(
      * @return resource fetched if present
      */
     override suspend fun invoke(
-        resource: Deferred<Response<GraphQLResponse<S>>>,
+        resource: Async<Response<GraphQLResponse<S>>>,
         requestCallback: RequestCallback
     ) = invoke(resource, requestCallback) { it }
 }

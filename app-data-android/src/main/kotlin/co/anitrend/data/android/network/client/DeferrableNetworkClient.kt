@@ -18,9 +18,9 @@
 package co.anitrend.data.android.network.client
 
 import co.anitrend.arch.domain.entities.RequestError
+import co.anitrend.data.android.extensions.Async
 import co.anitrend.data.android.network.contract.AbstractNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -33,7 +33,7 @@ import java.net.SocketTimeoutException
  *
  * @property dispatcher A [CoroutineDispatcher] that should be used for running requests
  */
-abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Response<T>>, Response<T>>() {
+abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response<T>>, Response<T>>() {
 
     protected abstract val dispatcher: CoroutineDispatcher
 
@@ -67,7 +67,7 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Respo
      * @param defaultDelay Initial delay before retrying
      * @param maxAttempts Max number of attempts to retry
      */
-    override suspend fun Deferred<Response<T>>.execute(
+    override suspend fun Async<Response<T>>.execute(
         defaultDelay: Long,
         maxAttempts: Int,
         shouldRetry: (Throwable) -> Boolean
@@ -76,7 +76,7 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Respo
 
         repeat(maxAttempts) { attempt ->
             runCatching {
-                withContext(dispatcher) { await() }
+                withContext(dispatcher) { this@execute() }
             }.onSuccess { response ->
                 return response
             }.onFailure { exception ->
@@ -102,7 +102,7 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Respo
     /**
      * Automatically runs the suspendable operation and returns the body
      *
-     * @param deferredRequest The request which needs to be executed
+     * @param request The request which needs to be executed
      * @param shouldRetry Conditions to determine when a request should be retried
      * @param firstDelay Initial delay before retrying
      * @param maxAttempts Max number of attempts to retry
@@ -111,11 +111,11 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Deferred<Respo
      */
     @Throws(HttpException::class)
     open suspend fun fetch(
-        deferredRequest: Deferred<Response<T>>,
+        request: Async<Response<T>>,
         firstDelay: Long = 500,
         maxAttempts: Int = 3,
         shouldRetry: (Throwable) -> Boolean = ::defaultShouldRetry,
-    ) = deferredRequest.execute(
+    ) = request.execute(
         firstDelay,
         maxAttempts,
         shouldRetry

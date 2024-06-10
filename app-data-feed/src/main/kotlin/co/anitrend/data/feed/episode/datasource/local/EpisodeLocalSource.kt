@@ -20,7 +20,7 @@ package co.anitrend.data.feed.episode.datasource.local
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -39,26 +39,26 @@ abstract class EpisodeLocalSource : AbstractLocalSource<EpisodeEntity>() {
     abstract override suspend fun clear()
 
     @Query("""
-        select * 
+        select *
         from episode
         where id = :id
         """)
     abstract fun episodeByIdFlow(id: Long): Flow<EpisodeEntity?>
 
     @Query("""
-        select * 
+        select *
         from episode
         where series_title not like '%dub%'
-        order by available_premium_time desc, series_title desc, 
+        order by available_premium_time desc, series_title desc,
         length(info_episode_number), info_episode_number
         """)
     abstract fun entryFactory(): DataSource.Factory<Int, EpisodeEntity>
 
     @Query("""
-        select * 
+        select *
         from episode
         where title match :searchTerm or series_title match :searchTerm or description match :searchTerm
-        order by available_premium_time desc, series_title desc, 
+        order by available_premium_time desc, series_title desc,
         length(info_episode_number), info_episode_number
         """)
     abstract fun entrySearchFactory(

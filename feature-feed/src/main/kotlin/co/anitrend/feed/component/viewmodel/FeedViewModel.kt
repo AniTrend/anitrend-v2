@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.feed.component.viewmodel.state.FeedState
 
 class FeedViewModel(
-    val state: FeedState
-) : AniTrendViewModel(state)
+    override val state: FeedState
+) : AniTrendViewModel()

@@ -35,6 +35,7 @@ import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGeneralBinding
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.launch
 
 internal class GeneralContent(
@@ -42,7 +43,10 @@ internal class GeneralContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_general
 ) : AniTrendContent<MediaDiscoverFilterGeneralBinding>() {
 
-    private val param by argument(MediaDiscoverRouter::MediaDiscoverParam)
+    private val param by argument(
+        key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
+        default = MediaDiscoverRouter::MediaDiscoverParam,
+    )
 
     private fun bindModelToViews() {
         requireBinding().excludeAdultContent.isChecked = param.isAdult == true

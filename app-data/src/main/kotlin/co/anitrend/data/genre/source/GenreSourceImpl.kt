@@ -21,6 +21,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.genre.MediaGenreController
 import co.anitrend.data.genre.converters.GenreEntityConverter
 import co.anitrend.data.genre.datasource.local.GenreLocalSource
@@ -55,7 +56,7 @@ internal class GenreSourceImpl(
     }
 
     override suspend fun getGenres(callback: RequestCallback): Boolean {
-        val deferred = async {
+        val deferred = deferred {
             remoteSource.getMediaGenres(
                 QueryContainerBuilder()
             )

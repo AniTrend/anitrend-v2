@@ -17,7 +17,6 @@
 
 package co.anitrend.data.account.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.auth.source.contract.AuthSource
@@ -27,16 +26,16 @@ import co.anitrend.domain.user.entity.User
 
 internal class AccountRepositoryImpl(
     private val source: AuthSource
-) : SupportRepository(source), AccountRepository<DataState<List<User>>>{
+) : AccountRepository<DataState<List<User>>>{
 
-    override fun getAccountUsers() =
+    override suspend fun getAccountUsers() =
         source create source()
 
-    override fun signOut(param: AccountParam.SignOut) {
+    override suspend fun signOut(param: AccountParam.SignOut) {
         source.signOut(param)
     }
 
-    override fun signIn(param: AccountParam.Activate) {
+    override suspend fun signIn(param: AccountParam.Activate) {
         source.signIn(param)
     }
 }

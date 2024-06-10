@@ -17,24 +17,19 @@
 
 package co.anitrend.domain.account.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.account.repository.AccountRepository
 
 abstract class AccountUseCase<State: UiState<*>>(
     protected val repository: AccountRepository<State>
-) : IUseCase {
-
-    /**
-     * @return Authenticated users or null
-     */
-    fun getAuthorizedAccounts() =
+) {
+    suspend fun getAuthorizedAccounts() =
         repository.getAccountUsers()
 
-    fun signOut(param: AccountParam.SignOut) =
+    suspend fun signOut(param: AccountParam.SignOut) =
         repository.signOut(param)
 
-    fun signIn(param: AccountParam.Activate) =
+    suspend fun signIn(param: AccountParam.Activate) =
         repository.signIn(param)
 }

@@ -33,6 +33,7 @@ import co.anitrend.core.android.helpers.image.toCoverImage
 import co.anitrend.core.android.helpers.image.using
 import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.viewer.R
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
 import co.anitrend.viewer.databinding.ImageViewerScreenBinding
@@ -43,7 +44,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
 
-    private val param by extra<ImageViewerRouter.ImageSourceParam>()
+    private val param by extra<ImageViewerRouter.ImageSourceParam>(
+        key = nameOf<ImageViewerRouter.ImageSourceParam>(),
+    )
 
     private val viewModel by viewModel<ImageViewerViewModel>()
 

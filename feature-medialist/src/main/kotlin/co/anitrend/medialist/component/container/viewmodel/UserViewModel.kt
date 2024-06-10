@@ -23,30 +23,42 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.user.entity.User
 import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.extensions.nameOf
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 class UserViewModel(
-    val state: UserState,
+    override val state: UserState,
     private val savedStateHandle: SavedStateHandle,
-) : AniTrendViewModel(state) {
+) : AniTrendViewModel() {
 
     init {
         viewModelScope.launch {
-            savedStateHandle.getLiveData<MediaListRouter.MediaListParam>(
-                key = "MediaListRouter.MediaListParam"
-            ).asFlow().collect(state::invoke)
+            savedStateHandle.getStateFlow<MediaListRouter.MediaListParam?>(
+                key = nameOf<MediaListRouter.MediaListParam>(),
+                initialValue = null
+            ).filterNotNull().collect { invoke(it) }
         }
     }
 
-    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>()
+    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>(
+        key = nameOf<MediaListRouter.MediaListParam>(),
+    )
 
     val tabConfigurationListInfo = state.model.map {
         val user = it as User.Extended
         user.mediaListInfo.filter { mediaListInfo ->
             mediaListInfo.mediaType == requireNotNull(param?.type)
+        }
+    }
+
+    private operator fun invoke(arg: MediaListRouter.MediaListParam) {
+        viewModelScope.launch {
+            state(arg)
         }
     }
 }

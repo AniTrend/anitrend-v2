@@ -18,7 +18,7 @@
 package co.anitrend.data.medialist.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
@@ -26,6 +26,7 @@ import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.model.mutation.MediaListMutation
 import co.anitrend.data.medialist.model.query.MediaListQuery
@@ -36,7 +37,7 @@ import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaListSource {
 
-    abstract class Sync : SupportCoreDataSource() {
+    abstract class Sync : AbstractCoreDataSource() {
 
         protected lateinit var query: MediaListQuery.Collection
 
@@ -53,7 +54,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class Entry : SupportCoreDataSource() {
+    abstract class Entry : AbstractCoreDataSource() {
 
         protected lateinit var query: MediaListQuery.Entry
 
@@ -80,7 +81,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class Paged : SupportPagingDataSource<Media>() {
+    abstract class Paged : AbstractPagingSource<Media>() {
 
         protected lateinit var query: MediaListQuery.Paged
 
@@ -146,7 +147,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class Collection : SupportPagingDataSource<Media>() {
+    abstract class Collection : AbstractPagingSource<Media>() {
 
         protected lateinit var query: MediaListQuery.Collection
 
@@ -212,7 +213,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class SaveEntry : SupportCoreDataSource() {
+    abstract class SaveEntry : AbstractCoreDataSource() {
 
         protected lateinit var mutation: MediaListMutation.SaveEntry
 
@@ -229,7 +230,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class SaveEntries : SupportCoreDataSource() {
+    abstract class SaveEntries : AbstractCoreDataSource() {
 
         protected lateinit var mutation: MediaListMutation.SaveEntries
 
@@ -246,7 +247,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class DeleteEntry : SupportCoreDataSource() {
+    abstract class DeleteEntry : AbstractCoreDataSource() {
 
         protected lateinit var mutation: MediaListMutation.DeleteEntry
 
@@ -263,7 +264,7 @@ internal class MediaListSource {
         }
     }
 
-    abstract class DeleteCustomList : SupportCoreDataSource() {
+    abstract class DeleteCustomList : AbstractCoreDataSource() {
 
         protected lateinit var mutation: MediaListMutation.DeleteCustomList
 

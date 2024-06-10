@@ -18,14 +18,16 @@
 package co.anitrend.navigation.drawer.action.provider.viewmodel
 
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.action.provider.viewmodel.state.AuthenticatedUserState
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class NotificationProviderViewModel(
-    val state: AuthenticatedUserState
-) : AniTrendViewModel(state) {
+    override val state: AuthenticatedUserState
+) : AniTrendViewModel() {
 
     val unreadNotifications = state.model.map { user ->
         when (user) {
@@ -42,7 +44,10 @@ internal class NotificationProviderViewModel(
     }
 
     fun fetchUser() {
-        runCatching(state::invoke)
-            .onFailure(Timber::w)
+        viewModelScope.launch {
+            runCatching {
+                state()
+            }.onFailure(Timber::w)
+        }
     }
 }

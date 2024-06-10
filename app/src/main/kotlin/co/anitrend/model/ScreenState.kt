@@ -24,12 +24,14 @@ import androidx.lifecycle.SavedStateHandle
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.android.state.IScreenState
 import co.anitrend.navigation.NavigationDrawerRouter
+import co.anitrend.navigation.extensions.nameOf
 
 internal class ScreenState(
     private val savedStateHandle: SavedStateHandle
 ) : IScreenState {
 
     private val navigationDestination by savedStateHandle.extra(
+        key = nameOf<NavigationDrawerRouter.NavigationDrawerParam>(),
         default = { NavigationDrawerRouter.Destination.HOME }
     )
 

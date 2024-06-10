@@ -23,30 +23,30 @@ import co.anitrend.domain.user.model.UserParam
 interface IUserRepository {
 
     interface User<State: UiState<*>> : IUserRepository {
-        fun getUser(param: UserParam.Identifier): State
+        suspend fun getUser(param: UserParam.Identifier): State
     }
 
     interface Authenticated<State: UiState<*>> : IUserRepository {
-        fun getProfile(): State
+        suspend fun getProfile(): State
     }
 
     interface Profile<State: UiState<*>> : IUserRepository {
-        fun getProfile(param: UserParam.Profile): State
+        suspend fun getProfile(param: UserParam.Profile): State
     }
 
     interface Search<State: UiState<*>> {
-        fun getPaged(param: UserParam.Search): State
+        suspend fun getPaged(param: UserParam.Search): State
     }
 
     interface ToggleFollow<State : UiState<*>> : IUserRepository {
-        fun toggleFollow(param: UserParam.ToggleFollow): State
+        suspend fun toggleFollow(param: UserParam.ToggleFollow): State
     }
 
     interface Update<State : UiState<*>> : IUserRepository {
-        fun updateProfile(param: UserParam.Update): State
+        suspend fun updateProfile(param: UserParam.Update): State
     }
 
     interface Statistic<State : UiState<*>> : IUserRepository {
-        fun getProfileStatistic(param: UserParam.Statistic): State
+        suspend fun getProfileStatistic(param: UserParam.Statistic): State
     }
 }

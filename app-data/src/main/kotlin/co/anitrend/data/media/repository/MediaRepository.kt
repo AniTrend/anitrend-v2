@@ -18,10 +18,8 @@
 package co.anitrend.data.media.repository
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
 import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.data.media.MediaDetailRepository
@@ -32,13 +30,11 @@ import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 
-internal sealed class MediaRepository(
-    source: ISupportCoroutine? = null
-) : SupportRepository(source) {
+internal sealed class MediaRepository {
 
     class Detail(
         private val source: MediaSource.Detail
-    ) : MediaRepository(source), MediaDetailRepository {
+    ) : MediaRepository(), MediaDetailRepository {
         override fun getMedia(
             param: MediaParam.Detail
         ) = source create source(param)
@@ -46,7 +42,7 @@ internal sealed class MediaRepository(
 
     class Paged(
         private val source: MediaSource.Paged
-    ) : MediaRepository(source), MediaPagedRepository {
+    ) : MediaRepository(), MediaPagedRepository {
         override fun getPaged(
             param: MediaParam.Find
         ) = source create source(param)
@@ -65,14 +61,6 @@ internal sealed class MediaRepository(
                 source,
                 PAGING_CONFIGURATION
             ).buildFlow()
-        }
-
-        /**
-         * Deals with cancellation of any pending or on going operations that the repository
-         * might be working on
-         */
-        override fun onCleared() {
-            source.getLatestSource()?.invalidate()
         }
     }
 }

@@ -17,7 +17,7 @@
 
 package co.anitrend.data.carousel.source.contract
 
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
@@ -28,7 +28,7 @@ import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
 import kotlinx.coroutines.flow.Flow
 
-internal abstract class CarouselSource : SupportCoreDataSource() {
+internal abstract class CarouselSource : AbstractCoreDataSource() {
 
     protected lateinit var query: CarouselQuery
         private set
@@ -50,32 +50,28 @@ internal abstract class CarouselSource : SupportCoreDataSource() {
 
     protected abstract suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean
 
-    operator fun invoke(param: CarouselParam.Find): Flow<List<MediaCarousel>> {
+    suspend operator fun invoke(param: CarouselParam.Find): Flow<List<MediaCarousel>> {
         query = CarouselQuery(param)
 
         cachePolicy(
-            scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = mangaCacheIdentity,
             block = ::getMediaCarouselManga
         )
 
         cachePolicy(
-            scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = animeCacheIdentity,
             block = ::getMediaCarouselAnime
         )
 
         cachePolicy(
-            scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = mangaMetaCacheIdentity,
             block = ::getMediaCarouselMangaMeta
         )
 
         cachePolicy(
-            scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = animeMetaCacheIdentity,
             block = ::getMediaCarouselAnimeMeta

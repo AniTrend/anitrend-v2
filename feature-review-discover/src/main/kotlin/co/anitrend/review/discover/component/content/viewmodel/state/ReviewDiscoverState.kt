@@ -29,15 +29,17 @@ import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewSort
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.model.sorting.Sorting
 
 class ReviewDiscoverState(
-    override val interactor: GetReviewPagedInteractor,
+    private val interactor: GetReviewPagedInteractor,
     settings: IUserSettings,
     savedStateHandle: SavedStateHandle,
 ): AniTrendViewModelState<PagedList<Review>>() {
 
     val default by savedStateHandle.extra(
+        key = nameOf<ReviewDiscoverRouter.ReviewDiscoverParam>(),
         default = {
             ReviewDiscoverRouter.ReviewDiscoverParam(
                 mediaType = MediaType.ANIME,

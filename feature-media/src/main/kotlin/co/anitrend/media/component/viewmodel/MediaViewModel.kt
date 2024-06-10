@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.media.component.viewmodel.state.MediaState
 
 class MediaViewModel(
-    val state: MediaState
-) : AniTrendViewModel(state)
+    override val state: MediaState
+) : AniTrendViewModel()

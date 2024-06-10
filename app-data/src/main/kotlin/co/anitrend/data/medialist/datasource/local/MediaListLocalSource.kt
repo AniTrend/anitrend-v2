@@ -23,7 +23,7 @@ import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
-import co.anitrend.data.android.source.AbstractLocalSource
+import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
@@ -50,7 +50,7 @@ internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEnti
 
     @Query("""
         delete from media_list
-        where id = :id and user_id = :userId 
+        where id = :id and user_id = :userId
         """)
     abstract suspend fun clearById(id: Long, userId: Long)
 

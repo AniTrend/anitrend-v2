@@ -17,9 +17,18 @@
 
 package co.anitrend.media.carousel.component.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.domain.carousel.model.CarouselParam
 import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
+import kotlinx.coroutines.launch
 
 class CarouselViewModel(
-    val state: CarouselState
-) : AniTrendViewModel(state)
+    override val state: CarouselState
+) : AniTrendViewModel() {
+    operator fun invoke(param: CarouselParam.Find) {
+        viewModelScope.launch {
+            state(param)
+        }
+    }
+}

@@ -27,13 +27,17 @@ import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.media.discover.filter.R
 import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterSortingBinding
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.launch
 
 internal class SortingContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_sorting
 ) : AniTrendContent<MediaDiscoverFilterSortingBinding>() {
 
-    private val param by argument(MediaDiscoverRouter::MediaDiscoverParam)
+    private val param by argument(
+        key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
+        default = MediaDiscoverRouter::MediaDiscoverParam,
+    )
 
 
     private fun initializeViewsWithOptions() {

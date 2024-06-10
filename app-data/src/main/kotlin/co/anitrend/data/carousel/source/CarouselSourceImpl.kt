@@ -21,6 +21,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.carousel.MediaCarouselListController
 import co.anitrend.data.carousel.datasource.local.CarouselLocalSource
 import co.anitrend.data.carousel.datasource.remote.CarouselRemoteSource
@@ -170,7 +171,7 @@ import retrofit2.Response
     ): Boolean {
         val param = query.param.copy(type = MediaType.ANIME)
         val queryBuilder = query.copy(param = param).toQueryContainerBuilder()
-        val deferred = async {
+        val deferred = deferred {
             val carousel = remoteSource.getCarousel(queryBuilder)
             @Suppress("UNCHECKED_CAST")
             carousel as Response<GraphQLResponse<CarouselModel>>
@@ -185,7 +186,7 @@ import retrofit2.Response
     ): Boolean {
         val param = query.param.copy(type = MediaType.MANGA)
         val queryBuilder = query.copy(param = param).toQueryContainerBuilder()
-        val deferred = async {
+        val deferred = deferred {
             val carousel = remoteSource.getCarousel(queryBuilder)
             @Suppress("UNCHECKED_CAST")
             carousel as Response<GraphQLResponse<CarouselModel>>
@@ -199,7 +200,7 @@ import retrofit2.Response
         val queryBuilder = query.toQueryContainerBuilder(
             ignoreNulls = false
         )
-        val deferred = async {
+        val deferred = deferred {
             val carousel = remoteSource.getCarouselAnime(queryBuilder)
             @Suppress("UNCHECKED_CAST")
             carousel as Response<GraphQLResponse<CarouselModel>>
@@ -213,7 +214,7 @@ import retrofit2.Response
         val queryBuilder = query.toQueryContainerBuilder(
             ignoreNulls = false
         )
-        val deferred = async {
+        val deferred = deferred {
             val carousel = remoteSource.getCarouselManga(queryBuilder)
             @Suppress("UNCHECKED_CAST")
             carousel as Response<GraphQLResponse<CarouselModel>>

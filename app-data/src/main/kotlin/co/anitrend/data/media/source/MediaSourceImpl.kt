@@ -24,6 +24,7 @@ import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.jikan.media.model.query.JikanQuery
@@ -76,7 +77,7 @@ internal class MediaSourceImpl {
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
             moeSource(RelationQuery(query.param.id))
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getMediaDetail(queryBuilder)
             }
@@ -131,7 +132,7 @@ internal class MediaSourceImpl {
         }
 
         override suspend fun getMedia(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )
@@ -169,7 +170,7 @@ internal class MediaSourceImpl {
 
         override suspend fun getMedia(param: MediaParam.Find, callback: RequestCallback): List<Media> {
             val query = MediaQuery.Find(initialKey)
-            val deferred = async {
+            val deferred = deferred {
                 val builder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )

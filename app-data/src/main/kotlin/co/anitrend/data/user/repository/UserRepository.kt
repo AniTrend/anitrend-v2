@@ -17,9 +17,7 @@
 
 package co.anitrend.data.user.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.user.UserAuthenticatedRepository
 import co.anitrend.data.user.UserFollowRepository
 import co.anitrend.data.user.UserIdentifierRepository
@@ -30,60 +28,58 @@ import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.domain.user.model.UserParam
 
-internal sealed class UserRepository(
-    source: ISupportCoroutine
-) : SupportRepository(source) {
+internal interface UserRepository {
 
     class Identifier(
         private val source: UserSource.Identifier
-    ) : UserRepository(source), UserIdentifierRepository {
-        override fun getUser(
+    ) : UserRepository, UserIdentifierRepository {
+        override suspend fun getUser(
             param: UserParam.Identifier
         ) = source create source(param)
     }
 
     class Authenticated(
         private val source: UserSource.Viewer
-    ) : UserRepository(source), UserAuthenticatedRepository {
-        override fun getProfile() = source create source()
+    ) : UserRepository, UserAuthenticatedRepository {
+        override suspend fun getProfile() = source create source()
     }
 
     class Search(
         private val source: UserSource.Search
-    ) : UserRepository(source), UserSearchRepository {
-        override fun getPaged(
+    ) : UserRepository, UserSearchRepository {
+        override suspend fun getPaged(
             param: UserParam.Search
         ) = source create source(param)
     }
 
     class Profile(
         private val source: UserSource.Profile
-    ) : UserRepository(source), UserProfileRepository {
-        override fun getProfile(
+    ) : UserRepository, UserProfileRepository {
+        override suspend fun getProfile(
             param: UserParam.Profile
         ) = source create source(param)
     }
 
     class Statistic(
         private val source: UserSource.Statistic
-    ) : UserRepository(source), UserProfileStatisticRepository {
-        override fun getProfileStatistic(
+    ) : UserRepository, UserProfileStatisticRepository {
+        override suspend fun getProfileStatistic(
             param: UserParam.Statistic
         ) = source create source(param)
     }
 
     class ToggleFollow(
         private val source: UserSource.ToggleFollow
-    ) : UserRepository(source), UserFollowRepository {
-        override fun toggleFollow(
+    ) : UserRepository, UserFollowRepository {
+        override suspend fun toggleFollow(
             param: UserParam.ToggleFollow
         ) = source create source(param)
     }
 
     class Update(
         private val source: UserSource.Update
-    ) : UserRepository(source), UserUpdateRepository {
-        override fun updateProfile(
+    ) : UserRepository, UserUpdateRepository {
+        override suspend fun updateProfile(
             param: UserParam.Update
         ) = source create source(param)
     }

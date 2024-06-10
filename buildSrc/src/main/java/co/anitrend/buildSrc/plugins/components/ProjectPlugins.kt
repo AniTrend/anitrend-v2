@@ -17,6 +17,7 @@
 
 package co.anitrend.buildSrc.plugins.components
 
+import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.androidComponents
 import co.anitrend.buildSrc.extensions.hasKaptSupport
 import co.anitrend.buildSrc.extensions.hasKotlinAndroidExtensionSupport
@@ -49,16 +50,13 @@ internal fun Project.configurePlugins() {
     addKotlinAndroidPlugin(plugins)
     addKotlinAndroidExtensions(project, plugins)
     addAnnotationProcessor(project, plugins)
+
+    if (project.hasComposeSupport()) {
+        plugins.apply("org.jetbrains.kotlin.plugin.compose")
+    }
 }
 
 internal fun Project.configureAdditionalPlugins() {
-    /*if (isAppModule()) {
-        logger.lifecycle("Applying additional google plugins")
-        if (file("google-services.json").exists()) {
-            plugins.apply("com.google.gms.google-services")
-            plugins.apply("com.google.firebase.crashlytics")
-        } else logger.lifecycle("google-services.json cannot be found and will not be using any of the google plugins")
-    }*/
     if (isAppModule()) {
         androidComponents().beforeVariants {
             logger.lifecycle("VariantFilter { name: ${it.name}, flavor: ${it.flavorName}, module: $name }")

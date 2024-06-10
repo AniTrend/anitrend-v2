@@ -18,8 +18,8 @@
 package co.anitrend.data.common.extension
 
 import co.anitrend.data.common.model.date.FuzzyDateModel
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -33,7 +33,7 @@ class FuzzyDateLikeConversionTest {
         /** new instance of the fuzzy date object should return all fields defaulted to [FuzzyDateModel.UNKNOWN] */
         val fuzzyDate = FuzzyDateModel.empty()
 
-        Assert.assertEquals("0", fuzzyDate.toFuzzyDateLike())
+        assertEquals("0", fuzzyDate.toFuzzyDateLike())
     }
 
     @Test
@@ -43,7 +43,7 @@ class FuzzyDateLikeConversionTest {
             month = 5
         )
 
-        Assert.assertEquals("197605%", fuzzyDate.toFuzzyDateLike())
+        assertEquals("197605%", fuzzyDate.toFuzzyDateLike())
     }
 
     @Test
@@ -53,13 +53,13 @@ class FuzzyDateLikeConversionTest {
             day = 10
         )
 
-        Assert.assertEquals("1843%10", fuzzyDate.toFuzzyDateLike())
+        assertEquals("1843%10", fuzzyDate.toFuzzyDateLike())
 
         val fuzzyDateYear = FuzzyDateModel.empty().copy(
             year = 1843
         )
 
-        Assert.assertEquals("1843%", fuzzyDateYear.toFuzzyDateLike())
+        assertEquals("1843%", fuzzyDateYear.toFuzzyDateLike())
     }
 
     @Test
@@ -69,13 +69,13 @@ class FuzzyDateLikeConversionTest {
             day = 10
         )
 
-        Assert.assertEquals("%0810", fuzzyDate.toFuzzyDateLike())
+        assertEquals("%0810", fuzzyDate.toFuzzyDateLike())
     }
 
     @Test
     fun `should produce fuzzy date like pattern with no missing parts`() {
         val fuzzyDate = FuzzyDateModel(2011, 11, 17)
 
-        Assert.assertEquals("20111117", fuzzyDate.toFuzzyDateLike())
+        assertEquals("20111117", fuzzyDate.toFuzzyDateLike())
     }
 }

@@ -23,7 +23,7 @@ import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 
 class EpisodeSheetState(
-    override val interactor: EpisodeDetailInteractor
+    private val interactor: EpisodeDetailInteractor
 ) : AniTrendViewModelState<Episode>() {
 
     operator fun invoke(param: EpisodeParam.Detail) {

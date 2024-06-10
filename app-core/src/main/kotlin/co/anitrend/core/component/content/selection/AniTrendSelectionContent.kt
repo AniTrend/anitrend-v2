@@ -56,10 +56,6 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
 
     protected abstract val bindingMapper: (View) -> B
 
-    override val onRefreshObserver = Observer<LoadState> {
-
-    }
-
     override val onNetworkObserver = Observer<LoadState> {
         changeLayoutState(it)
     }
@@ -237,7 +233,6 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModelState()?.loadState?.observe(viewLifecycleOwner, onNetworkObserver)
-        viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
         setUpViewModelObserver()
     }
 

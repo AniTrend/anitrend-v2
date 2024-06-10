@@ -24,6 +24,7 @@ import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.feed.news.NewPagedController
 import co.anitrend.data.feed.news.converter.NewsEntityConverter
 import co.anitrend.data.feed.news.datasource.local.NewsLocalSource
@@ -58,7 +59,7 @@ internal class NewsSourceImpl(
     }
 
     override suspend fun getNews(requestCallback: RequestCallback): Boolean {
-        val deferred = async {
+        val deferred = deferred {
             remoteSource.getNews(query.param.locale)
         }
 

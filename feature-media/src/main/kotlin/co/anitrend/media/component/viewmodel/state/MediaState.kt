@@ -25,7 +25,7 @@ import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.navigation.MediaRouter
 
 class MediaState(
-    override val interactor: GetDetailMediaInteractor,
+    private val interactor: GetDetailMediaInteractor,
     private val settings: IUserSettings
 ) : AniTrendViewModelState<Media>() {
 

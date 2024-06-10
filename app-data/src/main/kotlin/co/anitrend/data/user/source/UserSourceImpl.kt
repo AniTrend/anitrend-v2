@@ -24,6 +24,7 @@ import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.user.UserAuthController
@@ -72,7 +73,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun getUser(callback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getUserByName(queryBuilder)
             }
@@ -118,7 +119,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun getProfile(callback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getUserViewer(queryBuilder)
             }
@@ -164,7 +165,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun getUsers(callback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )
@@ -216,7 +217,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun getProfile(callback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getUserProfile(queryBuilder)
             }
@@ -263,7 +264,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun getProfileStatistic(callback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getUserWithStatistic(queryBuilder)
             }
@@ -304,7 +305,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun toggleFollow(callback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.saveToggleFollow(queryBuilder)
             }
@@ -333,7 +334,7 @@ internal class UserSourceImpl {
         }
 
         override suspend fun updateProfile(callback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.updateUserProfile(queryBuilder)
             }

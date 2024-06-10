@@ -29,13 +29,13 @@ import co.anitrend.data.airing.datasource.remote.AiringRemoteSource
 import co.anitrend.data.airing.entity.filter.AiringQueryFilter
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 
 internal class AiringScheduleSourceImpl {
@@ -67,7 +67,7 @@ internal class AiringScheduleSourceImpl {
         }
 
         override suspend fun getAiringSchedule(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )
@@ -86,9 +86,7 @@ internal class AiringScheduleSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            clearDataHelper(context) {
-                localSource.clear()
-            }
+            clearDataHelper(context = context, action = localSource::clear)
         }
     }
 }

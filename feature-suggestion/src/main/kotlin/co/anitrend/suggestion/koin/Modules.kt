@@ -39,9 +39,7 @@ private val fragmentModule = module {
 private val viewModelModule = module {
     viewModel {
         SuggestionViewModel(
-            state = SuggestionState(
-                interactor = get()
-            )
+            state = SuggestionState()
         )
     }
 }

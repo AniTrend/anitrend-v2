@@ -230,7 +230,7 @@ class BottomDrawerContent(
         )
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                accountViewModel.accountState()
+                accountViewModel()
             }
         }
         lifecycleScope.launch {
@@ -252,7 +252,7 @@ class BottomDrawerContent(
         lifecycleScope.launch {
             presenter.settings.isAuthenticated.flow
                 .onEach { isAuthenticated ->
-                    accountViewModel.accountState()
+                    accountViewModel.state()
                     navigationViewModel(isAuthenticated)
                 }.catch { cause: Throwable ->
                     Timber.e(cause)

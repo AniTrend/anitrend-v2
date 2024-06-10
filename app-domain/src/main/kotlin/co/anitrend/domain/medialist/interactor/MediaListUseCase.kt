@@ -17,12 +17,11 @@
 
 package co.anitrend.domain.medialist.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.domain.medialist.repository.IMediaListRepository
 
-sealed class MediaListUseCase : IUseCase {
+sealed class MediaListUseCase {
 
     abstract class Sync<State: UiState<*>>(
         protected val repository: IMediaListRepository.Sync<State>

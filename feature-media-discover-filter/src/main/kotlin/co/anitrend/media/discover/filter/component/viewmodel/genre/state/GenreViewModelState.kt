@@ -23,7 +23,7 @@ import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.genre.model.GenreParam
 
 class GenreViewModelState(
-    override val interactor: GenreInteractor
+    private val interactor: GenreInteractor
 ) : AniTrendViewModelState<List<Genre>>() {
 
     operator fun invoke(param: GenreParam) {

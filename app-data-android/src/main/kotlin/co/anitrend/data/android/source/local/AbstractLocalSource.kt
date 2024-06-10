@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.data.android.source
+package co.anitrend.data.android.source.local
 
 import androidx.room.Delete
 import androidx.room.Insert

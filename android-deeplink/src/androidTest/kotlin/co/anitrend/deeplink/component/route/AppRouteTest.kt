@@ -19,8 +19,8 @@ package co.anitrend.deeplink.component.route
 import android.content.Intent
 import co.anitrend.deeplink.common.CommonRouteTest
 import com.kingsleyadio.deeplink.DeepLinkParser
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class AppRouteTest : CommonRouteTest() {
     private val deepLinkParser: DeepLinkParser<Intent?> by lazy {
@@ -42,7 +42,7 @@ class AppRouteTest : CommonRouteTest() {
         val expected = "media.discover.component.screen.MediaDiscoverScreen".toIntent()
         val actual = deepLinkParser.parse(appLinkOf("discover"))
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -50,7 +50,7 @@ class AppRouteTest : CommonRouteTest() {
         val expected = "component.screen.MainScreen".toIntent()
         val actual = deepLinkParser.parse(appLinkOf("social"))
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -58,6 +58,6 @@ class AppRouteTest : CommonRouteTest() {
         val expected = "component.screen.MainScreen".toIntent()
         val actual = deepLinkParser.parse(appLinkOf("suggestions"))
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 }

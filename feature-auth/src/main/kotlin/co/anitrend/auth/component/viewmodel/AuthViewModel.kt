@@ -26,8 +26,8 @@ import co.anitrend.navigation.AuthRouter
 import timber.log.Timber
 
 class AuthViewModel(
-    val state: AuthState
-) : AniTrendViewModel(state) {
+    override val state: AuthState
+) : AniTrendViewModel() {
 
     fun onIntentData(context: Context, param: AuthRouter.AuthParam?) {
         if (param == null) {

@@ -67,7 +67,7 @@ class CarouselContent(
             currentTime = controller.currentTimeAsEpoch(),
             pageSize = controller.pageSize(resources,4)
         )
-        viewModel.state(mediaCarouselQuery)
+        viewModel(mediaCarouselQuery)
     }
 
     /**

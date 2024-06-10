@@ -17,7 +17,6 @@
 
 package co.anitrend.data.medialist.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.medialist.DeleteCustomMediaListRepository
@@ -31,62 +30,60 @@ import co.anitrend.data.medialist.MediaListSyncRepository
 import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.domain.medialist.model.MediaListParam
 
-internal sealed class MediaListRepository(
-    source: ISupportCoroutine
-) : SupportRepository(source) {
+internal sealed class MediaListRepository{
 
     class Sync(
         private val source: MediaListSource.Sync
-    ) : MediaListRepository(source), MediaListSyncRepository {
+    ) : MediaListRepository(), MediaListSyncRepository {
         override fun sync(param: MediaListParam.Collection) =
             source create source(param)
     }
 
     class Entry(
         private val source: MediaListSource.Entry
-    ) : MediaListRepository(source), MediaListEntryRepository {
+    ) : MediaListRepository(), MediaListEntryRepository {
         override fun getEntry(param: MediaListParam.Entry) =
             source create source(param)
     }
 
     class Collection(
         private val source: MediaListSource.Collection
-    ) : MediaListRepository(source), MediaListCollectionRepository {
+    ) : MediaListRepository(), MediaListCollectionRepository {
         override fun getCollection(param: MediaListParam.Collection) =
             source create source(param)
     }
 
     class Paged(
         private val source: MediaListSource.Paged
-    ) : MediaListRepository(source), MediaListPagedRepository {
+    ) : MediaListRepository(), MediaListPagedRepository {
         override fun getPaged(param: MediaListParam.Paged) =
             source create source(param)
     }
 
     class SaveEntry(
         private val source: MediaListSource.SaveEntry
-    ) : MediaListRepository(source), MediaListSaveEntryRepository {
+    ) : MediaListRepository(), MediaListSaveEntryRepository {
         override fun saveEntry(param: MediaListParam.SaveEntry) =
             source create source(param)
     }
 
     class SaveEntries(
         private val source: MediaListSource.SaveEntries
-    ) : MediaListRepository(source), MediaListSaveEntriesRepository {
+    ) : MediaListRepository(), MediaListSaveEntriesRepository {
         override fun saveEntries(param: MediaListParam.SaveEntries) =
             source create source(param)
     }
 
     class DeleteEntry(
         private val source: MediaListSource.DeleteEntry
-    ) : MediaListRepository(source), MediaListDeleteEntryRepository {
+    ) : MediaListRepository(), MediaListDeleteEntryRepository {
         override fun deleteEntry(param: MediaListParam.DeleteEntry) =
             source create source(param)
     }
 
     class DeleteCustomList(
         private val source: MediaListSource.DeleteCustomList
-    ) : MediaListRepository(source), DeleteCustomMediaListRepository {
+    ) : MediaListRepository(), DeleteCustomMediaListRepository {
         override fun deleteCustomList(param: MediaListParam.DeleteCustomList) =
             source create source(param)
     }

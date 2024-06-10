@@ -25,9 +25,10 @@ import app.cash.copper.flow.observeQuery
 import app.cash.turbine.test
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
 import org.junit.runner.RunWith
+import kotlin.test.DefaultAsserter.assertEquals
+import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -72,8 +73,8 @@ internal class NewsRemoteSourceTest {
 
         newsFlow.test {
             val news = awaitItem()
-            Assert.assertTrue(news.isNotEmpty())
-            Assert.assertEquals(15, news.size)
+            assertTrue(news.isNotEmpty())
+            assertEquals("should have returned the exact items", 15, news.size)
         }
     }
 }

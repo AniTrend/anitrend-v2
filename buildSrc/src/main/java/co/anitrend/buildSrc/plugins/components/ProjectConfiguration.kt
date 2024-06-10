@@ -22,7 +22,9 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.gradle.api.tasks.testing.Test
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.io.File
 
@@ -166,12 +168,12 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     tasks.withType(KotlinJvmCompile::class.java) {
-        kotlinOptions {
-            jvmTarget = "17"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
-    tasks.withType(KotlinCompile::class.java) {
+    tasks.withType(KotlinCompilationTask::class.java) {
         val compilerArgumentOptions = mutableListOf(
             "-opt-in=kotlin.ExperimentalStdlibApi",
         )
@@ -193,10 +195,20 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             }
         }
 
-        kotlinOptions {
-            allWarningsAsErrors = false
+        compilerOptions {
+            allWarningsAsErrors.set(false)
             // Filter out modules that won't be using coroutines
-            freeCompilerArgs = compilerArgumentOptions
+            freeCompilerArgs.addAll(compilerArgumentOptions)
+        }
+    }
+
+    tasks.withType(Test::class.java) {
+        useJUnitPlatform()
+
+        maxHeapSize = "1G"
+
+        testLogging {
+            events("passed")
         }
     }
 
@@ -207,10 +219,4 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     //            .languageVersion
     //            .set(KotlinVersion.KOTLIN_1_9)
     //    }
-
-    if (hasComposeSupport()) {
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
-        }
-    }
 }

@@ -29,8 +29,8 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class EpisodeSheetViewModel(
-    val state: EpisodeSheetState
-) : AniTrendViewModel(state) {
+    override val state: EpisodeSheetState
+) : AniTrendViewModel() {
 
     val model = MutableLiveData<String>()
 

@@ -21,6 +21,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.relation.converters.RelationEntityConverter
 import co.anitrend.data.relation.datasource.local.RelationLocalSource
 import co.anitrend.data.relation.datasource.remote.MoeRemoteSource
@@ -55,7 +56,7 @@ internal class RelationSourceImpl(
     }
 
     override suspend fun getSourceRelation(callback: RequestCallback): Boolean {
-        val deferred = async {
+        val deferred = deferred {
             remoteSource.getFromSource(
                 id = query.id,
                 source = query.source.type,

@@ -17,21 +17,17 @@
 
 package co.anitrend.data.feed.news.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.data.feed.news.NewsPagedRepository
 import co.anitrend.data.feed.news.NewsSyncRepository
 import co.anitrend.data.feed.news.source.contract.NewsSource
 import co.anitrend.domain.news.model.NewsParam
 
-internal sealed class NewsRepository(
-    source: ISupportCoroutine? = null
-) : SupportRepository(source) {
+internal sealed class NewsRepository {
 
     class Paged(
         private val source: NewsSource
-    ) : SupportRepository(source), NewsPagedRepository {
+    ) : NewsPagedRepository {
         override fun getPagedNews(
             param: NewsParam
         ) = source create source(param)
@@ -39,7 +35,7 @@ internal sealed class NewsRepository(
 
     class Sync(
         private val source: NewsSource
-    ) : SupportRepository(source), NewsSyncRepository {
+    ) : NewsSyncRepository {
         override fun sync(
             param: NewsParam
         ) = source create source.sync(param)

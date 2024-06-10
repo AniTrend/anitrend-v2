@@ -17,12 +17,11 @@
 
 package co.anitrend.domain.review.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.domain.review.repository.IReviewRepository
 
-sealed class ReviewUseCase : IUseCase {
+sealed class ReviewUseCase {
 
     abstract class GetEntry<State: UiState<*>>(
         protected val repository: IReviewRepository.Entry<State>

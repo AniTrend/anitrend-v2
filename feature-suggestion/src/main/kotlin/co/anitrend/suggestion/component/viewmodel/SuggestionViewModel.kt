@@ -21,5 +21,5 @@ import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.suggestion.component.viewmodel.state.SuggestionState
 
 class SuggestionViewModel(
-    val state: SuggestionState
-) : AniTrendViewModel(state)
+    override val state: SuggestionState
+) : AniTrendViewModel()

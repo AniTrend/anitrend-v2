@@ -26,7 +26,7 @@ import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.navigation.MediaListRouter
 
 class MediaListState(
-    override val interactor: GetPagedMediaListInteractor,
+    private val interactor: GetPagedMediaListInteractor,
     private val settings: IUserSettings
 ) : AniTrendViewModelState<PagedList<Media>>() {
 

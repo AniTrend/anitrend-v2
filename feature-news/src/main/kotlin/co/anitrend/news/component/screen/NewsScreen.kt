@@ -28,6 +28,7 @@ import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.NewsRouter
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.news.R
 import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
 import co.anitrend.news.databinding.NewsScreenBinding
@@ -46,7 +47,9 @@ class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
         named(MarkdownFlavour.STANDARD)
     )
 
-    private val param by extra<NewsRouter.NewsParam>()
+    private val param by extra<NewsRouter.NewsParam>(
+        key = nameOf<NewsRouter.NewsParam>()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

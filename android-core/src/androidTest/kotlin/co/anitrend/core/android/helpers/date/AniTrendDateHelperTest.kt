@@ -18,10 +18,10 @@
 package co.anitrend.core.android.helpers.date
 
 import co.anitrend.domain.common.entity.shared.FuzzyDate
-import org.junit.Assert.*
-import org.junit.Test
+import kotlin.test.Test
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import kotlin.test.DefaultAsserter.assertEquals
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -38,6 +38,6 @@ class AniTrendDateHelperTest : KoinTest {
         val expected = "Jul 04, 2021"
         val actual = dateHelper.convertToTextDate(given)
 
-        assertEquals(expected, actual)
+        assertEquals("", expected, actual)
     }
 }

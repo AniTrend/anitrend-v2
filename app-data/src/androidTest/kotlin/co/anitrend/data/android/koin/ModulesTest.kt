@@ -19,7 +19,7 @@ package co.anitrend.data.android.koin
 
 import io.mockk.mockk
 import org.junit.Rule
-import org.junit.Test
+import kotlin.test.Test
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.mock.MockProviderRule

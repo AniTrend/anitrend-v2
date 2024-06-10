@@ -19,8 +19,8 @@ package co.anitrend.data.common.extension
 
 import co.anitrend.data.common.FuzzyDateInt
 import co.anitrend.data.common.model.date.FuzzyDateModel
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -36,9 +36,9 @@ class FuzzyDateConversionTest {
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
-        Assert.assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.day)
-        Assert.assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.month)
-        Assert.assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.year)
+        assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.day)
+        assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.month)
+        assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.year)
     }
 
     @Test
@@ -47,9 +47,9 @@ class FuzzyDateConversionTest {
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
-        Assert.assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.day)
-        Assert.assertEquals(5, fuzzyDate.month)
-        Assert.assertEquals(1976, fuzzyDate.year)
+        assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.day)
+        assertEquals(5, fuzzyDate.month)
+        assertEquals(1976, fuzzyDate.year)
     }
 
     @Test
@@ -58,9 +58,9 @@ class FuzzyDateConversionTest {
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
-        Assert.assertEquals(10, fuzzyDate.day)
-        Assert.assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.month)
-        Assert.assertEquals(1843, fuzzyDate.year)
+        assertEquals(10, fuzzyDate.day)
+        assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.month)
+        assertEquals(1843, fuzzyDate.year)
     }
 
     @Test
@@ -69,9 +69,9 @@ class FuzzyDateConversionTest {
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
-        Assert.assertEquals(10, fuzzyDate.day)
-        Assert.assertEquals(8, fuzzyDate.month)
-        Assert.assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.year)
+        assertEquals(10, fuzzyDate.day)
+        assertEquals(8, fuzzyDate.month)
+        assertEquals(FuzzyDateModel.UNKNOWN, fuzzyDate.year)
     }
 
     @Test
@@ -80,8 +80,8 @@ class FuzzyDateConversionTest {
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
-        Assert.assertEquals(17, fuzzyDate.day)
-        Assert.assertEquals(11, fuzzyDate.month)
-        Assert.assertEquals(2011, fuzzyDate.year)
+        assertEquals(17, fuzzyDate.day)
+        assertEquals(11, fuzzyDate.month)
+        assertEquals(2011, fuzzyDate.year)
     }
 }

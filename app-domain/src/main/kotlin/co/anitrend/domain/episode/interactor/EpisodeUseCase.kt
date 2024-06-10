@@ -17,12 +17,11 @@
 
 package co.anitrend.domain.episode.interactor
 
-import co.anitrend.arch.domain.common.IUseCase
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.episode.model.EpisodeParam
 import co.anitrend.domain.episode.repository.IEpisodeRepository
 
-sealed class EpisodeUseCase : IUseCase {
+sealed class EpisodeUseCase {
 
     abstract class Detail<State: UiState<*>>(
         protected val repository: IEpisodeRepository.Detail<State>

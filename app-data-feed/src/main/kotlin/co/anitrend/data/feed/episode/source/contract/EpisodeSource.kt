@@ -18,13 +18,14 @@
 package co.anitrend.data.feed.episode.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.data.source.core.SupportCoreDataSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.feed.episode.cache.EpisodeCache
 import co.anitrend.data.feed.episode.model.query.EpisodeQuery
 import co.anitrend.domain.episode.entity.Episode
@@ -36,14 +37,14 @@ import kotlinx.coroutines.flow.flow
 
 internal sealed class EpisodeSource {
 
-    internal abstract class Detail : SupportCoreDataSource() {
+    internal abstract class Detail : AbstractCoreDataSource() {
 
         protected abstract fun observable(param: EpisodeParam.Detail): Flow<Episode>
 
         operator fun invoke(param: EpisodeParam.Detail) = observable(param)
     }
 
-    internal abstract class Paged : SupportPagingDataSource<Episode>() {
+    internal abstract class Paged : AbstractPagingSource<Episode>() {
 
         protected lateinit var query: EpisodeQuery
 

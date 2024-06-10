@@ -17,7 +17,6 @@
 
 package co.anitrend.data.tag.repository
 
-import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.tag.TagListRepository
 import co.anitrend.data.tag.source.contract.TagSource
@@ -25,7 +24,7 @@ import co.anitrend.domain.tag.model.TagParam
 
 internal class TagRepository(
     private val source: TagSource
-) : SupportRepository(source), TagListRepository {
+) : TagListRepository {
 
     /**
      * @return media genres

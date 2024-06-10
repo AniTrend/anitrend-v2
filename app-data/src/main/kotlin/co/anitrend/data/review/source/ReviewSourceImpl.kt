@@ -25,6 +25,7 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
+import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.review.ReviewDeleteController
 import co.anitrend.data.review.ReviewEntryController
@@ -72,7 +73,7 @@ internal sealed class ReviewSourceImpl {
         }
 
         override suspend fun getEntry(requestCallback: RequestCallback): Boolean {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder()
                 remoteSource.getReview(queryBuilder)
             }
@@ -104,7 +105,7 @@ internal sealed class ReviewSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun rateEntry(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.rateReview(queryBuilder)
             }
@@ -134,7 +135,7 @@ internal sealed class ReviewSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.deleteReview(queryBuilder)
             }
@@ -164,7 +165,7 @@ internal sealed class ReviewSourceImpl {
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = mutation.toQueryContainerBuilder()
                 remoteSource.saveReview(queryBuilder)
             }
@@ -209,7 +210,7 @@ internal sealed class ReviewSourceImpl {
         }
 
         override suspend fun getReview(requestCallback: RequestCallback) {
-            val deferred = async {
+            val deferred = deferred {
                 val queryBuilder = query.toQueryContainerBuilder(
                     supportPagingHelper
                 )
