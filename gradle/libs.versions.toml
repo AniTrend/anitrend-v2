@@ -93,7 +93,7 @@ tmdb = { module = "com.uwetrottmann.tmdb2:tmdb-java", version = "2.10.0" }
 trakt = { module = "com.uwetrottmann.trakt5:trakt-java", version = "6.13.0" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.17.2" }
 scalingImageView = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version = "3.10.0" }
-prettyTime = { module = "org.ocpsoft.prettytime:prettytime", version = "5.0.8.Final" }
+prettyTime = { module = "org.ocpsoft.prettytime:prettytime", version = "5.0.9.Final" }
 retrofitSerializer = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 deeplink = { module = "com.kingsleyadio.deeplink:deeplink", version = "0.4.0" }
 
