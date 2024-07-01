@@ -23,6 +23,7 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
@@ -115,7 +116,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 getDefaultProguardFile(
                     "proguard-android-optimize.txt"
                 ),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
+                "../proguard-common.pro"
             )
             if (project.file(".config/keystore.properties").exists())
                 signingConfig = signingConfigs.getByName("release")
@@ -130,7 +132,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 getDefaultProguardFile(
                     "proguard-android-optimize.txt"
                 ),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
+                "../proguard-common.pro"
             )
         }
     }
@@ -159,7 +162,10 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     testOptions {
-        unitTests.isReturnDefaultValues = true
+        unitTests {
+            isReturnDefaultValues = true
+            isIncludeAndroidResources = true
+        }
     }
 
     compileOptions {
@@ -208,7 +214,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         maxHeapSize = "1G"
 
         testLogging {
-            events("passed")
+            events("passed", "skipped", "failed")
+            exceptionFormat = TestExceptionFormat.FULL
+            showStandardStreams = true
         }
     }
 
@@ -219,4 +227,33 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     //            .languageVersion
     //            .set(KotlinVersion.KOTLIN_1_9)
     //    }
+
+    tasks.register("makeProguard") {
+        val projectDirectory = project.layout.projectDirectory
+        val buildDirectory = project.layout.buildDirectory
+        val proguardFile = projectDirectory.file("proguard-rules.pro").asFile
+        val missingRules = buildDirectory.file("outputs/mapping/release/missing_rules.txt").get().asFile
+        if (proguardFile.exists()) {
+            if (missingRules.exists() && missingRules.length() > 0) {
+                val contents = missingRules.readText()
+                val existing = proguardFile.readText()
+                if (proguardFile.length() < 1) {
+                    logger.lifecycle("Creating proguard-rules.pro $proguardFile with contents from $missingRules")
+                    proguardFile.writeText(contents)
+                } else {
+                    if (contents != existing) {
+                        logger.lifecycle("Updating proguard-rules.pro $proguardFile with contents from $missingRules")
+                        proguardFile.appendText(contents)
+                    } else {
+                        logger.lifecycle("$proguardFile contents are identical to $missingRules")
+                    }
+                }
+            } else {
+                logger.lifecycle("missing_rules.txt does not exist in $missingRules")
+            }
+        } else {
+            logger.lifecycle("Creating new proguard-rules.pro file in: $proguardFile")
+            proguardFile.createNewFile()
+        }
+    }
 }

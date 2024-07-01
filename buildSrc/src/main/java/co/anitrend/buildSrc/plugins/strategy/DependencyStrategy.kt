@@ -37,6 +37,7 @@ internal class DependencyStrategy(private val project: Project) {
 
         test(project.libs.jetbrains.kotlin.test)
         test(project.libs.mockk)
+        test(project.libs.junit)
 
         /** Work around for crashing tests when startup. initializer is not found in *.test packages */
         androidTest(project.libs.androidx.startup.runtime)

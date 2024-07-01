@@ -30,7 +30,6 @@ private val workManagerModule = module {
         MediaFavouriteWorker(
             context = androidContext(),
             parameters = scope.get(),
-            interactor = get()
         )
     }
 }
