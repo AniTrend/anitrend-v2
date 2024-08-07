@@ -249,7 +249,7 @@ google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlyti
 google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.9" }
 google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "24.0.0" }
 
-google-flexbox = { module = "com.google.android:flexbox", version = "2.0.1" }
+google-flexbox = { module = "com.google.android.flexbox:flexbox", version = "3.0.0" }
 
 google-android-material = { module = "com.google.android.material:material", version.ref = "google-android-material" }
 google-android-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter-3", version = "1.1.1" }
