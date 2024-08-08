@@ -34,7 +34,7 @@ internal class MigrationManager(
 ) : AbstractMigrationManager() {
 
     override fun shouldRunMigrations(): Boolean {
-        return settings.versionCode.value != BuildConfig.versionCode
+        return settings.versionCode.value < BuildConfig.versionCode
     }
 
     override fun updateVersion(migration: Migration) {

@@ -74,4 +74,17 @@ class MigrationManagerTest {
 
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `should not migrate when downgraded`() {
+        val expected = emptyList<Migration>()
+
+        val actual = manager.possibleMigrations(
+            2000000041,
+            1000000,
+            migrations
+        )
+
+        assertEquals(expected, actual)
+    }
 }
