@@ -106,7 +106,7 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "androidx-appcompat" }
 
 androidx-browser = { module = "androidx.browser:browser", version = "1.8.0" }
-androidx-collection-ktx = { module = "androidx.collection:collection-ktx", version = "1.4.3" }
+androidx-collection-ktx = { module = "androidx.collection:collection-ktx", version = "1.4.4" }
 
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose" }
 androidx-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout", version.ref = "androidx-compose" }
