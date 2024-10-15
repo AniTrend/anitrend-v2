@@ -179,7 +179,8 @@ fun ProfileScreenContent(
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun ProfileScreenPreview() {
     PreviewTheme {

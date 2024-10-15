@@ -19,25 +19,11 @@ package co.anitrend.profile.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.ProfileRouter
-import co.anitrend.profile.component.content.ProfileContent
 import co.anitrend.profile.component.viewmodel.ProfileViewModel
 import co.anitrend.profile.component.viewmodel.state.ProfileState
 import co.anitrend.profile.provider.FeatureProvider
-import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-
-private val coreModule = module {
-
-}
-
-private val fragmentModule = module {
-    fragment {
-        ProfileContent(
-            stateLayoutConfig = get()
-        )
-    }
-}
 
 private val viewModelModule = module {
     viewModel {
@@ -56,5 +42,5 @@ private val featureModule = module {
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
+    listOf(viewModelModule, featureModule)
 )

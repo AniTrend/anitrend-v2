@@ -242,3 +242,5 @@ fabric.properties
 jacoco.exec
 
 .idea/
+
+.kotlin/

@@ -21,13 +21,22 @@ import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.carousel.GetCarouselInteractor
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
+import co.anitrend.navigation.MediaCarouselRouter
 
 data class CarouselState(
     private val interactor: GetCarouselInteractor
 ) : AniTrendViewModelState<List<MediaCarousel>>() {
 
-    suspend operator fun invoke(parameter: CarouselParam.Find) {
-        val result = interactor(parameter)
+    suspend operator fun invoke(param: MediaCarouselRouter.MediaCarouselRouterParam) {
+        val input = CarouselParam.Find(
+            season = param.season,
+            seasonYear = param.seasonYear,
+            nextSeasonYear = param.nextSeasonYear,
+            nextSeason = param.nextSeason,
+            currentTime = param.currentTime,
+            pageSize = param.pageSize,
+        )
+        val result = interactor(input)
         state.postValue(result)
     }
 }

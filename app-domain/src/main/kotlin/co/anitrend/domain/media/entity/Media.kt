@@ -41,12 +41,12 @@ import co.anitrend.domain.tag.entity.Tag
 
 sealed class Media : IMedia {
 
-    abstract val externalLinks: Collection<IMediaExternalLink>
-    abstract val rankings: Collection<IMediaRank>
+    abstract val externalLinks: List<IMediaExternalLink>
+    abstract val rankings: List<IMediaRank>
     abstract val trailer: IMediaTrailer?
     abstract val sourceId: IMediaSourceId
     abstract val countryCode: CharSequence?
-    abstract val genres: Collection<Genre.Extended>
+    abstract val genres: List<Genre.Extended>
     abstract val twitterTag: CharSequence?
     abstract val isLicensed: Boolean?
     abstract val isLocked: Boolean?
@@ -54,8 +54,8 @@ sealed class Media : IMedia {
     abstract val isReviewBlocked: Boolean
     abstract val siteUrl: SiteUrl
     abstract val source: MediaSource?
-    abstract val synonyms: Collection<CharSequence>
-    abstract val tags: Collection<Tag>
+    abstract val synonyms: List<CharSequence>
+    abstract val tags: List<Tag>
     abstract val category: Category
 
     /**
@@ -118,8 +118,8 @@ sealed class Media : IMedia {
     )
 
     data class Core(
-        override val externalLinks: Collection<IMediaExternalLink>,
-        override val rankings: Collection<IMediaRank>,
+        override val externalLinks: List<IMediaExternalLink>,
+        override val rankings: List<IMediaRank>,
         override val title: IMediaTitle,
         override val image: IMediaCover,
         override val category: Category,
@@ -139,7 +139,7 @@ sealed class Media : IMedia {
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
         override val favourites: Int,
-        override val genres: Collection<Genre.Extended>,
+        override val genres: List<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
@@ -147,8 +147,8 @@ sealed class Media : IMedia {
         override val isReviewBlocked: Boolean,
         override val siteUrl: SiteUrl,
         override val source: MediaSource?,
-        override val synonyms: Collection<CharSequence>,
-        override val tags: Collection<Tag>,
+        override val synonyms: List<CharSequence>,
+        override val tags: List<Tag>,
         override val trailer: IMediaTrailer?
     ) : Media() {
         companion object {
@@ -193,10 +193,10 @@ sealed class Media : IMedia {
         val background: String?,
         val ageRating: String?,
         val extraInfo: String?,
-        val openingThemes: Collection<String>,
-        val endingThemes: Collection<String>,
-        override val externalLinks: Collection<IMediaExternalLink>,
-        override val rankings: Collection<IMediaRank>,
+        val openingThemes: List<String>,
+        val endingThemes: List<String>,
+        override val externalLinks: List<IMediaExternalLink>,
+        override val rankings: List<IMediaRank>,
         override val trailer: IMediaTrailer?,
         override val title: IMediaTitle,
         override val image: IMediaCover,
@@ -217,7 +217,7 @@ sealed class Media : IMedia {
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
         override val favourites: Int,
-        override val genres: Collection<Genre.Extended>,
+        override val genres: List<Genre.Extended>,
         override val twitterTag: CharSequence?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
@@ -225,8 +225,8 @@ sealed class Media : IMedia {
         override val isReviewBlocked: Boolean,
         override val siteUrl: SiteUrl,
         override val source: MediaSource?,
-        override val synonyms: Collection<CharSequence>,
-        override val tags: Collection<Tag>
+        override val synonyms: List<CharSequence>,
+        override val tags: List<Tag>
     ) : Media() {
         companion object {
             fun empty() = Extended(

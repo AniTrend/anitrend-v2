@@ -2,7 +2,6 @@ package co.anitrend.core.android.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Shapes
@@ -12,68 +11,10 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.android.settings.helper.theme.contract.IThemeHelper
-import co.anitrend.core.android.ui.color.md_theme_dark_background
-import co.anitrend.core.android.ui.color.md_theme_dark_error
-import co.anitrend.core.android.ui.color.md_theme_dark_errorContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_inverseOnSurface
-import co.anitrend.core.android.ui.color.md_theme_dark_inversePrimary
-import co.anitrend.core.android.ui.color.md_theme_dark_inverseSurface
-import co.anitrend.core.android.ui.color.md_theme_dark_onBackground
-import co.anitrend.core.android.ui.color.md_theme_dark_onError
-import co.anitrend.core.android.ui.color.md_theme_dark_onErrorContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_onPrimary
-import co.anitrend.core.android.ui.color.md_theme_dark_onPrimaryContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_onSecondary
-import co.anitrend.core.android.ui.color.md_theme_dark_onSecondaryContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_onSurface
-import co.anitrend.core.android.ui.color.md_theme_dark_onSurfaceVariant
-import co.anitrend.core.android.ui.color.md_theme_dark_onTertiary
-import co.anitrend.core.android.ui.color.md_theme_dark_onTertiaryContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_outline
-import co.anitrend.core.android.ui.color.md_theme_dark_outlineVariant
-import co.anitrend.core.android.ui.color.md_theme_dark_primary
-import co.anitrend.core.android.ui.color.md_theme_dark_primaryContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_scrim
-import co.anitrend.core.android.ui.color.md_theme_dark_secondary
-import co.anitrend.core.android.ui.color.md_theme_dark_secondaryContainer
-import co.anitrend.core.android.ui.color.md_theme_dark_surface
-import co.anitrend.core.android.ui.color.md_theme_dark_surfaceTint
-import co.anitrend.core.android.ui.color.md_theme_dark_surfaceVariant
-import co.anitrend.core.android.ui.color.md_theme_dark_tertiary
-import co.anitrend.core.android.ui.color.md_theme_dark_tertiaryContainer
-import co.anitrend.core.android.ui.color.md_theme_light_background
-import co.anitrend.core.android.ui.color.md_theme_light_error
-import co.anitrend.core.android.ui.color.md_theme_light_errorContainer
-import co.anitrend.core.android.ui.color.md_theme_light_inverseOnSurface
-import co.anitrend.core.android.ui.color.md_theme_light_inversePrimary
-import co.anitrend.core.android.ui.color.md_theme_light_inverseSurface
-import co.anitrend.core.android.ui.color.md_theme_light_onBackground
-import co.anitrend.core.android.ui.color.md_theme_light_onError
-import co.anitrend.core.android.ui.color.md_theme_light_onErrorContainer
-import co.anitrend.core.android.ui.color.md_theme_light_onPrimary
-import co.anitrend.core.android.ui.color.md_theme_light_onPrimaryContainer
-import co.anitrend.core.android.ui.color.md_theme_light_onSecondary
-import co.anitrend.core.android.ui.color.md_theme_light_onSecondaryContainer
-import co.anitrend.core.android.ui.color.md_theme_light_onSurface
-import co.anitrend.core.android.ui.color.md_theme_light_onSurfaceVariant
-import co.anitrend.core.android.ui.color.md_theme_light_onTertiary
-import co.anitrend.core.android.ui.color.md_theme_light_onTertiaryContainer
-import co.anitrend.core.android.ui.color.md_theme_light_outline
-import co.anitrend.core.android.ui.color.md_theme_light_outlineVariant
-import co.anitrend.core.android.ui.color.md_theme_light_primary
-import co.anitrend.core.android.ui.color.md_theme_light_primaryContainer
-import co.anitrend.core.android.ui.color.md_theme_light_scrim
-import co.anitrend.core.android.ui.color.md_theme_light_secondary
-import co.anitrend.core.android.ui.color.md_theme_light_secondaryContainer
-import co.anitrend.core.android.ui.color.md_theme_light_surface
-import co.anitrend.core.android.ui.color.md_theme_light_surfaceTint
-import co.anitrend.core.android.ui.color.md_theme_light_surfaceVariant
-import co.anitrend.core.android.ui.color.md_theme_light_tertiary
-import co.anitrend.core.android.ui.color.md_theme_light_tertiaryContainer
+import co.anitrend.core.android.ui.color.*
 import co.anitrend.core.android.ui.typography.AniTrendTypography
 import org.koin.compose.koinInject
 
@@ -155,19 +96,16 @@ private val AniTrendShapes = Shapes(
 fun AniTrendTheme3(
     darkTheme: Boolean = isSystemInDarkTheme(),
     themeHelper: IThemeHelper = koinInject(),
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val view = LocalView.current
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        themeHelper.dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            if (darkTheme) dynamicDarkColorScheme(view.context) else dynamicLightColorScheme(view.context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             themeHelper.applyApplicationTheme(view.context as FragmentActivity)

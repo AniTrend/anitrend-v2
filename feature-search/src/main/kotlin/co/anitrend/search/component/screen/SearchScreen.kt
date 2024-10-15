@@ -36,8 +36,9 @@ import co.anitrend.search.component.presenter.SearchPresenter
 class SearchScreen : AniTrendScreen() {
 
     private val presenter by inject<SearchPresenter>()
-    private val param by extra<SearchRouter.SearchParam>(
-        key = nameOf<SearchRouter.SearchParam>()
+    private val param by extra(
+        key = nameOf<SearchRouter.SearchParam>(),
+        default = SearchRouter::SearchParam ,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,11 +48,11 @@ class SearchScreen : AniTrendScreen() {
                 ContentWrapper<IParam>(
                     stateFlow = FeatureReady.loadState,
                     config = FeatureReady.config,
-                    param = param ?: SearchRouter.SearchParam(),
+                    param = param,
                     onClick = {},
                 ) {
                     SearchScreenContent(
-                        query = param?.query.orEmpty(),
+                        query = param.query.orEmpty(),
                         onQueryChange = {},
                         onSearch = {},
                         active = false,

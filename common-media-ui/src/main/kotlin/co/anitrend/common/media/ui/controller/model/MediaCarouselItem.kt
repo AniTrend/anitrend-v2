@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.FULL_SPAN_SIZE
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -60,7 +61,7 @@ internal class MediaCarouselItem(
             customSupportAnimator = null,
             stateConfiguration = StateLayoutConfig()
         )
-
+        requireBinding().mediaCarouselRecycler.gone()
         requireBinding().mediaCarouselRecycler.setUpWith(
             supportAdapter = mediaItemAdapter,
             recyclerViewPool = viewPool

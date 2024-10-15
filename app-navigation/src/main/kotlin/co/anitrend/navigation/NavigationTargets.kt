@@ -17,6 +17,7 @@
 
 package co.anitrend.navigation
 
+import android.content.Intent
 import android.text.SpannedString
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -49,6 +50,16 @@ import co.anitrend.navigation.work.WorkSchedulerController
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import org.koin.core.component.inject
+
+object DeepLinkRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider {
+        fun matchingIntent(uri: String): Intent?
+    }
+
+    fun forMatchingIntent(uri: String) = provider.matchingIntent(uri)
+}
 
 object MainRouter : NavigationRouter() {
     override val provider by inject<Provider>()
@@ -396,6 +407,19 @@ object MediaCarouselRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class MediaCarouselRouterParam(
+        val season: MediaSeason,
+        val seasonYear: Int,
+        val nextSeason: MediaSeason,
+        val nextSeasonYear: Int,
+        val isAdult: Boolean? = false,
+        val currentTime: Long,
+        val scoreFormat: ScoreFormat? = null,
+        val type: MediaType? = null,
+        val pageSize: Int
+    ) : IParam
 }
 
 object CharacterRouter : NavigationRouter() {
@@ -428,7 +452,8 @@ object StudioRouter : NavigationRouter() {
 
     @Parcelize
     data class StudioParam(
-        val id: Long,
+        val id: Long? = null,
+        val name: String? = null,
     ) : IParam
 }
 
@@ -459,11 +484,7 @@ object StaffDiscoverRouter : NavigationRouter() {
 object ProfileRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
+    interface Provider : INavigationProvider
 
     @Parcelize
     data class ProfileParam(
@@ -480,6 +501,11 @@ object ForumRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class ForumParam(
+        val id: Long? = null,
+    ) : IParam
 }
 
 object FeedRouter : NavigationRouter() {
@@ -490,6 +516,11 @@ object FeedRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class FeedParam(
+        val id: Long? = null,
+    ) : IParam
 }
 
 object ReviewRouter : NavigationRouter() {
@@ -500,6 +531,11 @@ object ReviewRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class ReviewParam(
+        val id: Long? = null,
+    ) : IParam
 }
 
 object ReviewDiscoverRouter : NavigationRouter() {
@@ -598,6 +634,11 @@ object SuggestionRouter : NavigationRouter() {
     }
 
     fun forFragment() = provider.fragment()
+
+    @Parcelize
+    data class SuggestionParam(
+        val mediaType: MediaType? = null,
+    ) : IParam
 }
 
 object UpdaterRouter : NavigationRouter() {
@@ -607,7 +648,7 @@ object UpdaterRouter : NavigationRouter() {
         fun fragment(): Class<out Fragment>
     }
 
-    fun forFragment() = ProfileRouter.provider.fragment()
+    fun forFragment() = provider.fragment()
 }
 
 object MediaListRouter : NavigationRouter() {

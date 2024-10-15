@@ -20,12 +20,9 @@ package co.anitrend.profile.provider
 import android.content.Context
 import android.content.Intent
 import co.anitrend.navigation.ProfileRouter
-import co.anitrend.profile.component.content.ProfileContent
 import co.anitrend.profile.component.screen.ProfileScreen
 
 class FeatureProvider : ProfileRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, ProfileScreen::class.java)
-
-    override fun fragment() = ProfileContent::class.java
 }

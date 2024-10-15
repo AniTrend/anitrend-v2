@@ -1,6 +1,8 @@
 package co.anitrend.core.android.compose.design.image
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ object AniTrendImageDefaults {
  *
  * @see [co.anitrend.core.android.helpers.image]
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AniTrendImage(
     image: ICoverImage,
@@ -41,6 +44,8 @@ fun AniTrendImage(
     transformations: List<Transformation> = emptyList(),
     contentScale: ContentScale = ContentScale.Crop,
     onClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onLongClick: () -> Unit = {},
+    onDoubleClick: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val requestImageBuilder = rememberRequestImage(
@@ -52,18 +57,22 @@ fun AniTrendImage(
         model = requestImageBuilder.build(),
         contentDescription = "$imageType image",
         contentScale = contentScale,
-        modifier = modifier.clickable {
-            val source = when (image) {
-                is IMediaCover -> {
-                    if (imageType == BANNER) image.banner
-                    else image.extraLarge ?: image.large ?: image.medium
-                }
-                else -> image.large ?: image.medium
-            } ?: return@clickable
+        modifier = modifier.combinedClickable(
+            onClick = {
+                val source = when (image) {
+                    is IMediaCover -> {
+                        if (imageType == BANNER) image.banner
+                        else image.extraLarge ?: image.large ?: image.medium
+                    }
+                    else -> image.large ?: image.medium
+                } ?: return@combinedClickable
 
-            onClick(
-                ImageViewerRouter.ImageSourceParam(source)
-            )
-        },
+                onClick(
+                    ImageViewerRouter.ImageSourceParam(source)
+                )
+            },
+            onLongClick = onLongClick,
+            onDoubleClick = onDoubleClick,
+        ),
     )
 }

@@ -46,8 +46,7 @@ internal abstract class RetrofitCallNetworkClient<T> : AbstractNetworkClient<Cal
      */
     override fun defaultShouldRetry(exception: Throwable) = when (exception) {
         is HttpException -> exception.code() == 429
-        is SocketTimeoutException,
-        is IOException -> true
+        is SocketTimeoutException -> true
         else -> false
     }
 

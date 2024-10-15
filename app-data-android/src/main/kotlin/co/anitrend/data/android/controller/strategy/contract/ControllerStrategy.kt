@@ -22,6 +22,7 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.network.model.NetworkMessage
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 /**
  * Contract for controller strategy
@@ -46,6 +47,13 @@ abstract class ControllerStrategy<D> {
             RequestError(
                 networkMessage.unrecoverableErrorTittle,
                 message,
+                cause
+            )
+        }
+        is UnknownHostException -> {
+            RequestError(
+                networkMessage.connectivityErrorTittle,
+                networkMessage.connectivityErrorMessage,
                 cause
             )
         }

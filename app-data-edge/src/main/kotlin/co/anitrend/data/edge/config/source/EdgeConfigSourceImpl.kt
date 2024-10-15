@@ -6,7 +6,7 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.edge.config.EdgeConfigController
-import co.anitrend.data.edge.config.converters.EdgeConfigEntityConverter
+import co.anitrend.data.edge.config.converters.EdgeConfigViewEntityConverter
 import co.anitrend.data.edge.config.datasource.local.EdgeConfigLocalSource
 import co.anitrend.data.edge.config.datasource.remote.EdgeConfigRemoteSource
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
@@ -25,14 +25,14 @@ internal class EdgeConfigSourceImpl(
     private val remoteSource: EdgeConfigRemoteSource,
     private val localSource: EdgeConfigLocalSource,
     private val controller: EdgeConfigController,
-    private val converter: EdgeConfigEntityConverter,
+    private val converter: EdgeConfigViewEntityConverter,
     private val clearDataHelper: IClearDataHelper,
     override val dispatcher: ISupportDispatcher,
     override val cachePolicy: ICacheStorePolicy
 ) : EdgeConfigSource() {
 
     override fun observable(): Flow<Config> {
-        return localSource.edgeConfig(EdgeConfigEntity.DEFAULT_ID)
+        return localSource.edgeConfigById(EdgeConfigEntity.DEFAULT_ID)
             .flowOn(dispatcher.io)
             .filterNotNull()
             .map(converter::convertFrom)

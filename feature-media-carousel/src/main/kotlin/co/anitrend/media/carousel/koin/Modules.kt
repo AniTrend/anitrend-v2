@@ -17,8 +17,6 @@
 
 package co.anitrend.media.carousel.koin
 
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.common.media.ui.adapter.MediaCarouselAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.carousel.component.content.CarouselContent
 import co.anitrend.media.carousel.component.content.controller.CarouselContentController
@@ -26,19 +24,9 @@ import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
 import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
 import co.anitrend.media.carousel.provider.FeatureProvider
 import co.anitrend.navigation.MediaCarouselRouter
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-
-private val coreModule = module {
-    factory {
-        RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_carousel_item, 12)
-            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_comfortable_item, 26)
-        }
-    }
-}
 
 private val controllerModule = module {
     factory {
@@ -52,13 +40,7 @@ private val fragmentModule = module {
     fragment {
         CarouselContent(
             controller = get(),
-            stateConfig = get(),
-            supportViewAdapter = MediaCarouselAdapter(
-                settings = get(),
-                viewPool = get(),
-                resources = androidContext().resources,
-                stateConfiguration = get()
-            )
+            settings = get(),
         )
     }
 }
@@ -80,5 +62,5 @@ private val featureModule = module {
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(coreModule, controllerModule, fragmentModule, viewModelModule, featureModule)
+    listOf(controllerModule, fragmentModule, viewModelModule, featureModule)
 )
