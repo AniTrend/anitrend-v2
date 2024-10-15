@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,17 +14,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.logger
 
 import io.github.wax911.library.logger.contract.ILogger.Level
 import io.github.wax911.library.logger.core.AbstractLogger
 import timber.log.Timber
 
-/**
- * Logs to timber
- */
-class GraphLogger(level: Level) : AbstractLogger(level) {
+class GraphTimberLogger(level: Level) : AbstractLogger(level) {
     /**
      * Write a log message to its destination.
      *
@@ -34,14 +30,19 @@ class GraphLogger(level: Level) : AbstractLogger(level) {
      * @param message The message you would like logged.
      * @param throwable An exception to log
      */
-    override fun log(level: Level, tag: String, message: String, throwable: Throwable?) {
+    override fun log(
+        level: Level,
+        tag: String,
+        message: String,
+        throwable: Throwable?,
+    ) {
         when (level) {
             Level.VERBOSE -> Timber.tag(tag).v(throwable, message)
             Level.DEBUG -> Timber.tag(tag).d(throwable, message)
             Level.INFO -> Timber.tag(tag).i(throwable, message)
             Level.WARNING -> Timber.tag(tag).w(throwable, message)
             Level.ERROR -> Timber.tag(tag).e(throwable, message)
-            Level.NONE -> { /** no logging */ }
+            Level.NONE -> { }
         }
     }
 }

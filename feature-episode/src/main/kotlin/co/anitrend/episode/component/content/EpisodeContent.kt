@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.episode.component.content
 
 import co.anitrend.arch.recycler.adapter.SupportAdapter
@@ -33,7 +32,6 @@ class EpisodeContent(
     override val supportViewAdapter: SupportAdapter<Episode>,
     override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<Episode>() {
-
     private val viewModel by viewModel<EpisodeContentViewModel>()
 
     /**
@@ -47,7 +45,7 @@ class EpisodeContent(
     override fun onFetchDataInitialize() {
         val locale = settings.locale.value.asLocaleString()
         viewModelState().invoke(
-            EpisodeParam.Paged(locale)
+            EpisodeParam.Paged(locale),
         )
     }
 

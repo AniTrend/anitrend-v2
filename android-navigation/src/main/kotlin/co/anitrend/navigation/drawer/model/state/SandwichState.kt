@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.model.state
 
 /**
  * Enumeration of states in which the account picker can be in.
  */
 enum class SandwichState {
-
     /**
      * The account picker is not visible. The navigation drawer is in its default state.
      */
@@ -36,5 +34,5 @@ enum class SandwichState {
      * The account picker sandwiching animation is running. The account picker is neither open
      * nor closed.
      */
-    SETTLING
+    SETTLING,
 }

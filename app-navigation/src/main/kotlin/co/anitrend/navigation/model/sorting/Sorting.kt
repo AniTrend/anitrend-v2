@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.model.sorting
 
 import android.os.Parcelable
@@ -25,7 +24,7 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-data class Sorting<Sortable: ISortable>(
+data class Sorting<Sortable : ISortable>(
     override val sortable: @RawValue Sortable,
-    override val order: SortOrder
+    override val order: SortOrder,
 ) : ISortWithOrder<Sortable>, Parcelable

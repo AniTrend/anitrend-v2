@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.tag.ui.adpter
 
 import android.content.res.Resources
@@ -36,7 +35,7 @@ class TagListAdapter(
     override val stateConfiguration: IStateLayoutConfig,
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Tag) -> IRecyclerItem = { TagItem(it) },
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportListAdapter<Tag>(TagDiffUtil) {
     /**
      * Should provide the required view holder, this function is a substitute for
@@ -46,6 +45,6 @@ class TagListAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ) = layoutInflater.createViewHolder(parent)
 }

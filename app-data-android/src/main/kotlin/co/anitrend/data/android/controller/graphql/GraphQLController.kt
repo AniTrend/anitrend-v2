@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.controller.graphql
 
 import co.anitrend.arch.data.common.ISupportResponse
@@ -54,25 +53,26 @@ class GraphQLController<S, out D>(
     suspend operator fun invoke(
         resource: Async<Response<GraphQLResponse<S>>>,
         requestCallback: RequestCallback,
-        interceptor: (S) -> S
+        interceptor: (S) -> S,
     ) = strategy(requestCallback) {
-
         val response = client.fetch(resource)
 
-        val error = response.errors?.onEach {
-            Timber.w(it.toString())
-        }?.firstOrNull()
+        val error =
+            response.errors?.onEach {
+                Timber.w(it.toString())
+            }?.firstOrNull()
 
         /**
          * Only throw if data is null while we have an error, [strategy] will catch
          * the exception and emit a network state for the user to see
          */
-        if (error != null && response.data == null)
+        if (error != null && response.data == null) {
             throw RequestError(
                 topic = "Error with request",
                 description = error.message,
-                throwable = null
+                throwable = null,
             )
+        }
 
         response.data?.let {
             val data = interceptor(it)

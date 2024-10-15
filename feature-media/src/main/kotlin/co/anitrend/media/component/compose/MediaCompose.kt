@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.component.compose
 
 import android.view.View
@@ -85,12 +84,12 @@ private fun TagListItems(
     LazyRow(
         state = rememberLazyListState(),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(
             count = tags.size,
             key = { tags[it].id },
-            contentType = { "Tag" }
+            contentType = { "Tag" },
         ) { index ->
             tags[index].also { tag ->
                 ElevatedSuggestionChip(
@@ -99,9 +98,10 @@ private fun TagListItems(
                             MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
                         )
                     },
-                    colors = SuggestionChipDefaults.suggestionChipColors(
-                        containerColor = accentColor,
-                    ),
+                    colors =
+                        SuggestionChipDefaults.suggestionChipColors(
+                            containerColor = accentColor,
+                        ),
                     label = {
                         Text(
                             text = tag.name,
@@ -109,13 +109,12 @@ private fun TagListItems(
                             color = MaterialTheme.colorScheme.onPrimary,
                             style = AniTrendTheme.typography.caption,
                         )
-                    }
+                    },
                 )
             }
         }
     }
 }
-
 
 @Composable
 private fun MediaDetailContent(
@@ -123,40 +122,43 @@ private fun MediaDetailContent(
     accentColor: Color,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         AniTrendImage(
             image = media.image,
             imageType = RequestImage.Media.ImageType.BANNER,
             onClick = onImageClick,
-            modifier = AniTrendImageDefaults.BANNER_SIZE
+            modifier = AniTrendImageDefaults.BANNER_SIZE,
         )
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .absoluteOffset(y = (-16).dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .absoluteOffset(y = (-16).dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.background,
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                    ),
         ) {
             Column(
-                modifier = Modifier
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp,
-                    ),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier =
+                    Modifier
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 16.dp,
+                        ),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 SummarySection(
                     media = media,
                     accentColor = accentColor,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                     onCoverClick = onImageClick,
-                    modifier = Modifier
-                        .absoluteOffset(y = (-16).dp)
+                    modifier =
+                        Modifier
+                            .absoluteOffset(y = (-16).dp),
                 )
                 GenresListComponent(
                     genres = media.genres as List<Genre>,
@@ -164,12 +166,12 @@ private fun MediaDetailContent(
                 )
                 MarkdownText(
                     synopsis = media,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
                 )
                 TagListItems(
                     accentColor = accentColor,
                     tags = media.tags as List<Tag>,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick
+                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                 )
             }
         }
@@ -212,10 +214,11 @@ fun MediaScreenContent(
                         )
                     }
                     IconButton(onClick = {
-                        val param = FavouriteTaskRouter.Param.MediaToggleParam(
-                            id = media.id,
-                            mediaType = media.category.type
-                        )
+                        val param =
+                            FavouriteTaskRouter.Param.MediaToggleParam(
+                                id = media.id,
+                                mediaType = media.category.type,
+                            )
                         onFavouriteButtonClick(view, param)
                     }) {
                         Icon(
@@ -228,7 +231,7 @@ fun MediaScreenContent(
                     FloatingActionButton(
                         onClick = { onFloatingActionButtonClick(media) },
                         containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                     ) {
                         Icon(Icons.Rounded.Share, "Share")
                     }
@@ -241,8 +244,9 @@ fun MediaScreenContent(
             accentColor = accentColor,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
-            modifier = Modifier.padding(innerPadding)
-                .verticalScroll(rememberScrollState())
+            modifier =
+                Modifier.padding(innerPadding)
+                    .verticalScroll(rememberScrollState()),
         )
     }
 }
@@ -255,7 +259,7 @@ private fun MediaDetailComponentPreview() {
             media = Media.Extended.empty(),
             accentColor = Color.DarkGray,
             onMediaDiscoverableItemClick = {},
-            onImageClick = {}
+            onImageClick = {},
         )
     }
 }

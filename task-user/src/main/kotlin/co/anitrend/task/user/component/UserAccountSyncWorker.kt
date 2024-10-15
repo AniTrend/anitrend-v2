@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.user.component
 
 import android.content.Context
@@ -28,7 +27,7 @@ import timber.log.Timber
 class UserAccountSyncWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val getAuthenticated: GetAuthenticatedInteractor
+    private val getAuthenticated: GetAuthenticatedInteractor,
 ) : SupportCoroutineWorker(context, parameters) {
 
     /**
@@ -51,8 +50,10 @@ class UserAccountSyncWorker(
             }
         }.onFailure(Timber::w)
 
-        return if (result.getOrNull() is LoadState.Success)
+        return if (result.getOrNull() is LoadState.Success) {
             Result.success()
-        else Result.failure()
+        } else {
+            Result.failure()
+        }
     }
 }

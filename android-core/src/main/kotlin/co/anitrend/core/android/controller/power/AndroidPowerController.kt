@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.controller.power
 
 import android.content.Context
@@ -45,17 +44,16 @@ internal class AndroidPowerController(
     private val connectivityManager: ConnectivityManager?,
     private val settings: IPowerSettings,
 ) : IPowerController {
-
     override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> {
         return when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
                 merge(
                     context.flowOfBroadcast(
-                        IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
+                        IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
                     ),
                     context.flowOfBroadcast(
-                        IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED)
-                    )
+                        IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED),
+                    ),
                 ).map {
                     powerSaverState()
                 }.onStart {
@@ -64,7 +62,7 @@ internal class AndroidPowerController(
             }
             else -> {
                 context.flowOfBroadcast(
-                    IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
+                    IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
                 ).map {
                     powerSaverState()
                 }.onStart {
@@ -74,18 +72,19 @@ internal class AndroidPowerController(
         }
     }
 
-    override fun powerSaverState(): PowerSaverState = when {
-        settings.isPowerSaverOn.value -> {
-            PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
+    override fun powerSaverState(): PowerSaverState =
+        when {
+            settings.isPowerSaverOn.value -> {
+                PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
+            }
+            powerManager?.isPowerSaveMode == true -> {
+                PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_POWER_SAVER)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isBackgroundDataRestricted() -> {
+                PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
+            }
+            else -> PowerSaverState.Disabled
         }
-        powerManager?.isPowerSaveMode == true -> {
-            PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_POWER_SAVER)
-        }
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isBackgroundDataRestricted() -> {
-            PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
-        }
-        else -> PowerSaverState.Disabled
-    }
 
     override fun disableBatteryOptimization() {
         val packageUri = "package:${context.packageName}"
@@ -95,7 +94,7 @@ internal class AndroidPowerController(
                     intentOf {
                         action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                         data = packageUri.toUri()
-                    }
+                    },
                 )
             }.onFailure(Timber::e)
         }
@@ -104,6 +103,6 @@ internal class AndroidPowerController(
     @RequiresApi(Build.VERSION_CODES.N)
     private fun isBackgroundDataRestricted(): Boolean {
         return connectivityManager?.restrictBackgroundStatus ==
-                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED
+            ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED
     }
 }

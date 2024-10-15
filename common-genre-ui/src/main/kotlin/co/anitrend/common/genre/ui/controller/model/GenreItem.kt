@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.genre.ui.controller.model
 
 import android.view.LayoutInflater
@@ -36,9 +35,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class GenreItem(
     private val entity: Genre,
-    override val supportsSelectionMode: Boolean = true
+    override val supportsSelectionMode: Boolean = true,
 ) : RecyclerItemBinding<GenreItemBinding>(entity.id) {
-
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
      * assign text, load images, e.t.c
@@ -54,7 +52,7 @@ internal class GenreItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = GenreItemBinding.bind(view)
         val isSelectable = selectionMode != null
@@ -65,8 +63,9 @@ internal class GenreItem(
             requireBinding().genre.setTextColor(background)
         }
 
-        if (isSelectable)
+        if (isSelectable) {
             requireBinding().genre.asChoice()
+        }
 
         requireBinding().genre.text = entity.name
 
@@ -74,9 +73,10 @@ internal class GenreItem(
             if (!isSelectable) {
                 MediaDiscoverRouter.startActivity(
                     context = it.context,
-                    navPayload = MediaDiscoverRouter.MediaDiscoverParam(
-                        genre = entity.name
-                    ).asNavPayload()
+                    navPayload =
+                        MediaDiscoverRouter.MediaDiscoverParam(
+                            genre = entity.name,
+                        ).asNavPayload(),
                 )
             } else {
                 selectionMode?.isSelectionClickable(it, decorator, id)
@@ -94,10 +94,11 @@ internal class GenreItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createViewHolder(
-            viewGroup: ViewGroup
-        ) = GenreItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createViewHolder(viewGroup: ViewGroup) =
+            GenreItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

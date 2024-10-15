@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.date.controller
 
 import co.anitrend.core.android.helpers.date.AniTrendDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 
 internal class FuzzyDateController(
-    private val dateHelper: AniTrendDateHelper
+    private val dateHelper: AniTrendDateHelper,
 ) {
-    fun asDateFormatted(default: CharSequence, fuzzyDate: FuzzyDate): CharSequence {
+    fun asDateFormatted(
+        default: CharSequence,
+        fuzzyDate: FuzzyDate,
+    ): CharSequence {
         return dateHelper.convertToTextDate(fuzzyDate) ?: default
     }
 }

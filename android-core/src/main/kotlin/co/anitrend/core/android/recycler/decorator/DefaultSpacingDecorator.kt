@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.recycler.decorator
 
 import android.graphics.Rect
@@ -30,9 +29,8 @@ import timber.log.Timber
 
 class DefaultSpacingDecorator(
     private val itemSpacing: Int = 2.dp,
-    private val edgeSpacing: Int = 2.dp
-): RecyclerView.ItemDecoration() {
-
+    private val edgeSpacing: Int = 2.dp,
+) : RecyclerView.ItemDecoration() {
     private fun isVerticalOrientation(recyclerView: RecyclerView): Boolean {
         return when (val layoutManager = recyclerView.layoutManager) {
             is FlexboxLayoutManager -> layoutManager.flexDirection == FlexDirection.COLUMN
@@ -69,14 +67,14 @@ class DefaultSpacingDecorator(
         outRect: Rect,
         view: View,
         parent: RecyclerView,
-        state: RecyclerView.State
+        state: RecyclerView.State,
     ) {
         /** Credits: https://stackoverflow.com/a/64375667/1725347 */
         val count = parent.adapter?.itemCount ?: 0
         val position = parent.getChildAdapterPosition(view)
         val leading = if (position == 0) edgeSpacing else itemSpacing
         val trailing = if (position == count - 1) edgeSpacing else 0
-        with (outRect) {
+        with(outRect) {
             if (isVerticalOrientation(parent)) {
                 top = leading
                 bottom = trailing

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2024 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.core.android.compose.design.image
 
 import androidx.compose.foundation.clickable
@@ -8,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.model.RequestImage.Media.ImageType.*
 import co.anitrend.core.android.helpers.image.toRequestBuilder
 import co.anitrend.domain.common.entity.contract.ICoverImage
 import co.anitrend.domain.common.entity.contract.IMediaCover
@@ -43,27 +58,33 @@ fun AniTrendImage(
     onClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
 ) {
     val context = LocalContext.current
-    val requestImageBuilder = rememberRequestImage(
-        image = image,
-        type = imageType
-    ) { toRequestBuilder(context, transformations) }
+    val requestImageBuilder =
+        rememberRequestImage(
+            image = image,
+            type = imageType,
+        ) { toRequestBuilder(context, transformations) }
 
     AsyncImage(
         model = requestImageBuilder.build(),
         contentDescription = "$imageType image",
         contentScale = contentScale,
-        modifier = modifier.clickable {
-            val source = when (image) {
-                is IMediaCover -> {
-                    if (imageType == BANNER) image.banner
-                    else image.extraLarge ?: image.large ?: image.medium
-                }
-                else -> image.large ?: image.medium
-            } ?: return@clickable
+        modifier =
+            modifier.clickable {
+                val source =
+                    when (image) {
+                        is IMediaCover -> {
+                            if (imageType == RequestImage.Media.ImageType.BANNER) {
+                                image.banner
+                            } else {
+                                image.extraLarge ?: image.large ?: image.medium
+                            }
+                        }
+                        else -> image.large ?: image.medium
+                    } ?: return@clickable
 
-            onClick(
-                ImageViewerRouter.ImageSourceParam(source)
-            )
-        },
+                onClick(
+                    ImageViewerRouter.ImageSourceParam(source),
+                )
+            },
     )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.storage.extensions
 
 import java.util.Locale
@@ -30,8 +29,10 @@ fun Float.toHumanReadableByteValue(si: Boolean = false): String {
     val pre =
         (if (si) "kMGTPE" else "KMGTPE")[exp - 1].toString() + if (si) "" else "i"
     return String.format(
-        Locale.getDefault(), "%.1f %sB",
-        bytes / unit.toDouble().pow(exp.toDouble()), pre
+        Locale.getDefault(),
+        "%.1f %sB",
+        bytes / unit.toDouble().pow(exp.toDouble()),
+        pre,
     )
 }
 
@@ -44,7 +45,9 @@ fun Long.toHumanReadableByteValue(si: Boolean = false): String {
     val pre =
         (if (si) "kMGTPE" else "KMGTPE")[exp - 1].toString() + if (si) "" else "i"
     return String.format(
-        Locale.getDefault(), "%.1f %sB",
-        bytes / unit.toDouble().pow(exp.toDouble()), pre
+        Locale.getDefault(),
+        "%.1f %sB",
+        bytes / unit.toDouble().pow(exp.toDouble()),
+        pre,
     )
 }

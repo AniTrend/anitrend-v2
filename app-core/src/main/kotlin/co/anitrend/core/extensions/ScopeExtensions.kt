@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.extensions
 
 import co.anitrend.core.koin.scope.contract.ICustomScope
@@ -29,10 +28,11 @@ import timber.log.Timber
  */
 operator fun ICustomScope.invoke(): Scope {
     val koin = KoinPlatformTools.defaultContext().get()
-    val scope = koin.getOrCreateScope(
-        toString(),
-        qualifier
-    )
+    val scope =
+        koin.getOrCreateScope(
+            toString(),
+            qualifier,
+        )
     Timber.v("Retrieving or creating custom scope: $scope")
     return scope
 }

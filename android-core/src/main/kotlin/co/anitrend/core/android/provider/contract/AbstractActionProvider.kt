@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.provider.contract
 
 import android.content.Context
@@ -29,23 +28,26 @@ import co.anitrend.arch.extension.ext.getDrawableAttr
 import co.anitrend.core.android.extensions.dp
 
 abstract class AbstractActionProvider(context: Context) : ActionProvider(context) {
+    protected val actionImageView =
+        AppCompatImageView(context).apply {
+            background =
+                context.getDrawableAttr(
+                    androidx.appcompat.R.attr.selectableItemBackgroundBorderless,
+                )
+            isClickable = true
+            isFocusable = true
+            setPadding(2.dp)
+        }
 
-    protected val actionImageView = AppCompatImageView(context).apply {
-        background = context.getDrawableAttr(
-            androidx.appcompat.R.attr.selectableItemBackgroundBorderless
-        )
-        isClickable = true
-        isFocusable = true
-        setPadding(2.dp)
-    }
-
-    protected val container = FrameLayout(context).apply {
-        layoutParams = FrameLayout.LayoutParams(
-            ViewGroup.MarginLayoutParams.WRAP_CONTENT,
-            ViewGroup.MarginLayoutParams.WRAP_CONTENT
-        )
-        setPadding(10.dp)
-    }
+    protected val container =
+        FrameLayout(context).apply {
+            layoutParams =
+                FrameLayout.LayoutParams(
+                    ViewGroup.MarginLayoutParams.WRAP_CONTENT,
+                    ViewGroup.MarginLayoutParams.WRAP_CONTENT,
+                )
+            setPadding(10.dp)
+        }
 
     /**
      * Factory for creating the [androidx.core.view.ActionProvider] view

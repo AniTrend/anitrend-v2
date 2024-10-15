@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
@@ -40,7 +39,7 @@ import kotlinx.coroutines.launch
 
 internal class GeneralContent(
     private val dateHelper: AbstractSupportDateHelper,
-    override val inflateLayout: Int = R.layout.media_discover_filter_general
+    override val inflateLayout: Int = R.layout.media_discover_filter_general,
 ) : AniTrendContent<MediaDiscoverFilterGeneralBinding>() {
 
     private val param by argument(
@@ -51,9 +50,11 @@ internal class GeneralContent(
     private fun bindModelToViews() {
         requireBinding().excludeAdultContent.isChecked = param.isAdult == true
         val seasonYear = param.seasonYear
-        if (seasonYear != null)
+        if (seasonYear != null) {
             requireBinding().yearRangeSlider.setValues(seasonYear.toFloat())
-        else requireBinding().yearRangeSlider.setValues(dateHelper.getCurrentYear().toFloat())
+        } else {
+            requireBinding().yearRangeSlider.setValues(dateHelper.getCurrentYear().toFloat())
+        }
         when (param.onList) {
             true -> requireBinding().onListChipGroup.check(R.id.onListChipInclude)
             false -> requireBinding().onListChipGroup.check(R.id.onListChipExclude)
@@ -67,7 +68,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.status_in?.contains(it) == true || param.status == it
-                }
+                },
             )
         }
         MediaType.entries.forEach {
@@ -75,7 +76,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.type == it
-                }
+                },
             )
         }
         MediaSeason.entries.forEach {
@@ -83,7 +84,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.season == it
-                }
+                },
             )
         }
         MediaFormat.entries.forEach {
@@ -91,7 +92,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.format_in?.contains(it) == true || param.format == it
-                }
+                },
             )
         }
         MediaSource.entries.forEach {
@@ -99,7 +100,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.alias
                     isChecked = param.source_in?.contains(it) == true || param.source == it
-                }
+                },
             )
         }
         MediaCountry.entries.forEach {
@@ -107,7 +108,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.name.lowercase().capitalizeWords()
                     isChecked = param.countryOfOrigin == it.alias
-                }
+                },
             )
         }
         MediaLicensor.entries.forEach {
@@ -115,7 +116,7 @@ internal class GeneralContent(
                 requireContext().createChipChoice {
                     text = it.title
                     isChecked = param.licensedBy_in?.contains(it) == true || param.licensedBy == it
-                }
+                },
             )
         }
         requireBinding().yearRangeSlider.valueTo = dateHelper.getCurrentYear(2).toFloat()
@@ -133,7 +134,6 @@ internal class GeneralContent(
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
     }
 
     /**
@@ -141,7 +141,6 @@ internal class GeneralContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -155,7 +154,10 @@ internal class GeneralContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = MediaDiscoverFilterGeneralBinding.bind(view)
         lifecycleScope.launch {

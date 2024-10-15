@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.controller.power.contract
 
 import kotlinx.coroutines.flow.Flow
@@ -25,9 +24,7 @@ import kotlinx.coroutines.flow.Flow
  * @see [co.anitrend.data.settings.power.IPowerSettings]
  */
 interface IPowerController {
-    fun powerSaverStateFlow(
-        ignorePreference: Boolean
-    ): Flow<PowerSaverState>
+    fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState>
 
     fun powerSaverState(): PowerSaverState
 
@@ -36,8 +33,9 @@ interface IPowerController {
 
 sealed class PowerSaverState {
     data object Disabled : PowerSaverState()
+
     data class Enabled(
-        val reason: Reason
+        val reason: Reason,
     ) : PowerSaverState()
 
     enum class Reason {

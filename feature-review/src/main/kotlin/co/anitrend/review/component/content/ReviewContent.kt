@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.component.content
 
 import android.os.Bundle
@@ -28,21 +27,19 @@ import co.anitrend.review.databinding.ReviewContentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewContent(
-    override val inflateLayout: Int = R.layout.review_content
+    override val inflateLayout: Int = R.layout.review_content,
 ) : AniTrendContent<ReviewContentBinding>() {
-    
     private val viewModel by viewModel<ReviewViewModel>()
-    
+
     private fun onFetchDataInitialize() {
         // TODO: Implement functionality
     }
-    
+
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -71,7 +68,7 @@ class ReviewContent(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = ReviewContentBinding.bind(requireNotNull(view))

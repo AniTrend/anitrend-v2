@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.controller.model.account
 
 import android.view.LayoutInflater
@@ -32,9 +31,8 @@ import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class AnonymousAccountItem(
-    private val entity: Account.Anonymous
+    private val entity: Account.Anonymous,
 ) : RecyclerItemBinding<AccountAnonymousItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -52,14 +50,15 @@ class AnonymousAccountItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = AccountAnonymousItemBinding.bind(view)
         requireBinding().accountUserName.setText(entity.titleRes)
 
-        disposable = requireBinding().accountProfileImage.using(
-            view.context.getCompatDrawable(entity.imageRes)
-        )
+        disposable =
+            requireBinding().accountProfileImage.using(
+                view.context.getCompatDrawable(entity.imageRes),
+            )
     }
 
     /**
@@ -73,10 +72,11 @@ class AnonymousAccountItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createAnonymousAccountViewHolder(
-            viewGroup: ViewGroup
-        ) = AccountAnonymousItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createAnonymousAccountViewHolder(viewGroup: ViewGroup) =
+            AccountAnonymousItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

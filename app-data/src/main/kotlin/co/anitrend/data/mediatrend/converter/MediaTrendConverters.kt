@@ -1,3 +1,4 @@
+@file:Suppress("standard:no-empty-file")
 /*
  * Copyright (C) 2020  AniTrend
  *
@@ -16,4 +17,3 @@
  */
 
 package co.anitrend.data.mediatrend.converter
-

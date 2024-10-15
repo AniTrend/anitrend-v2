@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,18 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.themes.koin
 
 import co.anitrend.data.themes.api.ThemesApiFactory
 import org.koin.dsl.module
 
-private val coreModule = module {
-    single {
-        ThemesApiFactory()
+private val coreModule =
+    module {
+        single {
+            ThemesApiFactory()
+        }
     }
-}
 
-val themesModules = module {
-    includes(coreModule)
-}
+val themesModules =
+    module {
+        includes(coreModule)
+    }

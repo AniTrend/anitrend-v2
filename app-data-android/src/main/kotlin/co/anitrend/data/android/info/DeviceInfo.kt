@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.info
 
 import android.os.Build
@@ -26,7 +25,6 @@ class DeviceInfo(platformUserAgent: String) : IDeviceInfo {
     override val sdkVersion: Int = Build.VERSION.SDK_INT
     override val releaseVersion: String = Build.VERSION.RELEASE
     override val userAgent: String = createUserAgent(platformUserAgent)
-
 
     private fun createUserAgent(platformUserAgent: String): String {
         val deviceInfo = "(${Build.MANUFACTURER} ${Build.MODEL})"

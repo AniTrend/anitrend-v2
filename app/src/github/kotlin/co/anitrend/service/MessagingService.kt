@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.service
 
 import android.content.Intent
@@ -22,7 +21,6 @@ import android.os.IBinder
 import co.anitrend.core.service.AniTrendLifecycleService
 
 class MessagingService : AniTrendLifecycleService() {
-
     override fun onBind(intent: Intent): IBinder? {
         return super.onBind(intent)
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,10 +14,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.koin
 
-//import co.anitrend.support.markdown.link.LinkifyPlugin
+// import co.anitrend.support.markdown.link.LinkifyPlugin
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.common.shared.ui.plugin.MarkdownPlugin
 import co.anitrend.core.android.koin.MarkdownFlavour
@@ -37,27 +36,29 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-private val coreModule = module {
-    single(named(MarkdownFlavour.ANILIST)) {
-        val context = androidContext()
-        val accent = context.getCompatColor(co.anitrend.core.android.R.color.colorAccent)
-        val builder = get<Markwon.Builder>()
-        builder.usePlugin(MarkdownPlugin.create())
-            .usePlugin(CorePlugin.create())
-            //.usePlugin(LinkifyPlugin.create())
-            .usePlugin(HeadingPlugin.create())
-            .usePlugin(EmphasisPlugin.create())
-            .usePlugin(CenterPlugin.create())
-            .usePlugin(ImagePlugin.create())
-            .usePlugin(WebMPlugin.create())
-            .usePlugin(YouTubePlugin.create())
-            .usePlugin(SpoilerPlugin.create(accent))
-            .usePlugin(StrikethroughPlugin.create())
-            .usePlugin(TaskListPlugin.create(context))
-            .build()
+private val coreModule =
+    module {
+        single(named(MarkdownFlavour.ANILIST)) {
+            val context = androidContext()
+            val accent = context.getCompatColor(co.anitrend.core.android.R.color.colorAccent)
+            val builder = get<Markwon.Builder>()
+            builder.usePlugin(MarkdownPlugin.create())
+                .usePlugin(CorePlugin.create())
+                // .usePlugin(LinkifyPlugin.create())
+                .usePlugin(HeadingPlugin.create())
+                .usePlugin(EmphasisPlugin.create())
+                .usePlugin(CenterPlugin.create())
+                .usePlugin(ImagePlugin.create())
+                .usePlugin(WebMPlugin.create())
+                .usePlugin(YouTubePlugin.create())
+                .usePlugin(SpoilerPlugin.create(accent))
+                .usePlugin(StrikethroughPlugin.create())
+                .usePlugin(TaskListPlugin.create(context))
+                .build()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(coreModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(coreModule),
+    )

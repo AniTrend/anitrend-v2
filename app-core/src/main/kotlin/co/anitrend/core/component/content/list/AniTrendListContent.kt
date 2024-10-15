@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.content.list
 
 import android.os.Bundle
@@ -47,9 +46,8 @@ import timber.log.Timber
 
 abstract class AniTrendListContent<M>(
     override val inflateLayout: Int = R.layout.shared_list_content,
-    override val listPresenter: SupportListPresenter<M> = AniTrendListContentPresenter()
+    override val listPresenter: SupportListPresenter<M> = AniTrendListContentPresenter(),
 ) : SupportFragmentList<M>(), AndroidScopeComponent, KoinScopeComponent {
-
     override val scope by fragmentScope()
 
     private val connectivity by inject<ISupportConnectivity>()
@@ -59,21 +57,25 @@ abstract class AniTrendListContent<M>(
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
-            val header = AniTrendLoadStateAdapter(resources, stateConfig).apply {
-                registerFlowListener()
-            }
-            val footer = AniTrendLoadStateAdapter(resources, stateConfig).apply {
-                registerFlowListener()
-            }
+            val header =
+                AniTrendLoadStateAdapter(resources, stateConfig).apply {
+                    registerFlowListener()
+                }
+            val footer =
+                AniTrendLoadStateAdapter(resources, stateConfig).apply {
+                    registerFlowListener()
+                }
 
             if (supportViewAdapter is RecyclerView.Adapter<*>) {
                 (supportViewAdapter as RecyclerView.Adapter<*>)
                     .stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
 
-            recyclerView.adapter = supportViewAdapter.withLoadStateHeaderAndFooter(
-                header = header, footer = footer
-            )
+            recyclerView.adapter =
+                supportViewAdapter.withLoadStateHeaderAndFooter(
+                    header = header,
+                    footer = footer,
+                )
         }
     }
 
@@ -122,12 +124,12 @@ abstract class AniTrendListContent<M>(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         listPresenter.swipeRefreshLayout?.setColorSchemeColors(
             requireContext().getColorFromAttr(androidx.appcompat.R.attr.colorPrimary),
-            requireContext().getColorFromAttr(androidx.appcompat.R.attr.colorAccent)
+            requireContext().getColorFromAttr(androidx.appcompat.R.attr.colorAccent),
         )
         return view
     }

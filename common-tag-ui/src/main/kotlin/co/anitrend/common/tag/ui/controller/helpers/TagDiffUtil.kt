@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.tag.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
@@ -23,11 +22,11 @@ import co.anitrend.domain.tag.entity.Tag
 internal object TagDiffUtil : DiffUtil.ItemCallback<Tag>() {
     override fun areItemsTheSame(
         oldItem: Tag,
-        newItem: Tag
+        newItem: Tag,
     ) = oldItem.id == newItem.id
 
     override fun areContentsTheSame(
         oldItem: Tag,
-        newItem: Tag
+        newItem: Tag,
     ) = oldItem.hashCode() == newItem.hashCode()
 }

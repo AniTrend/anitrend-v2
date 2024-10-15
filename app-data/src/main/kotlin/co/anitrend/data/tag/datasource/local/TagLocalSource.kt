@@ -17,7 +17,12 @@
 
 package co.anitrend.data.tag.datasource.local
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Insert
+import androidx.room.RawQuery
+import androidx.room.Transaction
+import androidx.room.OnConflictStrategy
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.tag.entity.TagEntity

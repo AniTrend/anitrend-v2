@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tmdb.koin
 
 import co.anitrend.data.android.network.cache.CacheHelper
@@ -22,19 +21,21 @@ import co.anitrend.data.tmdb.api.TmdbApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-
-private val coreModule = module {
-    single {
-        TmdbApi(
-            apiKey = getProperty("tmdbClientSecret"),
-            cache = CacheHelper.createCache(
-                androidContext(),
-                "tmdb"
+private val coreModule =
+    module {
+        single {
+            TmdbApi(
+                apiKey = getProperty("tmdbClientSecret"),
+                cache =
+                    CacheHelper.createCache(
+                        androidContext(),
+                        "tmdb",
+                    ),
             )
-        )
+        }
     }
-}
 
-val tmdbModules = module {
-    includes(coreModule)
-}
+val tmdbModules =
+    module {
+        includes(coreModule)
+    }

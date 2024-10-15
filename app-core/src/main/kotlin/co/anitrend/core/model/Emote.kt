@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.model
 
 /**
@@ -25,7 +24,8 @@ enum class Emote(private val emoji: String) {
     Heart("\u2764"),
     Cry("\uD83D\uDE22"),
     Shocked("\uD83E\uDD2D"),
-    Eyes("\uD83D\uDC40");
+    Eyes("\uD83D\uDC40"),
+    ;
 
     override fun toString() = emoji
 }

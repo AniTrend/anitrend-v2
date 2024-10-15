@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.thexem.single.model.local
 
 /**
@@ -30,7 +29,7 @@ internal sealed class XemQuery {
      */
     data class All(
         val id: Long,
-        override val origin: String = "anidb"
+        override val origin: String = "anidb",
     ) : XemQuery()
 
     /**
@@ -44,7 +43,7 @@ internal sealed class XemQuery {
         val id: Long,
         val season: Int,
         val episode: Int? = null,
-        override val origin: String = "anidb"
+        override val origin: String = "anidb",
     ) : XemQuery()
 
     /**
@@ -54,6 +53,6 @@ internal sealed class XemQuery {
     data class Names(
         val language: String = "all",
         val defaultNames: Int = 1,
-        override val origin: String = "anidb"
+        override val origin: String = "anidb",
     ) : XemQuery()
 }

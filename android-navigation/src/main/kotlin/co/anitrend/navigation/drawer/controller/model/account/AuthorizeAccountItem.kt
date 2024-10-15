@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.controller.model.account
 
 import android.view.LayoutInflater
@@ -35,9 +34,8 @@ import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class AuthorizeAccountItem(
-    private val entity: Account.Authorize
+    private val entity: Account.Authorize,
 ) : RecyclerItemBinding<AccountAnonymousItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -55,16 +53,17 @@ class AuthorizeAccountItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = AccountAnonymousItemBinding.bind(view)
         requireBinding().accountUserName.setText(entity.titleRes)
-        disposable = requireBinding().accountProfileImage.load(
-            view.context.getCompatDrawable(
-                R.drawable.ic_account_add_24dp,
-                co.anitrend.arch.theme.R.color.primaryTextColor
+        disposable =
+            requireBinding().accountProfileImage.load(
+                view.context.getCompatDrawable(
+                    R.drawable.ic_account_add_24dp,
+                    co.anitrend.arch.theme.R.color.primaryTextColor,
+                ),
             )
-        )
         requireBinding().accountContainer.setOnClickListener(AuthRouter::startActivity)
     }
 
@@ -80,10 +79,11 @@ class AuthorizeAccountItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createAuthorizeAccountViewHolder(
-            viewGroup: ViewGroup
-        ) = AccountAnonymousItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createAuthorizeAccountViewHolder(viewGroup: ViewGroup) =
+            AccountAnonymousItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

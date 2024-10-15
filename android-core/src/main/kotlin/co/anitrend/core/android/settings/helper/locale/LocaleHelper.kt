@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.helper.locale
 
 import android.content.Context
@@ -27,14 +26,14 @@ import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
 import java.util.Locale
 
 internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelper {
-
     /**
      * Current locale
      */
     override val locale: Locale
         get() {
-            if (settings.locale.value == AniTrendLocale.AUTOMATIC)
+            if (settings.locale.value == AniTrendLocale.AUTOMATIC) {
                 return Locale.getDefault()
+            }
             return getPersonalizedLocale()
         }
 
@@ -61,8 +60,9 @@ internal class LocaleHelper(private val settings: ILocaleSettings) : ILocaleHelp
 
     private fun getPersonalizedLocale(): Locale {
         val locale = settings.locale.value
-        if (locale.country == null)
+        if (locale.country == null) {
             return Locale(locale.language)
+        }
         return Locale(locale.language, locale.country)
     }
 }

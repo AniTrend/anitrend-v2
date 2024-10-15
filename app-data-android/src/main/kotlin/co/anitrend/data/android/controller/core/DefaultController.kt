@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.controller.core
 
 import co.anitrend.arch.data.common.ISupportResponse
@@ -52,7 +51,7 @@ class DefaultController<S, out D>(
     suspend operator fun invoke(
         resource: Async<Response<S>>,
         requestCallback: RequestCallback,
-        interceptor: (S) -> S
+        interceptor: (S) -> S,
     ) = strategy(requestCallback) {
         val response = client.fetch(resource)
         val data = interceptor(response)

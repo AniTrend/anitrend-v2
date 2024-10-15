@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.content
 
 import android.os.Bundle
@@ -37,9 +36,11 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
 
-abstract class AniTrendContent<B : ViewBinding> : SupportFragment(),
-    AndroidScopeComponent, KoinScopeComponent, IBindingView<B> {
-
+abstract class AniTrendContent<B : ViewBinding> :
+    SupportFragment(),
+    AndroidScopeComponent,
+    KoinScopeComponent,
+    IBindingView<B> {
     override var binding: B? = null
 
     override val scope by fragmentScope()

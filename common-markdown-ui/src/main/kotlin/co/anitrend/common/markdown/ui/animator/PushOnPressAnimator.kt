@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.markdown.ui.animator
 
 import android.animation.Animator
@@ -28,15 +27,14 @@ import android.view.animation.AccelerateDecelerateInterpolator
 
 /** Plays a subtle push animation when [view] is pressed. */
 class PushOnPressAnimator(private val view: View) : StateListAnimator() {
-
     init {
         addState(
             intArrayOf(android.R.attr.state_pressed),
-            createAnimator(toScale = 0.95f)
+            createAnimator(toScale = 0.95f),
         )
         addState(
             intArrayOf(-android.R.attr.state_pressed),
-            createAnimator(toScale = 1f)
+            createAnimator(toScale = 1f),
         )
     }
 

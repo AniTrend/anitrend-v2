@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.widget.airing
 
 import android.content.Context
@@ -32,59 +31,70 @@ import co.anitrend.core.android.asPrettyTime
 import co.anitrend.domain.media.entity.Media
 import com.google.android.material.textview.MaterialTextView
 
-class MediaAiringScheduleWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
-
-    init { onInit(context, attrs, defStyleAttr) }
-
-    private fun setDecoratedAiringText(controller: MediaAiringScheduleController) {
-        val schedule = controller.getSchedule()
-        val decoratorColor = controller.getColor(context)
-        val builder = SpannableStringBuilder()
-            .color(decoratorColor) {
-                append(
-                    context.getString(
-                        R.string.label_episode_airing_in_time,
-                        schedule.episode,
-                        schedule.asPrettyTime()
-                    )
-                )
-            }
-        text = builder
-    }
-
-    fun setUpAiringSchedule(media: Media) {
-        val controller = MediaAiringScheduleController(media)
-        if (controller.shouldHideWidget()) {
-            gone()
-            return
+class MediaAiringScheduleWidget
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : MaterialTextView(context, attrs, defStyleAttr), CustomView {
+        init {
+            onInit(context, attrs, defStyleAttr)
         }
-        visible()
-        setDecoratedAiringText(controller)
-    }
 
-    /**
-     * Callable in view constructors to perform view inflation and attribute initialization
-     *
-     * @param context view context
-     * @param attrs view attributes if applicable
-     * @param styleAttr style attribute if applicable
-     */
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        if (isInEditMode) {
-            val builder = SpannableStringBuilder()
-                .color(context.getCompatColor(co.anitrend.core.android.R.color.orange_A400)) {
-                    append(
-                        context.getString(
-                            R.string.label_episode_airing_in_time,
-                            10,
-                            "2 days from now"
+        private fun setDecoratedAiringText(controller: MediaAiringScheduleController) {
+            val schedule = controller.getSchedule()
+            val decoratorColor = controller.getColor(context)
+            val builder =
+                SpannableStringBuilder()
+                    .color(decoratorColor) {
+                        append(
+                            context.getString(
+                                R.string.label_episode_airing_in_time,
+                                schedule.episode,
+                                schedule.asPrettyTime(),
+                            ),
                         )
-                    )
-                }
+                    }
             text = builder
         }
-        TextViewCompat.setTextAppearance(this, com.google.android.material.R.style.TextAppearance_MaterialComponents_Caption)
+
+        fun setUpAiringSchedule(media: Media) {
+            val controller = MediaAiringScheduleController(media)
+            if (controller.shouldHideWidget()) {
+                gone()
+                return
+            }
+            visible()
+            setDecoratedAiringText(controller)
+        }
+
+        /**
+         * Callable in view constructors to perform view inflation and attribute initialization
+         *
+         * @param context view context
+         * @param attrs view attributes if applicable
+         * @param styleAttr style attribute if applicable
+         */
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            if (isInEditMode) {
+                val builder =
+                    SpannableStringBuilder()
+                        .color(context.getCompatColor(co.anitrend.core.android.R.color.orange_A400)) {
+                            append(
+                                context.getString(
+                                    R.string.label_episode_airing_in_time,
+                                    10,
+                                    "2 days from now",
+                                ),
+                            )
+                        }
+                text = builder
+            }
+            TextViewCompat.setTextAppearance(this, com.google.android.material.R.style.TextAppearance_MaterialComponents_Caption)
+        }
     }
-}

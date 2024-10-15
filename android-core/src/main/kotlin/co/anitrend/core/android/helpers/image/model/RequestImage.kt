@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.helpers.image.model
 
 import co.anitrend.domain.common.entity.contract.ICoverImage
@@ -24,17 +23,17 @@ import co.anitrend.domain.common.entity.contract.IMediaCover
  * Request image model that our custom image loader will use
  */
 sealed class RequestImage<T : ICoverImage>(val image: T?) {
-
     class Media(
         mediaImage: IMediaCover?,
-        val type: ImageType
+        val type: ImageType,
     ) : RequestImage<IMediaCover>(mediaImage) {
         enum class ImageType {
-            BANNER, POSTER
+            BANNER,
+            POSTER,
         }
     }
 
     class Cover(
-        coverImage: ICoverImage?
+        coverImage: ICoverImage?,
     ) : RequestImage<ICoverImage>(coverImage)
 }

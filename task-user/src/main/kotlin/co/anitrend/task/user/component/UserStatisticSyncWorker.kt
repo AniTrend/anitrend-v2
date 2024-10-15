@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.user.component
 
 import android.content.Context
@@ -25,7 +24,6 @@ class UserStatisticSyncWorker(
     context: Context,
     parameters: WorkerParameters,
 ) : SupportCoroutineWorker(context, parameters) {
-
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].

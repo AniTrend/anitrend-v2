@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 @file:Suppress("DEPRECATION")
 
 package co.anitrend.data.feed.api
@@ -36,24 +35,25 @@ import retrofit2.Converter
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 internal class FeedApiFactory : IEndpointFactory, IFeedFactory {
-    override val endpointType = object : IEndpointType {
-        override val url: HttpUrl = BuildConfig.rssUrl.toHttpUrl()
-    }
+    override val endpointType =
+        object : IEndpointType {
+            override val url: HttpUrl = BuildConfig.rssUrl.toHttpUrl()
+        }
 
     override fun okHttpConfig(scope: Scope): OkHttpClient {
         val builder = scope.defaultBuilder()
         builder.cache(
             CacheHelper.createCache(
                 scope.androidContext(),
-                "rss"
-            )
+                "rss",
+            ),
         )
         return builder.build()
     }
 
     override fun provideConverterFactory(): Converter.Factory {
         return SimpleXmlConverterFactory.createNonStrict(
-            Persister(AnnotationStrategy())
+            Persister(AnnotationStrategy()),
         )
     }
 }

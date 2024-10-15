@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,25 +14,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.controller.helpers
 
 import androidx.recyclerview.widget.DiffUtil
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.entity.Media
 
-
 internal object MediaDiffUtil : DiffUtil.ItemCallback<Media>() {
     override fun areItemsTheSame(
         oldItem: Media,
-        newItem: Media
+        newItem: Media,
     ): Boolean {
         return oldItem.id == newItem.id && oldItem.mediaList?.id == newItem.mediaList?.id
     }
 
     override fun areContentsTheSame(
         oldItem: Media,
-        newItem: Media
+        newItem: Media,
     ): Boolean {
         return oldItem.hashCode() == newItem.hashCode()
     }
@@ -51,24 +49,29 @@ internal object MediaDiffUtil : DiffUtil.ItemCallback<Media>() {
      *
      * @see Callback.getChangePayload
      */
-    override fun getChangePayload(oldItem: Media, newItem: Media): Any? {
-        return if (oldItem.mediaList == newItem.mediaList)
+    override fun getChangePayload(
+        oldItem: Media,
+        newItem: Media,
+    ): Any? {
+        return if (oldItem.mediaList == newItem.mediaList) {
             super.getChangePayload(oldItem, newItem)
-        else newItem
+        } else {
+            newItem
+        }
     }
 }
 
 internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
     override fun areItemsTheSame(
         oldItem: MediaCarousel,
-        newItem: MediaCarousel
+        newItem: MediaCarousel,
     ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
         oldItem: MediaCarousel,
-        newItem: MediaCarousel
+        newItem: MediaCarousel,
     ): Boolean {
         return oldItem.hashCode() == newItem.hashCode()
     }
@@ -87,7 +90,10 @@ internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
      *
      * @see Callback.getChangePayload
      */
-    override fun getChangePayload(oldItem: MediaCarousel, newItem: MediaCarousel): Any {
+    override fun getChangePayload(
+        oldItem: MediaCarousel,
+        newItem: MediaCarousel,
+    ): Any {
         return newItem
     }
 }

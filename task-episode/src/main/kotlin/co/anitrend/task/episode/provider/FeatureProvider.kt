@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.episode.provider
 
 import co.anitrend.navigation.EpisodeTaskRouter
@@ -23,5 +22,6 @@ import co.anitrend.task.episode.scheduler.EpisodeScheduler
 
 class FeatureProvider : EpisodeTaskRouter.Provider {
     override fun worker() = EpisodeWorker::class.java
+
     override fun scheduler() = EpisodeScheduler(worker())
 }

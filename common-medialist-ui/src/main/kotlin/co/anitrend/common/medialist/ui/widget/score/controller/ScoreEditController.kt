@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.score.controller
 
 import co.anitrend.arch.extension.ext.UNSAFE
@@ -25,9 +24,8 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 
 internal class ScoreEditController(
     private val model: ScoreEditModel,
-    private val settings: IUserSettings
+    private val settings: IUserSettings,
 ) : AbstractEditController() {
-
     private val scoreFormat by lazy(UNSAFE) {
         settings.scoreFormat.value
     }
@@ -40,32 +38,36 @@ internal class ScoreEditController(
     }
 
     init {
-        model.maximum = when (scoreFormat) {
-            ScoreFormat.POINT_10_DECIMAL,
-            ScoreFormat.POINT_10 -> 10f
-            ScoreFormat.POINT_100 -> 100f
-            ScoreFormat.POINT_3 -> 3f
-            ScoreFormat.POINT_5 -> 5f
-        }
+        model.maximum =
+            when (scoreFormat) {
+                ScoreFormat.POINT_10_DECIMAL,
+                ScoreFormat.POINT_10,
+                -> 10f
+                ScoreFormat.POINT_100 -> 100f
+                ScoreFormat.POINT_3 -> 3f
+                ScoreFormat.POINT_5 -> 5f
+            }
     }
 
     private fun Float.isWithBounds(): Boolean {
-        if (model.maximum < 1f)
+        if (model.maximum < 1f) {
             return this > -0.1f
+        }
         return this > -0.1f && this <= model.maximum
     }
 
-
     fun incrementScore() {
         val delta = model.current + changeFactor
-        if (delta.isWithBounds())
+        if (delta.isWithBounds()) {
             model.current = delta
+        }
     }
 
     fun decrementScore() {
         val delta = model.current - changeFactor
-        if (delta.isWithBounds())
+        if (delta.isWithBounds()) {
             model.current = delta
+        }
     }
 
     override fun maximumFormatted(): CharSequence {
@@ -84,7 +86,8 @@ internal class ScoreEditController(
 
     fun changeScore(score: String) {
         val value = score.toFloatOrNull()
-        if (value?.isWithBounds() == true)
+        if (value?.isWithBounds() == true) {
             model.current = value
+        }
     }
 }

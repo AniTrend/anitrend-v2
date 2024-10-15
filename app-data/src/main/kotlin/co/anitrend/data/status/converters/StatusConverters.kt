@@ -17,3 +17,6 @@
 
 package co.anitrend.data.status.converters
 
+internal class StatusModelConverter {}
+
+internal class StatusEntityConverter {}

@@ -18,7 +18,6 @@
 package co.anitrend.data.feed.news.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -29,7 +28,10 @@ import co.anitrend.data.feed.news.cache.NewsCache
 import co.anitrend.data.feed.news.model.query.NewsQuery
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 internal abstract class NewsSource : AbstractPagingSource<News>() {
 

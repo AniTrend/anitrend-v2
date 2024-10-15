@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.helper.theme.contract
 
 import androidx.annotation.StyleRes
 import androidx.fragment.app.FragmentActivity
 
 interface IThemeHelper {
-
     /**
      * Sets the default night mode based on the theme set in settings
      */
@@ -32,6 +30,6 @@ interface IThemeHelper {
      */
     fun applyApplicationTheme(
         context: FragmentActivity,
-        @StyleRes themeOverride: Int? = null
+        @StyleRes themeOverride: Int? = null,
     )
 }

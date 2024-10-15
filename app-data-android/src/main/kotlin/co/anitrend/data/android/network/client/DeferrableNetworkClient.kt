@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.client
 
 import co.anitrend.arch.domain.entities.RequestError
@@ -53,12 +52,14 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response
     /**
      * @return [Boolean] whether or not the request should be retried based on the [exception] received
      */
-    override fun defaultShouldRetry(exception: Throwable) = when (exception) {
-        is HttpException -> exception.code() == 429
-        is SocketTimeoutException,
-        is IOException -> true
-        else -> false
-    }
+    override fun defaultShouldRetry(exception: Throwable) =
+        when (exception) {
+            is HttpException -> exception.code() == 429
+            is SocketTimeoutException,
+            is IOException,
+            -> true
+            else -> false
+        }
 
     /**
      * Executes the request
@@ -70,7 +71,7 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response
     override suspend fun Async<Response<T>>.execute(
         defaultDelay: Long,
         maxAttempts: Int,
-        shouldRetry: (Throwable) -> Boolean
+        shouldRetry: (Throwable) -> Boolean,
     ): Response<T> {
         var lastKnownException: Throwable? = null
 
@@ -80,22 +81,23 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response
             }.onSuccess { response ->
                 return response
             }.onFailure { exception ->
-                if (lastKnownException != exception)
+                if (lastKnownException != exception) {
                     lastKnownException = exception
+                }
                 delay(
                     exception.getNextDelay(
                         attempt,
                         maxAttempts,
                         defaultDelay,
-                        shouldRetry
-                    )
+                        shouldRetry,
+                    ),
                 )
             }
         }
 
         throw lastKnownException ?: RequestError(
             "Unable to recover from unknown error",
-            "Maximum retry attempts exhausted without success"
+            "Maximum retry attempts exhausted without success",
         )
     }
 
@@ -118,6 +120,6 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response
     ) = request.execute(
         firstDelay,
         maxAttempts,
-        shouldRetry
+        shouldRetry,
     ).bodyOrThrow()
 }

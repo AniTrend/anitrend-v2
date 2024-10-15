@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.search.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -25,28 +24,30 @@ import co.anitrend.search.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-
-private val presenterModule = module {
-    scope<SearchScreen> {
-        scoped {
-            SearchPresenter(
-                context = androidContext(),
-                settings = get()
-            )
+private val presenterModule =
+    module {
+        scope<SearchScreen> {
+            scoped {
+                SearchPresenter(
+                    context = androidContext(),
+                    settings = get(),
+                )
+            }
         }
     }
-}
 
-private val viewModelModule = module {
-
-}
-
-private val featureModule = module {
-    factory<SearchRouter.Provider> {
-        FeatureProvider()
+private val viewModelModule =
+    module {
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-        listOf(presenterModule, featureModule)
-)
+private val featureModule =
+    module {
+        factory<SearchRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(presenterModule, featureModule),
+    )

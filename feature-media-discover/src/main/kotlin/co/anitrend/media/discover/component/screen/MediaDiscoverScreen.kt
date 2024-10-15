@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.screen
 
 import android.os.Bundle
@@ -27,7 +26,6 @@ import co.anitrend.navigation.SearchRouter
 import co.anitrend.navigation.extensions.startActivity
 
 class MediaDiscoverScreen : AniTrendBoundScreen<MediaDiscoverScreenBinding>() {
-
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -49,9 +47,10 @@ class MediaDiscoverScreen : AniTrendBoundScreen<MediaDiscoverScreenBinding>() {
     }
 
     private fun updateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = MediaDiscoverRouter.forFragment(),
-            parameter = intent.extras
-        ).commit(requireBinding().content, this)
+        currentFragmentTag =
+            FragmentItem(
+                fragment = MediaDiscoverRouter.forFragment(),
+                parameter = intent.extras,
+            ).commit(requireBinding().content, this)
     }
 }

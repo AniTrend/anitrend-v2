@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.view.chip.controller.contract
 
 import co.anitrend.common.shared.ui.view.chip.enums.CheckedState
@@ -23,8 +22,12 @@ import co.anitrend.navigation.model.sorting.Sorting
 
 interface IMaterialSortChipController {
     fun currentState(): CheckedState
+
     fun asSortOrder(): SortOrder
+
     fun isCheckedState(): Boolean
+
     fun updateSortOrder(sorting: Sorting<*>)
+
     fun toggleCheckedState(): CheckedState
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.migration
 
 import android.content.Context
@@ -30,9 +29,8 @@ import timber.log.Timber
  * dependency injector is initialized
  */
 internal class MigrationManager(
-    override val settings: Settings
+    override val settings: Settings,
 ) : AbstractMigrationManager() {
-
     override fun shouldRunMigrations(): Boolean {
         return settings.versionCode.value < BuildConfig.versionCode
     }
@@ -45,24 +43,27 @@ internal class MigrationManager(
     override fun possibleMigrations(
         previousVersion: Int,
         currentVersion: Int,
-        migrations: List<Migration>
+        migrations: List<Migration>,
     ): List<Migration> {
         Timber.d(
-            "Analysing list of possible migrations for last tracked version: $previousVersion and current version ${BuildConfig.versionCode} - ${BuildConfig.versionName}"
+            "Analysing list of possible migrations for last tracked version: " +
+                "$previousVersion and current version ${BuildConfig.versionCode} - ${BuildConfig.versionName}",
         )
 
-        val minMigrations = migrations.filter { migration ->
-            IntRange(
-                migration.startVersion,
-                migration.endVersion
-            ).contains(previousVersion)
-        }
-        val maxMigrations = migrations.filter { migration ->
-            IntRange(
-                migration.startVersion,
-                migration.endVersion
-            ).contains(currentVersion)
-        }
+        val minMigrations =
+            migrations.filter { migration ->
+                IntRange(
+                    migration.startVersion,
+                    migration.endVersion,
+                ).contains(previousVersion)
+            }
+        val maxMigrations =
+            migrations.filter { migration ->
+                IntRange(
+                    migration.startVersion,
+                    migration.endVersion,
+                ).contains(currentVersion)
+            }
 
         return (minMigrations + maxMigrations).distinct()
     }
@@ -74,11 +75,12 @@ internal class MigrationManager(
      */
     override fun applyMigrations(context: Context) {
         if (shouldRunMigrations()) {
-            val migrations = possibleMigrations(
-                settings.versionCode.value,
-                BuildConfig.versionCode,
-                Migrations.ALL
-            )
+            val migrations =
+                possibleMigrations(
+                    settings.versionCode.value,
+                    BuildConfig.versionCode,
+                    Migrations.ALL,
+                )
             Timber.d("Staring pending ${migrations.size} migrations")
             migrations.forEach { migration ->
                 runCatching {

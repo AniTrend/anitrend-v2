@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.editor.provider
 
 import android.content.Context
@@ -24,8 +23,7 @@ import co.anitrend.medialist.editor.component.sheet.MediaListEditorContent
 import co.anitrend.navigation.MediaListEditorRouter
 
 class FeatureProvider : MediaListEditorRouter.Provider {
-    override fun activity(context: Context?) =
-        Intent(context, MediaListEditorScreen::class.java)
-        
+    override fun activity(context: Context?) = Intent(context, MediaListEditorScreen::class.java)
+
     override fun sheet() = MediaListEditorContent::class.java
 }

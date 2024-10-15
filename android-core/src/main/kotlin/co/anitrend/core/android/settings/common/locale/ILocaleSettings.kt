@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.common.locale
 
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
 
 interface ILocaleSettings {
-
     val locale: AbstractSetting<AniTrendLocale>
 }

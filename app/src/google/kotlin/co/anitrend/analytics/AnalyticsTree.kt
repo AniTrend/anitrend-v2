@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.analytics
 
 import android.content.Context
@@ -33,32 +32,33 @@ import timber.log.Timber
  */
 class AnalyticsTree(
     context: Context,
-    settings: IPrivacySettings
+    settings: IPrivacySettings,
 ) : ISupportAnalytics, Timber.Tree() {
-
     private val analytics by lazy(UNSAFE) {
         FirebaseApp.getApps(context).let {
-            if (it.isNotEmpty())
+            if (it.isNotEmpty()) {
                 FirebaseAnalytics.getInstance(context).apply {
                     setAnalyticsCollectionEnabled(
-                        settings.isAnalyticsEnabled.value
+                        settings.isAnalyticsEnabled.value,
                     )
                 }
-            else
+            } else {
                 null
+            }
         }
     }
 
     private val crashlytics by lazy(UNSAFE) {
         FirebaseApp.getApps(context).let {
-            if (it.isNotEmpty())
+            if (it.isNotEmpty()) {
                 FirebaseCrashlytics.getInstance().apply {
                     setCrashlyticsCollectionEnabled(
-                        settings.isCrashlyticsEnabled.value
+                        settings.isCrashlyticsEnabled.value,
                     )
                 }
-            else
+            } else {
                 null
+            }
         }
     }
 
@@ -74,7 +74,11 @@ class AnalyticsTree(
     /**
      * Handles logging of an analytic service with the [priority] defaulted to [Log.WARN]
      */
-    override fun log(priority: Int, tag: String?, message: String) {
+    override fun log(
+        priority: Int,
+        tag: String?,
+        message: String,
+    ) {
         runCatching {
             crashlytics?.log(message)
         }.exceptionOrNull()?.printStackTrace()
@@ -83,7 +87,10 @@ class AnalyticsTree(
     /**
      * Handles logging the current state of a visited screen using an explicit [bundle]
      */
-    override fun logCurrentState(tag: String, bundle: Bundle?) {
+    override fun logCurrentState(
+        tag: String,
+        bundle: Bundle?,
+    ) {
         runCatching {
             bundle?.also { analytics?.logEvent(tag, it) }
         }.exceptionOrNull()?.printStackTrace()
@@ -116,9 +123,15 @@ class AnalyticsTree(
      * @param message Formatted log message. May be `null`, but then `t` will not be.
      * @param t Accompanying exceptions. May be `null`, but then `message` will not be.
      */
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if (priority < Log.DEBUG)
+    override fun log(
+        priority: Int,
+        tag: String?,
+        message: String,
+        t: Throwable?,
+    ) {
+        if (priority < Log.DEBUG) {
             return
+        }
 
         runCatching {
             crashlytics?.setCustomKey(PRIORITY, priority)

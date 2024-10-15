@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import co.anitrend.arch.analytics.contract.ISupportAnalytics
@@ -30,7 +29,9 @@ object Tags {
     private const val STATE_PREFIX = "state_"
 
     fun action(postfix: String) = ACTION_PREFIX.plus(postfix)
+
     fun view(postfix: String) = VIEW_PREFIX.plus(postfix)
+
     fun state(postfix: String) = STATE_PREFIX.plus(postfix)
 }
 

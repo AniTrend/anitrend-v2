@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import android.content.Context
@@ -32,11 +31,12 @@ import timber.log.Timber
  * @throws NotImplementedError when a context type cannot be handled
  */
 @Throws(NotImplementedError::class)
-fun Context.fragmentManager() = when (this) {
-    is FragmentActivity -> supportFragmentManager
-    is ContextWrapper -> (baseContext as FragmentActivity).supportFragmentManager
-    else -> throw NotImplementedError("This type of context: $this is not handled/supported")
-}
+fun Context.fragmentManager() =
+    when (this) {
+        is FragmentActivity -> supportFragmentManager
+        is ContextWrapper -> (baseContext as FragmentActivity).supportFragmentManager
+        else -> throw NotImplementedError("This type of context: $this is not handled/supported")
+    }
 
 @Throws(IllegalArgumentException::class)
 fun Context.requireLifecycleOwner(): LifecycleOwner {

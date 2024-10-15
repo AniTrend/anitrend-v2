@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.cookie
 
 import android.webkit.CookieManager
@@ -33,7 +32,9 @@ fun CookieManager.getCookies(url: HttpUrl): List<Cookie> {
     return if (!cookies.isNullOrBlank()) {
         val cookieList = cookies.split(';')
         cookieList.mapNotNull { Cookie.parse(url, it) }
-    } else emptyList()
+    } else {
+        emptyList()
+    }
 }
 
 /**
@@ -42,7 +43,10 @@ fun CookieManager.getCookies(url: HttpUrl): List<Cookie> {
  * @param url The url to lookup
  * @param cookies Collection of cookies to save
  */
-fun CookieManager.setCookies(url: HttpUrl, cookies: List<Cookie>) {
+fun CookieManager.setCookies(
+    url: HttpUrl,
+    cookies: List<Cookie>,
+) {
     val key = url.toString()
     cookies.forEach {
         val cookie = it.toString()

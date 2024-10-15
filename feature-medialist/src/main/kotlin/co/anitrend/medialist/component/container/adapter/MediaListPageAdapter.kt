@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.component.container.adapter
 
 import android.os.Bundle
@@ -30,7 +29,6 @@ import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.medialist.component.content.MediaListContent
 import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.extensions.asBundle
-import java.util.*
 
 internal class MediaListPageAdapter(
     private val param: MediaListRouter.MediaListParam?,
@@ -39,12 +37,13 @@ internal class MediaListPageAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-
     private fun createBundleFor(mediaListInfo: MediaListInfo): Bundle? {
-        val param = if (!mediaListInfo.isCustomList)
-            param?.copy(status = MediaListStatus.valueOf(mediaListInfo.name))
-        else
-            param?.copy(customListName = mediaListInfo.name)
+        val param =
+            if (!mediaListInfo.isCustomList) {
+                param?.copy(status = MediaListStatus.valueOf(mediaListInfo.name))
+            } else {
+                param?.copy(customListName = mediaListInfo.name)
+            }
 
         return param?.asBundle()
     }
@@ -72,11 +71,12 @@ internal class MediaListPageAdapter(
     override fun createFragment(position: Int): Fragment {
         val mediaInfo = mediaListInfo[position]
 
-        val fragmentItem = FragmentItem(
-            fragment = MediaListContent::class.java,
-            parameter = createBundleFor(mediaInfo),
-            tag = mediaInfo.name
-        )
+        val fragmentItem =
+            FragmentItem(
+                fragment = MediaListContent::class.java,
+                parameter = createBundleFor(mediaInfo),
+                tag = mediaInfo.name,
+            )
 
         return fragmentItem.fragmentByTagOrNew(fragmentActivity)
     }

@@ -33,7 +33,7 @@ import co.anitrend.data.android.database.AniTrendStore
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.info.AppInfo
 import co.anitrend.data.android.info.DeviceInfo
-import co.anitrend.data.android.logger.GraphLogger
+import co.anitrend.data.android.logger.GraphTimberLogger
 import co.anitrend.data.android.logger.OkHttpLogger
 import co.anitrend.data.android.network.cookie.ApplicationCookieJar
 import co.anitrend.data.auth.helper.AuthenticationHelper
@@ -124,7 +124,7 @@ private val retrofitModule = module {
             discoveryPlugin = AssetManagerDiscoveryPlugin(
                 assetManager = androidContext().assets
             ),
-            logger = GraphLogger(level)
+            logger = GraphTimberLogger(level)
         )
     }
     single {

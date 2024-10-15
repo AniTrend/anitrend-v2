@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.discover.component.content.viewmodel.state
 
 import androidx.lifecycle.SavedStateHandle
@@ -36,32 +35,33 @@ class ReviewDiscoverState(
     private val interactor: GetReviewPagedInteractor,
     settings: IUserSettings,
     savedStateHandle: SavedStateHandle,
-): AniTrendViewModelState<PagedList<Review>>() {
-
+) : AniTrendViewModelState<PagedList<Review>>() {
     val default by savedStateHandle.extra(
         key = nameOf<ReviewDiscoverRouter.ReviewDiscoverParam>(),
         default = {
             ReviewDiscoverRouter.ReviewDiscoverParam(
                 mediaType = MediaType.ANIME,
-                sort = listOf(
-                    Sorting(
-                        sortable = ReviewSort.CREATED_AT,
-                        order = SortOrder.DESC
-                    )
-                ),
-                scoreFormat = settings.scoreFormat.value
+                sort =
+                    listOf(
+                        Sorting(
+                            sortable = ReviewSort.CREATED_AT,
+                            order = SortOrder.DESC,
+                        ),
+                    ),
+                scoreFormat = settings.scoreFormat.value,
             )
-        }
+        },
     )
 
     operator fun invoke(param: ReviewDiscoverRouter.ReviewDiscoverParam) {
-        val query = ReviewParam.Paged(
-            mediaId = param.mediaId,
-            userId = param.userId,
-            mediaType = param.mediaType,
-            sort = param.sort,
-            scoreFormat = param.scoreFormat
-        )
+        val query =
+            ReviewParam.Paged(
+                mediaId = param.mediaId,
+                userId = param.userId,
+                mediaType = param.mediaType,
+                sort = param.sort,
+                scoreFormat = param.scoreFormat,
+            )
         val result = interactor(query)
         state.postValue(result)
     }

@@ -48,4 +48,8 @@ sealed class Tag : IEntity {
         override val isAdult: Boolean,
         override val id: Long,
     ) : Tag()
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 }

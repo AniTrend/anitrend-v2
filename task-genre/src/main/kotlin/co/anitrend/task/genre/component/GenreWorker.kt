@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.genre.component
 
 import android.content.Context
@@ -29,9 +28,8 @@ import kotlinx.coroutines.flow.first
 class GenreWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: GenreInteractor
+    private val interactor: GenreInteractor,
 ) : SupportCoroutineWorker(context, parameters) {
-
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].
@@ -44,16 +42,20 @@ class GenreWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        val dataState = interactor.getMediaGenres(
-            GenreParam(SortOrder.DESC)
-        )
+        val dataState =
+            interactor.getMediaGenres(
+                GenreParam(SortOrder.DESC),
+            )
 
-        val networkState = dataState.loadState.first { state ->
-            state is LoadState.Success || state is LoadState.Error
-        }
+        val networkState =
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
 
-        return if (networkState is LoadState.Success)
+        return if (networkState is LoadState.Success) {
             Result.success()
-        else Result.failure()
+        } else {
+            Result.failure()
+        }
     }
 }

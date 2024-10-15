@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.notification.component.screen
 
 import android.os.Bundle
@@ -25,7 +24,6 @@ import co.anitrend.navigation.NotificationRouter
 import co.anitrend.notification.databinding.NotificationScreenBinding
 
 class NotificationScreen : AniTrendBoundScreen<NotificationScreenBinding>() {
-
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -44,9 +42,10 @@ class NotificationScreen : AniTrendBoundScreen<NotificationScreenBinding>() {
     }
 
     private fun updateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = NotificationRouter.forFragment(),
-            parameter = intent.extras
-        ).commit(requireBinding().content, this)
+        currentFragmentTag =
+            FragmentItem(
+                fragment = NotificationRouter.forFragment(),
+                parameter = intent.extras,
+            ).commit(requireBinding().content, this)
     }
 }

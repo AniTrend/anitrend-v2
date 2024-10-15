@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.content.selection
 
 import android.os.Bundle
@@ -53,7 +52,6 @@ import timber.log.Timber
 
 abstract class AniTrendSelectionContent<B : ViewBinding, M> :
     AniTrendContent<B>(), ISupportFragmentList<M> {
-
     protected abstract val bindingMapper: (View) -> B
 
     override val onNetworkObserver = Observer<LoadState> {
@@ -68,10 +66,11 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
                     .debounce(16)
                     .filterIsInstance<ClickableItem.State>()
                     .onEach {
-                        if (it.state !is LoadState.Loading)
+                        if (it.state !is LoadState.Loading) {
                             viewModelState()?.retry()
-                        else
+                        } else {
                             Timber.d("retry -> state is loading? current state: ${it.state}")
+                        }
                     }.collect()
             }
         }
@@ -109,12 +108,12 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
         /** Since pagedList is a type of list we check it first */
         when (model) {
             is PagedList -> {
-                with (supportViewAdapter as SupportPagedListAdapter) {
+                with(supportViewAdapter as SupportPagedListAdapter) {
                     submitList(model)
                 }
             }
             is List -> {
-                with (supportViewAdapter as SupportListAdapter) {
+                with(supportViewAdapter as SupportListAdapter) {
                     submitList(model)
                 }
             }
@@ -137,8 +136,9 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
     override fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView) {
         if (recyclerView.layoutManager == null) {
             recyclerView.layoutManager = provideLayoutManager()
-            if (recyclerView.itemDecorationCount == 0)
+            if (recyclerView.itemDecorationCount == 0) {
                 recyclerView.addItemDecoration(DefaultSpacingDecorator())
+            }
         }
     }
 
@@ -147,9 +147,10 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
-            val header = SupportLoadStateAdapter(resources, stateConfig).apply {
-                registerFlowListener()
-            }
+            val header =
+                SupportLoadStateAdapter(resources, stateConfig).apply {
+                    registerFlowListener()
+                }
 
             if (supportViewAdapter is RecyclerView.Adapter<*>) {
                 (supportViewAdapter as RecyclerView.Adapter<*>)
@@ -180,8 +181,9 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
         attachComponent(supportViewAdapter)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                if (supportViewAdapter.isEmpty())
+                if (supportViewAdapter.isEmpty()) {
                     onFetchDataInitialize()
+                }
             }
         }
     }
@@ -212,7 +214,7 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = bindingMapper(requireNotNull(view))
@@ -230,7 +232,10 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         viewModelState()?.loadState?.observe(viewLifecycleOwner, onNetworkObserver)
         setUpViewModelObserver()

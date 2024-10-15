@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.component.action
 
 import android.content.Context
@@ -31,18 +30,20 @@ import co.anitrend.media.component.viewmodel.MediaViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class ManageMediaProvider(context: Context): AbstractActionProvider(context), KoinComponent {
-
+class ManageMediaProvider(context: Context) : AbstractActionProvider(context), KoinComponent {
     private val viewModel by sharedViewModel<MediaViewModel>()
     private val settings by inject<IUserSettings>()
 
     private fun iconForState(mediaListStatus: MediaListStatus?) {
-        val icon = if (mediaListStatus == null)
-            co.anitrend.common.shared.R.drawable.ic_bookmark
-        else co.anitrend.common.shared.R.drawable.ic_edit
+        val icon =
+            if (mediaListStatus == null) {
+                co.anitrend.common.shared.R.drawable.ic_bookmark
+            } else {
+                co.anitrend.common.shared.R.drawable.ic_edit
+            }
 
         actionImageView.setImageDrawable(
-            context.getCompatDrawable(icon)
+            context.getCompatDrawable(icon),
         )
     }
 
@@ -52,12 +53,13 @@ class ManageMediaProvider(context: Context): AbstractActionProvider(context), Ko
      * @param forItem Optional menu item to create view for
      */
     override fun createWidget(forItem: MenuItem?): View {
-        if (!actionImageView.hasOnClickListeners())
+        if (!actionImageView.hasOnClickListeners()) {
             actionImageView.setOnClickListener { view ->
                 viewModel.state.model.value?.let {
                     view.openMediaListSheetFor(it, settings)
                 }
             }
+        }
         viewModel.state.model.observe(context.requireLifecycleOwner()) { media ->
             iconForState(media.mediaList?.status)
         }

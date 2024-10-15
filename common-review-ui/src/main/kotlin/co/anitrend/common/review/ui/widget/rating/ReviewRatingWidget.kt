@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.review.ui.widget.rating
 
 import android.content.Context
@@ -29,48 +28,59 @@ import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.core.android.extensions.dp
 import co.anitrend.domain.review.entity.Review
 
-internal class ReviewRatingWidget @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : FrameLayout(
-    context, attrs, defStyleAttr
-), CustomView {
+internal class ReviewRatingWidget
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : FrameLayout(
+            context,
+            attrs,
+            defStyleAttr,
+        ),
+        CustomView {
+        private val ratingBar =
+            AppCompatRatingBar(
+                context,
+                null,
+                android.R.attr.ratingBarStyleSmall,
+            ).apply {
+                max = 100
+                setIsIndicator(true)
+                layoutParams =
+                    ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                    )
+                progressDrawable?.setTint(
+                    context.getCompatColor(co.anitrend.core.android.R.color.white_1000),
+                )
+            }
 
-    private val ratingBar = AppCompatRatingBar(
-        context,
-        null,
-        android.R.attr.ratingBarStyleSmall
-    ).apply {
-        max = 100
-        setIsIndicator(true)
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        progressDrawable?.setTint(
-            context.getCompatColor(co.anitrend.core.android.R.color.white_1000)
-        )
-    }
+        init {
+            onInit(context, attrs, defStyleAttr)
+        }
 
-    init {
-        onInit(context, attrs, defStyleAttr)
-    }
+        fun updateUsing(review: Review) {
+            ratingBar.progress = review.score
+        }
 
-    fun updateUsing(review: Review) {
-        ratingBar.progress = review.score
-    }
-
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.bubble_background)
-        setPadding(8.dp)
-        addView(ratingBar)
-        if (isInEditMode) {
-            ratingBar.progress = 70
-            layoutParams = LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.bubble_background)
+            setPadding(8.dp)
+            addView(ratingBar)
+            if (isInEditMode) {
+                ratingBar.progress = 70
+                layoutParams =
+                    LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                    )
+            }
         }
     }
-}

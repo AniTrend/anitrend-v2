@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import android.content.Context
@@ -38,12 +37,12 @@ fun Context.cascadePopupStyler(): CascadePopupMenu.Styler {
     val rippleDrawable = {
         RippleDrawable(
             ColorStateList.valueOf(
-                getColorFromAttr(androidx.appcompat.R.attr.colorPrimaryDark)
+                getColorFromAttr(androidx.appcompat.R.attr.colorPrimaryDark),
             ),
             null,
             ColorDrawable(
-                getColorFromAttr(com.google.android.material.R.attr.colorOnBackground)
-            )
+                getColorFromAttr(com.google.android.material.R.attr.colorOnBackground),
+            ),
         )
     }
 
@@ -51,26 +50,28 @@ fun Context.cascadePopupStyler(): CascadePopupMenu.Styler {
         background = {
             RoundedDrawable(
                 color = getColorFromAttr(com.google.android.material.R.attr.colorPrimaryVariant),
-                radius = 8f.dp
+                radius = 8f.dp,
             )
         },
         menuTitle = { header ->
-            header.titleView.typeface = ResourcesCompat.getFont(
-                this,
-                co.anitrend.arch.theme.R.font.product_sans_regular
-            )
+            header.titleView.typeface =
+                ResourcesCompat.getFont(
+                    this,
+                    co.anitrend.arch.theme.R.font.product_sans_regular,
+                )
             header.setBackground(rippleDrawable())
         },
         menuItem = { item ->
-            item.titleView.typeface = ResourcesCompat.getFont(
-                this,
-                co.anitrend.arch.theme.R.font.product_sans_regular
-            )
+            item.titleView.typeface =
+                ResourcesCompat.getFont(
+                    this,
+                    co.anitrend.arch.theme.R.font.product_sans_regular,
+                )
             item.setBackground(rippleDrawable())
             item.setGroupDividerColor(
-                getColorFromAttr(com.google.android.material.R.attr.colorOnSurface)
+                getColorFromAttr(com.google.android.material.R.attr.colorOnSurface),
             )
-        }
+        },
     )
 }
 
@@ -84,7 +85,7 @@ fun View.cascadeMenu(): CascadePopupMenu {
         context = context,
         anchor = this,
         gravity = Gravity.NO_GRAVITY,
-        styler = context.cascadePopupStyler()
+        styler = context.cascadePopupStyler(),
     )
 }
 
@@ -96,11 +97,11 @@ fun View.cascadeMenu(): CascadePopupMenu {
  */
 fun CascadePopupMenu.onMenu(
     shouldNavigateBack: Boolean = true,
-    action: Menu.() -> Unit
+    action: Menu.() -> Unit,
 ): CascadePopupMenu {
     MenuCompat.setGroupDividerEnabled(menu, true)
     menu.action()
-    if (shouldNavigateBack)
+    if (shouldNavigateBack) {
         menu.allChildren.filter { menuItem ->
             menuItem.intent == null
         }.forEach { menuItem ->
@@ -108,5 +109,6 @@ fun CascadePopupMenu.onMenu(
                 navigateBack()
             }
         }
+    }
     return this
 }

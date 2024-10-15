@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.provider
 
 import android.content.Context
@@ -24,8 +23,7 @@ import co.anitrend.review.component.content.ReviewContent
 import co.anitrend.review.component.screen.ReviewScreen
 
 class FeatureProvider : ReviewRouter.Provider {
-    override fun activity(context: Context?) =
-        Intent(context, ReviewScreen::class.java)
-        
+    override fun activity(context: Context?) = Intent(context, ReviewScreen::class.java)
+
     override fun fragment() = ReviewContent::class.java
 }

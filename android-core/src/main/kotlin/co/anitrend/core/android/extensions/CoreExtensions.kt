@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import android.content.res.Resources
@@ -28,8 +27,11 @@ fun Int.toHumanReadableQuantity(digits: Int = 1): String {
     if (quantity < unit) return "$quantity"
     val exp = (ln(quantity.toDouble()) / ln(unit.toDouble())).toInt()
     val suffix = "KMGTPE"[exp - 1].toString()
-    return String.format(Locale.getDefault(), "%.${digits}f %s",
-        quantity / unit.toDouble().pow(exp.toDouble()), suffix
+    return String.format(
+        Locale.getDefault(),
+        "%.${digits}f %s",
+        quantity / unit.toDouble().pow(exp.toDouble()),
+        suffix,
     )
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.news.scheduler
 
 import android.content.Context
@@ -28,29 +27,32 @@ import co.anitrend.navigation.work.WorkSchedulerController
 import java.util.concurrent.TimeUnit
 
 class NewsScheduler(
-    override val worker: Class<out ListenableWorker>
+    override val worker: Class<out ListenableWorker>,
 ) : WorkSchedulerController() {
-
     /**
      * Schedule a unit of work
      */
     override fun schedule(context: Context) {
-        val constrains = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .build()
+        val constrains =
+            Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(true)
+                .build()
 
-        val workRequest = PeriodicWorkRequest.Builder(
-            worker, 3, TimeUnit.HOURS
-        ).setConstraints(
-            constrains
-        ).build()
+        val workRequest =
+            PeriodicWorkRequest.Builder(
+                worker,
+                3,
+                TimeUnit.HOURS,
+            ).setConstraints(
+                constrains,
+            ).build()
 
         WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
                 worker.simpleName,
                 ExistingPeriodicWorkPolicy.KEEP,
-                workRequest
+                workRequest,
             )
     }
 

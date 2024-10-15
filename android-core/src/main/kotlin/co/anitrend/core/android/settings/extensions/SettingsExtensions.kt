@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.extensions
 
 import android.annotation.SuppressLint
@@ -34,30 +33,33 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
  */
 suspend fun AbstractSetting<PreferredViewMode>.flowUpdating(
     recyclerView: RecyclerView?,
-    resolver: (PreferredViewMode) -> Int
+    resolver: (PreferredViewMode) -> Int,
 ) {
     flow.collect { viewMode ->
         requireNotNull(recyclerView)
         val adapter = recyclerView.adapter as RecyclerView.Adapter<*>
-        val newSpanCount = recyclerView.resources.getInteger(
-            resolver(viewMode)
-        )
+        val newSpanCount =
+            recyclerView.resources.getInteger(
+                resolver(viewMode),
+            )
 
         @SuppressLint("NotifyDataSetChanged")
         when (val layoutManager = recyclerView.layoutManager) {
             is StaggeredGridLayoutManager -> {
                 val currentSpanCount = layoutManager.spanCount
-                if (currentSpanCount != newSpanCount)
+                if (currentSpanCount != newSpanCount) {
                     layoutManager.spanCount = newSpanCount
-                else
+                } else {
                     adapter.notifyDataSetChanged()
+                }
             }
             is GridLayoutManager -> {
                 val currentSpanCount = layoutManager.spanCount
-                if (currentSpanCount != newSpanCount)
+                if (currentSpanCount != newSpanCount) {
                     layoutManager.spanCount = newSpanCount
-                else
+                } else {
                     adapter.notifyDataSetChanged()
+                }
             }
         }
     }

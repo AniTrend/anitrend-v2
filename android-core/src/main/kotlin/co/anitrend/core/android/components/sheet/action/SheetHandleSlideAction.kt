@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.components.sheet.action
 
 import android.view.View
@@ -22,13 +21,17 @@ import co.anitrend.core.android.animations.normalize
 import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
 
 class SheetHandleSlideAction(private val handle: View) : OnSlideAction {
-    override fun onSlide(sheet: View, slideOffset: Float) {
-        val alpha = slideOffset.normalize(
-            -1f,
-            0f,
-            0f,
-            1f
-        )
+    override fun onSlide(
+        sheet: View,
+        slideOffset: Float,
+    ) {
+        val alpha =
+            slideOffset.normalize(
+                -1f,
+                0f,
+                0f,
+                1f,
+            )
         handle.alpha = 1f - alpha
     }
 }

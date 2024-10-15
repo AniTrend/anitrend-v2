@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.profile.component.screen
 
 import android.os.Bundle
@@ -37,7 +36,6 @@ import co.anitrend.profile.component.viewmodel.ProfileViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileScreen : AniTrendScreen() {
-
     private val viewModel by viewModel<ProfileViewModel>()
     private val settings by inject<IAuthenticationSettings>()
     private val param by extra<ProfileRouter.ProfileParam>(
@@ -59,7 +57,7 @@ class ProfileScreen : AniTrendScreen() {
                         onImageClick = { param ->
                             ImageViewerRouter.startActivity(
                                 context = this@ProfileScreen,
-                                navPayload = param.asNavPayload()
+                                navPayload = param.asNavPayload(),
                             )
                         },
                         onFloatingActionButtonClick = { url ->
@@ -69,10 +67,8 @@ class ProfileScreen : AniTrendScreen() {
                             }
                         },
                         onInboxButtonClick = {
-
                         },
                         onNotificationsButtonClick = {
-
                         },
                         onBackClick = ::onBackPressed,
                     )

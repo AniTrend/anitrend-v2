@@ -28,8 +28,12 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     }
     kotlin {
         target("**/*.kt")
-        targetExclude("**/build/**/*.kt")
-        ktlint(libs.versions.ktlint.get())
+        targetExclude(
+            "**/build/**/*.kt",
+            "**/androidTest/**/*.kt",
+            "**/test/**/*.kt",
+            "bin/**/*.kt")
+        ktlint(libs.pintrest.ktlint.get().version)
         licenseHeaderFile(
             withLicenseHeader(".kt")
         )

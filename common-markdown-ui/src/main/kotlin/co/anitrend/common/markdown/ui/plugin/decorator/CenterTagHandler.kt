@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.markdown.ui.plugin.decorator
 
 import android.text.Layout
@@ -25,24 +24,23 @@ import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.MarkwonHtmlRenderer
 import io.noties.markwon.html.TagHandler
 
-
-class CenterTagHandler private constructor(): TagHandler() {
-
+class CenterTagHandler private constructor() : TagHandler() {
     override fun handle(
         visitor: MarkwonVisitor,
         renderer: MarkwonHtmlRenderer,
-        tag: HtmlTag
+        tag: HtmlTag,
     ) {
-        if (tag.isBlock)
+        if (tag.isBlock) {
             visitChildren(visitor, renderer, tag.asBlock)
+        }
 
         SpannableBuilder.setSpans(
             visitor.builder(),
             AlignmentSpan.Standard(
-                Layout.Alignment.ALIGN_CENTER
+                Layout.Alignment.ALIGN_CENTER,
             ),
             tag.start(),
-            tag.end()
+            tag.end(),
         )
     }
 

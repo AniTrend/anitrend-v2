@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.controller.model.account
 
 import android.view.LayoutInflater
@@ -42,7 +41,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class AuthenticatedAccountItem(
     private val entity: Account.Authenticated,
 ) : RecyclerItemBinding<AccountAuthenticatedItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -60,13 +58,14 @@ class AuthenticatedAccountItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = AccountAuthenticatedItemBinding.bind(view)
-        disposable = requireBinding().accountProfileImage.using(
-            entity.coverImage.toRequestImage(),
-            listOf(CircleCropTransformation())
-        )
+        disposable =
+            requireBinding().accountProfileImage.using(
+                entity.coverImage.toRequestImage(),
+                listOf(CircleCropTransformation()),
+            )
         requireBinding().accountUserName.text = entity.userName
         if (entity.isActiveUser) {
             requireBinding().accountSignOut.visible()
@@ -76,20 +75,20 @@ class AuthenticatedAccountItem(
                     .createOneTimeUniqueWorker(it.context, params)
                     .enqueue()
             }
-        }
-        else
+        } else {
             requireBinding().accountSignOut.gone()
+        }
 
         requireBinding().accountContainer.setOnClickListener {
             if (entity.isActiveUser) {
                 ProfileRouter.startActivity(
                     context = it.context,
-                    navPayload = ProfileRouter.ProfileParam(
-                        userId = entity.id
-                    ).asNavPayload()
+                    navPayload =
+                        ProfileRouter.ProfileParam(
+                            userId = entity.id,
+                        ).asNavPayload(),
                 )
-            }
-            else {
+            } else {
                 val params = AccountTaskRouter.AccountParam(id = entity.id)
                 AccountTaskRouter.forSignInWorker()
                     .createOneTimeUniqueWorker(it.context, params)
@@ -111,10 +110,11 @@ class AuthenticatedAccountItem(
     }
 
     companion object {
-        internal fun LayoutInflater.createAuthenticatedAccountViewHolder(
-            viewGroup: ViewGroup
-        ) = AccountAuthenticatedItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createAuthenticatedAccountViewHolder(viewGroup: ViewGroup) =
+            AccountAuthenticatedItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

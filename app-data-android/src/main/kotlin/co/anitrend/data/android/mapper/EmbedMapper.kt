@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.source.local.AbstractLocalSource
 
 abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
-
     protected var entities: List<D>? = null
     protected abstract val localSource: AbstractLocalSource<D>
     protected abstract val converter: SupportConverter<S, D>
@@ -31,8 +29,9 @@ abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
     }
 
     open suspend fun onEmbedded(source: S?) {
-        if (source != null)
+        if (source != null) {
             entities = onResponseMapFrom(listOf(source))
+        }
     }
 
     open suspend fun persistEmbedded() {

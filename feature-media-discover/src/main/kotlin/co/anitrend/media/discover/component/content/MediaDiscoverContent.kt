@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.content
 
 import android.view.MenuItem
@@ -42,24 +41,22 @@ class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
     override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<Media>
+    override val supportViewAdapter: SupportAdapter<Media>,
 ) : AniTrendListContent<Media>() {
-
     private val viewModel by viewModel<MediaDiscoverViewModel>()
 
     override val defaultSpanSize: Int
-        get() = getSpanSizeByPreference(
-            settings.preferredViewMode.value
-        )
+        get() =
+            getSpanSizeByPreference(
+                settings.preferredViewMode.value,
+            )
 
-
-    @IntegerRes private fun getSpanSizeByPreference(
-        viewMode: PreferredViewMode
-    ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
-        else -> co.anitrend.core.android.R.integer.column_x1
-    }
+    @IntegerRes private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
+        when (viewMode) {
+            PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+            PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+            else -> co.anitrend.core.android.R.integer.column_x1
+        }
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -82,10 +79,11 @@ class MediaDiscoverContent(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             co.anitrend.core.android.R.id.action_filter -> {
-                val fragmentItem = FragmentItem(
-                    fragment = MediaDiscoverRouter.forSheet(),
-                    parameter = viewModel.default.asBundle()
-                )
+                val fragmentItem =
+                    FragmentItem(
+                        fragment = MediaDiscoverRouter.forSheet(),
+                        parameter = viewModel.default.asBundle(),
+                    )
                 val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
                 dialog.show(childFragmentManager, fragmentItem.tag())
                 true
@@ -105,7 +103,7 @@ class MediaDiscoverContent(
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
             viewModelState().invoke(
-                viewModel.default
+                viewModel.default,
             )
         }
         lifecycleScope.launch {

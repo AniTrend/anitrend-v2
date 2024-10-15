@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.koin
 
 import androidx.recyclerview.widget.RecyclerView
@@ -32,42 +31,48 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-	fragment {
-		val settings = get<Settings>()
-		MediaDiscoverContent(
-			settings = settings,
-			stateConfig = get(),
-			supportViewAdapter = MediaPagedAdapter(
-				settings = settings,
-				viewPool = RecyclerView.RecycledViewPool(),
-				resources = androidContext().resources,
-				stateConfiguration = get()
-			)
-		)
-	}
-	fragment {
-		MediaDiscoverFilterSheet()
-	}
-}
-
-private val viewModelModule = module {
-	viewModel { scope ->
-		MediaDiscoverViewModel(
-			state = MediaDiscoverState(
-				interactor = get(),
-			),
-			savedStateHandle = scope.get()
-		)
-	}
-}
-
-private val featureModule = module {
-	factory<MediaDiscoverRouter.Provider> {
-        FeatureProvider()
+private val fragmentModule =
+    module {
+        fragment {
+            val settings = get<Settings>()
+            MediaDiscoverContent(
+                settings = settings,
+                stateConfig = get(),
+                supportViewAdapter =
+                    MediaPagedAdapter(
+                        settings = settings,
+                        viewPool = RecyclerView.RecycledViewPool(),
+                        resources = androidContext().resources,
+                        stateConfiguration = get(),
+                    ),
+            )
+        }
+        fragment {
+            MediaDiscoverFilterSheet()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-	listOf(fragmentModule, viewModelModule, featureModule)
-)
+private val viewModelModule =
+    module {
+        viewModel { scope ->
+            MediaDiscoverViewModel(
+                state =
+                    MediaDiscoverState(
+                        interactor = get(),
+                    ),
+                savedStateHandle = scope.get(),
+            )
+        }
+    }
+
+private val featureModule =
+    module {
+        factory<MediaDiscoverRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

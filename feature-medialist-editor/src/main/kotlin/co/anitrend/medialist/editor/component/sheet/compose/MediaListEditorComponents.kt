@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.editor.component.sheet.compose
 
 import androidx.compose.foundation.Image
@@ -26,7 +25,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
@@ -36,21 +34,21 @@ import coil.compose.rememberAsyncImagePainter
 import org.koin.androidx.compose.get
 import org.koin.compose.koinInject
 
-
 @Composable
 private fun BackgroundHeader(
     mediaCover: LiveData<IMediaCover>,
     modifier: Modifier = Modifier,
-    imageLoader: ImageLoader = koinInject()
+    imageLoader: ImageLoader = koinInject(),
 ) {
     val mediaCoverState = mediaCover.observeAsState()
     Row(modifier = modifier.aspectRatio(1.7f)) {
         Image(
-            painter = rememberAsyncImagePainter(
-                model = mediaCoverState.value?.banner,
-                imageLoader = imageLoader
-            ),
-            contentDescription = null
+            painter =
+                rememberAsyncImagePainter(
+                    model = mediaCoverState.value?.banner,
+                    imageLoader = imageLoader,
+                ),
+            contentDescription = null,
         )
     }
 }

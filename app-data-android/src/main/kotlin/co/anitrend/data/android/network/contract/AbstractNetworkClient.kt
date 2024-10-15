@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.contract
 
 import retrofit2.HttpException
 import timber.log.Timber
 
 abstract class AbstractNetworkClient<in Input, out Output> {
-
     /**
      * @return [Boolean] whether or not the request should be retried based on the [exception] received
      */
@@ -37,7 +35,7 @@ abstract class AbstractNetworkClient<in Input, out Output> {
     protected abstract suspend fun Input.execute(
         defaultDelay: Long,
         maxAttempts: Int,
-        shouldRetry: (Throwable) -> Boolean
+        shouldRetry: (Throwable) -> Boolean,
     ): Output
 
     /**
@@ -47,7 +45,7 @@ abstract class AbstractNetworkClient<in Input, out Output> {
         attempt: Int,
         maxAttempts: Int,
         defaultDelay: Long,
-        shouldRetry: (Throwable) -> Boolean
+        shouldRetry: (Throwable) -> Boolean,
     ): Long {
         var nextDelay: Long = attempt * attempt * defaultDelay
         Timber.w("Request threw an exception -> $this")
@@ -73,14 +71,15 @@ abstract class AbstractNetworkClient<in Input, out Output> {
                     nextDelay = (retryAfterHeader.toLong() + 10).coerceAtLeast(defaultDelay)
                 } catch (nfe: NumberFormatException) {
                     Timber.e(
-                        nfe, "Highly unlikely exception was caught on header retry after"
+                        nfe,
+                        "Highly unlikely exception was caught on header retry after",
                     )
                 }
             }
         }
 
         Timber.i(
-            "Retrying request in $nextDelay ms -> attempt: ${attempt + 1} maxAttempts: $maxAttempts"
+            "Retrying request in $nextDelay ms -> attempt: ${attempt + 1} maxAttempts: $maxAttempts",
         )
         return nextDelay
     }

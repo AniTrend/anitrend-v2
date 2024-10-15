@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  AniTrend
+ * Copyright (C) 2023 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.koin
 
 import co.anitrend.config.DeveloperModeConfig
@@ -22,14 +21,16 @@ import co.anitrend.core.config.contract.IDeveloperModeConfig
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import org.koin.dsl.module
 
-private val variantModule = module {
-    factory<IDeveloperModeConfig> {
-        DeveloperModeConfig(
-            settings = get()
-        )
+private val variantModule =
+    module {
+        factory<IDeveloperModeConfig> {
+            DeveloperModeConfig(
+                settings = get(),
+            )
+        }
     }
-}
 
-internal val debugAppModules = DynamicFeatureModuleHelper(
-    listOf(variantModule)
-)
+internal val debugAppModules =
+    DynamicFeatureModuleHelper(
+        listOf(variantModule),
+    )

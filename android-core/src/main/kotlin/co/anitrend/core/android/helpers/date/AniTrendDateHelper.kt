@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.helpers.date
 
 import androidx.annotation.IntRange
@@ -31,14 +30,14 @@ import java.util.Date
 import java.util.Locale
 
 class AniTrendDateHelper : AbstractSupportDateHelper() {
-
     /**
      * Returns the current month in the form of an [Int].
      *
      * @return [IntRange] between 0 - 11
      */
     val month: Int
-        @IntRange(from = 0, to = 11) get() =
+        @IntRange(from = 0, to = 11)
+        get() =
             Calendar.getInstance().get(Calendar.MONTH)
 
     /**
@@ -47,7 +46,8 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
      * @return [IntRange] between 1 - 31
      */
     val day: Int
-        @IntRange(from = 0, to = 30) get() =
+        @IntRange(from = 0, to = 30)
+        get() =
             Calendar.getInstance().get(Calendar.DATE)
 
     /**
@@ -59,11 +59,12 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
     /**
      * @return [FuzzyDate]
      */
-    fun fuzzyDateNow() = FuzzyDate(
-        day = day,
-        month = month.plus(1),
-        year = year
-    )
+    fun fuzzyDateNow() =
+        FuzzyDate(
+            day = day,
+            month = month.plus(1),
+            year = year,
+        )
 
     /**
      * @return current seasons name
@@ -85,46 +86,61 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
      * @return current year with a given delta
      */
     override fun getCurrentYear(delta: Int): Int {
-        return if (month >= 11 && currentSeason == SeasonType.WINTER)
+        return if (month >= 11 && currentSeason == SeasonType.WINTER) {
             year + delta
-        else year
+        } else {
+            year
+        }
     }
 
     fun convertToTextDate(fuzzyDate: FuzzyDate?): CharSequence? {
         if (fuzzyDate == null || fuzzyDate.isDateNotSet()) return null
 
-        val month = if (fuzzyDate.month <= 9)
-            "0${fuzzyDate.month}"
-        else "${fuzzyDate.month}"
+        val month =
+            if (fuzzyDate.month <= 9) {
+                "0${fuzzyDate.month}"
+            } else {
+                "${fuzzyDate.month}"
+            }
 
-        val day = if (fuzzyDate.day <= 9)
-            "0${fuzzyDate.day}"
-        else "${fuzzyDate.day}"
+        val day =
+            if (fuzzyDate.day <= 9) {
+                "0${fuzzyDate.day}"
+            } else {
+                "${fuzzyDate.day}"
+            }
 
-        val dateFormatted = "${fuzzyDate.year}-${month}-${day}"
-        val dateFormatter = DateTimeFormatter.ofPattern(
-            "yyyy-MM-dd", Locale.getDefault()
-        )
+        val dateFormatted = "${fuzzyDate.year}-$month-$day"
+        val dateFormatter =
+            DateTimeFormatter.ofPattern(
+                "yyyy-MM-dd",
+                Locale.getDefault(),
+            )
 
         val parsedDate = dateFormatter.parse(dateFormatted)
         val localDate = from(parsedDate)
 
-        val outputDateFormat = DateTimeFormatter.ofPattern(
-            "MMM dd, yyyy", Locale.getDefault()
-        )
+        val outputDateFormat =
+            DateTimeFormatter.ofPattern(
+                "MMM dd, yyyy",
+                Locale.getDefault(),
+            )
         return localDate.format(outputDateFormat)
     }
 
     fun convertToUnixTimeStamp(fuzzyDate: FuzzyDate): Long {
         val fuzzyTextDate = convertToTextDate(fuzzyDate)
 
-        val dateFormatter = DateTimeFormatter.ofPattern(
-            "MMM dd, yyyy", Locale.getDefault()
-        )
+        val dateFormatter =
+            DateTimeFormatter.ofPattern(
+                "MMM dd, yyyy",
+                Locale.getDefault(),
+            )
         val parsedDate = dateFormatter.parse(fuzzyTextDate)
 
-        val instant = from(parsedDate).atTime(LocalTime.MIDNIGHT)
-            .toInstant(ZoneOffset.UTC)
+        val instant =
+            from(parsedDate).atTime(LocalTime.MIDNIGHT)
+                .toInstant(ZoneOffset.UTC)
 
         return instant.toEpochMilli()
     }
@@ -136,7 +152,7 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
         return FuzzyDate(
             year = segments[0].toInt(),
             month = segments[1].toInt(),
-            day = segments[2].toInt()
+            day = segments[2].toInt(),
         )
     }
 

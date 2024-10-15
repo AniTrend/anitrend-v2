@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.shortcut.model
 
 import androidx.annotation.DrawableRes
@@ -38,7 +37,9 @@ sealed class Shortcut {
     abstract val navPayload: NavPayload?
 
     @get:StringRes abstract val label: Int
+
     @get:DrawableRes abstract val icon: Int
+
     @get:StringRes abstract val disabledMessage: Int
 
     data class AiringSchedule(

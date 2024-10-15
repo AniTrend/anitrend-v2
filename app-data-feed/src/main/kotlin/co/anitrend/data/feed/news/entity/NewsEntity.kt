@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 
-
 @Entity(
     tableName = "news",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
 )
 data class NewsEntity(
     @ColumnInfo(name = "id") val id: String,
@@ -34,5 +32,5 @@ data class NewsEntity(
     @ColumnInfo(name = "original_link") val originalLink: String,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "content") val content: String,
-    @ColumnInfo(name = "published_on") val publishedOn: Long?
+    @ColumnInfo(name = "published_on") val publishedOn: Long?,
 )

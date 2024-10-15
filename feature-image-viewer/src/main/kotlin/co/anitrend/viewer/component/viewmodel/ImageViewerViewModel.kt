@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.viewer.component.viewmodel
 
 import android.app.DownloadManager
@@ -23,18 +22,17 @@ import android.os.Environment
 import androidx.lifecycle.ViewModel
 
 class ImageViewerViewModel(
-    private val downloadManager: DownloadManager?
+    private val downloadManager: DownloadManager?,
 ) : ViewModel() {
-
     fun downloadImage(imageSource: CharSequence?) {
         val imageUri = Uri.parse(imageSource as? String)
         val request = DownloadManager.Request(imageUri)
         request.setDestinationInExternalPublicDir(
             Environment.DIRECTORY_DOWNLOADS,
-            imageUri.lastPathSegment
+            imageUri.lastPathSegment,
         )
         request.setNotificationVisibility(
-            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
+            DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED,
         )
         downloadManager?.enqueue(request)
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.extensions
 
 inline fun <P, S> List<P>.union(
     secondary: List<S>,
-    predicate: (P, S) -> Boolean
+    predicate: (P, S) -> Boolean,
 ) = filter { p ->
     secondary.any { s ->
         predicate(p, s)
@@ -27,7 +26,9 @@ inline fun <P, S> List<P>.union(
 }
 
 fun <T> List<T>?.combine(item: T?): List<T> {
-    return if (item != null)
+    return if (item != null) {
         orEmpty().plus(listOf(item))
-    else orEmpty()
+    } else {
+        orEmpty()
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,30 +14,26 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.review.component
 
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.data.review.DeleteReviewInteractor
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewTaskRouter
-import co.anitrend.navigation.extensions.fromWorkerParameters
 import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.first
 
 class ReviewDeleteEntryWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: DeleteReviewInteractor
+    private val interactor: DeleteReviewInteractor,
 ) : SupportCoroutineWorker(context, parameters) {
-
     private val param by parameters.transform<
         ReviewTaskRouter.Param.DeleteEntry,
-        ReviewParam.Delete
+        ReviewParam.Delete,
     > { ReviewParam.Delete(id = it.id) }
 
     /**
@@ -54,9 +50,10 @@ class ReviewDeleteEntryWorker(
     override suspend fun doWork(): Result {
         val dataState = interactor(param)
 
-        val networkState = dataState.loadState.first { state ->
-            state is LoadState.Success || state is LoadState.Error
-        }
+        val networkState =
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
 
         return when (networkState) {
             is LoadState.Success -> Result.success()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.editor.ui.koin
 
 import co.anitrend.core.android.koin.MarkdownFlavour
@@ -26,19 +25,21 @@ import io.noties.markwon.editor.handler.StrongEmphasisEditHandler
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-
-private val editorModule = module {
-    single {
-        val markwon = get<Markwon>(
-            named(MarkdownFlavour.ANILIST)
-        )
-        MarkwonEditor.builder(markwon)
-            .useEditHandler(EmphasisEditHandler())
-            .useEditHandler(StrongEmphasisEditHandler())
-            .build()
+private val editorModule =
+    module {
+        single {
+            val markwon =
+                get<Markwon>(
+                    named(MarkdownFlavour.ANILIST),
+                )
+            MarkwonEditor.builder(markwon)
+                .useEditHandler(EmphasisEditHandler())
+                .useEditHandler(StrongEmphasisEditHandler())
+                .build()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(editorModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(editorModule),
+    )

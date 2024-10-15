@@ -30,13 +30,13 @@ internal class FrameTagReplacer private constructor() : HtmlEmptyTagReplacement(
     @SuppressLint("DefaultLocale")
     override fun replace(tag: HtmlTag): String? {
         return when (tag.name().lowercase()) {
-            in handlingTags -> frameReplacement
+            in handlingTags -> FRAME_REPLACEMENT
             else -> super.replace(tag)
         }
     }
 
     companion object {
-        private const val frameReplacement = "\u00a0" // non-breakable space
+        private const val FRAME_REPLACEMENT = "\u00a0" // non-breakable space
         private val handlingTags = listOf("iframe")
 
         fun create() = FrameTagReplacer()

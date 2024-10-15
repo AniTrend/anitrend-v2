@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.screen
 
 import androidx.viewbinding.ViewBinding
@@ -24,7 +23,6 @@ import co.anitrend.core.android.binding.IBindingView
  * Abstract over [AniTrendScreen] bound to view binding definition
  */
 abstract class AniTrendBoundScreen<B : ViewBinding> : AniTrendScreen(), IBindingView<B> {
-
     override var binding: B? = null
 
     override fun onDestroy() {

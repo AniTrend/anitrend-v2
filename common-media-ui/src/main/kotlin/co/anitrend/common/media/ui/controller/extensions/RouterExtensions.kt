@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.controller.extensions
 
 import android.view.View
@@ -34,27 +33,30 @@ import co.anitrend.navigation.extensions.startActivity
 internal fun View.startMediaScreenFor(entity: Media) {
     MediaRouter.startActivity(
         context = context,
-        navPayload = MediaRouter.MediaParam(
-            id = entity.id,
-            type = entity.category.type
-        ).asNavPayload()
+        navPayload =
+            MediaRouter.MediaParam(
+                id = entity.id,
+                type = entity.category.type,
+            ).asNavPayload(),
     )
 }
 
 fun View.openMediaListSheetFor(
     entity: Media,
-    settings: IUserSettings
+    settings: IUserSettings,
 ): Boolean {
     runIfActivityContext {
         runIfAuthenticated(settings) {
-            val fragmentItem = FragmentItem(
-                fragment = MediaListEditorRouter.forSheet(),
-                parameter = MediaListEditorRouter.MediaListEditorParam(
-                    mediaId = entity.id,
-                    mediaType = entity.category.type,
-                    scoreFormat = settings.scoreFormat.value
-                ).asBundle()
-            )
+            val fragmentItem =
+                FragmentItem(
+                    fragment = MediaListEditorRouter.forSheet(),
+                    parameter =
+                        MediaListEditorRouter.MediaListEditorParam(
+                            mediaId = entity.id,
+                            mediaType = entity.category.type,
+                            scoreFormat = settings.scoreFormat.value,
+                        ).asBundle(),
+                )
             val dialog = fragmentItem.fragmentByTagOrNew(this)
             dialog.show(fragmentManager(), fragmentItem.tag())
         }

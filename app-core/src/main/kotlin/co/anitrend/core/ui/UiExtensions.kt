@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.ui
 
 import android.content.Context
@@ -22,7 +21,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
 import co.anitrend.arch.extension.ext.SYNCHRONIZED
 import co.anitrend.core.R
@@ -44,12 +46,13 @@ import org.koin.core.qualifier.Qualifier
  */
 inline fun <reified T : Any> KoinScopeComponent.get(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
-): T = runCatching {
-    scope.get<T>(qualifier, parameters)
-}.getOrElse {
-    getKoin().get(qualifier, parameters)
-}
+    noinline parameters: ParametersDefinition? = null,
+): T =
+    runCatching {
+        scope.get<T>(qualifier, parameters)
+    }.getOrElse {
+        getKoin().get(qualifier, parameters)
+    }
 
 /**
  * Inject lazily, by both local and global scope
@@ -60,7 +63,7 @@ inline fun <reified T : Any> KoinScopeComponent.get(
 inline fun <reified T : Any> KoinScopeComponent.inject(
     qualifier: Qualifier? = null,
     lazyMode: LazyThreadSafetyMode = SYNCHRONIZED,
-    noinline parameters: ParametersDefinition? = null
+    noinline parameters: ParametersDefinition? = null,
 ) = lazy(lazyMode) { get<T>(qualifier, parameters) }
 
 /**
@@ -85,10 +88,10 @@ inline fun FragmentItem<*>.commit(
             co.anitrend.core.android.R.anim.enter_from_bottom,
             co.anitrend.core.android.R.anim.exit_to_bottom,
             R.anim.popup_enter,
-            R.anim.popup_exit
+            R.anim.popup_exit,
         )
-    }
-) : String {
+    },
+): String {
     val fragmentTag = tag()
     val fragmentManager = context.fragmentManager()
     val backStack = fragmentManager.findFragmentByTag(fragmentTag)
@@ -110,7 +113,7 @@ inline fun FragmentItem<*>.commit(
  *
  * @see androidx.fragment.app.commit
  */
-inline fun <T: Fragment> FragmentItem<T>.commit(
+inline fun <T : Fragment> FragmentItem<T>.commit(
     contentFrame: View,
     context: Context,
     action: FragmentTransaction.() -> Unit = {
@@ -118,9 +121,9 @@ inline fun <T: Fragment> FragmentItem<T>.commit(
             co.anitrend.core.android.R.anim.enter_from_bottom,
             co.anitrend.core.android.R.anim.exit_to_bottom,
             R.anim.popup_enter,
-            R.anim.popup_exit
+            R.anim.popup_exit,
         )
-    }
+    },
 ) = commit(contentFrame.id, context, action)
 
 /**
@@ -128,9 +131,7 @@ inline fun <T: Fragment> FragmentItem<T>.commit(
  *
  * @param classDefinition [Class] with an out variance of type [Fragment]
  */
-inline fun <reified T : Fragment> FragmentActivity.createFragment(
-    classDefinition: Class<out T>
-): T {
+inline fun <reified T : Fragment> FragmentActivity.createFragment(classDefinition: Class<out T>): T {
     val qualifier = classDefinition.name
     val factory = supportFragmentManager.fragmentFactory
     require(factory is KoinFragmentFactory) {
@@ -148,13 +149,12 @@ inline fun <reified T : Fragment> FragmentActivity.createFragment(
  *
  * @see runIfActivityContext
  */
-inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
-    activity: FragmentActivity
-): T {
+inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(activity: FragmentActivity): T {
     val fragmentTag = tag()
     val fragmentManager = activity.supportFragmentManager
-    val fragment = fragmentManager.findFragmentByTag(fragmentTag) as? T
-        ?: activity.createFragment(fragment)
+    val fragment =
+        fragmentManager.findFragmentByTag(fragmentTag) as? T
+            ?: activity.createFragment(fragment)
     fragment.arguments = parameter
     return fragment
 }
@@ -168,7 +168,7 @@ inline fun <reified T : Fragment> FragmentItem<T>.fragmentByTagOrNew(
  */
 inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
     fragmentItem: FragmentItem<T>,
-    lazyMode: LazyThreadSafetyMode = SYNCHRONIZED
+    lazyMode: LazyThreadSafetyMode = SYNCHRONIZED,
 ) = lazy(lazyMode) {
     fragmentItem.fragmentByTagOrNew(this)
 }
@@ -178,19 +178,20 @@ inline fun <reified T : Fragment> FragmentActivity.fragmentByTagOrNew(
  */
 inline fun <reified T : ViewModel> ViewGroup.viewModel(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
-): Lazy<T> = lazy(SYNCHRONIZED) {
-    when (val component = context) {
-        is ComponentActivity -> {
-            component.getViewModel(
-                qualifier = qualifier,
-                extrasProducer = null,
-                parameters = parameters
-            )
+    noinline parameters: ParametersDefinition? = null,
+): Lazy<T> =
+    lazy(SYNCHRONIZED) {
+        when (val component = context) {
+            is ComponentActivity -> {
+                component.getViewModel(
+                    qualifier = qualifier,
+                    extrasProducer = null,
+                    parameters = parameters,
+                )
+            }
+            else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
         }
-        else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
     }
-}
 
 /**
  * Resolve view models from within action providers, by default this looks view models
@@ -203,16 +204,17 @@ inline fun <reified T : ViewModel> ViewGroup.viewModel(
  */
 inline fun <reified T : ViewModel> AbstractActionProvider.sharedViewModel(
     qualifier: Qualifier? = null,
-    noinline parameters: ParametersDefinition? = null
-): Lazy<T> = lazy(SYNCHRONIZED) {
-    when (val component = context) {
-        is ComponentActivity -> {
-            component.getViewModel(
-                qualifier = qualifier,
-                extrasProducer = null,
-                parameters = parameters
-            )
+    noinline parameters: ParametersDefinition? = null,
+): Lazy<T> =
+    lazy(SYNCHRONIZED) {
+        when (val component = context) {
+            is ComponentActivity -> {
+                component.getViewModel(
+                    qualifier = qualifier,
+                    extrasProducer = null,
+                    parameters = parameters,
+                )
+            }
+            else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
         }
-        else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
     }
-}

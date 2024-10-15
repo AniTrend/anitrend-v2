@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.contract
 
 import android.content.Context
@@ -24,15 +23,23 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import co.anitrend.auth.R
 import co.anitrend.auth.model.Authentication
-import co.anitrend.data.auth.helper.*
+import co.anitrend.data.auth.helper.AuthenticationType
+import co.anitrend.data.auth.helper.CALLBACK_QUERY_ERROR_DESCRIPTION_KEY
+import co.anitrend.data.auth.helper.CALLBACK_QUERY_ERROR_KEY
+import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY
+import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_KEY
+import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_TYPE_KEY
+import co.anitrend.data.auth.helper.authenticationUri
 import timber.log.Timber
 
 class AuthResultContract(
-    private val resources: Resources
+    private val resources: Resources,
 ) : ActivityResultContract<String, Authentication>() {
-
     /** Create an intent that can be used for [Activity.startActivityForResult]  */
-    override fun createIntent(context: Context, input: String): Intent {
+    override fun createIntent(
+        context: Context,
+        input: String,
+    ): Intent {
         val uri = authenticationUri(AuthenticationType.TOKEN, input)
         return Intent().apply {
             flags = Intent.FLAG_ACTIVITY_NO_HISTORY
@@ -42,12 +49,16 @@ class AuthResultContract(
     }
 
     /** Convert result obtained from [Activity.onActivityResult] to O  */
-    override fun parseResult(resultCode: Int, intent: Intent?): Authentication {
-        val data = intent?.data
-            ?: return Authentication.Error(
-                title = resources.getString(R.string.auth_error_default_title),
-                message = resources.getString(R.string.auth_error_default_message)
-            )
+    override fun parseResult(
+        resultCode: Int,
+        intent: Intent?,
+    ): Authentication {
+        val data =
+            intent?.data
+                ?: return Authentication.Error(
+                    title = resources.getString(R.string.auth_error_default_title),
+                    message = resources.getString(R.string.auth_error_default_message),
+                )
 
         // APP_URL/callback#access_token=TOKEN_HERE&token_type=TOKEN_TYPE&expires_in=EXPIRES_IN_HERE
         // Why are we even using fragments :not_like:
@@ -63,15 +74,17 @@ class AuthResultContract(
                 },
                 requireNotNull(uri.getQueryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
                     "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $uri"
-                }.toLong()
+                }.toLong(),
             )
         }.getOrElse {
             Timber.w(it)
             Authentication.Error(
-                title = uri.getQueryParameter(CALLBACK_QUERY_ERROR_KEY)
-                    ?: resources.getString(R.string.auth_error_default_title),
-                message = uri.getQueryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY)
-                    ?: resources.getString(R.string.auth_error_default_message)
+                title =
+                    uri.getQueryParameter(CALLBACK_QUERY_ERROR_KEY)
+                        ?: resources.getString(R.string.auth_error_default_title),
+                message =
+                    uri.getQueryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY)
+                        ?: resources.getString(R.string.auth_error_default_message),
             )
         }
     }

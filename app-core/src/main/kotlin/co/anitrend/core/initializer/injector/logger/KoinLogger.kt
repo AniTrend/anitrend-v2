@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.initializer.injector.logger
 
 import co.anitrend.core.BuildConfig
@@ -25,10 +24,12 @@ import org.koin.core.logger.MESSAGE
 import timber.log.Timber
 
 internal class KoinLogger(
-    logLevel: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.WARNING
+    logLevel: Level = if (BuildConfig.DEBUG) Level.DEBUG else Level.WARNING,
 ) : Logger(logLevel) {
-
-    override fun display(level: Level, msg: MESSAGE) {
+    override fun display(
+        level: Level,
+        msg: MESSAGE,
+    ) {
         when (level) {
             Level.DEBUG -> Timber.tag(KOIN_TAG).d(msg)
             Level.INFO -> Timber.tag(KOIN_TAG).i(msg)

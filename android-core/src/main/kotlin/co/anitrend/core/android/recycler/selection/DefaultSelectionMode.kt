@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.recycler.selection
 
 import android.view.ActionMode
@@ -25,7 +24,6 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
 
 class DefaultSelectionMode : ISupportSelectionMode<Long> {
-
     private val selections = mutableListOf<Long>()
 
     /**
@@ -60,7 +58,7 @@ class DefaultSelectionMode : ISupportSelectionMode<Long> {
     override fun isLongSelectionClickable(
         view: View,
         decorator: ISelectionDecorator,
-        id: Long
+        id: Long,
     ): Boolean = false
 
     /**
@@ -76,12 +74,15 @@ class DefaultSelectionMode : ISupportSelectionMode<Long> {
     override fun isSelectionClickable(
         view: View,
         decorator: ISelectionDecorator,
-        id: Long
+        id: Long,
     ): Boolean {
         if (id != RecyclerView.NO_ID) {
             val exists = containsItem(id)
-            if (!exists) selections.add(id)
-            else selections.remove(id)
+            if (!exists) {
+                selections.add(id)
+            } else {
+                selections.remove(id)
+            }
             decorator.decorateUsing(view, !exists)
             return true
         }

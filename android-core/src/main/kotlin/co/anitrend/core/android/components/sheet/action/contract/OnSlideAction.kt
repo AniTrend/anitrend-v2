@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.components.sheet.action.contract
 
 import android.view.View
@@ -37,7 +36,7 @@ interface OnSlideAction {
             from = -1.0,
             fromInclusive = true,
             to = 1.0,
-            toInclusive = true
-        ) slideOffset: Float
+            toInclusive = true,
+        ) slideOffset: Float,
     )
 }

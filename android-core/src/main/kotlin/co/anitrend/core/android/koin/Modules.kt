@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.koin
 
 import android.content.pm.ShortcutManager
@@ -44,79 +43,83 @@ import org.koin.dsl.binds
 import org.koin.dsl.module
 import org.ocpsoft.prettytime.PrettyTime
 
-private val coreModule = module {
-    factory {
-        Settings(
-            context = androidContext()
-        )
-    } binds (Settings.BINDINGS)
+private val coreModule =
+    module {
+        factory {
+            Settings(
+                context = androidContext(),
+            )
+        } binds (Settings.BINDINGS)
 
-    single<ISupportDispatcher> {
-        SupportDispatcher()
+        single<ISupportDispatcher> {
+            SupportDispatcher()
+        }
+
+        single<IStorageController> {
+            StorageController()
+        }
+
+        factory {
+            AniTrendDateHelper()
+        } bind AbstractSupportDateHelper::class
+
+        single {
+            /** TODO: On language preference change, destroy and recreate [PrettyTime] */
+            val localeHelper = get<ILocaleHelper>()
+            PrettyTime(localeHelper.locale)
+        }
     }
 
-    single<IStorageController> {
-        StorageController()
+private val configurationModule =
+    module {
+        single<ILocaleHelper> {
+            LocaleHelper(
+                settings = get(),
+            )
+        }
+
+        single<IThemeHelper> {
+            ThemeHelper(
+                settings = get(),
+            )
+        }
+
+        factory<IConfigurationHelper> {
+            ConfigurationHelper(
+                settings = get(),
+                localeHelper = get(),
+                themeHelper = get(),
+            )
+        }
     }
 
-    factory {
-        AniTrendDateHelper()
-    } bind AbstractSupportDateHelper::class
+private val controllerModule =
+    module {
+        factory<IPowerController> {
+            val context = androidContext()
+            AndroidPowerController(
+                context = context,
+                powerManager = context.systemServiceOf<PowerManager>(),
+                connectivityManager = context.systemServiceOf<ConnectivityManager>(),
+                settings = get(),
+            )
+        }
 
-    single {
-        /** TODO: On language preference change, destroy and recreate [PrettyTime] */
-        val localeHelper = get<ILocaleHelper>()
-        PrettyTime(localeHelper.locale)
-    }
-}
-
-private val configurationModule = module {
-    single<ILocaleHelper> {
-        LocaleHelper(
-            settings = get()
-        )
-    }
-
-    single<IThemeHelper> {
-        ThemeHelper(
-            settings = get()
-        )
+        factory<IShortcutController> {
+            val context = androidContext()
+            ShortcutController(
+                context = context,
+                shortcutManager = context.systemServiceOf<ShortcutManager>(),
+            )
+        }
     }
 
-    factory<IConfigurationHelper> {
-        ConfigurationHelper(
-            settings = get(),
-            localeHelper = get(),
-            themeHelper = get()
-        )
+val androidCoreModules =
+    module {
+        includes(coreModule, configurationModule, controllerModule)
     }
-}
-
-private val controllerModule = module {
-    factory<IPowerController> {
-        val context = androidContext()
-        AndroidPowerController(
-            context = context,
-            powerManager = context.systemServiceOf<PowerManager>(),
-            connectivityManager = context.systemServiceOf<ConnectivityManager>(),
-            settings = get()
-        )
-    }
-
-    factory<IShortcutController> {
-        val context = androidContext()
-        ShortcutController(
-            context = context,
-            shortcutManager = context.systemServiceOf<ShortcutManager>()
-        )
-    }
-}
-
-val androidCoreModules = module {
-    includes(coreModule, configurationModule, controllerModule)
-}
 
 enum class MarkdownFlavour {
     STANDARD,
-    ANILIST
+    ANILIST,
 }

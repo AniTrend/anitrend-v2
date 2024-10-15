@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.controller.model
 
 import android.content.res.Resources
@@ -47,9 +46,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 internal class MediaSummaryItem(
     private val entity: Media,
     private val settings: Settings,
-    private val viewPool: RecyclerView.RecycledViewPool
+    private val viewPool: RecyclerView.RecycledViewPool,
 ) : RecyclerItemBinding<MediaSummaryItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
     private var genreListAdapter: GenreListAdapter? = null
 
@@ -58,7 +56,7 @@ internal class MediaSummaryItem(
 
         requireBinding().mediaGenresRecycler.setUpWith(
             supportAdapter = adapter,
-            recyclerViewPool = viewPool
+            recyclerViewPool = viewPool,
         )
 
         adapter.submitList(entity.genres.toList())
@@ -79,19 +77,20 @@ internal class MediaSummaryItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = MediaSummaryItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(co.anitrend.arch.theme.R.dimen.lg_margin).toFloat()
-        disposable = requireBinding().mediaImage.using(
-            entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
-            listOf(
-                RoundedCornersTransformation(
-                    topRight = radius,
-                    bottomRight = radius
-                )
+        disposable =
+            requireBinding().mediaImage.using(
+                entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
+                listOf(
+                    RoundedCornersTransformation(
+                        topRight = radius,
+                        bottomRight = radius,
+                    ),
+                ),
             )
-        )
         setUpMediaGenres(view)
         requireBinding().mediaFavourites.setFavouriteState(entity)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
@@ -133,14 +132,15 @@ internal class MediaSummaryItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.column_x1)
 
     companion object {
-        internal fun LayoutInflater.createListViewHolder(
-            viewGroup: ViewGroup
-        ) = MediaSummaryItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createListViewHolder(viewGroup: ViewGroup) =
+            MediaSummaryItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }

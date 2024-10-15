@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.component.content
 
 import android.animation.ValueAnimator
@@ -72,13 +71,12 @@ class BottomDrawerContent(
     private val navigationAdapter: NavigationAdapter,
     private val accountAdapter: AccountAdapter,
     override val inflateLayout: Int = R.layout.bottom_navigation_drawer,
-    override val inflateMenu: Int = R.menu.drawer_menu
+    override val inflateMenu: Int = R.menu.drawer_menu,
 ) : AniTrendContent<BottomNavigationDrawerBinding>(), INavigationDrawer {
-
     private val presenter by inject<DrawerPresenter>()
 
     private val accountViewModel by viewModel<AccountViewModel>(
-        ownerProducer = { requireActivity() }
+        ownerProducer = { requireActivity() },
     )
 
     private val navigationViewModel by viewModel<NavigationViewModel>(
@@ -97,7 +95,7 @@ class BottomDrawerContent(
         presenter.createBackgroundShape(requireBinding().sheetBackgroundContainer)
     }
 
-    private val foregroundShapeDrawable: MaterialShapeDrawable by lazy(UNSAFE)  {
+    private val foregroundShapeDrawable: MaterialShapeDrawable by lazy(UNSAFE) {
         presenter.createForegroundShape(requireBinding().sheetForegroundContainer)
     }
 
@@ -127,11 +125,12 @@ class BottomDrawerContent(
         set(value) {
             if (field != value) {
                 onSandwichProgressChanged(value)
-                val newState = when(value) {
-                    0F -> SandwichState.CLOSED
-                    1F -> SandwichState.OPEN
-                    else -> SandwichState.SETTLING
-                }
+                val newState =
+                    when (value) {
+                        0F -> SandwichState.CLOSED
+                        1F -> SandwichState.OPEN
+                        else -> SandwichState.SETTLING
+                    }
                 if (sandwichState != newState) onSandwichStateChanged(newState)
                 sandwichState = newState
                 field = value
@@ -143,27 +142,32 @@ class BottomDrawerContent(
      */
     private fun toggleSandwich() {
         val initialProgress = sandwichProgress
-        val newProgress = when (sandwichState) {
-            SandwichState.CLOSED -> {
-                // Store the original top location of the background container so we can animate
-                // the delta between its original top position and the top position needed to just
-                // show the account picker RecyclerView, and back again.
-                requireBinding().sheetBackgroundContainer.setTag(
-                    R.id.tag_view_top_snapshot,
-                    requireBinding().sheetBackgroundContainer.top
-                )
-                1F
+        val newProgress =
+            when (sandwichState) {
+                SandwichState.CLOSED -> {
+                    // Store the original top location of the background container so we can animate
+                    // the delta between its original top position and the top position needed to just
+                    // show the account picker RecyclerView, and back again.
+                    requireBinding().sheetBackgroundContainer.setTag(
+                        R.id.tag_view_top_snapshot,
+                        requireBinding().sheetBackgroundContainer.top,
+                    )
+                    1F
+                }
+                SandwichState.OPEN -> 0F
+                SandwichState.SETTLING -> return
             }
-            SandwichState.OPEN -> 0F
-            SandwichState.SETTLING -> return
-        }
         sandwichAnimator?.cancel()
-        sandwichAnimator = ValueAnimator.ofFloat(initialProgress, newProgress).apply {
-            addUpdateListener { sandwichProgress = animatedValue as Float }
-            interpolator = sandwichInterpolator
-            duration = (abs(newProgress - initialProgress) *
-                    resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_medium)).toLong()
-        }
+        sandwichAnimator =
+            ValueAnimator.ofFloat(initialProgress, newProgress).apply {
+                addUpdateListener { sandwichProgress = animatedValue as Float }
+                interpolator = sandwichInterpolator
+                duration =
+                    (
+                        abs(newProgress - initialProgress) *
+                            resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_medium)
+                    ).toLong()
+            }
         sandwichAnimator?.start()
     }
 
@@ -190,9 +194,13 @@ class BottomDrawerContent(
             // Animate the translationY of the backgroundContainer so just the account picker is
             // peeked above the BottomAppBar.
             sheetBackgroundContainer.translationY = progress *
-                    ((scrimView.bottom - accountRecycler.height
-                            - resources.getDimension(co.anitrend.core.android.R.dimen.design_bottom_app_bar_height)) -
-                            (sheetBackgroundContainer.getTag(R.id.tag_view_top_snapshot) as Int))
+                (
+                    (
+                        scrimView.bottom - accountRecycler.height -
+                            resources.getDimension(co.anitrend.core.android.R.dimen.design_bottom_app_bar_height)
+                    ) -
+                        (sheetBackgroundContainer.getTag(R.id.tag_view_top_snapshot) as Int)
+                )
         }
 
         // Call any actions which have been registered to run on progress changes.
@@ -207,14 +215,14 @@ class BottomDrawerContent(
         // the account list.
         when (state) {
             SandwichState.OPEN -> {
-                with (requireBinding()) {
+                with(requireBinding()) {
                     sheetForegroundContainer.gone()
                     profileImageView.isClickable = false
                     profileImageView.isFocusable = false
                 }
             }
             else -> {
-                with (requireBinding()) {
+                with(requireBinding()) {
                     sheetForegroundContainer.visible()
                     profileImageView.isClickable = true
                     profileImageView.isFocusable = true
@@ -226,7 +234,8 @@ class BottomDrawerContent(
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, closeDrawerOnBackPressed
+            this,
+            closeDrawerOnBackPressed,
         )
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -277,7 +286,10 @@ class BottomDrawerContent(
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = BottomNavigationDrawerBinding.bind(view)
         requireBinding().run {
@@ -291,22 +303,34 @@ class BottomDrawerContent(
             profileImageView.setOnClickListener { toggleSandwich() }
 
             presenter.applyStateAndSlideActions(
-                this, bottomSheetCallback, foregroundShapeDrawable
+                this,
+                bottomSheetCallback,
+                foregroundShapeDrawable,
             )
             // Close the sandwiching account picker if open
-            bottomSheetCallback.addOnStateChangedAction(object : OnStateChangedAction {
-                override fun onStateChanged(sheet: View, newState: Int) {
-                    sandwichAnimator?.cancel()
-                    sandwichProgress = 0F
-                }
-            })
+            bottomSheetCallback.addOnStateChangedAction(
+                object : OnStateChangedAction {
+                    override fun onStateChanged(
+                        sheet: View,
+                        newState: Int,
+                    ) {
+                        sandwichAnimator?.cancel()
+                        sandwichProgress = 0F
+                    }
+                },
+            )
 
             // If the drawer is open, pressing the system back button should close the drawer.
-            bottomSheetCallback.addOnStateChangedAction(object : OnStateChangedAction {
-                override fun onStateChanged(sheet: View, newState: Int) {
-                    closeDrawerOnBackPressed.isEnabled = newState != BottomSheetBehavior.STATE_HIDDEN
-                }
-            })
+            bottomSheetCallback.addOnStateChangedAction(
+                object : OnStateChangedAction {
+                    override fun onStateChanged(
+                        sheet: View,
+                        newState: Int,
+                    ) {
+                        closeDrawerOnBackPressed.isEnabled = newState != BottomSheetBehavior.STATE_HIDDEN
+                    }
+                },
+            )
 
             toggleMenuVisibility(false)
             behavior.addBottomSheetCallback(bottomSheetCallback)
@@ -335,33 +359,37 @@ class BottomDrawerContent(
      *
      * @see .onCreateOptionsMenu
      */
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_about -> {
-            AboutRouter.startActivity(context)
-            true
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.action_about -> {
+                AboutRouter.startActivity(context)
+                true
+            }
+            R.id.action_updates -> {
+                UpdaterRouter.startActivity(context)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        R.id.action_updates -> {
-            UpdaterRouter.startActivity(context)
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
 
     override fun isShowing(): Boolean {
         return behavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED ||
-                behavior.state == BottomSheetBehavior.STATE_EXPANDED
+            behavior.state == BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun toggleDrawer() {
-        if (sandwichState == SandwichState.OPEN)
+        if (sandwichState == SandwichState.OPEN) {
             toggleSandwich()
-        else when (behavior.state) {
-            BottomSheetBehavior.STATE_EXPANDED -> show()
-            BottomSheetBehavior.STATE_HIDDEN -> show()
-            BottomSheetBehavior.STATE_COLLAPSED,
-            BottomSheetBehavior.STATE_HALF_EXPANDED -> dismiss()
-            BottomSheetBehavior.STATE_DRAGGING -> { }
-            BottomSheetBehavior.STATE_SETTLING -> { }
+        } else {
+            when (behavior.state) {
+                BottomSheetBehavior.STATE_EXPANDED -> show()
+                BottomSheetBehavior.STATE_HIDDEN -> show()
+                BottomSheetBehavior.STATE_COLLAPSED,
+                BottomSheetBehavior.STATE_HALF_EXPANDED,
+                -> dismiss()
+                BottomSheetBehavior.STATE_DRAGGING -> { }
+                BottomSheetBehavior.STATE_SETTLING -> { }
+            }
         }
     }
 
@@ -389,7 +417,9 @@ class BottomDrawerContent(
         bottomSheetCallback.removeOnStateChangedAction(action)
     }
 
-    override suspend fun setCheckedItem(@IdRes selectedItem: Int) {
+    override suspend fun setCheckedItem(
+        @IdRes selectedItem: Int,
+    ) {
         navigationViewModel.setNavigationMenuItemChecked(selectedItem)
     }
 

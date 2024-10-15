@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.filter
 
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -33,13 +32,13 @@ import timber.log.Timber
  * Contract for a [QueryBuilder] builder to be used in conjunction with [androidx.room.RawQuery]
  */
 abstract class FilterQueryBuilder<F> {
-
     private var hash: Int? = null
     private var builder: QueryBuilder? = null
 
-    protected fun requireBuilder() = requireNotNull(builder) {
-        "Required instance of builder has not yet been set"
-    }
+    protected fun requireBuilder() =
+        requireNotNull(builder) {
+            "Required instance of builder has not yet been set"
+        }
 
     /**
      * Staring point of the query builder, that should make use of [requireBuilder]
@@ -50,11 +49,12 @@ abstract class FilterQueryBuilder<F> {
     private fun asSupportSQLiteQuery(): SimpleSQLiteQuery {
         // Temporary filter since projections seem to be added into params
         val query = requireBuilder().build()
-        val parameters = requireBuilder().buildParameters()
-            .filterNot { it is Projection }
-            .toTypedArray()
+        val parameters =
+            requireBuilder().buildParameters()
+                .filterNot { it is Projection }
+                .toTypedArray()
         Timber.d(
-            "Generated SQL query: \n\r${query} \n\rparams: [${parameters.joinToString()}]"
+            "Generated SQL query: \n\r$query \n\rparams: [${parameters.joinToString()}]",
         )
         return SimpleSQLiteQuery(query, parameters)
     }
@@ -66,20 +66,21 @@ abstract class FilterQueryBuilder<F> {
      *
      * @return [SupportSQLiteQuery]
      */
-    fun build(filter: F): SupportSQLiteQuery = when (hash) {
-        filter.hashCode() -> {
-            Timber.d("Reusing existing builder instance, filter hash has not changed")
-            asSupportSQLiteQuery()
+    fun build(filter: F): SupportSQLiteQuery =
+        when (hash) {
+            filter.hashCode() -> {
+                Timber.d("Reusing existing builder instance, filter hash has not changed")
+                asSupportSQLiteQuery()
+            }
+            else -> {
+                val filterHash = filter.hashCode()
+                Timber.d("Creating new builder instance, old != new filter has: $hash -> $filterHash")
+                hash = filterHash
+                builder = QueryBuilder()
+                onBuildQuery(filter)
+                asSupportSQLiteQuery()
+            }
         }
-        else -> {
-            val filterHash = filter.hashCode()
-            Timber.d("Creating new builder instance, old != new filter has: $hash -> $filterHash")
-            hash = filterHash
-            builder = QueryBuilder()
-            onBuildQuery(filter)
-            asSupportSQLiteQuery()
-        }
-    }
 
     companion object {
         /**
@@ -91,16 +92,22 @@ abstract class FilterQueryBuilder<F> {
         fun AbstractQueryBuilder.orderBy(
             projection: Projection,
             sortOrder: SortOrder,
-            caseSensitive: Boolean = true
+            caseSensitive: Boolean = true,
         ): AbstractQueryBuilder {
             when (caseSensitive) {
                 true -> {
-                    if (sortOrder == SortOrder.DESC) orderByDesc(projection)
-                    else orderByAsc(projection)
+                    if (sortOrder == SortOrder.DESC) {
+                        orderByDesc(projection)
+                    } else {
+                        orderByAsc(projection)
+                    }
                 }
                 false -> {
-                    if (sortOrder == SortOrder.DESC) orderByDescCollate(projection)
-                    else orderByAscCollate(projection)
+                    if (sortOrder == SortOrder.DESC) {
+                        orderByDescCollate(projection)
+                    } else {
+                        orderByAscCollate(projection)
+                    }
                 }
             }
             return this

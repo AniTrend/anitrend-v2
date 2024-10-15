@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.cache.repository.contract
 
 import co.anitrend.data.android.cache.model.CacheIdentity
@@ -22,7 +21,6 @@ import org.threeten.bp.Instant
 import org.threeten.bp.temporal.TemporalAmount
 
 interface ICacheStorePolicy {
-
     /**
      * Checks if the given [identity] has been requested before a certain time [instant]
      *
@@ -31,7 +29,7 @@ interface ICacheStorePolicy {
      */
     suspend fun isRequestBefore(
         identity: CacheIdentity,
-        instant: Instant
+        instant: Instant,
     ): Boolean
 
     /**
@@ -44,7 +42,7 @@ interface ICacheStorePolicy {
      */
     suspend fun isRequestExpired(
         identity: CacheIdentity,
-        threshold: TemporalAmount
+        threshold: TemporalAmount,
     ): Boolean
 
     /**
@@ -62,7 +60,7 @@ interface ICacheStorePolicy {
      */
     suspend fun shouldRefresh(
         identity: CacheIdentity,
-        expiresAfter: Instant
+        expiresAfter: Instant,
     ): Boolean
 
     /**
@@ -70,7 +68,7 @@ interface ICacheStorePolicy {
      */
     suspend fun updateLastRequest(
         identity: CacheIdentity,
-        timestamp: Instant
+        timestamp: Instant,
     )
 
     /**

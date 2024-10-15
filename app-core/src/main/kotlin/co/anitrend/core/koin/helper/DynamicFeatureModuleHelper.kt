@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.koin.helper
 
 import androidx.lifecycle.LifecycleOwner
@@ -32,9 +31,8 @@ import timber.log.Timber
  */
 class DynamicFeatureModuleHelper(
     private val modules: List<Module>,
-    private val unloadOnDestroy: Boolean = false
+    private val unloadOnDestroy: Boolean = false,
 ) : SupportLifecycle {
-
     /**
      * Triggered when the lifecycleOwner reaches it's onCreate state
      *
@@ -43,7 +41,7 @@ class DynamicFeatureModuleHelper(
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         Timber.v(
-            "Loading dynamic feature modules: ${modules.size}"
+            "Loading dynamic feature modules: ${modules.size}",
         )
         loadModules()
     }
@@ -57,7 +55,7 @@ class DynamicFeatureModuleHelper(
         super.onDestroy(owner)
         if (unloadOnDestroy) {
             Timber.v(
-                "Unloading ${modules.size} feature modules from global context"
+                "Unloading ${modules.size} feature modules from global context",
             )
             unloadModules()
         }

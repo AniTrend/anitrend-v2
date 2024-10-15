@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.component.screen
 
 import android.content.Intent
@@ -34,7 +33,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
-
     private val viewModel by viewModel<AuthViewModel>()
     private val authRouterParam by extra<AuthRouter.AuthParam>(
         key = nameOf<AuthRouter.AuthParam>(),
@@ -43,7 +41,7 @@ class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
     private fun checkIntentData() {
         viewModel.onIntentData(
             applicationContext,
-            authRouterParam
+            authRouterParam,
         )
     }
 
@@ -96,12 +94,13 @@ class AuthScreen : AniTrendBoundScreen<AuthScreenBinding>() {
      */
     override fun getParentActivityIntent(): Intent? {
         return MainRouter.forActivity(
-            context = applicationContext
+            context = applicationContext,
         )
     }
 
     private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(AuthRouter.forFragment())
-            .commit(requireBinding().splashFrame, this)
+        currentFragmentTag =
+            FragmentItem(AuthRouter.forFragment())
+                .commit(requireBinding().splashFrame, this)
     }
 }

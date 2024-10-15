@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.model.page
 
 import co.anitrend.data.feed.contract.model.IRssChannelModel
@@ -25,21 +24,24 @@ import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 
 @Root(name = "rss", strict = false)
-internal data class NewsPageModel @JvmOverloads constructor(
-    @field:Element(
-        name = "channel",
-        required = true
-    )
-    override var channel: ChannelModel? = null
-) : IRssContainer<NewsPageModel.ChannelModel> {
-
-    @Root(name = "channel", strict = false)
-    internal data class ChannelModel @JvmOverloads constructor(
-        @field:ElementList(
-            name = "item",
-            required = false,
-            inline = true
+internal data class NewsPageModel
+    @JvmOverloads
+    constructor(
+        @field:Element(
+            name = "channel",
+            required = true,
         )
-        override var items: List<NewsModelItem>? = null
-    ) : IRssChannelModel<NewsModelItem>
-}
+        override var channel: ChannelModel? = null,
+    ) : IRssContainer<NewsPageModel.ChannelModel> {
+        @Root(name = "channel", strict = false)
+        internal data class ChannelModel
+            @JvmOverloads
+            constructor(
+                @field:ElementList(
+                    name = "item",
+                    required = false,
+                    inline = true,
+                )
+                override var items: List<NewsModelItem>? = null,
+            ) : IRssChannelModel<NewsModelItem>
+    }

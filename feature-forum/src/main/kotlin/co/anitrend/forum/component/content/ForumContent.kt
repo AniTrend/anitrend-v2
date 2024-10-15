@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.forum.component.content
 
 import android.os.Bundle
@@ -32,9 +31,8 @@ import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForumContent(
-    override val inflateLayout: Int = R.layout.forum_content
+    override val inflateLayout: Int = R.layout.forum_content,
 ) : AniTrendContent<ForumContentBinding>() {
-
     private val viewModel by viewModel<ForumViewModel>()
 
     private fun onFetchDataInitialize() {
@@ -46,7 +44,6 @@ class ForumContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -75,7 +72,7 @@ class ForumContent(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = ForumContentBinding.bind(requireNotNull(view))

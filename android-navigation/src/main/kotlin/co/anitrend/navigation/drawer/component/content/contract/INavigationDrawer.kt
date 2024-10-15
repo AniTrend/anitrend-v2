@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.component.content.contract
 
 import androidx.annotation.IdRes
@@ -24,19 +23,27 @@ import co.anitrend.navigation.drawer.model.navigation.Navigation
 import kotlinx.coroutines.flow.Flow
 
 interface INavigationDrawer {
-
     val navigationFlow: Flow<Navigation.Menu>
 
     fun isShowing(): Boolean
+
     fun toggleDrawer()
+
     fun show()
+
     fun dismiss()
 
     fun addOnSlideAction(action: OnSlideAction)
+
     fun removeOnSlideAction(action: OnSlideAction)
+
     fun addOnStateChangedAction(action: OnStateChangedAction)
+
     fun removeOnStateChangedAction(action: OnStateChangedAction)
 
-    suspend fun setCheckedItem(@IdRes selectedItem: Int)
+    suspend fun setCheckedItem(
+        @IdRes selectedItem: Int,
+    )
+
     fun toggleMenuVisibility(showDrawerMenu: Boolean)
 }

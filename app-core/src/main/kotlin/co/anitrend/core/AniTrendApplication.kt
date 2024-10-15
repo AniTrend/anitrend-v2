@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core
 
 import android.app.Application
@@ -27,7 +26,6 @@ import coil.ImageLoaderFactory
 import timber.log.Timber
 
 abstract class AniTrendApplication : Application(), ImageLoaderFactory {
-
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
      * Initializes dependencies for the entire application, this function is automatically called
@@ -45,8 +43,9 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
      * Timber logging tree depending on the build type we plant the appropriate tree
      */
     protected open fun plantAnalyticsTree() {
-        if (!BuildConfig.DEBUG)
+        if (!BuildConfig.DEBUG) {
             Timber.plant(analyticsTree())
+        }
     }
 
     /**
@@ -59,7 +58,7 @@ abstract class AniTrendApplication : Application(), ImageLoaderFactory {
 
     private fun createUncaughtExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(
-            UncaughtExceptionHandler()
+            UncaughtExceptionHandler(),
         )
     }
 

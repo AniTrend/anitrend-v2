@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.koin
 
 import androidx.recyclerview.widget.RecyclerView
@@ -34,53 +33,60 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    fragment {
-        MediaListContainer(
-            stateConfig = get()
-        )
-    }
-    fragment {
-        val settings = get<Settings>()
-        MediaListContent(
-            settings = settings,
-            stateConfig = get(),
-            supportViewAdapter = MediaPagedAdapter(
-                settings = settings,
-                viewPool = RecyclerView.RecycledViewPool(),
-                resources = androidContext().resources,
-                stateConfiguration = get()
+private val fragmentModule =
+    module {
+        fragment {
+            MediaListContainer(
+                stateConfig = get(),
             )
-        )
+        }
+        fragment {
+            val settings = get<Settings>()
+            MediaListContent(
+                settings = settings,
+                stateConfig = get(),
+                supportViewAdapter =
+                    MediaPagedAdapter(
+                        settings = settings,
+                        viewPool = RecyclerView.RecycledViewPool(),
+                        resources = androidContext().resources,
+                        stateConfiguration = get(),
+                    ),
+            )
+        }
     }
-}
 
-private val viewModelModule = module {
-    viewModel { scope ->
-        MediaListViewModel(
-            state = MediaListState(
-                interactor = get(),
-                settings = get()
-            ),
-            savedStateHandle = scope.get()
-        )
+private val viewModelModule =
+    module {
+        viewModel { scope ->
+            MediaListViewModel(
+                state =
+                    MediaListState(
+                        interactor = get(),
+                        settings = get(),
+                    ),
+                savedStateHandle = scope.get(),
+            )
+        }
+        viewModel { scope ->
+            UserViewModel(
+                state =
+                    UserState(
+                        interactor = get(),
+                    ),
+                savedStateHandle = scope.get(),
+            )
+        }
     }
-    viewModel { scope ->
-        UserViewModel(
-            state = UserState(
-                interactor = get()
-            ),
-            savedStateHandle = scope.get()
-        )
-    }
-}
 
-private val featureModule = module {
-    factory<MediaListRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<MediaListRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.widget.airing.controller
 
 import android.content.Context
@@ -26,12 +25,11 @@ import co.anitrend.domain.common.HexColor
 import co.anitrend.domain.media.entity.Media
 
 internal class MediaAiringScheduleController(private val entity: Media) {
-
     /**
-    * Provides a type of [ColorInt] from the [HexColor] presented by the underlying entity
+     * Provides a type of [ColorInt] from the [HexColor] presented by the underlying entity
      *
      * @see asColorInt
-    */
+     */
     @ColorInt fun getColor(context: Context): Int {
         val colour: HexColor? = entity.image.color
         return colour?.asColorInt(context) ?: context.getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor)

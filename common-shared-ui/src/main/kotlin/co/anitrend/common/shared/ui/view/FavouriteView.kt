@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.view
 
 import android.content.Context
@@ -34,61 +33,79 @@ import co.anitrend.core.android.extensions.toHumanReadableQuantity
 import co.anitrend.domain.common.entity.contract.IFavourable
 import com.google.android.material.textview.MaterialTextView
 
-class FavouriteView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
+class FavouriteView
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : LinearLayoutCompat(context, attrs, defStyleAttr), CustomView {
+        private val favouriteImageView =
+            AppCompatImageView(context).apply {
+                layoutParams =
+                    LayoutParams(14.dp, 14.dp).also { param ->
+                        param.gravity = Gravity.CENTER_VERTICAL
+                    }
+            }
 
-    private val favouriteImageView = AppCompatImageView(context).apply {
-        layoutParams = LayoutParams(14.dp, 14.dp).also { param ->
-            param.gravity = Gravity.CENTER_VERTICAL
+        private val favouriteTextView =
+            MaterialTextView(context).apply {
+                layoutParams =
+                    LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT,
+                    ).also { param ->
+                        param.gravity = Gravity.CENTER_VERTICAL
+                    }
+                setTextColor(context.getCompatColor(co.anitrend.core.android.R.color.white_1000))
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+                setTypeface(typeface, Typeface.BOLD)
+            }
+
+        init {
+            onInit(context, attrs, defStyleAttr)
         }
-    }
 
-    private val favouriteTextView = MaterialTextView(context).apply {
-        layoutParams = LayoutParams(
-            LayoutParams.WRAP_CONTENT,
-            LayoutParams.WRAP_CONTENT
-        ).also { param ->
-            param.gravity = Gravity.CENTER_VERTICAL
-        }
-        setTextColor(context.getCompatColor(co.anitrend.core.android.R.color.white_1000))
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
-        setTypeface(typeface, Typeface.BOLD)
-    }
-
-    init { onInit(context, attrs, defStyleAttr) }
-
-    /**
-     * Set the number of favourites
-     */
-    fun setFavouriteState(favourite: IFavourable) {
-        favouriteTextView.text = favourite.favourites.toHumanReadableQuantity()
-        val drawableType = if (favourite.isFavourite)
-            R.drawable.ic_favorite
-        else R.drawable.ic_not_favorite
-        favouriteImageView.setImageDrawable(
-            context.getCompatDrawable(drawableType)
-        )
-    }
-
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        addView(favouriteImageView)
-        addView(favouriteTextView)
-
-        background = context.getCompatDrawable(
-            co.anitrend.core.android.R.drawable.widget_background,
-            co.anitrend.core.android.R.color.bubble_color
-        )
-
-        favouriteTextView.updateMargins(start = 8.dp)
-
-        if (isInEditMode)
-            setFavouriteState(
-                object : IFavourable {
-                    override val favourites: Int = 11650
-                    override val isFavourite: Boolean = false
-                    override val isFavouriteBlocked: Boolean = false
+        /**
+         * Set the number of favourites
+         */
+        fun setFavouriteState(favourite: IFavourable) {
+            favouriteTextView.text = favourite.favourites.toHumanReadableQuantity()
+            val drawableType =
+                if (favourite.isFavourite) {
+                    R.drawable.ic_favorite
+                } else {
+                    R.drawable.ic_not_favorite
                 }
+            favouriteImageView.setImageDrawable(
+                context.getCompatDrawable(drawableType),
             )
+        }
+
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            addView(favouriteImageView)
+            addView(favouriteTextView)
+
+            background =
+                context.getCompatDrawable(
+                    co.anitrend.core.android.R.drawable.widget_background,
+                    co.anitrend.core.android.R.color.bubble_color,
+                )
+
+            favouriteTextView.updateMargins(start = 8.dp)
+
+            if (isInEditMode) {
+                setFavouriteState(
+                    object : IFavourable {
+                        override val favourites: Int = 11650
+                        override val isFavourite: Boolean = false
+                        override val isFavouriteBlocked: Boolean = false
+                    },
+                )
+            }
+        }
     }
-}

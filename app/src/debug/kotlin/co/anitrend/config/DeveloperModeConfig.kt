@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.config
 
 import android.content.Intent
@@ -24,9 +23,8 @@ import co.anitrend.data.settings.developer.IDeveloperSettings
 import leakcanary.LeakCanary
 
 internal class DeveloperModeConfig(
-    override val settings: IDeveloperSettings
+    override val settings: IDeveloperSettings,
 ) : AbstractDeveloperModeConfig() {
-
     init {
         runCatching(::initialize)
             .stackTrace()
@@ -34,17 +32,17 @@ internal class DeveloperModeConfig(
 
     private fun initialize() {
         LeakCanary.showLeakDisplayActivityLauncherIcon(
-            settings.showLeakLauncher.value
+            settings.showLeakLauncher.value,
         )
-        LeakCanary.config = LeakCanary.config.copy(
-            dumpHeap = settings.automaticHeapDump.value
-        )
+        LeakCanary.config =
+            LeakCanary.config.copy(
+                dumpHeap = settings.automaticHeapDump.value,
+            )
     }
 
     override fun forceHeapDump() {
         LeakCanary.dumpHeap()
     }
 
-    override fun leakDumpIntent(): Intent =
-        LeakCanary.newLeakDisplayActivityIntent()
+    override fun leakDumpIntent(): Intent = LeakCanary.newLeakDisplayActivityIntent()
 }

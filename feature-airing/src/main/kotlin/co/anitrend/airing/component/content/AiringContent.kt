@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.airing.component.content
 
 import android.view.MenuItem
@@ -45,26 +44,25 @@ class AiringContent(
     private val dateHelper: AniTrendDateHelper,
     override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<Media>
+    override val supportViewAdapter: SupportAdapter<Media>,
 ) : AniTrendListContent<Media>() {
-
     private val viewModel by stateViewModel<AiringViewModel>(
-        state = { arguments.orEmpty() }
+        state = { arguments.orEmpty() },
     )
 
     override val defaultSpanSize: Int
-        get() = getSpanSizeByPreference(
-            settings.preferredViewMode.value
-        )
+        get() =
+            getSpanSizeByPreference(
+                settings.preferredViewMode.value,
+            )
 
     @IntegerRes
-    private fun getSpanSizeByPreference(
-        viewMode: PreferredViewMode
-    ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
-        else -> co.anitrend.core.android.R.integer.column_x1
-    }
+    private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
+        when (viewMode) {
+            PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+            PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+            else -> co.anitrend.core.android.R.integer.column_x1
+        }
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -94,11 +92,13 @@ class AiringContent(
                         setSelectedDate(dateHelper.convertToCalendar(it.toLong()))
                     }
                     onPositive { dateStart, _ ->
-                        val model = viewModel.filter.value?.copy(
-                            airingAt_greater = Instant.ofEpochMilli(
-                                dateStart.timeInMillis
-                            ).epochSecond.toInt()
-                        )
+                        val model =
+                            viewModel.filter.value?.copy(
+                                airingAt_greater =
+                                    Instant.ofEpochMilli(
+                                        dateStart.timeInMillis,
+                                    ).epochSecond.toInt(),
+                            )
                         viewModel.filter.postValue(model)
                     }
                 }

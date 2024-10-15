@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.carousel.koin
 
 import androidx.recyclerview.widget.RecyclerView
@@ -31,54 +30,62 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private val coreModule = module {
-    factory {
-        RecyclerView.RecycledViewPool().apply {
-            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_carousel_item, 12)
-            setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_comfortable_item, 26)
+private val coreModule =
+    module {
+        factory {
+            RecyclerView.RecycledViewPool().apply {
+                setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_carousel_item, 12)
+                setMaxRecycledViews(co.anitrend.common.media.ui.R.layout.media_comfortable_item, 26)
+            }
         }
     }
-}
 
-private val controllerModule = module {
-    factory {
-        CarouselContentController(
-            dateHelper = get()
-        )
-    }
-}
-
-private val fragmentModule = module {
-    fragment {
-        CarouselContent(
-            controller = get(),
-            stateConfig = get(),
-            supportViewAdapter = MediaCarouselAdapter(
-                settings = get(),
-                viewPool = get(),
-                resources = androidContext().resources,
-                stateConfiguration = get()
+private val controllerModule =
+    module {
+        factory {
+            CarouselContentController(
+                dateHelper = get(),
             )
-        )
+        }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        CarouselViewModel(
-            state = CarouselState(
-                interactor = get()
+private val fragmentModule =
+    module {
+        fragment {
+            CarouselContent(
+                controller = get(),
+                stateConfig = get(),
+                supportViewAdapter =
+                    MediaCarouselAdapter(
+                        settings = get(),
+                        viewPool = get(),
+                        resources = androidContext().resources,
+                        stateConfiguration = get(),
+                    ),
             )
-        )
+        }
     }
-}
 
-private val featureModule = module {
-	factory<MediaCarouselRouter.Provider> {
-        FeatureProvider()
+private val viewModelModule =
+    module {
+        viewModel {
+            CarouselViewModel(
+                state =
+                    CarouselState(
+                        interactor = get(),
+                    ),
+            )
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(coreModule, controllerModule, fragmentModule, viewModelModule, featureModule)
-)
+private val featureModule =
+    module {
+        factory<MediaCarouselRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(coreModule, controllerModule, fragmentModule, viewModelModule, featureModule),
+    )

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.koin
 
 import co.anitrend.common.genre.ui.adapter.GenreListAdapter
@@ -36,60 +35,68 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-	fragment {
-		SortingContent()
-	}
-	fragment {
-		GeneralContent(
-			dateHelper = get()
-		)
-	}
-	fragment {
-		GenreContent(
-			stateConfig = get(),
-			supportViewAdapter = GenreListAdapter(
-				stateConfiguration = get(),
-				resources = androidContext().resources,
-				supportAction = DefaultSelectionMode()
-			)
-		)
-	}
-	fragment {
-		TagContent(
-			stateConfig = get(),
-			supportViewAdapter = TagListAdapter(
-				stateConfiguration = get(),
-				resources = androidContext().resources,
-				supportAction = DefaultSelectionMode()
-			)
-		)
-	}
-}
-
-private val viewModelModule = module {
-	viewModel { 
-		GenreViewModel(
-			state = GenreViewModelState(
-				interactor = get()
-			)
-		)
-	}
-	viewModel {
-		TagViewModel(
-			state = TagViewModelState(
-				interactor = get()
-			)
-		)
-	}
-}
-
-private val featureModule = module {
-	factory<MediaDiscoverFilterRouter.Provider> {
-        FeatureProvider()
+private val fragmentModule =
+    module {
+        fragment {
+            SortingContent()
+        }
+        fragment {
+            GeneralContent(
+                dateHelper = get(),
+            )
+        }
+        fragment {
+            GenreContent(
+                stateConfig = get(),
+                supportViewAdapter =
+                    GenreListAdapter(
+                        stateConfiguration = get(),
+                        resources = androidContext().resources,
+                        supportAction = DefaultSelectionMode(),
+                    ),
+            )
+        }
+        fragment {
+            TagContent(
+                stateConfig = get(),
+                supportViewAdapter =
+                    TagListAdapter(
+                        stateConfiguration = get(),
+                        resources = androidContext().resources,
+                        supportAction = DefaultSelectionMode(),
+                    ),
+            )
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-	listOf(fragmentModule, viewModelModule, featureModule)
-)
+private val viewModelModule =
+    module {
+        viewModel {
+            GenreViewModel(
+                state =
+                    GenreViewModelState(
+                        interactor = get(),
+                    ),
+            )
+        }
+        viewModel {
+            TagViewModel(
+                state =
+                    TagViewModelState(
+                        interactor = get(),
+                    ),
+            )
+        }
+    }
+
+private val featureModule =
+    module {
+        factory<MediaDiscoverFilterRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

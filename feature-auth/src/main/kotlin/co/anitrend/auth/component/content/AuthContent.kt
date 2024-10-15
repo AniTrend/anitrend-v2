@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.component.content
 
 import android.os.Bundle
@@ -45,9 +44,8 @@ import timber.log.Timber
 
 class AuthContent(
     private val stateLayoutConfig: StateLayoutConfig,
-    override val inflateLayout: Int = R.layout.auth_content
+    override val inflateLayout: Int = R.layout.auth_content,
 ) : AniTrendContent<AuthContentBinding>() {
-
     private val presenter by inject<AuthPresenter>()
 
     private val viewModel by activityViewModel<AuthViewModel>()
@@ -56,10 +54,11 @@ class AuthContent(
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val stateFlow = binding?.stateLayout?.loadStateFlow
-                if (stateFlow?.value is LoadState.Loading || stateFlow?.value is LoadState.Error)
+                if (stateFlow?.value is LoadState.Loading || stateFlow?.value is LoadState.Error) {
                     stateFlow.value = LoadState.Idle()
-                else
+                } else {
                     closeScreen()
+                }
             }
         }
 
@@ -76,7 +75,8 @@ class AuthContent(
     override fun initializeComponents(savedInstanceState: Bundle?) {
         super.initializeComponents(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, resetNetworkStateOnBackPress
+            this,
+            resetNetworkStateOnBackPress,
         )
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -135,7 +135,7 @@ class AuthContent(
                 Snackbar.make(
                     requireView(),
                     R.string.auth_failed_message,
-                    Snackbar.LENGTH_INDEFINITE
+                    Snackbar.LENGTH_INDEFINITE,
                 ).setAction(co.anitrend.core.R.string.label_text_action_ok) {
                     presenter.runSignOutWorker()
                     closeScreen()
@@ -146,7 +146,10 @@ class AuthContent(
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = AuthContentBinding.bind(view)
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig

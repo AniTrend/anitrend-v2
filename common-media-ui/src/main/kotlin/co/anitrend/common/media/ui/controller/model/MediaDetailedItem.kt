@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.controller.model
 
 import android.content.res.Resources
@@ -41,9 +40,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 internal data class MediaDetailedItem(
     private val entity: Media,
-    private val settings: Settings
+    private val settings: Settings,
 ) : RecyclerItemBinding<MediaDetailedItemBinding>(entity.id) {
-
     private var disposable: Disposable? = null
 
     /**
@@ -61,19 +59,20 @@ internal data class MediaDetailedItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = MediaDetailedItemBinding.bind(view)
         val radius = view.resources.getDimensionPixelSize(co.anitrend.arch.theme.R.dimen.lg_margin).toFloat()
-        disposable = requireBinding().mediaImage.using(
-            entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
-            listOf(
-                RoundedCornersTransformation(
-                    topRight = radius,
-                    bottomRight = radius
-                )
+        disposable =
+            requireBinding().mediaImage.using(
+                entity.image.toMediaRequestImage(RequestImage.Media.ImageType.POSTER),
+                listOf(
+                    RoundedCornersTransformation(
+                        topRight = radius,
+                        bottomRight = radius,
+                    ),
+                ),
             )
-        )
         requireBinding().mediaRatingWidget.setupUsingMedia(entity, settings, co.anitrend.arch.theme.R.color.colorBackground)
         requireBinding().mediaSubTitleWidget.setUpSubTitle(entity)
         requireBinding().mediaStatusWidget.setBackgroundUsing(entity.status)
@@ -108,14 +107,15 @@ internal data class MediaDetailedItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.column_x1)
 
     companion object {
-        internal fun LayoutInflater.createDetailViewHolder(
-            viewGroup: ViewGroup
-        ) = MediaDetailedItemBinding.inflate(
-            this, viewGroup, false
-        ).let(::SupportViewHolder)
+        internal fun LayoutInflater.createDetailViewHolder(viewGroup: ViewGroup) =
+            MediaDetailedItemBinding.inflate(
+                this,
+                viewGroup,
+                false,
+            ).let(::SupportViewHolder)
     }
 }
