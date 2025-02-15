@@ -169,7 +169,7 @@ androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx
 
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version = "1.2.0" }
 
-androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0-alpha01" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0-beta01" }
 
 androidx-test-core-ktx =  { module = "androidx.test:core-ktx", version = "1.6.1" }
 androidx-test-runner = { module = "androidx.test:runner", version = "1.6.2" }
