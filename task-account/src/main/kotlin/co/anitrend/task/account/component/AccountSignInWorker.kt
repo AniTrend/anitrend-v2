@@ -18,6 +18,7 @@
 package co.anitrend.task.account.component
 
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.work.WorkerParameters
@@ -32,7 +33,9 @@ import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.AccountTaskRouter
 import co.anitrend.navigation.MediaListRouter
+import co.anitrend.navigation.extensions.DeepLinkType
 import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.deepLinkOf
 import co.anitrend.navigation.extensions.transform
 import kotlinx.coroutines.flow.firstOrNull
 import timber.log.Timber
@@ -42,7 +45,6 @@ class AccountSignInWorker(
     parameters: WorkerParameters,
     private val interactor: AccountInteractor,
     private val shortcutController: IShortcutController,
-    private val settings: IUserSettings,
 ) : SupportCoroutineWorker(context, parameters) {
 
     private val param by parameters.transform<
@@ -51,24 +53,15 @@ class AccountSignInWorker(
     > { AccountParam.Activate(userId = it.id) }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
-    private suspend fun createShortcuts() {
-        val scoreFormat = settings.scoreFormat.flow.firstOrNull() ?: IUserSettings.DEFAULT_SCORE_FORMAT
+    private fun createShortcuts() {
         runCatching {
             shortcutController.removeAllDynamicShortcuts()
             shortcutController.createShortcuts(
                 Shortcut.AnimeList(
-                    navPayload = MediaListRouter.MediaListParam(
-                        scoreFormat = scoreFormat,
-                        type = MediaType.ANIME,
-                        userId = param.userId,
-                    ).asNavPayload()
+                    data = deepLinkOf("/user/${param.userId}/animelist/", DeepLinkType.WEB)
                 ),
                 Shortcut.MangaList(
-                    navPayload = MediaListRouter.MediaListParam(
-                        scoreFormat = scoreFormat,
-                        type = MediaType.MANGA,
-                        userId = param.userId,
-                    ).asNavPayload()
+                    data = deepLinkOf("/user/${param.userId}/mangalist/", DeepLinkType.WEB)
                 ),
                 Shortcut.Notification(),
                 Shortcut.Profile(),

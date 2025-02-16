@@ -20,12 +20,9 @@ package co.anitrend.notification.provider
 import android.content.Context
 import android.content.Intent
 import co.anitrend.navigation.NotificationRouter
-import co.anitrend.notification.component.content.NotificationContent
 import co.anitrend.notification.component.screen.NotificationScreen
 
 class FeatureProvider : NotificationRouter.Provider {
     override fun activity(context: Context?) =
         Intent(context, NotificationScreen::class.java)
-
-    override fun fragment() = NotificationContent::class.java
 }

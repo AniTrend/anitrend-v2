@@ -1,3 +1,5 @@
+import co.anitrend.buildSrc.Libraries
+
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -21,6 +23,7 @@ plugins {
 
 dependencies {
     implementation(libs.androidx.browser)
+    implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
 
 android {

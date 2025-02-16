@@ -104,8 +104,6 @@ class AuthScreen : AniTrendScreen() {
         }
     }
 
-
-
     /**
      * {@inheritDoc}
      *

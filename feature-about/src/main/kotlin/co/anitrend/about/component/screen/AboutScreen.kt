@@ -19,30 +19,31 @@ package co.anitrend.about.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.viewbinding.ViewBinding
-import co.anitrend.about.component.content.AboutContent
-import co.anitrend.core.component.screen.AniTrendBoundScreen
+import co.anitrend.about.component.compose.AboutScreenContent
+import co.anitrend.about.component.viewmodel.AboutViewModel
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.model.common.IParam
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AboutScreen : AniTrendBoundScreen<ViewBinding>() {
+class AboutScreen : AniTrendScreen() {
 
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        updateUserInterface()
-    }
+    private val viewModel by viewModel<AboutViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AboutContent()
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = viewModel.loadState,
+                    param = IParam.None,
+                    onLoad = viewModel::invoke,
+                    onClick = {},
+                ) {
+                    AboutScreenContent(onBackPress = { finish() })
+                }
+            }
         }
-    }
-
-    private fun updateUserInterface() {
-
     }
 }

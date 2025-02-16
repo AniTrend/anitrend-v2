@@ -18,10 +18,11 @@
 package co.anitrend.notification.component.viewmodel.state
 
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.navigation.model.common.IParam
 
 class NotificationState(): AniTrendViewModelState<Any>() {
 
-    operator fun invoke() {
+    operator fun invoke(param: IParam) {
         // val result = interactor()
         // state.postValue(result)
     }

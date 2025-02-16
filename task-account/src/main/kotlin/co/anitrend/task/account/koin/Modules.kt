@@ -40,7 +40,6 @@ private val workManagerModule = module {
             parameters = scope.get(),
             interactor = get(),
             shortcutController = get(),
-            settings = get(),
         )
     }
 }

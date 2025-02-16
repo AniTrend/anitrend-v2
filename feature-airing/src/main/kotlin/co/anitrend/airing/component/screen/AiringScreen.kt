@@ -38,7 +38,7 @@ class AiringScreen : AniTrendBoundScreen<AiringScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-		binding = AiringScreenBinding.inflate(layoutInflater)
+        binding = AiringScreenBinding.inflate(layoutInflater)
         setContentView(requireBinding().root)
         setSupportActionBar(requireBinding().bottomAppBar)
     }
