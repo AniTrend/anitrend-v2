@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import co.anitrend.auth.component.viewmodel.state.AuthState
+import co.anitrend.common.shared.ui.compose.DefaultBottomAppBar
+import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.android.ui.typography.AniTrendTypography
@@ -143,42 +145,18 @@ private fun AuthContent(
 }
 
 @Composable
-private fun AuthBottomAppBar(onBackPress: () -> Unit) {
-    BottomAppBar(
-        actions = {
-            IconButton(onClick = onBackPress) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-        }
-    )
-}
-
-@Composable
 fun AuthScreenContent(
     onAuthorizeClick: () -> Unit,
     onAuthorizationHelpClick: () -> Unit,
     onAuthorizationAnonymousClick: () -> Unit,
     onBackPress: () -> Unit
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    Scaffold(
-        bottomBar = {
-            AuthBottomAppBar(onBackPress = onBackPress)
-        },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
-        modifier = Modifier
-    ) { innerPadding ->
+    DefaultScaffold(onBackPress = onBackPress) { modifier ->
         AuthContent(
             onAuthorizeClick,
             onAuthorizationHelpClick,
             onAuthorizationAnonymousClick,
-            modifier = Modifier.padding(innerPadding)
+            modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         )

@@ -1,3 +1,5 @@
+import co.anitrend.buildSrc.Libraries
+
 /*
  * Copyright (C) 2019  AniTrend
  *
@@ -20,7 +22,7 @@ plugins {
 }
 
 dependencies {
-
+    implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
 
 android {

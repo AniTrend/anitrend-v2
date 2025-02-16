@@ -19,22 +19,12 @@ package co.anitrend.notification.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NotificationRouter
-import co.anitrend.notification.component.content.NotificationContent
-import co.anitrend.notification.component.screen.NotificationScreen
 import co.anitrend.notification.component.viewmodel.NotificationViewModel
 import co.anitrend.notification.component.viewmodel.state.NotificationState
 import co.anitrend.notification.provider.FeatureProvider
-import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    scope<NotificationScreen> {
-        fragment {
-            NotificationContent()
-        }
-    }
-}
 
 private val viewModelModule = module {
     viewModel {
@@ -51,5 +41,5 @@ private val featureModule = module {
 }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
+    listOf(viewModelModule, featureModule)
 )

@@ -17,9 +17,11 @@
 
 package co.anitrend.about.koin
 
+import co.anitrend.about.component.viewmodel.AboutViewModel
 import co.anitrend.about.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AboutRouter
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 private val featureModule = module {
@@ -28,4 +30,8 @@ private val featureModule = module {
     }
 }
 
-internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule))
+private val viewModelModule = module {
+    viewModelOf(::AboutViewModel)
+}
+
+internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule, viewModelModule))

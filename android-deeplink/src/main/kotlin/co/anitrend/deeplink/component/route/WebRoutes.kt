@@ -24,7 +24,6 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.status.enums.StatusType
 import co.anitrend.navigation.CharacterRouter
 import co.anitrend.navigation.FeedRouter
 import co.anitrend.navigation.ForumRouter

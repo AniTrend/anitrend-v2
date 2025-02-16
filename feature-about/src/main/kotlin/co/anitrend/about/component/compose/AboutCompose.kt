@@ -15,33 +15,36 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package co.anitrend.updater.component.compose
+package co.anitrend.about.component.compose
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 
 @Composable
-private fun UpdateContent(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-    ) {
-
+fun AboutContent(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.then(Modifier.padding(16.dp))) {
+        Text(
+            text = "Hello People"
+        )
     }
 }
 
 @Composable
-fun UpdateScreenContent(onBackPress: () -> Unit) {
+fun AboutScreenContent(onBackPress: () -> Unit) {
     DefaultScaffold(onBackPress) { modifier ->
-        UpdateContent(
+        AboutContent(
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -49,15 +52,14 @@ fun UpdateScreenContent(onBackPress: () -> Unit) {
     }
 }
 
-
+@Composable
 @AniTrendPreview.Mobile
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
-@Composable
-private fun UpdateComposablePreview(
+private fun AboutContentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
 ) {
     PreviewTheme(darkTheme = darkTheme) {
-        UpdateContent()
+        AboutContent()
     }
 }

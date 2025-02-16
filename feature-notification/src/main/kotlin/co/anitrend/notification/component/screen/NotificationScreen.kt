@@ -18,35 +18,41 @@
 package co.anitrend.notification.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.navigation.NotificationRouter
-import co.anitrend.notification.databinding.NotificationScreenBinding
+import androidx.activity.compose.setContent
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureUnavailable
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.model.common.IParam
+import co.anitrend.notification.component.compose.NotificationScreenContent
+import co.anitrend.notification.component.viewmodel.NotificationViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.getValue
 
-class NotificationScreen : AniTrendBoundScreen<NotificationScreenBinding>() {
-
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        updateUserInterface()
-    }
+class NotificationScreen : AniTrendScreen() {
+    private val viewModel by viewModel<NotificationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NotificationScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    param = IParam.None,
+                    onLoad = viewModelState()::invoke,
+                    onClick = viewModelState()::retry,
+                ) {
+                    NotificationScreenContent(
+                        onBackPress = { onBackPressed() }
+                    )
+                }
+            }
+        }
     }
 
-    private fun updateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = NotificationRouter.forFragment(),
-            parameter = intent.extras
-        ).commit(requireBinding().content, this)
-    }
+    /**
+     * Proxy for a view model state if one exists
+     */
+    override fun viewModelState() = viewModel.state
 }
