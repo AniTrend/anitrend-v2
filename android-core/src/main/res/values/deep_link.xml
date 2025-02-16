@@ -21,19 +21,21 @@
     <string name="app_deep_link_scheme" translatable="false">app.anitrend</string>
 
     <string name="app_deep_link_host_auth" translatable="false">auth</string>
-    <string name="app_deep_link_host_settings" translatable="false">settings</string>
-    <string name="app_deep_link_host_discover" translatable="false">discover</string>
-    <string name="app_deep_link_host_series" translatable="false">series</string>
-    <string name="app_deep_link_host_profile" translatable="false">profile</string>
-    <string name="app_deep_link_host_studio" translatable="false">studio</string>
-    <string name="app_deep_link_host_character" translatable="false">character</string>
-    <string name="app_deep_link_host_staff" translatable="false">staff</string>
-    <string name="app_deep_link_host_search" translatable="false">search</string>
-    <string name="app_deep_link_host_review" translatable="false">review</string>
-    <string name="app_deep_link_host_news" translatable="false">news</string>
-    <string name="app_deep_link_host_episodes" translatable="false">episodes</string>
-    <string name="app_deep_link_host_updates" translatable="false">update</string>
-    <string name="app_deep_link_host_about" translatable="false">about</string>
+    <string name="app_deep_link_host_default" translatable="false">action</string>
+    <string name="app_deep_link_path_settings" translatable="false">/settings</string>
+    <string name="app_deep_link_path_airing" translatable="false">/airing</string>
+    <string name="app_deep_link_path_discover" translatable="false">/discover</string>
+    <string name="app_deep_link_path_series" translatable="false">/series</string>
+    <string name="app_deep_link_path_profile" translatable="false">/profile</string>
+    <string name="app_deep_link_path_studio" translatable="false">/studio</string>
+    <string name="app_deep_link_path_character" translatable="false">/character</string>
+    <string name="app_deep_link_path_staff" translatable="false">/staff</string>
+    <string name="app_deep_link_path_search" translatable="false">/search</string>
+    <string name="app_deep_link_path_review" translatable="false">/review</string>
+    <string name="app_deep_link_path_news" translatable="false">/news</string>
+    <string name="app_deep_link_path_episodes" translatable="false">/episodes</string>
+    <string name="app_deep_link_path_update" translatable="false">/update</string>
+    <string name="app_deep_link_path_about" translatable="false">/about</string>
     <string name="auth_deep_link_path_anilist" translatable="false">/oauth/v2/anilist</string>
     <string name="auth_deep_link_path_trakt" translatable="false">/oauth/v2/trakt</string>
 </resources>

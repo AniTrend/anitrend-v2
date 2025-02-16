@@ -27,6 +27,7 @@ import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_TYPE_KEY
 import co.anitrend.deeplink.component.route.contract.Route
 import co.anitrend.navigation.AboutRouter
+import co.anitrend.navigation.AiringRouter
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.NavigationDrawerRouter
@@ -104,9 +105,10 @@ internal object ProfileRoute : Route("profile") {
         env: Environment,
     ): Intent? {
         super.run(uri, params, env)
+        val settings = (env as IAniTrendEnvironment).settings
         val payload =
             ProfileRouter.ProfileParam(
-                userId = (env as IAniTrendEnvironment).userId,
+                userId = settings.authenticatedUserId.value,
             ).asNavPayload()
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -131,6 +133,17 @@ internal object AboutRoute : Route("about") {
     ): Intent? {
         super.run(uri, params, env)
         return AboutRouter.forActivity(env.context)
+    }
+}
+
+internal object AiringRoute : Route("airing") {
+    override fun run(
+        uri: DeepLinkUri,
+        params: Map<String, String>,
+        env: Environment,
+    ): Intent? {
+        super.run(uri, params, env)
+        return AiringRouter.forActivity(env.context)
     }
 }
 

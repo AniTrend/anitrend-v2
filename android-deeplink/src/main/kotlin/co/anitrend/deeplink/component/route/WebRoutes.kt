@@ -18,6 +18,7 @@ package co.anitrend.deeplink.component.route
 
 import android.content.Intent
 import androidx.core.text.isDigitsOnly
+import co.anitrend.core.android.environment.IAniTrendEnvironment
 import co.anitrend.deeplink.component.route.contract.Route
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
@@ -31,6 +32,7 @@ import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.NavigationDrawerRouter
+import co.anitrend.navigation.NotificationRouter
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.RecommendationDiscoverRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
@@ -64,7 +66,6 @@ internal object ForumDiscoverRoute : Route(
     "forum/:category",
     "forum/recent/:category",
 ) {
-
     override fun run(
         uri: DeepLinkUri,
         params: Map<String, String>,
@@ -260,21 +261,25 @@ internal object MediaListRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val identifier = params["id"]
-        val mediaType =
-            when (uri.pathSegments().last()) {
-                "animelist" -> MediaType.ANIME
-                else -> MediaType.MANGA
-            }
+        val lastSegment = uri.pathSegments().last { it.isNotBlank() }
+        val mediaType = when (lastSegment) {
+            "animelist" -> MediaType.ANIME
+            "mangalist" -> MediaType.MANGA
+            else -> throw NotImplementedError("Unable to match last segment: $lastSegment")
+        }
+        val scoreFormat = (env as IAniTrendEnvironment).settings.scoreFormat
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
                     MediaListRouter.MediaListParam(
                         userId = identifier.toLongOrNull(),
+                        scoreFormat = scoreFormat.value,
                         type = mediaType,
                     ).asNavPayload()
                 else ->
                     MediaListRouter.MediaListParam(
                         userName = identifier,
+                        scoreFormat = scoreFormat.value,
                         type = mediaType,
                     ).asNavPayload()
             }
@@ -380,6 +385,19 @@ internal object UserReviewRoute : Route(
                     ).asNavPayload()
             }
         return ProfileRouter.forActivity(env.context, payload)
+    }
+}
+
+internal object NotificationRoute : Route(
+    "notifications",
+) {
+    override fun run(
+        uri: DeepLinkUri,
+        params: Map<String, String>,
+        env: Environment,
+    ): Intent? {
+        super.run(uri, params, env)
+        return NotificationRouter.forActivity(env.context)
     }
 }
 

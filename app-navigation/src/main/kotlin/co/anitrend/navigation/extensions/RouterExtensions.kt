@@ -2,6 +2,7 @@ package co.anitrend.navigation.extensions
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import co.anitrend.navigation.model.NavPayload
@@ -24,6 +25,22 @@ fun NavigationRouter.forActivity(
     navPayload?.also {
         intent?.putExtra(it.key, it.param)
     }
+    return intent
+}
+
+/**
+ * Builds an activity intent from the navigation component
+ */
+fun NavigationRouter.forActivity(
+    context: Context,
+    data: Uri,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+): Intent? {
+    val intent = provider.activity(context)
+    intent?.flags = flags
+    intent?.action = action
+    intent?.data = data
     return intent
 }
 

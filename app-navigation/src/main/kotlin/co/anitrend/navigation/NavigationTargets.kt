@@ -579,11 +579,7 @@ object RecommendationDiscoverRouter : NavigationRouter() {
 object NotificationRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
+    interface Provider : INavigationProvider
 }
 
 object NewsRouter : NavigationRouter() {

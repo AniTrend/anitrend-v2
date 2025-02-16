@@ -20,8 +20,10 @@ import android.content.Intent
 import co.anitrend.core.android.environment.IAniTrendEnvironment
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.deeplink.component.route.AboutRoute
 import co.anitrend.deeplink.component.route.ActivityRoute
+import co.anitrend.deeplink.component.route.AiringRoute
 import co.anitrend.deeplink.component.route.CharacterRoute
 import co.anitrend.deeplink.component.route.DiscoverRoute
 import co.anitrend.deeplink.component.route.EpisodesRoute
@@ -32,6 +34,7 @@ import co.anitrend.deeplink.component.route.MainRoute
 import co.anitrend.deeplink.component.route.MediaListRoute
 import co.anitrend.deeplink.component.route.MediaRoute
 import co.anitrend.deeplink.component.route.NewsRoute
+import co.anitrend.deeplink.component.route.NotificationRoute
 import co.anitrend.deeplink.component.route.OAuthRoute
 import co.anitrend.deeplink.component.route.ProfileRoute
 import co.anitrend.deeplink.component.route.RecommendationRoute
@@ -47,25 +50,32 @@ import co.anitrend.deeplink.component.route.UserFavouritesRoute
 import co.anitrend.deeplink.component.route.UserReviewRoute
 import co.anitrend.deeplink.component.route.UserRoute
 import co.anitrend.deeplink.component.route.UserStatsRoute
+import co.anitrend.deeplink.component.viewmodel.DeepLinkViewModel
 import co.anitrend.deeplink.environment.AniTrendEnvironment
 import co.anitrend.deeplink.provider.FeatureProvider
 import co.anitrend.navigation.DeepLinkRouter
 import com.kingsleyadio.deeplink.DeepLinkParser
 import com.kingsleyadio.deeplink.Environment
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
 private val coreModule =
     module {
         factory<Environment> {
-            val settings = get<IAuthenticationSettings>()
+            val settings = get<IUserSettings>()
             AniTrendEnvironment(
                 context = androidApplication(),
                 isAuthenticated = settings.isAuthenticated.value,
-                userId = settings.authenticatedUserId.value,
+                settings = settings,
             )
         } binds(arrayOf(AniTrendEnvironment::class, IAniTrendEnvironment::class))
+    }
+
+private val viewModelModule =
+    module {
+        viewModelOf(::DeepLinkViewModel)
     }
 
 private val routerModule =
@@ -77,7 +87,6 @@ private val routerModule =
                 .addRoute(ActivityRoute)
                 .addRoute(ForumRoute)
                 .addRoute(ReviewRoute)
-                .addRoute(NewsRoute)
                 .addRoute(EpisodesRoute)
                 .addRoute(ForumDiscoverRoute)
                 .addRoute(RecommendationRoute)
@@ -91,6 +100,7 @@ private val routerModule =
                 .addRoute(UserStatsRoute)
                 .addRoute(UserFavouritesRoute)
                 .addRoute(UserReviewRoute)
+                .addRoute(NotificationRoute)
                 // AniTrend specific routes
                 .addRoute(DiscoverRoute)
                 .addRoute(SocialRoute)
@@ -100,6 +110,8 @@ private val routerModule =
                 .addRoute(UpdatesRoute)
                 .addRoute(AboutRoute)
                 .addRoute(OAuthRoute)
+                .addRoute(NewsRoute)
+                .addRoute(AiringRoute)
                 .addFallbackAction(FallbackAction)
                 .build()
         }
@@ -116,5 +128,5 @@ private val featureModule =
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(coreModule, routerModule, featureModule),
+        listOf(coreModule, viewModelModule, routerModule, featureModule),
     )

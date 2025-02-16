@@ -18,39 +18,51 @@ package co.anitrend.deeplink.component.route
 
 import android.content.Intent
 import co.anitrend.deeplink.common.CommonRouteTest
+import co.anitrend.deeplink.provider.FeatureProvider
 import com.kingsleyadio.deeplink.DeepLinkParser
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class WebRouteTest : CommonRouteTest() {
-    private val deepLinkParser: DeepLinkParser<Intent?> by lazy {
-        DeepLinkParser.of<Intent?>(environment)
-            .addRoute(MainRoute)
-            .addRoute(ActivityRoute)
-            .addRoute(ForumRoute)
-            .addRoute(ReviewRoute)
-            .addRoute(NewsRoute)
-            .addRoute(EpisodesRoute)
-            .addRoute(ForumDiscoverRoute)
-            .addRoute(RecommendationRoute)
-            .addRoute(CharacterRoute)
-            .addRoute(StudioRoute)
-            .addRoute(StaffRoute)
-            .addRoute(MediaRoute)
-            .addRoute(SearchRoute)
-            .addRoute(MediaListRoute)
-            .addRoute(UserRoute)
-            .addRoute(UserStatsRoute)
-            .addRoute(UserFavouritesRoute)
-            .addRoute(UserReviewRoute)
-            .addFallbackAction(FallbackAction)
-            .build()
+    private val deepLinkParser by lazy {
+        FeatureProvider(
+            DeepLinkParser.of<Intent?>(environment)
+                .addRoute(MainRoute)
+                .addRoute(ActivityRoute)
+                .addRoute(ForumRoute)
+                .addRoute(ReviewRoute)
+                .addRoute(NewsRoute)
+                .addRoute(EpisodesRoute)
+                .addRoute(ForumDiscoverRoute)
+                .addRoute(RecommendationRoute)
+                .addRoute(CharacterRoute)
+                .addRoute(StudioRoute)
+                .addRoute(StaffRoute)
+                .addRoute(MediaRoute)
+                .addRoute(SearchRoute)
+                .addRoute(MediaListRoute)
+                .addRoute(UserRoute)
+                .addRoute(UserStatsRoute)
+                .addRoute(UserFavouritesRoute)
+                .addRoute(UserReviewRoute)
+                .addRoute(NotificationRoute)
+                .addFallbackAction(FallbackAction)
+                .build()
+        )
     }
 
     @Test
     fun verifyHomeWebRoute() {
         val expected = "component.screen.MainScreen".toIntent()
-        val actual = deepLinkParser.parse(webLinkOf("home"))
+        val actual = deepLinkParser.matchingIntent("https://anilist.co/home")
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun verifyNotificationWebRoute() {
+        val expected = "notification.component.screen.NotificationScreen".toIntent()
+        val actual = deepLinkParser.matchingIntent("https://anilist.co/notifications")
 
         assertEquals(expected, actual)
     }

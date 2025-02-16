@@ -19,10 +19,14 @@ package co.anitrend.navigation.provider
 
 import android.content.Context
 import android.content.Intent
+import timber.log.Timber
 
 /**
  * Provider for navigation components
  */
 interface INavigationProvider {
-    fun activity(context: Context?): Intent? = null
+    fun activity(context: Context?): Intent? {
+        Timber.w(NotImplementedError())
+        return null
+    }
 }
