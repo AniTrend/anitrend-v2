@@ -21,6 +21,7 @@
     <application>
         <activity
             android:name=".component.screen.DeepLinkScreen"
+            android:launchMode="singleInstance"
             android:exported="true">
 
             <intent-filter>
@@ -184,8 +185,8 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_profile"
-                    android:pathPattern="/.*" />
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_discover" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -195,7 +196,8 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_settings" />
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_profile" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -205,7 +207,8 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_updates"/>
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_settings" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -215,7 +218,8 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_about"/>
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_airing" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -225,7 +229,8 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_news"/>
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_update"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -235,7 +240,30 @@
 
                 <data
                     android:scheme="@string/app_deep_link_scheme"
-                    android:host="@string/app_deep_link_host_episodes"/>
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_about"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="@string/app_deep_link_scheme"
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_news"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="@string/app_deep_link_scheme"
+                    android:host="@string/app_deep_link_host_default"
+                    android:path="@string/app_deep_link_path_episodes"/>
             </intent-filter>
 
             <intent-filter>

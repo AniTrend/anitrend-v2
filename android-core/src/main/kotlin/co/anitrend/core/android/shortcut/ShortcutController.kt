@@ -26,6 +26,7 @@ import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
+import co.anitrend.navigation.DeepLinkRouter
 import co.anitrend.navigation.extensions.forActivity
 import timber.log.Timber
 
@@ -46,12 +47,12 @@ internal class ShortcutController(
     override fun createShortcuts(vararg shortcuts: Shortcut): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             val shortcutInfo = shortcuts.mapNotNull { shortcut ->
-                val intent = shortcut.router.forActivity(
+                val intent = DeepLinkRouter.forActivity(
                     context = context,
-                    navPayload = shortcut.navPayload,
+                    data = shortcut.data
                 )
                 if (intent == null) {
-                    Timber.w("Intent for shortcut: `${shortcut.id}` returned null")
+                    Timber.e("Intent for shortcut: `${shortcut.id}` returned null")
                     null
                 } else {
                     ShortcutInfo.Builder(context, shortcut.id)

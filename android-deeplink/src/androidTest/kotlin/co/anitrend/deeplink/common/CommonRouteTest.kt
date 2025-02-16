@@ -22,15 +22,15 @@ import androidx.core.net.toUri
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.deeplink.component.screen.DeepLinkScreen
 import co.anitrend.deeplink.environment.AniTrendEnvironment
-import co.anitrend.deeplink.environment.contract.IAniTrendEnvironment
-import com.kingsleyadio.deeplink.DeepLinkUri
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Rule
+import kotlin.test.BeforeTest
 
 abstract class CommonRouteTest {
-    private val webBaseUrl = "https://anilist.co"
-    private val appBaseUrl = "app.anitrend://"
     private val basePackage = "co.anitrend"
 
     @get:Rule
@@ -40,20 +40,17 @@ abstract class CommonRouteTest {
         InstrumentationRegistry.getInstrumentation()
     }
 
-    protected val environment: IAniTrendEnvironment by lazy {
-        AniTrendEnvironment(
-            instrumentation.context,
-            false,
-            IAuthenticationSettings.INVALID_USER_ID,
-        )
-    }
+    protected val settings = mockk<IUserSettings>()
 
-    protected fun webLinkOf(path: String): DeepLinkUri {
-        return DeepLinkUri.parse("$webBaseUrl/$path")
-    }
+    protected val environment = mockk<AniTrendEnvironment>()
 
-    protected fun appLinkOf(path: String): DeepLinkUri {
-        return DeepLinkUri.parse("$appBaseUrl/$path")
+    @BeforeTest
+    fun setUp() {
+        every { settings.authenticatedUserId.value } returns IAuthenticationSettings.INVALID_USER_ID
+        every { settings.isAuthenticated.value } returns false
+        every { environment.settings } returns settings
+        every { environment.isAuthenticated } returns false
+        every { environment.context } returns instrumentation.context
     }
 
     protected fun String.toIntent(): Intent {
