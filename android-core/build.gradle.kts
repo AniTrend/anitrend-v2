@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.anitrend.arch.recycler)
     implementation(libs.google.flexbox)
     implementation(libs.prettyTime)
+    compileOnly(libs.pintrest.ktlint.rule.engine)
+    compileOnly(libs.pintrest.ktlint.ruleset.core)
 }
 
 android {

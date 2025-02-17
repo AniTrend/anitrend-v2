@@ -29,25 +29,30 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     val buildDirectory = layout.buildDirectory.get()
     kotlin {
         target("**/*.kt")
-        targetExclude("${buildDirectory}/**/*.kt",)
-        ktlint(libs.pintrest.ktlint.get().version)
+        targetExclude("${buildDirectory}/**/*.kt", "**/src/test/**/*.kt")
+        ktlint(libs.versions.ktlint.get()).setEditorConfigPath(
+            rootProject.file(".editorconfig")
+        )
         licenseHeaderFile(
             withLicenseHeader(".kt")
         )
+        suppressLintsFor {
+            step = "ktlint"
+            shortCode = "standard:property-naming"
+        }
+        trimTrailingWhitespace()
+        endWithNewline()
     }
     kotlinGradle {
         target("**/*.kts")
         targetExclude("${buildDirectory}/**/*.kts")
         licenseHeaderFile(withLicenseHeader(".kts"), "(^(?![\\/ ]\\*).*$)")
+        trimTrailingWhitespace()
+        endWithNewline()
     }
     format("xml") {
         target("**/*.xml")
         targetExclude("${buildDirectory}/**/*.xml")
-        licenseHeaderFile(withLicenseHeader(".xml"), "(<[^!?])")
-    }
-    format("properties") {
-        target("**/*.properties")
-        targetExclude("${buildDirectory}/*.properties")
-        licenseHeaderFile(withLicenseHeader(".properties"), "(^(#).*\$)")
+        licenseHeaderFile(withLicenseHeader(".xml"), "^(<\\?xml.*\\?>\\s*)?(<.*)")
     }
 }
