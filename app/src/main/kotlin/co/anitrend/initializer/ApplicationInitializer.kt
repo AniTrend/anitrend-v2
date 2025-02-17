@@ -31,7 +31,6 @@ import co.anitrend.koin.appModules
 import timber.log.Timber
 
 class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
-
     @RequiresApi(Build.VERSION_CODES.N_MR1)
     private fun setUpShortcuts() {
         runCatching {
