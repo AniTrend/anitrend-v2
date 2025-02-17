@@ -32,7 +32,7 @@ import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 
 @Composable
-fun AboutContent(modifier: Modifier = Modifier) {
+private fun AboutContent(modifier: Modifier = Modifier) {
     Column(modifier = modifier.then(Modifier.padding(16.dp))) {
         Text(
             text = "Hello People",
