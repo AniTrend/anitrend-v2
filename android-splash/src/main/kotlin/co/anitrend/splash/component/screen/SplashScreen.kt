@@ -17,15 +17,23 @@
 package co.anitrend.splash.component.screen
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.splash.component.content.SplashContent
-import co.anitrend.splash.databinding.ActivitySplashBinding
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.ui.inject
+import co.anitrend.splash.component.compose.SplashScreenContent
+import co.anitrend.splash.component.presenter.SplashPresenter
+import kotlinx.coroutines.launch
 
-class SplashScreen : AniTrendBoundScreen<ActivitySplashBinding>() {
+class SplashScreen : AniTrendScreen() {
+
+    private val presenter by inject<SplashPresenter>()
+
     override fun configureActivity() {
         super.configureActivity()
         hideStatusBarAndNavigationBar()
@@ -34,11 +42,18 @@ class SplashScreen : AniTrendBoundScreen<ActivitySplashBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
         with(splashScreen) {
             setKeepOnScreenCondition {
-                onUpdateUserInterface()
+                setContent {
+                    AniTrendTheme3 {
+                        SplashScreenContent(
+                            onLoad = {
+                                presenter.firstRunCheck()
+                                finishAfterTransition()
+                            }
+                        )
+                    }
+                }
                 false
             }
 
@@ -46,14 +61,5 @@ class SplashScreen : AniTrendBoundScreen<ActivitySplashBinding>() {
                 splashScreenView.remove()
             }
         }
-    }
-
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-    }
-
-    private fun onUpdateUserInterface() {
-        currentFragmentTag =
-            FragmentItem(fragment = SplashContent::class.java)
-                .commit(requireBinding().authFrame, this)
     }
 }
