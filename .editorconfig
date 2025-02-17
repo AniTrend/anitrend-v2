@@ -11,14 +11,21 @@ insert_final_newline = true
 
 [*.{java,kt,kts,xml}]
 indent_size = 4
-max_line_length=150
+max_line_length = 150
 
 [*.{kt,kts}]
-ij_kotlin_allow_trailing_comma=true
-ij_kotlin_allow_trailing_comma_on_call_site=true
+# Compose function naming exception
+ktlint_function_naming_ignore_when_annotated_with=Composable
 
-# Don't allow any wildcard imports
-ij_kotlin_packages_to_use_import_on_demand = unset
+# Disable other rules
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_import-ordering = disabled
+ktlint_standard_no-empty-file = disabled
+ktlint_standard_filename = disabled
+
+# Trailing commas
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
 
 [*.md]
 trim_trailing_whitespace = false

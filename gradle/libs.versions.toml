@@ -1,5 +1,5 @@
 [versions]
-ktlint = "1.1.1"
+ktlint = "1.5.0"
 
 gradle-plugin = "8.8.1"
 
@@ -335,4 +335,5 @@ square-retrofit-converter-simplexml = { module = "com.squareup.retrofit2:convert
 
 spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.2" }
 
-pintrest-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
+pintrest-ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
+pintrest-ktlint-ruleset-core = { module = "com.pinterest.ktlint:ktlint-cli-ruleset-core", version.ref = "ktlint" }
