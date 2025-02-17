@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.status.adapter
 
 import android.content.Context
@@ -33,41 +32,52 @@ internal class StatusIconAdapter(
     context: Context,
     @LayoutRes layoutResource: Int,
     @IdRes textViewResourceId: Int,
-    objects: List<MediaListStatus>
+    objects: List<MediaListStatus>,
 ) : ArrayAdapter<MediaListStatus>(context, layoutResource, textViewResourceId, objects) {
-
     private var binding: AdapterStatusSpinerItemBinding? = null
     private val mediaListStatusLocalized = context.getStringList(R.array.media_list_status)
 
-    private fun onViewCreated(view: View, position: Int) {
+    private fun onViewCreated(
+        view: View,
+        position: Int,
+    ) {
         binding = AdapterStatusSpinerItemBinding.bind(view)
 
         binding?.statusSpinnerText?.text = mediaListStatusLocalized[position]
 
-        val statusIconDrawable = when(getItem(position)) {
-            MediaListStatus.CURRENT -> co.anitrend.common.media.ui.R.drawable.ic_current
-            MediaListStatus.COMPLETED -> co.anitrend.common.media.ui.R.drawable.ic_completed
-            MediaListStatus.DROPPED -> co.anitrend.common.media.ui.R.drawable.ic_dropped
-            MediaListStatus.PAUSED -> co.anitrend.common.media.ui.R.drawable.ic_paused
-            MediaListStatus.PLANNING -> co.anitrend.common.media.ui.R.drawable.ic_planning
-            else -> co.anitrend.common.media.ui.R.drawable.ic_repeat
-        }
+        val statusIconDrawable =
+            when (getItem(position)) {
+                MediaListStatus.CURRENT -> co.anitrend.common.media.ui.R.drawable.ic_current
+                MediaListStatus.COMPLETED -> co.anitrend.common.media.ui.R.drawable.ic_completed
+                MediaListStatus.DROPPED -> co.anitrend.common.media.ui.R.drawable.ic_dropped
+                MediaListStatus.PAUSED -> co.anitrend.common.media.ui.R.drawable.ic_paused
+                MediaListStatus.PLANNING -> co.anitrend.common.media.ui.R.drawable.ic_planning
+                else -> co.anitrend.common.media.ui.R.drawable.ic_repeat
+            }
 
         binding?.statusSpinnerIcon?.setImageDrawable(
             context.getCompatDrawableTintAttr(
                 statusIconDrawable,
-                androidx.appcompat.R.attr.colorControlNormal
-            )
+                androidx.appcompat.R.attr.colorControlNormal,
+            ),
         )
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getView(
+        position: Int,
+        convertView: View?,
+        parent: ViewGroup,
+    ): View {
         val view = super.getView(position, convertView, parent)
         onViewCreated(view, position)
         return view
     }
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getDropDownView(
+        position: Int,
+        convertView: View?,
+        parent: ViewGroup,
+    ): View {
         val view = super.getDropDownView(position, convertView, parent)
         onViewCreated(view, position)
         return view

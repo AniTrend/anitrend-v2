@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.account.repository
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.account.model.AccountParam
 
-interface AccountRepository<State: UiState<*>> {
+interface AccountRepository<State : UiState<*>> {
     suspend fun getAccountUsers(): State
+
     suspend fun signOut(param: AccountParam.SignOut)
+
     suspend fun signIn(param: AccountParam.Activate)
 }

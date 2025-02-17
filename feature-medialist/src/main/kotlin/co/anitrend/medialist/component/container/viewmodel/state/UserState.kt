@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.component.container.viewmodel.state
 
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
@@ -24,14 +23,14 @@ import co.anitrend.domain.user.model.UserParam
 import co.anitrend.navigation.MediaListRouter
 
 class UserState(
-    private val interactor: GetProfileInteractor
+    private val interactor: GetProfileInteractor,
 ) : AniTrendViewModelState<User>() {
-
     suspend operator fun invoke(param: MediaListRouter.MediaListParam) {
-        val query = UserParam.Profile(
-            id = param.userId,
-            name = param.userName
-        )
+        val query =
+            UserParam.Profile(
+                id = param.userId,
+                name = param.userName,
+            )
         val result = interactor(query)
 
         state.postValue(result)

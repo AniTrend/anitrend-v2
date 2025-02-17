@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,19 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.koin
 
 import co.anitrend.data.jikan.api.JikanApiFactory
 import co.anitrend.data.jikan.media.koin.mediaModules
 import org.koin.dsl.module
 
-private val coreModule = module {
-    single {
-        JikanApiFactory()
+private val coreModule =
+    module {
+        single {
+            JikanApiFactory()
+        }
     }
-}
 
-val jikanModules = module {
-    includes(coreModule, mediaModules)
-}
+val jikanModules =
+    module {
+        includes(coreModule, mediaModules)
+    }

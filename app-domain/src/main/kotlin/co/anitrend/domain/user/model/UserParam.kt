@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.model
 
 import co.anitrend.domain.common.sort.SortWithOrder
@@ -28,7 +27,6 @@ import co.anitrend.domain.user.enums.UserStatisticsSort
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
 sealed class UserParam {
-
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param id Filter by id of the user
@@ -36,7 +34,7 @@ sealed class UserParam {
      */
     data class Identifier(
         val name: String,
-        val id: Long? = null
+        val id: Long? = null,
     ) : UserParam()
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -45,7 +43,7 @@ sealed class UserParam {
      */
     data class Profile(
         val id: Long? = null,
-        val name: String? = null
+        val name: String? = null,
     ) : UserParam()
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -55,9 +53,10 @@ sealed class UserParam {
      */
     data class Statistic(
         val id: Long,
-        val statisticsSort: List<ISortWithOrder<UserStatisticsSort>>? = listOf(
-            SortWithOrder(UserStatisticsSort.MEAN_SCORE, SortOrder.DESC)
-        )
+        val statisticsSort: List<ISortWithOrder<UserStatisticsSort>>? =
+            listOf(
+                SortWithOrder(UserStatisticsSort.MEAN_SCORE, SortOrder.DESC),
+            ),
     ) : UserParam()
 
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -67,7 +66,7 @@ sealed class UserParam {
      */
     data class Search(
         val search: String,
-        val sort: List<ISortWithOrder<UserSort>>? = null
+        val sort: List<ISortWithOrder<UserSort>>? = null,
     ) : UserParam()
 
     /** [UpdateUser mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -111,7 +110,7 @@ sealed class UserParam {
             val splitCompletedSectionByFormat: Boolean = false,
             val customLists: List<String>? = null,
             val advancedScoring: List<String>? = null,
-            val advancedScoringEnabled: Boolean = false
+            val advancedScoringEnabled: Boolean = false,
         )
 
         /** [NotificationOptionInput](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationoptioninput.doc.html)
@@ -123,7 +122,7 @@ sealed class UserParam {
          */
         data class NotificationOption(
             val enabled: Boolean,
-            val type: NotificationType
+            val type: NotificationType,
         )
     }
 
@@ -134,7 +133,7 @@ sealed class UserParam {
      * @param userId The id of the user to un/follow
      */
     data class ToggleFollow(
-        val userId: Long
+        val userId: Long,
     ) : UserParam()
 
     /** [Viewer query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -144,6 +143,6 @@ sealed class UserParam {
      * @param id The id of the user
      */
     data class Viewer(
-        val id: Long
+        val id: Long,
     ) : UserParam()
 }

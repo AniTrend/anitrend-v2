@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.carousel.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -28,39 +27,45 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val controllerModule = module {
-    factory {
-        CarouselContentController(
-            dateHelper = get()
-        )
-    }
-}
-
-private val fragmentModule = module {
-    fragment {
-        CarouselContent(
-            controller = get(),
-            settings = get(),
-        )
-    }
-}
-
-private val viewModelModule = module {
-    viewModel {
-        CarouselViewModel(
-            state = CarouselState(
-                interactor = get()
+private val controllerModule =
+    module {
+        factory {
+            CarouselContentController(
+                dateHelper = get(),
             )
-        )
+        }
     }
-}
 
-private val featureModule = module {
-	factory<MediaCarouselRouter.Provider> {
-        FeatureProvider()
+private val fragmentModule =
+    module {
+        fragment {
+            CarouselContent(
+                controller = get(),
+                settings = get(),
+            )
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(controllerModule, fragmentModule, viewModelModule, featureModule)
-)
+private val viewModelModule =
+    module {
+        viewModel {
+            CarouselViewModel(
+                state =
+                    CarouselState(
+                        interactor = get(),
+                    ),
+            )
+        }
+    }
+
+private val featureModule =
+    module {
+        factory<MediaCarouselRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(controllerModule, fragmentModule, viewModelModule, featureModule),
+    )

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.episode.datasource.remote
 
 import co.anitrend.data.core.XML
@@ -25,16 +24,15 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 internal interface EpisodeRemoteSource {
-
     @XML
     @GET("/crunchyroll/rss/anime/popular")
     suspend fun getPopularEpisodes(
-        @Query("locale") locale: RssLocale
+        @Query("locale") locale: RssLocale,
     ): Response<EpisodePageModel>
 
     @XML
     @GET("/crunchyroll/rss/anime")
     suspend fun getLatestEpisodes(
-        @Query("locale") locale: RssLocale
+        @Query("locale") locale: RssLocale,
     ): Response<EpisodePageModel>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.model
 
 import co.anitrend.domain.common.DateInt
@@ -30,7 +29,6 @@ import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
 
 sealed class MediaParam {
-
     /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
      *
      * @param id Filter by the media id
@@ -40,7 +38,7 @@ sealed class MediaParam {
     data class Detail(
         val id: Long,
         val type: MediaType,
-        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
+        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
     ) : MediaParam()
 
     /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
@@ -183,9 +181,8 @@ sealed class MediaParam {
         var type: MediaType? = null,
         var volumes: Int? = null,
         var volumes_greater: Int? = null,
-        var volumes_lesser: Int? = null
+        var volumes_lesser: Int? = null,
     ) : MediaParam() {
-
         infix fun builder(param: Find.() -> Unit): Find {
             this.param()
             return this

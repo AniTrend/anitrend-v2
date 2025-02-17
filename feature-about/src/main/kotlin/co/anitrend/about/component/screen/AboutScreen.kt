@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.component.screen
 
 import android.os.Bundle
@@ -28,7 +27,6 @@ import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AboutScreen : AniTrendScreen() {
-
     private val viewModel by viewModel<AboutViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

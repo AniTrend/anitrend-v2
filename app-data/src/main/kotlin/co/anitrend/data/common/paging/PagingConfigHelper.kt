@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.paging
 
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
@@ -26,13 +25,15 @@ import timber.log.Timber
  * W.I.P
  */
 internal object PagingConfigHelper {
-
-    private fun setupPagingFrom(itemCount: Int, pagingHelper: SupportPagingHelper) {
+    private fun setupPagingFrom(
+        itemCount: Int,
+        pagingHelper: SupportPagingHelper,
+    ) {
         if (itemCount > 0) {
             val lastLoadedPage = itemCount / pagingHelper.pageSize
             pagingHelper.page = lastLoadedPage
             Timber.v(
-                "Setting up paging -> items: $itemCount with pages: $lastLoadedPage"
+                "Setting up paging -> items: $itemCount with pages: $lastLoadedPage",
             )
         }
     }
@@ -49,7 +50,7 @@ internal object PagingConfigHelper {
     suspend inline operator fun invoke(
         requestType: Request.Type,
         pagingHelper: SupportPagingHelper,
-        crossinline action: suspend () -> Int
+        crossinline action: suspend () -> Int,
     ) {
         when (requestType) {
             Request.Type.BEFORE -> {

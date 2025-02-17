@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.datasource.local
 
 import androidx.room.Dao
@@ -25,43 +24,50 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class RelationLocalSource : AbstractLocalSource<RelationEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(anilist) from relation
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from relation
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from relation
         where anilist = :anilist
-    """)
+    """,
+    )
     abstract suspend fun clear(anilist: Long)
 
-    @Query("""
+    @Query(
+        """
         select count(anilist)
         from relation
         where anilist = :anilist
-    """)
+    """,
+    )
     abstract suspend fun count(anilist: Long): Int
 
-    @Query("""
+    @Query(
+        """
         select * from relation
         where anilist = :anilist
-    """)
-    abstract fun withAniListIdFlow(
-        anilist: Long
-    ): Flow<RelationEntity?>
+    """,
+    )
+    abstract fun withAniListIdFlow(anilist: Long): Flow<RelationEntity?>
 
-    @Query("""
+    @Query(
+        """
         select * from relation
         where anilist = :anilist
-    """)
-    abstract suspend fun withAniListId(
-        anilist: Long
-    ): RelationEntity?
+    """,
+    )
+    abstract suspend fun withAniListId(anilist: Long): RelationEntity?
 }

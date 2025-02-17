@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,21 +14,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.entity.attribute.title
 
 data class MediaTitle(
     override val romaji: CharSequence?,
     override val english: CharSequence?,
     override val native: CharSequence?,
-    override val userPreferred: CharSequence?
+    override val userPreferred: CharSequence?,
 ) : IMediaTitle {
     companion object {
-        fun empty() = MediaTitle(
-            null,
-            null,
-            null,
-            null,
-        )
+        fun empty() =
+            MediaTitle(
+                null,
+                null,
+                null,
+                null,
+            )
     }
 }

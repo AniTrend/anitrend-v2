@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.model
 
 import co.anitrend.navigation.model.common.IParam
@@ -24,5 +23,5 @@ import co.anitrend.navigation.model.common.IParam
  */
 data class NavPayload(
     val key: String,
-    val param: IParam
+    val param: IParam,
 )

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.discover.component.content
 
 import android.view.Menu
@@ -27,18 +26,19 @@ import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.viewmodel.toExtras
 
 class ReviewDiscoverContent(
     override val stateConfig: StateLayoutConfig,
     override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val supportViewAdapter: SupportAdapter<Review>,
-    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1
+    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<Review>() {
-
     private val viewModel by viewModel<ReviewDiscoverViewModel>()
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.findItem(co.anitrend.core.android.R.id.action_list_style).isVisible = false
     }
@@ -61,14 +61,13 @@ class ReviewDiscoverContent(
      *
      * @see .onCreateOptionsMenu
      */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             co.anitrend.core.android.R.id.action_filter -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
 
     /**
      * Invoke view model observer to watch for changes, this will be called

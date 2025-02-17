@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.character.entity.fts
 
 import androidx.room.ColumnInfo
@@ -29,5 +28,5 @@ internal data class CharacterFtsEntity(
     @ColumnInfo(name = "name_first") val first: String?,
     @ColumnInfo(name = "name_full") val full: String?,
     @ColumnInfo(name = "name_last") val last: String?,
-    @ColumnInfo(name = "name_original") val original: String?
+    @ColumnInfo(name = "name_original") val original: String?,
 )

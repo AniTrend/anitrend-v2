@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.tag.interactor
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.tag.model.TagParam
 import co.anitrend.domain.tag.repository.ITagRepository
 
-abstract class TagUseCase<R: UiState<*>>(
-    protected val repository: ITagRepository<R>
+abstract class TagUseCase<R : UiState<*>>(
+    protected val repository: ITagRepository<R>,
 ) {
-
     /**
      * @return media tags user interface state
      */
-    fun getMediaTags(param: TagParam) =
-        repository.getMediaTags(param)
+    fun getMediaTags(param: TagParam) = repository.getMediaTags(param)
 }

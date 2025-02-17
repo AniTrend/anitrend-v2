@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.account.koin
 
 import co.anitrend.data.account.AccountInteractor
@@ -22,22 +21,25 @@ import co.anitrend.data.account.repository.AccountRepositoryImpl
 import co.anitrend.data.account.usecase.AccountUseCaseImpl
 import org.koin.dsl.module
 
-private val useCaseModule = module {
-    factory<AccountInteractor> {
-        AccountUseCaseImpl(
-            repository = get()
-        )
+private val useCaseModule =
+    module {
+        factory<AccountInteractor> {
+            AccountUseCaseImpl(
+                repository = get(),
+            )
+        }
     }
-}
 
-private val repositoryModule = module {
-    factory {
-        AccountRepositoryImpl(
-            source = get()
-        )
+private val repositoryModule =
+    module {
+        factory {
+            AccountRepositoryImpl(
+                source = get(),
+            )
+        }
     }
-}
 
-internal val accountModules = module {
-    includes(useCaseModule, repositoryModule)
-}
+internal val accountModules =
+    module {
+        includes(useCaseModule, repositoryModule)
+    }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.model
 
 import co.anitrend.data.airing.model.contract.IAiringScheduleModel
@@ -24,14 +23,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class AiringScheduleModel : IAiringScheduleModel {
-
     @Serializable
     internal data class Core(
         @SerialName("airingAt") override val airingAt: Long,
         @SerialName("episode") override val episode: Int,
         @SerialName("mediaId") override val mediaId: Long,
         @SerialName("timeUntilAiring") override val timeUntilAiring: Long,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : AiringScheduleModel()
 
     @Serializable
@@ -41,6 +39,6 @@ internal sealed class AiringScheduleModel : IAiringScheduleModel {
         @SerialName("episode") override val episode: Int,
         @SerialName("mediaId") override val mediaId: Long,
         @SerialName("timeUntilAiring") override val timeUntilAiring: Long,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : AiringScheduleModel()
 }

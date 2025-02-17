@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity.option
 
 import androidx.room.*
@@ -31,8 +30,8 @@ import kotlinx.serialization.Serializable
     indices = [
         Index(
             value = ["user_id"],
-            unique = true
-        )
+            unique = true,
+        ),
     ],
     foreignKeys = [
         ForeignKey(
@@ -40,9 +39,9 @@ import kotlinx.serialization.Serializable
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 internal data class UserGeneralOptionEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
@@ -51,18 +50,17 @@ internal data class UserGeneralOptionEntity(
     @ColumnInfo(name = "notification_option") val notificationOption: List<NotificationOption>,
     @ColumnInfo(name = "title_language") val titleLanguage: UserTitleLanguage,
     @ColumnInfo(name = "profile_color") val profileColor: String?,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : Identity {
-
     @Serializable
     data class NotificationOption(
         @SerialName("enabled") val enabled: Boolean,
-        @SerialName("notification_type") val notificationType: NotificationType
+        @SerialName("notification_type") val notificationType: NotificationType,
     )
 
     @Serializable
     internal data class ListActivityOption(
         @SerialName("disabled") val disabled: Boolean,
-        @SerialName("media_list_status_type") val statusType: MediaListStatus
+        @SerialName("media_list_status_type") val statusType: MediaListStatus,
     )
 }

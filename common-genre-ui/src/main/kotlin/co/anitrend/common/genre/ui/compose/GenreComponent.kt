@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.genre.ui.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +44,7 @@ private fun GenreItem(
         icon = {
             Icon(
                 painter = rememberDrawablePainter(TextDrawable(context, genre.emoji)),
-                contentDescription = null
+                contentDescription = null,
             )
         },
         label = { Text(text = genre.name) },
@@ -55,7 +54,7 @@ private fun GenreItem(
             )
         },
         shape = SuggestionChipDefaults.shape,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -63,18 +62,18 @@ private fun GenreItem(
 fun GenresListComponent(
     genres: List<Genre>,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyRow(
         state = rememberLazyListState(),
         contentPadding = PaddingValues(all = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(
             count = genres.size,
             key = { genres[it].id },
-            contentType = { "Genre" }
+            contentType = { "Genre" },
         ) { index ->
             GenreItem(
                 genre = genres[index],

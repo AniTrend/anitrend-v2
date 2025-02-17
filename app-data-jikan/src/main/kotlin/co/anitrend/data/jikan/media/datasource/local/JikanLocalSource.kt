@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.datasource.local
 
 import androidx.room.*
@@ -25,37 +24,42 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class JikanLocalSource : AbstractLocalSource<JikanEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from jikan
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from jikan
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from jikan
         where id = :id
-    """)
+    """,
+    )
     abstract suspend fun clear(id: Long)
 
-    @Query("""
+    @Query(
+        """
         select * from jikan
         where id = :id
-    """)
-    abstract fun byIdFlow(
-        id: Long
-    ): Flow<JikanEntity?>
+    """,
+    )
+    abstract fun byIdFlow(id: Long): Flow<JikanEntity?>
 
-    @Query("""
+    @Query(
+        """
         select * from jikan
         where id = :id
-    """)
+    """,
+    )
     @Transaction
-    abstract fun withConnectionFlow(
-        id: Long
-    ): Flow<JikanWithConnection?>
+    abstract fun withConnectionFlow(id: Long): Flow<JikanWithConnection?>
 }

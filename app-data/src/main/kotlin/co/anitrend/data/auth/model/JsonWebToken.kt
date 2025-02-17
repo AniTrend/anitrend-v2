@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,9 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.model
-
 
 /**
  * Json Web Token from Implicit Grant see implicit grant manual docs at:
@@ -24,7 +22,7 @@ package co.anitrend.data.auth.model
  */
 internal data class JsonWebToken(
     val userId: Long,
-    val accessToken: String
+    val accessToken: String,
 ) {
     fun getTokenKey() = "Bearer $accessToken"
 }

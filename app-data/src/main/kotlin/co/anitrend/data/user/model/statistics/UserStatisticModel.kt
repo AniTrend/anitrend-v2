@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.model.statistics
 
 import co.anitrend.data.user.model.statistics.contract.IUserStatisticModel
@@ -30,7 +29,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class UserStatisticModel : IUserStatisticModel {
-
     abstract val count: Int
     abstract val meanScore: Float
     abstract val standardDeviation: Float
@@ -53,7 +51,7 @@ internal sealed class UserStatisticModel : IUserStatisticModel {
         @SerialName("statuses") override val statuses: List<UserStatisticAnimeModel.Status>?,
         @SerialName("studios") override val studios: List<UserStatisticAnimeModel.Studio>?,
         @SerialName("tags") override val tags: List<UserStatisticAnimeModel.Tag>?,
-        @SerialName("voiceActors") override val voiceActors: List<UserStatisticAnimeModel.VoiceActor>?
+        @SerialName("voiceActors") override val voiceActors: List<UserStatisticAnimeModel.VoiceActor>?,
     ) : UserStatisticModel()
 
     @Serializable
@@ -74,6 +72,6 @@ internal sealed class UserStatisticModel : IUserStatisticModel {
         @SerialName("statuses") override val statuses: List<UserStatisticMangaModel.Status>?,
         @SerialName("studios") override val studios: List<UserStatisticMangaModel.Studio>?,
         @SerialName("tags") override val tags: List<UserStatisticMangaModel.Tag>?,
-        @SerialName("voiceActors") override val voiceActors: List<UserStatisticMangaModel.VoiceActor>?
+        @SerialName("voiceActors") override val voiceActors: List<UserStatisticMangaModel.VoiceActor>?,
     ) : UserStatisticModel()
 }

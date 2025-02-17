@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.component.screen
 
 import android.os.Bundle
@@ -38,17 +37,16 @@ import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.core.qualifier.named
 
 class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
-
     private val presenter by inject<NewsPresenter>()
 
     private val viewModel by inject<NewsScreenViewModel>()
 
     private val markwon by inject<Markwon>(
-        named(MarkdownFlavour.STANDARD)
+        named(MarkdownFlavour.STANDARD),
     )
 
     private val param by extra<NewsRouter.NewsParam>(
-        key = nameOf<NewsRouter.NewsParam>()
+        key = nameOf<NewsRouter.NewsParam>(),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,19 +62,18 @@ class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             R.id.action_open_in_browser -> {
                 runCatching {
                     binding?.root?.handleViewIntent(
-                        requireNotNull(param?.link)
+                        requireNotNull(param?.link),
                     )
                 }.stackTrace()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
 
     /**
      * Additional initialization to be done in this method, this is called in during
@@ -86,15 +83,18 @@ class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireBinding().shareAction.setOnClickListener {
-            val shareCompat = param?.let { entity ->
-                presenter.createShareContent(entity, this)
-            }?.createChooserIntent()
+            val shareCompat =
+                param
+                    ?.let { entity ->
+                        presenter.createShareContent(entity, this)
+                    }?.createChooserIntent()
 
             runCatching {
                 startActivity(shareCompat)
             }.stackTrace()
         }
-        BetterLinkMovementMethod.linkify(Linkify.ALL, this)
+        BetterLinkMovementMethod
+            .linkify(Linkify.ALL, this)
             .setOnLinkClickListener { view, url ->
                 runCatching {
                     view.handleViewIntent(url)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.plugin.tag
 
 import co.anitrend.common.markdown.ui.extension.onImage
@@ -26,21 +25,21 @@ import io.noties.markwon.html.HtmlTag
 import io.noties.markwon.html.tag.SimpleTagHandler
 
 internal class RssImageTagHandler private constructor() : SimpleTagHandler() {
-
     override fun getSpans(
         configuration: MarkwonConfiguration,
         renderProps: RenderProps,
-        tag: HtmlTag
+        tag: HtmlTag,
     ): Any? {
-        val imageSpanConfiguration = RssImageSpanConfiguration(
-            magnificationScale = 1.5f,
-            sizeMeasurementUnit = SizeMeasurementUnit.PIXEL,
-            configuration = configuration,
-            renderProps = renderProps,
-            tag = tag,
-            cutoffImageSize = 80,
-            isClickable = true
-        )
+        val imageSpanConfiguration =
+            RssImageSpanConfiguration(
+                magnificationScale = 1.5f,
+                sizeMeasurementUnit = SizeMeasurementUnit.PIXEL,
+                configuration = configuration,
+                renderProps = renderProps,
+                tag = tag,
+                cutoffImageSize = 80,
+                isClickable = true,
+            )
 
         return imageSpanConfiguration.onImage()?.toArray()
     }

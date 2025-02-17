@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
@@ -25,15 +24,15 @@ import co.anitrend.data.relation.model.remote.MoeModel
 
 internal class RelationMapper(
     private val localSource: RelationLocalSource,
-    private val converter: RelationModelConverter
+    private val converter: RelationModelConverter,
 ) : DefaultMapper<MoeModel?, RelationEntity?>() {
-
     /**
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: RelationEntity?) {
-        if (data != null)
+        if (data != null) {
             localSource.upsert(data)
+        }
     }
 
     /**
@@ -42,7 +41,5 @@ internal class RelationMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(
-        source: MoeModel?
-    ) = source?.let { converter.convertFrom(it) }
+    override suspend fun onResponseMapFrom(source: MoeModel?) = source?.let { converter.convertFrom(it) }
 }

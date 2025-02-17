@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.core.component.content.compose
 
 import android.os.Bundle
@@ -18,8 +34,10 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
 
-abstract class AniTrendComposition : SupportFragment(), AndroidScopeComponent, KoinScopeComponent {
-
+abstract class AniTrendComposition :
+    SupportFragment(),
+    AndroidScopeComponent,
+    KoinScopeComponent {
     override val scope by fragmentScope()
 
     private val connectivity by inject<ISupportConnectivity>()
@@ -40,11 +58,9 @@ abstract class AniTrendComposition : SupportFragment(), AndroidScopeComponent, K
                     .onEach { state ->
                         Timber.v("Connectivity state changed: $state")
                         if (state == ConnectivityState.Connected) viewModelState()?.retry()
-                    }
-                    .catch { cause ->
+                    }.catch { cause ->
                         Timber.w(cause, "While collecting connectivity state")
-                    }
-                    .collect()
+                    }.collect()
             }
         }
     }

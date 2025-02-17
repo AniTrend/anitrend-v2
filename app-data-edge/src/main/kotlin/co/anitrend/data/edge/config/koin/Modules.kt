@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.data.edge.config.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
@@ -22,89 +38,97 @@ import co.anitrend.data.edge.genre.mapper.EdgeGenreMapper
 import co.anitrend.data.edge.navigation.mapper.EdgeNavigationMapper
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<EdgeConfigSource> {
-        EdgeConfigSourceImpl(
-            remoteSource = aniTrendApi(),
-            localSource = configStore().edgeConfigDao(),
-            controller = graphQLController(
-                mapper = get<EdgeConfigMapper>(),
-                strategy = offline()
-            ),
-            converter = get(),
-            clearDataHelper = get(),
-            dispatcher = get(),
-            cachePolicy = get<EdgeConfigCache>()
-        )
+private val sourceModule =
+    module {
+        factory<EdgeConfigSource> {
+            EdgeConfigSourceImpl(
+                remoteSource = aniTrendApi(),
+                localSource = configStore().edgeConfigDao(),
+                controller =
+                    graphQLController(
+                        mapper = get<EdgeConfigMapper>(),
+                        strategy = offline(),
+                    ),
+                converter = get(),
+                clearDataHelper = get(),
+                dispatcher = get(),
+                cachePolicy = get<EdgeConfigCache>(),
+            )
+        }
     }
-}
 
-private val converterModule = module {
-    factory {
-        EdgeConfigModelConverter()
+private val converterModule =
+    module {
+        factory {
+            EdgeConfigModelConverter()
+        }
+        factory {
+            EdgeConfigViewEntityConverter()
+        }
+        factory {
+            EdgeConfigEntityConverter()
+        }
     }
-    factory {
-        EdgeConfigViewEntityConverter()
-    }
-    factory {
-        EdgeConfigEntityConverter()
-    }
-}
 
-private val cacheModule = module {
-    factory {
-        EdgeConfigCache(
-            localSource = cacheLocalSource()
-        )
+private val cacheModule =
+    module {
+        factory {
+            EdgeConfigCache(
+                localSource = cacheLocalSource(),
+            )
+        }
     }
-}
 
-private val mapperModule = module {
-    factory {
-        EdgeConfigMapper(
-            genreMapper = get(),
-            navigationMapper = get(),
-            localSource = configStore().edgeConfigDao(),
-            converter = get(),
-        )
+private val mapperModule =
+    module {
+        factory {
+            EdgeConfigMapper(
+                genreMapper = get(),
+                navigationMapper = get(),
+                localSource = configStore().edgeConfigDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            EdgeNavigationMapper(
+                localSource = navigationStore().edgeNavigationDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            EdgeGenreMapper(
+                localSource = genreStore().edgeGenreDao(),
+                converter = get(),
+            )
+        }
     }
-    factory {
-        EdgeNavigationMapper(
-            localSource = navigationStore().edgeNavigationDao(),
-            converter = get()
-        )
-    }
-    factory {
-        EdgeGenreMapper(
-            localSource = genreStore().edgeGenreDao(),
-            converter = get(),
-        )
-    }
-}
 
-private val repositoryModule = module {
-    factory<ConfigRepository> {
-        EdgeConfigRepository(
-            source = get()
+private val repositoryModule =
+    module {
+        factory<ConfigRepository> {
+            EdgeConfigRepository(
+                source = get(),
+            )
+        }
+    }
+
+private val useCaseModule =
+    module {
+        factory<GetConfigInteractor> {
+            EdgeConfigInteractor(
+                repository = get(),
+            )
+        }
+    }
+
+internal val edgeConfigModules =
+    module {
+        includes(
+            sourceModule,
+            converterModule,
+            cacheModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
         )
     }
-}
-
-private val useCaseModule = module {
-    factory<GetConfigInteractor> {
-        EdgeConfigInteractor(
-            repository = get()
-        )
-    }
-}
-
-internal val edgeConfigModules = module {
-    includes(
-        sourceModule,
-        converterModule,
-        cacheModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.plugin.tag
 
 import co.anitrend.common.markdown.ui.plugin.span.size.SizeMeasurementUnit
@@ -32,26 +31,27 @@ import io.noties.markwon.html.tag.SimpleTagHandler
  * <iframe src="https://www.youtube.com/embed/luWcue3t2OU" width="640" height="360" />
  */
 internal class FrameTagHandler private constructor() : SimpleTagHandler() {
-
     override fun getSpans(
         configuration: MarkwonConfiguration,
         renderProps: RenderProps,
-        tag: HtmlTag
+        tag: HtmlTag,
     ): Any? {
-        val imageSpanConfiguration = YouTubeSpanConfiguration(
-            magnificationScale = 1.8f,
-            sizeMeasurementUnit = SizeMeasurementUnit.PIXEL,
-            configuration = configuration,
-            renderProps = renderProps,
-            tag = tag
-        )
+        val imageSpanConfiguration =
+            YouTubeSpanConfiguration(
+                magnificationScale = 1.8f,
+                sizeMeasurementUnit = SizeMeasurementUnit.PIXEL,
+                configuration = configuration,
+                renderProps = renderProps,
+                tag = tag,
+            )
 
         return imageSpanConfiguration.onFrame().toArray()
     }
 
-    override fun supportedTags() = listOf(
-        YouTubeSpanConfiguration.IFRAME_TAG
-    )
+    override fun supportedTags() =
+        listOf(
+            YouTubeSpanConfiguration.IFRAME_TAG,
+        )
 
     companion object {
         fun create() = FrameTagHandler()

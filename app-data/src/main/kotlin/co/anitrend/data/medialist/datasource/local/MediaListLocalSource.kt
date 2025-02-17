@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.datasource.local
 
 import androidx.paging.DataSource
@@ -31,46 +30,63 @@ import co.anitrend.data.user.entity.UserEntity
 
 @Dao
 internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEntity>() {
-
     /**
      * Count the number of entities
      */
-    @Query("""
+    @Query(
+        """
             select count(id) from media_list
-        """)
+        """,
+    )
     abstract override suspend fun count(): Int
 
     /**
      * Removes all records from table
      */
-    @Query("""
+    @Query(
+        """
         delete from media_list
-        """)
+        """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from media_list
         where id = :id and user_id = :userId
-        """)
-    abstract suspend fun clearById(id: Long, userId: Long)
+        """,
+    )
+    abstract suspend fun clearById(
+        id: Long,
+        userId: Long,
+    )
 
-    @Query("""
+    @Query(
+        """
         delete from media_list
         where user_id = :userId
-        """)
+        """,
+    )
     abstract suspend fun clearByUserId(userId: Long)
 
-    @Query("""
+    @Query(
+        """
         delete from media_list
         where user_name = :userName
-        """)
+        """,
+    )
     abstract suspend fun clearByUserName(userName: String)
 
-    @Query("""
+    @Query(
+        """
         delete from media_list
         where user_id = :userId and media_id = :mediaId
-        """)
-    abstract suspend fun clearByMediaId(mediaId: Long, userId: Long)
+        """,
+    )
+    abstract suspend fun clearByMediaId(
+        mediaId: Long,
+        userId: Long,
+    )
 
     @Transaction
     @RawQuery(observedEntities = [MediaListEntity::class, MediaEntity::class, UserEntity::class])

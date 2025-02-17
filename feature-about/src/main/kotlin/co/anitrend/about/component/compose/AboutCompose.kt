@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.component.compose
 
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,7 @@ import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 fun AboutContent(modifier: Modifier = Modifier) {
     Column(modifier = modifier.then(Modifier.padding(16.dp))) {
         Text(
-            text = "Hello People"
+            text = "Hello People",
         )
     }
 }
@@ -45,9 +44,10 @@ fun AboutContent(modifier: Modifier = Modifier) {
 fun AboutScreenContent(onBackPress: () -> Unit) {
     DefaultScaffold(onBackPress) { modifier ->
         AboutContent(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         )
     }
 }
@@ -57,7 +57,7 @@ fun AboutScreenContent(onBackPress: () -> Unit) {
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
 private fun AboutContentPreview(
-    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
         AboutContent()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.cleaner.contract
 
 import kotlin.coroutines.CoroutineContext
@@ -23,7 +22,6 @@ import kotlin.coroutines.CoroutineContext
  * Contract helper for delegating clear data tasks
  */
 interface IClearDataHelper {
-
     /**
      * Executes an [action] in the provided [context]
      *
@@ -32,7 +30,7 @@ interface IClearDataHelper {
      */
     suspend operator fun invoke(
         context: CoroutineContext,
-        action: suspend () -> Unit
+        action: suspend () -> Unit,
     )
 
     /**
@@ -40,7 +38,5 @@ interface IClearDataHelper {
      *
      * @param action The task that needs to be run
      */
-    suspend operator fun invoke(
-        action: suspend () -> Unit
-    )
+    suspend operator fun invoke(action: suspend () -> Unit)
 }

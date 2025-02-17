@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.airing.component.viewmodel.state
 
 import androidx.paging.PagedList
@@ -25,31 +24,31 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.AiringRouter
 
 class AiringState(
-    private val interactor: GetPagedAiringScheduleInteractor
+    private val interactor: GetPagedAiringScheduleInteractor,
 ) : AniTrendViewModelState<PagedList<Media>>() {
-
     operator fun invoke(param: AiringRouter.AiringParam) {
-        val query = AiringParam.Find() builder {
-            id = param.id
-            mediaId = param.mediaId
-            episode = param.episode
-            airingAt = param.airingAt
-            notYetAired = param.notYetAired
-            id_not = param.id_not
-            id_in = param.id_in
-            id_not_in = param.id_not_in
-            mediaId_not = param.mediaId_not
-            mediaId_in = param.mediaId_in
-            mediaId_not_in = param.mediaId_not_in
-            episode_not = param.episode_not
-            episode_in = param.episode_in
-            episode_not_in = param.episode_not_in
-            episode_greater = param.episode_greater
-            episode_lesser = param.episode_lesser
-            airingAt_greater = param.airingAt_greater
-            airingAt_lesser = param.airingAt_lesser
-            sort = param.sort
-        }
+        val query =
+            AiringParam.Find() builder {
+                id = param.id
+                mediaId = param.mediaId
+                episode = param.episode
+                airingAt = param.airingAt
+                notYetAired = param.notYetAired
+                id_not = param.id_not
+                id_in = param.id_in
+                id_not_in = param.id_not_in
+                mediaId_not = param.mediaId_not
+                mediaId_in = param.mediaId_in
+                mediaId_not_in = param.mediaId_not_in
+                episode_not = param.episode_not
+                episode_in = param.episode_in
+                episode_not_in = param.episode_not_in
+                episode_greater = param.episode_greater
+                episode_lesser = param.episode_lesser
+                airingAt_greater = param.airingAt_greater
+                airingAt_lesser = param.airingAt_lesser
+                sort = param.sort
+            }
         val result = interactor(query)
         state.postValue(result)
     }

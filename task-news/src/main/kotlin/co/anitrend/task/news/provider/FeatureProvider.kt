@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.news.provider
 
 import co.anitrend.navigation.NewsTaskRouter
@@ -23,5 +22,6 @@ import co.anitrend.task.news.scheduler.NewsScheduler
 
 class FeatureProvider : NewsTaskRouter.Provider {
     override fun worker() = NewsWorker::class.java
+
     override fun scheduler() = NewsScheduler(worker())
 }

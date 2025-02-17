@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.compose.section
 
 import androidx.compose.foundation.layout.Arrangement
@@ -40,18 +39,16 @@ import co.anitrend.core.android.compose.AniTrendDimensions
 import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.roundedCornersTransformation
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.navigation.ImageViewerRouter
 
-
 @Composable
 private fun MediaCover(
     cover: IMediaCover,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AniTrendImage(
         image = cover,
@@ -69,7 +66,7 @@ private fun MediaTitle(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = title.userPreferred.toString(),
@@ -94,7 +91,7 @@ private fun MediaScore(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = "${meanScore}%",
+        text = "$meanScore%",
         color = accentColor,
         fontWeight = FontWeight.Bold,
         style = MaterialTheme.typography.bodySmall,
@@ -107,25 +104,27 @@ fun MediaSummarySection(
     media: Media,
     accentColor: Color,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         MediaCover(
             cover = media.image,
-            modifier = Modifier.height(AniTrendDimensions.series_image_lg)
-                .aspectRatio(AniTrendDimensions.series_image_aspect_ratio),
+            modifier =
+                Modifier
+                    .height(AniTrendDimensions.series_image_lg)
+                    .aspectRatio(AniTrendDimensions.series_image_aspect_ratio),
             onCoverClick = onCoverClick,
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.offset(y = 24.dp)
+            modifier = Modifier.offset(y = 24.dp),
         ) {
             MediaTitle(
                 title = media.title,
-                extraInfo = (media as Media.Extended).extraInfo
+                extraInfo = (media as Media.Extended).extraInfo,
             )
             MediaReleaseStatus(media)
             MediaSubTitleText(media = media)

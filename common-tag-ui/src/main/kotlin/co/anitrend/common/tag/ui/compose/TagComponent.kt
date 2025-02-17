@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.tag.ui.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -37,9 +53,10 @@ private fun TagItem(
                 MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
             )
         },
-        colors = SuggestionChipDefaults.suggestionChipColors(
-            containerColor = accentColor,
-        ),
+        colors =
+            SuggestionChipDefaults.suggestionChipColors(
+                containerColor = accentColor,
+            ),
         label = {
             Text(
                 text = tag.name,
@@ -49,18 +66,23 @@ private fun TagItem(
             )
         },
         icon = {
-            val icon = when (tag) {
-                is Tag.Extended -> {
-                    if (tag.isMediaSpoiler)
-                        Icons.Rounded.Cancel
-                    else null
-                }
-                else -> {
-                    if (tag.isGeneralSpoiler)
-                        Icons.Rounded.Warning
-                    else null
-                }
-            } ?: Icons.Rounded.Tag
+            val icon =
+                when (tag) {
+                    is Tag.Extended -> {
+                        if (tag.isMediaSpoiler) {
+                            Icons.Rounded.Cancel
+                        } else {
+                            null
+                        }
+                    }
+                    else -> {
+                        if (tag.isGeneralSpoiler) {
+                            Icons.Rounded.Warning
+                        } else {
+                            null
+                        }
+                    }
+                } ?: Icons.Rounded.Tag
             Icon(
                 imageVector = icon,
                 contentDescription = null,
@@ -81,12 +103,12 @@ fun TagListItems(
     LazyRow(
         state = rememberLazyListState(),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(
             count = tags.size,
             key = { tags[it].id },
-            contentType = { "Tag" }
+            contentType = { "Tag" },
         ) { index ->
             TagItem(
                 tag = tags[index],
@@ -102,17 +124,21 @@ fun TagListItems(
 private fun TagComponentPreview() {
     PreviewTheme(wrapInSurface = true) {
         TagItem(
-            tag = Tag.Extended(
-                rank = 1,
-                isMediaSpoiler = false,
-                background = MaterialTheme.colorScheme.onSurface.toArgb().toHexString(),
-                name = "Isekai",
-                description = "",
-                category = "",
-                isGeneralSpoiler = true,
-                isAdult = false,
-                id = 0,
-            ),
+            tag =
+                Tag.Extended(
+                    rank = 1,
+                    isMediaSpoiler = false,
+                    background =
+                        MaterialTheme.colorScheme.onSurface
+                            .toArgb()
+                            .toHexString(),
+                    name = "Isekai",
+                    description = "",
+                    category = "",
+                    isGeneralSpoiler = true,
+                    isAdult = false,
+                    id = 0,
+                ),
             accentColor = MaterialTheme.colorScheme.onSurface,
             onMediaDiscoverableItemClick = {},
         )

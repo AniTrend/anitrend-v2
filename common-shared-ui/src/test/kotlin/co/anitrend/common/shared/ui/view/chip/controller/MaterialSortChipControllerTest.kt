@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.view.chip.controller
 
 import co.anitrend.common.shared.ui.view.chip.enums.CheckedState
@@ -22,12 +21,11 @@ import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.navigation.model.sorting.Sorting
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
 class MaterialSortChipControllerTest {
-
     @Test
     fun `controller checked state should be false with default instance`() {
         val controller = MaterialSortChipController()
@@ -37,10 +35,11 @@ class MaterialSortChipControllerTest {
     @Test
     fun `controller checked state should be true when sorting of desc order`() {
         val controller = MaterialSortChipController()
-        val sorting = Sorting(
-            sortable = MediaSort.CHAPTERS,
-            order = SortOrder.DESC
-        )
+        val sorting =
+            Sorting(
+                sortable = MediaSort.CHAPTERS,
+                order = SortOrder.DESC,
+            )
         controller.updateSortOrder(sorting)
         assertTrue(controller.isCheckedState())
     }
@@ -48,10 +47,11 @@ class MaterialSortChipControllerTest {
     @Test
     fun `controller checked state should be true when sorting of asc order`() {
         val controller = MaterialSortChipController()
-        val sorting = Sorting(
-            sortable = MediaSort.CHAPTERS,
-            order = SortOrder.ASC
-        )
+        val sorting =
+            Sorting(
+                sortable = MediaSort.CHAPTERS,
+                order = SortOrder.ASC,
+            )
         controller.updateSortOrder(sorting)
         assertTrue(controller.isCheckedState())
     }
@@ -74,8 +74,8 @@ class MaterialSortChipControllerTest {
         controller.updateSortOrder(
             Sorting(
                 sortable = MediaSort.CHAPTERS,
-                order = SortOrder.ASC
-            )
+                order = SortOrder.ASC,
+            ),
         )
 
         val previousState = controller.toggleCheckedState()
@@ -92,8 +92,8 @@ class MaterialSortChipControllerTest {
         controller.updateSortOrder(
             Sorting(
                 sortable = MediaSort.CHAPTERS,
-                order = SortOrder.DESC
-            )
+                order = SortOrder.DESC,
+            ),
         )
 
         val previousState = controller.toggleCheckedState()
@@ -110,8 +110,8 @@ class MaterialSortChipControllerTest {
         controller.updateSortOrder(
             Sorting(
                 sortable = MediaSort.CHAPTERS,
-                order = SortOrder.DESC
-            )
+                order = SortOrder.DESC,
+            ),
         )
 
         val previousState = controller.toggleCheckedState()

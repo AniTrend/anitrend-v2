@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.repository
 
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -24,20 +23,15 @@ import co.anitrend.data.feed.news.source.contract.NewsSource
 import co.anitrend.domain.news.model.NewsParam
 
 internal sealed class NewsRepository {
-
     class Paged(
-        private val source: NewsSource
+        private val source: NewsSource,
     ) : NewsPagedRepository {
-        override fun getPagedNews(
-            param: NewsParam
-        ) = source create source(param)
+        override fun getPagedNews(param: NewsParam) = source create source(param)
     }
 
     class Sync(
-        private val source: NewsSource
+        private val source: NewsSource,
     ) : NewsSyncRepository {
-        override fun sync(
-            param: NewsParam
-        ) = source create source.sync(param)
+        override fun sync(param: NewsParam) = source create source.sync(param)
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.model.date.query
 
 import co.anitrend.data.common.model.graph.IGraphPayload
@@ -22,15 +21,15 @@ import co.anitrend.data.common.model.graph.IGraphPayload
 internal data class FuzzyDateQuery(
     val year: Int,
     val month: Int,
-    val day: Int
+    val day: Int,
 ) : IGraphPayload {
-
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
-    override fun toMap() = mapOf(
-        "year" to year,
-        "month" to month,
-        "day" to day
-    )
+    override fun toMap() =
+        mapOf(
+            "year" to year,
+            "month" to month,
+            "day" to day,
+        )
 }

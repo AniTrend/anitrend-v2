@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.suggestion.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -28,28 +27,32 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    scope<SuggestionScreen> {
-        fragment {
-            SuggestionContent()
+private val fragmentModule =
+    module {
+        scope<SuggestionScreen> {
+            fragment {
+                SuggestionContent()
+            }
         }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        SuggestionViewModel(
-            state = SuggestionState()
-        )
+private val viewModelModule =
+    module {
+        viewModel {
+            SuggestionViewModel(
+                state = SuggestionState(),
+            )
+        }
     }
-}
 
-private val featureModule = module {
-    factory<SuggestionRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<SuggestionRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

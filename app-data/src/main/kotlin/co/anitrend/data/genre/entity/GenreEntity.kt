@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.entity
 
 import androidx.room.ColumnInfo
@@ -29,13 +28,13 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     indices = [
         Index(
             value = ["genre", "emoji"],
-            unique = true
-        )
-    ]
+            unique = true,
+        ),
+    ],
 )
 @EntitySchema
 internal data class GenreEntity(
     @ColumnInfo(name = "id") override val id: Long,
     @ColumnInfo(name = "genre") val genre: String,
-    @ColumnInfo(name = "emoji") val emoji: String
+    @ColumnInfo(name = "emoji") val emoji: String,
 ) : Identity

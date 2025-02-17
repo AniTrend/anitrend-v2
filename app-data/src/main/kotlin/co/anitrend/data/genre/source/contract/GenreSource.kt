@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.source.contract
 
 import co.anitrend.arch.request.callback.RequestCallback
@@ -28,7 +27,6 @@ import co.anitrend.domain.genre.model.GenreParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class GenreSource : AbstractCoreDataSource() {
-
     protected lateinit var param: GenreParam
 
     protected val cacheIdentity: CacheIdentity = GenreCache.Identity.GENRE
@@ -45,7 +43,7 @@ internal abstract class GenreSource : AbstractCoreDataSource() {
             scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = cacheIdentity,
-            block = ::getGenres
+            block = ::getGenres,
         )
 
         return observable()

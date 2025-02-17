@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,21 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.source.contract
 
-import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.relation.cache.RelationCache
 import co.anitrend.data.relation.model.local.RelationQuery
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import kotlinx.coroutines.flow.Flow
 
 abstract class RelationSource : AbstractCoreDataSource() {
-
     protected lateinit var query: RelationQuery
 
     protected lateinit var cacheIdentity: CacheIdentity
@@ -37,9 +35,7 @@ abstract class RelationSource : AbstractCoreDataSource() {
 
     internal abstract fun observable(): Flow<IMediaSourceId>
 
-    protected abstract suspend fun getSourceRelation(
-        callback: RequestCallback
-    ): Boolean
+    protected abstract suspend fun getSourceRelation(callback: RequestCallback): Boolean
 
     operator fun invoke(sourceQuery: RelationQuery) {
         query = sourceQuery

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.widget.ranking
 
 import androidx.compose.foundation.layout.Arrangement
@@ -35,22 +51,26 @@ private fun RankingItem(
 ) {
     ElevatedSuggestionChip(
         onClick = {
-            val sorting = when (ranking.type) {
-                MediaRankType.RATED -> Sorting(
-                    sortable = MediaSort.SCORE,
-                    order = SortOrder.DESC
-                )
-                else -> Sorting(
-                    sortable = MediaSort.POPULARITY,
-                    order = SortOrder.DESC
-                )
-            }
+            val sorting =
+                when (ranking.type) {
+                    MediaRankType.RATED ->
+                        Sorting(
+                            sortable = MediaSort.SCORE,
+                            order = SortOrder.DESC,
+                        )
+                    else ->
+                        Sorting(
+                            sortable = MediaSort.POPULARITY,
+                            order = SortOrder.DESC,
+                        )
+                }
             onClick(ranking, listOf(sorting))
         },
         shape = SuggestionChipDefaults.shape,
-        colors = SuggestionChipDefaults.elevatedSuggestionChipColors().copy(
-            containerColor = accentColor,
-        ),
+        colors =
+            SuggestionChipDefaults.elevatedSuggestionChipColors().copy(
+                containerColor = accentColor,
+            ),
         label = {
             val content = StringBuilder("#${ranking.rank} ${ranking.context}".capitalizeWords())
             if (ranking.season != null) {
@@ -69,16 +89,16 @@ private fun RankingItem(
             )
         },
         icon = {
-            val resource = when (ranking.type) {
-                MediaRankType.POPULAR -> Icons.AutoMirrored.Rounded.TrendingUp
-                MediaRankType.RATED -> Icons.Rounded.StarRate
-            }
+            val resource =
+                when (ranking.type) {
+                    MediaRankType.POPULAR -> Icons.AutoMirrored.Rounded.TrendingUp
+                    MediaRankType.RATED -> Icons.Rounded.StarRate
+                }
             Icon(imageVector = resource, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
         },
         modifier = modifier,
     )
 }
-
 
 @Composable
 fun RankingItems(
@@ -91,12 +111,12 @@ fun RankingItems(
         state = rememberLazyListState(),
         contentPadding = PaddingValues(all = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(
             count = rankings.size,
             key = { rankings[it].id },
-            contentType = { rankings[it].type }
+            contentType = { rankings[it].type },
         ) { index ->
             val ranking = rankings[index]
             RankingItem(

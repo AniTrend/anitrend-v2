@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.datasource.remote
 
 import co.anitrend.data.auth.model.JsonWebToken
@@ -32,7 +31,6 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 internal interface AuthRemoteSource {
-
     @JSON
     @POST("/token")
     suspend fun getAuthenticationToken(
@@ -40,7 +38,7 @@ internal interface AuthRemoteSource {
         @Field("client_id") client_id: String,
         @Field("client_secret") client_secret: String,
         @Field("redirect_uri") redirect_uri: String,
-        @Field("code") code: String
+        @Field("code") code: String,
     ): Response<JsonWebToken>
 
     @GRAPHQL
@@ -48,6 +46,6 @@ internal interface AuthRemoteSource {
     @GraphQuery("GetUserViewer")
     suspend fun getAuthenticatedUser(
         @Header("Authorization") authToken: String,
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.Viewer>>
 }

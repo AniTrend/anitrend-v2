@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.component.screen
 
 import android.net.Uri
@@ -43,11 +42,10 @@ import co.anitrend.navigation.extensions.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaScreen : AniTrendScreen() {
-
     private val viewModel by viewModel<MediaViewModel>()
 
     private val mediaRouterParam by extra<MediaRouter.MediaParam>(
-        key = nameOf<MediaRouter.MediaParam>()
+        key = nameOf<MediaRouter.MediaParam>(),
     )
 
     private val settings by inject<IUserSettings>()
@@ -72,7 +70,8 @@ class MediaScreen : AniTrendScreen() {
                         },
                         onFavouriteButtonClick = { view, params ->
                             view.runIfAuthenticated(settings) {
-                                FavouriteTaskRouter.forWorker()
+                                FavouriteTaskRouter
+                                    .forWorker()
                                     .createOneTimeUniqueWorker(
                                         context = view.context,
                                         params = params,
@@ -89,13 +88,13 @@ class MediaScreen : AniTrendScreen() {
                         onMediaDiscoverableItemClick = { param ->
                             MediaDiscoverRouter.startActivity(
                                 context = this@MediaScreen,
-                                navPayload = param.asNavPayload()
+                                navPayload = param.asNavPayload(),
                             )
                         },
                         onImageClick = { param ->
                             ImageViewerRouter.startActivity(
                                 context = this@MediaScreen,
-                                navPayload = param.asNavPayload()
+                                navPayload = param.asNavPayload(),
                             )
                         },
                         onBackClick = ::onBackPressed,

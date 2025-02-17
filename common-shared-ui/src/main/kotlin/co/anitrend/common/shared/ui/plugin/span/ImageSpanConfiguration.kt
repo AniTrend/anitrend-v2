@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.plugin.span
 
 import co.anitrend.common.markdown.ui.plugin.span.image.AbstractImageSpan
@@ -31,10 +30,12 @@ internal data class ImageSpanConfiguration(
     override val tag: HtmlTag,
     override val magnificationScale: Float,
     override val sizeMeasurementUnit: SizeMeasurementUnit,
-    override val isClickable: Boolean
+    override val isClickable: Boolean,
 ) : AbstractImageSpan() {
-
-    override fun addPropertiesToImage(source: String, imageSize: ImageSize) {
+    override fun addPropertiesToImage(
+        source: String,
+        imageSize: ImageSize,
+    ) {
         ImageProps.DESTINATION.set(renderProps, source)
         ImageProps.IMAGE_SIZE.set(renderProps, imageSize)
         // No documentation is provided for this.. welp

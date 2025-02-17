@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.item
 
 import androidx.compose.foundation.background
@@ -15,7 +31,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +46,6 @@ import co.anitrend.core.android.R
 import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.roundedCornersTransformation
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.common.entity.shared.FuzzyDate
@@ -59,24 +73,26 @@ private fun MediaTitleItem(
     ) {
         mediaStatus?.let {
             Box(
-                modifier = Modifier.size(8.dp)
-                    .clip(CircleShape)
-                    .background(
-                        when (mediaStatus) {
-                            MediaStatus.NOT_YET_RELEASED -> colorResource(R.color.orange_A700)
-                            MediaStatus.RELEASING -> colorResource(R.color.blue_A700)
-                            MediaStatus.CANCELLED -> colorResource(R.color.red_A700)
-                            MediaStatus.FINISHED -> colorResource(R.color.green_A700)
-                            MediaStatus.HIATUS -> colorResource(R.color.purple_A700)
-                        },
-                    ),
+                modifier =
+                    Modifier
+                        .size(8.dp)
+                        .clip(CircleShape)
+                        .background(
+                            when (mediaStatus) {
+                                MediaStatus.NOT_YET_RELEASED -> colorResource(R.color.orange_A700)
+                                MediaStatus.RELEASING -> colorResource(R.color.blue_A700)
+                                MediaStatus.CANCELLED -> colorResource(R.color.red_A700)
+                                MediaStatus.FINISHED -> colorResource(R.color.green_A700)
+                                MediaStatus.HIATUS -> colorResource(R.color.purple_A700)
+                            },
+                        ),
             )
             Text(
                 text = mediaTitle.userPreferred?.toString().orEmpty(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = AniTrendTheme.typography.body2,
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(4.dp),
             )
         }
     }
@@ -100,8 +116,8 @@ fun MediaCompactItem(
                 mediaItemClick(
                     MediaRouter.MediaParam(
                         id = media.id,
-                        type = media.category.type
-                    )
+                        type = media.category.type,
+                    ),
                 )
             },
             onLongClick = {
@@ -109,17 +125,18 @@ fun MediaCompactItem(
                     MediaListEditorRouter.MediaListEditorParam(
                         mediaId = media.id,
                         mediaType = media.category.type,
-                        scoreFormat = mediaPreferenceData.scoreFormat
-                    )
+                        scoreFormat = mediaPreferenceData.scoreFormat,
+                    ),
                 )
             },
-            modifier = Modifier
-                .weight(1f)
-                .clip(RoundedCornerShape(8.dp)),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(8.dp)),
         )
         MediaTitleItem(
             mediaTitle = media.title,
-            mediaStatus = media.status
+            mediaStatus = media.status,
         )
         MediaSubTitleText(
             media = media,
@@ -145,20 +162,21 @@ fun MediaCompactItemList(
         state = rememberLazyListState(),
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
+        modifier = modifier,
     ) {
         items(
             count = mediaItems.size,
             key = { mediaItems[it].hashCode() },
-            contentType = { mediaItems[it].category }
+            contentType = { mediaItems[it].category },
         ) { index ->
             MediaCompactItem(
                 media = mediaItems[index],
                 mediaPreferenceData = mediaPreferenceData,
                 mediaItemClick = mediaItemClick,
-                modifier = Modifier
-                    .height(275.dp)
-                    .aspectRatio(.55f)
+                modifier =
+                    Modifier
+                        .height(275.dp)
+                        .aspectRatio(.55f),
             )
         }
     }
@@ -169,29 +187,36 @@ fun MediaCompactItemList(
 private fun MediaCompactItemPreview() {
     PreviewTheme(wrapInSurface = true) {
         MediaCompactItem(
-            media = Media.Core.empty().copy(
-                title = MediaTitle(
-                    userPreferred = "Boku no Hero Academia 3",
-                    english = "My Hero Academia Season 3",
-                    romaji = "Boku no Hero Academia 3",
-                    native = "僕のヒーローアカデミア 3",
+            media =
+                Media.Core.empty().copy(
+                    title =
+                        MediaTitle(
+                            userPreferred = "Boku no Hero Academia 3",
+                            english = "My Hero Academia Season 3",
+                            romaji = "Boku no Hero Academia 3",
+                            native = "僕のヒーローアカデミア 3",
+                        ),
+                    status = MediaStatus.FINISHED,
+                    image = MediaImage.empty().copy(color = "#e4a15d"),
+                    startDate = FuzzyDate.empty().copy(2018),
+                    format = MediaFormat.TV,
+                    category =
+                        Media.Category.Anime
+                            .empty()
+                            .copy(25),
                 ),
-                status = MediaStatus.FINISHED,
-                image = MediaImage.empty().copy(color = "#e4a15d"),
-                startDate = FuzzyDate.empty().copy(2018),
-                format = MediaFormat.TV,
-                category = Media.Category.Anime.empty().copy(25)
-            ),
-            mediaPreferenceData = MediaPreferenceData(
-                ScoreFormat.POINT_10_DECIMAL,
-            ),
+            mediaPreferenceData =
+                MediaPreferenceData(
+                    ScoreFormat.POINT_10_DECIMAL,
+                ),
             mediaItemClick = {},
-            modifier = Modifier
-                .padding(8.dp)
-                .size(
-                    height = 265.dp,
-                    width = 150.dp,
-                ),
+            modifier =
+                Modifier
+                    .padding(8.dp)
+                    .size(
+                        height = 265.dp,
+                        width = 150.dp,
+                    ),
         )
     }
 }

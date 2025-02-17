@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.source
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
@@ -32,8 +31,6 @@ import co.anitrend.data.jikan.media.source.contract.JikanSource
 import co.anitrend.data.jikan.model.JikanWrapper
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -48,49 +45,54 @@ internal class JikanSourceImpl(
     private val controller: JikanController,
     private val clearDataHelper: IClearDataHelper,
     override val dispatcher: ISupportDispatcher,
-    override val cachePolicy: ICacheStorePolicy
+    override val cachePolicy: ICacheStorePolicy,
 ) : JikanSource() {
-
-    override fun observable(): Flow<JikanWithConnection> {
-        return localSource.withConnectionFlow(query.id)
+    override fun observable(): Flow<JikanWithConnection> =
+        localSource
+            .withConnectionFlow(query.id)
             .flowOn(dispatcher.io)
             .filterNotNull()
             .distinctUntilChanged()
             .flowOn(coroutineContext)
-    }
 
-    private suspend fun getMediaInfo(): JikanWrapper<JikanMediaModel.MoreInfo>? = runCatching {
-        val mediaType = query.type.name.uppercase()
-        val deferred = deferred {
-            remoteSource.getExtraInfo(query.id, mediaType)
-        }
-        DefaultNetworkClient<JikanWrapper<JikanMediaModel.MoreInfo>>(dispatcher.io)
-            .fetch(deferred)
-    }.onFailure {
-        Timber.e(it)
-    }.getOrNull()
+    private suspend fun getMediaInfo(): JikanWrapper<JikanMediaModel.MoreInfo>? =
+        runCatching {
+            val mediaType = query.type.name.uppercase()
+            val deferred =
+                deferred {
+                    remoteSource.getExtraInfo(query.id, mediaType)
+                }
+            DefaultNetworkClient<JikanWrapper<JikanMediaModel.MoreInfo>>(dispatcher.io)
+                .fetch(deferred)
+        }.onFailure {
+            Timber.e(it)
+        }.getOrNull()
 
     override suspend fun getMedia(callback: RequestCallback): Boolean {
-        val deferred = deferred {
-            @Suppress("UNCHECKED_CAST")
-            when (query.type) {
-                MediaType.ANIME -> remoteSource.getAnimeDetails(query.id)
-                else -> remoteSource.getMangaDetails(query.id)
-            } as Response<JikanWrapper<JikanMediaModel>>
-        }
+        val deferred =
+            deferred {
+                @Suppress("UNCHECKED_CAST")
+                when (query.type) {
+                    MediaType.ANIME -> remoteSource.getAnimeDetails(query.id)
+                    else -> remoteSource.getMangaDetails(query.id)
+                } as Response<JikanWrapper<JikanMediaModel>>
+            }
 
         val jikanMediaInfo = getMediaInfo()?.data
 
-        val result = controller(deferred, callback) { model ->
-            when (val data = model.data) {
-                is JikanMediaModel.Anime -> data.copy(
-                    moreInfo = jikanMediaInfo?.moreInfo
-                )
-                is JikanMediaModel.Manga -> data.copy(
-                    moreInfo = jikanMediaInfo?.moreInfo
-                )
-            }.let(::JikanWrapper)
-        }
+        val result =
+            controller(deferred, callback) { model ->
+                when (val data = model.data) {
+                    is JikanMediaModel.Anime ->
+                        data.copy(
+                            moreInfo = jikanMediaInfo?.moreInfo,
+                        )
+                    is JikanMediaModel.Manga ->
+                        data.copy(
+                            moreInfo = jikanMediaInfo?.moreInfo,
+                        )
+                }.let(::JikanWrapper)
+            }
 
         return result != null
     }

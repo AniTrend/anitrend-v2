@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.review.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -27,36 +26,39 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
-private val workManagerModule = module {
-    worker { scope ->
-        ReviewSaveEntryWorker(
-            context = androidContext(),
-            parameters = scope.get(),
-            interactor = get()
-        )
+private val workManagerModule =
+    module {
+        worker { scope ->
+            ReviewSaveEntryWorker(
+                context = androidContext(),
+                parameters = scope.get(),
+                interactor = get(),
+            )
+        }
+        worker { scope ->
+            ReviewDeleteEntryWorker(
+                context = androidContext(),
+                parameters = scope.get(),
+                interactor = get(),
+            )
+        }
+        worker { scope ->
+            ReviewVoteEntryWorker(
+                context = androidContext(),
+                parameters = scope.get(),
+                interactor = get(),
+            )
+        }
     }
-    worker { scope ->
-        ReviewDeleteEntryWorker(
-            context = androidContext(),
-            parameters = scope.get(),
-            interactor = get()
-        )
-    }
-    worker { scope ->
-        ReviewVoteEntryWorker(
-            context = androidContext(),
-            parameters = scope.get(),
-            interactor = get()
-        )
-    }
-}
 
-private val featureModule = module {
-    factory<ReviewTaskRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<ReviewTaskRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(workManagerModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(workManagerModule, featureModule),
+    )

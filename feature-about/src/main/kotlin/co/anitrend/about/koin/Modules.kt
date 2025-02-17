@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.koin
 
 import co.anitrend.about.component.viewmodel.AboutViewModel
@@ -24,14 +23,16 @@ import co.anitrend.navigation.AboutRouter
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-private val featureModule = module {
-    factory<AboutRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<AboutRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-private val viewModelModule = module {
-    viewModelOf(::AboutViewModel)
-}
+private val viewModelModule =
+    module {
+        viewModelOf(::AboutViewModel)
+    }
 
 internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule, viewModelModule))

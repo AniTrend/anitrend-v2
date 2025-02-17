@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.repository
 
 import androidx.paging.PagedList
@@ -31,36 +30,33 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 
 internal sealed class MediaRepository {
-
     class Detail(
-        private val source: MediaSource.Detail
-    ) : MediaRepository(), MediaDetailRepository {
-        override fun getMedia(
-            param: MediaParam.Detail
-        ) = source create source(param)
+        private val source: MediaSource.Detail,
+    ) : MediaRepository(),
+        MediaDetailRepository {
+        override fun getMedia(param: MediaParam.Detail) = source create source(param)
     }
 
     class Paged(
-        private val source: MediaSource.Paged
-    ) : MediaRepository(), MediaPagedRepository {
-        override fun getPaged(
-            param: MediaParam.Find
-        ) = source create source(param)
+        private val source: MediaSource.Paged,
+    ) : MediaRepository(),
+        MediaPagedRepository {
+        override fun getPaged(param: MediaParam.Find) = source create source(param)
     }
 
     class Network(
-        private val source: MediaSourceFactory.Network
-    ) : MediaRepository(), MediaNetworkRepository {
-        override fun getPaged(
-            param: MediaParam.Find
-        ): DataState<PagedList<Media>> {
+        private val source: MediaSourceFactory.Network,
+    ) : MediaRepository(),
+        MediaNetworkRepository {
+        override fun getPaged(param: MediaParam.Find): DataState<PagedList<Media>> {
             source.initialKey = param
             val dataSource = source.create()
 
-            return dataSource create FlowPagedListBuilder(
-                source,
-                PAGING_CONFIGURATION
-            ).buildFlow()
+            return dataSource create
+                FlowPagedListBuilder(
+                    source,
+                    PAGING_CONFIGURATION,
+                ).buildFlow()
         }
     }
 }

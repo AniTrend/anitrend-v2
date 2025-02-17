@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,22 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.account.model
 
 sealed class AccountParam {
-
     data class SignIn(
         val accessToken: String,
         val tokenType: String,
-        val expiresIn: Long
+        val expiresIn: Long,
     ) : AccountParam()
 
     data class SignOut(
-        val userId: Long
+        val userId: Long,
     ) : AccountParam()
 
     data class Activate(
-        val userId: Long
+        val userId: Long,
     ) : AccountParam()
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.entity
 
 import androidx.room.ColumnInfo
@@ -29,13 +28,13 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     indices = [
         Index(
             value = ["name"],
-            unique = true
+            unique = true,
         ),
         Index(
             value = ["category"],
-            unique = false
-        )
-    ]
+            unique = false,
+        ),
+    ],
 )
 @EntitySchema
 internal data class TagEntity(
@@ -44,5 +43,5 @@ internal data class TagEntity(
     @ColumnInfo(name = "category") val category: String?,
     @ColumnInfo(name = "is_general_spoiler") val isGeneralSpoiler: Boolean,
     @ColumnInfo(name = "is_adult") val isAdult: Boolean,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity

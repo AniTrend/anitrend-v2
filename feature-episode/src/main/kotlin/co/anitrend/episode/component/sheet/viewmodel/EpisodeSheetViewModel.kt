@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.episode.component.sheet.viewmodel
 
 import android.content.Context
@@ -29,17 +28,22 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class EpisodeSheetViewModel(
-    override val state: EpisodeSheetState
+    override val state: EpisodeSheetState,
 ) : AniTrendViewModel() {
-
     val model = MutableLiveData<String>()
 
-    fun buildHtml(episode: Episode, context: Context) {
+    fun buildHtml(
+        episode: Episode,
+        context: Context,
+    ) {
         viewModelScope.launch {
             val description = episode.description
-            val content = if (description.isNullOrBlank())
-                context.getString(R.string.label_episode_has_no_summary, episode.about.episodeTitle)
-            else episode.description ?: String.empty()
+            val content =
+                if (description.isNullOrBlank()) {
+                    context.getString(R.string.label_episode_has_no_summary, episode.about.episodeTitle)
+                } else {
+                    episode.description ?: String.empty()
+                }
 
             val document = Jsoup.parse(content)
             model.postValue(document.html())

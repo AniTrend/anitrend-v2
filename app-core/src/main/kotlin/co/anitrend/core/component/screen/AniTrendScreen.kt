@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.screen
 
 import android.content.Context
@@ -45,8 +44,10 @@ import timber.log.Timber
  * @property configurationHelper Configuration driver for this activity
  * @property scope Dependency injection scope for this activity lifecycle
  */
-abstract class AniTrendScreen : SupportActivity(), AndroidScopeComponent, KoinScopeComponent {
-
+abstract class AniTrendScreen :
+    SupportActivity(),
+    AndroidScopeComponent,
+    KoinScopeComponent {
     protected val configurationHelper by inject<IConfigurationHelper>()
 
     override val scope by activityRetainedScope()
@@ -66,11 +67,9 @@ abstract class AniTrendScreen : SupportActivity(), AndroidScopeComponent, KoinSc
                     .onEach { state ->
                         Timber.v("Connectivity state changed: $state")
                         if (state == ConnectivityState.Connected) viewModelState()?.retry()
-                    }
-                    .catch { cause ->
+                    }.catch { cause ->
                         Timber.w(cause, "While collecting connectivity state")
-                    }
-                    .collect()
+                    }.collect()
             }
         }
     }

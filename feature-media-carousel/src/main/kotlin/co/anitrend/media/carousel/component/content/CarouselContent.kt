@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.carousel.component.content
 
 import android.os.Bundle
@@ -47,14 +46,13 @@ class CarouselContent(
     private val controller: CarouselContentController,
     private val settings: IUserSettings,
 ) : AniTrendComposition() {
-
     private val viewModel by viewModel<CarouselViewModel>()
     private val param by argument<MediaCarouselRouter.MediaCarouselRouterParam>(
-        key = nameOf<MediaCarouselRouter.MediaCarouselRouterParam>()
+        key = nameOf<MediaCarouselRouter.MediaCarouselRouterParam>(),
     )
 
-    private fun paramOrDefault(): MediaCarouselRouter.MediaCarouselRouterParam {
-        return param ?: MediaCarouselRouter.MediaCarouselRouterParam(
+    private fun paramOrDefault(): MediaCarouselRouter.MediaCarouselRouterParam =
+        param ?: MediaCarouselRouter.MediaCarouselRouterParam(
             season = controller.season,
             seasonYear = controller.year,
             nextSeasonYear = controller.nextSeasonYear,
@@ -62,7 +60,6 @@ class CarouselContent(
             currentTime = controller.currentTimeAsEpoch(),
             pageSize = controller.pageSize(resources, 4),
         )
-    }
 
     /**
      * Called to have the fragment instantiate its user interface view. This is optional, and
@@ -107,26 +104,26 @@ class CarouselContent(
                             is MediaDiscoverRouter.MediaDiscoverParam ->
                                 MediaDiscoverRouter.startActivity(
                                     context = requireContext(),
-                                    navPayload = param.asNavPayload()
+                                    navPayload = param.asNavPayload(),
                                 )
                             is MediaRouter.MediaParam ->
                                 MediaRouter.startActivity(
                                     context = requireContext(),
-                                    navPayload = param.asNavPayload()
+                                    navPayload = param.asNavPayload(),
                                 )
                             is MediaListEditorRouter.MediaListEditorParam ->
                                 view?.openMediaListSheetFor(
                                     mediaListParam = param,
-                                    settings = settings
+                                    settings = settings,
                                 )
                             is AiringRouter.AiringParam ->
                                 AiringRouter.startActivity(
                                     context = requireContext(),
-                                    navPayload = param.asNavPayload()
+                                    navPayload = param.asNavPayload(),
                                 )
                             else -> Timber.e(UnsupportedOperationException("Param with type $param does not have a valid matcher"))
                         }
-                    }
+                    },
                 )
             }
         }

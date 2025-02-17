@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.recommendation.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
@@ -31,6 +30,7 @@ import kotlinx.serialization.Serializable
 internal class RecommendationConnection(
     @SerialName("edges") override val edges: List<RecommendationEdge>?,
     @SerialName("nodes") override val nodes: List<RecommendationModel.Core>?,
-    @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection, IEntityConnection.IEdge<RecommendationEdge>,
+    @SerialName("pageInfo") override val pageInfo: PageInfo?,
+) : IEntityConnection,
+    IEntityConnection.IEdge<RecommendationEdge>,
     IEntityConnection.INode<RecommendationModel>

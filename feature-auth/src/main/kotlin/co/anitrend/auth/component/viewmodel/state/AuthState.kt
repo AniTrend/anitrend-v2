@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.component.viewmodel.state
 
 import androidx.lifecycle.LiveData
@@ -32,42 +31,43 @@ import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 class AuthState(
-    private val interactor: AuthUserInteractor
+    private val interactor: AuthUserInteractor,
 ) : AniTrendViewModelState<User>() {
-
     val authenticationFlow =
         MutableStateFlow<Authentication>(Authentication.Idle)
 
-    override val loadState: LiveData<LoadState> = authenticationFlow
-        .map { state ->
-            Timber.v("Authentication flow state changed: $state")
-            when (state) {
-                is Authentication.Authenticate -> {
-                    LoadState.Loading()
+    override val loadState: LiveData<LoadState> =
+        authenticationFlow
+            .map { state ->
+                Timber.v("Authentication flow state changed: $state")
+                when (state) {
+                    is Authentication.Authenticate -> {
+                        LoadState.Loading()
+                    }
+
+                    is Authentication.Error ->
+                        LoadState.Error(
+                            RequestError(
+                                topic = state.title,
+                                description = state.message,
+                            ),
+                        )
+
+                    else -> LoadState.Idle()
                 }
-
-                is Authentication.Error ->
-                    LoadState.Error(
-                        RequestError(
-                            topic = state.title,
-                            description = state.message,
-                        ),
-                    )
-
-                else -> LoadState.Idle()
-            }
-        }.asLiveData(viewModelScope.coroutineContext)
+            }.asLiveData(viewModelScope.coroutineContext)
 
     operator fun invoke(authentication: Authentication) {
         when (authentication) {
             is Authentication.Authenticate -> {
-                val result = interactor.getAuthenticatedUser(
-                    AccountParam.SignIn(
-                        accessToken = authentication.accessToken,
-                        tokenType = authentication.tokenType,
-                        expiresIn = authentication.expiresIn
+                val result =
+                    interactor.getAuthenticatedUser(
+                        AccountParam.SignIn(
+                            accessToken = authentication.accessToken,
+                            tokenType = authentication.tokenType,
+                            expiresIn = authentication.expiresIn,
+                        ),
                     )
-                )
                 state.postValue(result)
             }
             else -> {

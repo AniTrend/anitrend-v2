@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.episode.component.sheet.viewmodel.state
 
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
@@ -23,9 +22,8 @@ import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 
 class EpisodeSheetState(
-    private val interactor: EpisodeDetailInteractor
+    private val interactor: EpisodeDetailInteractor,
 ) : AniTrendViewModelState<Episode>() {
-
     operator fun invoke(param: EpisodeParam.Detail) {
         val result = interactor(param)
         state.postValue(result)

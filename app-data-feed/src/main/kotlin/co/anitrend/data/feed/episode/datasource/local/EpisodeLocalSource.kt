@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.episode.datasource.local
 
 import androidx.paging.DataSource
@@ -26,42 +25,49 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class EpisodeLocalSource : AbstractLocalSource<EpisodeEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id)
         from episode
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from episode
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         select *
         from episode
         where id = :id
-        """)
+        """,
+    )
     abstract fun episodeByIdFlow(id: Long): Flow<EpisodeEntity?>
 
-    @Query("""
+    @Query(
+        """
         select *
         from episode
         where series_title not like '%dub%'
         order by available_premium_time desc, series_title desc,
         length(info_episode_number), info_episode_number
-        """)
+        """,
+    )
     abstract fun entryFactory(): DataSource.Factory<Int, EpisodeEntity>
 
-    @Query("""
+    @Query(
+        """
         select *
         from episode
         where title match :searchTerm or series_title match :searchTerm or description match :searchTerm
         order by available_premium_time desc, series_title desc,
         length(info_episode_number), info_episode_number
-        """)
-    abstract fun entrySearchFactory(
-        searchTerm: String
-    ): DataSource.Factory<Int, EpisodeEntity>
+        """,
+    )
+    abstract fun entrySearchFactory(searchTerm: String): DataSource.Factory<Int, EpisodeEntity>
 }

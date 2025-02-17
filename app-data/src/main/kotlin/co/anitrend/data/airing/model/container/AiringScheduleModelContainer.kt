@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.model.container
 
 import co.anitrend.data.airing.model.AiringScheduleModel
@@ -25,16 +24,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class AiringScheduleModelContainer {
-
     @Serializable
     data class Paged(
-        @SerialName("Page") val page: Page = Page()
+        @SerialName("Page") val page: Page = Page(),
     ) : AiringScheduleModelContainer() {
-
         @Serializable
         data class Page(
             @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
-            @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended> = emptyList()
+            @SerialName("airingSchedules") val airingSchedules: List<AiringScheduleModel.Extended> = emptyList(),
         ) : IPageModel
     }
 }

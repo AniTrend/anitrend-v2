@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
@@ -28,14 +27,13 @@ import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.model.UserModel
 
 internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
-
     protected abstract val localSource: ReviewLocalSource
     protected abstract val converter: ReviewModelConverter
 
     class Entry(
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         override val localSource: ReviewLocalSource,
-        override val converter: ReviewModelConverter
+        override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.Entry, ReviewEntity>() {
         /**
          * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -45,7 +43,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          */
         override suspend fun onResponseMapFrom(source: ReviewContainerModel.Entry): ReviewEntity {
             mediaMapper.onEmbedded(
-                source.entry.media
+                source.entry.media,
             )
             return converter.convertFrom(source.entry)
         }
@@ -63,7 +61,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         private val userMapper: UserMapper.Embed,
         override val localSource: ReviewLocalSource,
-        override val converter: ReviewModelConverter
+        override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.Paged, List<ReviewEntity>>() {
         /**
          * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -74,13 +72,13 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
         override suspend fun onResponseMapFrom(source: ReviewContainerModel.Paged): List<ReviewEntity> {
             mediaMapper.onEmbedded(
                 source.page.entries.map(
-                    ReviewModel.Extended::media
-                )
+                    ReviewModel.Extended::media,
+                ),
             )
             userMapper.onEmbedded(
                 source.page.entries.map {
                     it.user as UserModel
-                }
+                },
             )
             return converter.convertFrom(source.page.entries)
         }
@@ -97,7 +95,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
 
     class Rate(
         override val localSource: ReviewLocalSource,
-        override val converter: ReviewModelConverter
+        override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.RatedEntry, ReviewEntity>() {
         /**
          * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -105,9 +103,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: ReviewContainerModel.RatedEntry
-        ) = converter.convertFrom(source.entry)
+        override suspend fun onResponseMapFrom(source: ReviewContainerModel.RatedEntry) = converter.convertFrom(source.entry)
 
         /**
          * Save [data] into your desired local source
@@ -119,7 +115,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
 
     class Save(
         override val localSource: ReviewLocalSource,
-        override val converter: ReviewModelConverter
+        override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.SavedEntry, ReviewEntity>() {
         /**
          * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -127,9 +123,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: ReviewContainerModel.SavedEntry
-        ) = converter.convertFrom(source.entry)
+        override suspend fun onResponseMapFrom(source: ReviewContainerModel.SavedEntry) = converter.convertFrom(source.entry)
 
         /**
          * Save [data] into your desired local source
@@ -141,7 +135,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
 
     class Delete(
         override val localSource: ReviewLocalSource,
-        override val converter: ReviewModelConverter
+        override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.DeletedEntry, Boolean>() {
         /**
          * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -149,15 +143,12 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: ReviewContainerModel.DeletedEntry
-        ) = source.entry.deleted
+        override suspend fun onResponseMapFrom(source: ReviewContainerModel.DeletedEntry) = source.entry.deleted
 
         /**
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: Boolean) {
-
         }
     }
 }

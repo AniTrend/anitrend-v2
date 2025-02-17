@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.koin
 
 import co.anitrend.data.android.extensions.graphQLController
@@ -28,58 +27,64 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<AuthSource> {
-        AuthSourceImpl(
-            remoteSource = aniListApi(),
-            localSource = store().authDao(),
-            clearDataHelper = get(),
-            controller = graphQLController(
-                mapper = get<AuthMapper>()
-            ),
-            settings = get(),
-            converter = get(),
-            userLocalSource = store().userDao(),
-            authenticationHelper = get(),
-            dispatcher = get()
+private val sourceModule =
+    module {
+        factory<AuthSource> {
+            AuthSourceImpl(
+                remoteSource = aniListApi(),
+                localSource = store().authDao(),
+                clearDataHelper = get(),
+                controller =
+                    graphQLController(
+                        mapper = get<AuthMapper>(),
+                    ),
+                settings = get(),
+                converter = get(),
+                userLocalSource = store().userDao(),
+                authenticationHelper = get(),
+                dispatcher = get(),
+            )
+        }
+    }
+
+private val mapperModule =
+    module {
+        factory {
+            AuthMapper(
+                settings = get(),
+                generalOptionMapper = get(),
+                mediaOptionMapper = get(),
+                notificationMapper = get(),
+                localSource = store().userDao(),
+                converter = get(),
+            )
+        }
+    }
+
+private val useCaseModule =
+    module {
+        factory<AuthUserInteractor> {
+            AuthUseCaseImpl(
+                repository = get(),
+            )
+        }
+    }
+
+private val repositoryModule =
+    module {
+        factory {
+            AuthRepositoryImpl(
+                source = get(),
+            )
+        }
+    }
+
+internal val authModules =
+    module {
+        includes(
+            sourceModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
         )
     }
-}
-
-private val mapperModule = module {
-    factory {
-        AuthMapper(
-            settings = get(),
-            generalOptionMapper = get(),
-            mediaOptionMapper = get(),
-            notificationMapper = get(),
-            localSource = store().userDao(),
-            converter = get(),
-        )
-    }
-}
-
-private val useCaseModule = module {
-    factory<AuthUserInteractor> {
-        AuthUseCaseImpl(
-            repository = get()
-        )
-    }
-}
-
-private val repositoryModule = module {
-    factory {
-        AuthRepositoryImpl(
-            source = get()
-        )
-    }
-}
-
-internal val authModules = module {
-    includes(
-        sourceModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}

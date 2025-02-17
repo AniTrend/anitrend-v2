@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data
 
 import android.content.Context
@@ -33,34 +32,39 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
-private val data = module {
-    single<ISupportDispatcher> {
-        SupportDispatcher()
+private val data =
+    module {
+        single<ISupportDispatcher> {
+            SupportDispatcher()
+        }
+        single {
+            MockWebServer()
+        }
     }
-    single {
-        MockWebServer()
-    }
-}
 
-private val store = module {
-    single {
-        Room.inMemoryDatabaseBuilder(
-            androidContext(),
-            AniTrendStore::class.java,
-        ).build()
-    } binds IAniTrendStore.BINDINGS
-}
-
-private val provider = module {
-    factory {
-        androidContext().contentResolver
+private val store =
+    module {
+        single {
+            Room
+                .inMemoryDatabaseBuilder(
+                    androidContext(),
+                    AniTrendStore::class.java,
+                ).build()
+        } binds IAniTrendStore.BINDINGS
     }
-}
+
+private val provider =
+    module {
+        factory {
+            androidContext().contentResolver
+        }
+    }
 
 internal val testModules = listOf(data, store, provider) + mediaModules + genreModules + tagModules + dataModules
 
-internal fun initializeKoin(context: Context) = startKoin {
-    androidContext(context)
-    allowOverride(true)
-    modules(testModules)
-}
+internal fun initializeKoin(context: Context) =
+    startKoin {
+        androidContext(context)
+        allowOverride(true)
+        modules(testModules)
+    }

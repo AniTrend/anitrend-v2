@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.database.converter
 
 import androidx.room.TypeConverter
@@ -28,38 +27,39 @@ import kotlinx.serialization.json.Json
 import org.threeten.bp.Instant
 
 internal class TypeConverterObject {
-
     @TypeConverter fun fromListString(value: List<String>) = value.toCommaSeparatedValues()
+
     @TypeConverter fun toListString(value: String): List<String> = value.fromCommaSeparatedValues()
 
     @TypeConverter fun fromListLong(value: List<Long>) = value.toCommaSeparatedValues()
-    @TypeConverter fun toListLong(value: String): List<Long> =
-        value.fromCommaSeparatedValues().map(String::toLong)
+
+    @TypeConverter fun toListLong(value: String): List<Long> = value.fromCommaSeparatedValues().map(String::toLong)
 
     @TypeConverter fun fromListFloat(value: List<Float>) = value.toCommaSeparatedValues()
-    @TypeConverter fun toListFloat(value: String): List<Float> =
-        value.fromCommaSeparatedValues().map(String::toFloat)
+
+    @TypeConverter fun toListFloat(value: String): List<Float> = value.fromCommaSeparatedValues().map(String::toFloat)
 
     @TypeConverter fun fromInstant(date: Instant?) = date?.toEpochMilli()
+
     @TypeConverter fun toInstant(value: Long?) = value?.let { Instant.ofEpochMilli(it) }
 
     @TypeConverter fun fromCharSequence(value: CharSequence?) = value?.toString()
+
     @TypeConverter fun toCharSequence(value: String?) = value as? CharSequence
 
-    @TypeConverter fun fromUserNotificationSettingList(
-        value: List<UserGeneralOptionEntity.NotificationOption>
-    ): String {
-        val serializer = ListSerializer(
-            UserGeneralOptionEntity.NotificationOption.serializer()
-        )
+    @TypeConverter fun fromUserNotificationSettingList(value: List<UserGeneralOptionEntity.NotificationOption>): String {
+        val serializer =
+            ListSerializer(
+                UserGeneralOptionEntity.NotificationOption.serializer(),
+            )
         return koinOf<Json>().encodeToString(serializer, value)
     }
-    @TypeConverter fun toUserNotificationSettingList(
-        value: String
-    ): List<UserGeneralOptionEntity.NotificationOption> {
-        val serializer = ListSerializer(
-            UserGeneralOptionEntity.NotificationOption.serializer()
-        )
+
+    @TypeConverter fun toUserNotificationSettingList(value: String): List<UserGeneralOptionEntity.NotificationOption> {
+        val serializer =
+            ListSerializer(
+                UserGeneralOptionEntity.NotificationOption.serializer(),
+            )
         return koinOf<Json>().decodeFromString(serializer, value)
     }
 

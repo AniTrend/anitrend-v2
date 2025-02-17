@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.datasource.local
 
 import androidx.paging.DataSource
@@ -26,39 +25,48 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class StudioLocalSource : AbstractLocalSource<StudioEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from studio
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from studio
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from studio
         where id = :id
-        """)
+        """,
+    )
     abstract suspend fun clearById(id: Long)
 
-    @Query("""
+    @Query(
+        """
         select * from studio
         where id = :id
-    """)
+    """,
+    )
     abstract fun studioByIdFlow(id: Long): Flow<StudioEntity?>
 
-    @Query("""
+    @Query(
+        """
         select * from studio
-    """)
+    """,
+    )
     abstract fun allStudioFactory(): DataSource.Factory<Int, StudioEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from studio
         where name match :term
-    """)
-    abstract fun searchStudioFactory(
-        term: String
-    ): DataSource.Factory<Int, StudioEntity>
+    """,
+    )
+    abstract fun searchStudioFactory(term: String): DataSource.Factory<Int, StudioEntity>
 }

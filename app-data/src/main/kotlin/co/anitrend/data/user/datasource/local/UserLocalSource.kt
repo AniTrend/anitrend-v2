@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.datasource.local
 
 import androidx.paging.DataSource
@@ -28,132 +27,146 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
-
     /**
      * Count the number of entities
      */
-    @Query("""
+    @Query(
+        """
             select count(id) from user
-        """)
+        """,
+    )
     abstract override suspend fun count(): Int
 
     /**
      * Removes all records from table
      */
-    @Query("""
+    @Query(
+        """
         delete from user
-        """)
+        """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from user
         where id = :id
-        """)
+        """,
+    )
     abstract suspend fun clearById(id: Long)
 
-    @Query("""
+    @Query(
+        """
         delete from user
         where user_name = :userName
-        """)
+        """,
+    )
     abstract suspend fun clearByUserName(userName: String)
 
-    @Query("""
+    @Query(
+        """
         delete from user
         where user_name match :userName
-        """)
+        """,
+    )
     abstract suspend fun clearByMatch(userName: String)
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where id = :id
-    """)
+    """,
+    )
     abstract suspend fun userById(id: Long): UserEntity?
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where id in(:ids)
-    """)
+    """,
+    )
     abstract suspend fun userById(ids: List<Long>): List<UserEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where id = :id
-    """)
+    """,
+    )
     abstract fun userByIdFlow(id: Long): Flow<UserEntity?>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where user_name = :userName
-    """)
+    """,
+    )
     abstract fun userByNameFlow(userName: String): Flow<UserEntity?>
 
     @Query(
         """
         select * from user
         where id = :userId
-    """
+    """,
     )
     @Transaction
-    abstract fun userAuthenticated(
-        userId: Long
-    ): Flow<UserEntityView.Authenticated?>
+    abstract fun userAuthenticated(userId: Long): Flow<UserEntityView.Authenticated?>
 
     @Query(
         """
         select * from user
         where user_name = :userName
-    """
+    """,
     )
     @Transaction
-    abstract fun userByNameWithOptionsFlow(
-        userName: String
-    ): Flow<UserEntityView.WithOptions?>
+    abstract fun userByNameWithOptionsFlow(userName: String): Flow<UserEntityView.WithOptions?>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where id = :id
-    """)
+    """,
+    )
     @Transaction
-    abstract fun userByIdWithOptionsFlow(
-        id: Long
-    ): Flow<UserEntityView.WithOptions?>
+    abstract fun userByIdWithOptionsFlow(id: Long): Flow<UserEntityView.WithOptions?>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where id = :id
-    """)
+    """,
+    )
     @Transaction
-    abstract fun userByIdWithStatisticFlow(
-        id: Long
-    ): Flow<UserEntityView.WithStatistic?>
+    abstract fun userByIdWithStatisticFlow(id: Long): Flow<UserEntityView.WithStatistic?>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where user_is_following = :following
-    """)
-    abstract fun userFollowing(
-        following: Boolean = true
-    ): DataSource.Factory<Int, UserEntity>
+    """,
+    )
+    abstract fun userFollowing(following: Boolean = true): DataSource.Factory<Int, UserEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where user_is_follower = :follower
-    """)
-    abstract fun userFollowers(
-        follower: Boolean = true
-    ): DataSource.Factory<Int, UserEntity>
+    """,
+    )
+    abstract fun userFollowers(follower: Boolean = true): DataSource.Factory<Int, UserEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from user
-    """)
-    abstract fun entryFactory(
-    ): DataSource.Factory<Int, UserEntity>
+    """,
+    )
+    abstract fun entryFactory(): DataSource.Factory<Int, UserEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from user
         where user_name match :searchTerm
-    """)
-    abstract fun entrySearchFactory(
-        searchTerm: String
-    ): DataSource.Factory<Int, UserEntity>
+    """,
+    )
+    abstract fun entrySearchFactory(searchTerm: String): DataSource.Factory<Int, UserEntity>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.koin
 
 import co.anitrend.data.feed.api.FeedApiFactory
@@ -24,12 +23,14 @@ import co.anitrend.data.feed.news.koin.newsModules
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-private val coreModule = module {
-    single {
-        FeedApiFactory()
-    } bind IFeedFactory::class
-}
+private val coreModule =
+    module {
+        single {
+            FeedApiFactory()
+        } bind IFeedFactory::class
+    }
 
-val feedModules = module {
-    includes(coreModule, episodeModules, newsModules)
-}
+val feedModules =
+    module {
+        includes(coreModule, episodeModules, newsModules)
+    }

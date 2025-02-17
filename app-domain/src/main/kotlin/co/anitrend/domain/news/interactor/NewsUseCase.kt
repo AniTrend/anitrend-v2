@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.news.interactor
 
 import co.anitrend.arch.domain.state.UiState
@@ -22,18 +21,15 @@ import co.anitrend.domain.news.model.NewsParam
 import co.anitrend.domain.news.repository.INewsRepository
 
 sealed class NewsUseCase {
-
     abstract class GetPaged<State : UiState<*>>(
-        protected val repository: INewsRepository.Paged<State>
+        protected val repository: INewsRepository.Paged<State>,
     ) : NewsUseCase() {
-        operator fun invoke(param: NewsParam) =
-            repository.getPagedNews(param)
+        operator fun invoke(param: NewsParam) = repository.getPagedNews(param)
     }
 
     abstract class Sync<State : UiState<*>>(
-        protected val repository: INewsRepository.Sync<State>
+        protected val repository: INewsRepository.Sync<State>,
     ) : NewsUseCase() {
-        operator fun invoke(param: NewsParam) =
-            repository.sync(param)
+        operator fun invoke(param: NewsParam) = repository.sync(param)
     }
 }

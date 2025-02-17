@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.api.interceptor
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
@@ -31,9 +30,8 @@ import okhttp3.Route
  * on the dispatching caller, as such take care to assure thread safety
  */
 internal class GraphAuthenticator(
-    private val authenticationHelper: IAuthenticationHelper
+    private val authenticationHelper: IAuthenticationHelper,
 ) : Authenticator {
-
     /**
      * Returns a request that includes a credential to satisfy an authentication challenge in `response`.
      * Returns null if the challenge cannot be satisfied.
@@ -43,7 +41,10 @@ internal class GraphAuthenticator(
      * available. It may also not be provided when an authenticator is re-used manually in an
      * application interceptor, such as when implementing client-specific retries.
      */
-    override fun authenticate(route: Route?, response: Response): Request {
+    override fun authenticate(
+        route: Route?,
+        response: Response,
+    ): Request {
         val requestBuilder = response.request.newBuilder()
         if (response.code == UNAUTHORIZED) {
             if (authenticationHelper.isAuthenticated) {

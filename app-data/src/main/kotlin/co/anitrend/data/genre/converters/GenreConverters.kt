@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -26,32 +25,31 @@ import io.wax911.emojify.EmojiManager
 
 internal class GenreEntityConverter(
     override val fromType: (GenreEntity) -> Genre = ::transform,
-    override val toType: (Genre) -> GenreEntity = { throw NotImplementedError() }
+    override val toType: (Genre) -> GenreEntity = { throw NotImplementedError() },
 ) : SupportConverter<GenreEntity, Genre>() {
     private companion object : ISupportTransformer<GenreEntity, Genre> {
-        override fun transform(source: GenreEntity) = Genre.Core(
-            name = source.genre,
-            emoji = source.emoji,
-            id = source.id
-        )
+        override fun transform(source: GenreEntity) =
+            Genre.Core(
+                name = source.genre,
+                emoji = source.emoji,
+                id = source.id,
+            )
     }
 }
 
 internal class GenreModelConverter(
     emojiManager: EmojiManager,
     override val fromType: (GenreCollection.GenreModel) -> GenreEntity = { transform(it, emojiManager) },
-    override val toType: (GenreEntity) -> GenreCollection.GenreModel = { throw NotImplementedError() }
+    override val toType: (GenreEntity) -> GenreCollection.GenreModel = { throw NotImplementedError() },
 ) : SupportConverter<GenreCollection.GenreModel, GenreEntity>() {
-
     private companion object {
-
         fun EmojiManager.withAlias(alias: String): String {
             val emoji = getForAlias(alias)
             return emoji?.emoji.orEmpty()
         }
 
-        fun EmojiManager.getEmojiFor(genre: String): String {
-            return when (genre) {
+        fun EmojiManager.getEmojiFor(genre: String): String =
+            when (genre) {
                 "Action" -> withAlias("cowboy")
                 "Adventure" -> withAlias("rocket")
                 "Comedy" -> withAlias("rofl")
@@ -73,14 +71,17 @@ internal class GenreModelConverter(
                 "Thriller" -> withAlias("dagger")
                 else -> withAlias("question")
             }
-        }
 
-        fun transform(source: GenreCollection.GenreModel, emojiManager: EmojiManager) = GenreEntity(
+        fun transform(
+            source: GenreCollection.GenreModel,
+            emojiManager: EmojiManager,
+        ) = GenreEntity(
             id = source.id,
             genre = source.genre,
-            emoji = emojiManager.getEmojiFor(
-                source.genre
-            )
+            emoji =
+                emojiManager.getEmojiFor(
+                    source.genre,
+                ),
         )
     }
 }

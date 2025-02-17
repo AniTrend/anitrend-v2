@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.usecase
 
 import co.anitrend.data.feed.news.NewsPagedInteractor
@@ -23,12 +22,11 @@ import co.anitrend.data.feed.news.NewsSyncInteractor
 import co.anitrend.data.feed.news.NewsSyncRepository
 
 internal interface NewsInteractor {
-
     class Paged(
-        repository: NewsPagedRepository
+        repository: NewsPagedRepository,
     ) : NewsPagedInteractor(repository)
 
     class Sync(
-        repository: NewsSyncRepository
+        repository: NewsSyncRepository,
     ) : NewsSyncInteractor(repository)
 }

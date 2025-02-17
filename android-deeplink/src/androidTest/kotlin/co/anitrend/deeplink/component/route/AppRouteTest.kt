@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,8 @@ import kotlin.test.assertEquals
 class AppRouteTest : CommonRouteTest() {
     private val deepLinkParser by lazy {
         FeatureProvider(
-            DeepLinkParser.of<Intent?>(environment)
+            DeepLinkParser
+                .of<Intent?>(environment)
                 .addRoute(DiscoverRoute)
                 .addRoute(SocialRoute)
                 .addRoute(SuggestionsRoute)
@@ -36,8 +37,8 @@ class AppRouteTest : CommonRouteTest() {
                 .addRoute(AboutRoute)
                 .addRoute(OAuthRoute)
                 .addFallbackAction(FallbackAction)
-                .build()
-            )
+                .build(),
+        )
     }
 
     @Test

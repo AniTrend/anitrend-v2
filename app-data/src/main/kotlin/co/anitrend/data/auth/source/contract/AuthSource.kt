@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,19 +14,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.source.contract
 
-import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.account.action.AccountAction
 import co.anitrend.data.android.extensions.invoke
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.user.entity.User
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class AuthSource : AbstractCoreDataSource() {
-
     protected abstract val observable: Flow<User>
     protected abstract val observables: Flow<List<User>>
 
@@ -36,12 +34,10 @@ internal abstract class AuthSource : AbstractCoreDataSource() {
 
     protected abstract suspend fun getAuthorizedUser(
         param: AccountAction.SignIn,
-        callback: RequestCallback
+        callback: RequestCallback,
     )
 
-    internal operator fun invoke(): Flow<List<User>> {
-        return observables
-    }
+    internal operator fun invoke(): Flow<List<User>> = observables
 
     internal operator fun invoke(param: AccountParam.SignIn): Flow<User> {
         invoke {

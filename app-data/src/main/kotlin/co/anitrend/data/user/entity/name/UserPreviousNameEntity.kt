@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity.name
 
 import androidx.room.ColumnInfo
@@ -29,8 +28,8 @@ import co.anitrend.data.user.entity.UserEntity
     tableName = "user_previous_name",
     indices = [
         Index(
-            value = ["user_id"]
-        )
+            value = ["user_id"],
+        ),
     ],
     foreignKeys = [
         ForeignKey(
@@ -38,14 +37,14 @@ import co.anitrend.data.user.entity.UserEntity
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 internal data class UserPreviousNameEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "created_at") val createdAt: Long,
     @ColumnInfo(name = "name") val name: CharSequence,
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : Identity

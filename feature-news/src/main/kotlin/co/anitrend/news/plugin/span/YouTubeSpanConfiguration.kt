@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.plugin.span
 
 import androidx.annotation.VisibleForTesting
@@ -33,10 +32,12 @@ internal data class YouTubeSpanConfiguration(
     override val tag: HtmlTag,
     override val magnificationScale: Float,
     override val sizeMeasurementUnit: SizeMeasurementUnit,
-    override val isClickable: Boolean = true
+    override val isClickable: Boolean = true,
 ) : AbstractImageSpan() {
+    private val pattern =
+        "(?:https?:\\/\\/)?(?:www\\.)?youtu(?:\\.be\\/|be.com\\/\\S*(?:watch|embed)(?:(?:(?=\\/[^&\\s\\?]+(?!\\S))\\/)|(?:\\S*v=|v\\/)))([^&\\s\\?]+)"
 
-    private val regex = Regex(PATTERN, RegexOption.IGNORE_CASE)
+    private val regex = Regex(pattern, RegexOption.IGNORE_CASE)
 
     @VisibleForTesting
     fun getVideoId(src: String): String {
@@ -59,7 +60,10 @@ internal data class YouTubeSpanConfiguration(
         return "https://img.youtube.com/vi/$videoId/maxresdefault.jpg"
     }
 
-    override fun addPropertiesToImage(source: String, imageSize: ImageSize) {
+    override fun addPropertiesToImage(
+        source: String,
+        imageSize: ImageSize,
+    ) {
         ImageProps.DESTINATION.set(renderProps, createImageLink(source))
         ImageProps.IMAGE_SIZE.set(renderProps, imageSize)
         ImageProps.REPLACEMENT_TEXT_IS_LINK.set(renderProps, false)
@@ -67,7 +71,6 @@ internal data class YouTubeSpanConfiguration(
     }
 
     companion object {
-        private const val PATTERN = "(?:https?:\\/\\/)?(?:www\\.)?youtu(?:\\.be\\/|be.com\\/\\S*(?:watch|embed)(?:(?:(?=\\/[^&\\s\\?]+(?!\\S))\\/)|(?:\\S*v=|v\\/)))([^&\\s\\?]+)"
         internal const val LOOKUP_KEY = "youtube"
         internal const val IFRAME_TAG = "iframe"
     }

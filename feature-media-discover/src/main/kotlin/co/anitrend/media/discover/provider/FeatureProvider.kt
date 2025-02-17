@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.provider
 
 import android.content.Context
@@ -25,9 +24,7 @@ import co.anitrend.media.discover.component.sheet.MediaDiscoverFilterSheet
 import co.anitrend.navigation.MediaDiscoverRouter
 
 internal class FeatureProvider : MediaDiscoverRouter.Provider {
-
-    override fun activity(context: Context?) =
-		Intent(context, MediaDiscoverScreen::class.java)
+    override fun activity(context: Context?) = Intent(context, MediaDiscoverScreen::class.java)
 
     override fun fragment() = MediaDiscoverContent::class.java
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.cache.helper
 
 import org.threeten.bp.Instant
@@ -38,7 +37,7 @@ fun TemporalAmount.inPast(): Instant = Instant.now().minus(this)
 fun periodOf(
     years: Int = 0,
     months: Int = 0,
-    days: Int = 0
+    days: Int = 0,
 ): Period = Period.of(years, months, days)
 
 /**
@@ -50,7 +49,11 @@ fun periodOf(
  *
  * @return [Instant] of the time measurement
  */
-fun instantInPast(days: Int = 0, hours: Int = 0, minutes: Int = 0): Instant {
+fun instantInPast(
+    days: Int = 0,
+    hours: Int = 0,
+    minutes: Int = 0,
+): Instant {
     var instant = Instant.now()
     if (days != 0) {
         instant = instant.minus(days.toLong(), ChronoUnit.DAYS)
@@ -73,16 +76,23 @@ fun instantInPast(days: Int = 0, hours: Int = 0, minutes: Int = 0): Instant {
  *
  * @return [Instant] of the time measurement
  */
-fun instantInFuture(days: Int = 0, hours: Int = 0, minutes: Int = 0): Instant {
+fun instantInFuture(
+    days: Int = 0,
+    hours: Int = 0,
+    minutes: Int = 0,
+): Instant {
     var instant = Instant.now()
-    if (days != 0)
+    if (days != 0) {
         instant = instant.plus(days.toLong(), ChronoUnit.DAYS)
+    }
 
-    if (hours != 0)
+    if (hours != 0) {
         instant = instant.plus(hours.toLong(), ChronoUnit.HOURS)
+    }
 
-    if (minutes != 0)
+    if (minutes != 0) {
         instant = instant.plus(minutes.toLong(), ChronoUnit.HOURS)
+    }
     return instant
 }
 

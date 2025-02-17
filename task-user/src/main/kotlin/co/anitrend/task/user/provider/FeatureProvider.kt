@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.user.provider
 
 import co.anitrend.core.android.koinOf
@@ -35,12 +34,12 @@ internal class FeatureProvider : UserTaskRouter.Provider {
     override fun accountSyncScheduler() =
         UserAccountScheduler(
             worker = accountSyncWorker(),
-            settings = koinOf()
+            settings = koinOf(),
         )
 
     override fun statisticSyncScheduler() =
         UserStatisticScheduler(
             worker = statisticSyncWorker(),
-            settings = koinOf()
+            settings = koinOf(),
         )
 }

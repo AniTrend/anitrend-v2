@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.carousel.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -25,24 +24,23 @@ import org.threeten.bp.Instant
 
 internal class CarouselCache(
     override val localSource: CacheLocalSource,
-    override val request: CacheRequest = CacheRequest.CAROUSEL
+    override val request: CacheRequest = CacheRequest.CAROUSEL,
 ) : CacheStorePolicy() {
-
     /**
      * Check if a resource with a given [entityId] is permitted to refresh
      */
     override suspend fun shouldRefresh(
         identity: CacheIdentity,
-        expiresAfter: Instant
+        expiresAfter: Instant,
     ): Boolean = isRequestBefore(identity, expiresAfter)
 
     enum class Identifier(
         override val id: Long,
-        override val key: String
+        override val key: String,
     ) : CacheIdentity {
         ANIME_META(10L, "carousel_anime_meta"),
         MANGA_META(11L, "carousel_manga_meta"),
         ANIME(12L, "carousel_anime"),
-        MANGA(13L, "carousel_manga")
+        MANGA(13L, "carousel_manga"),
     }
 }

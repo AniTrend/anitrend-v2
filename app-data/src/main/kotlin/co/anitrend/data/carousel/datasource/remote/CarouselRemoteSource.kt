@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.carousel.datasource.remote
 
 import co.anitrend.data.carousel.model.CarouselModel
@@ -28,25 +27,24 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface CarouselRemoteSource {
-
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("Carousel")
     suspend fun getCarousel(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<CarouselModel.Core>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("CarouselAnime")
     suspend fun getCarouselAnime(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<CarouselModel.Anime>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("CarouselManga")
     suspend fun getCarouselManga(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<CarouselModel.Manga>>
 }

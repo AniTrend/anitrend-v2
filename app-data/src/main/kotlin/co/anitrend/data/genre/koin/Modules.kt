@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.koin
 
 import co.anitrend.data.android.extensions.graphQLController
@@ -33,86 +32,95 @@ import co.anitrend.data.genre.source.contract.GenreSource
 import co.anitrend.data.genre.usecase.GenreUseCaseImpl
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<GenreSource> {
-        GenreSourceImpl(
-            localSource = store().genreDao(),
-            remoteSource = aniListApi(),
-            controller = graphQLController(
-                mapper = get<GenreMapper.Core>()
-            ),
-            cachePolicy = get<GenreCache>(),
-            clearDataHelper = get(),
-            filter = get(),
-            converter = get(),
-            dispatcher = get()
+private val sourceModule =
+    module {
+        factory<GenreSource> {
+            GenreSourceImpl(
+                localSource = store().genreDao(),
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<GenreMapper.Core>(),
+                    ),
+                cachePolicy = get<GenreCache>(),
+                clearDataHelper = get(),
+                filter = get(),
+                converter = get(),
+                dispatcher = get(),
+            )
+        }
+    }
+
+private val filterModule =
+    module {
+        factory {
+            GenreQueryFilter()
+        }
+    }
+
+private val cacheModule =
+    module {
+        factory {
+            GenreCache(
+                localSource = store().cacheDao(),
+            )
+        }
+    }
+
+private val converterModule =
+    module {
+        factory {
+            GenreEntityConverter()
+        }
+        factory {
+            GenreModelConverter(
+                emojiManager = get(),
+            )
+        }
+    }
+
+private val mapperModule =
+    module {
+        factory {
+            GenreMapper.Core(
+                localSource = store().genreDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            GenreMapper.Embed(
+                localSource = store().genreConnectionDao(),
+            )
+        }
+    }
+
+private val useCaseModule =
+    module {
+        factory<GenreInteractor> {
+            GenreUseCaseImpl(
+                repository = get(),
+            )
+        }
+    }
+
+private val repositoryModule =
+    module {
+        factory<GenreListRepository> {
+            GenreRepository(
+                source = get(),
+            )
+        }
+    }
+
+internal val genreModules =
+    module {
+        includes(
+            converterModule,
+            filterModule,
+            cacheModule,
+            sourceModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
         )
     }
-}
-
-private val filterModule = module {
-    factory {
-        GenreQueryFilter()
-    }
-}
-
-private val cacheModule = module {
-    factory {
-        GenreCache(
-            localSource = store().cacheDao()
-        )
-    }
-}
-
-private val converterModule = module {
-    factory {
-        GenreEntityConverter()
-    }
-    factory {
-        GenreModelConverter(
-            emojiManager = get()
-        )
-    }
-}
-
-private val mapperModule = module {
-    factory {
-        GenreMapper.Core(
-            localSource = store().genreDao(),
-            converter = get()
-        )
-    }
-    factory {
-        GenreMapper.Embed(
-            localSource = store().genreConnectionDao()
-        )
-    }
-}
-
-private val useCaseModule = module {
-    factory<GenreInteractor> {
-        GenreUseCaseImpl(
-            repository = get()
-        )
-    }
-}
-
-private val repositoryModule = module {
-    factory<GenreListRepository> {
-        GenreRepository(
-            source = get()
-        )
-    }
-}
-
-internal val genreModules = module {
-    includes(
-        converterModule,
-        filterModule,
-        cacheModule,
-        sourceModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}

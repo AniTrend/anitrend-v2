@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.entity.view
 
 import androidx.room.Embedded
@@ -33,32 +32,32 @@ internal sealed class MediaListEntityView {
         @Embedded override val mediaList: MediaListEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_list_id"
+            entityColumn = "media_list_id",
         )
         override val customList: List<CustomListEntity> = emptyList(),
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_list_id"
+            entityColumn = "media_list_id",
         )
-        override val customScore: List<CustomScoreEntity> = emptyList()
+        override val customScore: List<CustomScoreEntity> = emptyList(),
     ) : MediaListEntityView()
 
     internal data class WithMedia(
         @Relation(
             parentColumn = "media_id",
-            entityColumn = "id"
+            entityColumn = "id",
         )
         val media: MediaEntity,
         @Embedded override val mediaList: MediaListEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_list_id"
+            entityColumn = "media_list_id",
         )
         override val customList: List<CustomListEntity> = emptyList(),
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_list_id"
+            entityColumn = "media_list_id",
         )
-        override val customScore: List<CustomScoreEntity> = emptyList()
+        override val customScore: List<CustomScoreEntity> = emptyList(),
     ) : MediaListEntityView()
 }

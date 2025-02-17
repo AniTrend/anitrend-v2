@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.recommendation.model.container
 
 import co.anitrend.data.common.model.paging.data.IPageModel
@@ -25,20 +24,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class RecommendationModelContainer {
-
     @Serializable
     data class Detail(
-        @SerialName("Recommendation") val recommendation: RecommendationModel.Core
+        @SerialName("Recommendation") val recommendation: RecommendationModel.Core,
     )
 
     @Serializable
     data class Paged(
-        @SerialName("Page") val page: Page = Page()
+        @SerialName("Page") val page: Page = Page(),
     ) {
         @Serializable
         data class Page(
             @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
-            @SerialName("recommendations") val media: List<RecommendationModel.Core> = emptyList()
+            @SerialName("recommendations") val media: List<RecommendationModel.Core> = emptyList(),
         ) : IPageModel
     }
 }

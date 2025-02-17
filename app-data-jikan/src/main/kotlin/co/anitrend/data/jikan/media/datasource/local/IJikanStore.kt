@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.datasource.local
 
 import co.anitrend.data.jikan.author.datasource.local.JikanAuthorLocalSource
@@ -24,8 +23,12 @@ import co.anitrend.data.jikan.studio.datasource.local.JikanStudioLocalSource
 
 interface IJikanStore {
     fun jikanDao(): JikanLocalSource
+
     fun jikanAuthorDao(): JikanAuthorLocalSource
+
     fun jikanLicensorDao(): JikanLicensorLocalSource
+
     fun jikanProducerDao(): JikanProducerLocalSource
+
     fun jikanStudioDao(): JikanStudioLocalSource
 }

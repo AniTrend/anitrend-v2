@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.updater.component.compose
 
 import androidx.compose.foundation.layout.Column
@@ -32,9 +31,8 @@ import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 @Composable
 private fun UpdateContent(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
-
     }
 }
 
@@ -42,20 +40,20 @@ private fun UpdateContent(modifier: Modifier = Modifier) {
 fun UpdateScreenContent(onBackPress: () -> Unit) {
     DefaultScaffold(onBackPress) { modifier ->
         UpdateContent(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         )
     }
 }
-
 
 @AniTrendPreview.Mobile
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
 @Composable
 private fun UpdateComposablePreview(
-    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
         UpdateContent()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
@@ -25,7 +24,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class StudioEdge : IEntityEdge<StudioModel> {
-
     /** [StudioEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/studioedge.doc.html)
      * Studio connection edge
      *
@@ -35,8 +33,9 @@ internal sealed class StudioEdge : IEntityEdge<StudioModel> {
     data class Favourite(
         @SerialName("favouriteOrder") val favouriteOrder: Int?,
         @SerialName("node") override val node: StudioModel?,
-        @SerialName("id") override val id: Long
-    ) : StudioEdge(), Identity
+        @SerialName("id") override val id: Long,
+    ) : StudioEdge(),
+        Identity
 
     /** [StudioEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/studioedge.doc.html)
      * Studio connection edge
@@ -47,6 +46,7 @@ internal sealed class StudioEdge : IEntityEdge<StudioModel> {
     data class Media(
         @SerialName("isMain") val isMain: Boolean,
         @SerialName("node") override val node: StudioModel?,
-        @SerialName("id") override val id: Long
-    ) : StudioEdge(), Identity
+        @SerialName("id") override val id: Long,
+    ) : StudioEdge(),
+        Identity
 }

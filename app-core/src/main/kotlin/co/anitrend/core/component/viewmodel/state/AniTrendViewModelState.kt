@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.viewmodel.state
 
 import androidx.lifecycle.MutableLiveData
@@ -28,19 +27,22 @@ import kotlinx.coroutines.cancel
 import timber.log.Timber
 import java.util.concurrent.CancellationException
 
-abstract class AniTrendViewModelState<T> : ViewModel(), ISupportViewModelState<T> {
-
+abstract class AniTrendViewModelState<T> :
+    ViewModel(),
+    ISupportViewModelState<T> {
     protected val state = MutableLiveData<DataState<T>>()
 
-    override val model = state.switchMap {
-        Timber.i("Performing `model` switch map using ${viewModelScope.coroutineContext} on $this")
-        it.model.asLiveData(viewModelScope.coroutineContext)
-    }
+    override val model =
+        state.switchMap {
+            Timber.i("Performing `model` switch map using ${viewModelScope.coroutineContext} on $this")
+            it.model.asLiveData(viewModelScope.coroutineContext)
+        }
 
-    override val loadState = state.switchMap {
-        Timber.i("Performing `loadState` switch map using ${viewModelScope.coroutineContext} on $this")
-        it.loadState.asLiveData(viewModelScope.coroutineContext)
-    }
+    override val loadState =
+        state.switchMap {
+            Timber.i("Performing `loadState` switch map using ${viewModelScope.coroutineContext} on $this")
+            it.loadState.asLiveData(viewModelScope.coroutineContext)
+        }
 
     /**
      * Triggers use case to perform refresh operation
@@ -60,7 +62,7 @@ abstract class AniTrendViewModelState<T> : ViewModel(), ISupportViewModelState<T
 
     override fun onCleared() {
         viewModelScope.cancel(
-            cause = CancellationException("onCleared")
+            cause = CancellationException("onCleared"),
         )
         super.onCleared()
     }

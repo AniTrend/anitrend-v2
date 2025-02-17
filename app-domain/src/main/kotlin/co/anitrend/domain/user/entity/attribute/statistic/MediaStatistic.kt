@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.entity.attribute.statistic
 
 import co.anitrend.domain.common.CountryCode
@@ -47,7 +46,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Format(
@@ -55,7 +54,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Genre(
@@ -63,7 +62,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Length(
@@ -71,7 +70,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class ReleaseYear(
@@ -79,7 +78,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Score(
@@ -87,7 +86,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Staff(
@@ -95,7 +94,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class StartYear(
@@ -103,7 +102,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Status(
@@ -111,7 +110,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Studio(
@@ -119,7 +118,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class Tag(
@@ -127,7 +126,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
 
         data class VoiceActor(
@@ -135,7 +134,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val minutesWatched: Int
+            override val minutesWatched: Int,
         ) : Anime()
     }
 
@@ -150,7 +149,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Format(
@@ -158,7 +157,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Genre(
@@ -166,7 +165,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Length(
@@ -174,7 +173,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class ReleaseYear(
@@ -182,7 +181,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Score(
@@ -190,7 +189,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Staff(
@@ -198,7 +197,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class StartYear(
@@ -206,7 +205,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Status(
@@ -214,7 +213,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Studio(
@@ -222,7 +221,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class Tag(
@@ -230,7 +229,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
 
         data class VoiceActor(
@@ -238,7 +237,7 @@ sealed class MediaStatistic {
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
-            override val chaptersRead: Int
+            override val chaptersRead: Int,
         ) : Manga()
     }
 }

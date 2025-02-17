@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.model.edge
 
 import co.anitrend.data.airing.model.AiringScheduleModel
@@ -30,23 +29,25 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class MediaEdge {
-
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
      */
     @Serializable
     data class Airing(
         @SerialName("node") override val node: AiringScheduleModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : MediaEdge(), IEntityEdge<AiringScheduleModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : MediaEdge(),
+        IEntityEdge<AiringScheduleModel>,
+        Identity
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
      */
     @Serializable
     data class Recommendation(
-        @SerialName("node") override val node: MediaModel.Core?
-    ) : MediaEdge(), IEntityEdge<MediaModel>
+        @SerialName("node") override val node: MediaModel.Core?,
+    ) : MediaEdge(),
+        IEntityEdge<MediaModel>
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -57,8 +58,10 @@ internal sealed class MediaEdge {
     data class Relation(
         @SerialName("relationType") val mediaRelation: MediaRelation?,
         @SerialName("node") override val node: MediaModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : MediaEdge(),
+        IEntityEdge<MediaModel>,
+        Identity
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -69,8 +72,10 @@ internal sealed class MediaEdge {
     data class Studio(
         @SerialName("isMainStudio") val isMainStudio: Boolean,
         @SerialName("node") override val node: MediaModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : MediaEdge(),
+        IEntityEdge<MediaModel>,
+        Identity
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -81,8 +86,10 @@ internal sealed class MediaEdge {
     data class Favourite(
         @SerialName("favouriteOrder") val favouriteOrder: Int?,
         @SerialName("node") override val node: MediaModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : MediaEdge(),
+        IEntityEdge<MediaModel>,
+        Identity
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -97,8 +104,10 @@ internal sealed class MediaEdge {
         @SerialName("name") val name: String?,
         @SerialName("voiceActorRoles") val voiceActorRoles: List<StaffModel.ActorRole>?,
         @SerialName("node") override val node: CharacterModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : MediaEdge(), IEntityEdge<CharacterModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : MediaEdge(),
+        IEntityEdge<CharacterModel>,
+        Identity
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -110,6 +119,8 @@ internal sealed class MediaEdge {
     data class Staff(
         @SerialName("role") val staffRole: String?,
         @SerialName("node") override val node: MediaModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : MediaEdge(), IEntityEdge<MediaModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : MediaEdge(),
+        IEntityEdge<MediaModel>,
+        Identity
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.entity.contract
 
 import co.anitrend.domain.common.entity.contract.ICoverImage
@@ -25,13 +24,14 @@ import co.anitrend.domain.common.entity.contract.ICoverImage
 data class UserImage(
     override val large: CharSequence?,
     override val medium: CharSequence?,
-    val banner: CharSequence?
+    val banner: CharSequence?,
 ) : ICoverImage {
     companion object {
-        fun empty() = UserImage(
-            large = null,
-            medium = null,
-            banner = null
-        )
+        fun empty() =
+            UserImage(
+                large = null,
+                medium = null,
+                banner = null,
+            )
     }
 }

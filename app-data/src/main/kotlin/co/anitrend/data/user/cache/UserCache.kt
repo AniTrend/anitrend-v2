@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -27,10 +26,9 @@ import co.anitrend.domain.user.model.UserParam
 import org.threeten.bp.Instant
 
 internal sealed class UserCache : CacheStorePolicy() {
-
     class Identifier(
         override val localSource: CacheLocalSource,
-        override val request: CacheRequest = CacheRequest.USER_ID
+        override val request: CacheRequest = CacheRequest.USER_ID,
     ) : UserCache() {
         /**
          * Check if a resource with a given [identity] is permitted to refresh
@@ -40,22 +38,23 @@ internal sealed class UserCache : CacheStorePolicy() {
          */
         override suspend fun shouldRefresh(
             identity: CacheIdentity,
-            expiresAfter: Instant
+            expiresAfter: Instant,
         ): Boolean = isRequestBefore(identity, expiresAfter)
 
         class Identity(
             val param: UserParam.Identifier,
-            override val id: Long = param.let {
-                it.id ?: requireNotNull(it.name).toHashId()
-            },
+            override val id: Long =
+                param.let {
+                    it.id ?: requireNotNull(it.name).toHashId()
+                },
             override val key: String = "user_id",
-            override val expiresAt: Instant = instantInPast(minutes = 5)
+            override val expiresAt: Instant = instantInPast(minutes = 5),
         ) : CacheIdentity
     }
 
     class Viewer(
         override val localSource: CacheLocalSource,
-        override val request: CacheRequest = CacheRequest.VIEWER
+        override val request: CacheRequest = CacheRequest.VIEWER,
     ) : UserCache() {
         /**
          * Check if a resource with a given [identity] is permitted to refresh
@@ -65,19 +64,19 @@ internal sealed class UserCache : CacheStorePolicy() {
          */
         override suspend fun shouldRefresh(
             identity: CacheIdentity,
-            expiresAfter: Instant
+            expiresAfter: Instant,
         ): Boolean = isRequestBefore(identity, expiresAfter)
 
         class Identity(
             override val id: Long,
             override val key: String = "viewer",
-            override val expiresAt: Instant = instantInPast(minutes = 5)
+            override val expiresAt: Instant = instantInPast(minutes = 5),
         ) : CacheIdentity
     }
 
     class Profile(
         override val localSource: CacheLocalSource,
-        override val request: CacheRequest = CacheRequest.USER
+        override val request: CacheRequest = CacheRequest.USER,
     ) : UserCache() {
         /**
          * Check if a resource with a given [identity] is permitted to refresh
@@ -87,23 +86,24 @@ internal sealed class UserCache : CacheStorePolicy() {
          */
         override suspend fun shouldRefresh(
             identity: CacheIdentity,
-            expiresAfter: Instant
+            expiresAfter: Instant,
         ): Boolean = isRequestBefore(identity, expiresAfter)
 
         class Identity(
             val param: UserParam.Profile,
-            override val id: Long = when {
-                param.id != null -> requireNotNull(param.id)
-                else -> requireNotNull(param.name?.toHashId())
-            },
+            override val id: Long =
+                when {
+                    param.id != null -> requireNotNull(param.id)
+                    else -> requireNotNull(param.name?.toHashId())
+                },
             override val key: String = "user_profile",
-            override val expiresAt: Instant = instantInPast(minutes = 5)
+            override val expiresAt: Instant = instantInPast(minutes = 5),
         ) : CacheIdentity
     }
 
     class Statistic(
         override val localSource: CacheLocalSource,
-        override val request: CacheRequest = CacheRequest.STATISTIC
+        override val request: CacheRequest = CacheRequest.STATISTIC,
     ) : UserCache() {
         /**
          * Check if a resource with a given [identity] is permitted to refresh
@@ -113,14 +113,14 @@ internal sealed class UserCache : CacheStorePolicy() {
          */
         override suspend fun shouldRefresh(
             identity: CacheIdentity,
-            expiresAfter: Instant
+            expiresAfter: Instant,
         ): Boolean = isRequestBefore(identity, expiresAfter)
 
         class Identity(
             val param: UserParam.Statistic,
             override val id: Long = param.id,
             override val key: String = "user_profile_statistic",
-            override val expiresAt: Instant = instantInPast(hours = 1)
+            override val expiresAt: Instant = instantInPast(hours = 1),
         ) : CacheIdentity
     }
 }

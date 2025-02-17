@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.link.entity
 
 import androidx.room.ColumnInfo
@@ -30,7 +29,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     tableName = "link",
     primaryKeys = ["id"],
     indices = [
-        Index(value = ["media_id"])
+        Index(value = ["media_id"]),
     ],
     foreignKeys = [
         ForeignKey(
@@ -38,8 +37,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"]
-        )
+            parentColumns = ["id"],
+        ),
     ],
 )
 @EntitySchema
@@ -54,5 +53,5 @@ internal data class LinkEntity(
     @ColumnInfo(name = "link_type") val linkType: ExternalLinkType?,
     @ColumnInfo(name = "site") val site: String,
     @ColumnInfo(name = "url") val url: String,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity

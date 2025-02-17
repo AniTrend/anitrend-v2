@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.adapter
 
 import android.content.res.Resources
@@ -25,7 +24,6 @@ import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.media.ui.controller.helpers.CarouselDiffUtil
 import co.anitrend.common.media.ui.controller.model.MediaCarouselItem
@@ -42,9 +40,8 @@ class MediaCarouselAdapter(
     override val mapper: (MediaCarousel) -> IRecyclerItem = {
         MediaCarouselItem(it, settings, viewPool)
     },
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportListAdapter<MediaCarousel>(CarouselDiffUtil) {
-
     /**
      * Should provide the required view holder, this function is a substitute for
      * [androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder] which now
@@ -53,6 +50,6 @@ class MediaCarouselAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ) = layoutInflater.createCarouselViewHolder(parent)
 }

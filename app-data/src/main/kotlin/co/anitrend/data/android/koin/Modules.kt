@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.koin
 
 import android.net.ConnectivityManager
@@ -90,168 +89,177 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
-private val coreModule = module {
-    singleOf(::AniListApiFactory)
-    singleOf(AniTrendStore::create) {
-        binds(IAniTrendStore.BINDINGS.toList())
+private val coreModule =
+    module {
+        singleOf(::AniListApiFactory)
+        singleOf(AniTrendStore::create) {
+            binds(IAniTrendStore.BINDINGS.toList())
+        }
+        single<IDeviceInfo>(createdAtStart = true) {
+            DeviceInfo(
+                platformUserAgent = WebSettings.getDefaultUserAgent(androidContext()),
+            )
+        }
+        singleOf(::AppInfo) {
+            bind<IAppInfo>()
+        }
+        factory<IAuthenticationHelper> {
+            AuthenticationHelper(
+                authSettings = get(),
+                userSettings = get(),
+                localSource = store().authDao(),
+                mediaListLocalSource = store().mediaListDao(),
+                cacheLocalSource = store().cacheDao(),
+            )
+        }
+        factoryOf(::ClearDataHelper) {
+            bind<IClearDataHelper>()
+        }
     }
-    single<IDeviceInfo>(createdAtStart = true) {
-        DeviceInfo(
-            platformUserAgent = WebSettings.getDefaultUserAgent(androidContext())
-        )
-    }
-    singleOf(::AppInfo) {
-        bind<IAppInfo>()
-    }
-    factory<IAuthenticationHelper> {
-        AuthenticationHelper(
-            authSettings = get(),
-            userSettings = get(),
-            localSource = store().authDao(),
-            mediaListLocalSource = store().mediaListDao(),
-            cacheLocalSource = store().cacheDao()
-        )
-    }
-    factoryOf(::ClearDataHelper) {
-        bind<IClearDataHelper>()
-    }
-}
 
-private val retrofitModule = module {
-    factory<AbstractGraphProcessor> {
-        val level = if (BuildConfig.DEBUG) ILogger.Level.VERBOSE else ILogger.Level.ERROR
-        GraphProcessor(
-            discoveryPlugin = AssetManagerDiscoveryPlugin(
-                assetManager = androidContext().assets
-            ),
-            logger = GraphLogger(level)
-        )
-    }
-    single {
-        GsonBuilder()
-            .setLenient()
-            .create()
-    }
-    single {
-        Json {
-            serializersModule = SerializersModule {
-                polymorphic(AiringScheduleModel::class) {
-                    subclass(AiringScheduleModel.Core::class, AiringScheduleModel.Core.serializer())
-                    subclass(AiringScheduleModel.Extended::class, AiringScheduleModel.Extended.serializer())
-                }
-                polymorphic(StatusModel::class) {
-                    subclass(StatusModel.Progress::class, StatusModel.Progress.serializer())
-                    subclass(StatusModel.Message::class, StatusModel.Message.serializer())
-                    subclass(StatusModel.Reply::class, StatusModel.Reply.serializer())
-                    subclass(StatusModel.Text::class, StatusModel.Text.serializer())
-                }
-                classDiscriminator = "__type"
+private val retrofitModule =
+    module {
+        factory<AbstractGraphProcessor> {
+            val level = if (BuildConfig.DEBUG) ILogger.Level.VERBOSE else ILogger.Level.ERROR
+            GraphProcessor(
+                discoveryPlugin =
+                    AssetManagerDiscoveryPlugin(
+                        assetManager = androidContext().assets,
+                    ),
+                logger = GraphLogger(level),
+            )
+        }
+        single {
+            GsonBuilder()
+                .setLenient()
+                .create()
+        }
+        single {
+            Json {
+                serializersModule =
+                    SerializersModule {
+                        polymorphic(AiringScheduleModel::class) {
+                            subclass(AiringScheduleModel.Core::class, AiringScheduleModel.Core.serializer())
+                            subclass(AiringScheduleModel.Extended::class, AiringScheduleModel.Extended.serializer())
+                        }
+                        polymorphic(StatusModel::class) {
+                            subclass(StatusModel.Progress::class, StatusModel.Progress.serializer())
+                            subclass(StatusModel.Message::class, StatusModel.Message.serializer())
+                            subclass(StatusModel.Reply::class, StatusModel.Reply.serializer())
+                            subclass(StatusModel.Text::class, StatusModel.Text.serializer())
+                        }
+                        classDiscriminator = "__type"
+                    }
+                ignoreUnknownKeys = !BuildConfig.DEBUG
+                coerceInputValues = true
+                isLenient = true
             }
-            ignoreUnknownKeys = !BuildConfig.DEBUG
-            coerceInputValues = true
-            isLenient = true
         }
-    }
-    factory {
-        val mimeType = AniRequestConverter.JSON_MIME_TYPE
-        val defaultJsonFactory = Json {
-            ignoreUnknownKeys = true
-            coerceInputValues = true
-            isLenient = true
-        }
-        AniTrendConverterFactory(
-            processor = get(),
-            gson = get(),
-            jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
-            graphFactory = get<Json>().asConverterFactory(mimeType),
-            xmlFactory = get<IFeedFactory>().provideConverterFactory()
-        )
-    }
-}
-
-private val networkModule = module {
-    single<ISupportConnectivity> {
-        SupportConnectivity(
-            connectivityManager = androidContext()
-                .systemServiceOf<ConnectivityManager>()
-        )
-    }
-    single {
-        Retrofit.Builder()
-            .addConverterFactory(
-                get<AniTrendConverterFactory>()
-            )
-    }
-
-    factory<CookieJar> {
-        ApplicationCookieJar(
-            cookieManager = CookieManager.getInstance()
-        )
-    }
-}
-
-private val interceptorModules = module {
-    factory { (exclusionHeaders: Set<String>) ->
-        ChuckerInterceptor.Builder(context = androidContext())
-                .collector(
-                    collector = ChuckerCollector(
-                        context = androidContext(),
-                        showNotification = true,
-                        retentionPeriod = RetentionManager.Period.ONE_DAY
-                    )
-                )
-                .maxContentLength(
-                    length = 250000L
-                )
-                .redactHeaders(
-                    headerNames = exclusionHeaders
-                )
-                .alwaysReadResponseBody(false)
-                .build()
-    }
-    factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
-        OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor(
-                    logger = OkHttpLogger()
-                ).apply {
-                    level = interceptorLogLevel
-                    redactHeader("Authorization")
+        factory {
+            val mimeType = AniRequestConverter.JSON_MIME_TYPE
+            val defaultJsonFactory =
+                Json {
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                    isLenient = true
                 }
+            AniTrendConverterFactory(
+                processor = get(),
+                gson = get(),
+                jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
+                graphFactory = get<Json>().asConverterFactory(mimeType),
+                xmlFactory = get<IFeedFactory>().provideConverterFactory(),
             )
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
+        }
     }
-}
 
-val dataModules = module {
-    includes(
-        coreModule,
-        retrofitModule,
-        networkModule,
-        interceptorModules,
-        airingModules,
-        tagModules,
-        genreModules,
-        sourceModules,
-        mediaModules,
-        carouselModules,
-        authModules,
-        accountModules,
-        userModules,
-        mediaListModules,
-        feedModules,
-        jikanModules,
-        linkModules,
-        rankModules,
-        traktModules,
-        tmdbModules,
-        themesModules,
-        theXemModules,
-        customListModules,
-        customScoreModules,
-        reviewModules,
-        edgeModules,
-    )
-}
+private val networkModule =
+    module {
+        single<ISupportConnectivity> {
+            SupportConnectivity(
+                connectivityManager =
+                    androidContext()
+                        .systemServiceOf<ConnectivityManager>(),
+            )
+        }
+        single {
+            Retrofit
+                .Builder()
+                .addConverterFactory(
+                    get<AniTrendConverterFactory>(),
+                )
+        }
+
+        factory<CookieJar> {
+            ApplicationCookieJar(
+                cookieManager = CookieManager.getInstance(),
+            )
+        }
+    }
+
+private val interceptorModules =
+    module {
+        factory { (exclusionHeaders: Set<String>) ->
+            ChuckerInterceptor
+                .Builder(context = androidContext())
+                .collector(
+                    collector =
+                        ChuckerCollector(
+                            context = androidContext(),
+                            showNotification = true,
+                            retentionPeriod = RetentionManager.Period.ONE_DAY,
+                        ),
+                ).maxContentLength(
+                    length = 250000L,
+                ).redactHeaders(
+                    headerNames = exclusionHeaders,
+                ).alwaysReadResponseBody(false)
+                .build()
+        }
+        factory { (interceptorLogLevel: HttpLoggingInterceptor.Level) ->
+            OkHttpClient
+                .Builder()
+                .addInterceptor(
+                    HttpLoggingInterceptor(
+                        logger = OkHttpLogger(),
+                    ).apply {
+                        level = interceptorLogLevel
+                        redactHeader("Authorization")
+                    },
+                ).readTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+        }
+    }
+
+val dataModules =
+    module {
+        includes(
+            coreModule,
+            retrofitModule,
+            networkModule,
+            interceptorModules,
+            airingModules,
+            tagModules,
+            genreModules,
+            sourceModules,
+            mediaModules,
+            carouselModules,
+            authModules,
+            accountModules,
+            userModules,
+            mediaListModules,
+            feedModules,
+            jikanModules,
+            linkModules,
+            rankModules,
+            traktModules,
+            tmdbModules,
+            themesModules,
+            theXemModules,
+            customListModules,
+            customScoreModules,
+            reviewModules,
+            edgeModules,
+        )
+    }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
@@ -28,20 +27,21 @@ import kotlinx.serialization.Serializable
  * Studio Connection
  */
 @Serializable
-internal sealed class StudioConnection : IEntityConnection,
-    IEntityConnection.IEdge<StudioEdge>, IEntityConnection.INode<StudioModel> {
-
+internal sealed class StudioConnection :
+    IEntityConnection,
+    IEntityConnection.IEdge<StudioEdge>,
+    IEntityConnection.INode<StudioModel> {
     @Serializable
     data class Favourite(
         @SerialName("edges") override val edges: List<StudioEdge.Favourite>?,
         @SerialName("nodes") override val nodes: List<StudioModel>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?
+        @SerialName("pageInfo") override val pageInfo: PageInfo?,
     ) : StudioConnection()
 
     @Serializable
     data class Media(
         @SerialName("edges") override val edges: List<StudioEdge.Media>?,
         @SerialName("nodes") override val nodes: List<StudioModel>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?
+        @SerialName("pageInfo") override val pageInfo: PageInfo?,
     ) : StudioConnection()
 }

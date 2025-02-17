@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.sheet.adapter
 
 import androidx.fragment.app.Fragment
@@ -34,9 +33,8 @@ internal class FilterPageAdapter(
     private val titles: List<String>,
     private val fragmentActivity: FragmentActivity,
     fragmentManager: FragmentManager,
-    lifecycle: Lifecycle
+    lifecycle: Lifecycle,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-
     /**
      * Returns the total number of items in the data set held by the adapter.
      *
@@ -57,21 +55,26 @@ internal class FilterPageAdapter(
      * @see ViewPager2.setOffscreenPageLimit
      */
     override fun createFragment(position: Int): Fragment {
-        val fragment = when (position) {
-            0 -> FragmentItem(
-                fragment = MediaDiscoverFilterRouter.forGeneral()
-            ).fragmentByTagOrNew(fragmentActivity)
-            1 -> FragmentItem(
-                fragment = MediaDiscoverFilterRouter.forSorting()
-            ).fragmentByTagOrNew(fragmentActivity)
-            2 -> FragmentItem(
-                fragment = MediaDiscoverFilterRouter.forGenre()
-            ).fragmentByTagOrNew(fragmentActivity)
-            3 -> FragmentItem(
-                fragment = MediaDiscoverFilterRouter.forTag()
-            ).fragmentByTagOrNew(fragmentActivity)
-            else -> Fragment()
-        }
+        val fragment =
+            when (position) {
+                0 ->
+                    FragmentItem(
+                        fragment = MediaDiscoverFilterRouter.forGeneral(),
+                    ).fragmentByTagOrNew(fragmentActivity)
+                1 ->
+                    FragmentItem(
+                        fragment = MediaDiscoverFilterRouter.forSorting(),
+                    ).fragmentByTagOrNew(fragmentActivity)
+                2 ->
+                    FragmentItem(
+                        fragment = MediaDiscoverFilterRouter.forGenre(),
+                    ).fragmentByTagOrNew(fragmentActivity)
+                3 ->
+                    FragmentItem(
+                        fragment = MediaDiscoverFilterRouter.forTag(),
+                    ).fragmentByTagOrNew(fragmentActivity)
+                else -> Fragment()
+            }
         fragment.arguments = param?.asBundle()
         Timber.v("Created fragment, named: ${titles[position]} -> $fragment")
         return fragment

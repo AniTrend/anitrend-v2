@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.review.model
 
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
@@ -24,14 +23,12 @@ import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.review.enums.ReviewSort
 
 sealed class ReviewParam {
-
-
     /** [EntryReview query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param id Filter by Review id
      */
     data class Entry(
-        val id: Long
+        val id: Long,
     ) : ReviewParam()
 
     /** [FindReview query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -46,9 +43,8 @@ sealed class ReviewParam {
         val userId: Long? = null,
         val mediaType: MediaType? = null,
         val sort: List<ISortWithOrder<ReviewSort>>? = null,
-        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100
+        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
     ) : ReviewParam()
-
 
     /** [RateReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
@@ -59,7 +55,7 @@ sealed class ReviewParam {
      */
     data class Rate(
         val id: Long,
-        val rating: ReviewRating
+        val rating: ReviewRating,
     ) : ReviewParam()
 
     /** [DeleteReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -69,7 +65,7 @@ sealed class ReviewParam {
      * @param id The id of the review to delete
      */
     data class Delete(
-        val id: Long
+        val id: Long,
     ) : ReviewParam()
 
     /** [SaveReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -89,7 +85,7 @@ sealed class ReviewParam {
         val body: String,
         val summary: String,
         val score: Int,
-        val private: Boolean
+        val private: Boolean,
     ) : ReviewParam() {
         /**
          * Summary validation Min:20, Max:120 characters

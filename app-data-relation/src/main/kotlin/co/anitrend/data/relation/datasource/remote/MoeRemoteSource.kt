@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.datasource.remote
 
 import co.anitrend.data.core.JSON
@@ -24,12 +23,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 internal interface MoeRemoteSource {
-
     @JSON
     @GET("api/v2/ids")
     suspend fun getFromSource(
         @Query("id") id: Long,
         @Query("source") source: String,
         @Query("include") include: String? = null,
-    ) : Response<MoeModel?>
+    ): Response<MoeModel?>
 }

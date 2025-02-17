@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,22 +14,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.model.mutation
 
 import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.studio.model.StudioParam
 
-internal sealed class StudioMutation : IGraphPayload{
-
+internal sealed class StudioMutation : IGraphPayload {
     data class Favourite(
-        val param: StudioParam.Favourite
+        val param: StudioParam.Favourite,
     ) : StudioMutation() {
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+            )
     }
 }

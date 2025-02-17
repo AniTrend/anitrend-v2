@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.thread.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,6 +21,8 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * Thread comments sort enums
  */
-enum class ThreadCommentSort(override val alias: CharSequence) : IAliasable {
-    ID("Id")
+enum class ThreadCommentSort(
+    override val alias: CharSequence,
+) : IAliasable {
+    ID("Id"),
 }

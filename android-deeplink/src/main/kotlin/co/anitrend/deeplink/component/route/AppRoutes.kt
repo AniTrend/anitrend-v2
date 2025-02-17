@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -50,9 +50,10 @@ internal object DiscoverRoute : Route("discover") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.DISCOVER,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.DISCOVER,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -65,9 +66,10 @@ internal object SocialRoute : Route("social") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.SOCIAL,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.SOCIAL,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -80,9 +82,10 @@ internal object SuggestionsRoute : Route("suggestions") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.SUGGESTIONS,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.SUGGESTIONS,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -107,9 +110,10 @@ internal object ProfileRoute : Route("profile") {
         super.run(uri, params, env)
         val settings = (env as IAniTrendEnvironment).settings
         val payload =
-            ProfileRouter.ProfileParam(
-                userId = settings.authenticatedUserId.value,
-            ).asNavPayload()
+            ProfileRouter
+                .ProfileParam(
+                    userId = settings.authenticatedUserId.value,
+                ).asNavPayload()
         return ProfileRouter.forActivity(env.context, payload)
     }
 }
@@ -155,9 +159,10 @@ internal object NewsRoute : Route("news") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.NEWS,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.NEWS,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -170,9 +175,10 @@ internal object EpisodesRoute : Route("episodes") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.EPISODES,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.EPISODES,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -186,25 +192,24 @@ internal object OAuthRoute : Route(
         return runCatching {
             AuthRouter.AuthParam(
                 accessToken =
-                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
-                },
+                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_KEY)) {
+                        "$CALLBACK_QUERY_TOKEN_KEY was not found in -> $fullyQualifiedUrl"
+                    },
                 tokenType =
-                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $fullyQualifiedUrl"
-                },
+                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_TYPE_KEY)) {
+                        "$CALLBACK_QUERY_TOKEN_TYPE_KEY was not found in -> $fullyQualifiedUrl"
+                    },
                 expiresIn =
-                requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
-                    "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $fullyQualifiedUrl"
-                }.toLong(),
+                    requireNotNull(queryParameter(CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY)) {
+                        "$CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY was not found in -> $fullyQualifiedUrl"
+                    }.toLong(),
             )
-        }
-            .onFailure(Timber::w)
+        }.onFailure(Timber::w)
             .getOrDefault(
                 AuthRouter.AuthParam(
                     errorTitle = queryParameter(CALLBACK_QUERY_ERROR_KEY),
                     errorDescription = queryParameter(CALLBACK_QUERY_ERROR_DESCRIPTION_KEY),
-                )
+                ),
             )
     }
 

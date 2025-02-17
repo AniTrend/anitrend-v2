@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.shared.ui.extension
 
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +27,7 @@ import co.anitrend.core.android.recycler.CarouselRecycler
  */
 fun CarouselRecycler.setUpWith(
     supportAdapter: RecyclerView.Adapter<*>,
-    recyclerViewPool: RecyclerView.RecycledViewPool?
+    recyclerViewPool: RecyclerView.RecycledViewPool?,
 ) {
     supportAdapter.stateRestorationPolicy =
         RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY

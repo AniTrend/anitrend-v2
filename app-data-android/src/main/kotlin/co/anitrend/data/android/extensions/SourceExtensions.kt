@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.extensions
 
 import co.anitrend.arch.extension.ext.empty
@@ -24,7 +23,6 @@ import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import kotlinx.coroutines.launch
-
 
 /**
  * Wrapper for handling request dispatching from an paging source
@@ -38,19 +36,20 @@ operator fun AbstractPagingSource<*>.invoke(
     key: String = String.empty(),
     paging: SupportPagingHelper,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit
+    block: suspend (RequestCallback) -> Unit,
 ) {
     scope.launch {
         requestHelper.runIfNotRunning(
-            Request.Default(key, requestType)
+            Request.Default(key, requestType),
         ) { requestCallback ->
             when (requestType) {
                 Request.Type.BEFORE -> {
                     if (!paging.isFirstPage()) {
                         paging.onPagePrevious()
                         block(requestCallback)
+                    } else {
+                        requestCallback.recordSuccess()
                     }
-                    else requestCallback.recordSuccess()
                 }
                 Request.Type.AFTER -> {
                     paging.onPageNext()
@@ -72,11 +71,11 @@ operator fun AbstractPagingSource<*>.invoke(
 operator fun AbstractCoreDataSource.invoke(
     key: String = String.empty(),
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit
+    block: suspend (RequestCallback) -> Unit,
 ) {
     scope.launch {
         requestHelper.runIfNotRunning(
-            Request.Default(key, requestType)
+            Request.Default(key, requestType),
         ) { requestCallback ->
             block(requestCallback)
         }

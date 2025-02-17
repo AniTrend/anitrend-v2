@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.settings.component.screen
 
 import android.os.Bundle
@@ -25,7 +24,6 @@ import co.anitrend.settings.component.content.SettingsContent
 import co.anitrend.settings.databinding.SettingsActivityBinding
 
 class SettingsScreen : AniTrendBoundScreen<SettingsActivityBinding>() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = SettingsActivityBinding.inflate(layoutInflater)
@@ -44,8 +42,9 @@ class SettingsScreen : AniTrendBoundScreen<SettingsActivityBinding>() {
     }
 
     private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = SettingsContent::class.java
-        ).commit(requireBinding().contentFrame, this)
+        currentFragmentTag =
+            FragmentItem(
+                fragment = SettingsContent::class.java,
+            ).commit(requireBinding().contentFrame, this)
     }
 }

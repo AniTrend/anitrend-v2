@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.status.model
 
 import co.anitrend.data.media.model.MediaModel
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class StatusModel : IStatusModel {
-
     /**
      * @param media The associated media to the activity update
      * @param progress The list progress made
@@ -50,9 +48,8 @@ internal sealed class StatusModel : IStatusModel {
         @SerialName("replyCount") override val replyCount: Int,
         @SerialName("siteUrl") override val siteUrl: String? = null,
         @SerialName("type") override val type: StatusType? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StatusModel()
-
 
     /**
      * @param message The message text
@@ -63,7 +60,7 @@ internal sealed class StatusModel : IStatusModel {
      */
     @Serializable
     internal data class Message(
-        @SerialName("recipient") val recipient : UserModel.Core? = null,
+        @SerialName("recipient") val recipient: UserModel.Core? = null,
         @SerialName("isLocked") val isLocked: Boolean,
         @SerialName("isSubscribed") val isSubscribed: Boolean,
         @SerialName("message") val message: String? = null,
@@ -74,7 +71,7 @@ internal sealed class StatusModel : IStatusModel {
         @SerialName("replyCount") override val replyCount: Int,
         @SerialName("siteUrl") override val siteUrl: String? = null,
         @SerialName("type") override val type: StatusType? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StatusModel()
 
     /**
@@ -93,7 +90,7 @@ internal sealed class StatusModel : IStatusModel {
         @SerialName("replyCount") override val replyCount: Int,
         @SerialName("siteUrl") override val siteUrl: String? = null,
         @SerialName("type") override val type: StatusType? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StatusModel()
 
     /**
@@ -115,6 +112,6 @@ internal sealed class StatusModel : IStatusModel {
         @SerialName("replyCount") override val replyCount: Int,
         @SerialName("siteUrl") override val siteUrl: String? = null,
         @SerialName("type") override val type: StatusType? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StatusModel()
 }

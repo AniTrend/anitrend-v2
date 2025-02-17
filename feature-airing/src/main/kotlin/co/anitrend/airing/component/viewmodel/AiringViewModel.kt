@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.airing.component.viewmodel
 
 import androidx.lifecycle.MutableLiveData
@@ -27,11 +26,10 @@ import co.anitrend.navigation.extensions.nameOf
 
 class AiringViewModel(
     override val state: AiringState,
-    stateHandle: SavedStateHandle
+    stateHandle: SavedStateHandle,
 ) : AniTrendViewModel() {
-
     val param by stateHandle.extra<AiringRouter.AiringParam>(
-        key = nameOf<AiringRouter.AiringParam>()
+        key = nameOf<AiringRouter.AiringParam>(),
     )
 
     val filter = MutableLiveData<AiringRouter.AiringParam>(param)

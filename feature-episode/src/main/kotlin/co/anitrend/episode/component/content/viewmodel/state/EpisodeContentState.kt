@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.episode.component.content.viewmodel.state
 
 import androidx.paging.PagedList
@@ -24,9 +23,8 @@ import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 
 class EpisodeContentState(
-    private val interactor: EpisodePagedInteractor
+    private val interactor: EpisodePagedInteractor,
 ) : AniTrendViewModelState<PagedList<Episode>>() {
-
     operator fun invoke(param: EpisodeParam.Paged) {
         val result = interactor(param)
         state.postValue(result)

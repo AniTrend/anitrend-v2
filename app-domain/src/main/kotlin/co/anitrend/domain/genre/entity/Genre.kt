@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,27 +14,25 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.genre.entity
 
 import co.anitrend.domain.common.HexColor
 import co.anitrend.domain.common.entity.contract.IEntity
 
 sealed class Genre : IEntity {
-
     abstract val name: String
     abstract val emoji: String?
 
     data class Core(
         override val name: String,
         override val emoji: String?,
-        override val id: Long
+        override val id: Long,
     ) : Genre()
 
     data class Extended(
         val background: HexColor?,
         override val name: String,
         override val emoji: String?,
-        override val id: Long
+        override val id: Long,
     ) : Genre()
 }

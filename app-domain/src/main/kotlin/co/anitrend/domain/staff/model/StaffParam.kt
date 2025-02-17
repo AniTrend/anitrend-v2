@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.staff.model
 
 import co.anitrend.domain.staff.enums.StaffSort
 
 sealed class StaffParam {
-
     /** [Staff query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param id Filter by the staff id
@@ -36,6 +34,6 @@ sealed class StaffParam {
         val id_not: Long,
         val id_in: List<Long>?,
         val id_not_in: List<Long>?,
-        val sort: List<StaffSort>?
+        val sort: List<StaffSort>?,
     ) : StaffParam()
 }

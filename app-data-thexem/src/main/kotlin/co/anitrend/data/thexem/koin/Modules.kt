@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,18 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.thexem.koin
 
 import co.anitrend.data.thexem.api.TheXemApiFactory
 import org.koin.dsl.module
 
-private val coreModule = module {
-    single {
-        TheXemApiFactory()
+private val coreModule =
+    module {
+        single {
+            TheXemApiFactory()
+        }
     }
-}
 
-val theXemModules = module {
-    includes(coreModule)
-}
+val theXemModules =
+    module {
+        includes(coreModule)
+    }

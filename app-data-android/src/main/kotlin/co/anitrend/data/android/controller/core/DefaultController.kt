@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.controller.core
 
 import co.anitrend.arch.data.common.ISupportResponse
@@ -24,7 +23,6 @@ import co.anitrend.data.android.extensions.Async
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
@@ -36,9 +34,8 @@ class DefaultController<S, out D>(
     private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
     private val dispatcher: CoroutineDispatcher,
-    private val client: DeferrableNetworkClient<S>
+    private val client: DeferrableNetworkClient<S>,
 ) : ISupportResponse<Async<Response<S>>, D> {
-
     /**
      * Response handler for coroutine contexts which need to observe [LoadState]
      *
@@ -52,7 +49,7 @@ class DefaultController<S, out D>(
     suspend operator fun invoke(
         resource: Async<Response<S>>,
         requestCallback: RequestCallback,
-        interceptor: (S) -> S
+        interceptor: (S) -> S,
     ) = strategy(requestCallback) {
         val response = client.fetch(resource)
         val data = interceptor(response)
@@ -73,6 +70,6 @@ class DefaultController<S, out D>(
      */
     override suspend fun invoke(
         resource: Async<Response<S>>,
-        requestCallback: RequestCallback
+        requestCallback: RequestCallback,
     ) = invoke(resource, requestCallback) { it }
 }

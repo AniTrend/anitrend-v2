@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.entity
 
 import androidx.room.ColumnInfo
@@ -24,7 +23,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "studio",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
 )
 @EntitySchema
 internal data class StudioEntity(
@@ -34,5 +33,5 @@ internal data class StudioEntity(
     @ColumnInfo(name = "is_favourite_blocked") val isFavouriteBlocked: Boolean,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "site_url") val siteUrl: String,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity

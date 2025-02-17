@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,23 +14,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.repository
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.media.model.MediaParam
 
 interface IMediaRepository {
-
-    interface Detail<State: UiState<*>> : IMediaRepository {
+    interface Detail<State : UiState<*>> : IMediaRepository {
         fun getMedia(param: MediaParam.Detail): State
     }
 
-    interface Paged<State: UiState<*>> : IMediaRepository {
+    interface Paged<State : UiState<*>> : IMediaRepository {
         fun getPaged(param: MediaParam.Find): State
     }
 
-    interface Network<State: UiState<*>> : IMediaRepository {
+    interface Network<State : UiState<*>> : IMediaRepository {
         fun getPaged(param: MediaParam.Find): State
     }
 }

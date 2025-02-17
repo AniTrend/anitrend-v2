@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.carousel.component.viewmodel.state
 
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
@@ -24,18 +23,18 @@ import co.anitrend.domain.carousel.model.CarouselParam
 import co.anitrend.navigation.MediaCarouselRouter
 
 data class CarouselState(
-    private val interactor: GetCarouselInteractor
+    private val interactor: GetCarouselInteractor,
 ) : AniTrendViewModelState<List<MediaCarousel>>() {
-
     suspend operator fun invoke(param: MediaCarouselRouter.MediaCarouselRouterParam) {
-        val input = CarouselParam.Find(
-            season = param.season,
-            seasonYear = param.seasonYear,
-            nextSeasonYear = param.nextSeasonYear,
-            nextSeason = param.nextSeason,
-            currentTime = param.currentTime,
-            pageSize = param.pageSize,
-        )
+        val input =
+            CarouselParam.Find(
+                season = param.season,
+                seasonYear = param.seasonYear,
+                nextSeasonYear = param.nextSeasonYear,
+                nextSeason = param.nextSeason,
+                currentTime = param.currentTime,
+                pageSize = param.pageSize,
+            )
         val result = interactor(input)
         state.postValue(result)
     }

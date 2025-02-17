@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.widget.progress.controller
 
 import co.anitrend.core.android.settings.Settings
@@ -29,28 +28,30 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
 class MediaProgressControllerTest {
-
     private val media = mockk<Media>()
     private val settings = mockk<Settings>()
     private lateinit var controller: MediaProgressController
 
     @BeforeEach
     fun setUp() {
-        every { media.mediaList } returns MediaList.Core.empty().copy(
-            progress = MediaListProgress.Anime(
-                5,
-                0
-            ),
-            score = 5.8f,
-            userId = 15
-        )
+        every { media.mediaList } returns
+            MediaList.Core.empty().copy(
+                progress =
+                    MediaListProgress.Anime(
+                        5,
+                        0,
+                    ),
+                score = 5.8f,
+                userId = 15,
+            )
 
         every { media.status } returns MediaStatus.RELEASING
 
-        every { media.category } returns Media.Category.Anime.empty().copy(
-            25,
-            23
-        )
+        every { media.category } returns
+            Media.Category.Anime.empty().copy(
+                25,
+                23,
+            )
 
         every { settings.authenticatedUserId.value } returns 15
         every { settings.isAuthenticated.value } returns true

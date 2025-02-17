@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
@@ -31,9 +30,8 @@ internal class AuthMapper(
     private val mediaOptionMapper: UserMapper.MediaOptionEmbed,
     private val notificationMapper: UserMapper.NotificationEmbed,
     private val localSource: UserLocalSource,
-    private val converter: UserModelConverter
+    private val converter: UserModelConverter,
 ) : DefaultMapper<UserModelContainer.Viewer, UserEntity>() {
-
     /**
      * Save [data] into your desired local source
      */
@@ -50,15 +48,13 @@ internal class AuthMapper(
      * @param source the incoming data source type
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(
-        source: UserModelContainer.Viewer
-    ): UserEntity {
+    override suspend fun onResponseMapFrom(source: UserModelContainer.Viewer): UserEntity {
         generalOptionMapper.onEmbedded(source.user)
         mediaOptionMapper.onEmbedded(source.user)
         notificationMapper.onEmbedded(
             UserMapper.NotificationEmbed.asItem(
-                source.user
-            )
+                source.user,
+            ),
         )
         return converter.convertFrom(source.user)
     }

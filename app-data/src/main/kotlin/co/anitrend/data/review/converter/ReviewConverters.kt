@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -29,7 +28,7 @@ import co.anitrend.domain.review.enums.ReviewRating
 
 internal class ReviewModelConverter(
     override val fromType: (ReviewModel) -> ReviewEntity = ::transform,
-    override val toType: (ReviewEntity) -> ReviewModel = { throw NotImplementedError() }
+    override val toType: (ReviewEntity) -> ReviewModel = { throw NotImplementedError() },
 ) : SupportConverter<ReviewModel, ReviewEntity>() {
     private companion object : ISupportTransformer<ReviewModel, ReviewEntity> {
         override fun transform(source: ReviewModel): ReviewEntity =
@@ -53,7 +52,7 @@ internal class ReviewModelConverter(
 
 internal class ReviewEntityViewConverter(
     override val fromType: (ReviewEntityView) -> Review = ::transform,
-    override val toType: (Review) -> ReviewEntityView = { throw NotImplementedError() }
+    override val toType: (Review) -> ReviewEntityView = { throw NotImplementedError() },
 ) : SupportConverter<ReviewEntityView, Review>() {
     private companion object : ISupportTransformer<ReviewEntityView, Review> {
         override fun transform(source: ReviewEntityView): Review =

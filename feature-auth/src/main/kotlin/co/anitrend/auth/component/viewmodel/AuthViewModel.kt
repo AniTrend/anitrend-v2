@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.component.viewmodel
 
 import android.content.Context
@@ -26,10 +25,12 @@ import co.anitrend.navigation.AuthRouter
 import timber.log.Timber
 
 class AuthViewModel(
-    override val state: AuthState
+    override val state: AuthState,
 ) : AniTrendViewModel() {
-
-    fun onIntentData(context: Context, param: AuthRouter.AuthParam?) {
+    fun onIntentData(
+        context: Context,
+        param: AuthRouter.AuthParam?,
+    ) {
         if (param == null) {
             Timber.d("AuthRouter.Param is null, no new intent data available. Skipping checks")
             return
@@ -37,20 +38,23 @@ class AuthViewModel(
 
         Timber.d("AuthRouter.Param change triggered from on new intent: $param")
 
-        val authenticationState = runCatching {
-            Authentication.Authenticate(
-                requireNotNull(param.accessToken),
-                requireNotNull(param.tokenType),
-                requireNotNull(param.expiresIn)
-            )
-        }.onFailure {
-            Authentication.Error(
-                title = param.errorTitle
-                    ?: context.getString(R.string.auth_error_default_title),
-                message = param.errorDescription
-                    ?: context.getString(R.string.auth_error_default_message)
-            )
-        }.getOrDefault(Authentication.Idle)
+        val authenticationState =
+            runCatching {
+                Authentication.Authenticate(
+                    requireNotNull(param.accessToken),
+                    requireNotNull(param.tokenType),
+                    requireNotNull(param.expiresIn),
+                )
+            }.onFailure {
+                Authentication.Error(
+                    title =
+                        param.errorTitle
+                            ?: context.getString(R.string.auth_error_default_title),
+                    message =
+                        param.errorDescription
+                            ?: context.getString(R.string.auth_error_default_message),
+                )
+            }.getOrDefault(Authentication.Idle)
 
         state.authenticationFlow.value = authenticationState
         state(authenticationState)

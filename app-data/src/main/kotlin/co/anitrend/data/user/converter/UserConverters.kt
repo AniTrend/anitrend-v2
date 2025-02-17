@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.converter
 
 import androidx.annotation.VisibleForTesting
@@ -50,641 +49,761 @@ import co.anitrend.domain.user.enums.UserTitleLanguage
 
 internal class UserModelConverter(
     override val fromType: (UserModel) -> UserEntity = ::transform,
-    override val toType: (UserEntity) -> UserModel = { throw NotImplementedError() }
+    override val toType: (UserEntity) -> UserModel = { throw NotImplementedError() },
 ) : SupportConverter<UserModel, UserEntity>() {
     private companion object : ISupportTransformer<UserModel, UserEntity> {
-        override fun transform(source: UserModel): UserEntity = when (source) {
-            is UserModel.Core -> UserEntity(
-                about = UserEntity.About(
-                    name = source.name,
-                    bio = source.about,
-                    siteUrl = source.siteUrl,
-                    donatorTier = source.donatorTier,
-                    donatorBadge = source.donatorBadge,
-                ),
-                status = UserEntity.Status(
-                    isFollowing = source.isFollowing,
-                    isFollower = source.isFollower,
-                    isBlocked = source.isBlocked ?: false
-                ),
-                coverImage = UserEntity.CoverImage(
-                    large = source.avatar?.large,
-                    medium = source.avatar?.medium,
-                    banner = source.bannerImage
-                ),
-                updatedAt = source.updatedAt,
-                createdAt = source.createdAt,
-                id = source.id
-            )
-            is UserModel.Extended -> UserEntity(
-                about = UserEntity.About(
-                    name = source.name,
-                    bio = source.about,
-                    siteUrl = source.siteUrl,
-                    donatorTier = source.donatorTier,
-                    donatorBadge = source.donatorBadge,
-                ),
-                status = UserEntity.Status(
-                    isFollowing = source.isFollowing,
-                    isFollower = source.isFollower,
-                    isBlocked = source.isBlocked ?: false
-                ),
-                coverImage = UserEntity.CoverImage(
-                    large = source.avatar?.large,
-                    medium = source.avatar?.medium,
-                    banner = source.bannerImage
-                ),
-                updatedAt = source.updatedAt,
-                createdAt = source.createdAt,
-                id = source.id
-            )
-            is UserModel.Viewer -> UserEntity(
-                about = UserEntity.About(
-                    name = source.name,
-                    bio = source.about,
-                    siteUrl = source.siteUrl,
-                    donatorTier = source.donatorTier,
-                    donatorBadge = source.donatorBadge,
-                ),
-                status = UserEntity.Status(
-                    isFollowing = false,
-                    isFollower = false,
-                    isBlocked = source.isBlocked ?: false
-                ),
-                coverImage = UserEntity.CoverImage(
-                    large = source.avatar?.large,
-                    medium = source.avatar?.medium,
-                    banner = source.bannerImage
-                ),
-                updatedAt = source.updatedAt,
-                createdAt = source.createdAt,
-                id = source.id
-            )
-            is UserModel.WithStatistic -> UserEntity(
-                about = UserEntity.About(
-                    name = source.name,
-                    bio = source.about,
-                    siteUrl = source.siteUrl,
-                    donatorTier = source.donatorTier,
-                    donatorBadge = source.donatorBadge,
-                ),
-                status = UserEntity.Status(
-                    isFollowing = source.isFollowing,
-                    isFollower = source.isFollower,
-                    isBlocked = source.isBlocked ?: false
-                ),
-                coverImage = UserEntity.CoverImage(
-                    large = source.avatar?.large,
-                    medium = source.avatar?.medium,
-                    banner = source.bannerImage
-                ),
-                updatedAt = source.updatedAt,
-                createdAt = source.createdAt,
-                id = source.id
-            )
-            else -> error("Nothing to do with this type: $source")
-        }
+        override fun transform(source: UserModel): UserEntity =
+            when (source) {
+                is UserModel.Core ->
+                    UserEntity(
+                        about =
+                            UserEntity.About(
+                                name = source.name,
+                                bio = source.about,
+                                siteUrl = source.siteUrl,
+                                donatorTier = source.donatorTier,
+                                donatorBadge = source.donatorBadge,
+                            ),
+                        status =
+                            UserEntity.Status(
+                                isFollowing = source.isFollowing,
+                                isFollower = source.isFollower,
+                                isBlocked = source.isBlocked ?: false,
+                            ),
+                        coverImage =
+                            UserEntity.CoverImage(
+                                large = source.avatar?.large,
+                                medium = source.avatar?.medium,
+                                banner = source.bannerImage,
+                            ),
+                        updatedAt = source.updatedAt,
+                        createdAt = source.createdAt,
+                        id = source.id,
+                    )
+                is UserModel.Extended ->
+                    UserEntity(
+                        about =
+                            UserEntity.About(
+                                name = source.name,
+                                bio = source.about,
+                                siteUrl = source.siteUrl,
+                                donatorTier = source.donatorTier,
+                                donatorBadge = source.donatorBadge,
+                            ),
+                        status =
+                            UserEntity.Status(
+                                isFollowing = source.isFollowing,
+                                isFollower = source.isFollower,
+                                isBlocked = source.isBlocked ?: false,
+                            ),
+                        coverImage =
+                            UserEntity.CoverImage(
+                                large = source.avatar?.large,
+                                medium = source.avatar?.medium,
+                                banner = source.bannerImage,
+                            ),
+                        updatedAt = source.updatedAt,
+                        createdAt = source.createdAt,
+                        id = source.id,
+                    )
+                is UserModel.Viewer ->
+                    UserEntity(
+                        about =
+                            UserEntity.About(
+                                name = source.name,
+                                bio = source.about,
+                                siteUrl = source.siteUrl,
+                                donatorTier = source.donatorTier,
+                                donatorBadge = source.donatorBadge,
+                            ),
+                        status =
+                            UserEntity.Status(
+                                isFollowing = false,
+                                isFollower = false,
+                                isBlocked = source.isBlocked ?: false,
+                            ),
+                        coverImage =
+                            UserEntity.CoverImage(
+                                large = source.avatar?.large,
+                                medium = source.avatar?.medium,
+                                banner = source.bannerImage,
+                            ),
+                        updatedAt = source.updatedAt,
+                        createdAt = source.createdAt,
+                        id = source.id,
+                    )
+                is UserModel.WithStatistic ->
+                    UserEntity(
+                        about =
+                            UserEntity.About(
+                                name = source.name,
+                                bio = source.about,
+                                siteUrl = source.siteUrl,
+                                donatorTier = source.donatorTier,
+                                donatorBadge = source.donatorBadge,
+                            ),
+                        status =
+                            UserEntity.Status(
+                                isFollowing = source.isFollowing,
+                                isFollower = source.isFollower,
+                                isBlocked = source.isBlocked ?: false,
+                            ),
+                        coverImage =
+                            UserEntity.CoverImage(
+                                large = source.avatar?.large,
+                                medium = source.avatar?.medium,
+                                banner = source.bannerImage,
+                            ),
+                        updatedAt = source.updatedAt,
+                        createdAt = source.createdAt,
+                        id = source.id,
+                    )
+                else -> error("Nothing to do with this type: $source")
+            }
     }
 }
 
 internal class UserStatisticModelConverter(
     override val fromType: (UserModel.WithStatistic) -> UserWithStatisticEntity = ::transform,
-    override val toType: (UserWithStatisticEntity) -> UserModel.WithStatistic = { throw NotImplementedError() }
+    override val toType: (UserWithStatisticEntity) -> UserModel.WithStatistic = { throw NotImplementedError() },
 ) : SupportConverter<UserModel.WithStatistic, UserWithStatisticEntity>() {
     private companion object : ISupportTransformer<UserModel.WithStatistic, UserWithStatisticEntity> {
-        override fun transform(source: UserModel.WithStatistic) = UserWithStatisticEntity(
-            statistic = UserWithStatisticEntity.Statistic(
-                anime = source.statistics?.anime,
-                manga = source.statistics?.manga
-            ),
-            userId = source.id
-        )
+        override fun transform(source: UserModel.WithStatistic) =
+            UserWithStatisticEntity(
+                statistic =
+                    UserWithStatisticEntity.Statistic(
+                        anime = source.statistics?.anime,
+                        manga = source.statistics?.manga,
+                    ),
+                userId = source.id,
+            )
     }
 }
 
 internal class UserMediaOptionModelConverter(
     override val fromType: (UserModel.WithOptions) -> UserMediaOptionEntity = ::transform,
-    override val toType: (UserMediaOptionEntity) -> UserModel.WithOptions = { throw NotImplementedError() }
+    override val toType: (UserMediaOptionEntity) -> UserModel.WithOptions = { throw NotImplementedError() },
 ) : SupportConverter<UserModel.WithOptions, UserMediaOptionEntity>() {
     private companion object : ISupportTransformer<UserModel.WithOptions, UserMediaOptionEntity> {
-        override fun transform(source: UserModel.WithOptions) = UserMediaOptionEntity(
-            userId = source.id,
-            scoreFormat = source.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100,
-            rowOrder = source.mediaListOptions?.rowOrder,
-            anime = UserMediaOptionEntity.MediaOption(
-                customLists = source.mediaListOptions?.animeList?.customLists.orEmpty(),
-                sectionOrder = source.mediaListOptions?.animeList?.sectionOrder.orEmpty(),
-                advancedScoring = source.mediaListOptions?.animeList?.advancedScoring.orEmpty(),
-                advancedScoringEnabled = source.mediaListOptions?.animeList?.advancedScoringEnabled
-                    ?: false,
-                splitCompletedSectionByFormat = source.mediaListOptions?.animeList?.splitCompletedSectionByFormat
-                    ?: false
-            ),
-            manga = UserMediaOptionEntity.MediaOption(
-                customLists = source.mediaListOptions?.mangaList?.customLists.orEmpty(),
-                sectionOrder = source.mediaListOptions?.mangaList?.sectionOrder.orEmpty(),
-                advancedScoring = source.mediaListOptions?.mangaList?.advancedScoring.orEmpty(),
-                advancedScoringEnabled = source.mediaListOptions?.mangaList?.advancedScoringEnabled
-                    ?: false,
-                splitCompletedSectionByFormat = source.mediaListOptions?.mangaList?.splitCompletedSectionByFormat
-                    ?: false
+        override fun transform(source: UserModel.WithOptions) =
+            UserMediaOptionEntity(
+                userId = source.id,
+                scoreFormat = source.mediaListOptions?.scoreFormat ?: ScoreFormat.POINT_100,
+                rowOrder = source.mediaListOptions?.rowOrder,
+                anime =
+                    UserMediaOptionEntity.MediaOption(
+                        customLists =
+                            source.mediaListOptions
+                                ?.animeList
+                                ?.customLists
+                                .orEmpty(),
+                        sectionOrder =
+                            source.mediaListOptions
+                                ?.animeList
+                                ?.sectionOrder
+                                .orEmpty(),
+                        advancedScoring =
+                            source.mediaListOptions
+                                ?.animeList
+                                ?.advancedScoring
+                                .orEmpty(),
+                        advancedScoringEnabled =
+                            source.mediaListOptions?.animeList?.advancedScoringEnabled
+                                ?: false,
+                        splitCompletedSectionByFormat =
+                            source.mediaListOptions?.animeList?.splitCompletedSectionByFormat
+                                ?: false,
+                    ),
+                manga =
+                    UserMediaOptionEntity.MediaOption(
+                        customLists =
+                            source.mediaListOptions
+                                ?.mangaList
+                                ?.customLists
+                                .orEmpty(),
+                        sectionOrder =
+                            source.mediaListOptions
+                                ?.mangaList
+                                ?.sectionOrder
+                                .orEmpty(),
+                        advancedScoring =
+                            source.mediaListOptions
+                                ?.mangaList
+                                ?.advancedScoring
+                                .orEmpty(),
+                        advancedScoringEnabled =
+                            source.mediaListOptions?.mangaList?.advancedScoringEnabled
+                                ?: false,
+                        splitCompletedSectionByFormat =
+                            source.mediaListOptions?.mangaList?.splitCompletedSectionByFormat
+                                ?: false,
+                    ),
             )
-        )
     }
 }
 
 internal class UserGeneralOptionModelConverter(
     override val fromType: (UserModel.WithOptions) -> UserGeneralOptionEntity = ::transform,
-    override val toType: (UserGeneralOptionEntity) -> UserModel.WithOptions = { throw NotImplementedError() }
+    override val toType: (UserGeneralOptionEntity) -> UserModel.WithOptions = { throw NotImplementedError() },
 ) : SupportConverter<UserModel.WithOptions, UserGeneralOptionEntity>() {
     private companion object : ISupportTransformer<UserModel.WithOptions, UserGeneralOptionEntity> {
-        override fun transform(source: UserModel.WithOptions) = when (source) {
-            is UserModel.Extended -> UserGeneralOptionEntity(
-                userId = source.id,
-                airingNotifications = false,
-                displayAdultContent = source.options?.displayAdultContent ?: false,
-                notificationOption = emptyList(),
-                titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
-                profileColor = source.options?.profileColor
-            )
-            is UserModel.Viewer -> UserGeneralOptionEntity(
-                userId = source.id,
-                airingNotifications = source.options?.airingNotifications ?: false,
-                displayAdultContent = source.options?.displayAdultContent ?: false,
-                notificationOption = source.options?.notificationOptions?.map { option ->
-                    UserGeneralOptionEntity.NotificationOption(
-                        enabled = option.enabled,
-                        notificationType = option.notificationType
+        override fun transform(source: UserModel.WithOptions) =
+            when (source) {
+                is UserModel.Extended ->
+                    UserGeneralOptionEntity(
+                        userId = source.id,
+                        airingNotifications = false,
+                        displayAdultContent = source.options?.displayAdultContent ?: false,
+                        notificationOption = emptyList(),
+                        titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
+                        profileColor = source.options?.profileColor,
                     )
-                }.orEmpty(),
-                titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
-                profileColor = source.options?.profileColor,
-            )
-            else -> error("$source type does not contain any models of type UserGeneralOption")
-        }
+                is UserModel.Viewer ->
+                    UserGeneralOptionEntity(
+                        userId = source.id,
+                        airingNotifications = source.options?.airingNotifications ?: false,
+                        displayAdultContent = source.options?.displayAdultContent ?: false,
+                        notificationOption =
+                            source.options
+                                ?.notificationOptions
+                                ?.map { option ->
+                                    UserGeneralOptionEntity.NotificationOption(
+                                        enabled = option.enabled,
+                                        notificationType = option.notificationType,
+                                    )
+                                }.orEmpty(),
+                        titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
+                        profileColor = source.options?.profileColor,
+                    )
+                else -> error("$source type does not contain any models of type UserGeneralOption")
+            }
     }
 }
 
 internal class UserEntityConverter(
     override val fromType: (UserEntity) -> User = ::transform,
-    override val toType: (User) -> UserEntity = { throw NotImplementedError() }
+    override val toType: (User) -> UserEntity = { throw NotImplementedError() },
 ) : SupportConverter<UserEntity, User>() {
     private companion object : ISupportTransformer<UserEntity, User> {
-        override fun transform(source: UserEntity) = User.Core(
-            name = source.about.name,
-            avatar = UserImage(
-                large = source.coverImage.large,
-                medium = source.coverImage.medium,
-                banner = source.coverImage.banner
-            ),
-            status = UserStatus(
-                about = source.about.bio,
-                donationBadge = source.about.donatorBadge,
-                donationTier = source.about.donatorTier,
-                isFollowing = source.status?.isFollowing,
-                isFollower = source.status?.isFollower,
-                isBlocked = source.status?.isBlocked,
-                pageUrl = source.about.siteUrl,
-                createdAt = source.createdAt,
-                updatedAt = source.updatedAt,
-            ),
-            id = source.id
-        )
+        override fun transform(source: UserEntity) =
+            User.Core(
+                name = source.about.name,
+                avatar =
+                    UserImage(
+                        large = source.coverImage.large,
+                        medium = source.coverImage.medium,
+                        banner = source.coverImage.banner,
+                    ),
+                status =
+                    UserStatus(
+                        about = source.about.bio,
+                        donationBadge = source.about.donatorBadge,
+                        donationTier = source.about.donatorTier,
+                        isFollowing = source.status?.isFollowing,
+                        isFollower = source.status?.isFollower,
+                        isBlocked = source.status?.isBlocked,
+                        pageUrl = source.about.siteUrl,
+                        createdAt = source.createdAt,
+                        updatedAt = source.updatedAt,
+                    ),
+                id = source.id,
+            )
     }
 }
 
 internal class UserViewEntityConverter(
     override val fromType: (UserEntityView) -> User = ::transform,
-    override val toType: (User) -> UserEntityView = { throw NotImplementedError() }
+    override val toType: (User) -> UserEntityView = { throw NotImplementedError() },
 ) : SupportConverter<UserEntityView, User>() {
     private companion object : ISupportTransformer<UserEntityView, User> {
-
         @VisibleForTesting
         fun UserMediaOptionEntity.MediaOption.listStatus(
             mediaType: MediaType,
-            userEntityView: UserEntityView.WithExtended
+            userEntityView: UserEntityView.WithExtended,
         ): List<MediaListInfo> {
+            val mediaListInfoList =
+                MediaListStatus.values().map {
+                    MediaListInfo(
+                        isCustomList = false,
+                        mediaType = mediaType,
+                        name = it.name,
+                        count =
+                            userEntityView.mediaListCount
+                                .filter { countView ->
+                                    countView.mediaType == mediaType && countView.listStatus == it
+                                }.sumOf(MediaListCountView::listCount),
+                    )
+                }
 
-            val mediaListInfoList = MediaListStatus.values().map {
-                MediaListInfo(
-                    isCustomList = false,
-                    mediaType = mediaType,
-                    name = it.name,
-                    count = userEntityView.mediaListCount.filter { countView ->
-                        countView.mediaType == mediaType && countView.listStatus == it
-                    }.sumOf(MediaListCountView::listCount)
-                )
-            }
-
-            val customListInfoList = customLists.map {
-                MediaListInfo(
-                    isCustomList = true,
-                    mediaType = mediaType,
-                    name = it,
-                    count = userEntityView.customListCount.filter { countView ->
-                        countView.mediaType == mediaType && countView.customListName == it
-                    }.sumOf(CustomListCountView::listCount)
-                )
-            }
+            val customListInfoList =
+                customLists.map {
+                    MediaListInfo(
+                        isCustomList = true,
+                        mediaType = mediaType,
+                        name = it,
+                        count =
+                            userEntityView.customListCount
+                                .filter { countView ->
+                                    countView.mediaType == mediaType && countView.customListName == it
+                                }.sumOf(CustomListCountView::listCount),
+                    )
+                }
 
             return mediaListInfoList + customListInfoList
         }
 
-        override fun transform(source: UserEntityView) = when (source) {
-            is UserEntityView.WithOptions -> User.Extended(
-                listOption = UserMediaListOption(
-                    scoreFormat = source.mediaListOption.scoreFormat,
-                    rowOrder = source.mediaListOption.rowOrder,
-                    animeList = UserMediaListTypeOptions(
-                        sectionOrder = source.mediaListOption.anime.sectionOrder,
-                        splitCompletedSectionByFormat = source.mediaListOption.anime.splitCompletedSectionByFormat,
-                        customLists = source.mediaListOption.anime.customLists,
-                        advancedScoring = source.mediaListOption.anime.advancedScoring,
-                        advancedScoringEnabled = source.mediaListOption.anime.advancedScoringEnabled
-                    ),
-                    mangaList = UserMediaListTypeOptions(
-                        sectionOrder = source.mediaListOption.manga.sectionOrder,
-                        splitCompletedSectionByFormat = source.mediaListOption.manga.splitCompletedSectionByFormat,
-                        customLists = source.mediaListOption.manga.customLists,
-                        advancedScoring = source.mediaListOption.manga.advancedScoring,
-                        advancedScoringEnabled = source.mediaListOption.manga.advancedScoringEnabled
-                    ),
-                ),
-                profileOption = UserProfileOption(
-                    titleLanguage = source.generalOption.titleLanguage,
-                    displayAdultContent = source.generalOption.displayAdultContent,
-                    airingNotifications = source.generalOption.airingNotifications,
-                    notificationOptions = source.generalOption.notificationOption.map { option ->
-                        UserNotificationOption(
-                            isEnabled = option.enabled,
-                            type = option.notificationType
-                        )
-                    },
-                    profileColor = source.generalOption.profileColor,
-                ),
-                name = source.user.about.name,
-                previousNames = source.previousNames.map {
-                    User.PreviousName(
-                        createdAt = it.createdAt,
-                        name = it.name,
-                        updatedAt = it.updatedAt,
+        override fun transform(source: UserEntityView) =
+            when (source) {
+                is UserEntityView.WithOptions ->
+                    User.Extended(
+                        listOption =
+                            UserMediaListOption(
+                                scoreFormat = source.mediaListOption.scoreFormat,
+                                rowOrder = source.mediaListOption.rowOrder,
+                                animeList =
+                                    UserMediaListTypeOptions(
+                                        sectionOrder = source.mediaListOption.anime.sectionOrder,
+                                        splitCompletedSectionByFormat = source.mediaListOption.anime.splitCompletedSectionByFormat,
+                                        customLists = source.mediaListOption.anime.customLists,
+                                        advancedScoring = source.mediaListOption.anime.advancedScoring,
+                                        advancedScoringEnabled = source.mediaListOption.anime.advancedScoringEnabled,
+                                    ),
+                                mangaList =
+                                    UserMediaListTypeOptions(
+                                        sectionOrder = source.mediaListOption.manga.sectionOrder,
+                                        splitCompletedSectionByFormat = source.mediaListOption.manga.splitCompletedSectionByFormat,
+                                        customLists = source.mediaListOption.manga.customLists,
+                                        advancedScoring = source.mediaListOption.manga.advancedScoring,
+                                        advancedScoringEnabled = source.mediaListOption.manga.advancedScoringEnabled,
+                                    ),
+                            ),
+                        profileOption =
+                            UserProfileOption(
+                                titleLanguage = source.generalOption.titleLanguage,
+                                displayAdultContent = source.generalOption.displayAdultContent,
+                                airingNotifications = source.generalOption.airingNotifications,
+                                notificationOptions =
+                                    source.generalOption.notificationOption.map { option ->
+                                        UserNotificationOption(
+                                            isEnabled = option.enabled,
+                                            type = option.notificationType,
+                                        )
+                                    },
+                                profileColor = source.generalOption.profileColor,
+                            ),
+                        name = source.user.about.name,
+                        previousNames =
+                            source.previousNames.map {
+                                User.PreviousName(
+                                    createdAt = it.createdAt,
+                                    name = it.name,
+                                    updatedAt = it.updatedAt,
+                                )
+                            },
+                        avatar =
+                            UserImage(
+                                large = source.user.coverImage.large,
+                                medium = source.user.coverImage.medium,
+                                banner = source.user.coverImage.banner,
+                            ),
+                        status =
+                            UserStatus(
+                                about = source.user.about.bio,
+                                donationBadge = source.user.about.donatorBadge,
+                                donationTier = source.user.about.donatorTier,
+                                isFollowing = source.user.status?.isFollowing,
+                                isFollower = source.user.status?.isFollower,
+                                isBlocked = source.user.status?.isBlocked,
+                                pageUrl = source.user.about.siteUrl,
+                                createdAt = source.user.createdAt,
+                                updatedAt = source.user.updatedAt,
+                            ),
+                        mediaListInfo =
+                            source.mediaListOption.anime.listStatus(MediaType.ANIME, source) +
+                                source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
+                        id = source.user.id,
                     )
-                },
-                avatar = UserImage(
-                    large = source.user.coverImage.large,
-                    medium = source.user.coverImage.medium,
-                    banner = source.user.coverImage.banner
-                ),
-                status = UserStatus(
-                    about = source.user.about.bio,
-                    donationBadge = source.user.about.donatorBadge,
-                    donationTier = source.user.about.donatorTier,
-                    isFollowing = source.user.status?.isFollowing,
-                    isFollower = source.user.status?.isFollower,
-                    isBlocked = source.user.status?.isBlocked,
-                    pageUrl = source.user.about.siteUrl,
-                    createdAt = source.user.createdAt,
-                    updatedAt = source.user.updatedAt,
-                ),
-                mediaListInfo =
-                    source.mediaListOption.anime.listStatus(MediaType.ANIME, source) +
-                    source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
-                id = source.user.id
-            )
-            is UserEntityView.WithStatistic -> User.WithStats(
-                listOption = UserMediaListOption(
-                    scoreFormat = source.mediaListOption.scoreFormat,
-                    rowOrder = source.mediaListOption.rowOrder,
-                    animeList = UserMediaListTypeOptions(
-                        sectionOrder = source.mediaListOption.anime.sectionOrder,
-                        splitCompletedSectionByFormat = source.mediaListOption.anime.splitCompletedSectionByFormat,
-                        customLists = source.mediaListOption.anime.customLists,
-                        advancedScoring = source.mediaListOption.anime.advancedScoring,
-                        advancedScoringEnabled = source.mediaListOption.anime.advancedScoringEnabled
-                    ),
-                    mangaList = UserMediaListTypeOptions(
-                        sectionOrder = source.mediaListOption.manga.sectionOrder,
-                        splitCompletedSectionByFormat = source.mediaListOption.manga.splitCompletedSectionByFormat,
-                        customLists = source.mediaListOption.manga.customLists,
-                        advancedScoring = source.mediaListOption.manga.advancedScoring,
-                        advancedScoringEnabled = source.mediaListOption.manga.advancedScoringEnabled
-                    ),
-                ),
-                profileOption = UserProfileOption(
-                    titleLanguage = source.generalOption.titleLanguage,
-                    displayAdultContent = source.generalOption.displayAdultContent,
-                    airingNotifications = source.generalOption.airingNotifications,
-                    notificationOptions = source.generalOption.notificationOption.map { option ->
-                        UserNotificationOption(
-                            isEnabled = option.enabled,
-                            type = option.notificationType
-                        )
-                    },
-                    profileColor = source.generalOption.profileColor,
-                ),
-                statistics = UserMediaStatisticType(
-                    anime = source.statistic.statistic.anime?.let { entity ->
-                        Statistic.Anime(
-                            minutesWatched = entity.minutesWatched,
-                            episodesWatched = entity.episodesWatched,
-                            count = entity.count,
-                            meanScore = entity.meanScore,
-                            standardDeviation = entity.standardDeviation,
-                            countries = entity.countries?.map {
-                                MediaStatistic.Anime.Country(
-                                    country = it.country,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            formats = entity.formats?.map {
-                                MediaStatistic.Anime.Format(
-                                    format = it.format,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            genres = entity.genres?.map {
-                                MediaStatistic.Anime.Genre(
-                                    genre = it.genre,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            lengths = entity.lengths?.map {
-                                MediaStatistic.Anime.Length(
-                                    length = it.length,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            releaseYears = entity.releaseYears?.map {
-                                MediaStatistic.Anime.ReleaseYear(
-                                    releaseYear = it.releaseYear,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            scores = entity.scores?.map {
-                                MediaStatistic.Anime.Score(
-                                    score = it.score,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            staff = entity.staff?.map {
-                                MediaStatistic.Anime.Staff(
-                                    staff = it.staff?.let { staff ->
-                                        koinOf<StaffConverter>().convertFrom(staff)
+                is UserEntityView.WithStatistic ->
+                    User.WithStats(
+                        listOption =
+                            UserMediaListOption(
+                                scoreFormat = source.mediaListOption.scoreFormat,
+                                rowOrder = source.mediaListOption.rowOrder,
+                                animeList =
+                                    UserMediaListTypeOptions(
+                                        sectionOrder = source.mediaListOption.anime.sectionOrder,
+                                        splitCompletedSectionByFormat = source.mediaListOption.anime.splitCompletedSectionByFormat,
+                                        customLists = source.mediaListOption.anime.customLists,
+                                        advancedScoring = source.mediaListOption.anime.advancedScoring,
+                                        advancedScoringEnabled = source.mediaListOption.anime.advancedScoringEnabled,
+                                    ),
+                                mangaList =
+                                    UserMediaListTypeOptions(
+                                        sectionOrder = source.mediaListOption.manga.sectionOrder,
+                                        splitCompletedSectionByFormat = source.mediaListOption.manga.splitCompletedSectionByFormat,
+                                        customLists = source.mediaListOption.manga.customLists,
+                                        advancedScoring = source.mediaListOption.manga.advancedScoring,
+                                        advancedScoringEnabled = source.mediaListOption.manga.advancedScoringEnabled,
+                                    ),
+                            ),
+                        profileOption =
+                            UserProfileOption(
+                                titleLanguage = source.generalOption.titleLanguage,
+                                displayAdultContent = source.generalOption.displayAdultContent,
+                                airingNotifications = source.generalOption.airingNotifications,
+                                notificationOptions =
+                                    source.generalOption.notificationOption.map { option ->
+                                        UserNotificationOption(
+                                            isEnabled = option.enabled,
+                                            type = option.notificationType,
+                                        )
                                     },
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            startYears = entity.startYears?.map {
-                                MediaStatistic.Anime.StartYear(
-                                    startYear = it.startYear,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            statuses = entity.statuses?.map {
-                                MediaStatistic.Anime.Status(
-                                    status = it.status,
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            studios = entity.studios?.map {
-                                MediaStatistic.Anime.Studio(
-                                    studio = it.studio?.let { studio ->
-                                        koinOf<StudioConverter>().convertFrom(studio)
+                                profileColor = source.generalOption.profileColor,
+                            ),
+                        statistics =
+                            UserMediaStatisticType(
+                                anime =
+                                    source.statistic.statistic.anime?.let { entity ->
+                                        Statistic.Anime(
+                                            minutesWatched = entity.minutesWatched,
+                                            episodesWatched = entity.episodesWatched,
+                                            count = entity.count,
+                                            meanScore = entity.meanScore,
+                                            standardDeviation = entity.standardDeviation,
+                                            countries =
+                                                entity.countries?.map {
+                                                    MediaStatistic.Anime.Country(
+                                                        country = it.country,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            formats =
+                                                entity.formats?.map {
+                                                    MediaStatistic.Anime.Format(
+                                                        format = it.format,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            genres =
+                                                entity.genres?.map {
+                                                    MediaStatistic.Anime.Genre(
+                                                        genre = it.genre,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            lengths =
+                                                entity.lengths?.map {
+                                                    MediaStatistic.Anime.Length(
+                                                        length = it.length,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            releaseYears =
+                                                entity.releaseYears?.map {
+                                                    MediaStatistic.Anime.ReleaseYear(
+                                                        releaseYear = it.releaseYear,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            scores =
+                                                entity.scores?.map {
+                                                    MediaStatistic.Anime.Score(
+                                                        score = it.score,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            staff =
+                                                entity.staff?.map {
+                                                    MediaStatistic.Anime.Staff(
+                                                        staff =
+                                                            it.staff?.let { staff ->
+                                                                koinOf<StaffConverter>().convertFrom(staff)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            startYears =
+                                                entity.startYears?.map {
+                                                    MediaStatistic.Anime.StartYear(
+                                                        startYear = it.startYear,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            statuses =
+                                                entity.statuses?.map {
+                                                    MediaStatistic.Anime.Status(
+                                                        status = it.status,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            studios =
+                                                entity.studios?.map {
+                                                    MediaStatistic.Anime.Studio(
+                                                        studio =
+                                                            it.studio?.let { studio ->
+                                                                koinOf<StudioConverter>().convertFrom(studio)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            tags =
+                                                entity.tags?.map {
+                                                    MediaStatistic.Anime.Tag(
+                                                        tag =
+                                                            it.tag?.let { tag ->
+                                                                koinOf<TagConverter>().convertFrom(tag)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                            voiceActors =
+                                                entity.voiceActors?.map {
+                                                    MediaStatistic.Anime.VoiceActor(
+                                                        voiceActor =
+                                                            it.voiceActor?.let { staff ->
+                                                                koinOf<StaffConverter>().convertFrom(staff)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        minutesWatched = it.minutesWatched,
+                                                    )
+                                                },
+                                        )
                                     },
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                            tags = entity.tags?.map {
-                                MediaStatistic.Anime.Tag(
-                                    tag = it.tag?.let { tag ->
-                                        koinOf<TagConverter>().convertFrom(tag)
+                                manga =
+                                    source.statistic.statistic.manga?.let { entity ->
+                                        Statistic.Manga(
+                                            chaptersRead = entity.chaptersRead,
+                                            volumesRead = entity.volumesRead,
+                                            count = entity.count,
+                                            meanScore = entity.meanScore,
+                                            standardDeviation = entity.standardDeviation,
+                                            countries =
+                                                entity.countries?.map {
+                                                    MediaStatistic.Manga.Country(
+                                                        country = it.country,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            formats =
+                                                entity.formats?.map {
+                                                    MediaStatistic.Manga.Format(
+                                                        format = it.format,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            genres =
+                                                entity.genres?.map {
+                                                    MediaStatistic.Manga.Genre(
+                                                        genre = it.genre,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            lengths =
+                                                entity.lengths?.map {
+                                                    MediaStatistic.Manga.Length(
+                                                        length = it.length,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            releaseYears =
+                                                entity.releaseYears?.map {
+                                                    MediaStatistic.Manga.ReleaseYear(
+                                                        releaseYear = it.releaseYear,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            scores =
+                                                entity.scores?.map {
+                                                    MediaStatistic.Manga.Score(
+                                                        score = it.score,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            staff =
+                                                entity.staff?.map {
+                                                    MediaStatistic.Manga.Staff(
+                                                        staff =
+                                                            it.staff?.let { staff ->
+                                                                koinOf<StaffConverter>().convertFrom(staff)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            startYears =
+                                                entity.startYears?.map {
+                                                    MediaStatistic.Manga.StartYear(
+                                                        startYear = it.startYear,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            statuses =
+                                                entity.statuses?.map {
+                                                    MediaStatistic.Manga.Status(
+                                                        status = it.status,
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            studios =
+                                                entity.studios?.map {
+                                                    MediaStatistic.Manga.Studio(
+                                                        studio =
+                                                            it.studio?.let { studio ->
+                                                                koinOf<StudioConverter>().convertFrom(studio)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            tags =
+                                                entity.tags?.map {
+                                                    MediaStatistic.Manga.Tag(
+                                                        tag =
+                                                            it.tag?.let { tag ->
+                                                                koinOf<TagConverter>().convertFrom(tag)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                            voiceActors =
+                                                entity.voiceActors?.map {
+                                                    MediaStatistic.Manga.VoiceActor(
+                                                        voiceActor =
+                                                            it.voiceActor?.let { staff ->
+                                                                koinOf<StaffConverter>().convertFrom(staff)
+                                                            },
+                                                        count = it.count,
+                                                        meanScore = it.meanScore,
+                                                        mediaIds = it.mediaIds,
+                                                        chaptersRead = it.chaptersRead,
+                                                    )
+                                                },
+                                        )
                                     },
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
+                            ),
+                        name = source.user.about.name,
+                        previousNames =
+                            source.previousNames.map {
+                                User.PreviousName(
+                                    createdAt = it.createdAt,
+                                    name = it.name,
+                                    updatedAt = it.updatedAt,
                                 )
                             },
-                            voiceActors = entity.voiceActors?.map {
-                                MediaStatistic.Anime.VoiceActor(
-                                    voiceActor = it.voiceActor?.let { staff ->
-                                        koinOf<StaffConverter>().convertFrom(staff)
-                                    },
-                                    count = it.count,
-                                    meanScore = it.meanScore,
-                                    mediaIds = it.mediaIds,
-                                    minutesWatched = it.minutesWatched,
-                                )
-                            },
-                        )
-                    },
-                    manga = source.statistic.statistic.manga?.let { entity ->
-                        Statistic.Manga(
-                            chaptersRead = entity.chaptersRead,
-                            volumesRead = entity.volumesRead,
-                            count = entity.count,
-                            meanScore = entity.meanScore,
-                            standardDeviation = entity.standardDeviation,
-                            countries = entity.countries?.map {
-                                 MediaStatistic.Manga.Country(
-                                     country = it.country,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            formats = entity.formats?.map {
-                                 MediaStatistic.Manga.Format(
-                                     format = it.format,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            genres = entity.genres?.map {
-                                 MediaStatistic.Manga.Genre(
-                                     genre = it.genre,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            lengths = entity.lengths?.map {
-                                 MediaStatistic.Manga.Length(
-                                     length = it.length,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            releaseYears = entity.releaseYears?.map {
-                                 MediaStatistic.Manga.ReleaseYear(
-                                     releaseYear = it.releaseYear,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            scores = entity.scores?.map {
-                                 MediaStatistic.Manga.Score(
-                                     score = it.score,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            staff = entity.staff?.map {
-                                 MediaStatistic.Manga.Staff(
-                                     staff = it.staff?.let { staff ->
-                                         koinOf<StaffConverter>().convertFrom(staff)
-                                     },
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            startYears = entity.startYears?.map {
-                                 MediaStatistic.Manga.StartYear(
-                                     startYear = it.startYear,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            statuses = entity.statuses?.map {
-                                 MediaStatistic.Manga.Status(
-                                     status = it.status,
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            studios = entity.studios?.map {
-                                 MediaStatistic.Manga.Studio(
-                                     studio = it.studio?.let { studio ->
-                                         koinOf<StudioConverter>().convertFrom(studio)
-                                     },
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            tags = entity.tags?.map {
-                                 MediaStatistic.Manga.Tag(
-                                     tag = it.tag?.let { tag ->
-                                         koinOf<TagConverter>().convertFrom(tag)
-                                     },
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                            voiceActors = entity.voiceActors?.map {
-                                 MediaStatistic.Manga.VoiceActor(
-                                     voiceActor = it.voiceActor?.let { staff ->
-                                         koinOf<StaffConverter>().convertFrom(staff)
-                                     },
-                                     count = it.count,
-                                     meanScore = it.meanScore,
-                                     mediaIds = it.mediaIds,
-                                     chaptersRead = it.chaptersRead,
-                                 )
-                            },
-                        )
-                    }
-                ),
-                name = source.user.about.name,
-                previousNames = source.previousNames.map {
-                    User.PreviousName(
-                        createdAt = it.createdAt,
-                        name = it.name,
-                        updatedAt = it.updatedAt,
+                        avatar =
+                            UserImage(
+                                large = source.user.coverImage.large,
+                                medium = source.user.coverImage.medium,
+                                banner = source.user.coverImage.banner,
+                            ),
+                        status =
+                            UserStatus(
+                                about = source.user.about.bio,
+                                donationBadge = source.user.about.donatorBadge,
+                                donationTier = source.user.about.donatorTier,
+                                isFollowing = source.user.status?.isFollowing,
+                                isFollower = source.user.status?.isFollower,
+                                isBlocked = source.user.status?.isBlocked,
+                                pageUrl = source.user.about.siteUrl,
+                                createdAt = source.user.createdAt,
+                                updatedAt = source.user.updatedAt,
+                            ),
+                        mediaListStats =
+                            source.mediaListOption.anime.listStatus(MediaType.ANIME, source) +
+                                source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
+                        id = source.user.id,
                     )
-                },
-                avatar = UserImage(
-                    large = source.user.coverImage.large,
-                    medium = source.user.coverImage.medium,
-                    banner = source.user.coverImage.banner
-                ),
-                status = UserStatus(
-                    about = source.user.about.bio,
-                    donationBadge = source.user.about.donatorBadge,
-                    donationTier = source.user.about.donatorTier,
-                    isFollowing = source.user.status?.isFollowing,
-                    isFollower = source.user.status?.isFollower,
-                    isBlocked = source.user.status?.isBlocked,
-                    pageUrl = source.user.about.siteUrl,
-                    createdAt = source.user.createdAt,
-                    updatedAt = source.user.updatedAt,
-                ),
-                mediaListStats =
-                    source.mediaListOption.anime.listStatus(MediaType.ANIME, source) +
-                    source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
-                id = source.user.id
-            )
-            is UserEntityView.Authenticated -> User.Authenticated(
-                unreadNotifications = source.notification.unreadNotifications,
-                name = source.user.about.name,
-                avatar = UserImage(
-                    large = source.user.coverImage.large,
-                    medium = source.user.coverImage.medium,
-                    banner = source.user.coverImage.banner
-                ),
-                status = UserStatus(
-                    about = source.user.about.bio,
-                    donationBadge = source.user.about.donatorBadge,
-                    donationTier = source.user.about.donatorTier,
-                    isFollowing = source.user.status?.isFollowing,
-                    isFollower = source.user.status?.isFollower,
-                    isBlocked = source.user.status?.isBlocked,
-                    pageUrl = source.user.about.siteUrl,
-                    createdAt = source.user.createdAt,
-                    updatedAt = source.user.updatedAt,
-                ),
-                id = source.user.id
-            )
-            else -> throw NotImplementedError("Instance of $source is not supported")
-        }
+                is UserEntityView.Authenticated ->
+                    User.Authenticated(
+                        unreadNotifications = source.notification.unreadNotifications,
+                        name = source.user.about.name,
+                        avatar =
+                            UserImage(
+                                large = source.user.coverImage.large,
+                                medium = source.user.coverImage.medium,
+                                banner = source.user.coverImage.banner,
+                            ),
+                        status =
+                            UserStatus(
+                                about = source.user.about.bio,
+                                donationBadge = source.user.about.donatorBadge,
+                                donationTier = source.user.about.donatorTier,
+                                isFollowing = source.user.status?.isFollowing,
+                                isFollower = source.user.status?.isFollower,
+                                isBlocked = source.user.status?.isBlocked,
+                                pageUrl = source.user.about.siteUrl,
+                                createdAt = source.user.createdAt,
+                                updatedAt = source.user.updatedAt,
+                            ),
+                        id = source.user.id,
+                    )
+                else -> throw NotImplementedError("Instance of $source is not supported")
+            }
     }
 }

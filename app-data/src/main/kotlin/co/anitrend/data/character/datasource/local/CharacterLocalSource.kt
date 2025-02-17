@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.character.datasource.local
 
 import androidx.paging.DataSource
@@ -26,49 +25,60 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class CharacterLocalSource : AbstractLocalSource<CharacterEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from character
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from character
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from character
         where id = :id
-        """)
+        """,
+    )
     abstract suspend fun clearById(id: Long)
 
-    @Query("""
+    @Query(
+        """
         select * from character
         where id = :id
-    """)
+    """,
+    )
     abstract suspend fun characterById(id: Long): CharacterEntity
 
-    @Query("""
+    @Query(
+        """
         select * from character
         where id = :id
-    """)
+    """,
+    )
     abstract fun characterByIdFlow(id: Long): Flow<CharacterEntity?>
 
-    @Query("""
+    @Query(
+        """
         select * from character
-    """)
+    """,
+    )
     abstract fun allCharacterFactory(): DataSource.Factory<Int, CharacterEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from character
         where name_first match :term
         or name_full match :term
         or name_last match :term
         or name_original match :term
         or name_alternative match :term
-    """)
-    abstract fun searchCharacterFactory(
-        term: String
-    ): DataSource.Factory<Int, CharacterEntity>
+    """,
+    )
+    abstract fun searchCharacterFactory(term: String): DataSource.Factory<Int, CharacterEntity>
 }

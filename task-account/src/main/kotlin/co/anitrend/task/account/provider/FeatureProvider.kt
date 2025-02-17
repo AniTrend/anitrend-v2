@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.account.provider
 
 import co.anitrend.navigation.AccountTaskRouter
@@ -23,5 +22,6 @@ import co.anitrend.task.account.component.AccountSignOutWorker
 
 class FeatureProvider : AccountTaskRouter.Provider {
     override fun signOutWorker() = AccountSignOutWorker::class.java
+
     override fun signInWorker() = AccountSignInWorker::class.java
 }

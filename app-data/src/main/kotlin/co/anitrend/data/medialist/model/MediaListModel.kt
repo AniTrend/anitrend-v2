@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.model
 
 import co.anitrend.data.common.model.date.FuzzyDateModel
@@ -28,16 +27,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class MediaListModel : IMediaListModel {
-
     @Serializable
     internal data class CustomList(
         @SerialName("name") override val name: String,
-        @SerialName("enabled") override val enabled: Boolean
+        @SerialName("enabled") override val enabled: Boolean,
     ) : IMediaListModel.ICustomList
 
     @Serializable
     internal data class Category(
-        @SerialName("type") val type: MediaType
+        @SerialName("type") val type: MediaType,
     )
 
     @Serializable
@@ -86,6 +84,6 @@ internal sealed class MediaListModel : IMediaListModel {
         @SerialName("status") override val status: MediaListStatus? = null,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("user") override val user: UserModel.Core,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : MediaListModel()
 }

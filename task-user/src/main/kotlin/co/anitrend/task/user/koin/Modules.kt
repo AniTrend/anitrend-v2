@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.user.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -27,35 +26,38 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
-private val workManagerModule = module {
-    worker { params ->
-        UserFollowToggleWorker(
-            context = androidContext(),
-            parameters = params.get(),
-            toggleFollow = get()
-        )
+private val workManagerModule =
+    module {
+        worker { params ->
+            UserFollowToggleWorker(
+                context = androidContext(),
+                parameters = params.get(),
+                toggleFollow = get(),
+            )
+        }
+        worker { params ->
+            UserStatisticSyncWorker(
+                context = androidContext(),
+                parameters = params.get(),
+            )
+        }
+        worker { params ->
+            UserAccountSyncWorker(
+                context = androidContext(),
+                parameters = params.get(),
+                getAuthenticated = get(),
+            )
+        }
     }
-    worker { params ->
-        UserStatisticSyncWorker(
-            context = androidContext(),
-            parameters = params.get(),
-        )
-    }
-    worker { params ->
-        UserAccountSyncWorker(
-            context = androidContext(),
-            parameters = params.get(),
-            getAuthenticated = get()
-        )
-    }
-}
 
-private val featureModule = module {
-    factory<UserTaskRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<UserTaskRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(workManagerModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(workManagerModule, featureModule),
+    )

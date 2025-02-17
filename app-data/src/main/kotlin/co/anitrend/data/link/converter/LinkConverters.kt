@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.link.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -24,21 +23,22 @@ import co.anitrend.data.link.model.LinkModel
 
 internal class LinkModelConverter(
     override val fromType: (LinkModel) -> LinkEntity = ::transform,
-    override val toType: (LinkEntity) -> LinkModel = { throw NotImplementedError() }
+    override val toType: (LinkEntity) -> LinkModel = { throw NotImplementedError() },
 ) : SupportConverter<LinkModel, LinkEntity>() {
     private companion object : ISupportTransformer<LinkModel, LinkEntity> {
-        override fun transform(source: LinkModel) = LinkEntity(
-            mediaId = 0,
-            color = source.color,
-            icon = source.icon,
-            isDisabled = source.isDisabled,
-            language = source.language,
-            notes = source.notes,
-            siteId = source.siteId,
-            linkType = source.linkType,
-            site = source.site,
-            url = source.url,
-            id = source.id
-        )
+        override fun transform(source: LinkModel) =
+            LinkEntity(
+                mediaId = 0,
+                color = source.color,
+                icon = source.icon,
+                isDisabled = source.isDisabled,
+                language = source.language,
+                notes = source.notes,
+                siteId = source.siteId,
+                linkType = source.linkType,
+                site = source.site,
+                url = source.url,
+                id = source.id,
+            )
     }
 }

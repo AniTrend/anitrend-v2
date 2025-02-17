@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.entity.filter
 
 import co.anitrend.data.android.filter.FilterQueryBuilder
@@ -32,7 +31,6 @@ import co.anitrend.support.query.builder.dsl.from
 import co.anitrend.support.query.builder.dsl.whereAnd
 
 internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQueryBuilder<T>() {
-
     protected val customListTable = CustomListEntitySchema.tableName.asTable()
     protected val mediaListTable = MediaListEntitySchema.tableName.asTable()
     protected val mediaTable = MediaEntitySchema.tableName.asTable()
@@ -57,47 +55,47 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
                 MediaListSort.ADDED_TIME ->
                     requireBuilder().orderBy(
                         MediaListEntitySchema.createdAt.asColumn(mediaListTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.FINISHED_ON ->
                     requireBuilder().orderBy(
                         MediaListEntitySchema.completedAt.asColumn(mediaListTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.MEDIA_POPULARITY ->
                     requireBuilder().orderBy(
                         MediaEntitySchema.popularity.asColumn(mediaTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.MEDIA_TITLE_ENGLISH ->
                     requireBuilder().orderBy(
                         MediaEntitySchema.titleEnglish.asColumn(mediaTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.MEDIA_TITLE_NATIVE ->
                     requireBuilder().orderBy(
                         MediaEntitySchema.titleOriginal.asColumn(mediaTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.MEDIA_TITLE_ROMAJI ->
                     requireBuilder().orderBy(
                         MediaEntitySchema.titleRomaji.asColumn(mediaTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.REPEAT ->
                     requireBuilder().orderBy(
                         MediaListEntitySchema.repeatCount.asColumn(mediaListTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.STARTED_ON ->
                     requireBuilder().orderBy(
                         MediaListEntitySchema.startedAt.asColumn(mediaListTable),
-                        sort.order
+                        sort.order,
                     )
                 MediaListSort.UPDATED_TIME ->
                     requireBuilder().orderBy(
                         MediaListEntitySchema.updatedAt.asColumn(mediaListTable),
-                        sort.order
+                        sort.order,
                     )
                 else -> {
                     val qualifier = sort.sortable.name.lowercase()
@@ -112,47 +110,51 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
      * to add query objections
      */
     override fun onBuildQuery(filter: T) {
-        requireBuilder() from (mediaTable).innerJoin(mediaListTable).on(
-            MediaEntitySchema.id.asColumn(mediaTable).equal(
-                MediaListEntitySchema.mediaId.asColumn(mediaListTable)
-            )
-        ) whereAnd {
-            if (filter.userId != null)
-                MediaListEntitySchema.userId.asColumn(mediaListTable)
-                    .equal(requireNotNull(filter.userId))
-            else
-                MediaListEntitySchema.userName.asColumn(mediaListTable)
-                    .equal(requireNotNull(filter.userName))
-        }
+        requireBuilder() from
+            (mediaTable).innerJoin(mediaListTable).on(
+                MediaEntitySchema.id.asColumn(mediaTable).equal(
+                    MediaListEntitySchema.mediaId.asColumn(mediaListTable),
+                ),
+            ) whereAnd {
+                if (filter.userId != null) {
+                    MediaListEntitySchema.userId
+                        .asColumn(mediaListTable)
+                        .equal(requireNotNull(filter.userId))
+                } else {
+                    MediaListEntitySchema.userName
+                        .asColumn(mediaListTable)
+                        .equal(requireNotNull(filter.userName))
+                }
+            }
 
         selection(filter)
         order(filter)
     }
 
     class Paged(
-        override val authentication: IAuthenticationSettings
+        override val authentication: IAuthenticationSettings,
     ) : MediaListQueryFilter<MediaListParam.Paged>() {
-
         override fun selection(filter: MediaListParam.Paged) {
             super.selection(filter)
             filter.customListName?.also { listName ->
                 requireBuilder().from {
                     innerJoin(customListTable).on(
                         CustomListEntitySchema.mediaListId.asColumn(customListTable).equal(
-                            MediaListEntitySchema.id.asColumn(mediaListTable)
-                        )
+                            MediaListEntitySchema.id.asColumn(mediaListTable),
+                        ),
                     )
                 } whereAnd {
                     CustomListEntitySchema.listName.asColumn(customListTable) equal listName
                 } whereAnd {
-                    if (filter.userId != null)
+                    if (filter.userId != null) {
                         CustomListEntitySchema.userId.asColumn(
-                            customListTable
+                            customListTable,
                         ) equal requireNotNull(filter.userId)
-                    else
+                    } else {
                         CustomListEntitySchema.userName.asColumn(
-                            customListTable
+                            customListTable,
                         ) equal requireNotNull(filter.userName)
+                    }
                 } whereAnd {
                     CustomListEntitySchema.enabled.asColumn(customListTable) equal true
                 }
@@ -161,9 +163,8 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
     }
 
     class Collection(
-        override val authentication: IAuthenticationSettings
+        override val authentication: IAuthenticationSettings,
     ) : MediaListQueryFilter<MediaListParam.Collection>() {
-
         override fun selection(filter: MediaListParam.Collection) {
             super.selection(filter)
         }
@@ -178,15 +179,16 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
          * to add query objections
          */
         override fun onBuildQuery(filter: MediaListParam.Entry) {
-            requireBuilder() from (mediaTable).innerJoin(mediaListTable).on(
-                MediaEntitySchema.id.asColumn(mediaTable).equal(
-                    MediaListEntitySchema.mediaId.asColumn(mediaListTable)
-                )
-            ) whereAnd {
-                MediaListEntitySchema.userId.asColumn(mediaListTable).equal(filter.userId)
-            } whereAnd {
-                MediaEntitySchema.id.asColumn(mediaTable).equal(filter.mediaId)
-            }
+            requireBuilder() from
+                (mediaTable).innerJoin(mediaListTable).on(
+                    MediaEntitySchema.id.asColumn(mediaTable).equal(
+                        MediaListEntitySchema.mediaId.asColumn(mediaListTable),
+                    ),
+                ) whereAnd {
+                    MediaListEntitySchema.userId.asColumn(mediaListTable).equal(filter.userId)
+                } whereAnd {
+                    MediaEntitySchema.id.asColumn(mediaTable).equal(filter.mediaId)
+                }
         }
     }
 }

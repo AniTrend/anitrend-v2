@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.staff.entity
 
 import co.anitrend.domain.common.entity.shared.CoverImage
@@ -24,7 +23,6 @@ import co.anitrend.domain.staff.entity.contract.IStaff
 import co.anitrend.domain.staff.enums.StaffLanguage
 
 sealed class Staff : IStaff {
-
     abstract val age: Int?
     abstract val dateOfBirth: FuzzyDate?
     abstract val dateOfDeath: FuzzyDate?
@@ -36,7 +34,7 @@ sealed class Staff : IStaff {
 
     data class ActiveYearPeriod(
         val start: Int?,
-        val end: Int?
+        val end: Int?,
     )
 
     data class Core(
@@ -56,7 +54,7 @@ sealed class Staff : IStaff {
         override val language: StaffLanguage?,
         override val name: CoverName?,
         override val siteUrl: String?,
-        override val id: Long
+        override val id: Long,
     ) : Staff()
 
     data class Extended(
@@ -76,6 +74,6 @@ sealed class Staff : IStaff {
         override val language: StaffLanguage?,
         override val name: CoverName?,
         override val siteUrl: String?,
-        override val id: Long
+        override val id: Long,
     ) : Staff()
 }

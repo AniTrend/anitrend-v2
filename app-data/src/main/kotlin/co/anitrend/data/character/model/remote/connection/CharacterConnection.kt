@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.character.model.remote.connection
 
 import co.anitrend.data.character.model.remote.edge.CharacterEdge
@@ -28,22 +27,24 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class CharacterConnection : IEntityConnection {
-
     @Serializable
     data class Favourite(
         @SerialName("edges") override val edges: List<CharacterEdge.Favourite>? = null,
-        @SerialName("pageInfo") override val pageInfo: PageInfo? = null
-    ) : CharacterConnection(), IEntityConnection.IEdge<CharacterEdge>
+        @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
+    ) : CharacterConnection(),
+        IEntityConnection.IEdge<CharacterEdge>
 
     @Serializable
     data class Media(
         @SerialName("nodes") override val edges: List<CharacterEdge.Media>? = null,
-        @SerialName("pageInfo") override val pageInfo: PageInfo? = null
-    ) : CharacterConnection(), IEntityConnection.IEdge<CharacterEdge>
+        @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
+    ) : CharacterConnection(),
+        IEntityConnection.IEdge<CharacterEdge>
 
     @Serializable
     data class Staff(
         @SerialName("edges") override val edges: List<CharacterEdge.Staff>? = null,
-        @SerialName("pageInfo") override val pageInfo: PageInfo? = null
-    ) : CharacterConnection(), IEntityConnection.IEdge<CharacterEdge>
+        @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
+    ) : CharacterConnection(),
+        IEntityConnection.IEdge<CharacterEdge>
 }

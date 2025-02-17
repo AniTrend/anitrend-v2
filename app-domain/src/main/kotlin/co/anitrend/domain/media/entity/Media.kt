@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.entity
 
 import co.anitrend.domain.airing.entity.AiringSchedule
@@ -40,7 +39,6 @@ import co.anitrend.domain.medialist.entity.base.IMediaList
 import co.anitrend.domain.tag.entity.Tag
 
 sealed class Media : IMedia {
-
     abstract val externalLinks: List<IMediaExternalLink>
     abstract val rankings: List<IMediaRank>
     abstract val trailer: IMediaTrailer?
@@ -65,9 +63,8 @@ sealed class Media : IMedia {
      */
     sealed class Category(
         val type: MediaType,
-        val total: Int
+        val total: Int,
     ) {
-
         /**
          * Japanese Anime
          *
@@ -83,13 +80,14 @@ sealed class Media : IMedia {
             val schedule: AiringSchedule?,
         ) : Category(MediaType.ANIME, episodes) {
             companion object {
-                fun empty() = Anime(
-                    0,
-                    0,
-                    broadcast = null,
-                    premiered = null,
-                    null
-                )
+                fun empty() =
+                    Anime(
+                        0,
+                        0,
+                        broadcast = null,
+                        premiered = null,
+                        null,
+                    )
             }
         }
 
@@ -101,20 +99,21 @@ sealed class Media : IMedia {
          */
         data class Manga(
             val chapters: Int,
-            val volumes: Int
+            val volumes: Int,
         ) : Category(MediaType.MANGA, chapters) {
             companion object {
-                fun empty() = Manga(
-                    0,
-                    0
-                )
+                fun empty() =
+                    Manga(
+                        0,
+                        0,
+                    )
             }
         }
     }
 
     data class SiteUrl(
         val aniList: String? = null,
-        val myAnimeList: String? = null
+        val myAnimeList: String? = null,
     )
 
     data class Core(
@@ -149,43 +148,44 @@ sealed class Media : IMedia {
         override val source: MediaSource?,
         override val synonyms: List<CharSequence>,
         override val tags: List<Tag>,
-        override val trailer: IMediaTrailer?
+        override val trailer: IMediaTrailer?,
     ) : Media() {
         companion object {
-            fun empty() = Core(
-                sourceId = MediaSourceId.empty(),
-                countryCode = null,
-                description = null,
-                favourites = 0,
-                isFavouriteBlocked = false,
-                genres = emptyList(),
-                twitterTag = null,
-                isLicensed = null,
-                isLocked = null,
-                isRecommendationBlocked = false,
-                isReviewBlocked = false,
-                siteUrl = SiteUrl(),
-                source = null,
-                synonyms = emptyList(),
-                tags = emptyList(),
-                format = null,
-                season = null,
-                status = null,
-                meanScore = 0,
-                averageScore = 0,
-                startDate = FuzzyDate.empty(),
-                endDate = FuzzyDate.empty(),
-                title = MediaTitle.empty(),
-                image = MediaImage.empty(),
-                category = Category.Anime.empty(),
-                isAdult = null,
-                isFavourite = false,
-                id = INVALID_ID,
-                mediaList = null,
-                trailer = null,
-                externalLinks = emptyList(),
-                rankings = emptyList()
-            )
+            fun empty() =
+                Core(
+                    sourceId = MediaSourceId.empty(),
+                    countryCode = null,
+                    description = null,
+                    favourites = 0,
+                    isFavouriteBlocked = false,
+                    genres = emptyList(),
+                    twitterTag = null,
+                    isLicensed = null,
+                    isLocked = null,
+                    isRecommendationBlocked = false,
+                    isReviewBlocked = false,
+                    siteUrl = SiteUrl(),
+                    source = null,
+                    synonyms = emptyList(),
+                    tags = emptyList(),
+                    format = null,
+                    season = null,
+                    status = null,
+                    meanScore = 0,
+                    averageScore = 0,
+                    startDate = FuzzyDate.empty(),
+                    endDate = FuzzyDate.empty(),
+                    title = MediaTitle.empty(),
+                    image = MediaImage.empty(),
+                    category = Category.Anime.empty(),
+                    isAdult = null,
+                    isFavourite = false,
+                    id = INVALID_ID,
+                    mediaList = null,
+                    trailer = null,
+                    externalLinks = emptyList(),
+                    rankings = emptyList(),
+                )
         }
     }
 
@@ -226,48 +226,49 @@ sealed class Media : IMedia {
         override val siteUrl: SiteUrl,
         override val source: MediaSource?,
         override val synonyms: List<CharSequence>,
-        override val tags: List<Tag>
+        override val tags: List<Tag>,
     ) : Media() {
         companion object {
-            fun empty() = Extended(
-                background = null,
-                ageRating = null,
-                extraInfo = null,
-                openingThemes = emptyList(),
-                endingThemes = emptyList(),
-                sourceId = MediaSourceId.empty(),
-                countryCode = null,
-                description = null,
-                externalLinks = emptyList(),
-                favourites = 0,
-                isFavouriteBlocked = false,
-                genres = emptyList(),
-                twitterTag = null,
-                isLicensed = null,
-                isLocked = null,
-                isRecommendationBlocked = false,
-                isReviewBlocked = false,
-                rankings = emptyList(),
-                siteUrl = SiteUrl(),
-                source = null,
-                synonyms = emptyList(),
-                tags = emptyList(),
-                trailer = null,
-                format = null,
-                season = null,
-                status = null,
-                meanScore = 0,
-                averageScore = 0,
-                startDate = FuzzyDate.empty(),
-                endDate = FuzzyDate.empty(),
-                title = MediaTitle.empty(),
-                image = MediaImage.empty(),
-                category = Category.Anime.empty(),
-                isAdult = null,
-                isFavourite = false,
-                id = INVALID_ID,
-                mediaList = null
-            )
+            fun empty() =
+                Extended(
+                    background = null,
+                    ageRating = null,
+                    extraInfo = null,
+                    openingThemes = emptyList(),
+                    endingThemes = emptyList(),
+                    sourceId = MediaSourceId.empty(),
+                    countryCode = null,
+                    description = null,
+                    externalLinks = emptyList(),
+                    favourites = 0,
+                    isFavouriteBlocked = false,
+                    genres = emptyList(),
+                    twitterTag = null,
+                    isLicensed = null,
+                    isLocked = null,
+                    isRecommendationBlocked = false,
+                    isReviewBlocked = false,
+                    rankings = emptyList(),
+                    siteUrl = SiteUrl(),
+                    source = null,
+                    synonyms = emptyList(),
+                    tags = emptyList(),
+                    trailer = null,
+                    format = null,
+                    season = null,
+                    status = null,
+                    meanScore = 0,
+                    averageScore = 0,
+                    startDate = FuzzyDate.empty(),
+                    endDate = FuzzyDate.empty(),
+                    title = MediaTitle.empty(),
+                    image = MediaImage.empty(),
+                    category = Category.Anime.empty(),
+                    isAdult = null,
+                    isFavourite = false,
+                    id = INVALID_ID,
+                    mediaList = null,
+                )
         }
     }
 }

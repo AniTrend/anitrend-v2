@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -27,6 +24,7 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.paging.AbstractPagingSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.model.mutation.MediaListMutation
 import co.anitrend.data.medialist.model.query.MediaListQuery
@@ -36,16 +34,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaListSource {
-
     abstract class Sync : AbstractCoreDataSource() {
-
         protected lateinit var query: MediaListQuery.Collection
 
         protected abstract val observable: Flow<Boolean?>
 
-        protected abstract suspend fun getMediaList(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.Collection): Flow<Boolean> {
             query = MediaListQuery.Collection(param)
@@ -55,7 +49,6 @@ internal class MediaListSource {
     }
 
     abstract class Entry : AbstractCoreDataSource() {
-
         protected lateinit var query: MediaListQuery.Entry
 
         protected lateinit var cacheIdentity: CacheIdentity
@@ -64,9 +57,7 @@ internal class MediaListSource {
 
         protected abstract fun observable(): Flow<Media>
 
-        protected abstract suspend fun getEntry(
-            requestCallback: RequestCallback
-        ): Boolean
+        protected abstract suspend fun getEntry(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaListParam.Entry): Flow<Media> {
             query = MediaListQuery.Entry(param)
@@ -82,16 +73,13 @@ internal class MediaListSource {
     }
 
     abstract class Paged : AbstractPagingSource<Media>() {
-
         protected lateinit var query: MediaListQuery.Paged
 
         protected abstract val cacheIdentity: CacheIdentity
 
         protected abstract fun observable(): Flow<PagedList<Media>>
 
-        protected abstract suspend fun getMediaList(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.Paged): Flow<PagedList<Media>> {
             query = MediaListQuery.Paged(param)
@@ -112,7 +100,7 @@ internal class MediaListSource {
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
                 requestType = Request.Type.AFTER,
-                block = ::getMediaList
+                block = ::getMediaList,
             )
         }
 
@@ -142,22 +130,19 @@ internal class MediaListSource {
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
-                block = ::getMediaList
+                block = ::getMediaList,
             )
         }
     }
 
     abstract class Collection : AbstractPagingSource<Media>() {
-
         protected lateinit var query: MediaListQuery.Collection
 
         protected abstract val cacheIdentity: CacheIdentity
 
         protected abstract fun observable(): Flow<PagedList<Media>>
 
-        protected abstract suspend fun getMediaList(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.Collection): Flow<PagedList<Media>> {
             query = MediaListQuery.Collection(param)
@@ -178,7 +163,7 @@ internal class MediaListSource {
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
                 requestType = Request.Type.AFTER,
-                block = ::getMediaList
+                block = ::getMediaList,
             )
         }
 
@@ -208,20 +193,17 @@ internal class MediaListSource {
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
-                block = ::getMediaList
+                block = ::getMediaList,
             )
         }
     }
 
     abstract class SaveEntry : AbstractCoreDataSource() {
-
         protected lateinit var mutation: MediaListMutation.SaveEntry
 
         protected abstract val observable: Flow<Boolean?>
 
-        protected abstract suspend fun saveEntry(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun saveEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.SaveEntry): Flow<Boolean> {
             mutation = MediaListMutation.SaveEntry(param)
@@ -231,14 +213,11 @@ internal class MediaListSource {
     }
 
     abstract class SaveEntries : AbstractCoreDataSource() {
-
         protected lateinit var mutation: MediaListMutation.SaveEntries
 
         protected abstract val observable: Flow<Boolean?>
 
-        protected abstract suspend fun saveEntries(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun saveEntries(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.SaveEntries): Flow<Boolean> {
             mutation = MediaListMutation.SaveEntries(param)
@@ -248,14 +227,11 @@ internal class MediaListSource {
     }
 
     abstract class DeleteEntry : AbstractCoreDataSource() {
-
         protected lateinit var mutation: MediaListMutation.DeleteEntry
 
         protected abstract val observable: Flow<Boolean?>
 
-        protected abstract suspend fun deleteEntry(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun deleteEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.DeleteEntry): Flow<Boolean> {
             mutation = MediaListMutation.DeleteEntry(param)
@@ -265,14 +241,11 @@ internal class MediaListSource {
     }
 
     abstract class DeleteCustomList : AbstractCoreDataSource() {
-
         protected lateinit var mutation: MediaListMutation.DeleteCustomList
 
         protected abstract val observable: Flow<Boolean?>
 
-        protected abstract suspend fun deleteCustomList(
-            requestCallback: RequestCallback
-        )
+        protected abstract suspend fun deleteCustomList(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.DeleteCustomList): Flow<Boolean> {
             mutation = MediaListMutation.DeleteCustomList(param)

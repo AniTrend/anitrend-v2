@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.core.android.compose.design
 
 import androidx.annotation.DrawableRes
@@ -43,10 +59,11 @@ import org.koin.compose.koinInject
 @Composable
 private fun ContentImage(
     @DrawableRes drawableResource: Int?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    if (drawableResource == null)
+    if (drawableResource == null) {
         return
+    }
 
     Image(
         painter = rememberAsyncImagePainter(drawableResource),
@@ -58,7 +75,7 @@ private fun ContentImage(
 @Composable
 private fun ContentText(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -79,7 +96,7 @@ private fun LoadingContent(
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ContentImage(drawableResource = config.loadingDrawable)
             Spacer(modifier = Modifier.height(8.dp))
@@ -88,8 +105,10 @@ private fun LoadingContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(16.dp)
-                        .align(alignment = Alignment.CenterVertically),
+                    modifier =
+                        Modifier
+                            .size(16.dp)
+                            .align(alignment = Alignment.CenterVertically),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     strokeWidth = 2.dp,
                     trackColor = MaterialTheme.colorScheme.secondary,
@@ -114,7 +133,7 @@ private fun ErrorContent(
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             ContentImage(drawableResource = config.errorDrawable)
             Spacer(modifier = Modifier.height(16.dp))
@@ -134,7 +153,7 @@ private fun ErrorContent(
 }
 
 @Composable
-fun <P: IParam> ContentWrapper(
+fun <P : IParam> ContentWrapper(
     stateFlow: LiveData<LoadState>,
     config: IStateLayoutConfig = koinInject(),
     param: P? = null,
@@ -148,29 +167,32 @@ fun <P: IParam> ContentWrapper(
     if (param == null) {
         ErrorContent(
             config = config,
-            state = LoadState.Error(
-                RequestError(
-                    topic = stringResource(co.anitrend.core.android.R.string.app_controller_heading_missing_param),
-                    description = stringResource(co.anitrend.core.android.R.string.app_controller_message_missing_param),
-                )
-            ),
+            state =
+                LoadState.Error(
+                    RequestError(
+                        topic = stringResource(co.anitrend.core.android.R.string.app_controller_heading_missing_param),
+                        description = stringResource(co.anitrend.core.android.R.string.app_controller_message_missing_param),
+                    ),
+                ),
             modifier = modifier,
-            onClick = onClick
+            onClick = onClick,
         )
         return
     }
 
     when (val state = loadState) {
-        is LoadState.Error -> ErrorContent(
-            config = config,
-            state = state,
-            modifier = modifier,
-            onClick = onClick,
-        )
-        is LoadState.Loading -> LoadingContent(
-            config = config,
-            modifier = modifier,
-        )
+        is LoadState.Error ->
+            ErrorContent(
+                config = config,
+                state = state,
+                modifier = modifier,
+                onClick = onClick,
+            )
+        is LoadState.Loading ->
+            LoadingContent(
+                config = config,
+                modifier = modifier,
+            )
         else -> content()
     }
 
@@ -179,43 +201,47 @@ fun <P: IParam> ContentWrapper(
     }
 }
 
-
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
 @Composable
 private fun ContentWrapperPreview(
-    @PreviewParameter(provider = ContentWrapperPreviewParameter::class) loadState: LoadState
+    @PreviewParameter(provider = ContentWrapperPreviewParameter::class) loadState: LoadState,
 ) {
     val modifier: Modifier = Modifier.fillMaxSize().padding(16.dp)
-    val config: IStateLayoutConfig = StateLayoutConfig(
-        loadingDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
-        errorDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
-        loadingMessage = co.anitrend.arch.ui.R.string.supportTextLoading,
-        defaultMessage = co.anitrend.core.android.R.string.app_controller_message_missing_param,
-        retryAction = co.anitrend.core.android.R.string.action_share
-    )
+    val config: IStateLayoutConfig =
+        StateLayoutConfig(
+            loadingDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
+            errorDrawable = co.anitrend.arch.ui.R.drawable.ic_support_empty_state,
+            loadingMessage = co.anitrend.arch.ui.R.string.supportTextLoading,
+            defaultMessage = co.anitrend.core.android.R.string.app_controller_message_missing_param,
+            retryAction = co.anitrend.core.android.R.string.action_share,
+        )
     PreviewTheme {
         when (loadState) {
-            is LoadState.Error -> ErrorContent(
-                config = config,
-                state = loadState,
-                modifier = modifier,
-                onClick = {},
-            )
-            is LoadState.Loading -> LoadingContent(
-                config = config,
-                modifier = modifier,
-            )
+            is LoadState.Error ->
+                ErrorContent(
+                    config = config,
+                    state = loadState,
+                    modifier = modifier,
+                    onClick = {},
+                )
+            is LoadState.Loading ->
+                LoadingContent(
+                    config = config,
+                    modifier = modifier,
+                )
             is LoadState.Idle,
-            is LoadState.Success -> {}
+            is LoadState.Success,
+            -> {}
         }
     }
 }
 
 private class ContentWrapperPreviewParameter(
-    override val values: Sequence<LoadState> = sequenceOf(
-        LoadState.Loading(),
-        LoadState.Error(details = UnsupportedOperationException("Looks like no arguments were passed to this screen")),
-        LoadState.Idle(),
-    )
+    override val values: Sequence<LoadState> =
+        sequenceOf(
+            LoadState.Loading(),
+            LoadState.Error(details = UnsupportedOperationException("Looks like no arguments were passed to this screen")),
+            LoadState.Idle(),
+        ),
 ) : PreviewParameterProvider<LoadState>

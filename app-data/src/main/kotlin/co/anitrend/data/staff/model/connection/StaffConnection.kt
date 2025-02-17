@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.staff.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
@@ -30,22 +29,24 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class StaffConnection : IEntityConnection {
-
     @Serializable
     data class Favourite(
         @SerialName("edges") override val edges: List<StaffEdge.Favourite>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?
-    ) : StaffConnection(), IEntityConnection.IEdge<StaffEdge>
+        @SerialName("pageInfo") override val pageInfo: PageInfo?,
+    ) : StaffConnection(),
+        IEntityConnection.IEdge<StaffEdge>
 
     @Serializable
     data class MediaWithRole(
         @SerialName("edges") override val edges: List<StaffEdge.MediaWithRole>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?
-    ) : StaffConnection(), IEntityConnection.IEdge<StaffEdge>
+        @SerialName("pageInfo") override val pageInfo: PageInfo?,
+    ) : StaffConnection(),
+        IEntityConnection.IEdge<StaffEdge>
 
     @Serializable
     data class Media(
         @SerialName("nodes") override val nodes: List<MediaModel.Core>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?
-    ) : StaffConnection(), IEntityConnection.INode<MediaModel>
+        @SerialName("pageInfo") override val pageInfo: PageInfo?,
+    ) : StaffConnection(),
+        IEntityConnection.INode<MediaModel>
 }

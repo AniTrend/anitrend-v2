@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,13 +21,18 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * Media season enums
  */
-enum class MediaSeason(override val alias: CharSequence) : IAliasable {
+enum class MediaSeason(
+    override val alias: CharSequence,
+) : IAliasable {
     /** Months September to November */
     FALL("Fall"),
+
     /** Months March to May */
     SPRING("Spring"),
+
     /** Months June to August */
     SUMMER("Summer"),
+
     /** Months December to February */
-    WINTER("Winter")
+    WINTER("Winter"),
 }

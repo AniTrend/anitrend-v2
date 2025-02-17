@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.datasource.local
 
 import androidx.paging.DataSource
@@ -32,33 +31,40 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
-
     /**
      * Count the number of entities
      */
-    @Query("""
+    @Query(
+        """
             select count(id) from media
-        """)
+        """,
+    )
     abstract override suspend fun count(): Int
 
     /**
      * Removes all records from table
      */
-    @Query("""
+    @Query(
+        """
         delete from media
-        """)
+        """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from media
         where id = :id
-        """)
+        """,
+    )
     abstract suspend fun clearById(id: Long)
 
-    @Query("""
+    @Query(
+        """
         select * from media
         where id = :id
-    """)
+    """,
+    )
     @Transaction
     abstract fun mediaByIdFlow(id: Long): Flow<MediaEntityView.Extended?>
 

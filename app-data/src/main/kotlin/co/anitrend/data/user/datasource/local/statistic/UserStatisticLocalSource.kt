@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.datasource.local.statistic
 
 import androidx.room.Dao
@@ -24,14 +23,17 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 @Dao
 internal abstract class UserStatisticLocalSource : AbstractLocalSource<UserWithStatisticEntity>() {
-
-    @Query("""
+    @Query(
+        """
             select count(id) from user_statistic
-        """)
+        """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from user_statistic
-        """)
+        """,
+    )
     abstract override suspend fun clear()
 }

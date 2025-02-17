@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.data.edge.config.source
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
@@ -14,7 +30,6 @@ import co.anitrend.data.edge.config.source.contract.EdgeConfigSource
 import co.anitrend.domain.config.entity.Config
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -28,24 +43,24 @@ internal class EdgeConfigSourceImpl(
     private val converter: EdgeConfigViewEntityConverter,
     private val clearDataHelper: IClearDataHelper,
     override val dispatcher: ISupportDispatcher,
-    override val cachePolicy: ICacheStorePolicy
+    override val cachePolicy: ICacheStorePolicy,
 ) : EdgeConfigSource() {
-
-    override fun observable(): Flow<Config> {
-        return localSource.edgeConfigById(EdgeConfigEntity.DEFAULT_ID)
+    override fun observable(): Flow<Config> =
+        localSource
+            .edgeConfigById(EdgeConfigEntity.DEFAULT_ID)
             .flowOn(dispatcher.io)
             .filterNotNull()
             .map(converter::convertFrom)
             .distinctUntilChanged()
             .flowOn(dispatcher.computation)
-    }
 
     override suspend fun getConfig(callback: RequestCallback): Boolean {
-        val deferred = deferred {
-            remoteSource.getConfig(
-                QueryContainerBuilder()
-            )
-        }
+        val deferred =
+            deferred {
+                remoteSource.getConfig(
+                    QueryContainerBuilder(),
+                )
+            }
 
         val result = controller(deferred, callback)
 

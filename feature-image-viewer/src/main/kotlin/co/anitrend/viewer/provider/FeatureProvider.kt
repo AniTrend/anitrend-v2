@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.viewer.provider
 
 import android.content.Context
@@ -23,6 +22,5 @@ import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.viewer.component.screen.ImageViewerScreen
 
 class FeatureProvider : ImageViewerRouter.Provider {
-    override fun activity(context: Context?) =
-        Intent(context, ImageViewerScreen::class.java)
+    override fun activity(context: Context?) = Intent(context, ImageViewerScreen::class.java)
 }

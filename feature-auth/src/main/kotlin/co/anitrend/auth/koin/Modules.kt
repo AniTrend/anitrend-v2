@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,50 +14,51 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.koin
 
 import androidx.browser.customtabs.CustomTabsIntent
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.auth.component.screen.AuthScreen
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.presenter.AuthPresenter
 import co.anitrend.auth.provider.FeatureProvider
-import co.anitrend.core.R
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AuthRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val viewModelModule = module {
-    viewModel {
-        AuthViewModel(
-            state = AuthState(get())
-        )
-    }
-}
-
-private val presenterModule = module {
-    scope<AuthScreen> {
-        scoped {
-            AuthPresenter(
-                context = androidContext(),
-                settings = get(),
-                clientId = getProperty("aniListClientId"),
-                customTabs = get<CustomTabsIntent.Builder>().build()
+private val viewModelModule =
+    module {
+        viewModel {
+            AuthViewModel(
+                state = AuthState(get()),
             )
         }
     }
-}
 
-private val featureModule = module {
-    factory<AuthRouter.Provider> {
-        FeatureProvider()
+private val presenterModule =
+    module {
+        scope<AuthScreen> {
+            scoped {
+                AuthPresenter(
+                    context = androidContext(),
+                    settings = get(),
+                    clientId = getProperty("aniListClientId"),
+                    customTabs = get<CustomTabsIntent.Builder>().build(),
+                )
+            }
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(viewModelModule, presenterModule, featureModule)
-)
+private val featureModule =
+    module {
+        factory<AuthRouter.Provider> {
+            FeatureProvider()
+        }
+    }
+
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(viewModelModule, presenterModule, featureModule),
+    )

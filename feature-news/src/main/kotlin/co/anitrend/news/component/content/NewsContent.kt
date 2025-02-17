@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.component.content
 
 import co.anitrend.arch.recycler.adapter.SupportAdapter
@@ -33,7 +32,6 @@ class NewsContent(
     override val supportViewAdapter: SupportAdapter<News>,
     override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<News>() {
-
     private val viewModel by viewModel<NewsContentViewModel>()
 
     /**
@@ -45,9 +43,11 @@ class NewsContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        val locale = presenter.settings.locale.value.asLocaleString()
+        val locale =
+            presenter.settings.locale.value
+                .asLocaleString()
         viewModelState().invoke(
-            NewsParam(locale)
+            NewsParam(locale),
         )
     }
 

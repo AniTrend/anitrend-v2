@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -54,9 +54,10 @@ internal object MainRoute : Route("home") {
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.HOME,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.HOME,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -72,9 +73,10 @@ internal object ForumDiscoverRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            NavigationDrawerRouter.NavigationDrawerParam(
-                destination = NavigationDrawerRouter.Destination.FORUMS,
-            ).asNavPayload()
+            NavigationDrawerRouter
+                .NavigationDrawerParam(
+                    destination = NavigationDrawerRouter.Destination.FORUMS,
+                ).asNavPayload()
         return MainRouter.forActivity(env.context, payload)
     }
 }
@@ -92,14 +94,17 @@ internal object ActivityRoute : Route(
         val id = params["id"]
         return if (id == null) {
             val payload =
-                NavigationDrawerRouter.NavigationDrawerParam(
-                    destination = NavigationDrawerRouter.Destination.SOCIAL,
-                ).asNavPayload()
+                NavigationDrawerRouter
+                    .NavigationDrawerParam(
+                        destination = NavigationDrawerRouter.Destination.SOCIAL,
+                    ).asNavPayload()
             MainRouter.forActivity(env.context, payload)
         } else {
-            val payload = FeedRouter.FeedParam(
-                id = id.toLongOrNull()
-            ).asNavPayload()
+            val payload =
+                FeedRouter
+                    .FeedParam(
+                        id = id.toLongOrNull(),
+                    ).asNavPayload()
             FeedRouter.forActivity(env.context, payload)
         }
     }
@@ -114,9 +119,11 @@ internal object ForumRoute : Route(
         env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload = ForumRouter.ForumParam(
-            id = params["id"]?.toLongOrNull(),
-        ).asNavPayload()
+        val payload =
+            ForumRouter
+                .ForumParam(
+                    id = params["id"]?.toLongOrNull(),
+                ).asNavPayload()
         return ForumRouter.forActivity(env.context, payload)
     }
 }
@@ -154,10 +161,11 @@ internal object CharacterRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            CharacterRouter.CharacterParam(
-                id = params["id"]?.toLongOrNull(),
-                name = params["name"],
-            ).asNavPayload()
+            CharacterRouter
+                .CharacterParam(
+                    id = params["id"]?.toLongOrNull(),
+                    name = params["name"],
+                ).asNavPayload()
         return CharacterRouter.forActivity(env.context, payload)
     }
 }
@@ -173,9 +181,10 @@ internal object StudioRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            StudioRouter.StudioParam(
-                id = params["id"]?.toLongOrNull(),
-            ).asNavPayload()
+            StudioRouter
+                .StudioParam(
+                    id = params["id"]?.toLongOrNull(),
+                ).asNavPayload()
         return StudioRouter.forActivity(env.context, payload)
     }
 }
@@ -193,10 +202,11 @@ internal object StaffRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            StaffRouter.StaffParam(
-                id = params["id"]?.toLongOrNull(),
-                name = params["name"],
-            ).asNavPayload()
+            StaffRouter
+                .StaffParam(
+                    id = params["id"]?.toLongOrNull(),
+                    name = params["name"],
+                ).asNavPayload()
         return StaffRouter.forActivity(env.context, payload)
     }
 }
@@ -214,14 +224,17 @@ internal object MediaRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val mediaType =
-            uri.pathSegments().first()
+            uri
+                .pathSegments()
+                .first()
                 .uppercase()
 
         val payload =
-            MediaRouter.MediaParam(
-                id = requireNotNull(params["id"]).toLong(),
-                type = MediaType.valueOf(mediaType),
-            ).asNavPayload()
+            MediaRouter
+                .MediaParam(
+                    id = requireNotNull(params["id"]).toLong(),
+                    type = MediaType.valueOf(mediaType),
+                ).asNavPayload()
         return MediaRouter.forActivity(env.context, payload)
     }
 }
@@ -237,14 +250,15 @@ internal object SearchRoute : Route(
     ): Intent? {
         super.run(uri, params, env)
         val payload =
-            SearchRouter.SearchParam(
-                query = uri.queryParameter("search"),
-                genres = uri.queryParameter("genres")?.split(","),
-                year = uri.queryParameter("year")?.toInt(),
-                season = uri.queryParameter("season")?.let { MediaSeason.valueOf(it) },
-                format = uri.queryParameter("format")?.let { MediaFormat.valueOf(it) },
-                status = uri.queryParameter("airing status")?.let { MediaStatus.valueOf(it) },
-            ).asNavPayload()
+            SearchRouter
+                .SearchParam(
+                    query = uri.queryParameter("search"),
+                    genres = uri.queryParameter("genres")?.split(","),
+                    year = uri.queryParameter("year")?.toInt(),
+                    season = uri.queryParameter("season")?.let { MediaSeason.valueOf(it) },
+                    format = uri.queryParameter("format")?.let { MediaFormat.valueOf(it) },
+                    status = uri.queryParameter("airing status")?.let { MediaStatus.valueOf(it) },
+                ).asNavPayload()
         return SearchRouter.forActivity(env.context, payload)
     }
 }
@@ -261,26 +275,29 @@ internal object MediaListRoute : Route(
         super.run(uri, params, env)
         val identifier = params["id"]
         val lastSegment = uri.pathSegments().last { it.isNotBlank() }
-        val mediaType = when (lastSegment) {
-            "animelist" -> MediaType.ANIME
-            "mangalist" -> MediaType.MANGA
-            else -> throw NotImplementedError("Unable to match last segment: $lastSegment")
-        }
+        val mediaType =
+            when (lastSegment) {
+                "animelist" -> MediaType.ANIME
+                "mangalist" -> MediaType.MANGA
+                else -> throw NotImplementedError("Unable to match last segment: $lastSegment")
+            }
         val scoreFormat = (env as IAniTrendEnvironment).settings.scoreFormat
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    MediaListRouter.MediaListParam(
-                        userId = identifier.toLongOrNull(),
-                        scoreFormat = scoreFormat.value,
-                        type = mediaType,
-                    ).asNavPayload()
+                    MediaListRouter
+                        .MediaListParam(
+                            userId = identifier.toLongOrNull(),
+                            scoreFormat = scoreFormat.value,
+                            type = mediaType,
+                        ).asNavPayload()
                 else ->
-                    MediaListRouter.MediaListParam(
-                        userName = identifier,
-                        scoreFormat = scoreFormat.value,
-                        type = mediaType,
-                    ).asNavPayload()
+                    MediaListRouter
+                        .MediaListParam(
+                            userName = identifier,
+                            scoreFormat = scoreFormat.value,
+                            type = mediaType,
+                        ).asNavPayload()
             }
         return MediaListRouter.forActivity(env.context, payload)
     }
@@ -299,13 +316,15 @@ internal object UserRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.ProfileParam(
-                        userId = identifier.toLongOrNull(),
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userId = identifier.toLongOrNull(),
+                        ).asNavPayload()
                 else ->
-                    ProfileRouter.ProfileParam(
-                        userName = identifier,
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userName = identifier,
+                        ).asNavPayload()
             }
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -325,13 +344,15 @@ internal object UserStatsRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.ProfileParam(
-                        userId = identifier.toLongOrNull(),
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userId = identifier.toLongOrNull(),
+                        ).asNavPayload()
                 else ->
-                    ProfileRouter.ProfileParam(
-                        userName = identifier,
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userName = identifier,
+                        ).asNavPayload()
             }
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -350,13 +371,15 @@ internal object UserFavouritesRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.ProfileParam(
-                        userId = identifier.toLongOrNull(),
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userId = identifier.toLongOrNull(),
+                        ).asNavPayload()
                 else ->
-                    ProfileRouter.ProfileParam(
-                        userName = identifier,
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userName = identifier,
+                        ).asNavPayload()
             }
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -375,13 +398,15 @@ internal object UserReviewRoute : Route(
         val payload =
             when (identifier?.isDigitsOnly()) {
                 true ->
-                    ProfileRouter.ProfileParam(
-                        userId = identifier.toLongOrNull(),
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userId = identifier.toLongOrNull(),
+                        ).asNavPayload()
                 else ->
-                    ProfileRouter.ProfileParam(
-                        userName = identifier,
-                    ).asNavPayload()
+                    ProfileRouter
+                        .ProfileParam(
+                            userName = identifier,
+                        ).asNavPayload()
             }
         return ProfileRouter.forActivity(env.context, payload)
     }

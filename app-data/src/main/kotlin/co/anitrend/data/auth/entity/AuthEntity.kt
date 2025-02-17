@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.entity
 
 import androidx.room.ColumnInfo
@@ -27,9 +26,9 @@ import androidx.room.PrimaryKey
     indices = [
         Index(
             value = ["access_token"],
-            unique = true
-        )
-    ]
+            unique = true,
+        ),
+    ],
 )
 internal data class AuthEntity(
     @PrimaryKey(autoGenerate = true)
@@ -37,5 +36,5 @@ internal data class AuthEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "expires_on") val expiresOn: Long,
     @ColumnInfo(name = "token_type") val tokenType: String,
-    @ColumnInfo(name = "access_token") val accessToken: String
+    @ColumnInfo(name = "access_token") val accessToken: String,
 )

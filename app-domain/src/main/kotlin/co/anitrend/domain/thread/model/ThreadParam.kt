@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.thread.model
 
 import co.anitrend.domain.thread.enums.ThreadSort
 
 sealed class ThreadParam {
-
     /** [Thread query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param id Filter by the thread id
@@ -42,7 +40,7 @@ sealed class ThreadParam {
         val mediaCategoryId: Long? = null,
         val search: String? = null,
         val id_in: List<Long>? = null,
-        val sort: List<ThreadSort>? = null
+        val sort: List<ThreadSort>? = null,
     ) : ThreadParam()
 
     /** [ThreadComment query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -54,7 +52,7 @@ sealed class ThreadParam {
     data class FindComment(
         val id: Long? = null,
         val threadId: Long? = null,
-        val userId: Long? = null
+        val userId: Long? = null,
     ) : ThreadParam()
 
     /** [DeleteThread mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -64,7 +62,7 @@ sealed class ThreadParam {
      *  @param id The id of the thread to delete
      */
     data class Delete(
-        val id: Long
+        val id: Long,
     ) : ThreadParam()
 
     /** [SaveThreadComment mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -80,7 +78,7 @@ sealed class ThreadParam {
         val id: Long? = null,
         val threadId: Long,
         val parentCommentId: Long,
-        val comment: String
+        val comment: String,
     ) : ThreadParam()
 
     /** [SaveThread mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -98,7 +96,7 @@ sealed class ThreadParam {
         val title: String,
         val body: String,
         val categories: List<Long>,
-        val mediaCategories: List<Long>
+        val mediaCategories: List<Long>,
     ) : ThreadParam()
 
     /** [ToggleThreadSubscription mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -110,6 +108,6 @@ sealed class ThreadParam {
      */
     data class ToggleSubscribe(
         val threadId: Long,
-        val subscribe: Boolean
+        val subscribe: Boolean,
     ) : ThreadParam()
 }
