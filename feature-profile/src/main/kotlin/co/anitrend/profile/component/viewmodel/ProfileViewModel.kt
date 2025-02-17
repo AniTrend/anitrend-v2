@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.profile.component.viewmodel
 
 import androidx.lifecycle.viewModelScope
@@ -24,9 +23,8 @@ import co.anitrend.profile.component.viewmodel.state.ProfileState
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    override val state: ProfileState
+    override val state: ProfileState,
 ) : AniTrendViewModel() {
-
     operator fun invoke(param: ProfileRouter.ProfileParam) {
         viewModelScope.launch {
             state(param)

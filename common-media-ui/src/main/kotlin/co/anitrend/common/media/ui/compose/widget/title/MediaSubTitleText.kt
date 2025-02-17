@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.widget.title
 
 import androidx.compose.material3.LocalTextStyle
@@ -29,42 +45,44 @@ import co.anitrend.domain.media.enums.MediaFormat.Companion.isQuantitative
 
 @Composable
 @ReadOnlyComposable
-private fun Media.Category.BuildTextUsing(
-    builder: AnnotatedString.Builder
-) {
+private fun Media.Category.BuildTextUsing(builder: AnnotatedString.Builder) {
     val unknown = stringResource(co.anitrend.core.R.string.label_place_holder_to_be_announced)
 
-    when(this) {
+    when (this) {
         is Media.Category.Anime -> {
             when (episodes) {
-                0 -> builder.withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
-                    append(AnnotatedString(unknown))
-                }
-                else -> builder.withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(
-                        pluralStringResource(
-                            R.plurals.label_number_of_episodes,
-                            episodes,
-                            episodes
+                0 ->
+                    builder.withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(AnnotatedString(unknown))
+                    }
+                else ->
+                    builder.withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(
+                            pluralStringResource(
+                                R.plurals.label_number_of_episodes,
+                                episodes,
+                                episodes,
+                            ),
                         )
-                    )
-                }
+                    }
             }
         }
         is Media.Category.Manga -> {
             when (chapters) {
-                0 -> builder.withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
-                    append(unknown)
-                }
-                else -> builder.withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(
-                        pluralStringResource(
-                            R.plurals.label_number_of_chapters,
-                            chapters,
-                            chapters
+                0 ->
+                    builder.withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(unknown)
+                    }
+                else ->
+                    builder.withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(
+                            pluralStringResource(
+                                R.plurals.label_number_of_chapters,
+                                chapters,
+                                chapters,
+                            ),
                         )
-                    )
-                }
+                    }
             }
         }
     }
@@ -74,13 +92,17 @@ private fun Media.Category.BuildTextUsing(
 @ReadOnlyComposable
 private fun Media.annotatedSubTitle(color: Color): AnnotatedString {
     val builder = AnnotatedString.Builder()
-    val unknown = stringResource(
-        co.anitrend.core.R.string.label_place_holder_to_be_announced
-    )
+    val unknown =
+        stringResource(
+            co.anitrend.core.R.string.label_place_holder_to_be_announced,
+        )
     builder.withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
         withStyle(style = SpanStyle(color = color)) {
-            if (startDate.isDateNotSet()) append(unknown)
-            else append("${startDate.year}")
+            if (startDate.isDateNotSet()) {
+                append(unknown)
+            } else {
+                append("${startDate.year}")
+            }
         }
     }
     builder.append(" $CHARACTER_SEPARATOR ")
@@ -91,12 +113,14 @@ private fun Media.annotatedSubTitle(color: Color): AnnotatedString {
         builder.withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
             append(requireNotNull(format?.alias))
         }
-        if (isQuantitative)
+        if (isQuantitative) {
             builder.append(" $CHARACTER_SEPARATOR ")
+        }
     }
 
-    if (isQuantitative)
+    if (isQuantitative) {
         category.BuildTextUsing(builder)
+    }
 
     return builder.toAnnotatedString()
 }
@@ -121,7 +145,7 @@ fun MediaSubTitleText(
         overflow = TextOverflow.Ellipsis,
         style = style,
         maxLines = 1,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -130,12 +154,16 @@ fun MediaSubTitleText(
 private fun MediaSubTitleTextPreview() {
     PreviewTheme(wrapInSurface = true) {
         MediaSubTitleText(
-            media = Media.Core.empty().copy(
-                image = MediaImage.empty().copy(color = "#e4a15d"),
-                startDate = FuzzyDate.empty().copy(2018),
-                format = MediaFormat.TV,
-                category = Media.Category.Anime.empty().copy(25)
-            )
+            media =
+                Media.Core.empty().copy(
+                    image = MediaImage.empty().copy(color = "#e4a15d"),
+                    startDate = FuzzyDate.empty().copy(2018),
+                    format = MediaFormat.TV,
+                    category =
+                        Media.Category.Anime
+                            .empty()
+                            .copy(25),
+                ),
         )
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@ package co.anitrend.deeplink.koin
 import android.content.Intent
 import co.anitrend.core.android.environment.IAniTrendEnvironment
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.deeplink.component.route.AboutRoute
 import co.anitrend.deeplink.component.route.ActivityRoute
@@ -70,7 +69,7 @@ private val coreModule =
                 isAuthenticated = settings.isAuthenticated.value,
                 settings = settings,
             )
-        } binds(arrayOf(AniTrendEnvironment::class, IAniTrendEnvironment::class))
+        } binds (arrayOf(AniTrendEnvironment::class, IAniTrendEnvironment::class))
     }
 
 private val viewModelModule =
@@ -81,7 +80,8 @@ private val viewModelModule =
 private val routerModule =
     module {
         factory {
-            DeepLinkParser.of<Intent?>(get())
+            DeepLinkParser
+                .of<Intent?>(get())
                 // AniList specific routes
                 .addRoute(MainRoute)
                 .addRoute(ActivityRoute)

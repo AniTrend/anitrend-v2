@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.database.common
 
 import androidx.room.RoomDatabase
@@ -43,25 +42,60 @@ import co.anitrend.data.studio.datasource.local.IStudioStore
 import co.anitrend.data.tag.datasource.local.ITagStore
 import co.anitrend.data.user.datasource.local.IUserStore
 
-internal interface IAniTrendStore : IMediaStore, IGenreStore, ITagStore,
-    IRelationStore, IAuthStore, IAiringStore, ICarouselStore, ICacheStore, IUserStore,
-    IMediaListStore, INewsStore, IEpisodeStore, ICharacterStore, IStaffStore, IStudioStore,
-    ILinkStore, IRankStore, IJikanStore, ICustomListStore, ICustomScoreStore, IReviewStore,
-    IEdgeConfigStore, IEdgeGenreStore, IEdgeNavigationStore {
-
+internal interface IAniTrendStore :
+    IMediaStore,
+    IGenreStore,
+    ITagStore,
+    IRelationStore,
+    IAuthStore,
+    IAiringStore,
+    ICarouselStore,
+    ICacheStore,
+    IUserStore,
+    IMediaListStore,
+    INewsStore,
+    IEpisodeStore,
+    ICharacterStore,
+    IStaffStore,
+    IStudioStore,
+    ILinkStore,
+    IRankStore,
+    IJikanStore,
+    ICustomListStore,
+    ICustomScoreStore,
+    IReviewStore,
+    IEdgeConfigStore,
+    IEdgeGenreStore,
+    IEdgeNavigationStore {
     companion object {
-
         /** Binding types for [IAniTrendStore] */
-        val BINDINGS = arrayOf(
-            IMediaStore::class, ITagStore::class, IGenreStore::class,
-            IRelationStore::class, IAuthStore::class, IAiringStore::class,
-            ICarouselStore::class, ICacheStore::class, IUserStore::class,
-            IMediaListStore::class, INewsStore::class, IEpisodeStore::class,
-            ICharacterStore::class, IStaffStore::class, IStudioStore::class,
-            ILinkStore::class, IRankStore::class, IJikanStore::class,
-            ICustomListStore::class, ICustomScoreStore::class,
-            IReviewStore::class, IEdgeConfigStore::class,
-            IEdgeGenreStore::class, IEdgeNavigationStore::class, RoomDatabase::class
-        )
+        val BINDINGS =
+            arrayOf(
+                IMediaStore::class,
+                ITagStore::class,
+                IGenreStore::class,
+                IRelationStore::class,
+                IAuthStore::class,
+                IAiringStore::class,
+                ICarouselStore::class,
+                ICacheStore::class,
+                IUserStore::class,
+                IMediaListStore::class,
+                INewsStore::class,
+                IEpisodeStore::class,
+                ICharacterStore::class,
+                IStaffStore::class,
+                IStudioStore::class,
+                ILinkStore::class,
+                IRankStore::class,
+                IJikanStore::class,
+                ICustomListStore::class,
+                ICustomScoreStore::class,
+                IReviewStore::class,
+                IEdgeConfigStore::class,
+                IEdgeGenreStore::class,
+                IEdgeNavigationStore::class,
+                RoomDatabase::class,
+            )
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.auth.component.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -9,38 +25,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material.icons.twotone.NoAccounts
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import co.anitrend.auth.component.viewmodel.state.AuthState
-import co.anitrend.common.shared.ui.compose.DefaultBottomAppBar
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.android.ui.typography.AniTrendTypography
-import kotlinx.coroutines.launch
 
 @Composable
 private fun AuthBrandNameComponent(modifier: Modifier = Modifier) {
@@ -51,10 +53,10 @@ private fun AuthBrandNameComponent(modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(co.anitrend.auth.R.string.auth_label_segment_second),
-            style = AniTrendTypography.displayMedium.copy(
-                color = colorResource(co.anitrend.arch.theme.R.color.colorStateBlue)
-            ),
-
+            style =
+                AniTrendTypography.displayMedium.copy(
+                    color = colorResource(co.anitrend.arch.theme.R.color.colorStateBlue),
+                ),
         )
     }
 }
@@ -63,7 +65,7 @@ private fun AuthBrandNameComponent(modifier: Modifier = Modifier) {
 private fun AuthHeaderSection(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(top = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AuthBrandNameComponent()
         Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -75,11 +77,11 @@ private fun AuthHeaderSection(modifier: Modifier = Modifier) {
 private fun AuthAuthorizationSection(
     onAuthorizeClick: () -> Unit,
     onAuthorizationHelpClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(top = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         FilledTonalButton(
             onClick = onAuthorizeClick,
@@ -94,7 +96,7 @@ private fun AuthAuthorizationSection(
             label = {
                 Text(text = stringResource(co.anitrend.auth.R.string.auth_label_having_trouble_logging_in))
             },
-            icon = { Icon(imageVector = Icons.TwoTone.Info, contentDescription = null) }
+            icon = { Icon(imageVector = Icons.TwoTone.Info, contentDescription = null) },
         )
     }
 }
@@ -106,7 +108,7 @@ private fun AuthAnonymousSection(
 ) {
     Column(
         modifier = modifier.padding(top = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(co.anitrend.auth.R.string.auth_label_alternative_account),
@@ -119,7 +121,7 @@ private fun AuthAnonymousSection(
             label = {
                 Text(text = stringResource(co.anitrend.auth.R.string.auth_label_action_start_anonymous_account))
             },
-            icon = { Icon(imageVector = Icons.TwoTone.NoAccounts, contentDescription = null) }
+            icon = { Icon(imageVector = Icons.TwoTone.NoAccounts, contentDescription = null) },
         )
     }
 }
@@ -130,7 +132,7 @@ private fun AuthContent(
     onAuthorizationHelpClick: () -> Unit,
     onAuthorizationAnonymousClick: () -> Unit,
     modifier: Modifier = Modifier,
-    ) {
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -149,20 +151,20 @@ fun AuthScreenContent(
     onAuthorizeClick: () -> Unit,
     onAuthorizationHelpClick: () -> Unit,
     onAuthorizationAnonymousClick: () -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     DefaultScaffold(onBackPress = onBackPress) { modifier ->
         AuthContent(
             onAuthorizeClick,
             onAuthorizationHelpClick,
             onAuthorizationAnonymousClick,
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         )
     }
 }
-
 
 @AniTrendPreview.Mobile
 @AniTrendPreview.Light
@@ -173,7 +175,7 @@ private fun MediaDetailComponentPreview() {
         AuthContent(
             onAuthorizeClick = {},
             onAuthorizationHelpClick = {},
-            onAuthorizationAnonymousClick = {}
+            onAuthorizationAnonymousClick = {},
         )
     }
 }

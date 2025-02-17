@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.migration
 
 import android.content.Context
@@ -26,51 +25,63 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
 class MigrationManagerTest {
-
     private val manager = MigrationManager(mockk())
     private val migrations = mutableListOf<Migration>()
 
     @BeforeEach
     fun setUp() {
-        migrations += listOf(
-            object : Migration(20290, 20300){
-                override fun invoke(context: Context, settings: Settings) {
-
-                }
-            },
-            object : Migration(20310, 20320){
-                override fun invoke(context: Context, settings: Settings) {
-
-                }
-            },
-            object : Migration(20320, 20330){
-                override fun invoke(context: Context, settings: Settings) {
-
-                }
-            }
-        )
+        migrations +=
+            listOf(
+                object : Migration(20290, 20300) {
+                    override fun invoke(
+                        context: Context,
+                        settings: Settings,
+                    ) {
+                    }
+                },
+                object : Migration(20310, 20320) {
+                    override fun invoke(
+                        context: Context,
+                        settings: Settings,
+                    ) {
+                    }
+                },
+                object : Migration(20320, 20330) {
+                    override fun invoke(
+                        context: Context,
+                        settings: Settings,
+                    ) {
+                    }
+                },
+            )
     }
 
     @Test
     fun `check possible migrations`() {
-        val expected = listOf(
-            object : Migration(20290, 20300){
-                override fun invoke(context: Context, settings: Settings) {
+        val expected =
+            listOf(
+                object : Migration(20290, 20300) {
+                    override fun invoke(
+                        context: Context,
+                        settings: Settings,
+                    ) {
+                    }
+                },
+                object : Migration(20310, 20320) {
+                    override fun invoke(
+                        context: Context,
+                        settings: Settings,
+                    ) {
+                    }
+                },
+            )
 
-                }
-            },
-            object : Migration(20310, 20320){
-                override fun invoke(context: Context, settings: Settings) {
-
-                }
-            }
-        )
-
-        val actual = manager.possibleMigrations(
-            20300,
-            20310,
-            migrations
-        )
+        val actual =
+            manager.possibleMigrations(
+                20300,
+                20310,
+                migrations,
+            )
 
         assertEquals(expected, actual)
     }
@@ -79,11 +90,12 @@ class MigrationManagerTest {
     fun `should not migrate when downgraded`() {
         val expected = emptyList<Migration>()
 
-        val actual = manager.possibleMigrations(
-            2000000041,
-            1000000,
-            migrations
-        )
+        val actual =
+            manager.possibleMigrations(
+                2000000041,
+                1000000,
+                migrations,
+            )
 
         assertEquals(expected, actual)
     }

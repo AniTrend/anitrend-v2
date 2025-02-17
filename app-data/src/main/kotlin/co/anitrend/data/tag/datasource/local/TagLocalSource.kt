@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.datasource.local
 
 import androidx.room.*
@@ -26,22 +25,25 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class TagLocalSource : AbstractLocalSource<TagEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from tag
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from tag
-    """
+    """,
     )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         select * from tag
         order by category, name asc
-        """
+        """,
     )
     abstract fun findAllFlow(): Flow<List<TagEntity>>
 

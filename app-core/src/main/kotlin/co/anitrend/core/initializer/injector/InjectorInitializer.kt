@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.initializer.injector
 
 import android.content.Context
@@ -30,7 +29,6 @@ import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 
 class InjectorInitializer : AbstractCoreInitializer<Unit>() {
-
     /**
      * Initializes and a component given the application [Context]
      *
@@ -54,6 +52,5 @@ class InjectorInitializer : AbstractCoreInitializer<Unit>() {
      * For e.g. if a [Initializer] `B` defines another
      * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-            listOf(MigrationInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(MigrationInitializer::class.java)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.widget.progress.controller
 
 import co.anitrend.core.android.helpers.date.AniTrendDateHelper
@@ -32,20 +31,15 @@ import co.anitrend.navigation.MediaListTaskRouter
  */
 internal class MediaProgressController(
     private val entity: IMedia,
-    private val settings: Settings
+    private val settings: Settings,
 ) {
-
-    private fun requireMediaList(): IMediaList {
-        return requireNotNull(entity.mediaList)
-    }
+    private fun requireMediaList(): IMediaList = requireNotNull(entity.mediaList)
 
     /**
      * Indicates whether or not the widget should be displayed based
      * on the availability of data [IMediaList] in this [IMedia]
      */
-    fun shouldHideWidget(): Boolean {
-        return entity.mediaList == null
-    }
+    fun shouldHideWidget(): Boolean = entity.mediaList == null
 
     /**
      * Check if we've caught up, assuming that the max progress is not 0
@@ -53,8 +47,9 @@ internal class MediaProgressController(
     fun hasCaughtUp(): Boolean {
         val current = getCurrentProgress()
         val maximum = getMaximumProgress()
-        if (maximum == 0)
+        if (maximum == 0) {
             return false
+        }
         return current == maximum
     }
 
@@ -75,10 +70,11 @@ internal class MediaProgressController(
         val media = entity as Media
         return when (val category = media.category) {
             is Media.Category.Anime -> {
-                if (category.schedule != null && category.episodes == 0)
+                if (category.schedule != null && category.episodes == 0) {
                     category.schedule!!.episode
-                else category.episodes
-
+                } else {
+                    category.episodes
+                }
             }
             is Media.Category.Manga -> category.chapters
         }
@@ -87,12 +83,11 @@ internal class MediaProgressController(
     /**
      * @return Current progress for this user
      */
-    fun getCurrentProgress(): Int {
-        return when (val progress = requireMediaList().progress) {
+    fun getCurrentProgress(): Int =
+        when (val progress = requireMediaList().progress) {
             is MediaListProgress.Anime -> progress.episodeProgress
             is MediaListProgress.Manga -> progress.chapterProgress
         }
-    }
 
     /**
      * Creates a save entry parameter object
@@ -109,22 +104,24 @@ internal class MediaProgressController(
         var startFuzzyDate = requireMediaList().startedOn
         var finishFuzzyDate = requireMediaList().finishedOn
 
-        val statusUpdated = when {
-            progressIncremented == getMaximumProgress() -> {
-                finishFuzzyDate = dateHelper.fuzzyDateNow()
-                MediaListStatus.COMPLETED
+        val statusUpdated =
+            when {
+                progressIncremented == getMaximumProgress() -> {
+                    finishFuzzyDate = dateHelper.fuzzyDateNow()
+                    MediaListStatus.COMPLETED
+                }
+                requireMediaList().status == MediaListStatus.PLANNING -> {
+                    startFuzzyDate = dateHelper.fuzzyDateNow()
+                    MediaListStatus.CURRENT
+                }
+                else -> requireMediaList().status
             }
-            requireMediaList().status == MediaListStatus.PLANNING -> {
-                startFuzzyDate = dateHelper.fuzzyDateNow()
-                MediaListStatus.CURRENT
-            }
-            else -> requireMediaList().status
-        }
 
-        val progressVolumes = when (val mediaProgress = requireMediaList().progress) {
-            is MediaListProgress.Manga -> mediaProgress.volumeProgress
-            else -> 0
-        }
+        val progressVolumes =
+            when (val mediaProgress = requireMediaList().progress) {
+                is MediaListProgress.Manga -> mediaProgress.volumeProgress
+                else -> 0
+            }
 
         return MediaListTaskRouter.Param.SaveEntry(
             id = requireMediaList().id,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.sheet
 
 import android.app.Dialog
@@ -55,13 +54,15 @@ import org.koin.androidx.scope.fragmentScope
 import org.koin.core.component.KoinScopeComponent
 import timber.log.Timber
 
-
 abstract class AniTrendBottomSheet<B : ViewBinding>(
     @MenuRes protected open val inflateMenu: Int = SupportFragment.NO_MENU_ITEM,
-    @LayoutRes protected open val inflateLayout: Int = SupportFragment.NO_LAYOUT_ITEM
-) : BottomSheetDialogFragment(), AndroidScopeComponent, KoinScopeComponent, IBindingView<B>,
-    CoroutineScope by MainScope(), ILifecycleController {
-
+    @LayoutRes protected open val inflateLayout: Int = SupportFragment.NO_LAYOUT_ITEM,
+) : BottomSheetDialogFragment(),
+    AndroidScopeComponent,
+    KoinScopeComponent,
+    IBindingView<B>,
+    CoroutineScope by MainScope(),
+    ILifecycleController {
     override var binding: B? = null
 
     override val scope by fragmentScope()
@@ -114,32 +115,32 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
                     .onEach { state ->
                         Timber.v("Connectivity state changed: $state")
                         if (state == ConnectivityState.Connected) viewModelState()?.retry()
-                    }
-                    .catch { cause ->
+                    }.catch { cause ->
                         Timber.w(cause, "While collecting connectivity state")
-                    }
-                    .collect()
+                    }.collect()
             }
         }
     }
 
     // If I set a theme then the dialog will create a window background
-    //override fun getTheme() = R.style.BottomSheetDialog
+    // override fun getTheme() = R.style.BottomSheetDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         initializeComponents(savedInstanceState)
         dialog.setOnShowListener {
-            val bottomSheet = dialog.findViewById<FrameLayout>(
-                com.google.android.material.R.id.design_bottom_sheet
-            )
-            behavior = BottomSheetBehavior.from(bottomSheet).apply {
-                halfExpandedRatio = 0.45f
-                addBottomSheetCallback(bottomSheetCallback)
-                peekHeight = defaultPeekHeight
-                skipCollapsed = false
-                setState(defaultState)
-            }
+            val bottomSheet =
+                dialog.findViewById<FrameLayout>(
+                    com.google.android.material.R.id.design_bottom_sheet,
+                )
+            behavior =
+                BottomSheetBehavior.from(bottomSheet).apply {
+                    halfExpandedRatio = 0.45f
+                    addBottomSheetCallback(bottomSheetCallback)
+                    peekHeight = defaultPeekHeight
+                    skipCollapsed = false
+                    setState(defaultState)
+                }
         }
         return dialog
     }
@@ -171,12 +172,13 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return if (inflateLayout != SupportFragment.NO_LAYOUT_ITEM) {
+        savedInstanceState: Bundle?,
+    ): View? =
+        if (inflateLayout != SupportFragment.NO_LAYOUT_ITEM) {
             inflater.inflate(inflateLayout, container, false)
-        } else super.onCreateView(inflater, container, savedInstanceState)
-    }
+        } else {
+            super.onCreateView(inflater, container, savedInstanceState)
+        }
 
     /**
      * Called immediately after [onCreateView] has returned, but before any saved state has been
@@ -189,7 +191,10 @@ abstract class AniTrendBottomSheet<B : ViewBinding>(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         applyMargins(view.parent)
         setUpViewModelObserver()

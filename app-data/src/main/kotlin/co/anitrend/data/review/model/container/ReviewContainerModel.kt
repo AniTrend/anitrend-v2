@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.model.container
 
 import co.anitrend.data.common.model.delete.DeletedModel
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class ReviewContainerModel {
-
     abstract class Single : ReviewContainerModel() {
         abstract val entry: ReviewModel
     }
@@ -37,32 +35,32 @@ internal sealed class ReviewContainerModel {
 
     @Serializable
     data class Entry(
-        @SerialName("Review") override val entry: ReviewModel.Extended
+        @SerialName("Review") override val entry: ReviewModel.Extended,
     ) : Single()
 
     @Serializable
     data class SavedEntry(
-        @SerialName("SaveReview") override val entry: ReviewModel.Core
+        @SerialName("SaveReview") override val entry: ReviewModel.Core,
     ) : Single()
 
     @Serializable
     data class RatedEntry(
-        @SerialName("RateReview") override val entry: ReviewModel.Core
+        @SerialName("RateReview") override val entry: ReviewModel.Core,
     ) : Single()
 
     @Serializable
     data class DeletedEntry(
-        @SerialName("DeleteReview") override val entry: DeletedModel
+        @SerialName("DeleteReview") override val entry: DeletedModel,
     ) : Deleted()
 
     @Serializable
     data class Paged(
-        @SerialName("Page") val page: Page = Page()
+        @SerialName("Page") val page: Page = Page(),
     ) {
         @Serializable
         data class Page(
             @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
-            @SerialName("reviews") val entries: List<ReviewModel.Extended> = emptyList()
+            @SerialName("reviews") val entries: List<ReviewModel.Extended> = emptyList(),
         ) : IPageModel
     }
 }

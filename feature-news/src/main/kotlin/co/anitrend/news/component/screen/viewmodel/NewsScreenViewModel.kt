@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.component.screen.viewmodel
 
 import androidx.lifecycle.MutableLiveData
@@ -25,13 +24,13 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class NewsScreenViewModel : ViewModel() {
-
     val model = MutableLiveData<String>()
 
     private fun buildHtml(param: NewsRouter.NewsParam) {
-        val template = """
-                <p><h3>${param.title}</h3></p>
-                <h5>${param.subTitle}</h5>
+        val template =
+            """
+            <p><h3>${param.title}</h3></p>
+            <h5>${param.subTitle}</h5>
             """.trimIndent()
         val document = Jsoup.parse("$template${param.content}")
 

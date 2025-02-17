@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.usecase
 
 import co.anitrend.data.media.GetDetailMediaInteractor
@@ -25,16 +24,15 @@ import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
 
 internal interface MediaInteractor {
-
     class Detail(
-        repository: MediaDetailRepository
+        repository: MediaDetailRepository,
     ) : GetDetailMediaInteractor(repository)
 
     class Paged(
-        repository: MediaPagedRepository
+        repository: MediaPagedRepository,
     ) : GetPagedMediaInteractor(repository)
 
     class Network(
-        repository: MediaNetworkRepository
+        repository: MediaNetworkRepository,
     ) : GetNetworkMediaInteractor(repository)
 }

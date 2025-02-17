@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.customscore.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -24,32 +23,31 @@ import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.medialist.model.MediaListModel
 
 internal class CustomScoreMapper(
-    override val localSource: CustomScoreLocalSource
+    override val localSource: CustomScoreLocalSource,
 ) : EmbedMapper<CustomScoreMapper.Item, CustomScoreEntity>() {
+    override val converter =
+        object : SupportConverter<Item, CustomScoreEntity>() {
+            /**
+             * Function reference from converting from [M] to [E] which will
+             * be called by [convertFrom]
+             */
+            override val fromType: (Item) -> CustomScoreEntity = {
+                CustomScoreEntity(
+                    score = it.score,
+                    scoreName = it.scoreName,
+                    mediaListId = it.mediaListId,
+                    userId = it.userId,
+                    userName = it.userName,
+                )
+            }
 
-    override val converter = object : SupportConverter<Item, CustomScoreEntity>() {
-        /**
-         * Function reference from converting from [M] to [E] which will
-         * be called by [convertFrom]
-         */
-        override val fromType: (Item) -> CustomScoreEntity = {
-            CustomScoreEntity(
-                score = it.score,
-                scoreName = it.scoreName,
-                mediaListId = it.mediaListId,
-                userId = it.userId,
-                userName = it.userName
-            )
+            /**
+             * Function reference from converting from [E] to [M] which will
+             * be called by [convertTo]
+             */
+            override val toType: (CustomScoreEntity) -> Item
+                get() = throw NotImplementedError()
         }
-
-        /**
-         * Function reference from converting from [E] to [M] which will
-         * be called by [convertTo]
-         */
-        override val toType: (CustomScoreEntity) -> Item
-            get() = throw NotImplementedError()
-
-    }
 
     data class Item(
         val score: Float,
@@ -61,15 +59,16 @@ internal class CustomScoreMapper(
 
     companion object {
         fun asItem(source: MediaListModel) =
-            source.advancedScores?.map {
-                Item(
-                    score = it.value,
-                    scoreName = it.key,
-                    mediaListId = source.id,
-                    userId = source.user.id,
-                    userName = source.user.name
-                )
-            }.orEmpty()
+            source.advancedScores
+                ?.map {
+                    Item(
+                        score = it.value,
+                        scoreName = it.key,
+                        mediaListId = source.id,
+                        userId = source.user.id,
+                        userName = source.user.name,
+                    )
+                }.orEmpty()
 
         fun asItem(source: List<MediaListModel>) =
             source.flatMap { mediaList ->

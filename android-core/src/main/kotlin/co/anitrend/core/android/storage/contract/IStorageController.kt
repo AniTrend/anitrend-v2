@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.storage.contract
 
 import android.content.Context
@@ -24,9 +23,21 @@ import java.io.File
 
 interface IStorageController {
     fun getLogsCache(context: Context): File
+
     fun getImageCache(context: Context): File
+
     fun getVideoCache(context: Context): File
+
     fun getVideoOfflineCache(context: Context): File
-    fun getFreeSpace(context: Context, type: StorageType): Long
-    fun getStorageUsageLimit(context: Context, type: StorageType, settings: ICacheSettings): Long
+
+    fun getFreeSpace(
+        context: Context,
+        type: StorageType,
+    ): Long
+
+    fun getStorageUsageLimit(
+        context: Context,
+        type: StorageType,
+        settings: ICacheSettings,
+    ): Long
 }

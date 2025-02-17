@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.source
 
 import androidx.paging.PagedList
@@ -41,7 +40,6 @@ import co.anitrend.data.review.source.contract.ReviewSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.review.entity.Review
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -50,7 +48,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 internal sealed class ReviewSourceImpl {
-
     class Entry(
         private val remoteSource: ReviewRemoteSource,
         private val localSource: ReviewLocalSource,
@@ -59,24 +56,24 @@ internal sealed class ReviewSourceImpl {
         private val filter: ReviewQueryFilter.Entry,
         private val clearDataHelper: IClearDataHelper,
         override val cachePolicy: ICacheStorePolicy,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : ReviewSource.Entry() {
-
-        override fun observable(): Flow<Review> {
-            return localSource.rawFlow(
-                filter.build(query.param)
-            ).flowOn(dispatcher.io)
+        override fun observable(): Flow<Review> =
+            localSource
+                .rawFlow(
+                    filter.build(query.param),
+                ).flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
-        }
 
         override suspend fun getEntry(requestCallback: RequestCallback): Boolean {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder()
-                remoteSource.getReview(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getReview(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
 
@@ -99,16 +96,16 @@ internal sealed class ReviewSourceImpl {
     class Rate(
         private val remoteSource: ReviewRemoteSource,
         private val controller: ReviewRateController,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : ReviewSource.Rate() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun rateEntry(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.rateReview(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.rateReview(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
             observable.value = result != null
@@ -120,7 +117,6 @@ internal sealed class ReviewSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-
         }
     }
 
@@ -129,16 +125,16 @@ internal sealed class ReviewSourceImpl {
         private val localSource: ReviewLocalSource,
         private val controller: ReviewDeleteController,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : ReviewSource.Delete() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.deleteReview(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.deleteReview(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
             observable.value = result != null
@@ -159,16 +155,16 @@ internal sealed class ReviewSourceImpl {
     class Save(
         private val remoteSource: ReviewRemoteSource,
         private val controller: ReviewSaveController,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : ReviewSource.Save() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.saveReview(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.saveReview(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
             observable.value = result != null
@@ -180,7 +176,6 @@ internal sealed class ReviewSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-
         }
     }
 
@@ -193,29 +188,31 @@ internal sealed class ReviewSourceImpl {
         private val clearDataHelper: IClearDataHelper,
         override val dispatcher: ISupportDispatcher,
     ) : ReviewSource.Paged() {
-
         override val cacheIdentity: CacheIdentity = ReviewCache.Identity.Paged()
 
         override fun observable(): Flow<PagedList<Review>> {
-            val dataSourceFactory = localSource
-                .rawFactory(filter.build(query.param))
-                .map(converter::convertFrom)
+            val dataSourceFactory =
+                localSource
+                    .rawFactory(filter.build(query.param))
+                    .map(converter::convertFrom)
 
             return FlowPagedListBuilder(
                 dataSourceFactory,
                 PAGING_CONFIGURATION,
                 null,
-                this
+                this,
             ).buildFlow()
         }
 
         override suspend fun getReview(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper
-                )
-                remoteSource.getReviewPaged(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder =
+                        query.toQueryContainerBuilder(
+                            supportPagingHelper,
+                        )
+                    remoteSource.getReviewPaged(queryBuilder)
+                }
 
             controller(deferred, requestCallback) {
                 supportPagingHelper.from(it.page)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.sheet.controller
 
 import android.os.Bundle
@@ -26,65 +25,85 @@ import co.anitrend.navigation.MediaDiscoverFilterRouter.Action
 import co.anitrend.navigation.MediaDiscoverRouter.MediaDiscoverParam
 import com.google.android.material.tabs.TabLayout
 
-internal class MediaFilterController(tabLayout: TabLayout) {
-
+internal class MediaFilterController(
+    tabLayout: TabLayout,
+) {
     private val sortTab by lazy(UNSAFE) { tabLayout.getTabAt(0) }
     private val generalTab by lazy(UNSAFE) { tabLayout.getTabAt(1) }
     private val genreTab by lazy(UNSAFE) { tabLayout.getTabAt(2) }
     private val tagTab by lazy(UNSAFE) { tabLayout.getTabAt(3) }
 
-    private fun onTagFilters(tag: Action.Tag?, filter: LiveData<MediaDiscoverParam>) {
-        if (tag?.isDefault() == true)
+    private fun onTagFilters(
+        tag: Action.Tag?,
+        filter: LiveData<MediaDiscoverParam>,
+    ) {
+        if (tag?.isDefault() == true) {
             tagTab?.orCreateBadge
-        else tagTab?.removeBadge()
+        } else {
+            tagTab?.removeBadge()
+        }
         filter.value?.tagCategory_in = tag?.tagCategory_in
         filter.value?.tagCategory_not_in = tag?.tagCategory_not_in
         filter.value?.tag_in = tag?.tag_in
         filter.value?.tag_not_in = tag?.tag_not_in
     }
 
-    private fun onGenreFilters(genre: Action.Genre?, filter: LiveData<MediaDiscoverParam>) {
-        if (genre?.isDefault() == true)
+    private fun onGenreFilters(
+        genre: Action.Genre?,
+        filter: LiveData<MediaDiscoverParam>,
+    ) {
+        if (genre?.isDefault() == true) {
             genreTab?.orCreateBadge
-        else genreTab?.removeBadge()
+        } else {
+            genreTab?.removeBadge()
+        }
         filter.value?.genre_in = genre?.genre_in
         filter.value?.genre_not_in = genre?.genre_not_in
     }
 
-    private fun onGeneralFilter(general: Action.General?, filter: LiveData<MediaDiscoverParam>) {
-        if (general?.isDefault() == true)
+    private fun onGeneralFilter(
+        general: Action.General?,
+        filter: LiveData<MediaDiscoverParam>,
+    ) {
+        if (general?.isDefault() == true) {
             generalTab?.orCreateBadge
-        else generalTab?.removeBadge()
+        } else {
+            generalTab?.removeBadge()
+        }
     }
 
-    private fun onSortFilter(general: Action.Sort?, filter: LiveData<MediaDiscoverParam>) {
-        if (general?.isDefault() == true)
+    private fun onSortFilter(
+        general: Action.Sort?,
+        filter: LiveData<MediaDiscoverParam>,
+    ) {
+        if (general?.isDefault() == true) {
             sortTab?.orCreateBadge
-        else sortTab?.removeBadge()
+        } else {
+            sortTab?.removeBadge()
+        }
         filter.value?.sort = general?.sort
     }
 
     /**
      * Listens in for results on [setFragmentResultListener]
      */
-    fun registerResultCallbacks(fragment: Fragment, filter: LiveData<MediaDiscoverParam>) {
-        fragment.setFragmentResultListener(Action.Sort::class.java.simpleName) {
-                key: String, bundle: Bundle ->
+    fun registerResultCallbacks(
+        fragment: Fragment,
+        filter: LiveData<MediaDiscoverParam>,
+    ) {
+        fragment.setFragmentResultListener(Action.Sort::class.java.simpleName) { key: String, bundle: Bundle ->
             val sort = bundle.getParcelable<Action.Sort>(key)
             onSortFilter(sort, filter)
         }
-        fragment.setFragmentResultListener(Action.General::class.java.simpleName) {
-                key: String, bundle: Bundle ->
+        fragment.setFragmentResultListener(Action.General::class.java.simpleName) { key: String, bundle: Bundle ->
             val general = bundle.getParcelable<Action.General>(key)
             onGeneralFilter(general, filter)
         }
-        fragment.setFragmentResultListener(Action.Tag::class.java.simpleName) {
-                key: String, bundle: Bundle ->
+        fragment.setFragmentResultListener(Action.Tag::class.java.simpleName) { key: String, bundle: Bundle ->
             val tag = bundle.getParcelable<Action.Tag>(key)
             onTagFilters(tag, filter)
         }
-        fragment.setFragmentResultListener(Action.Genre::class.java.simpleName) {
-                key: String, bundle: Bundle ->
+        fragment.setFragmentResultListener(Action.Genre::class.java.simpleName) { key: String, bundle: Bundle ->
             val genre = bundle.getParcelable<Action.Genre>(key)
             onGenreFilters(genre, filter)
         }

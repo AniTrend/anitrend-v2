@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review
 
 import androidx.paging.PagedList
@@ -26,11 +25,11 @@ import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.interactor.ReviewUseCase
 import co.anitrend.domain.review.repository.IReviewRepository
 
-internal typealias ReviewEntryController =  GraphQLController<ReviewContainerModel.Entry, ReviewEntity>
-internal typealias ReviewDeleteController =  GraphQLController<ReviewContainerModel.DeletedEntry, Boolean>
-internal typealias ReviewSaveController =  GraphQLController<ReviewContainerModel.SavedEntry, ReviewEntity>
-internal typealias ReviewRateController =  GraphQLController<ReviewContainerModel.RatedEntry, ReviewEntity>
-internal typealias ReviewPagedController =  GraphQLController<ReviewContainerModel.Paged, List<ReviewEntity>>
+internal typealias ReviewEntryController = GraphQLController<ReviewContainerModel.Entry, ReviewEntity>
+internal typealias ReviewDeleteController = GraphQLController<ReviewContainerModel.DeletedEntry, Boolean>
+internal typealias ReviewSaveController = GraphQLController<ReviewContainerModel.SavedEntry, ReviewEntity>
+internal typealias ReviewRateController = GraphQLController<ReviewContainerModel.RatedEntry, ReviewEntity>
+internal typealias ReviewPagedController = GraphQLController<ReviewContainerModel.Paged, List<ReviewEntity>>
 
 internal typealias ReviewEntryRepository = IReviewRepository.Entry<DataState<Review>>
 internal typealias ReviewDeleteRepository = IReviewRepository.Delete<DataState<Boolean>>

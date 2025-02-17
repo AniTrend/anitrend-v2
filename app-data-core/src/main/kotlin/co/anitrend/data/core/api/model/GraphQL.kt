@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.api.model
 
 import kotlinx.serialization.Contextual
@@ -29,7 +28,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SourceLocation(
     @SerialName("line") val line: Int,
-    @SerialName("column") val column: Int
+    @SerialName("column") val column: Int,
 )
 
 /**
@@ -48,7 +47,7 @@ data class GraphQLError(
     @SerialName("message") val message: String,
     @SerialName("locations") val locations: List<SourceLocation>? = null,
     @SerialName("path") val path: List<@Contextual Any>? = null,
-    @SerialName("extensions") val extensions: Map<String, @Contextual Any?>? = null
+    @SerialName("extensions") val extensions: Map<String, @Contextual Any?>? = null,
 )
 
 /**
@@ -60,5 +59,5 @@ data class GraphQLError(
 data class GraphQLResponse<T>(
     @SerialName("data") val data: T? = null,
     @SerialName("errors") val errors: List<GraphQLError>? = null,
-    @SerialName("extensions") val extensions: Map<@Contextual Any, @Contextual Any>? = null
+    @SerialName("extensions") val extensions: Map<@Contextual Any, @Contextual Any>? = null,
 )

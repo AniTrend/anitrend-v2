@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.auth.presenter
 
 import android.content.Context
@@ -40,9 +39,8 @@ class AuthPresenter(
     context: Context,
     settings: Settings,
     private val clientId: String,
-    private val customTabs: CustomTabsIntent
+    private val customTabs: CustomTabsIntent,
 ) : CorePresenter(context, settings) {
-
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
         val uri = Uri.parse(context.getString(co.anitrend.core.android.R.string.app_faq_page_link))
@@ -50,9 +48,10 @@ class AuthPresenter(
             Timber.analytics {
                 logCurrentState(
                     tag = Timber.tags.action("authorization_issue"),
-                    bundle = bundleOf(
-                        Timber.keys.DATA to UriCompat.toSafeString(uri)
-                    )
+                    bundle =
+                        bundleOf(
+                            Timber.keys.DATA to UriCompat.toSafeString(uri),
+                        ),
                 )
             }
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -69,9 +68,10 @@ class AuthPresenter(
             Timber.analytics {
                 logCurrentState(
                     tag = Timber.tags.action("authorization_issue"),
-                    bundle = bundleOf(
-                        Timber.keys.DATA to UriCompat.toSafeString(uri)
-                    )
+                    bundle =
+                        bundleOf(
+                            Timber.keys.DATA to UriCompat.toSafeString(uri),
+                        ),
                 )
             }
             customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
@@ -83,17 +83,20 @@ class AuthPresenter(
     }
 
     fun runSignOutWorker() {
-        val param = AccountTaskRouter.AccountParam(
-            settings.authenticatedUserId.value
-        )
-        AccountTaskRouter.forSignOutWorker()
+        val param =
+            AccountTaskRouter.AccountParam(
+                settings.authenticatedUserId.value,
+            )
+        AccountTaskRouter
+            .forSignOutWorker()
             .createOneTimeUniqueWorker(context, param)
             .enqueue()
     }
 
     fun runSignInWorker(id: Long) {
         val param = AccountTaskRouter.AccountParam(id)
-        AccountTaskRouter.forSignInWorker()
+        AccountTaskRouter
+            .forSignInWorker()
             .createOneTimeUniqueWorker(context, param)
             .enqueue()
     }

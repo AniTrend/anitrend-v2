@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.markdown.ui.plugin.decorator
 
 import android.text.Layout
@@ -28,19 +27,19 @@ import io.noties.markwon.html.tag.SimpleTagHandler
  * Handle align tags
  */
 class AlignmentTagHandler private constructor() : SimpleTagHandler() {
-
     override fun getSpans(
         configuration: MarkwonConfiguration,
         renderProps: RenderProps,
-        tag: HtmlTag
+        tag: HtmlTag,
     ): Any {
-        val alignment: Layout.Alignment = when {
-            tag.attributes().containsKey("center") ->
-                Layout.Alignment.ALIGN_CENTER
-            tag.attributes().containsKey("end") ->
-                Layout.Alignment.ALIGN_OPPOSITE
-            else -> Layout.Alignment.ALIGN_NORMAL
-        }
+        val alignment: Layout.Alignment =
+            when {
+                tag.attributes().containsKey("center") ->
+                    Layout.Alignment.ALIGN_CENTER
+                tag.attributes().containsKey("end") ->
+                    Layout.Alignment.ALIGN_OPPOSITE
+                else -> Layout.Alignment.ALIGN_NORMAL
+            }
 
         return AlignmentSpan.Standard(alignment)
     }

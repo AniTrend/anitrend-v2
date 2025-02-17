@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.notification.component.compose
 
 import androidx.compose.foundation.layout.Column
@@ -12,13 +28,11 @@ import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 
-
 @Composable
 private fun NotificationContent(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
-
     }
 }
 
@@ -26,20 +40,20 @@ private fun NotificationContent(modifier: Modifier = Modifier) {
 fun NotificationScreenContent(onBackPress: () -> Unit) {
     DefaultScaffold(onBackPress) { modifier ->
         NotificationContent(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         )
     }
 }
-
 
 @AniTrendPreview.Mobile
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
 @Composable
 private fun NotificationComposablePreview(
-    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
         NotificationContent()

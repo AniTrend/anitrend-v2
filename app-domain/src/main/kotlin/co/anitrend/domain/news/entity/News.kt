@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.news.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -29,5 +28,5 @@ data class News(
     val subTitle: String,
     val description: String?,
     val content: String,
-    val publishedOn: Long?
+    val publishedOn: Long?,
 ) : IEntity

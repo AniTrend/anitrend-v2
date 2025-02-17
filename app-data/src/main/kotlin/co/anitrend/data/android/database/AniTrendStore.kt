@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.database
 
 import android.content.Context
@@ -74,7 +73,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 @Database(
     entities = [
         CacheEntity::class, RelationEntity::class,
-        AuthEntity::class, TagEntity::class , TagConnectionEntity::class,
+        AuthEntity::class, TagEntity::class, TagConnectionEntity::class,
         GenreEntity::class, GenreConnectionEntity::class,
         MediaEntity::class, MediaFtsEntity::class, AiringScheduleEntity::class,
         UserEntity::class, UserFtsEntity::class, UserGeneralOptionEntity::class,
@@ -87,33 +86,34 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
         UserNotificationEntity::class,
-        EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class
+        EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class,
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     autoMigrations = [
-        AutoMigration(from = 6, to = 8)
-    ]
+        AutoMigration(from = 6, to = 8),
+    ],
 )
 @TypeConverters(
     value = [
         TypeConverterObject::class,
-        TypeConverterEnum::class
-    ]
+        TypeConverterEnum::class,
+    ],
 )
-internal abstract class AniTrendStore: RoomDatabase(), IAniTrendStore {
-
+internal abstract class AniTrendStore :
+    RoomDatabase(),
+    IAniTrendStore {
     companion object {
         const val DATABASE_SCHEMA_VERSION = 8
 
-        internal fun create(applicationContext: Context): IAniTrendStore {
-            return Room.databaseBuilder(
-                applicationContext,
-                AniTrendStore::class.java,
-                "anitrend-db"
-            ).fallbackToDestructiveMigration()
+        internal fun create(applicationContext: Context): IAniTrendStore =
+            Room
+                .databaseBuilder(
+                    applicationContext,
+                    AniTrendStore::class.java,
+                    "anitrend-db",
+                ).fallbackToDestructiveMigration()
                 .addMigrations(*migrations)
                 .build()
-        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.studio.entity
 
 import androidx.room.ColumnInfo
@@ -28,7 +27,7 @@ import co.anitrend.data.jikan.media.entity.JikanEntity
     tableName = "jikan_studio",
     primaryKeys = ["id"],
     indices = [
-        Index(value = ["jikan_id"])
+        Index(value = ["jikan_id"]),
     ],
     foreignKeys = [
         ForeignKey(
@@ -36,13 +35,13 @@ import co.anitrend.data.jikan.media.entity.JikanEntity
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["jikan_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 data class JikanStudioEntity(
     @ColumnInfo(name = "jikan_id") override val jikanId: Long,
     @ColumnInfo(name = "type") override val type: String?,
     @ColumnInfo(name = "name") override val name: String?,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : JikanEntityAttribute

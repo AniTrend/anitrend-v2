@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.account.repository
 
 import co.anitrend.arch.data.state.DataState
@@ -25,11 +24,9 @@ import co.anitrend.domain.account.repository.AccountRepository
 import co.anitrend.domain.user.entity.User
 
 internal class AccountRepositoryImpl(
-    private val source: AuthSource
-) : AccountRepository<DataState<List<User>>>{
-
-    override suspend fun getAccountUsers() =
-        source create source()
+    private val source: AuthSource,
+) : AccountRepository<DataState<List<User>>> {
+    override suspend fun getAccountUsers() = source create source()
 
     override suspend fun signOut(param: AccountParam.SignOut) {
         source.signOut(param)

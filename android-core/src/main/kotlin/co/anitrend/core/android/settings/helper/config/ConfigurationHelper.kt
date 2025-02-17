@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.helper.config
 
 import android.content.Context
@@ -39,9 +38,8 @@ import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
 internal class ConfigurationHelper(
     private val settings: IConfigurationSettings,
     private val localeHelper: ILocaleHelper,
-    private val themeHelper: IThemeHelper
+    private val themeHelper: IThemeHelper,
 ) : IConfigurationHelper {
-
     @StyleRes
     override var themeOverride: Int? = null
 
@@ -52,8 +50,7 @@ internal class ConfigurationHelper(
     /**
      * Creates a new context with configuration
      */
-    override fun attachContext(context: Context?) =
-        localeHelper.applyLocale(context)
+    override fun attachContext(context: Context?) = localeHelper.applyLocale(context)
 
     /**
      * Applies configuration upon the create state of the current activity
@@ -74,7 +71,7 @@ internal class ConfigurationHelper(
      */
     override fun onResume(activity: FragmentActivity) {
         if (applicationTheme != settings.theme.value) {
-            //activity.recreate()
+            // activity.recreate()
             activity.resetActivity()
             themeHelper.applyDynamicNightModeFromTheme()
         }
@@ -95,7 +92,7 @@ internal class ConfigurationHelper(
         private operator fun FragmentActivity.invoke() {
             overridePendingTransition(
                 android.R.anim.fade_in,
-                android.R.anim.fade_out
+                android.R.anim.fade_out,
             )
         }
     }

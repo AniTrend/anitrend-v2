@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.status.entity
 
 import androidx.room.Entity
@@ -22,28 +21,27 @@ import androidx.room.PrimaryKey
 import co.anitrend.data.core.common.Identity
 
 internal sealed class StatusEntity : Identity {
-
     @Entity(tableName = "list_status")
     data class ListStatus(
         @PrimaryKey
-        override val id: Long
+        override val id: Long,
     ) : StatusEntity()
 
     @Entity(tableName = "message_status")
     data class MessageStatus(
         @PrimaryKey
-        override val id: Long
+        override val id: Long,
     ) : StatusEntity()
 
     @Entity(tableName = "reply_status")
     data class ReplyStatus(
         @PrimaryKey
-        override val id: Long
+        override val id: Long,
     ) : StatusEntity()
 
     @Entity(tableName = "text_status")
     data class TextStatus(
         @PrimaryKey
-        override val id: Long
+        override val id: Long,
     ) : StatusEntity()
 }

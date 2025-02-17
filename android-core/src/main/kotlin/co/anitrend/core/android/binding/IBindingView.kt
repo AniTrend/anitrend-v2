@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.binding
 
 import androidx.viewbinding.ViewBinding
@@ -24,8 +23,7 @@ import androidx.viewbinding.ViewBinding
  *
  * @property binding The binding property that represents a view
  */
-interface IBindingView<B: ViewBinding> {
-
+interface IBindingView<B : ViewBinding> {
     var binding: B?
 
     /**

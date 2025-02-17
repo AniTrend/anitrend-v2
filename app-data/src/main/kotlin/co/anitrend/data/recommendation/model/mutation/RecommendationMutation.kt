@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,25 +14,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.recommendation.model.mutation
 
 import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.recommendation.model.RecommendationParam
 
 internal sealed class RecommendationMutation {
-
     internal data class Save(
-        val param: RecommendationParam.Save
+        val param: RecommendationParam.Save,
     ) : IGraphPayload {
-
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "mediaId" to param.mediaId,
-            "mediaRecommendationId" to param.mediaRecommendationId,
-            "rating" to param.rating
-        )
+        override fun toMap() =
+            mapOf(
+                "mediaId" to param.mediaId,
+                "mediaRecommendationId" to param.mediaRecommendationId,
+                "rating" to param.rating,
+            )
     }
 }

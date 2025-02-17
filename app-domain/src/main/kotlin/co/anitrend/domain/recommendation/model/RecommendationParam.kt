@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.recommendation.model
 
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 import co.anitrend.domain.recommendation.enums.RecommendationSort
 
 sealed class RecommendationParam {
-
     /** [Recommendation query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param id Filter by recommendation id
@@ -43,7 +41,7 @@ sealed class RecommendationParam {
         val rating_greater: Int? = null,
         val rating_lesser: Int? = null,
         val sort: List<RecommendationSort>? = null,
-        val userId: Int? = null
+        val userId: Int? = null,
     ) : RecommendationParam()
 
     /** [SaveRecommendation mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -57,6 +55,6 @@ sealed class RecommendationParam {
     data class Save(
         val mediaId: Int,
         val mediaRecommendationId: Int,
-        val rating: RecommendationRating
+        val rating: RecommendationRating,
     ) : RecommendationParam()
 }

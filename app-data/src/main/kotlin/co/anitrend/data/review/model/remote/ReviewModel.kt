@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.model.remote
 
 import co.anitrend.data.media.model.MediaModel
@@ -30,7 +29,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class ReviewModel : IReviewModel {
-
     @Serializable
     internal data class Core(
         @SerialName("body") override val body: String? = null,
@@ -47,7 +45,7 @@ internal sealed class ReviewModel : IReviewModel {
         @SerialName("user") override val user: UserModel.Core? = null,
         @SerialName("userId") override val userId: Long,
         @SerialName("userRating") override val userRating: ReviewRating? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : ReviewModel()
 
     @Serializable
@@ -67,6 +65,6 @@ internal sealed class ReviewModel : IReviewModel {
         @SerialName("user") override val user: UserModel.Core? = null,
         @SerialName("userId") override val userId: Long,
         @SerialName("userRating") override val userRating: ReviewRating? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : ReviewModel()
 }

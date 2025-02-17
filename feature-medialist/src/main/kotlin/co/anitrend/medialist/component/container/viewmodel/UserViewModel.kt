@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.component.container.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.asFlow
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.user.entity.User
 import co.anitrend.medialist.component.container.viewmodel.state.UserState
 import co.anitrend.navigation.MediaListRouter
@@ -35,13 +32,14 @@ class UserViewModel(
     override val state: UserState,
     private val savedStateHandle: SavedStateHandle,
 ) : AniTrendViewModel() {
-
     init {
         viewModelScope.launch {
-            savedStateHandle.getStateFlow<MediaListRouter.MediaListParam?>(
-                key = nameOf<MediaListRouter.MediaListParam>(),
-                initialValue = null
-            ).filterNotNull().collect { invoke(it) }
+            savedStateHandle
+                .getStateFlow<MediaListRouter.MediaListParam?>(
+                    key = nameOf<MediaListRouter.MediaListParam>(),
+                    initialValue = null,
+                ).filterNotNull()
+                .collect { invoke(it) }
         }
     }
 
@@ -49,12 +47,13 @@ class UserViewModel(
         key = nameOf<MediaListRouter.MediaListParam>(),
     )
 
-    val tabConfigurationListInfo = state.model.map {
-        val user = it as User.Extended
-        user.mediaListInfo.filter { mediaListInfo ->
-            mediaListInfo.mediaType == requireNotNull(param?.type)
+    val tabConfigurationListInfo =
+        state.model.map {
+            val user = it as User.Extended
+            user.mediaListInfo.filter { mediaListInfo ->
+                mediaListInfo.mediaType == requireNotNull(param?.type)
+            }
         }
-    }
 
     private operator fun invoke(arg: MediaListRouter.MediaListParam) {
         viewModelScope.launch {

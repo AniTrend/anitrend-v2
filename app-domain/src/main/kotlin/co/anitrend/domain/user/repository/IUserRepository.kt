@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,27 +14,25 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.repository
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.user.model.UserParam
 
 interface IUserRepository {
-
-    interface User<State: UiState<*>> : IUserRepository {
+    interface User<State : UiState<*>> : IUserRepository {
         suspend fun getUser(param: UserParam.Identifier): State
     }
 
-    interface Authenticated<State: UiState<*>> : IUserRepository {
+    interface Authenticated<State : UiState<*>> : IUserRepository {
         suspend fun getProfile(): State
     }
 
-    interface Profile<State: UiState<*>> : IUserRepository {
+    interface Profile<State : UiState<*>> : IUserRepository {
         suspend fun getProfile(param: UserParam.Profile): State
     }
 
-    interface Search<State: UiState<*>> {
+    interface Search<State : UiState<*>> {
         suspend fun getPaged(param: UserParam.Search): State
     }
 

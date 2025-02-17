@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.adapter
 
 import android.content.res.Resources
@@ -26,13 +25,10 @@ internal class AniTrendLoadStateAdapter(
     resources: Resources,
     stateConfiguration: IStateLayoutConfig,
 ) : SupportLoadStateAdapter(resources, stateConfiguration) {
-
     /**
      * Returns true if the LoadState should be displayed as a list item when active.
      *
      * By default, [LoadState.Loading] and [LoadState.Error] present as list items, others do not.
      */
-    override fun displayLoadStateAsItem(loadState: LoadState): Boolean {
-        return super.displayLoadStateAsItem(loadState) || loadState is LoadState.Success
-    }
+    override fun displayLoadStateAsItem(loadState: LoadState): Boolean = super.displayLoadStateAsItem(loadState) || loadState is LoadState.Success
 }

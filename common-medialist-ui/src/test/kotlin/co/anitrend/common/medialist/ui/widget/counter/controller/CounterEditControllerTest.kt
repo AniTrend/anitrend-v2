@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.medialist.ui.widget.counter.controller
 
 import co.anitrend.common.medialist.ui.widget.counter.model.CounterEditModel
@@ -22,7 +21,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
 class CounterEditControllerTest {
-
     @Test
     fun `increment when near model maximum`() {
         val given = CounterEditModel(7, 8)
@@ -51,7 +49,6 @@ class CounterEditControllerTest {
         val expected = 8
         val actual = given.current
         assertEquals(expected, actual)
-
     }
 
     @Test

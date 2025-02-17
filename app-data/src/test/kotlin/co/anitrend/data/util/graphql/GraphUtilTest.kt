@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.util.graphql
 
 import co.anitrend.data.base.MockQuery
@@ -30,14 +29,13 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
-
 class GraphUtilTest {
-
     @Test
     fun `default query has required map keys and values`() {
-        val actual = PageQuery(
-            page = 1
-        ).toQueryContainerBuilder()
+        val actual =
+            PageQuery(
+                page = 1,
+            ).toQueryContainerBuilder()
 
         assertTrue(actual.containsKey("page"))
         assertEquals(1, actual.getVariable("page"))
@@ -55,7 +53,6 @@ class GraphUtilTest {
 
         assertEquals(expected, actual)
     }
-
 
     @Test
     fun `sorting helper does not append postfix to ignored values`() {
@@ -92,10 +89,10 @@ class GraphUtilTest {
 
     @Test
     fun `mock query with sorting parameter produces mapped sorting order using sort order settings as descending`() {
-
-        val input = listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
-            .map { SortWithOrder(it, SortOrder.DESC) }
-        val mockQuery = MockQuery(sort=input)
+        val input =
+            listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
+                .map { SortWithOrder(it, SortOrder.DESC) }
+        val mockQuery = MockQuery(sort = input)
 
         val expected = listOf("SEARCH_MATCH", "POPULARITY_DESC", "TYPE_DESC")
 
@@ -107,10 +104,10 @@ class GraphUtilTest {
 
     @Test
     fun `mock query with sorting parameter produces mapped sorting order using sort order settings as ascending`() {
-
-        val input = listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
-            .map { SortWithOrder(it, SortOrder.ASC) }
-        val mockQuery = MockQuery(sort=input)
+        val input =
+            listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
+                .map { SortWithOrder(it, SortOrder.ASC) }
+        val mockQuery = MockQuery(sort = input)
 
         val expected = listOf("SEARCH_MATCH", "POPULARITY", "TYPE")
 

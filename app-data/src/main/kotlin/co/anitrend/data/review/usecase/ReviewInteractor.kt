@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.usecase
 
 import co.anitrend.data.review.DeleteReviewInteractor
@@ -29,24 +28,23 @@ import co.anitrend.data.review.ReviewSaveRepository
 import co.anitrend.data.review.SaveReviewInteractor
 
 internal interface ReviewInteractor {
-
     class Entry(
-        repository: ReviewEntryRepository
+        repository: ReviewEntryRepository,
     ) : GetReviewInteractor(repository)
 
     class Delete(
-        repository: ReviewDeleteRepository
+        repository: ReviewDeleteRepository,
     ) : DeleteReviewInteractor(repository)
 
     class Rate(
-        repository: ReviewRateRepository
+        repository: ReviewRateRepository,
     ) : RateReviewInteractor(repository)
 
     class Save(
-        repository: ReviewSaveRepository
+        repository: ReviewSaveRepository,
     ) : SaveReviewInteractor(repository)
 
     class Paged(
-        repository: ReviewPagedRepository
+        repository: ReviewPagedRepository,
     ) : GetReviewPagedInteractor(repository)
 }

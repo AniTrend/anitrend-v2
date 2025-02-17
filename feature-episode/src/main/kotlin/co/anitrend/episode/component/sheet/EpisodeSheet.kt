@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.episode.component.sheet
 
 import android.os.Bundle
@@ -47,28 +46,30 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EpisodeSheet(
     private val markwon: Markwon,
-    override val inflateLayout: Int = R.layout.episode_sheet
+    override val inflateLayout: Int = R.layout.episode_sheet,
 ) : AniTrendBottomSheet<EpisodeSheetBinding>() {
-
     private val viewModel by viewModel<EpisodeSheetViewModel>()
 
     private val param by argument<EpisodeRouter.EpisodeParam>(
-        key = nameOf<EpisodeRouter.EpisodeParam>()
+        key = nameOf<EpisodeRouter.EpisodeParam>(),
     )
 
     private var disposable: Disposable? = null
 
-    private val shapeTransformationAction = object : OnSlideAction {
-        /**
-         * Called when the bottom sheet's [slideOffset] is changed. [slideOffset] will always be a
-         * value between -1.0 and 1.0. -1.0 is equal to [BottomSheetBehavior.STATE_HIDDEN], 0.0
-         * is equal to [BottomSheetBehavior.STATE_HALF_EXPANDED] and 1.0 is equal to
-         * [BottomSheetBehavior.STATE_EXPANDED].
-         */
-        override fun onSlide(sheet: View, slideOffset: Float) {
-
+    private val shapeTransformationAction =
+        object : OnSlideAction {
+            /**
+             * Called when the bottom sheet's [slideOffset] is changed. [slideOffset] will always be a
+             * value between -1.0 and 1.0. -1.0 is equal to [BottomSheetBehavior.STATE_HIDDEN], 0.0
+             * is equal to [BottomSheetBehavior.STATE_HALF_EXPANDED] and 1.0 is equal to
+             * [BottomSheetBehavior.STATE_EXPANDED].
+             */
+            override fun onSlide(
+                sheet: View,
+                slideOffset: Float,
+            ) {
+            }
         }
-    }
 
     /**
      * Invoke view model observer to watch for changes, this will be called
@@ -92,7 +93,8 @@ class EpisodeSheet(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, closeSheetOnBackPressed
+            this,
+            closeSheetOnBackPressed,
         )
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -132,7 +134,7 @@ class EpisodeSheet(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = EpisodeSheetBinding.bind(requireNotNull(view))
@@ -150,9 +152,13 @@ class EpisodeSheet(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
-        BetterLinkMovementMethod.linkify(Linkify.ALL, activity)
+        BetterLinkMovementMethod
+            .linkify(Linkify.ALL, activity)
             .setOnLinkClickListener { target, url ->
                 runCatching {
                     target.handleViewIntent(url)
@@ -191,7 +197,7 @@ class EpisodeSheet(
     override fun onResume() {
         super.onResume()
         bottomSheetCallback.addOnSlideAction(
-            shapeTransformationAction
+            shapeTransformationAction,
         )
     }
 
@@ -202,7 +208,7 @@ class EpisodeSheet(
      */
     override fun onPause() {
         bottomSheetCallback.removeOnSlideAction(
-            shapeTransformationAction
+            shapeTransformationAction,
         )
         super.onPause()
     }
@@ -212,7 +218,8 @@ class EpisodeSheet(
      * after [onStop] and before [onDetach].
      */
     override fun onDestroy() {
-        BetterLinkMovementMethod.linkify(Linkify.ALL, activity)
+        BetterLinkMovementMethod
+            .linkify(Linkify.ALL, activity)
             .setOnLinkClickListener(null)
         binding?.episodePlay?.setOnClickListener(null)
         binding?.episodePublisher?.setOnClickListener(null)

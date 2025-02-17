@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.model.remote
 
 import kotlinx.serialization.SerialName
@@ -22,5 +21,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class TagContainerModel(
-    @SerialName("MediaTagCollection") val mediaTagCollection: List<TagModel.Core>
+    @SerialName("MediaTagCollection") val mediaTagCollection: List<TagModel.Core>,
 )

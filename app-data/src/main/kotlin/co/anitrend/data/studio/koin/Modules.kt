@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.koin
 
 import co.anitrend.data.studio.converter.StudioConverter
@@ -22,38 +21,40 @@ import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.converter.StudioModelConverter
 import org.koin.dsl.module
 
-private val sourceModule = module {
-
-}
-
-private val converterModule = module {
-    factory {
-        StudioConverter()
+private val sourceModule =
+    module {
     }
-    factory {
-        StudioModelConverter()
+
+private val converterModule =
+    module {
+        factory {
+            StudioConverter()
+        }
+        factory {
+            StudioModelConverter()
+        }
+        factory {
+            StudioEntityConverter()
+        }
     }
-    factory {
-        StudioEntityConverter()
+
+private val mapperModule =
+    module {
     }
-}
 
-private val mapperModule = module {
+private val useCaseModule =
+    module {
+    }
 
-}
+private val repositoryModule =
+    module {
+    }
 
-private val useCaseModule = module {
-
-}
-
-private val repositoryModule = module {
-
-}
-
-internal val studioModules = listOf(
-    sourceModule,
-    converterModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val studioModules =
+    listOf(
+        sourceModule,
+        converterModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule,
+    )

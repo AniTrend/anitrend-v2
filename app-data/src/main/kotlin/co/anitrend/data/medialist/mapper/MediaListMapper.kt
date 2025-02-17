@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
@@ -31,7 +30,6 @@ import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.model.UserModel
 
 internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
-
     protected abstract val localSource: MediaListLocalSource
     protected abstract val converter: MediaListModelConverter
 
@@ -39,12 +37,10 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.DeletedCustomList, Boolean>() {
-
         /**
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: Boolean) {
-
         }
 
         /**
@@ -53,21 +49,17 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: MediaListContainerModel.DeletedCustomList
-        ) = source.entry.deleted
+        override suspend fun onResponseMapFrom(source: MediaListContainerModel.DeletedCustomList) = source.entry.deleted
     }
 
     class DeletedEntry(
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.DeletedEntry, Boolean>() {
-
         /**
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: Boolean) {
-
         }
 
         /**
@@ -76,9 +68,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: MediaListContainerModel.DeletedEntry
-        ) = source.entry.deleted
+        override suspend fun onResponseMapFrom(source: MediaListContainerModel.DeletedEntry) = source.entry.deleted
     }
 
     class Entry(
@@ -89,7 +79,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.Entry, MediaListEntity>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -107,20 +96,18 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: MediaListContainerModel.Entry
-        ): MediaListEntity {
+        override suspend fun onResponseMapFrom(source: MediaListContainerModel.Entry): MediaListEntity {
             userMapper.onEmbedded(
-                source.entry.user
+                source.entry.user,
             )
             mediaMapper.onEmbedded(
-                source.entry.media
+                source.entry.media,
             )
             customListMapper.onEmbedded(
-                CustomListMapper.asItem(source.entry)
+                CustomListMapper.asItem(source.entry),
             )
             customScoreMapper.onEmbedded(
-                CustomScoreMapper.asItem(source.entry)
+                CustomScoreMapper.asItem(source.entry),
             )
             return converter.convertFrom(source.entry)
         }
@@ -134,7 +121,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.SavedEntry, MediaListEntity>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -152,17 +138,15 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: MediaListContainerModel.SavedEntry
-        ): MediaListEntity {
+        override suspend fun onResponseMapFrom(source: MediaListContainerModel.SavedEntry): MediaListEntity {
             userMapper.onEmbedded(
-                source.entry.user
+                source.entry.user,
             )
             customListMapper.onEmbedded(
-                CustomListMapper.asItem(source.entry)
+                CustomListMapper.asItem(source.entry),
             )
             customScoreMapper.onEmbedded(
-                CustomScoreMapper.asItem(source.entry)
+                CustomScoreMapper.asItem(source.entry),
             )
             return converter.convertFrom(source.entry)
         }
@@ -176,7 +160,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.SavedEntries, List<MediaListEntity>>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -194,17 +177,15 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: MediaListContainerModel.SavedEntries
-        ): List<MediaListEntity> {
+        override suspend fun onResponseMapFrom(source: MediaListContainerModel.SavedEntries): List<MediaListEntity> {
             userMapper.onEmbedded(
-                source.entries.map { it.user }
+                source.entries.map { it.user },
             )
             customListMapper.onEmbedded(
-                CustomListMapper.asItem(source.entries)
+                CustomListMapper.asItem(source.entries),
             )
             customScoreMapper.onEmbedded(
-                CustomScoreMapper.asItem(source.entries)
+                CustomScoreMapper.asItem(source.entries),
             )
             return converter.convertFrom(source.entries)
         }
@@ -218,7 +199,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.Collection, List<MediaListEntity>>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -240,13 +220,13 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
             userMapper.onEmbedded(source.mediaListCollection.user)
             val mediaList = source.mediaListCollection.lists.flatMap { it.entries }
             mediaMapper.onEmbedded(
-                mediaList.map(MediaListModel.Extended::media)
+                mediaList.map(MediaListModel.Extended::media),
             )
             customListMapper.onEmbedded(
-                CustomListMapper.asItem(mediaList)
+                CustomListMapper.asItem(mediaList),
             )
             customScoreMapper.onEmbedded(
-                CustomScoreMapper.asItem(mediaList)
+                CustomScoreMapper.asItem(mediaList),
             )
             return converter.convertFrom(mediaList)
         }
@@ -260,7 +240,6 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.Paged, List<MediaListEntity>>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -278,24 +257,22 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: MediaListContainerModel.Paged
-        ): List<MediaListEntity> {
+        override suspend fun onResponseMapFrom(source: MediaListContainerModel.Paged): List<MediaListEntity> {
             userMapper.onEmbedded(
                 source.page.entries.map {
                     it.user
-                }
+                },
             )
             mediaMapper.onEmbedded(
                 source.page.entries.map(
-                    MediaListModel.Extended::media
-                )
+                    MediaListModel.Extended::media,
+                ),
             )
             customListMapper.onEmbedded(
-                CustomListMapper.asItem(source.page.entries)
+                CustomListMapper.asItem(source.page.entries),
             )
             customScoreMapper.onEmbedded(
-                CustomScoreMapper.asItem(source.page.entries)
+                CustomScoreMapper.asItem(source.page.entries),
             )
             return converter.convertFrom(source.page.entries)
         }
@@ -306,7 +283,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
         override val localSource: MediaListLocalSource,
-        override val converter: MediaListModelConverter
+        override val converter: MediaListModelConverter,
     ) : EmbedMapper<MediaListModel, MediaListEntity>() {
         /**
          * Save [data] into your desired local source
@@ -324,17 +301,15 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: List<MediaListModel>
-        ): List<MediaListEntity> {
+        override suspend fun onResponseMapFrom(source: List<MediaListModel>): List<MediaListEntity> {
             userMapper.onEmbedded(
-                source.map { it.user as UserModel }
+                source.map { it.user as UserModel },
             )
             customListMapper.onEmbedded(
-                CustomListMapper.asItem(source)
+                CustomListMapper.asItem(source),
             )
             customScoreMapper.onEmbedded(
-                CustomScoreMapper.asItem(source)
+                CustomScoreMapper.asItem(source),
             )
             return super.onResponseMapFrom(source)
         }
@@ -344,9 +319,8 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val userMapper: UserMapper.Embed,
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         override val localSource: MediaListLocalSource,
-        override val converter: MediaListModelConverter
+        override val converter: MediaListModelConverter,
     ) : EmbedMapper<MediaListModel, MediaListEntity>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -362,18 +336,18 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: List<MediaListModel>
-        ): List<MediaListEntity> {
+        override suspend fun onResponseMapFrom(source: List<MediaListModel>): List<MediaListEntity> {
             userMapper.onEmbedded(
-                source.map { it.user as UserModel }
+                source.map { it.user as UserModel },
             )
             mediaMapper.onEmbedded(
                 source.mapNotNull {
-                    if (it is MediaListModel.Extended)
+                    if (it is MediaListModel.Extended) {
                         it.media
-                    else null
-                }
+                    } else {
+                        null
+                    }
+                },
             )
             return super.onResponseMapFrom(source)
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,9 @@ import timber.log.Timber
 /**
  * Application deep link router for handling anitrend and web URIs
  */
-abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
+abstract class Route(
+    vararg routes: String,
+) : BaseRoute<Intent?>(*routes) {
     /**
      * Called when the application receives a matching deep link from [routes]
      *
@@ -39,7 +41,11 @@ abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
      * @param params Variables available in the uri path e.g `segment/:param`
      * @param env Application environment
      */
-    override fun run(uri: DeepLinkUri, params: Map<String, String>, env: Environment): Intent? {
+    override fun run(
+        uri: DeepLinkUri,
+        params: Map<String, String>,
+        env: Environment,
+    ): Intent? {
         Timber.d("DeepLinkUri match hit: $uri")
         val entries = params.entries.joinToString()
         Timber.analytics {
@@ -47,9 +53,9 @@ abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
                 Timber.tags.view("deep_link"),
                 bundleOf(
                     Timber.keys.DATA to
-                    UriCompat.toSafeString(
-                        uri.toAndroidUri()
-                    )
+                        UriCompat.toSafeString(
+                            uri.toAndroidUri(),
+                        ),
                 ),
             )
         }

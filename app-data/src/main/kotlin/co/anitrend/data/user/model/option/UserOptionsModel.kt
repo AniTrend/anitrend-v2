@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.model.option
 
 import co.anitrend.domain.medialist.enums.MediaListStatus
@@ -71,7 +70,7 @@ internal sealed class UserOptionsModel {
     @Serializable
     internal data class NotificationOptions(
         @SerialName("enabled") val enabled: Boolean,
-        @SerialName("type") val notificationType: NotificationType
+        @SerialName("type") val notificationType: NotificationType,
     )
 
     /**
@@ -81,6 +80,6 @@ internal sealed class UserOptionsModel {
     @Serializable
     internal data class ListActivityOption(
         @SerialName("disabled") val disabled: Boolean,
-        @SerialName("type") val mediaListStatusType: MediaListStatus
+        @SerialName("type") val mediaListStatusType: MediaListStatus,
     )
 }

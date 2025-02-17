@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.storage.enums
 
 import android.os.Environment
@@ -24,10 +23,12 @@ import android.os.Environment
  *
  * @param type The type of files directory to return.
  */
-enum class StorageType(val type: String?) {
+enum class StorageType(
+    val type: String?,
+) {
     CACHE(null),
     FILES(null),
     MUSIC(Environment.DIRECTORY_MUSIC),
     PICTURES(Environment.DIRECTORY_PICTURES),
-    MOVIES(Environment.DIRECTORY_MOVIES)
+    MOVIES(Environment.DIRECTORY_MOVIES),
 }

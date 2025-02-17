@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.source
 
 import androidx.paging.PagedList
@@ -56,20 +55,19 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 internal class MediaListSourceImpl {
-
     class Sync(
         private val remoteSource: MediaListRemoteSource,
         private val controller: MediaListCollectionController,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.Sync() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder()
-                remoteSource.getMediaListCollection(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getMediaListCollection(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
             observable.value = result != null
@@ -81,7 +79,6 @@ internal class MediaListSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-
         }
     }
 
@@ -94,24 +91,24 @@ internal class MediaListSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
         override val dispatcher: ISupportDispatcher,
-        override val cachePolicy: ICacheStorePolicy
+        override val cachePolicy: ICacheStorePolicy,
     ) : MediaListSource.Entry() {
-
-        override fun observable(): Flow<Media> {
-            return mediaLocalSource.rawFlow(
-                filter.build(query.param)
-            ).flowOn(dispatcher.io)
+        override fun observable(): Flow<Media> =
+            mediaLocalSource
+                .rawFlow(
+                    filter.build(query.param),
+                ).flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
-        }
 
         override suspend fun getEntry(requestCallback: RequestCallback): Boolean {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder()
-                remoteSource.getMediaListEntry(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getMediaListEntry(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
 
@@ -127,7 +124,7 @@ internal class MediaListSourceImpl {
             clearDataHelper(context) {
                 localSource.clearByMediaId(
                     mediaId = query.param.mediaId,
-                    userId = query.param.userId
+                    userId = query.param.userId,
                 )
                 cachePolicy.invalidateLastRequest(cacheIdentity)
             }
@@ -142,31 +139,33 @@ internal class MediaListSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val filter: MediaListQueryFilter.Paged,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.Paged() {
-
         override val cacheIdentity: CacheIdentity = MediaListCache.Identity.Paged()
 
         override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory = mediaLocalSource
-                .rawFactory(filter.build(query.param))
-                .map(converter::convertFrom)
+            val dataSourceFactory =
+                mediaLocalSource
+                    .rawFactory(filter.build(query.param))
+                    .map(converter::convertFrom)
 
             return FlowPagedListBuilder(
                 dataSourceFactory,
                 PAGING_CONFIGURATION,
                 null,
-                this
+                this,
             ).buildFlow()
         }
 
         override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper
-                )
-                remoteSource.getMediaListPaged(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder =
+                        query.toQueryContainerBuilder(
+                            supportPagingHelper,
+                        )
+                    remoteSource.getMediaListPaged(queryBuilder)
+                }
 
             controller(deferred, requestCallback) {
                 supportPagingHelper.from(it.page)
@@ -181,14 +180,15 @@ internal class MediaListSourceImpl {
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
-                if (query.param.userId != null)
+                if (query.param.userId != null) {
                     localSource.clearByUserId(
-                        requireNotNull(query.param.userId)
+                        requireNotNull(query.param.userId),
                     )
-                else if (query.param.userName != null)
+                } else if (query.param.userName != null) {
                     localSource.clearByUserName(
-                        requireNotNull(query.param.userName)
+                        requireNotNull(query.param.userName),
                     )
+                }
             }
         }
     }
@@ -201,31 +201,33 @@ internal class MediaListSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val filter: MediaListQueryFilter.Collection,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.Collection() {
-
         override val cacheIdentity: CacheIdentity = MediaListCache.Identity.Collection()
 
         override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory = mediaLocalSource
-                .rawFactory(filter.build(query.param))
-                .map(converter::convertFrom)
+            val dataSourceFactory =
+                mediaLocalSource
+                    .rawFactory(filter.build(query.param))
+                    .map(converter::convertFrom)
 
             return FlowPagedListBuilder(
                 dataSourceFactory,
                 PAGING_CONFIGURATION,
                 null,
-                this
+                this,
             ).buildFlow()
         }
 
         override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper
-                )
-                remoteSource.getMediaListCollection(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder =
+                        query.toQueryContainerBuilder(
+                            supportPagingHelper,
+                        )
+                    remoteSource.getMediaListCollection(queryBuilder)
+                }
 
             controller(deferred, requestCallback)
         }
@@ -237,14 +239,15 @@ internal class MediaListSourceImpl {
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
-                if (query.param.userId != null)
+                if (query.param.userId != null) {
                     localSource.clearByUserId(
-                        requireNotNull(query.param.userId)
+                        requireNotNull(query.param.userId),
                     )
-                else if (query.param.userName != null)
+                } else if (query.param.userName != null) {
                     localSource.clearByUserName(
-                        requireNotNull(query.param.userName)
+                        requireNotNull(query.param.userName),
                     )
+                }
             }
         }
     }
@@ -252,16 +255,16 @@ internal class MediaListSourceImpl {
     class SaveEntry(
         private val remoteSource: MediaListRemoteSource,
         private val controller: MediaListSaveEntryController,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.SaveEntry() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun saveEntry(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.saveMediaListEntry(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.saveMediaListEntry(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
             observable.value = result != null
@@ -273,23 +276,22 @@ internal class MediaListSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-
         }
     }
 
     class SaveEntries(
         private val remoteSource: MediaListRemoteSource,
         private val controller: MediaListSaveEntriesController,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.SaveEntries() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun saveEntries(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.saveMediaListEntries(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.saveMediaListEntries(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
             observable.value = !result.isNullOrEmpty()
@@ -301,7 +303,6 @@ internal class MediaListSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-
         }
     }
 
@@ -311,21 +312,22 @@ internal class MediaListSourceImpl {
         private val controller: MediaListDeleteEntryController,
         private val settings: IAuthenticationSettings,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.DeleteEntry() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.deleteMediaListEntry(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.deleteMediaListEntry(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
 
-            if (result == true)
+            if (result == true) {
                 clearDataSource(dispatcher.io)
+            }
 
             observable.value = result
         }
@@ -339,7 +341,7 @@ internal class MediaListSourceImpl {
             clearDataHelper(context) {
                 localSource.clearById(
                     id = mutation.param.id,
-                    userId = settings.authenticatedUserId.value
+                    userId = settings.authenticatedUserId.value,
                 )
             }
         }
@@ -352,16 +354,16 @@ internal class MediaListSourceImpl {
         private val controller: DeleteCustomListController,
         private val settings: IAuthenticationSettings,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaListSource.DeleteCustomList() {
-
         override val observable: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
         override suspend fun deleteCustomList(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = mutation.toQueryContainerBuilder()
-                remoteSource.deleteCustomList(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = mutation.toQueryContainerBuilder()
+                    remoteSource.deleteCustomList(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
 
@@ -384,7 +386,7 @@ internal class MediaListSourceImpl {
                 val userId = settings.authenticatedUserId.value
                 localSource.clear(
                     listName = mutation.param.customList,
-                    userId = userId
+                    userId = userId,
                 )
             }
         }

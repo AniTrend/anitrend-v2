@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.api.interceptor
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
@@ -28,16 +27,16 @@ import okhttp3.Response
  * on the dispatching caller, as such take care to assure thread safety
  */
 internal class GraphClientInterceptor(
-    private val authenticationHelper: IAuthenticationHelper
+    private val authenticationHelper: IAuthenticationHelper,
 ) : Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
 
         val contentLength = original.body?.contentLength() ?: 0
         val requestBuilder = original.newBuilder()
 
-        requestBuilder.header(CONTENT_TYPE, GraphConverter.MIME_TYPE)
+        requestBuilder
+            .header(CONTENT_TYPE, GraphConverter.MIME_TYPE)
             .header(ACCEPT, ACCEPT_TYPE)
             .header(CONTENT_LENGTH, contentLength.toString())
             .method(original.method, original.body)

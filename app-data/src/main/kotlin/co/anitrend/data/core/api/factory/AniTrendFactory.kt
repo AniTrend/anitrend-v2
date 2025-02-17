@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.api.factory
 
 import co.anitrend.data.BuildConfig
@@ -35,41 +34,43 @@ internal class AniListApiFactory(
     private val authenticationHelper: IAuthenticationHelper,
     private val deviceInfo: IDeviceInfo,
 ) : IEndpointFactory {
-
-    override val endpointType = object : IEndpointType {
-        override val url: HttpUrl = BuildConfig.aniListApi.toHttpUrl()
-    }
+    override val endpointType =
+        object : IEndpointType {
+            override val url: HttpUrl = BuildConfig.aniListApi.toHttpUrl()
+        }
 
     override fun okHttpConfig(scope: Scope): OkHttpClient {
         val builder = scope.defaultBuilder(setOf(IAuthenticationHelper.AUTHORIZATION))
         Timber.d("Adding authenticator and request interceptors for request")
-        builder.addInterceptor(
-            SharedInterceptor(
-                deviceInfo = deviceInfo
-            )
-        ).addInterceptor(
-            GraphClientInterceptor(
-                authenticationHelper = authenticationHelper
-            )
-        ).authenticator(
-            GraphAuthenticator(
-                authenticationHelper = authenticationHelper
-            )
-        ).cookieJar(scope.get())
+        builder
+            .addInterceptor(
+                SharedInterceptor(
+                    deviceInfo = deviceInfo,
+                ),
+            ).addInterceptor(
+                GraphClientInterceptor(
+                    authenticationHelper = authenticationHelper,
+                ),
+            ).authenticator(
+                GraphAuthenticator(
+                    authenticationHelper = authenticationHelper,
+                ),
+            ).cookieJar(scope.get())
         return builder.build()
     }
 }
 
 internal class AuthenticationApiFactory : IEndpointFactory {
-
-    override val endpointType = object : IEndpointType {
-        override val url: HttpUrl = "https://${BuildConfig.aniListAuth}".toHttpUrl()
-    }
+    override val endpointType =
+        object : IEndpointType {
+            override val url: HttpUrl = "https://${BuildConfig.aniListAuth}".toHttpUrl()
+        }
 
     override fun okHttpConfig(scope: Scope): OkHttpClient {
-        val builder = scope.defaultBuilder().addInterceptor(
-            SharedInterceptor(deviceInfo = scope.get())
-        )
+        val builder =
+            scope.defaultBuilder().addInterceptor(
+                SharedInterceptor(deviceInfo = scope.get()),
+            )
         return builder.build()
     }
 }

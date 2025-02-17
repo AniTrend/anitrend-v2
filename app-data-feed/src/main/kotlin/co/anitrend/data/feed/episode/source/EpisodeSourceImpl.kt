@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.episode.source
 
 import androidx.paging.PagedList
@@ -33,7 +32,6 @@ import co.anitrend.data.feed.episode.source.contract.EpisodeSource
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -41,21 +39,19 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 internal sealed class EpisodeSourceImpl {
-
     internal class Detail(
         private val localSource: EpisodeLocalSource,
         private val converter: EpisodeEntityConverter,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : EpisodeSource.Detail() {
-
-        override fun observable(param: EpisodeParam.Detail): Flow<Episode> {
-            return localSource.episodeByIdFlow(param.id)
-                    .flowOn(dispatcher.io)
-                    .filterNotNull()
-                    .map(converter::convertFrom)
-                    .distinctUntilChanged()
-                    .flowOn(dispatcher.computation)
-        }
+        override fun observable(param: EpisodeParam.Detail): Flow<Episode> =
+            localSource
+                .episodeByIdFlow(param.id)
+                .flowOn(dispatcher.io)
+                .filterNotNull()
+                .map(converter::convertFrom)
+                .distinctUntilChanged()
+                .flowOn(dispatcher.computation)
 
         /**
          * Clears data sources (databases, preferences, e.t.c)
@@ -74,26 +70,27 @@ internal sealed class EpisodeSourceImpl {
         private val controller: EpisodePagedController,
         private val converter: EpisodeEntityConverter,
         override val cachePolicy: ICacheStorePolicy,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : EpisodeSource.Paged() {
-
         override fun observable(): Flow<PagedList<Episode>> {
-            val dataSourceFactory = localSource
-                .entryFactory()
-                .map(converter::convertFrom)
+            val dataSourceFactory =
+                localSource
+                    .entryFactory()
+                    .map(converter::convertFrom)
 
             return FlowPagedListBuilder(
                 dataSourceFactory,
                 PAGING_CONFIGURATION,
                 null,
-                this
+                this,
             ).buildFlow()
         }
 
         override suspend fun getEpisodes(requestCallback: RequestCallback): Boolean {
-            val deferred = deferred {
-                remoteSource.getLatestEpisodes(query.param.locale)
-            }
+            val deferred =
+                deferred {
+                    remoteSource.getLatestEpisodes(query.param.locale)
+                }
 
             val result = controller(deferred, requestCallback)
 

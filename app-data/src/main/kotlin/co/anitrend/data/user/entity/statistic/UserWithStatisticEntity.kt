@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity.statistic
 
 import androidx.room.*
@@ -33,18 +32,18 @@ import kotlinx.serialization.Serializable
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 internal data class UserWithStatisticEntity(
     @Embedded(prefix = "statistic_") val statistic: Statistic,
     @ColumnInfo(name = "user_id") val userId: Long,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : Identity {
     @Serializable
     data class Statistic(
         @SerialName("anime") @ColumnInfo(name = "anime") val anime: UserStatisticModel.Anime?,
-        @SerialName("manga") @ColumnInfo(name = "manga") val manga: UserStatisticModel.Manga?
+        @SerialName("manga") @ColumnInfo(name = "manga") val manga: UserStatisticModel.Manga?,
     )
 }

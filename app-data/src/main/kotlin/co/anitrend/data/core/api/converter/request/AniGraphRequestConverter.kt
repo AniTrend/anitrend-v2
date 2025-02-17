@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.api.converter.request
 
 import co.anitrend.data.BuildConfig
@@ -31,9 +30,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 internal class AniRequestConverter(
     methodAnnotations: Array<out Annotation>,
     processor: AbstractGraphProcessor,
-    gson: Gson
+    gson: Gson,
 ) : GraphRequestConverter(methodAnnotations, processor, gson) {
-
     /**
      * Converter for the request body, gets the GraphQL query from the method annotation
      * and constructs a GraphQL request body to send over the network.

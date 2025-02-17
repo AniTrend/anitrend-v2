@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.source
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
@@ -29,7 +28,6 @@ import co.anitrend.data.relation.source.contract.MoeController
 import co.anitrend.data.relation.source.contract.RelationSource
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -43,26 +41,26 @@ internal class RelationSourceImpl(
     private val clearDataHelper: IClearDataHelper,
     private val converter: RelationEntityConverter,
     override val cachePolicy: ICacheStorePolicy,
-    override val dispatcher: ISupportDispatcher
+    override val dispatcher: ISupportDispatcher,
 ) : RelationSource() {
-
-    override fun observable(): Flow<IMediaSourceId> {
-        return localSource.withAniListIdFlow(query.id)
+    override fun observable(): Flow<IMediaSourceId> =
+        localSource
+            .withAniListIdFlow(query.id)
             .flowOn(dispatcher.io)
             .filterNotNull()
             .map(converter::convertFrom)
             .distinctUntilChanged()
             .flowOn(coroutineContext)
-    }
 
     override suspend fun getSourceRelation(callback: RequestCallback): Boolean {
-        val deferred = deferred {
-            remoteSource.getFromSource(
-                id = query.id,
-                source = query.source.type,
-                include = query.includeRelations()
-            )
-        }
+        val deferred =
+            deferred {
+                remoteSource.getFromSource(
+                    id = query.id,
+                    source = query.source.type,
+                    include = query.includeRelations(),
+                )
+            }
 
         val result = controller(deferred, callback)
 

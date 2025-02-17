@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,15 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.controller.graphql
 
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
-import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.extensions.Async
+import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
 import co.anitrend.data.core.api.model.GraphQLResponse
 import kotlinx.coroutines.CoroutineDispatcher
@@ -38,9 +37,8 @@ class GraphQLController<S, out D>(
     private val mapper: DefaultMapper<S, D>,
     private val strategy: ControllerStrategy<D>,
     private val dispatcher: CoroutineDispatcher,
-    private val client: DeferrableNetworkClient<GraphQLResponse<S>>
+    private val client: DeferrableNetworkClient<GraphQLResponse<S>>,
 ) : ISupportResponse<Async<Response<GraphQLResponse<S>>>, D> {
-
     /**
      * Response handler for coroutine contexts which need to observe [LoadState]
      *
@@ -54,25 +52,27 @@ class GraphQLController<S, out D>(
     suspend operator fun invoke(
         resource: Async<Response<GraphQLResponse<S>>>,
         requestCallback: RequestCallback,
-        interceptor: (S) -> S
+        interceptor: (S) -> S,
     ) = strategy(requestCallback) {
-
         val response = client.fetch(resource)
 
-        val error = response.errors?.onEach {
-            Timber.w(it.toString())
-        }?.firstOrNull()
+        val error =
+            response.errors
+                ?.onEach {
+                    Timber.w(it.toString())
+                }?.firstOrNull()
 
         /**
          * Only throw if data is null while we have an error, [strategy] will catch
          * the exception and emit a network state for the user to see
          */
-        if (error != null && response.data == null)
+        if (error != null && response.data == null) {
             throw RequestError(
                 topic = "Error with request",
                 description = error.message,
-                throwable = null
+                throwable = null,
             )
+        }
 
         response.data?.let {
             val data = interceptor(it)
@@ -94,6 +94,6 @@ class GraphQLController<S, out D>(
      */
     override suspend fun invoke(
         resource: Async<Response<GraphQLResponse<S>>>,
-        requestCallback: RequestCallback
+        requestCallback: RequestCallback,
     ) = invoke(resource, requestCallback) { it }
 }

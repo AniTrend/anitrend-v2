@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.account.component
 
 import android.content.Context
@@ -22,7 +21,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.core.android.koinOf
 import co.anitrend.core.android.shortcut.contract.IShortcutController
 import co.anitrend.core.android.shortcut.model.Shortcut
@@ -30,19 +28,17 @@ import co.anitrend.core.extensions.cancelAuthenticationWorkers
 import co.anitrend.data.account.AccountInteractor
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.navigation.AccountTaskRouter
-import co.anitrend.navigation.extensions.fromWorkerParameters
 import co.anitrend.navigation.extensions.transform
 import timber.log.Timber
 
 class AccountSignOutWorker(
     context: Context,
     parameters: WorkerParameters,
-    private val interactor: AccountInteractor
+    private val interactor: AccountInteractor,
 ) : SupportCoroutineWorker(context, parameters) {
-
     private val param by parameters.transform<
         AccountTaskRouter.AccountParam,
-        AccountParam.SignOut
+        AccountParam.SignOut,
     > { AccountParam.SignOut(userId = it.id) }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
@@ -52,7 +48,7 @@ class AccountSignOutWorker(
             shortcutManager.removeAllDynamicShortcuts()
             shortcutManager.createShortcuts(
                 Shortcut.AiringSchedule(),
-                Shortcut.Search()
+                Shortcut.Search(),
             )
         }.onFailure {
             Timber.w(it)

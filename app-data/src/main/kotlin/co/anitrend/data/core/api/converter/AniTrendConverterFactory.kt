@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.api.converter
 
 import co.anitrend.data.core.GRAPHQL
@@ -36,9 +35,8 @@ internal class AniTrendConverterFactory(
     private val graphFactory: Converter.Factory,
     private val xmlFactory: Converter.Factory,
     processor: AbstractGraphProcessor,
-    gson: Gson
+    gson: Gson,
 ) : GraphConverter(processor, gson) {
-
     /**
      * Response body converter delegates logic processing to a child class that handles
      * wrapping and deserialization of the json response data.
@@ -54,36 +52,40 @@ internal class AniTrendConverterFactory(
         type: Type,
         parameterAnnotations: Array<out Annotation>,
         methodAnnotations: Array<out Annotation>,
-        retrofit: Retrofit
-    ): Converter<*, RequestBody>? {
-        return methodAnnotations.map { annotation ->
-            when (annotation) {
-                is XML -> xmlFactory.requestBodyConverter(
-                    type,
-                    parameterAnnotations,
-                    methodAnnotations,
-                    retrofit
-                )
-                is GRAPHQL -> AniRequestConverter(
-                    methodAnnotations,
-                    graphProcessor,
-                    gson
-                )
-                is JSON -> jsonFactory.requestBodyConverter(
-                    type,
-                    parameterAnnotations,
-                    methodAnnotations,
-                    retrofit
-                )
-                else -> GsonConverterFactory.create(gson).requestBodyConverter(
-                    type,
-                    parameterAnnotations,
-                    methodAnnotations,
-                    retrofit
-                )
-            }
-        }.first()
-    }
+        retrofit: Retrofit,
+    ): Converter<*, RequestBody>? =
+        methodAnnotations
+            .map { annotation ->
+                when (annotation) {
+                    is XML ->
+                        xmlFactory.requestBodyConverter(
+                            type,
+                            parameterAnnotations,
+                            methodAnnotations,
+                            retrofit,
+                        )
+                    is GRAPHQL ->
+                        AniRequestConverter(
+                            methodAnnotations,
+                            graphProcessor,
+                            gson,
+                        )
+                    is JSON ->
+                        jsonFactory.requestBodyConverter(
+                            type,
+                            parameterAnnotations,
+                            methodAnnotations,
+                            retrofit,
+                        )
+                    else ->
+                        GsonConverterFactory.create(gson).requestBodyConverter(
+                            type,
+                            parameterAnnotations,
+                            methodAnnotations,
+                            retrofit,
+                        )
+                }
+            }.first()
 
     /**
      * Response body converter delegates logic processing to a child class that handles
@@ -99,34 +101,35 @@ internal class AniTrendConverterFactory(
     override fun responseBodyConverter(
         type: Type,
         annotations: Array<out Annotation>,
-        retrofit: Retrofit
-    ): Converter<ResponseBody, *>? {
-        return annotations.map { annotation ->
-            when (annotation) {
-                is XML ->
-                    xmlFactory.responseBodyConverter(
-                        type,
-                        annotations,
-                        retrofit
-                    )
-                is JSON ->
-                    jsonFactory.responseBodyConverter(
-                        type,
-                        annotations,
-                        retrofit
-                    )
-                is GRAPHQL ->
-                    graphFactory.responseBodyConverter(
-                        type,
-                        annotations,
-                        retrofit
-                    )
-                else -> GsonConverterFactory.create(gson).responseBodyConverter(
-                    type,
-                    annotations,
-                    retrofit
-                )
-            }
-        }.first()
-    }
+        retrofit: Retrofit,
+    ): Converter<ResponseBody, *>? =
+        annotations
+            .map { annotation ->
+                when (annotation) {
+                    is XML ->
+                        xmlFactory.responseBodyConverter(
+                            type,
+                            annotations,
+                            retrofit,
+                        )
+                    is JSON ->
+                        jsonFactory.responseBodyConverter(
+                            type,
+                            annotations,
+                            retrofit,
+                        )
+                    is GRAPHQL ->
+                        graphFactory.responseBodyConverter(
+                            type,
+                            annotations,
+                            retrofit,
+                        )
+                    else ->
+                        GsonConverterFactory.create(gson).responseBodyConverter(
+                            type,
+                            annotations,
+                            retrofit,
+                        )
+                }
+            }.first()
 }

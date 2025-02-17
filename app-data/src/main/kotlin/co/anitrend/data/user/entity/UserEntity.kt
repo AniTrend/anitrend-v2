@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity
 
 import androidx.room.ColumnInfo
@@ -38,9 +37,8 @@ internal data class UserEntity(
     @Embedded(prefix = "cover_") val coverImage: CoverImage,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "created_at") val createdAt: Long?,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity {
-
     data class About(
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "bio") val bio: String?,
@@ -58,6 +56,6 @@ internal data class UserEntity(
     data class CoverImage(
         @ColumnInfo(name = "large") val large: String? = null,
         @ColumnInfo(name = "medium") val medium: String? = null,
-        @ColumnInfo(name = "banner") val banner: String? = null
+        @ColumnInfo(name = "banner") val banner: String? = null,
     )
 }

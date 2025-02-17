@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.model
 
 import co.anitrend.data.core.common.Identity
@@ -28,7 +27,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class UserModel : IUserModel {
-
     /** [MediaListOptions](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistoptions.doc.html)
      * A user's list options
      *
@@ -42,7 +40,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("scoreFormat") val scoreFormat: ScoreFormat,
         @SerialName("rowOrder") val rowOrder: String,
         @SerialName("animeList") val animeList: MediaListTypeOptions? = null,
-        @SerialName("mangaList") val mangaList: MediaListTypeOptions?
+        @SerialName("mangaList") val mangaList: MediaListTypeOptions?,
     )
 
     /** [MediaListTypeOptions](https://anilist.github.io/ApiV2-GraphQL-Docs/medialisttypeoptions.doc.html)
@@ -60,7 +58,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("splitCompletedSectionByFormat") val splitCompletedSectionByFormat: Boolean,
         @SerialName("customLists") val customLists: List<String>? = null,
         @SerialName("advancedScoring") val advancedScoring: List<String>? = null,
-        @SerialName("advancedScoringEnabled") val advancedScoringEnabled: Boolean
+        @SerialName("advancedScoringEnabled") val advancedScoringEnabled: Boolean,
     )
 
     /**
@@ -79,7 +77,7 @@ internal sealed class UserModel : IUserModel {
 
     @Serializable
     internal data class Id(
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : Identity
 
     /**
@@ -100,7 +98,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("createdAt") override val createdAt: Long? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : UserModel()
 
     /**
@@ -135,7 +133,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("createdAt") override val createdAt: Long? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : WithOptions()
 
     /**
@@ -161,7 +159,7 @@ internal sealed class UserModel : IUserModel {
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("createdAt") override val createdAt: Long? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : WithOptions()
 
     @Serializable
@@ -179,9 +177,8 @@ internal sealed class UserModel : IUserModel {
         @SerialName("siteUrl") override val siteUrl: String,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("createdAt") override val createdAt: Long? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : UserModel() {
-
         /** [UserStatisticTypes](https://anilist.github.io/ApiV2-GraphQL-Docs/UserStatisticTypes.doc.html)
          * A user's statistics
          *
@@ -191,7 +188,7 @@ internal sealed class UserModel : IUserModel {
         @Serializable
         data class Statistic(
             @SerialName("anime") val anime: UserStatisticModel.Anime,
-            @SerialName("manga") val manga: UserStatisticModel.Manga
+            @SerialName("manga") val manga: UserStatisticModel.Manga,
         )
     }
 }

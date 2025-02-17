@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.source
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
@@ -35,7 +34,6 @@ import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.account.model.AccountParam
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emitAll
@@ -55,37 +53,43 @@ internal class AuthSourceImpl(
     private val converter: UserEntityConverter,
     private val userLocalSource: UserLocalSource,
     private val authenticationHelper: IAuthenticationHelper,
-    override val dispatcher: ISupportDispatcher
+    override val dispatcher: ISupportDispatcher,
 ) : AuthSource() {
-
     private val userIdFlow = MutableSharedFlow<Long?>()
 
-    override val observable = flow {
-        userIdFlow
-            .filterNotNull()
-            .onEach { id ->
-                val userFlow = userLocalSource.userByIdFlow(id)
-                    .filterNotNull()
-                    .map(converter::convertFrom)
-                emitAll(userFlow)
-            }.collect()
-    }
+    override val observable =
+        flow {
+            userIdFlow
+                .filterNotNull()
+                .onEach { id ->
+                    val userFlow =
+                        userLocalSource
+                            .userByIdFlow(id)
+                            .filterNotNull()
+                            .map(converter::convertFrom)
+                    emitAll(userFlow)
+                }.collect()
+        }
 
-    override val observables = flow {
-        val userIds = localSource.userIds()
-        val entities = userLocalSource.userById(userIds)
-        emit(converter.convertFrom(entities))
-    }
+    override val observables =
+        flow {
+            val userIds = localSource.userIds()
+            val entities = userLocalSource.userById(userIds)
+            emit(converter.convertFrom(entities))
+        }
 
-    private suspend fun persistChanges(action: AccountAction.SignIn, user: UserEntity) {
+    private suspend fun persistChanges(
+        action: AccountAction.SignIn,
+        user: UserEntity,
+    ) {
         withContext(dispatcher.io) {
             localSource.upsert(
                 AuthEntity(
                     userId = user.id,
                     expiresOn = action.expiresAtTime,
                     tokenType = action.param.tokenType,
-                    accessToken = action.param.accessToken
-                )
+                    accessToken = action.param.accessToken,
+                ),
             )
 
             settings.authenticatedUserId.value = user.id
@@ -95,7 +99,7 @@ internal class AuthSourceImpl(
     }
 
     override fun signOut(param: AccountParam.SignOut) {
-        launch (dispatcher.io) {
+        launch(dispatcher.io) {
             authenticationHelper.invalidateAuthenticationState()
             userIdFlow.emit(IAuthenticationSettings.INVALID_USER_ID)
         }
@@ -109,18 +113,23 @@ internal class AuthSourceImpl(
         }
     }
 
-    override suspend fun getAuthorizedUser(param: AccountAction.SignIn, callback: RequestCallback) {
-        val deferred = deferred {
-            remoteSource.getAuthenticatedUser(
-                param.accessTokenBearer,
-                QueryContainerBuilder()
-            )
-        }
+    override suspend fun getAuthorizedUser(
+        param: AccountAction.SignIn,
+        callback: RequestCallback,
+    ) {
+        val deferred =
+            deferred {
+                remoteSource.getAuthenticatedUser(
+                    param.accessTokenBearer,
+                    QueryContainerBuilder(),
+                )
+            }
 
         val user = controller(deferred, callback)
 
-        if (user != null)
+        if (user != null) {
             persistChanges(param, user)
+        }
     }
 
     /**

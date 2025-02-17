@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -26,7 +25,7 @@ import org.threeten.bp.Instant
 
 internal class RelationCache(
     override val localSource: CacheLocalSource,
-    override val request: CacheRequest = CacheRequest.MOE
+    override val request: CacheRequest = CacheRequest.MOE,
 ) : CacheStorePolicy() {
     /**
      * Check if a resource with a given [identity] is permitted to refresh
@@ -36,12 +35,12 @@ internal class RelationCache(
      */
     override suspend fun shouldRefresh(
         identity: CacheIdentity,
-        expiresAfter: Instant
+        expiresAfter: Instant,
     ): Boolean = isRequestBefore(identity, expiresAfter)
 
     class Identity(
         val query: RelationQuery,
         override val id: Long = query.id,
-        override val key: String = "moe_relation_${query.source}"
+        override val key: String = "moe_relation_${query.source}",
     ) : CacheIdentity
 }

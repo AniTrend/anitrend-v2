@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.source
 
 import androidx.paging.PagedList
@@ -45,7 +44,6 @@ import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -53,7 +51,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 internal class MediaSourceImpl {
-
     class Detail(
         private val remoteSource: MediaRemoteSource,
         private val localSource: MediaLocalSource,
@@ -63,29 +60,30 @@ internal class MediaSourceImpl {
         private val moeSource: RelationSource,
         private val jikanSource: JikanSource,
         override val cachePolicy: ICacheStorePolicy,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaSource.Detail() {
-
-        override fun observable(): Flow<Media> {
-            return localSource.mediaByIdFlow(cacheIdentity.id)
+        override fun observable(): Flow<Media> =
+            localSource
+                .mediaByIdFlow(cacheIdentity.id)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
-        }
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
             moeSource(RelationQuery(query.param.id))
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder()
-                remoteSource.getMediaDetail(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getMediaDetail(queryBuilder)
+                }
 
             val result = controller(deferred, requestCallback)
 
-            if (result?.malId != null)
+            if (result?.malId != null) {
                 jikanSource(JikanQuery(result.malId, result.type))
+            }
 
             return result != null
         }
@@ -113,31 +111,33 @@ internal class MediaSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
         private val filter: MediaQueryFilter.Paged,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaSource.Paged() {
-
         override val cacheIdentity = MediaCache.Identity.Paged()
 
         override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory = localSource
-                .rawFactory(filter.build(query.param))
-                .map(converter::convertFrom)
+            val dataSourceFactory =
+                localSource
+                    .rawFactory(filter.build(query.param))
+                    .map(converter::convertFrom)
 
             return FlowPagedListBuilder(
                 dataSourceFactory,
                 PAGING_CONFIGURATION,
                 null,
-                this
+                this,
             ).buildFlow()
         }
 
         override suspend fun getMedia(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper
-                )
-                remoteSource.getMediaPaged(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder =
+                        query.toQueryContainerBuilder(
+                            supportPagingHelper,
+                        )
+                    remoteSource.getMediaPaged(queryBuilder)
+                }
 
             controller(deferred, requestCallback) {
                 supportPagingHelper.from(it.page)
@@ -163,19 +163,23 @@ internal class MediaSourceImpl {
         private val remoteSource: MediaRemoteSource,
         private val controller: MediaNetworkController,
         override val initialKey: MediaParam.Find,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : MediaSource.Network() {
-
         override val cacheIdentity = MediaCache.Identity.Network()
 
-        override suspend fun getMedia(param: MediaParam.Find, callback: RequestCallback): List<Media> {
+        override suspend fun getMedia(
+            param: MediaParam.Find,
+            callback: RequestCallback,
+        ): List<Media> {
             val query = MediaQuery.Find(initialKey)
-            val deferred = deferred {
-                val builder = query.toQueryContainerBuilder(
-                    supportPagingHelper
-                )
-                remoteSource.getMediaPaged(builder)
-            }
+            val deferred =
+                deferred {
+                    val builder =
+                        query.toQueryContainerBuilder(
+                            supportPagingHelper,
+                        )
+                    remoteSource.getMediaPaged(builder)
+                }
 
             return controller(deferred, callback) {
                 supportPagingHelper.from(it.page)

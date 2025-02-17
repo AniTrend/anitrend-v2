@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.mediatrend.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
@@ -28,5 +27,6 @@ import co.anitrend.data.mediatrend.model.MediaTrendModel
  */
 internal data class MediaTrendEdge(
     override val id: Long,
-    override val node: MediaTrendModel.Core?
-) : IEntityEdge<MediaTrendModel>, Identity
+    override val node: MediaTrendModel.Core?,
+) : IEntityEdge<MediaTrendModel>,
+    Identity

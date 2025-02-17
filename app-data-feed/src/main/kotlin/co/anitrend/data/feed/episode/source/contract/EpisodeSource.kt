@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,18 +14,16 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.episode.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.paging.AbstractPagingSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.feed.episode.cache.EpisodeCache
 import co.anitrend.data.feed.episode.model.query.EpisodeQuery
 import co.anitrend.domain.episode.entity.Episode
@@ -36,16 +34,13 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 internal sealed class EpisodeSource {
-
     internal abstract class Detail : AbstractCoreDataSource() {
-
         protected abstract fun observable(param: EpisodeParam.Detail): Flow<Episode>
 
         operator fun invoke(param: EpisodeParam.Detail) = observable(param)
     }
 
     internal abstract class Paged : AbstractPagingSource<Episode>() {
-
         protected lateinit var query: EpisodeQuery
 
         protected val cacheIdentity: CacheIdentity = EpisodeCache.Identity.EPISODE
@@ -61,21 +56,22 @@ internal sealed class EpisodeSource {
             return observable()
         }
 
-        fun sync(param: EpisodeParam.Paged): Flow<Boolean> = flow {
-            query = EpisodeQuery(param)
-            val resultFlow = MutableSharedFlow<Boolean>()
-            cachePolicy(
-                scope = scope,
-                requestHelper = requestHelper,
-                cacheIdentity = cacheIdentity,
-                block = {
-                    val result = getEpisodes(it)
-                    resultFlow.emit(result)
-                    result
-                }
-            )
-            emitAll(resultFlow)
-        }
+        fun sync(param: EpisodeParam.Paged): Flow<Boolean> =
+            flow {
+                query = EpisodeQuery(param)
+                val resultFlow = MutableSharedFlow<Boolean>()
+                cachePolicy(
+                    scope = scope,
+                    requestHelper = requestHelper,
+                    cacheIdentity = cacheIdentity,
+                    block = {
+                        val result = getEpisodes(it)
+                        resultFlow.emit(result)
+                        result
+                    },
+                )
+                emitAll(resultFlow)
+            }
 
         /**
          * Called when the item at the front of the PagedList has been loaded, and access has
@@ -92,7 +88,7 @@ internal sealed class EpisodeSource {
                     requestHelper = requestHelper,
                     cacheIdentity = cacheIdentity,
                     requestType = Request.Type.BEFORE,
-                    block = ::getEpisodes
+                    block = ::getEpisodes,
                 )
             }
         }
@@ -105,7 +101,7 @@ internal sealed class EpisodeSource {
                 scope = scope,
                 requestHelper = requestHelper,
                 cacheIdentity = cacheIdentity,
-                block = ::getEpisodes
+                block = ::getEpisodes,
             )
         }
     }

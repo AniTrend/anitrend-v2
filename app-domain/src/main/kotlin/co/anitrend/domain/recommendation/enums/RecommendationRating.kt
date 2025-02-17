@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.recommendation.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,8 +21,10 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * Recommendation rating enums
  */
-enum class RecommendationRating(override val alias: CharSequence) : IAliasable {
+enum class RecommendationRating(
+    override val alias: CharSequence,
+) : IAliasable {
     NO_RATING("No rating"),
     RATE_DOWN("Rating down"),
-    RATE_UP("Rating up")
+    RATE_UP("Rating up"),
 }

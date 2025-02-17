@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.action.provider.viewmodel
 
 import androidx.lifecycle.map
@@ -26,18 +25,18 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class NotificationProviderViewModel(
-    override val state: AuthenticatedUserState
+    override val state: AuthenticatedUserState,
 ) : AniTrendViewModel() {
-
-    val unreadNotifications = state.model.map { user ->
-        when (user) {
-            is User.Authenticated -> user.unreadNotifications
-            else -> {
-                Timber.w("Type of $user does not has no `unreadNotifications` property")
-                0
+    val unreadNotifications =
+        state.model.map { user ->
+            when (user) {
+                is User.Authenticated -> user.unreadNotifications
+                else -> {
+                    Timber.w("Type of $user does not has no `unreadNotifications` property")
+                    0
+                }
             }
         }
-    }
 
     init {
         fetchUser()

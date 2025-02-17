@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.extension
 
 import co.anitrend.data.common.FuzzyDateInt
@@ -28,11 +27,10 @@ import kotlin.test.Test
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
 class FuzzyDateConversionTest {
-
     @Test
     fun `should produce unknown fuzzy date fields`() {
         /** should produce fuzzy date of [FuzzyDateModel.UNKNOWN] */
-        val fuzzyDateInt : FuzzyDateInt = "0"
+        val fuzzyDateInt: FuzzyDateInt = "0"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
@@ -43,7 +41,7 @@ class FuzzyDateConversionTest {
 
     @Test
     fun `should produce fuzzy date with an unknown day field`() {
-        val fuzzyDateInt : FuzzyDateInt = "19760500"
+        val fuzzyDateInt: FuzzyDateInt = "19760500"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
@@ -54,7 +52,7 @@ class FuzzyDateConversionTest {
 
     @Test
     fun `should produce fuzzy date with an unknown month field`() {
-        val fuzzyDateInt : FuzzyDateInt = "18430010"
+        val fuzzyDateInt: FuzzyDateInt = "18430010"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
@@ -65,7 +63,7 @@ class FuzzyDateConversionTest {
 
     @Test
     fun `should produce fuzzy date with an unknown year field`() {
-        val fuzzyDateInt : FuzzyDateInt = "00000810"
+        val fuzzyDateInt: FuzzyDateInt = "00000810"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 
@@ -76,7 +74,7 @@ class FuzzyDateConversionTest {
 
     @Test
     fun `should produce fuzzy date with no unknown fields`() {
-        val fuzzyDateInt : FuzzyDateInt = "20111117"
+        val fuzzyDateInt: FuzzyDateInt = "20111117"
 
         val fuzzyDate = fuzzyDateInt.toFuzzyDateModel()
 

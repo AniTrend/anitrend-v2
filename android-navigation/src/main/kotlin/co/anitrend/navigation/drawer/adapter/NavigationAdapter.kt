@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.adapter
 
 import android.content.res.Resources
@@ -47,9 +46,8 @@ class NavigationAdapter(
         }
     },
     override val customSupportAnimator: AbstractAnimator? = null,
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportListAdapter<Navigation>(NavigationDiffUtil, true) {
-
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
      * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
@@ -57,9 +55,7 @@ class NavigationAdapter(
      * The identifiable id of each item should unique, and if non exists
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
-    override fun getStableIdFor(item: Navigation?): Long {
-        return item?.hashCode()?.toLong() ?: super.getStableIdFor(item)
-    }
+    override fun getStableIdFor(item: Navigation?): Long = item?.hashCode()?.toLong() ?: super.getStableIdFor(item)
 
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.
@@ -72,15 +68,14 @@ class NavigationAdapter(
      * @return integer value identifying the type of the view needed to represent the item at
      * [position]. Type codes need not be contiguous.
      */
-    override fun getItemViewType(position: Int): Int {
-        return when (val viewType = super.getItemViewType(position)) {
+    override fun getItemViewType(position: Int): Int =
+        when (val viewType = super.getItemViewType(position)) {
             ISupportAdapter.DEFAULT_VIEW_TYPE -> {
                 val item = getItem(position)
                 item.toNavType() ?: viewType
             }
             else -> viewType
         }
-    }
 
     /**
      * Should provide the required view holder, this function is a substitute for
@@ -90,7 +85,7 @@ class NavigationAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ) = when (viewType) {
         Navigation.MENU -> layoutInflater.createNavMenuViewHolder(parent)
         Navigation.GROUP -> layoutInflater.createNavGroupViewHolder(parent)

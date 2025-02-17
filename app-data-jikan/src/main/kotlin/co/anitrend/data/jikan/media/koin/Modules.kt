@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
@@ -37,89 +36,95 @@ import co.anitrend.data.jikan.producer.mapper.JikanProducerMapper
 import co.anitrend.data.jikan.studio.mapper.JikanStudioMapper
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<JikanSource> {
-        JikanSourceImpl(
-            remoteSource = remoteSource(),
-            localSource = jikanLocalSource(),
-            controller = defaultController(
-                mapper = get<JikanMapper>()
-            ),
-            clearDataHelper = get(),
-            dispatcher = get(),
-            cachePolicy = get<JikanCache>()
-        )
+private val sourceModule =
+    module {
+        factory<JikanSource> {
+            JikanSourceImpl(
+                remoteSource = remoteSource(),
+                localSource = jikanLocalSource(),
+                controller =
+                    defaultController(
+                        mapper = get<JikanMapper>(),
+                    ),
+                clearDataHelper = get(),
+                dispatcher = get(),
+                cachePolicy = get<JikanCache>(),
+            )
+        }
     }
-}
 
-private val converterModule = module {
-    factory {
-        JikanModelConverter()
+private val converterModule =
+    module {
+        factory {
+            JikanModelConverter()
+        }
+        factory {
+            JikanAuthorModelConverter()
+        }
+        factory {
+            JikanProducerModelConverter()
+        }
+        factory {
+            JikanLicensorModelConverter()
+        }
+        factory {
+            JikanStudioModelConverter()
+        }
     }
-    factory {
-        JikanAuthorModelConverter()
-    }
-    factory {
-        JikanProducerModelConverter()
-    }
-    factory {
-        JikanLicensorModelConverter()
-    }
-    factory {
-        JikanStudioModelConverter()
-    }
-}
 
-private val cacheModule = module {
-    factory {
-        JikanCache(
-            localSource = cacheLocalSource()
-        )
+private val cacheModule =
+    module {
+        factory {
+            JikanCache(
+                localSource = cacheLocalSource(),
+            )
+        }
     }
-}
 
-private val mapperModule = module {
-    factory {
-        JikanMapper(
-            authorMapper = get(),
-            licensorMapper = get(),
-            producerMapper = get(),
-            studioMapper = get(),
-            localSource = jikanLocalSource(),
-            converter = get(),
-        )
+private val mapperModule =
+    module {
+        factory {
+            JikanMapper(
+                authorMapper = get(),
+                licensorMapper = get(),
+                producerMapper = get(),
+                studioMapper = get(),
+                localSource = jikanLocalSource(),
+                converter = get(),
+            )
+        }
+        factory {
+            JikanAuthorMapper.Embed(
+                localSource = db().jikanAuthorDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            JikanProducerMapper.Embed(
+                localSource = db().jikanProducerDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            JikanLicensorMapper.Embed(
+                localSource = db().jikanLicensorDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            JikanStudioMapper.Embed(
+                localSource = db().jikanStudioDao(),
+                converter = get(),
+            )
+        }
     }
-    factory {
-        JikanAuthorMapper.Embed(
-            localSource = db().jikanAuthorDao(),
-            converter = get()
-        )
-    }
-    factory {
-        JikanProducerMapper.Embed(
-            localSource = db().jikanProducerDao(),
-            converter = get()
-        )
-    }
-    factory {
-        JikanLicensorMapper.Embed(
-            localSource = db().jikanLicensorDao(),
-            converter = get()
-        )
-    }
-    factory {
-        JikanStudioMapper.Embed(
-            localSource = db().jikanStudioDao(),
-            converter = get()
-        )
-    }
-}
 
-internal val mediaModules = module {
-    includes(
-        sourceModule,
-        converterModule,
-        cacheModule,
-        mapperModule
-    )
-}
+internal val mediaModules =
+    module {
+        includes(
+            sourceModule,
+            converterModule,
+            cacheModule,
+            mapperModule,
+        )
+    }

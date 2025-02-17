@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,21 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.source.contract
 
-import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.tag.cache.TagCache
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.tag.model.TagParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class TagSource : AbstractCoreDataSource() {
-
     protected lateinit var param: TagParam
 
     protected val cacheIdentity: CacheIdentity = TagCache.Identity.TAG
@@ -45,7 +43,7 @@ internal abstract class TagSource : AbstractCoreDataSource() {
             scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = cacheIdentity,
-            block = ::getTags
+            block = ::getTags,
         )
 
         return observable()

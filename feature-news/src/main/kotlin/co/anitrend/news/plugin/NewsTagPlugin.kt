@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.plugin
 
 import co.anitrend.common.markdown.ui.plugin.decorator.AlignmentTagHandler
@@ -27,8 +26,7 @@ import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.MarkwonPlugin
 import io.noties.markwon.html.HtmlPlugin
 
-internal class NewsTagPlugin private constructor(): AbstractMarkwonPlugin() {
-
+internal class NewsTagPlugin private constructor() : AbstractMarkwonPlugin() {
     override fun configure(registry: MarkwonPlugin.Registry) {
         registry.require(HtmlPlugin::class.java) { plugin ->
             plugin.emptyTagReplacement(FrameTagReplacer.create())

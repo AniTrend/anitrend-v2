@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.settings.helper.theme
 
 import android.annotation.TargetApi
@@ -35,8 +34,9 @@ import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
  *
  * @param settings instance of theme settings
  */
-internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper {
-
+internal class ThemeHelper(
+    private val settings: IThemeSettings,
+) : IThemeHelper {
     /** Indicates weather the current theme is dynamic or static */
     override val dynamicColor: Boolean
         get() = settings.theme.value == AniTrendTheme.DYNAMIC
@@ -50,13 +50,13 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.setSystemBarsAppearance(
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS and WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
             )
         } else {
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = systemUiOptions and
-                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR  and
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR and
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 
@@ -71,17 +71,16 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
         } else {
             @Suppress("DEPRECATION")
             window.decorView.systemUiVisibility = systemUiOptions or
-                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.navigationBarColor = primaryColor
             window.statusBarColor = primaryColor
         }
     }
 
-
     private fun FragmentActivity.applyWindowStyle() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            @Suppress("DEPRECATION") //Until I figure out a way to apply decorations using window controller
+            @Suppress("DEPRECATION") // Until I figure out a way to apply decorations using window controller
             val systemUiOptions = window.decorView.systemUiVisibility
             when (AppCompatDelegate.getDefaultNightMode()) {
                 AppCompatDelegate.MODE_NIGHT_NO -> applyDayModeDecorations(systemUiOptions)
@@ -89,9 +88,11 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
                 else -> {
                     // According to Google/IO other ui options like auto and follow system
                     // will be deprecated in the future
-                    if (isEnvironmentNightMode())
+                    if (isEnvironmentNightMode()) {
                         applyNightModeDecorations(systemUiOptions)
-                    else applyDayModeDecorations(systemUiOptions)
+                    } else {
+                        applyDayModeDecorations(systemUiOptions)
+                    }
                 }
             }
         }
@@ -102,19 +103,22 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
      */
     override fun applyDynamicNightModeFromTheme() {
         val theme = settings.theme.value
-        if (theme == AniTrendTheme.SYSTEM)
+        if (theme == AniTrendTheme.SYSTEM) {
             AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
             )
-        else
+        } else {
             when (theme.useNightMode) {
-                true -> AppCompatDelegate.setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_NO
-                )
-                else -> AppCompatDelegate.setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_YES
-                )
+                true ->
+                    AppCompatDelegate.setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_NO,
+                    )
+                else ->
+                    AppCompatDelegate.setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_YES,
+                    )
             }
+        }
     }
 
     /**
@@ -122,12 +126,13 @@ internal class ThemeHelper(private val settings: IThemeSettings) : IThemeHelper 
      */
     override fun applyApplicationTheme(
         context: FragmentActivity,
-        themeOverride: Int?
+        themeOverride: Int?,
     ) {
-        if (themeOverride != null)
+        if (themeOverride != null) {
             context.setTheme(themeOverride)
-        else
+        } else {
             context.setTheme(settings.theme.value.styleAttribute)
+        }
         context.applyWindowStyle()
     }
 }

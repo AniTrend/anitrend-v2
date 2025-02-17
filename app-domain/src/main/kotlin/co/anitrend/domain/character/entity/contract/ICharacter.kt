@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.character.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -23,7 +22,10 @@ import co.anitrend.domain.common.entity.contract.ISynopsis
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.common.entity.shared.CoverName
 
-interface ICharacter : IEntity, IFavourable, ISynopsis {
+interface ICharacter :
+    IEntity,
+    IFavourable,
+    ISynopsis {
     val image: CoverImage?
     val name: CoverName?
     val siteUrl: String?

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.source.factory
 
 import androidx.paging.DataSource
@@ -29,15 +28,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.properties.Delegates
 
 internal sealed class MediaSourceFactory<Key : Any, Value : Any> : DataSource.Factory<Key, Value>() {
-
     protected abstract val stateSourceFlow: MutableStateFlow<SupportPagingLiveDataSource<Key, Value>?>
 
     class Network(
         private val remoteSource: MediaRemoteSource,
         private val controller: MediaNetworkController,
-        private val dispatcher: ISupportDispatcher
+        private val dispatcher: ISupportDispatcher,
     ) : MediaSourceFactory<MediaParam.Find, Media>() {
-
         var initialKey by Delegates.notNull<MediaParam.Find>()
 
         override val stateSourceFlow = MutableStateFlow<SupportPagingLiveDataSource<MediaParam.Find, Media>?>(null)
@@ -58,11 +55,12 @@ internal sealed class MediaSourceFactory<Key : Any, Value : Any> : DataSource.Fa
          * @return the new DataSource.
          */
         override fun create() =
-            MediaSourceImpl.Network(
-                remoteSource = remoteSource,
-                controller = controller,
-                dispatcher = dispatcher,
-                initialKey = initialKey
-            ).also { stateSourceFlow.value = it }
+            MediaSourceImpl
+                .Network(
+                    remoteSource = remoteSource,
+                    controller = controller,
+                    dispatcher = dispatcher,
+                    initialKey = initialKey,
+                ).also { stateSourceFlow.value = it }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.model.date
 
 import co.anitrend.data.common.model.date.contract.IFuzzyDateModel
@@ -25,29 +24,27 @@ import kotlinx.serialization.Serializable
 internal data class FuzzyDateModel(
     @SerialName("year") override val year: Int = UNKNOWN,
     @SerialName("month") override val month: Int = UNKNOWN,
-    @SerialName("day") override val day: Int = UNKNOWN
+    @SerialName("day") override val day: Int = UNKNOWN,
 ) : IFuzzyDateModel {
-
     /**
      * Checks if all date fields are not set
      *
      * @return [Boolean] true if the date fields are set to [UNKNOWN] otherwise false
      */
-    override fun isDateNotSet() =
-        day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
+    override fun isDateNotSet() = day == UNKNOWN && month == UNKNOWN && year == UNKNOWN
 
     companion object {
-
         /**
          * Default representation of null or not set
          */
         internal const val UNKNOWN = 0
 
-        internal fun empty() = FuzzyDateModel(
-            UNKNOWN,
-            UNKNOWN,
-            UNKNOWN
-        )
+        internal fun empty() =
+            FuzzyDateModel(
+                UNKNOWN,
+                UNKNOWN,
+                UNKNOWN,
+            )
 
         internal fun IFuzzyDateModel?.orEmpty() = this ?: empty()
     }

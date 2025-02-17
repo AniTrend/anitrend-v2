@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.model.statistics.media
 
 import co.anitrend.data.common.CountryCode
@@ -39,7 +38,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -48,7 +47,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -57,7 +56,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -66,7 +65,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -75,7 +74,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -84,7 +83,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -93,7 +92,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -102,7 +101,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -111,7 +110,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -120,7 +119,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -129,7 +128,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 
     @Serializable
@@ -138,6 +137,6 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,
-        @SerialName("minutesWatched") override val minutesWatched: Int
+        @SerialName("minutesWatched") override val minutesWatched: Int,
     ) : UserStatisticAnimeModel()
 }

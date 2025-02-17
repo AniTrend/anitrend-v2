@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.item
 
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +37,6 @@ import co.anitrend.common.media.ui.controller.compose.CarouselController
 import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
@@ -61,16 +76,17 @@ private fun CarouselHeader(
     headerSeeMoreClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val carouselData = CarouselController(
-        mediaType = mediaType,
-        carouselType = carouselType,
-        mediaItem = mediaItem,
-    ).createCarouselData()
+    val carouselData =
+        CarouselController(
+            mediaType = mediaType,
+            carouselType = carouselType,
+            mediaItem = mediaItem,
+        ).createCarouselData()
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         HeaderTitle(
             data = carouselData.header,
@@ -107,7 +123,7 @@ fun MediaCarouselItem(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(bottom = 64.dp)
+        contentPadding = PaddingValues(bottom = 64.dp),
     ) {
         items(
             count = carouselItems.size,
@@ -119,13 +135,13 @@ fun MediaCarouselItem(
                 carouselType = carouselItem.carouselType,
                 mediaItem = carouselItem.mediaItems.firstOrNull(),
                 headerSeeMoreClick = carouselItemClick,
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
+                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
             )
             CarouselItems(
                 mediaItems = carouselItem.mediaItems,
                 mediaPreferenceData = mediaPreferenceData,
                 mediaItemClick = carouselItemClick,
-                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
             )
         }
     }
@@ -139,7 +155,7 @@ private fun MediaCarouselItemPreview() {
             mediaType = MediaType.ANIME,
             carouselType = MediaCarousel.CarouselType.AIRING_SOON,
             mediaItem = Media.Core.empty(),
-            headerSeeMoreClick = {}
+            headerSeeMoreClick = {},
         )
     }
 }

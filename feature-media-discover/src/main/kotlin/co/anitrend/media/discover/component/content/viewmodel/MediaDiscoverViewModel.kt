@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.content.viewmodel
 
 import androidx.lifecycle.MutableLiveData
@@ -33,14 +32,15 @@ class MediaDiscoverViewModel(
     override val state: MediaDiscoverState,
     private val savedStateHandle: SavedStateHandle,
 ) : AniTrendViewModel() {
-
     init {
         viewModelScope.launch {
-            savedStateHandle.getLiveData<MediaDiscoverRouter.MediaDiscoverParam>(
-                MediaDiscoverFilterRouter.Action.KEY
-            ).asFlow().collect { param ->
-                state(param)
-            }
+            savedStateHandle
+                .getLiveData<MediaDiscoverRouter.MediaDiscoverParam>(
+                    MediaDiscoverFilterRouter.Action.KEY,
+                ).asFlow()
+                .collect { param ->
+                    state(param)
+                }
         }
     }
 

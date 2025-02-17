@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
@@ -35,9 +34,8 @@ internal class JikanMapper(
     private val producerMapper: JikanProducerMapper.Embed,
     private val studioMapper: JikanStudioMapper.Embed,
     private val localSource: JikanLocalSource,
-    private val converter: JikanModelConverter
+    private val converter: JikanModelConverter,
 ) : DefaultMapper<JikanWrapper<JikanMediaModel>, JikanEntity>() {
-
     /**
      * Save [data] into your desired local source
      */
@@ -47,7 +45,6 @@ internal class JikanMapper(
         producerMapper.persistEmbedded()
         studioMapper.persistEmbedded()
         authorMapper.persistEmbedded()
-
     }
 
     /**
@@ -60,38 +57,42 @@ internal class JikanMapper(
         when (val data = source.data) {
             is JikanMediaModel.Anime -> {
                 licensorMapper.onEmbedded(
-                    data.licensors?.map {
-                        JikanItem(
-                            jikanId = data.malId,
-                            model = it
-                        )
-                    }.orEmpty()
+                    data.licensors
+                        ?.map {
+                            JikanItem(
+                                jikanId = data.malId,
+                                model = it,
+                            )
+                        }.orEmpty(),
                 )
                 producerMapper.onEmbedded(
-                    data.producers?.map {
-                        JikanItem(
-                            jikanId = data.malId,
-                            model = it
-                        )
-                    }.orEmpty()
+                    data.producers
+                        ?.map {
+                            JikanItem(
+                                jikanId = data.malId,
+                                model = it,
+                            )
+                        }.orEmpty(),
                 )
                 studioMapper.onEmbedded(
-                    data.studios?.map {
-                        JikanItem(
-                            jikanId = data.malId,
-                            model = it
-                        )
-                    }.orEmpty()
+                    data.studios
+                        ?.map {
+                            JikanItem(
+                                jikanId = data.malId,
+                                model = it,
+                            )
+                        }.orEmpty(),
                 )
             }
             is JikanMediaModel.Manga -> {
                 authorMapper.onEmbedded(
-                    data.authors?.map {
-                        JikanItem(
-                            jikanId = data.malId,
-                            model = it
-                        )
-                    }.orEmpty()
+                    data.authors
+                        ?.map {
+                            JikanItem(
+                                jikanId = data.malId,
+                                model = it,
+                            )
+                        }.orEmpty(),
                 )
             }
         }

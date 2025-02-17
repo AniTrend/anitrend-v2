@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.carousel.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -24,9 +23,8 @@ import co.anitrend.domain.media.enums.MediaType
 data class MediaCarousel(
     val mediaType: MediaType,
     val carouselType: CarouselType,
-    val mediaItems: List<Media>
-): IEntity {
-
+    val mediaItems: List<Media>,
+) : IEntity {
     override val id: Long
         get() {
             var result = mediaType.hashCode()
@@ -41,7 +39,7 @@ data class MediaCarousel(
         POPULAR_THIS_SEASON,
         RECENTLY_ADDED,
         ANTICIPATED_NEXT_SEASON,
-        POPULAR_MANHWA
+        POPULAR_MANHWA,
     }
 
     /**
@@ -56,14 +54,14 @@ data class MediaCarousel(
      *
      * Read more about [equality](https://kotlinlang.org/docs/reference/equality.html) in Kotlin.
      */
-    override fun equals(other: Any?): Boolean {
-        return when (other) {
-            is MediaCarousel -> other.id == id &&
+    override fun equals(other: Any?): Boolean =
+        when (other) {
+            is MediaCarousel ->
+                other.id == id &&
                     other.carouselType == carouselType &&
                     other.mediaType == mediaType
             else -> super.equals(other)
         }
-    }
 
     override fun hashCode(): Int {
         var result = mediaType.hashCode()

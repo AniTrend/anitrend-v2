@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -24,21 +23,21 @@ import co.anitrend.domain.common.enums.contract.IAliasable
  */
 enum class MediaLicensor(
     val title: CharSequence,
-    override val alias: CharSequence
+    override val alias: CharSequence,
 ) : IAliasable {
-    CRUNCHYROLL("Crunchyroll","crunchyroll"),
-    HIDIVE("Hidive","hidive"),
-    FUNIMATION("Funimation","funimation"),
-    NETFLIX("Netflix","netflix"),
-    AMAZON("Amazon","amazon"),
-    HULU("Hulu","hulu"),
-    HBO_MAX("HBO Max","hbomax"),
-    ANIMELAB("AnimeLab","animelab"),
-    VIZ("Viz","viz"),
-    ADULT_SWIM("Adult Swim","adultswim"),
-    RETROCRUSH("RetroCrush","retrocrush"),
-    MIDNIGHT_PULP("Midnight Pulp","midnightpulp.com"),
-    TUBI_TV("Tubi TV","tubitv.com"),
-    CONTV("CONtv","contv.com"),
-    VRV("VRV","vrv")
+    CRUNCHYROLL("Crunchyroll", "crunchyroll"),
+    HIDIVE("Hidive", "hidive"),
+    FUNIMATION("Funimation", "funimation"),
+    NETFLIX("Netflix", "netflix"),
+    AMAZON("Amazon", "amazon"),
+    HULU("Hulu", "hulu"),
+    HBO_MAX("HBO Max", "hbomax"),
+    ANIMELAB("AnimeLab", "animelab"),
+    VIZ("Viz", "viz"),
+    ADULT_SWIM("Adult Swim", "adultswim"),
+    RETROCRUSH("RetroCrush", "retrocrush"),
+    MIDNIGHT_PULP("Midnight Pulp", "midnightpulp.com"),
+    TUBI_TV("Tubi TV", "tubitv.com"),
+    CONTV("CONtv", "contv.com"),
+    VRV("VRV", "vrv"),
 }

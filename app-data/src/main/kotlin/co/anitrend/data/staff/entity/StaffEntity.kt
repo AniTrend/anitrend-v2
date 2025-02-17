@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.staff.entity
 
 import androidx.room.ColumnInfo
@@ -27,7 +26,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "staff",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
 )
 @EntitySchema
 internal data class StaffEntity(
@@ -40,12 +39,11 @@ internal data class StaffEntity(
     @Embedded(prefix = "name_") val name: Name,
     @ColumnInfo(name = "site_url") val siteUrl: String,
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity {
-
     data class CoverImage(
         @ColumnInfo(name = "large") val large: String? = null,
-        @ColumnInfo(name = "medium") val medium: String? = null
+        @ColumnInfo(name = "medium") val medium: String? = null,
     )
 
     data class Name(
@@ -64,7 +62,7 @@ internal data class StaffEntity(
         @ColumnInfo(name = "gender") val gender: String? = null,
         @ColumnInfo(name = "blood_type") val bloodType: String?,
         @ColumnInfo(name = "home_town") val homeTown: String? = null,
-        @ColumnInfo(name = "primary_occupations") val primaryOccupations: List<String>?= null,
+        @ColumnInfo(name = "primary_occupations") val primaryOccupations: List<String>? = null,
         @ColumnInfo(name = "year_active_start") val yearActiveStart: Int? = null,
         @ColumnInfo(name = "year_active_end") val yearActiveEnd: Int? = null,
     )

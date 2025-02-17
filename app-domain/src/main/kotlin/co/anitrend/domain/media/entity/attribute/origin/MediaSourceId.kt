@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.entity.attribute.origin
 
 data class MediaSourceId(
@@ -27,20 +26,21 @@ data class MediaSourceId(
     override val liveChart: Long?,
     override val notifyMoe: String?,
     override val theMovieDb: Long?,
-    override val mal: Long?
+    override val mal: Long?,
 ) : IMediaSourceId {
     companion object {
-        fun empty() = MediaSourceId(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-        )
+        fun empty() =
+            MediaSourceId(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            )
     }
 }

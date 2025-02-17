@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ tasks.withType(KotlinCompilationTask::class.java) {
 
 dependencies {
     implementation(libs.jetbrains.kotlinx.serialization.json)
-    
+
     // Will remove this later, we just need a few specific endpoints so no need to include this package
     implementation(libs.trakt) {
         exclude(group = "org.threeten", module = "threetenbp")

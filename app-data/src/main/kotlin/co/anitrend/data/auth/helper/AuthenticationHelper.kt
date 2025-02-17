@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.helper
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -38,7 +37,6 @@ internal class AuthenticationHelper(
     private val mediaListLocalSource: MediaListLocalSource,
     private val cacheLocalSource: CacheLocalSource,
 ) : IAuthenticationHelper {
-
     /**
      * Invalidates any properties related to authentication state
      */
@@ -68,14 +66,16 @@ internal class AuthenticationHelper(
      * @param requestBuilder The current ongoing request builder
      */
     override operator fun invoke(requestBuilder: Request.Builder) {
-        val entity = localSource.byUserId(
-            authSettings.authenticatedUserId.value
-        )
-        if (entity != null)
-            requestBuilder.addHeader(IAuthenticationHelper.AUTHORIZATION, entity.accessToken)
-        else
-            Timber.w(
-                "Settings indicates that user is authenticated, but no authentication token for the user can be found"
+        val entity =
+            localSource.byUserId(
+                authSettings.authenticatedUserId.value,
             )
+        if (entity != null) {
+            requestBuilder.addHeader(IAuthenticationHelper.AUTHORIZATION, entity.accessToken)
+        } else {
+            Timber.w(
+                "Settings indicates that user is authenticated, but no authentication token for the user can be found",
+            )
+        }
     }
 }

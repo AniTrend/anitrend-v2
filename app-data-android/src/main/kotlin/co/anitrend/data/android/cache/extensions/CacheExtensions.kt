@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.cache.extensions
 
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
@@ -39,15 +38,18 @@ suspend operator fun ICacheStorePolicy.invoke(
     requestHelper: IRequestHelper,
     cacheIdentity: CacheIdentity,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Boolean
+    block: suspend (RequestCallback) -> Boolean,
 ) {
     requestHelper.runIfNotRunning(
-        Request.Default(cacheIdentity.key, requestType)
+        Request.Default(cacheIdentity.key, requestType),
     ) { requestCallback ->
         if (shouldRefresh(cacheIdentity, cacheIdentity.expiresAt)) {
-            if (block(requestCallback))
+            if (block(requestCallback)) {
                 updateLastRequest(cacheIdentity, Instant.now())
-        } else requestCallback.recordSuccess()
+            }
+        } else {
+            requestCallback.recordSuccess()
+        }
     }
 }
 
@@ -64,7 +66,7 @@ operator fun ICacheStorePolicy.invoke(
     requestHelper: IRequestHelper,
     cacheIdentity: CacheIdentity,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Boolean
+    block: suspend (RequestCallback) -> Boolean,
 ) {
     scope.launch {
         invoke(
@@ -88,7 +90,7 @@ suspend operator fun CacheIdentity.invoke(
     paging: SupportPagingHelper,
     requestHelper: IRequestHelper,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit
+    block: suspend (RequestCallback) -> Unit,
 ) {
     val request = Request.Default(key, requestType)
     requestHelper.runIfNotRunning(request) { requestCallback ->
@@ -97,20 +99,26 @@ suspend operator fun CacheIdentity.invoke(
                 if (!paging.isFirstPage()) {
                     paging.onPagePrevious()
                     block(requestCallback)
-                } else requestCallback.recordSuccess()
+                } else {
+                    requestCallback.recordSuccess()
+                }
             }
 
             Request.Type.AFTER -> {
                 if (!paging.isPagingLimit) {
                     paging.onPageNext()
                     block(requestCallback)
-                } else requestCallback.recordSuccess()
+                } else {
+                    requestCallback.recordSuccess()
+                }
             }
 
             else -> {
-                if (!paging.isPagingLimit)
+                if (!paging.isPagingLimit) {
                     block(requestCallback)
-                else requestCallback.recordSuccess()
+                } else {
+                    requestCallback.recordSuccess()
+                }
             }
         }
     }
@@ -129,7 +137,7 @@ operator fun CacheIdentity.invoke(
     paging: SupportPagingHelper,
     requestHelper: IRequestHelper,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit
+    block: suspend (RequestCallback) -> Unit,
 ) {
     scope.launch {
         invoke(
@@ -151,10 +159,10 @@ operator fun CacheIdentity.invoke(
 suspend operator fun CacheIdentity.invoke(
     requestHelper: IRequestHelper,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit
+    block: suspend (RequestCallback) -> Unit,
 ) {
     requestHelper.runIfNotRunning(
-        Request.Default(key, requestType)
+        Request.Default(key, requestType),
     ) { requestCallback ->
         block(requestCallback)
     }
@@ -171,7 +179,7 @@ operator fun CacheIdentity.invoke(
     scope: CoroutineScope,
     requestHelper: IRequestHelper,
     requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit
+    block: suspend (RequestCallback) -> Unit,
 ) {
     scope.launch {
         invoke(

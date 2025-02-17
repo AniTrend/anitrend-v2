@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.mediatrend.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
@@ -28,6 +27,7 @@ import co.anitrend.data.mediatrend.model.edge.MediaTrendEdge
 internal data class MediaTrendConnection(
     override val edges: List<MediaTrendEdge>?,
     override val nodes: List<MediaTrendModel.Core>?,
-    override val pageInfo: PageInfo?
-) : IEntityConnection, IEntityConnection.IEdge<MediaTrendEdge>,
+    override val pageInfo: PageInfo?,
+) : IEntityConnection,
+    IEntityConnection.IEdge<MediaTrendEdge>,
     IEntityConnection.INode<MediaTrendModel>

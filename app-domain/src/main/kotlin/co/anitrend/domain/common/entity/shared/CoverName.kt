@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.common.entity.shared
 
 import co.anitrend.domain.common.entity.contract.IEntityName
@@ -30,5 +29,5 @@ data class CoverName(
     override val full: String?,
     override val last: String?,
     override val native: String?,
-    override val userPreferred: String?
+    override val userPreferred: String?,
 ) : IEntityName

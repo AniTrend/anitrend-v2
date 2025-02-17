@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,15 +21,21 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * The current releasing status of the media
  */
-enum class MediaStatus(override val alias: CharSequence) : IAliasable {
+enum class MediaStatus(
+    override val alias: CharSequence,
+) : IAliasable {
     /** Ended before the work could be finished */
     CANCELLED("Cancelled"),
+
     /** Has completed and is no longer being released */
     FINISHED("Finished"),
+
     /** Version 2 only. Is currently paused from releasing and will resume at a later date */
     HIATUS("Hiatus"),
+
     /** To be released at a later date */
     NOT_YET_RELEASED("Not yet released"),
+
     /** Currently releasing */
-    RELEASING("Releasing")
+    RELEASING("Releasing"),
 }

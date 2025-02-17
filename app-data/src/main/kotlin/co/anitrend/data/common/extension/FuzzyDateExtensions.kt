@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.extension
 
 import co.anitrend.data.common.FuzzyDateInt
@@ -28,7 +27,7 @@ internal fun IFuzzyDateModel?.asFuzzyDate(): FuzzyDate {
     return FuzzyDate(
         year = model.year,
         month = model.month,
-        day = model.day
+        day = model.day,
     )
 }
 
@@ -37,7 +36,7 @@ internal fun FuzzyDateInt?.asFuzzyDate(): FuzzyDate {
     return FuzzyDate(
         year = model.year,
         month = model.month,
-        day = model.day
+        day = model.day,
     )
 }
 
@@ -46,7 +45,7 @@ internal fun FuzzyDate?.asFuzzyDateModel(): IFuzzyDateModel {
     return FuzzyDateModel(
         year = model.year,
         month = model.month,
-        day = model.day
+        day = model.day,
     )
 }
 
@@ -54,24 +53,28 @@ internal fun FuzzyDate?.asFuzzyDateModel(): IFuzzyDateModel {
  *
  * @see FuzzyDateInt
  */
-internal fun IFuzzyDateModel.toFuzzyDateInt() : FuzzyDateInt {
-    if (isDateNotSet())
+internal fun IFuzzyDateModel.toFuzzyDateInt(): FuzzyDateInt {
+    if (isDateNotSet()) {
         return "0"
+    }
 
-    val fuzzyDateYear = when {
-        year < 10 -> "000$year"
-        year < 100 -> "00$year"
-        year < 1000 -> "0$year"
-        else -> "$year"
-    }
-    val fuzzyDateMonth = when {
-        month <= 9 -> "0$month"
-        else -> "$month"
-    }
-    val fuzzyDateDay = when {
-        day <= 9 -> "0$day"
-        else -> "$day"
-    }
+    val fuzzyDateYear =
+        when {
+            year < 10 -> "000$year"
+            year < 100 -> "00$year"
+            year < 1000 -> "0$year"
+            else -> "$year"
+        }
+    val fuzzyDateMonth =
+        when {
+            month <= 9 -> "0$month"
+            else -> "$month"
+        }
+    val fuzzyDateDay =
+        when {
+            day <= 9 -> "0$day"
+            else -> "$day"
+        }
     return "$fuzzyDateYear$fuzzyDateMonth$fuzzyDateDay"
 }
 
@@ -79,9 +82,10 @@ internal fun IFuzzyDateModel.toFuzzyDateInt() : FuzzyDateInt {
  *
  * @see FuzzyDateModel
  */
-internal fun FuzzyDateInt?.toFuzzyDateModel() : IFuzzyDateModel {
-    if (this == "0" || this == null)
+internal fun FuzzyDateInt?.toFuzzyDateModel(): IFuzzyDateModel {
+    if (this == "0" || this == null) {
         return FuzzyDateModel.empty()
+    }
 
     val fuzzyDateIntYear = substring(0, 4).toInt()
     val fuzzyDateIntMonth = substring(4, 6).toInt()
@@ -90,42 +94,47 @@ internal fun FuzzyDateInt?.toFuzzyDateModel() : IFuzzyDateModel {
     return FuzzyDateModel(
         year = fuzzyDateIntYear,
         month = fuzzyDateIntMonth,
-        day = fuzzyDateIntDay
+        day = fuzzyDateIntDay,
     )
 }
 
-
-internal fun IFuzzyDateModel.toFuzzyDateLike() : FuzzyDateLike {
-    if (isDateNotSet())
+internal fun IFuzzyDateModel.toFuzzyDateLike(): FuzzyDateLike {
+    if (isDateNotSet()) {
         return "0"
+    }
 
-    val fuzzyDateYear = when {
-        year == 0 -> "%"
-        year < 10 -> "000$year"
-        year < 100 -> "00$year"
-        year < 1000 -> "0$year"
-        else -> "$year"
-    }
-    val fuzzyDateMonth = when {
-        month == 0 -> {
-            if (fuzzyDateYear != "%")
-                "%"
-            else
-                ""
+    val fuzzyDateYear =
+        when {
+            year == 0 -> "%"
+            year < 10 -> "000$year"
+            year < 100 -> "00$year"
+            year < 1000 -> "0$year"
+            else -> "$year"
         }
-        month <= 9 -> "0$month"
-        else -> "$month"
-    }
-    val fuzzyDateDay = when {
-        day == 0 -> {
-            if (fuzzyDateMonth != "%")
-                "%"
-            else
-                ""
+    val fuzzyDateMonth =
+        when {
+            month == 0 -> {
+                if (fuzzyDateYear != "%") {
+                    "%"
+                } else {
+                    ""
+                }
+            }
+            month <= 9 -> "0$month"
+            else -> "$month"
         }
-        day <= 9 -> "0$day"
-        else -> "$day"
-    }
+    val fuzzyDateDay =
+        when {
+            day == 0 -> {
+                if (fuzzyDateMonth != "%") {
+                    "%"
+                } else {
+                    ""
+                }
+            }
+            day <= 9 -> "0$day"
+            else -> "$day"
+        }
 
     return "$fuzzyDateYear$fuzzyDateMonth$fuzzyDateDay"
 }

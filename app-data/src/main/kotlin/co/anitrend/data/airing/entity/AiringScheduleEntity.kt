@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.entity
 
 import androidx.room.ColumnInfo
@@ -29,7 +28,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     tableName = "airing_schedule",
     primaryKeys = ["id"],
     indices = [
-        Index(value = ["media_id"])
+        Index(value = ["media_id"]),
     ],
     foreignKeys = [
         ForeignKey(
@@ -37,15 +36,15 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 @EntitySchema
 internal data class AiringScheduleEntity(
-    @ColumnInfo(name ="airing_at") val airingAt: Long,
-    @ColumnInfo(name ="episode") val episode: Int,
-    @ColumnInfo(name ="media_id") val mediaId: Long,
-    @ColumnInfo(name ="time_until_airing") val timeUntilAiring: Long,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "airing_at") val airingAt: Long,
+    @ColumnInfo(name = "episode") val episode: Int,
+    @ColumnInfo(name = "media_id") val mediaId: Long,
+    @ColumnInfo(name = "time_until_airing") val timeUntilAiring: Long,
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity

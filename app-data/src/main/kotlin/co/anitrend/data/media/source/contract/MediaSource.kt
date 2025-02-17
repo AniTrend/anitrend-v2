@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.source.contract
 
 import androidx.paging.PagedList
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Default
-import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.paging.legacy.source.live.SupportPagingLiveDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
@@ -29,6 +26,7 @@ import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.paging.AbstractPagingSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
@@ -36,9 +34,7 @@ import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.Flow
 
 internal class MediaSource {
-
     abstract class Detail : AbstractCoreDataSource() {
-
         protected lateinit var query: MediaQuery.Detail
 
         protected lateinit var cacheIdentity: CacheIdentity
@@ -63,7 +59,6 @@ internal class MediaSource {
     }
 
     abstract class Paged : AbstractPagingSource<Media>() {
-
         protected lateinit var query: MediaQuery.Find
 
         protected abstract val cacheIdentity: CacheIdentity
@@ -91,7 +86,7 @@ internal class MediaSource {
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
                 requestType = Request.Type.AFTER,
-                block = ::getMedia
+                block = ::getMedia,
             )
         }
 
@@ -121,21 +116,22 @@ internal class MediaSource {
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
-                block = ::getMedia
+                block = ::getMedia,
             )
         }
     }
 
-    abstract class Network : SupportPagingLiveDataSource<MediaParam.Find, Media>(), ISupportCoroutine by Default() {
-
+    abstract class Network :
+        SupportPagingLiveDataSource<MediaParam.Find, Media>(),
+        ISupportCoroutine by Default() {
         protected abstract val cacheIdentity: CacheIdentity
 
         protected abstract val initialKey: MediaParam.Find
 
         protected abstract suspend fun getMedia(
             param: MediaParam.Find,
-            callback: RequestCallback
-        ) : List<Media>
+            callback: RequestCallback,
+        ): List<Media>
 
         /**
          * Load initial data.
@@ -154,12 +150,12 @@ internal class MediaSource {
          */
         override fun loadInitial(
             params: LoadInitialParams<MediaParam.Find>,
-            callback: LoadInitialCallback<MediaParam.Find, Media>
+            callback: LoadInitialCallback<MediaParam.Find, Media>,
         ) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
-                requestHelper = requestHelper
+                requestHelper = requestHelper,
             ) {
                 val result = getMedia(initialKey, it)
                 callback.onResult(result, null, initialKey)
@@ -185,13 +181,13 @@ internal class MediaSource {
          */
         override fun loadAfter(
             params: LoadParams<MediaParam.Find>,
-            callback: LoadCallback<MediaParam.Find, Media>
+            callback: LoadCallback<MediaParam.Find, Media>,
         ) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
-                requestType = Request.Type.AFTER
+                requestType = Request.Type.AFTER,
             ) {
                 val result = getMedia(params.key, it)
                 callback.onResult(result, params.key)
@@ -217,18 +213,17 @@ internal class MediaSource {
          */
         override fun loadBefore(
             params: LoadParams<MediaParam.Find>,
-            callback: LoadCallback<MediaParam.Find, Media>
+            callback: LoadCallback<MediaParam.Find, Media>,
         ) {
             cacheIdentity(
                 scope = scope,
                 paging = supportPagingHelper,
                 requestHelper = requestHelper,
-                requestType = Request.Type.BEFORE
+                requestType = Request.Type.BEFORE,
             ) {
                 val result = getMedia(params.key, it)
                 callback.onResult(result, params.key)
             }
-
         }
     }
 }

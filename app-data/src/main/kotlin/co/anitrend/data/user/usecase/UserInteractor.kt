@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.usecase
 
 import co.anitrend.data.user.GetAuthenticatedInteractor
@@ -33,32 +32,31 @@ import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserUpdateRepository
 
 internal interface UserInteractor {
-
     class Identifier(
-        repository: UserIdentifierRepository
+        repository: UserIdentifierRepository,
     ) : GetUserInteractor(repository)
 
     class Paged(
-        repository: UserSearchRepository
+        repository: UserSearchRepository,
     ) : GetUserPagedInteractor(repository)
 
     class Profile(
-        repository: UserProfileRepository
+        repository: UserProfileRepository,
     ) : GetProfileInteractor(repository)
 
     class Statistic(
-        repository: UserProfileStatisticRepository
+        repository: UserProfileStatisticRepository,
     ) : GetProfileStatisticInteractor(repository)
 
     class Authenticated(
-        repository: UserAuthenticatedRepository
+        repository: UserAuthenticatedRepository,
     ) : GetAuthenticatedInteractor(repository)
 
     class ToggleFollow(
-        repository: UserFollowRepository
+        repository: UserFollowRepository,
     ) : ToggleFollowInteractor(repository)
 
     class Update(
-        repository: UserUpdateRepository
+        repository: UserUpdateRepository,
     ) : UpdateProfileInteractor(repository)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.crash.runtime
 
 import co.anitrend.core.crash.ExceptionCrashHandler
@@ -24,7 +23,6 @@ import co.anitrend.core.crash.contract.IExceptionCrashHandler
  * An uncaught exception handler for the application
  */
 internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
-
     private val originalHandler: Thread.UncaughtExceptionHandler? =
         Thread.getDefaultUncaughtExceptionHandler()
 
@@ -39,7 +37,10 @@ internal class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
      * @param thread the thread
      * @param throwable the exception
      */
-    override fun uncaughtException(thread: Thread, throwable: Throwable) {
+    override fun uncaughtException(
+        thread: Thread,
+        throwable: Throwable,
+    ) {
         exceptionHandler.onException(thread, throwable)
     }
 }

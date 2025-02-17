@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.entity.filter
 
 import co.anitrend.data.android.filter.FilterQueryBuilder
@@ -24,7 +23,6 @@ import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
 
 internal class GenreQueryFilter : FilterQueryBuilder<GenreParam>() {
-
     /**
      * Staring point of the query builder, that should make use of [requireBuilder]
      * to add query objections
@@ -33,7 +31,7 @@ internal class GenreQueryFilter : FilterQueryBuilder<GenreParam>() {
         val table = GenreEntitySchema.tableName
         requireBuilder().from(table).orderBy(
             GenreEntitySchema.genre.asColumn(),
-            sortOrder = filter.sortOrder
+            sortOrder = filter.sortOrder,
         )
     }
 }

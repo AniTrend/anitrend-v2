@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.profile.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -25,22 +24,26 @@ import co.anitrend.profile.provider.FeatureProvider
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val viewModelModule = module {
-    viewModel {
-        ProfileViewModel(
-            state = ProfileState(
-                interactor = get()
+private val viewModelModule =
+    module {
+        viewModel {
+            ProfileViewModel(
+                state =
+                    ProfileState(
+                        interactor = get(),
+                    ),
             )
-        )
+        }
     }
-}
 
-private val featureModule = module {
-    factory<ProfileRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<ProfileRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(viewModelModule, featureModule),
+    )

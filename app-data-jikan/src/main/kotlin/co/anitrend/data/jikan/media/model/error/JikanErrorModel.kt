@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.model.error
 
 import kotlinx.serialization.SerialName
@@ -25,5 +24,5 @@ data class JikanErrorModel(
     @SerialName("status") val status: Int,
     @SerialName("type") val type: String,
     @SerialName("message") val message: String,
-    @SerialName("error") val error: String
+    @SerialName("error") val error: String,
 )

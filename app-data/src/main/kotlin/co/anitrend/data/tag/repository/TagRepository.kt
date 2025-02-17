@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.repository
 
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -23,12 +22,10 @@ import co.anitrend.data.tag.source.contract.TagSource
 import co.anitrend.domain.tag.model.TagParam
 
 internal class TagRepository(
-    private val source: TagSource
+    private val source: TagSource,
 ) : TagListRepository {
-
     /**
      * @return media genres
      */
-    override fun getMediaTags(param: TagParam) =
-        source create source(param)
+    override fun getMediaTags(param: TagParam) = source create source(param)
 }

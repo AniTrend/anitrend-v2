@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.content.list.presenter
 
 import android.view.View
@@ -29,9 +28,9 @@ import co.anitrend.core.databinding.SharedListContentBinding
 /**
  * Custom content list presenter
  */
-class AniTrendListContentPresenter<M> : SupportListPresenter<M>(),
+class AniTrendListContentPresenter<M> :
+    SupportListPresenter<M>(),
     IBindingView<SharedListContentBinding> {
-
     override val recyclerView: RecyclerView
         get() = requireBinding().recyclerView
 
@@ -43,7 +42,10 @@ class AniTrendListContentPresenter<M> : SupportListPresenter<M>(),
 
     override var binding: SharedListContentBinding? = null
 
-    override fun onCreateView(fragmentList: ISupportFragmentList<M>, view: View?) {
+    override fun onCreateView(
+        fragmentList: ISupportFragmentList<M>,
+        view: View?,
+    ) {
         binding = SharedListContentBinding.bind(requireNotNull(view))
         super.onCreateView(fragmentList, view)
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.thread.model.remote
 
 import co.anitrend.data.core.common.Identity
@@ -30,7 +29,6 @@ import co.anitrend.data.user.model.UserModel
  *
  */
 internal sealed class ThreadModel : IThreadModel {
-
     abstract val categories: List<Category>?
 
     /** [ThreadCategory](https://anilist.github.io/ApiV2-GraphQL-Docs/threadcategory.doc.html)
@@ -61,7 +59,7 @@ internal sealed class ThreadModel : IThreadModel {
         override val updatedAt: Long,
         override val user: UserModel.Core,
         override val userId: Long,
-        override val viewCount: Int
+        override val viewCount: Int,
     ) : ThreadModel()
 
     /**
@@ -91,6 +89,6 @@ internal sealed class ThreadModel : IThreadModel {
         override val user: UserModel.Core,
         override val userId: Long,
         override val viewCount: Int,
-        override val id: Long
+        override val id: Long,
     ) : ThreadModel()
 }

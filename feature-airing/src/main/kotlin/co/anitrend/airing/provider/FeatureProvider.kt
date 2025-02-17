@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.airing.provider
 
 import android.content.Context
@@ -24,7 +23,7 @@ import co.anitrend.airing.component.screen.AiringScreen
 import co.anitrend.navigation.AiringRouter
 
 internal class FeatureProvider : AiringRouter.Provider {
-    override fun activity(context: Context?) =
-		Intent(context, AiringScreen::class.java)
+    override fun activity(context: Context?) = Intent(context, AiringScreen::class.java)
+
     override fun fragment() = AiringContent::class.java
 }

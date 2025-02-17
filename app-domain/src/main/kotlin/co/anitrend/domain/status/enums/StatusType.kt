@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.status.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,15 +21,21 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * Activity type enum
  */
-enum class StatusType(override val alias: CharSequence) : IAliasable {
+enum class StatusType(
+    override val alias: CharSequence,
+) : IAliasable {
     /** A text activity */
     TEXT("Text"),
+
     /** A anime list update activity */
     ANIME_LIST("Anime List"),
+
     /** A manga list update activity */
     MANGA_LIST("Manga List"),
+
     /** A text message activity sent to another user */
     MESSAGE("Message"),
+
     /** Anime & Manga list update, only used in query arguments */
-    MEDIA_LIST("Media List")
+    MEDIA_LIST("Media List"),
 }

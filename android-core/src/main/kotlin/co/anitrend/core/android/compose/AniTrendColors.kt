@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.compose
 
 import android.content.Context
@@ -26,42 +25,31 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.unit.Dp
 import co.anitrend.arch.extension.ext.getCompatColor
 
+fun Context.primaryColor() = Color(getCompatColor(co.anitrend.arch.theme.R.color.primaryColor))
 
-fun Context.primaryColor() =
-    Color(getCompatColor(co.anitrend.arch.theme.R.color.primaryColor))
+fun Context.secondaryColor() = Color(getCompatColor(co.anitrend.arch.theme.R.color.secondaryColor))
 
-fun Context.secondaryColor() =
-    Color(getCompatColor(co.anitrend.arch.theme.R.color.secondaryColor))
+fun Context.backgroundColor() = Color(getCompatColor(co.anitrend.arch.theme.R.color.colorBackground))
 
-fun Context.backgroundColor() =
-    Color(getCompatColor(co.anitrend.arch.theme.R.color.colorBackground))
+fun Context.onBackgroundColor() = Color(getCompatColor(co.anitrend.arch.theme.R.color.colorOnBackground))
 
-fun Context.onBackgroundColor() =
-    Color(getCompatColor(co.anitrend.arch.theme.R.color.colorOnBackground))
+fun Context.primaryTextColor() = Color(getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor))
 
-fun Context.primaryTextColor() =
-    Color(getCompatColor(co.anitrend.arch.theme.R.color.primaryTextColor))
-
-fun Context.secondaryTextColor() =
-    Color(getCompatColor(co.anitrend.arch.theme.R.color.secondaryTextColor))
-
+fun Context.secondaryTextColor() = Color(getCompatColor(co.anitrend.arch.theme.R.color.secondaryTextColor))
 
 /**
  * Return the fully opaque color that results from compositing [onSurface] atop [surface] with the
  * given [alpha]. Useful for situations where semi-transparent colors are undesirable.
  */
 @Composable
-fun Colors.compositedOnSurface(alpha: Float): Color {
-    return onSurface.copy(alpha = alpha).compositeOver(surface)
-}
+fun Colors.compositedOnSurface(alpha: Float): Color = onSurface.copy(alpha = alpha).compositeOver(surface)
 
 /**
  * Calculates the color of an elevated `surface` in dark mode. Returns `surface` in light mode.
  */
 @Composable
-fun Colors.elevatedSurface(elevation: Dp): Color {
-    return LocalElevationOverlay.current?.apply(
+fun Colors.elevatedSurface(elevation: Dp): Color =
+    LocalElevationOverlay.current?.apply(
         color = this.surface,
-        elevation = elevation
+        elevation = elevation,
     ) ?: this.surface
-}

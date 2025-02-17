@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.common.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,9 +21,11 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * Types that can be liked
  */
-enum class LikeableType(override val alias: CharSequence) : IAliasable {
+enum class LikeableType(
+    override val alias: CharSequence,
+) : IAliasable {
     ACTIVITY("Activity"),
     ACTIVITY_REPLY("Activity reply"),
     THREAD("Thread"),
-    THREAD_COMMENT("Thread comment")
+    THREAD_COMMENT("Thread comment"),
 }

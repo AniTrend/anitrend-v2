@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.relation.model.local
 
 import kotlinx.serialization.SerialName
@@ -31,9 +30,10 @@ data class RelationQuery(
     @SerialName("source") val source: RelationType = RelationType.ANILIST,
     @SerialName("include") val include: List<RelationType> = emptyList(),
 ) {
-    fun includeRelations(): String? {
-        return if (include.isNotEmpty()) {
+    fun includeRelations(): String? =
+        if (include.isNotEmpty()) {
             include.joinToString(transform = RelationType::type)
-        } else null
-    }
+        } else {
+            null
+        }
 }

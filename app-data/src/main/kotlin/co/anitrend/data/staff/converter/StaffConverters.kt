@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.staff.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -28,93 +27,102 @@ import co.anitrend.domain.staff.entity.Staff
 
 internal class StaffConverter(
     override val fromType: (StaffModel) -> Staff = ::transform,
-    override val toType: (Staff) -> StaffModel = { throw NotImplementedError() }
+    override val toType: (Staff) -> StaffModel = { throw NotImplementedError() },
 ) : SupportConverter<StaffModel, Staff>() {
     private companion object : ISupportTransformer<StaffModel, Staff> {
-        override fun transform(source: StaffModel) = when (source) {
-            is StaffModel.Core -> Staff.Core(
-                age = source.age,
-                dateOfBirth = source.dateOfBirth?.asFuzzyDate(),
-                dateOfDeath = source.dateOfDeath?.asFuzzyDate(),
-                gender = source.gender,
-                homeTown = source.homeTown,
-                bloodType = source.bloodType,
-                primaryOccupations = source.primaryOccupations.orEmpty(),
-                yearsActive = Staff.ActiveYearPeriod(
-                    start = source.yearsActive.firstOrNull(),
-                    end = source.yearsActive.lastOrNull(),
-                ),
-                description = source.description,
-                favourites = source.favourites,
-                image = source.image?.let { image ->
-                    CoverImage(
-                        large = image.large,
-                        medium = image.medium
+        override fun transform(source: StaffModel) =
+            when (source) {
+                is StaffModel.Core ->
+                    Staff.Core(
+                        age = source.age,
+                        dateOfBirth = source.dateOfBirth?.asFuzzyDate(),
+                        dateOfDeath = source.dateOfDeath?.asFuzzyDate(),
+                        gender = source.gender,
+                        homeTown = source.homeTown,
+                        bloodType = source.bloodType,
+                        primaryOccupations = source.primaryOccupations.orEmpty(),
+                        yearsActive =
+                            Staff.ActiveYearPeriod(
+                                start = source.yearsActive.firstOrNull(),
+                                end = source.yearsActive.lastOrNull(),
+                            ),
+                        description = source.description,
+                        favourites = source.favourites,
+                        image =
+                            source.image?.let { image ->
+                                CoverImage(
+                                    large = image.large,
+                                    medium = image.medium,
+                                )
+                            },
+                        isFavourite = source.isFavourite,
+                        isFavouriteBlocked = source.isFavouriteBlocked,
+                        language = source.language,
+                        name =
+                            source.name?.let { name ->
+                                CoverName(
+                                    alternative = name.alternative.orEmpty(),
+                                    alternativeSpoiler = name.alternativeSpoiler.orEmpty(),
+                                    first = name.first,
+                                    full = name.full,
+                                    last = name.last,
+                                    middle = name.middle,
+                                    native = name.native,
+                                    userPreferred = name.userPreferred,
+                                )
+                            },
+                        siteUrl = source.siteUrl,
+                        id = source.id,
                     )
-                },
-                isFavourite = source.isFavourite,
-                isFavouriteBlocked = source.isFavouriteBlocked,
-                language = source.language,
-                name = source.name?.let { name ->
-                    CoverName(
-                        alternative = name.alternative.orEmpty(),
-                        alternativeSpoiler = name.alternativeSpoiler.orEmpty(),
-                        first = name.first,
-                        full = name.full,
-                        last = name.last,
-                        middle = name.middle,
-                        native = name.native,
-                        userPreferred = name.userPreferred
+                is StaffModel.Extended ->
+                    Staff.Extended(
+                        age = source.age,
+                        dateOfBirth = source.dateOfBirth?.asFuzzyDate(),
+                        dateOfDeath = source.dateOfDeath?.asFuzzyDate(),
+                        gender = source.gender,
+                        homeTown = source.homeTown,
+                        bloodType = source.bloodType,
+                        primaryOccupations = source.primaryOccupations.orEmpty(),
+                        yearsActive =
+                            Staff.ActiveYearPeriod(
+                                start = source.yearsActive.firstOrNull(),
+                                end = source.yearsActive.lastOrNull(),
+                            ),
+                        description = source.description,
+                        favourites = source.favourites,
+                        image =
+                            source.image?.let { image ->
+                                CoverImage(
+                                    large = image.large,
+                                    medium = image.medium,
+                                )
+                            },
+                        isFavourite = source.isFavourite,
+                        isFavouriteBlocked = source.isFavouriteBlocked,
+                        language = source.language,
+                        name =
+                            source.name?.let { name ->
+                                CoverName(
+                                    alternative = name.alternative.orEmpty(),
+                                    alternativeSpoiler = name.alternativeSpoiler.orEmpty(),
+                                    first = name.first,
+                                    full = name.full,
+                                    last = name.last,
+                                    middle = name.middle,
+                                    native = name.native,
+                                    userPreferred = name.userPreferred,
+                                )
+                            },
+                        siteUrl = source.siteUrl,
+                        id = source.id,
                     )
-                },
-                siteUrl = source.siteUrl,
-                id = source.id
-            )
-            is StaffModel.Extended -> Staff.Extended(
-                age = source.age,
-                dateOfBirth = source.dateOfBirth?.asFuzzyDate(),
-                dateOfDeath = source.dateOfDeath?.asFuzzyDate(),
-                gender = source.gender,
-                homeTown = source.homeTown,
-                bloodType = source.bloodType,
-                primaryOccupations = source.primaryOccupations.orEmpty(),
-                yearsActive = Staff.ActiveYearPeriod(
-                    start = source.yearsActive.firstOrNull(),
-                    end = source.yearsActive.lastOrNull(),
-                ),
-                description = source.description,
-                favourites = source.favourites,
-                image = source.image?.let { image ->
-                    CoverImage(
-                        large = image.large,
-                        medium = image.medium
-                    )
-                },
-                isFavourite = source.isFavourite,
-                isFavouriteBlocked = source.isFavouriteBlocked,
-                language = source.language,
-                name = source.name?.let { name ->
-                    CoverName(
-                        alternative = name.alternative.orEmpty(),
-                        alternativeSpoiler = name.alternativeSpoiler.orEmpty(),
-                        first = name.first,
-                        full = name.full,
-                        last = name.last,
-                        middle = name.middle,
-                        native = name.native,
-                        userPreferred = name.userPreferred
-                    )
-                },
-                siteUrl = source.siteUrl,
-                id = source.id
-            )
-        }
+            }
     }
 }
 
 internal class StaffModelConverter(
     override val fromType: (StaffModel) -> StaffEntity = ::transform,
-    override val toType: (StaffEntity) -> StaffModel = { throw NotImplementedError() }
+    override val toType: (StaffEntity) -> StaffModel = { throw NotImplementedError() },
 ) : SupportConverter<StaffModel, StaffEntity>() {
     private companion object : ISupportTransformer<StaffModel, StaffEntity> {
         override fun transform(source: StaffModel): StaffEntity {
@@ -125,7 +133,7 @@ internal class StaffModelConverter(
 
 internal class StaffEntityConverter(
     override val fromType: (StaffEntity) -> Staff = ::transform,
-    override val toType: (Staff) -> StaffEntity = { throw NotImplementedError() }
+    override val toType: (Staff) -> StaffEntity = { throw NotImplementedError() },
 ) : SupportConverter<StaffEntity, Staff>() {
     private companion object : ISupportTransformer<StaffEntity, Staff> {
         override fun transform(source: StaffEntity): Staff {

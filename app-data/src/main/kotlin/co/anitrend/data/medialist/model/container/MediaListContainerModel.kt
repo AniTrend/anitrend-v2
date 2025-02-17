@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.model.container
 
 import co.anitrend.data.common.model.delete.DeletedModel
@@ -28,7 +27,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class MediaListContainerModel {
-
     abstract class Single : MediaListContainerModel() {
         abstract val entry: MediaListModel
     }
@@ -43,13 +41,14 @@ internal sealed class MediaListContainerModel {
 
     @Serializable
     data class Paged(
-        @SerialName("Page") val page: Page = Page()
+        @SerialName("Page") val page: Page = Page(),
     ) : MediaListContainerModel() {
         @Serializable
         data class Page(
             @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
-            @SerialName("mediaList") override val entries: List<MediaListModel.Extended> = emptyList()
-        ) : Many(), IPageModel
+            @SerialName("mediaList") override val entries: List<MediaListModel.Extended> = emptyList(),
+        ) : Many(),
+            IPageModel
     }
 
     /** [MediaListCollection](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistcollection.doc.html)
@@ -57,9 +56,8 @@ internal sealed class MediaListContainerModel {
      */
     @Serializable
     data class Collection(
-        @SerialName("MediaListCollection") val mediaListCollection: ListCollection
-    ) : MediaListContainerModel(){
-
+        @SerialName("MediaListCollection") val mediaListCollection: ListCollection,
+    ) : MediaListContainerModel() {
         /** [MediaListGroup](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistgroup.doc.html)
          * List group of anime or manga entries
          *
@@ -75,7 +73,7 @@ internal sealed class MediaListContainerModel {
             @SerialName("isCustomList") val isCustomList: Boolean = false,
             @SerialName("isSplitCompletedList") val isSplitCompletedList: Boolean = false,
             @SerialName("name") val name: String? = null,
-            @SerialName("status") val status: MediaListStatus? = null
+            @SerialName("status") val status: MediaListStatus? = null,
         ) : Many()
 
         /**
@@ -87,32 +85,32 @@ internal sealed class MediaListContainerModel {
         data class ListCollection(
             @SerialName("lists") val lists: List<Group>,
             @SerialName("hasNextChunk") val hasNextChunk: Boolean,
-            @SerialName("user") val user: UserModel.Core?
+            @SerialName("user") val user: UserModel.Core?,
         )
     }
 
     @Serializable
     data class Entry(
-        @SerialName("MediaList") override val entry: MediaListModel.Extended
+        @SerialName("MediaList") override val entry: MediaListModel.Extended,
     ) : Single()
 
     @Serializable
     data class SavedEntry(
-        @SerialName("SaveMediaListEntry") override val entry: MediaListModel.Core
+        @SerialName("SaveMediaListEntry") override val entry: MediaListModel.Core,
     ) : Single()
 
     @Serializable
     data class SavedEntries(
-        @SerialName("UpdateMediaListEntries") override val entries: List<MediaListModel.Core>
+        @SerialName("UpdateMediaListEntries") override val entries: List<MediaListModel.Core>,
     ) : Many()
 
     @Serializable
     data class DeletedEntry(
-        @SerialName("DeleteMediaListEntry") override val entry: DeletedModel
+        @SerialName("DeleteMediaListEntry") override val entry: DeletedModel,
     ) : Deleted()
 
     @Serializable
     data class DeletedCustomList(
-        @SerialName("DeleteCustomList") override val entry: DeletedModel
+        @SerialName("DeleteCustomList") override val entry: DeletedModel,
     ) : Deleted()
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.model.anime
 
 import kotlinx.serialization.SerialName
@@ -23,7 +22,6 @@ import kotlinx.serialization.Transient
 
 @Serializable
 internal sealed class JikanMediaModel {
-
     abstract val malId: Long
     abstract val url: String?
     abstract val imageUrl: String?
@@ -42,12 +40,12 @@ internal sealed class JikanMediaModel {
         @SerialName("mal_id") val malId: Long,
         @SerialName("type") val type: String? = null,
         @SerialName("name") val name: String? = null,
-        @SerialName("url") val url: String? = null
+        @SerialName("url") val url: String? = null,
     )
 
     @Serializable
     data class MoreInfo(
-        @SerialName("moreinfo") val moreInfo: String?
+        @SerialName("moreinfo") val moreInfo: String?,
     )
 
     @Serializable
@@ -75,7 +73,7 @@ internal sealed class JikanMediaModel {
         @SerialName("airing") override val releasing: Boolean?,
         @SerialName("synopsis") override val synopsis: String?,
         @SerialName("background") override val background: String?,
-        @Transient override val moreInfo: String? = null
+        @Transient override val moreInfo: String? = null,
     ) : JikanMediaModel()
 
     @Serializable
@@ -94,6 +92,6 @@ internal sealed class JikanMediaModel {
         @SerialName("publishing") override val releasing: Boolean?,
         @SerialName("synopsis") override val synopsis: String?,
         @SerialName("background") override val background: String?,
-        @Transient override val moreInfo: String? = null
+        @Transient override val moreInfo: String? = null,
     ) : JikanMediaModel()
 }

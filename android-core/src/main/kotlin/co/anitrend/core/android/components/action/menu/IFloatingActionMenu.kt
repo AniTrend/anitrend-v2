@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.components.action.menu
 
 import android.view.MenuInflater
@@ -23,11 +22,12 @@ import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
 
 interface IFloatingActionMenu {
-
     /**
      * Find a menu item for the given [id]
      */
-    fun findMenuItem(@IdRes id: Int): MenuItem?
+    fun findMenuItem(
+        @IdRes id: Int,
+    ): MenuItem?
 
     /**
      * Inflate menu
@@ -35,7 +35,7 @@ interface IFloatingActionMenu {
     fun inflate(
         menuInflater: MenuInflater?,
         @MenuRes menuRes: Int,
-        clickListener: (item: MenuItem?) -> Boolean
+        clickListener: (item: MenuItem?) -> Boolean,
     )
 
     /**

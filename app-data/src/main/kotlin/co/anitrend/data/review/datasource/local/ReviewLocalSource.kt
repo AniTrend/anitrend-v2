@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.datasource.local
 
 import androidx.paging.DataSource
@@ -32,21 +31,26 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class ReviewLocalSource : AbstractLocalSource<ReviewEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from review
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from review
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from review
         where id = :id
-        """)
+        """,
+    )
     abstract suspend fun clearById(id: Long)
 
     @Transaction

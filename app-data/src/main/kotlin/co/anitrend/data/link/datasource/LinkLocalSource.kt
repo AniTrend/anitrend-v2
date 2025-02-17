@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.link.datasource
 
 import androidx.room.*
@@ -23,15 +22,18 @@ import co.anitrend.data.link.entity.LinkEntity
 
 @Dao
 internal abstract class LinkLocalSource : AbstractLocalSource<LinkEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id)
         from link
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from link
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.extensions
 
 import co.anitrend.data.core.extensions.api
@@ -27,8 +26,6 @@ internal inline fun <reified T> Scope.remoteSource(): T {
     return api(provider)
 }
 
-internal fun Scope.jikanLocalSource() =
-    get<IJikanStore>().jikanDao()
+internal fun Scope.jikanLocalSource() = get<IJikanStore>().jikanDao()
 
-internal fun Scope.db() =
-    get<IJikanStore>()
+internal fun Scope.db() = get<IJikanStore>()

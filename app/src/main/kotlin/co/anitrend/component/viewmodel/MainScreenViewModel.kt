@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.component.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import co.anitrend.model.ScreenState
 
-class MainScreenViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class MainScreenViewModel(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
     internal val state = ScreenState(savedStateHandle)
 }

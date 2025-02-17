@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.medialist.editor.component.sheet
 
 import android.content.Context
@@ -49,13 +48,12 @@ import timber.log.Timber
 class MediaListEditorContent(
     private val controller: MediaListEditorController,
     private val stateConfig: StateLayoutConfig,
-    override val inflateLayout: Int = R.layout.media_list_editor_content
+    override val inflateLayout: Int = R.layout.media_list_editor_content,
 ) : AniTrendBottomSheet<MediaListEditorContentBinding>() {
-
     private val viewModel by viewModel<MediaListEditorViewModel>()
 
     private val param by argument<MediaListEditorRouter.MediaListEditorParam>(
-        key = nameOf<MediaListEditorRouter.MediaListEditorParam>()
+        key = nameOf<MediaListEditorRouter.MediaListEditorParam>(),
     )
 
     private fun onFetchDataInitialize() {
@@ -77,15 +75,14 @@ class MediaListEditorContent(
         super.initializeComponents(savedInstanceState)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                requireBinding().stateLayout.interactionFlow
+                requireBinding()
+                    .stateLayout.interactionFlow
                     .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
                     .onEach {
                         viewModelState().retry()
-                    }
-                    .catch { cause: Throwable ->
+                    }.catch { cause: Throwable ->
                         Timber.e(cause)
-                    }
-                    .collect()
+                    }.collect()
             }
         }
         lifecycleScope.launch {
@@ -94,7 +91,8 @@ class MediaListEditorContent(
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, closeSheetOnBackPressed
+            this,
+            closeSheetOnBackPressed,
         )
     }
 
@@ -111,8 +109,9 @@ class MediaListEditorContent(
         viewModelState().loadState.observe(viewLifecycleOwner) {
             if (viewModelState().model.value == null) {
                 requireBinding().stateLayout.loadStateFlow.value = it
+            } else {
+                requireBinding().stateLayout.loadStateFlow.value = LoadState.Idle()
             }
-            else requireBinding().stateLayout.loadStateFlow.value = LoadState.Idle()
         }
     }
 
@@ -142,7 +141,7 @@ class MediaListEditorContent(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         binding = MediaListEditorContentBinding.bind(requireNotNull(view))
@@ -160,7 +159,10 @@ class MediaListEditorContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         requireBinding().stateLayout.stateConfigFlow.value = stateConfig
     }

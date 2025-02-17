@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.carousel.interactor
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.carousel.model.CarouselParam
 import co.anitrend.domain.carousel.repository.IMediaCarouselRepository
 
-abstract class MediaCarouselUseCase<State: UiState<*>>(
-    protected val repository: IMediaCarouselRepository<State>
+abstract class MediaCarouselUseCase<State : UiState<*>>(
+    protected val repository: IMediaCarouselRepository<State>,
 ) {
-    suspend operator fun invoke(param: CarouselParam.Find) =
-        repository.getMediaCarousel(param)
+    suspend operator fun invoke(param: CarouselParam.Find) = repository.getMediaCarousel(param)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.entity.view
 
 import androidx.room.ColumnInfo
@@ -25,7 +24,7 @@ import org.intellij.lang.annotations.Language
 
 @DatabaseView(
     value = MediaListCountView.QUERY,
-    viewName = "media_list_count"
+    viewName = "media_list_count",
 )
 internal data class MediaListCountView(
     @ColumnInfo(name = "list_count") val listCount: Int,
@@ -43,10 +42,9 @@ internal data class MediaListCountView(
     }
 }
 
-
 @DatabaseView(
     value = CustomListCountView.QUERY,
-    viewName = "custom_list_count"
+    viewName = "custom_list_count",
 )
 internal data class CustomListCountView(
     @ColumnInfo(name = "list_count") val listCount: Int,

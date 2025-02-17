@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.character.model.remote.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
@@ -27,7 +26,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class CharacterEdge {
-
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
      * Character connection edge
      *
@@ -35,7 +33,7 @@ internal sealed class CharacterEdge {
      */
     @Serializable
     data class Favourite(
-        @SerialName("favouriteOrder") val favouriteOrder: Int? = null
+        @SerialName("favouriteOrder") val favouriteOrder: Int? = null,
     ) : CharacterEdge()
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
@@ -48,8 +46,9 @@ internal sealed class CharacterEdge {
     data class Media(
         @SerialName("characterRole") val characterRole: CharacterRole? = null,
         @SerialName("media") val media: List<MediaModel.Core>? = null,
-        @SerialName("id") override val id: Long
-    ) : CharacterEdge(), Identity
+        @SerialName("id") override val id: Long,
+    ) : CharacterEdge(),
+        Identity
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
      * Character connection edge
@@ -61,6 +60,8 @@ internal sealed class CharacterEdge {
         @SerialName("characterRole") val characterRole: CharacterRole? = null,
         @SerialName("voiceActorRoles") val voiceActorRoles: List<StaffModel.ActorRole>? = null,
         @SerialName("node") override val node: MediaModel.Core? = null,
-        @SerialName("id") override val id: Long
-    ) : CharacterEdge(), IEntityEdge<MediaModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : CharacterEdge(),
+        IEntityEdge<MediaModel>,
+        Identity
 }

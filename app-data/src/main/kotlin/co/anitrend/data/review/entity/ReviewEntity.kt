@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.entity
 
 import androidx.room.ColumnInfo
@@ -41,16 +40,16 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"]
+            parentColumns = ["id"],
         ),
         ForeignKey(
             entity = UserEntity::class,
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 @EntitySchema
 internal data class ReviewEntity(
@@ -66,5 +65,5 @@ internal data class ReviewEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "user_rating") val userRating: ReviewRating,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity

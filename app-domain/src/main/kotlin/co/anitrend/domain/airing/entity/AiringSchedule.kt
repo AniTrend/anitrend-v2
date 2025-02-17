@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.airing.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -32,16 +31,16 @@ data class AiringSchedule(
     val episode: Int,
     val mediaId: Long,
     val timeUntilAiring: Long,
-    override val id: Long
+    override val id: Long,
 ) : IEntity {
-
     companion object {
-        fun empty() = AiringSchedule(
-            airingAt = 0,
-            episode = 0,
-            mediaId = INVALID_ID,
-            timeUntilAiring = 0,
-            id = INVALID_ID
-        )
+        fun empty() =
+            AiringSchedule(
+                airingAt = 0,
+                episode = 0,
+                mediaId = INVALID_ID,
+                timeUntilAiring = 0,
+                id = INVALID_ID,
+            )
     }
 }

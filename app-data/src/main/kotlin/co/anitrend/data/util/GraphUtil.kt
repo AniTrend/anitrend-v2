@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.util
 
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
@@ -29,10 +28,11 @@ import io.github.wax911.library.model.request.QueryContainerBuilder
  * Graph request helper class
  */
 internal object GraphUtil {
-
-    private val SORT_ORDER_EXCEPTIONS = listOf(
-        "SEARCH_MATCH", "RELEVANCE"
-    )
+    private val SORT_ORDER_EXCEPTIONS =
+        listOf(
+            "SEARCH_MATCH",
+            "RELEVANCE",
+        )
 
     private const val SORT_ORDER_DESC_POSTFIX = "_DESC"
 
@@ -50,7 +50,7 @@ internal object GraphUtil {
      */
     internal fun IGraphPayload.toQueryContainerBuilder(
         paging: SupportPagingHelper? = null,
-        ignoreNulls: Boolean = false
+        ignoreNulls: Boolean = false,
     ): QueryContainerBuilder {
         val queryContainerBuilder = QueryContainerBuilder()
         paging?.apply {
@@ -62,18 +62,22 @@ internal object GraphUtil {
         variables
             .filter { it.value is List<*> }
             .forEach { entry ->
-                val mapped = (entry.value as List<*>).map {
-                    if (it is ISortWithOrder<*>)
-                        return@map it.applySortOrderUsing()
-                    it
-                }
+                val mapped =
+                    (entry.value as List<*>).map {
+                        if (it is ISortWithOrder<*>) {
+                            return@map it.applySortOrderUsing()
+                        }
+                        it
+                    }
                 variables[entry.key] = mapped
             }
 
         queryContainerBuilder.putVariables(
-            if (ignoreNulls)
+            if (ignoreNulls) {
                 variables.filterValues { it != null }
-            else variables
+            } else {
+                variables
+            },
         )
         return queryContainerBuilder
     }
@@ -84,17 +88,24 @@ internal object GraphUtil {
      * @param shrink flag which allows or prevents minification
      */
     @AniTrendExperimentalFeature
-    internal fun String.minify(shrink: Boolean): String {
-        return if (shrink) replace(
-            "\n\n", " "
-        ).replace(
-            '\t', ' '
-        ).replace(
-            '\n', ' '
-        ).replace(
-            "    ", " "
-        ) else this
-    }
+    internal fun String.minify(shrink: Boolean): String =
+        if (shrink) {
+            replace(
+                "\n\n",
+                " ",
+            ).replace(
+                '\t',
+                ' ',
+            ).replace(
+                '\n',
+                ' ',
+            ).replace(
+                "    ",
+                " ",
+            )
+        } else {
+            this
+        }
 
     /**
      * Applies order on sortable keys, if the key is not among the sort order exceptions
@@ -104,10 +115,11 @@ internal object GraphUtil {
     fun ISortWithOrder<*>.applySortOrderUsing(): String {
         val sortType = (sortable as Enum<*>).name
         if (order == SortOrder.DESC) {
-            return if (SORT_ORDER_EXCEPTIONS.contains(sortType))
+            return if (SORT_ORDER_EXCEPTIONS.contains(sortType)) {
                 sortType
-            else
+            } else {
                 sortType + SORT_ORDER_DESC_POSTFIX
+            }
         }
         return sortType
     }

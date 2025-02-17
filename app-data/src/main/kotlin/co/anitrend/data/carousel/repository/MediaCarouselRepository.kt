@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.carousel.repository
 
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -22,11 +21,8 @@ import co.anitrend.data.carousel.MediaCarouselListRepository
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.domain.carousel.model.CarouselParam
 
-
 internal class MediaCarouselRepository(
-    private val source: CarouselSource
+    private val source: CarouselSource,
 ) : MediaCarouselListRepository {
-    override suspend fun getMediaCarousel(
-        param: CarouselParam.Find
-    ) = source create source(param)
+    override suspend fun getMediaCarousel(param: CarouselParam.Find) = source create source(param)
 }

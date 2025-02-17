@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.episode.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -30,18 +29,17 @@ data class Episode(
     val series: Series,
     val thumbnail: CoverImage,
     val availability: Availability,
-    val about: About
+    val about: About,
 ) : IEntity {
-
     data class Availability(
         val freeTime: Long,
-        val premiumTime: Long
+        val premiumTime: Long,
     )
 
     data class About(
         val episodeDuration: String,
         val episodeTitle: String?,
-        val episodeNumber: String?
+        val episodeNumber: String?,
     )
 
     data class Series(
@@ -49,31 +47,34 @@ data class Episode(
         val seriesPublisher: String?,
         val seriesSeason: String?,
         val keywords: List<String>,
-        val rating: String?
+        val rating: String?,
     )
 
     companion object {
-        fun empty() = Episode(
-            id = 0,
-            title = "",
-            guid = "",
-            mediaId = 0,
-            description = "",
-            subtitles = emptyList(),
-            series = Series(
-                seriesTitle = "",
-                seriesPublisher = "",
-                seriesSeason = "",
-                keywords = emptyList(),
-                rating = "",
-            ),
-            thumbnail = CoverImage(large = null, medium = null),
-            availability = Availability(freeTime = 0, premiumTime = 0),
-            about = About(
-                episodeDuration = "",
-                episodeTitle = "",
-                episodeNumber = ""
+        fun empty() =
+            Episode(
+                id = 0,
+                title = "",
+                guid = "",
+                mediaId = 0,
+                description = "",
+                subtitles = emptyList(),
+                series =
+                    Series(
+                        seriesTitle = "",
+                        seriesPublisher = "",
+                        seriesSeason = "",
+                        keywords = emptyList(),
+                        rating = "",
+                    ),
+                thumbnail = CoverImage(large = null, medium = null),
+                availability = Availability(freeTime = 0, premiumTime = 0),
+                about =
+                    About(
+                        episodeDuration = "",
+                        episodeTitle = "",
+                        episodeNumber = "",
+                    ),
             )
-        )
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.review.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -23,7 +22,9 @@ import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.user.entity.User
 
-interface IReview : IEntity, ISynopsis {
+interface IReview :
+    IEntity,
+    ISynopsis {
     val createdAt: Long
     val mediaId: Long
     val mediaType: MediaType

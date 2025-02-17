@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.staff.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -24,7 +23,10 @@ import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.common.entity.shared.CoverName
 import co.anitrend.domain.staff.enums.StaffLanguage
 
-interface IStaff : IEntity, IFavourable, ISynopsis {
+interface IStaff :
+    IEntity,
+    IFavourable,
+    ISynopsis {
     val image: CoverImage?
     val language: StaffLanguage?
     val name: CoverName?

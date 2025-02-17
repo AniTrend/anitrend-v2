@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.sheet
 
 import android.os.Bundle
@@ -37,11 +36,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class MediaDiscoverFilterSheet(
-    override val inflateLayout: Int = R.layout.media_discover_filter_sheet
+    override val inflateLayout: Int = R.layout.media_discover_filter_sheet,
 ) : AniTrendBottomSheet<MediaDiscoverFilterSheetBinding>() {
-
     private val viewModel by activityViewModel<MediaDiscoverViewModel>(
-        ownerProducer = { requireParentFragment() }
+        ownerProducer = { requireParentFragment() },
     )
 
     private val titles by lazy(UNSAFE) {
@@ -57,13 +55,14 @@ class MediaDiscoverFilterSheet(
     }
 
     private fun setUpViewPager() {
-        requireBinding().viewPager.adapter = FilterPageAdapter(
-            param = viewModel.filter.value,
-            titles = titles,
-            fragmentActivity = requireActivity(),
-            fragmentManager = childFragmentManager,
-            lifecycle = lifecycle
-        )
+        requireBinding().viewPager.adapter =
+            FilterPageAdapter(
+                param = viewModel.filter.value,
+                titles = titles,
+                fragmentActivity = requireActivity(),
+                fragmentManager = childFragmentManager,
+                lifecycle = lifecycle,
+            )
         requireBinding().viewPager.enableBottomSheetScrolling()
     }
 
@@ -75,7 +74,8 @@ class MediaDiscoverFilterSheet(
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireActivity().onBackPressedDispatcher.addCallback(
-            this, closeSheetOnBackPressed
+            this,
+            closeSheetOnBackPressed,
         )
     }
 
@@ -100,7 +100,10 @@ class MediaDiscoverFilterSheet(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = MediaDiscoverFilterSheetBinding.bind(view)
         ViewCompat.setOnApplyWindowInsetsListener(view) { _: View, insets: WindowInsetsCompat ->
@@ -113,7 +116,7 @@ class MediaDiscoverFilterSheet(
         setUpViewPager()
         TabLayoutMediator(
             requireBinding().materialTabsLayout,
-            requireBinding().viewPager
+            requireBinding().viewPager,
         ) { tab, index -> tab.text = titles[index] }.attach()
         controller.registerResultCallbacks(this, viewModel.filter)
     }
@@ -127,7 +130,7 @@ class MediaDiscoverFilterSheet(
     override fun onResume() {
         super.onResume()
         bottomSheetCallback.addOnSlideAction(
-            handleSlideAction
+            handleSlideAction,
         )
     }
 
@@ -138,7 +141,7 @@ class MediaDiscoverFilterSheet(
      */
     override fun onPause() {
         bottomSheetCallback.removeOnSlideAction(
-            handleSlideAction
+            handleSlideAction,
         )
         super.onPause()
     }
