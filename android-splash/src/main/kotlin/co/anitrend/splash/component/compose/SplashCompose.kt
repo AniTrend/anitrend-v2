@@ -57,7 +57,7 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun SplashSpinner(modifier: Modifier = Modifier) {
     CircularProgressIndicator(
-        modifier = modifier.size(dimensionResource(id = co.anitrend.core.android.R.dimen.size_24dp))
+        modifier = modifier.size(dimensionResource(id = co.anitrend.core.android.R.dimen.size_24dp)),
     )
 }
 
@@ -65,55 +65,60 @@ fun SplashSpinner(modifier: Modifier = Modifier) {
 fun SplashLines(
     largeMargin: Dp,
     rotation: Float,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(top = largeMargin)
-            .rotate(rotation)
+        modifier =
+            modifier
+                .padding(top = largeMargin)
+                .rotate(rotation),
     ) {
         // First stripe
         Box(
-            modifier = Modifier
-                .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_xl))
-                .height(largeMargin)
-                .background(
-                    color = colorResource(id = co.anitrend.core.android.R.color.green_A700),
-                    shape = RoundedCornerShape(4.dp)
-                )
+            modifier =
+                Modifier
+                    .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_xl))
+                    .height(largeMargin)
+                    .background(
+                        color = colorResource(id = co.anitrend.core.android.R.color.green_A700),
+                        shape = RoundedCornerShape(4.dp),
+                    ),
         )
         Spacer(modifier = Modifier.height(largeMargin))
         // Second stripe
         Box(
-            modifier = Modifier
-                .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_lg))
-                .height(largeMargin)
-                .background(
-                    color = colorResource(id = co.anitrend.core.android.R.color.blue_A700),
-                    shape = RoundedCornerShape(4.dp)
-                )
+            modifier =
+                Modifier
+                    .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_lg))
+                    .height(largeMargin)
+                    .background(
+                        color = colorResource(id = co.anitrend.core.android.R.color.blue_A700),
+                        shape = RoundedCornerShape(4.dp),
+                    ),
         )
         Spacer(modifier = Modifier.height(largeMargin))
         // Third stripe
         Box(
-            modifier = Modifier
-                .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_md))
-                .height(largeMargin)
-                .background(
-                    color = colorResource(id = co.anitrend.core.android.R.color.orange_A700),
-                    shape = RoundedCornerShape(4.dp)
-                )
+            modifier =
+                Modifier
+                    .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_md))
+                    .height(largeMargin)
+                    .background(
+                        color = colorResource(id = co.anitrend.core.android.R.color.orange_A700),
+                        shape = RoundedCornerShape(4.dp),
+                    ),
         )
         Spacer(modifier = Modifier.height(largeMargin))
         // Fourth stripe
         Box(
-            modifier = Modifier
-                .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_sm))
-                .height(largeMargin)
-                .background(
-                    color = colorResource(id = co.anitrend.core.android.R.color.red_A700),
-                    shape = RoundedCornerShape(4.dp)
-                )
+            modifier =
+                Modifier
+                    .width(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_sm))
+                    .height(largeMargin)
+                    .background(
+                        color = colorResource(id = co.anitrend.core.android.R.color.red_A700),
+                        shape = RoundedCornerShape(4.dp),
+                    ),
         )
     }
 }
@@ -123,9 +128,10 @@ fun SplashLogo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = co.anitrend.core.R.drawable.ic_anitrend_logo),
         contentDescription = null,
-        modifier = modifier
-            .size(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_sm))
-            .clip(RoundedCornerShape(16.dp))
+        modifier =
+            modifier
+                .size(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_sm))
+                .clip(RoundedCornerShape(16.dp)),
     )
 }
 
@@ -134,18 +140,19 @@ fun SplashAppName(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_segment_first),
-            style = AniTrendTheme.typography.h5.copy(fontWeight = FontWeight.Bold)
+            style = AniTrendTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
         )
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_segment_second),
-            style = AniTrendTheme.typography.h5.copy(
-                fontWeight = FontWeight.Bold,
-                color = colorResource(id = co.anitrend.arch.theme.R.color.colorStateBlue)
-            )
+            style =
+                AniTrendTheme.typography.h5.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = co.anitrend.arch.theme.R.color.colorStateBlue),
+                ),
         )
     }
 }
@@ -153,20 +160,20 @@ fun SplashAppName(modifier: Modifier = Modifier) {
 @Composable
 fun SplashCredits(
     largeMargin: Dp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(dimensionResource(id = co.anitrend.arch.theme.R.dimen.md_margin)),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_powered_by),
-            style = AniTrendTheme.typography.subtitle2.copy(fontWeight = FontWeight.Bold)
+            style = AniTrendTheme.typography.subtitle2.copy(fontWeight = FontWeight.Bold),
         )
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_provider),
             style = AniTrendTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(bottom = largeMargin)
+            modifier = Modifier.padding(bottom = largeMargin),
         )
     }
 }
@@ -177,7 +184,7 @@ private fun SplashContent(modifier: Modifier = Modifier) {
     val rotation = integerResource(id = co.anitrend.splash.R.integer.splash_stripe_rotation_factor).toFloat()
 
     ConstraintLayout(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         // Create constraint references
         val (
@@ -185,50 +192,55 @@ private fun SplashContent(modifier: Modifier = Modifier) {
             splashLinesRef,
             splashLogoRef,
             splashAppNameRef,
-            splashCreditsRef
+            splashCreditsRef,
         ) = createRefs()
 
         SplashSpinner(
-            modifier = Modifier.constrainAs(splashSpinnerRef) {
-                top.linkTo(parent.top, margin = largeMargin)
-                end.linkTo(parent.end, margin = largeMargin)
-            }
+            modifier =
+                Modifier.constrainAs(splashSpinnerRef) {
+                    top.linkTo(parent.top, margin = largeMargin)
+                    end.linkTo(parent.end, margin = largeMargin)
+                },
         )
 
         SplashLines(
             largeMargin = largeMargin,
             rotation = rotation,
-            modifier = Modifier.constrainAs(splashLinesRef) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-            }
+            modifier =
+                Modifier.constrainAs(splashLinesRef) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                },
         )
 
         SplashLogo(
-            modifier = Modifier.constrainAs(splashLogoRef) {
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
+            modifier =
+                Modifier.constrainAs(splashLogoRef) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
         )
 
         SplashAppName(
-            modifier = Modifier.constrainAs(splashAppNameRef) {
-                top.linkTo(splashLogoRef.bottom)
-                bottom.linkTo(splashCreditsRef.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
+            modifier =
+                Modifier.constrainAs(splashAppNameRef) {
+                    top.linkTo(splashLogoRef.bottom)
+                    bottom.linkTo(splashCreditsRef.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
         )
 
         SplashCredits(
             largeMargin = largeMargin,
-            modifier = Modifier.constrainAs(splashCreditsRef) {
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
+            modifier =
+                Modifier.constrainAs(splashCreditsRef) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
         )
     }
 }
