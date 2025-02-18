@@ -16,9 +16,25 @@
  */
 package co.anitrend.media.component.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.media.component.viewmodel.state.MediaState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.media.GetDetailMediaInteractor
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.navigation.MediaRouter
 
 class MediaViewModel(
-    override val state: MediaState,
-) : AniTrendViewModel()
+    private val interactor: GetDetailMediaInteractor,
+    private val settings: IUserSettings,
+) : AniTrendViewModelState<Media>() {
+    operator fun invoke(parameter: MediaRouter.MediaParam) {
+        val param =
+            MediaParam.Detail(
+                id = parameter.id,
+                type = parameter.type,
+                scoreFormat = settings.scoreFormat.value,
+            )
+        val result = interactor(param)
+        state.postValue(result)
+    }
+}

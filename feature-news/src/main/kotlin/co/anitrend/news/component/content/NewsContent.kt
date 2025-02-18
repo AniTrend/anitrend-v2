@@ -46,7 +46,7 @@ class NewsContent(
         val locale =
             presenter.settings.locale.value
                 .asLocaleString()
-        viewModelState().invoke(
+        viewModel.invoke(
             NewsParam(locale),
         )
     }
@@ -56,7 +56,7 @@ class NewsContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
     }
@@ -64,5 +64,5 @@ class NewsContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

@@ -74,7 +74,7 @@ class ReviewDiscoverContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
     }
@@ -88,13 +88,13 @@ class ReviewDiscoverContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        listPresenter.stateLayout.assureParamNotMissing(viewModelState().default) {
-            viewModelState().invoke(viewModelState().default)
+        listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
+            viewModel.invoke(viewModel.default)
         }
     }
 
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

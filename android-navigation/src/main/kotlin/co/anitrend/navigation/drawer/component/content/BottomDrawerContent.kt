@@ -262,7 +262,7 @@ class BottomDrawerContent(
         lifecycleScope.launch {
             presenter.settings.isAuthenticated.flow
                 .onEach { isAuthenticated ->
-                    accountViewModel.state()
+                    accountViewModel()
                     navigationViewModel(isAuthenticated)
                 }.catch { cause: Throwable ->
                     Timber.e(cause)

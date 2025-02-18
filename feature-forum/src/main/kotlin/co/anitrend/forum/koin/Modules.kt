@@ -20,7 +20,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.forum.component.content.ForumContent
 import co.anitrend.forum.component.screen.ForumScreen
 import co.anitrend.forum.component.viewmodel.ForumViewModel
-import co.anitrend.forum.component.viewmodel.state.ForumState
 import co.anitrend.forum.provider.FeatureProvider
 import co.anitrend.navigation.ForumRouter
 import org.koin.androidx.fragment.dsl.fragment
@@ -39,9 +38,7 @@ private val fragmentModule =
 private val viewModelModule =
     module {
         viewModel {
-            ForumViewModel(
-                state = ForumState(),
-            )
+            ForumViewModel()
         }
     }
 

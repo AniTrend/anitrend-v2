@@ -182,10 +182,5 @@ sealed class MediaParam {
         var volumes: Int? = null,
         var volumes_greater: Int? = null,
         var volumes_lesser: Int? = null,
-    ) : MediaParam() {
-        infix fun builder(param: Find.() -> Unit): Find {
-            this.param()
-            return this
-        }
-    }
+    ) : MediaParam()
 }

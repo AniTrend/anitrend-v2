@@ -70,7 +70,7 @@ class MediaFavouriteActionProvider(
         if (!actionImageView.hasOnClickListeners()) {
             actionImageView.setOnClickListener(::onActionClick)
         }
-        viewModel.state.model.observe(context.requireLifecycleOwner()) { media ->
+        viewModel.model.observe(context.requireLifecycleOwner()) { media ->
             iconForState(media.isFavourite)
         }
         container.addView(actionImageView)

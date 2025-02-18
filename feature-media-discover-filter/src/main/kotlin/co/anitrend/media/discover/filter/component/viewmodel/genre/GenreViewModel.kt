@@ -16,9 +16,16 @@
  */
 package co.anitrend.media.discover.filter.component.viewmodel.genre
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.media.discover.filter.component.viewmodel.genre.state.GenreViewModelState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.genre.GenreInteractor
+import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.genre.model.GenreParam
 
 class GenreViewModel(
-    override val state: GenreViewModelState,
-) : AniTrendViewModel()
+    private val interactor: GenreInteractor,
+) : AniTrendViewModelState<List<Genre>>() {
+    operator fun invoke(param: GenreParam) {
+        val result = interactor.getMediaGenres(param)
+        state.postValue(result)
+    }
+}

@@ -23,9 +23,8 @@ import co.anitrend.common.shared.ui.extension.shareContent
 import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.inject
-import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.NotificationRouter
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.nameOf
@@ -36,7 +35,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileScreen : AniTrendScreen() {
     private val viewModel by viewModel<ProfileViewModel>()
-    private val settings by inject<IAuthenticationSettings>()
     private val param by extra<ProfileRouter.ProfileParam>(
         key = nameOf<ProfileRouter.ProfileParam>(),
     )
@@ -46,13 +44,13 @@ class ProfileScreen : AniTrendScreen() {
         setContent {
             AniTrendTheme3 {
                 ContentWrapper(
-                    stateFlow = viewModelState().loadState,
+                    stateFlow = viewModel.loadState,
                     param = param,
                     onLoad = viewModel::invoke,
-                    onClick = viewModelState()::retry,
+                    onClick = viewModel::retry,
                 ) {
                     ProfileScreenContent(
-                        profileState = viewModelState(),
+                        viewModel = viewModelState(),
                         onImageClick = { param ->
                             ImageViewerRouter.startActivity(
                                 context = this@ProfileScreen,
@@ -66,10 +64,12 @@ class ProfileScreen : AniTrendScreen() {
                             }
                         },
                         onInboxButtonClick = {
+                            // TODO: Create an inbox or messages router
                         },
                         onNotificationsButtonClick = {
+                            NotificationRouter.startActivity(this)
                         },
-                        onBackClick = ::onBackPressed,
+                        onBackClick = onBackPressedDispatcher::onBackPressed,
                     )
                 }
             }
@@ -79,5 +79,5 @@ class ProfileScreen : AniTrendScreen() {
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

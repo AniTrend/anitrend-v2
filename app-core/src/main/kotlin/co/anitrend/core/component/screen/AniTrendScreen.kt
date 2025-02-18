@@ -21,11 +21,11 @@ import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.activity.SupportActivity
 import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.ui.inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -106,5 +106,5 @@ abstract class AniTrendScreen :
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState(): AniTrendViewModelState<*>? = null
+    override fun viewModelState(): ISupportViewModelState<*>? = null
 }

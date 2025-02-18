@@ -16,9 +16,6 @@
  */
 package co.anitrend.review.component.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.review.component.viewmodel.state.ReviewState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
-class ReviewViewModel(
-    override val state: ReviewState,
-) : AniTrendViewModel()
+class ReviewViewModel : AniTrendViewModelState<Unit>()

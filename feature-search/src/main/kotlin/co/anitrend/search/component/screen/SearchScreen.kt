@@ -55,7 +55,7 @@ class SearchScreen : AniTrendScreen() {
                         onSearch = {},
                         active = false,
                         onActiveChange = {},
-                        onBackClick = ::onBackPressed,
+                        onBackClick = onBackPressedDispatcher::onBackPressed,
                     )
                 }
             }

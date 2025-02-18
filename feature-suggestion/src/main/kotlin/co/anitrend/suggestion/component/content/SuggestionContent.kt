@@ -22,29 +22,15 @@ import android.view.View
 import android.view.ViewGroup
 import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.android.views.compose.composable
 import co.anitrend.core.component.FeatureUnavailable
-import co.anitrend.core.component.content.AniTrendContent
+import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.navigation.model.common.IParam
-import co.anitrend.suggestion.R
 import co.anitrend.suggestion.component.viewmodel.SuggestionViewModel
-import co.anitrend.suggestion.databinding.SuggestionContentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SuggestionContent(
-    override val inflateLayout: Int = R.layout.suggestion_content,
-) : AniTrendContent<SuggestionContentBinding>() {
+class SuggestionContent : AniTrendComposition() {
     private val viewModel by viewModel<SuggestionViewModel>()
-
-    private fun onFetchDataInitialize() {
-        // TODO: Implement functionality
-    }
-
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-    }
 
     /**
      * Called to have the fragment instantiate its user interface view. This is optional, and
@@ -73,23 +59,20 @@ class SuggestionContent(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        binding = SuggestionContentBinding.bind(requireNotNull(view))
-        requireBinding().root.setContent {
+    ): View =
+        composable(inflater.context) {
             AniTrendTheme3 {
-                ContentWrapper<IParam>(
+                ContentWrapper(
                     stateFlow = FeatureUnavailable.loadState,
                     config = FeatureUnavailable.config,
+                    param = IParam.None,
                     onClick = {},
                 ) {}
             }
         }
-        return view
-    }
 
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

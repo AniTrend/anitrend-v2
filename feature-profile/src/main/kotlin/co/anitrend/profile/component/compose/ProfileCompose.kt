@@ -59,7 +59,7 @@ import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.ImageViewerRouter
-import co.anitrend.profile.component.viewmodel.state.ProfileState
+import co.anitrend.profile.component.viewmodel.ProfileViewModel
 import coil.transform.CircleCropTransformation
 
 @Composable
@@ -144,14 +144,14 @@ private fun ProfileContent(
 
 @Composable
 fun ProfileScreenContent(
-    profileState: ProfileState,
+    viewModel: ProfileViewModel,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onFloatingActionButtonClick: (CharSequence?) -> Unit,
     onInboxButtonClick: () -> Unit,
     onNotificationsButtonClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val state = profileState.model.observeAsState()
+    val state = viewModel.model.observeAsState()
     val user: User = state.value ?: return
 
     Scaffold(
@@ -197,6 +197,7 @@ fun ProfileScreenContent(
     }
 }
 
+@AniTrendPreview.Mobile
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
 @Composable

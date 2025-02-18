@@ -101,7 +101,7 @@ class MediaDiscoverContent(
      */
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
-            viewModelState().invoke(
+            viewModel.invoke(
                 viewModel.default,
             )
         }
@@ -120,7 +120,7 @@ class MediaDiscoverContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
     }
@@ -128,5 +128,5 @@ class MediaDiscoverContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

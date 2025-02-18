@@ -20,17 +20,23 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.empty
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.feed.episode.EpisodeDetailInteractor
 import co.anitrend.domain.episode.entity.Episode
+import co.anitrend.domain.episode.model.EpisodeParam
 import co.anitrend.episode.R
-import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class EpisodeSheetViewModel(
-    override val state: EpisodeSheetState,
-) : AniTrendViewModel() {
-    val model = MutableLiveData<String>()
+    private val interactor: EpisodeDetailInteractor,
+) : AniTrendViewModelState<Episode>() {
+    val documentHtml = MutableLiveData<String>()
+
+    operator fun invoke(param: EpisodeParam.Detail) {
+        val result = interactor(param)
+        state.postValue(result)
+    }
 
     fun buildHtml(
         episode: Episode,
@@ -46,7 +52,7 @@ class EpisodeSheetViewModel(
                 }
 
             val document = Jsoup.parse(content)
-            model.postValue(document.html())
+            documentHtml.postValue(document.html())
         }
     }
 }

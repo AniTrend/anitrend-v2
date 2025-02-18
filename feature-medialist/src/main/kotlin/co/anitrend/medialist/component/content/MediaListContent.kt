@@ -90,7 +90,7 @@ class MediaListContent(
      */
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
-            viewModelState().invoke(requireNotNull(viewModel.param))
+            viewModel.invoke(requireNotNull(viewModel.param))
         }
     }
 
@@ -99,16 +99,16 @@ class MediaListContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
         viewModel.filter.observe(viewLifecycleOwner) {
-            it?.let(viewModelState()::invoke)
+            it?.let(viewModel::invoke)
         }
     }
 
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

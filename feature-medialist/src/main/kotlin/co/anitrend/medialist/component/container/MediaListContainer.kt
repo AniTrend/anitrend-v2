@@ -108,7 +108,7 @@ class MediaListContainer(
                 tabLayoutMediator.attach()
             }.onFailure(Timber::e)
         }
-        viewModelState().loadState.observe(viewLifecycleOwner) {
+        viewModel.loadState.observe(viewLifecycleOwner) {
             requireBinding().stateLayout.loadStateFlow.value = it
         }
     }
@@ -127,7 +127,7 @@ class MediaListContainer(
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 requireBinding().stateLayout.assureParamNotMissing(viewModel.param) {
-                    viewModelState().invoke(requireNotNull(viewModel.param))
+                    viewModel.invoke(requireNotNull(viewModel.param))
                 }
             }
         }
@@ -189,5 +189,5 @@ class MediaListContainer(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

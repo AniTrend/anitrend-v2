@@ -51,8 +51,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.genre.ui.compose.GenresListComponent
 import co.anitrend.common.markdown.ui.compose.MarkdownText
-import co.anitrend.common.media.ui.compose.section.MediaSummarySection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
+import co.anitrend.common.media.ui.compose.section.MediaSummarySection
 import co.anitrend.common.media.ui.compose.widget.ranking.RankingItems
 import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.core.android.compose.design.BackIconButton
@@ -67,7 +67,7 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.media.R
-import co.anitrend.media.component.viewmodel.state.MediaState
+import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
@@ -152,7 +152,7 @@ private fun MediaDetailContent(
 
 @Composable
 fun MediaScreenContent(
-    mediaState: MediaState,
+    mediaState: MediaViewModel,
     onMyAnimeListButtonClick: (String) -> Unit,
     onBookmarkButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,

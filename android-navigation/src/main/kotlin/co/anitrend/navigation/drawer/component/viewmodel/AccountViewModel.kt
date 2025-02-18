@@ -16,31 +16,31 @@
  */
 package co.anitrend.navigation.drawer.component.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.account.AccountInteractor
+import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.drawer.component.viewmodel.mapper.UsersToAccountsMapper
-import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
 import co.anitrend.navigation.drawer.model.account.Account
 import kotlinx.coroutines.launch
 
 internal class AccountViewModel(
-    mapper: UsersToAccountsMapper,
-    override val state: AccountState,
-) : AniTrendViewModel() {
-    val userAccounts =
-        state.model.map {
-            mapper(it)
-        }
+    private val mapper: UsersToAccountsMapper,
+    private val interactor: AccountInteractor,
+) : AniTrendViewModelState<List<User>>() {
+    val userAccounts: LiveData<List<Account>> = model.map(mapper::invoke)
 
-    val activeAccount =
+    val activeAccount: LiveData<Account?> =
         userAccounts.map {
             it.singleOrNull(Account::isActiveUser)
         }
 
     operator fun invoke() {
         viewModelScope.launch {
-            state()
+            val result = interactor.getAuthorizedAccounts()
+            state.postValue(result)
         }
     }
 }

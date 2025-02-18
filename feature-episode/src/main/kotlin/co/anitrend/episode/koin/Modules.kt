@@ -21,10 +21,8 @@ import co.anitrend.core.android.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
-import co.anitrend.episode.component.content.viewmodel.state.EpisodeContentState
 import co.anitrend.episode.component.sheet.EpisodeSheet
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
-import co.anitrend.episode.component.sheet.viewmodel.state.EpisodeSheetState
 import co.anitrend.episode.provider.FeatureProvider
 import co.anitrend.navigation.EpisodeRouter
 import org.koin.android.ext.koin.androidContext
@@ -57,18 +55,12 @@ private val viewModelModule =
     module {
         viewModel {
             EpisodeContentViewModel(
-                state =
-                    EpisodeContentState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
         viewModel {
             EpisodeSheetViewModel(
-                state =
-                    EpisodeSheetState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
     }

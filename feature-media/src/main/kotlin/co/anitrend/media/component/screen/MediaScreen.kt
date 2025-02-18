@@ -55,10 +55,10 @@ class MediaScreen : AniTrendScreen() {
         setContent {
             AniTrendTheme3 {
                 ContentWrapper(
-                    stateFlow = viewModelState().loadState,
+                    stateFlow = viewModel.loadState,
                     param = mediaRouterParam,
-                    onLoad = viewModelState()::invoke,
-                    onClick = viewModelState()::retry,
+                    onLoad = viewModel::invoke,
+                    onClick = viewModel::retry,
                 ) {
                     MediaScreenContent(
                         mediaState = viewModelState(),
@@ -97,7 +97,7 @@ class MediaScreen : AniTrendScreen() {
                                 navPayload = param.asNavPayload(),
                             )
                         },
-                        onBackClick = ::onBackPressed,
+                        onBackClick = onBackPressedDispatcher::onBackPressed,
                     )
                 }
             }
@@ -107,5 +107,5 @@ class MediaScreen : AniTrendScreen() {
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

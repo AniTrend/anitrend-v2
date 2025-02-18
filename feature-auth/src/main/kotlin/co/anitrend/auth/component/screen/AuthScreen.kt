@@ -47,22 +47,15 @@ class AuthScreen : AniTrendScreen() {
 
     private val presenter by inject<AuthPresenter>()
 
-    private fun checkIntentData() {
-        viewModel.onIntentData(
-            applicationContext,
-            authRouterParam,
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
                 ContentWrapper(
-                    stateFlow = viewModelState().loadState,
+                    stateFlow = viewModel.loadState,
                     param = IParam.None,
                     onLoad = {},
-                    onClick = viewModelState()::retry,
+                    onClick = viewModel::retry,
                 ) {
                     AuthScreenContent(
                         onAuthorizeClick = {
@@ -73,9 +66,9 @@ class AuthScreen : AniTrendScreen() {
                         },
                         onAuthorizationAnonymousClick = {
                             presenter.runSignOutWorker()
-                            onBackPressed()
+                            onBackPressedDispatcher.onBackPressed()
                         },
-                        onBackPress = ::onBackPressed,
+                        onBackPress = onBackPressedDispatcher::onBackPressed,
                     )
                 }
             }
@@ -89,11 +82,11 @@ class AuthScreen : AniTrendScreen() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        viewModelState().model.observeOnce(requireLifecycleOwner()) { user ->
+        viewModel.model.observeOnce(requireLifecycleOwner()) { user ->
             runCatching {
                 presenter.runSignInWorker(user.id)
             }.onSuccess {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
             }.onFailure {
                 Timber.e(it)
                 Toast.makeText(applicationContext, R.string.auth_failed_message, Toast.LENGTH_LONG).show()
@@ -117,7 +110,7 @@ class AuthScreen : AniTrendScreen() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        checkIntentData()
+        presenter.onIntentData(authRouterParam)?.run(viewModel::invoke)
     }
 
     /**
@@ -139,5 +132,5 @@ class AuthScreen : AniTrendScreen() {
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

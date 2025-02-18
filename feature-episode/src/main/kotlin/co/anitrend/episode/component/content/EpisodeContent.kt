@@ -44,7 +44,7 @@ class EpisodeContent(
      */
     override fun onFetchDataInitialize() {
         val locale = settings.locale.value.asLocaleString()
-        viewModelState().invoke(
+        viewModel.invoke(
             EpisodeParam.Paged(locale),
         )
     }
@@ -54,7 +54,7 @@ class EpisodeContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
     }
@@ -62,5 +62,5 @@ class EpisodeContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

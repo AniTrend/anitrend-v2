@@ -28,7 +28,7 @@ import androidx.lifecycle.map
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
+import co.anitrend.medialist.editor.component.sheet.viewmodel.MediaListEditorViewModel
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import org.koin.compose.koinInject
@@ -53,7 +53,7 @@ private fun BackgroundHeader(
 }
 
 @Composable
-fun MediaListEditorComponent(state: MediaListEditorState) {
+fun MediaListEditorComponent(state: MediaListEditorViewModel) {
     AniTrendTheme3 {
         Surface {
             BackgroundHeader(state.model.map(Media::image))

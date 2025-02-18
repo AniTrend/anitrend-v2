@@ -16,9 +16,15 @@
  */
 package co.anitrend.notification.component.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.notification.component.viewmodel.state.NotificationState
+import androidx.lifecycle.viewModelScope
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.navigation.model.common.IParam
+import kotlinx.coroutines.launch
 
-class NotificationViewModel(
-    override val state: NotificationState,
-) : AniTrendViewModel()
+class NotificationViewModel : AniTrendViewModelState<Unit>() {
+    operator fun invoke(param: IParam) {
+        viewModelScope.launch {
+            param
+        }
+    }
+}

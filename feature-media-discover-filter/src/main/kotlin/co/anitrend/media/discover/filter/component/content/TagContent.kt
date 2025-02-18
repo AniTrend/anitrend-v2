@@ -84,7 +84,7 @@ internal class TagContent(
      */
     override fun onFetchDataInitialize() {
         val param = TagParam(SortOrder.ASC)
-        viewModelState().invoke(param)
+        viewModel.invoke(param)
     }
 
     /**
@@ -92,7 +92,7 @@ internal class TagContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             applySelections(it)
             onPostModelChange(it)
         }
@@ -120,5 +120,5 @@ internal class TagContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

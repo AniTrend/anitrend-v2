@@ -116,7 +116,7 @@ class AiringContent(
      */
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
-            viewModelState().invoke(requireNotNull(viewModel.param))
+            viewModel.invoke(requireNotNull(viewModel.param))
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -133,12 +133,12 @@ class AiringContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
         listPresenter.stateLayout.assureParamNotMissing(viewModel.param) {
             viewModel.filter.observe(viewLifecycleOwner) {
-                viewModelState().invoke(it)
+                viewModel.invoke(it)
             }
         }
     }
@@ -146,5 +146,5 @@ class AiringContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

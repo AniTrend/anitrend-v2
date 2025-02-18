@@ -20,7 +20,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.medialist.editor.component.sheet.MediaListEditorContent
 import co.anitrend.medialist.editor.component.sheet.controller.MediaListEditorController
 import co.anitrend.medialist.editor.component.sheet.viewmodel.MediaListEditorViewModel
-import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
 import co.anitrend.medialist.editor.provider.FeatureProvider
 import co.anitrend.navigation.MediaListEditorRouter
 import org.koin.androidx.fragment.dsl.fragment
@@ -44,10 +43,7 @@ private val viewModelModule =
     module {
         viewModel {
             MediaListEditorViewModel(
-                state =
-                    MediaListEditorState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
     }

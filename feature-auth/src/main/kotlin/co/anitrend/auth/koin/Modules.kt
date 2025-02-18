@@ -19,7 +19,6 @@ package co.anitrend.auth.koin
 import androidx.browser.customtabs.CustomTabsIntent
 import co.anitrend.auth.component.screen.AuthScreen
 import co.anitrend.auth.component.viewmodel.AuthViewModel
-import co.anitrend.auth.component.viewmodel.state.AuthState
 import co.anitrend.auth.presenter.AuthPresenter
 import co.anitrend.auth.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -32,7 +31,7 @@ private val viewModelModule =
     module {
         viewModel {
             AuthViewModel(
-                state = AuthState(get()),
+                interactor = get(),
             )
         }
     }

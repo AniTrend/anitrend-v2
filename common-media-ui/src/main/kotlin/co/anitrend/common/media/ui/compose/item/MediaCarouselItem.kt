@@ -120,10 +120,12 @@ fun MediaCarouselItem(
     carouselItems: List<MediaCarousel>,
     mediaPreferenceData: MediaPreferenceData,
     carouselItemClick: (IParam) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(bottom = 64.dp),
+        modifier = modifier,
     ) {
         items(
             count = carouselItems.size,

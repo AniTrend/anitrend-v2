@@ -16,9 +16,25 @@
  */
 package co.anitrend.medialist.editor.component.sheet.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.medialist.editor.component.sheet.viewmodel.state.MediaListEditorState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.media.GetDetailMediaInteractor
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.navigation.MediaListEditorRouter
 
 class MediaListEditorViewModel(
-    override val state: MediaListEditorState,
-) : AniTrendViewModel()
+    private val interactor: GetDetailMediaInteractor,
+) : AniTrendViewModelState<Media>() {
+    operator fun invoke(param: MediaListEditorRouter.MediaListEditorParam) {
+        val query =
+            MediaParam.Detail(
+                id = param.mediaId,
+                type = param.mediaType,
+                scoreFormat = param.scoreFormat,
+            )
+
+        val result = interactor(query)
+
+        state.postValue(result)
+    }
+}

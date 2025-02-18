@@ -44,7 +44,7 @@ class AppRouteTest : CommonRouteTest() {
     @Test
     fun verifyDiscoverAppRoute() {
         val expected = "media.discover.component.screen.MediaDiscoverScreen".toIntent()
-        val actual = deepLinkParser.matchingIntent("app.anitrend://discover")
+        val actual = deepLinkParser.matchingIntent("app.anitrend://action/discover")
 
         assertEquals(expected, actual)
     }
@@ -52,7 +52,7 @@ class AppRouteTest : CommonRouteTest() {
     @Test
     fun verifySocialAppRoute() {
         val expected = "component.screen.MainScreen".toIntent()
-        val actual = deepLinkParser.matchingIntent("app.anitrend://social")
+        val actual = deepLinkParser.matchingIntent("app.anitrend://action/social")
 
         assertEquals(expected, actual)
     }
@@ -60,7 +60,7 @@ class AppRouteTest : CommonRouteTest() {
     @Test
     fun verifySuggestionsAppRoute() {
         val expected = "component.screen.MainScreen".toIntent()
-        val actual = deepLinkParser.matchingIntent("app.anitrend://suggestions")
+        val actual = deepLinkParser.matchingIntent("app.anitrend://action/suggestions")
 
         assertEquals(expected, actual)
     }

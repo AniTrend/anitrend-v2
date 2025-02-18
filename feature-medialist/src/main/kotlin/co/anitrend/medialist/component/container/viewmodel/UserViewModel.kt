@@ -16,22 +16,37 @@
  */
 package co.anitrend.medialist.component.container.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.domain.user.entity.User
-import co.anitrend.medialist.component.container.viewmodel.state.UserState
+import co.anitrend.domain.user.entity.attribute.MediaListInfo
+import co.anitrend.domain.user.model.UserParam
 import co.anitrend.navigation.MediaListRouter
 import co.anitrend.navigation.extensions.nameOf
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 class UserViewModel(
-    override val state: UserState,
+    private val interactor: GetProfileInteractor,
     private val savedStateHandle: SavedStateHandle,
-) : AniTrendViewModel() {
+) : AniTrendViewModelState<User>() {
+    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>(
+        key = nameOf<MediaListRouter.MediaListParam>(),
+    )
+
+    val tabConfigurationListInfo: LiveData<List<MediaListInfo>> =
+        model.map {
+            val user = it as User.Extended
+            user.mediaListInfo.filter { mediaListInfo ->
+                mediaListInfo.mediaType == requireNotNull(param?.type)
+            }
+        }
+
     init {
         viewModelScope.launch {
             savedStateHandle
@@ -43,21 +58,15 @@ class UserViewModel(
         }
     }
 
-    val param by savedStateHandle.extra<MediaListRouter.MediaListParam>(
-        key = nameOf<MediaListRouter.MediaListParam>(),
-    )
-
-    val tabConfigurationListInfo =
-        state.model.map {
-            val user = it as User.Extended
-            user.mediaListInfo.filter { mediaListInfo ->
-                mediaListInfo.mediaType == requireNotNull(param?.type)
-            }
-        }
-
-    private operator fun invoke(arg: MediaListRouter.MediaListParam) {
+    operator fun invoke(arg: MediaListRouter.MediaListParam) {
         viewModelScope.launch {
-            state(arg)
+            val query =
+                UserParam.Profile(
+                    id = arg.userId,
+                    name = arg.userName,
+                )
+            val result = interactor(query)
+            state.postValue(result)
         }
     }
 }

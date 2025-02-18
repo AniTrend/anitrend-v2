@@ -75,7 +75,7 @@ internal class GenreContent(
      */
     override fun onFetchDataInitialize() {
         val param = GenreParam(SortOrder.ASC)
-        viewModelState().invoke(param)
+        viewModel.invoke(param)
     }
 
     /**
@@ -83,7 +83,7 @@ internal class GenreContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             applySelections(it)
             onPostModelChange(it)
         }
@@ -111,5 +111,5 @@ internal class GenreContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }
