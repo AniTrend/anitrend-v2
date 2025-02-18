@@ -16,9 +16,17 @@
  */
 package co.anitrend.news.component.content.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.news.component.content.viewmodel.state.NewsContentState
+import androidx.paging.PagedList
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.feed.news.NewsPagedInteractor
+import co.anitrend.domain.news.entity.News
+import co.anitrend.domain.news.model.NewsParam
 
 class NewsContentViewModel(
-    override val state: NewsContentState,
-) : AniTrendViewModel()
+    private val interactor: NewsPagedInteractor,
+) : AniTrendViewModelState<PagedList<News>>() {
+    operator fun invoke(param: NewsParam) {
+        val result = interactor(param)
+        state.postValue(result)
+    }
+}

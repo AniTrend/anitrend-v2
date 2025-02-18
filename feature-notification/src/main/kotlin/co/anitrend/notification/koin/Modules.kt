@@ -19,7 +19,6 @@ package co.anitrend.notification.koin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NotificationRouter
 import co.anitrend.notification.component.viewmodel.NotificationViewModel
-import co.anitrend.notification.component.viewmodel.state.NotificationState
 import co.anitrend.notification.provider.FeatureProvider
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -27,9 +26,7 @@ import org.koin.dsl.module
 private val viewModelModule =
     module {
         viewModel {
-            NotificationViewModel(
-                state = NotificationState(),
-            )
+            NotificationViewModel()
         }
     }
 

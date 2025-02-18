@@ -22,7 +22,6 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.review.discover.component.content.ReviewDiscoverContent
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
-import co.anitrend.review.discover.component.content.viewmodel.state.ReviewDiscoverState
 import co.anitrend.review.discover.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
@@ -49,12 +48,9 @@ private val viewModelModule =
     module {
         viewModel {
             ReviewDiscoverViewModel(
-                state =
-                    ReviewDiscoverState(
-                        interactor = get(),
-                        savedStateHandle = get(),
-                        settings = get(),
-                    ),
+                interactor = get(),
+                savedStateHandle = get(),
+                settings = get(),
             )
         }
     }

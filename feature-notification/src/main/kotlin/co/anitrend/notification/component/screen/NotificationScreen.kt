@@ -26,7 +26,6 @@ import co.anitrend.navigation.model.common.IParam
 import co.anitrend.notification.component.compose.NotificationScreenContent
 import co.anitrend.notification.component.viewmodel.NotificationViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.getValue
 
 class NotificationScreen : AniTrendScreen() {
     private val viewModel by viewModel<NotificationViewModel>()
@@ -39,11 +38,11 @@ class NotificationScreen : AniTrendScreen() {
                     stateFlow = FeatureUnavailable.loadState,
                     config = FeatureUnavailable.config,
                     param = IParam.None,
-                    onLoad = viewModelState()::invoke,
-                    onClick = viewModelState()::retry,
+                    onLoad = viewModel::invoke,
+                    onClick = viewModel::retry,
                 ) {
                     NotificationScreenContent(
-                        onBackPress = { onBackPressed() },
+                        onBackPress = onBackPressedDispatcher::onBackPressed,
                     )
                 }
             }
@@ -53,5 +52,5 @@ class NotificationScreen : AniTrendScreen() {
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

@@ -17,17 +17,25 @@
 package co.anitrend.profile.component.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.user.GetProfileInteractor
+import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.model.UserParam
 import co.anitrend.navigation.ProfileRouter
-import co.anitrend.profile.component.viewmodel.state.ProfileState
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    override val state: ProfileState,
-) : AniTrendViewModel() {
+    private val interactor: GetProfileInteractor,
+) : AniTrendViewModelState<User>() {
     operator fun invoke(param: ProfileRouter.ProfileParam) {
         viewModelScope.launch {
-            state(param)
+            val profile =
+                UserParam.Profile(
+                    id = param.userId,
+                    name = param.userName,
+                )
+            val result = interactor(profile)
+            state.postValue(result)
         }
     }
 }

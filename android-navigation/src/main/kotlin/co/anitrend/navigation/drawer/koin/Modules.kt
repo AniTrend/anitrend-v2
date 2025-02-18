@@ -20,7 +20,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.core.koin.scope.AppScope
 import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.drawer.action.provider.viewmodel.NotificationProviderViewModel
-import co.anitrend.navigation.drawer.action.provider.viewmodel.state.AuthenticatedUserState
 import co.anitrend.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.navigation.drawer.component.content.BottomDrawerContent
@@ -29,7 +28,6 @@ import co.anitrend.navigation.drawer.component.presenter.DrawerPresenter
 import co.anitrend.navigation.drawer.component.viewmodel.AccountViewModel
 import co.anitrend.navigation.drawer.component.viewmodel.NavigationViewModel
 import co.anitrend.navigation.drawer.component.viewmodel.mapper.UsersToAccountsMapper
-import co.anitrend.navigation.drawer.component.viewmodel.state.AccountState
 import co.anitrend.navigation.drawer.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
@@ -57,10 +55,7 @@ private val viewModelModule =
                     UsersToAccountsMapper(
                         settings = get(),
                     ),
-                state =
-                    AccountState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
         viewModel {
@@ -70,12 +65,7 @@ private val viewModelModule =
             )
         }
         viewModel {
-            NotificationProviderViewModel(
-                state =
-                    AuthenticatedUserState(
-                        interactor = get(),
-                    ),
-            )
+            NotificationProviderViewModel(interactor = get())
         }
     }
 

@@ -22,7 +22,6 @@ import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.component.content.MediaDiscoverContent
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
-import co.anitrend.media.discover.component.content.viewmodel.state.MediaDiscoverState
 import co.anitrend.media.discover.component.sheet.MediaDiscoverFilterSheet
 import co.anitrend.media.discover.provider.FeatureProvider
 import co.anitrend.navigation.MediaDiscoverRouter
@@ -56,10 +55,7 @@ private val viewModelModule =
     module {
         viewModel { scope ->
             MediaDiscoverViewModel(
-                state =
-                    MediaDiscoverState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
                 savedStateHandle = scope.get(),
             )
         }

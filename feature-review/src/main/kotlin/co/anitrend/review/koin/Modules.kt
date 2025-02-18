@@ -21,7 +21,6 @@ import co.anitrend.navigation.ReviewRouter
 import co.anitrend.review.component.content.ReviewContent
 import co.anitrend.review.component.screen.ReviewScreen
 import co.anitrend.review.component.viewmodel.ReviewViewModel
-import co.anitrend.review.component.viewmodel.state.ReviewState
 import co.anitrend.review.provider.FeatureProvider
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
@@ -39,9 +38,7 @@ private val fragmentModule =
 private val viewModelModule =
     module {
         viewModel {
-            ReviewViewModel(
-                state = ReviewState(),
-            )
+            ReviewViewModel()
         }
     }
 

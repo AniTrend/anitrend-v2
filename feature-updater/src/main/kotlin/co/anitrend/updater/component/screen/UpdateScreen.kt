@@ -28,7 +28,7 @@ class UpdateScreen : AniTrendBoundScreen<ViewBinding>() {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                UpdateScreenContent(onBackPress = ::onBackPressed)
+                UpdateScreenContent(onBackPress = onBackPressedDispatcher::onBackPressed)
             }
         }
     }

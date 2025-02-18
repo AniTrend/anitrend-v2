@@ -18,7 +18,7 @@ package co.anitrend.navigation.drawer.component.viewmodel
 
 import androidx.annotation.IdRes
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import co.anitrend.core.component.viewmodel.AniTrendViewModel
 import co.anitrend.core.extensions.mutableStateFlow
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.drawer.R
@@ -28,8 +28,8 @@ import timber.log.Timber
 
 internal class NavigationViewModel(
     settings: IAuthenticationSettings,
-    private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+    override val savedStateHandle: SavedStateHandle,
+) : AniTrendViewModel() {
     val navigationItems: MutableStateFlow<List<Navigation>> by mutableStateFlow {
         createNavigationItems(settings.isAuthenticated.value)
     }

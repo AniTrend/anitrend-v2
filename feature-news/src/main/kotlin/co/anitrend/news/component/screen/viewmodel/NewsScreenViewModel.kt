@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class NewsScreenViewModel : ViewModel() {
-    val model = MutableLiveData<String>()
+    val documentHtml = MutableLiveData<String>()
 
     private fun buildHtml(param: NewsRouter.NewsParam) {
         val template =
@@ -34,7 +34,7 @@ class NewsScreenViewModel : ViewModel() {
             """.trimIndent()
         val document = Jsoup.parse("$template${param.content}")
 
-        model.postValue(document.html())
+        documentHtml.postValue(document.html())
     }
 
     operator fun invoke(param: NewsRouter.NewsParam) {

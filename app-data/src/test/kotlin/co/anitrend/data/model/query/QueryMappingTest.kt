@@ -59,24 +59,24 @@ class QueryMappingTest {
     fun `mapping of media query has correct keys and values`() {
         val mediaQuery =
             MediaQuery.Find(
-                MediaParam.Find() builder {
-                    type = MediaType.ANIME
+                MediaParam.Find(
+                    type = MediaType.ANIME,
                     endDate =
-                        FuzzyDateModel
-                            .empty()
-                            .copy(
-                                year = 2018,
-                                month = 5,
-                            ).toFuzzyDateInt()
-                    season = MediaSeason.FALL
-                    format_in = MediaFormat.entries
-                    onList = true
+                    FuzzyDateModel
+                        .empty()
+                        .copy(
+                            year = 2018,
+                            month = 5,
+                        ).toFuzzyDateInt(),
+                    season = MediaSeason.FALL,
+                    format_in = MediaFormat.entries,
+                    onList = true,
                     status_in =
-                        listOf(
-                            MediaStatus.FINISHED,
-                            MediaStatus.NOT_YET_RELEASED,
-                        )
-                },
+                    listOf(
+                        MediaStatus.FINISHED,
+                        MediaStatus.NOT_YET_RELEASED,
+                    ),
+                ),
             )
 
         val mappedQuery = mediaQuery.toMap()

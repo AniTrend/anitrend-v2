@@ -58,7 +58,7 @@ class MediaListEditorContent(
 
     private fun onFetchDataInitialize() {
         requireBinding().stateLayout.assureParamNotMissing(param) {
-            viewModelState().invoke(requireNotNull(param))
+            viewModel.invoke(requireNotNull(param))
         }
     }
 
@@ -79,7 +79,7 @@ class MediaListEditorContent(
                     .stateLayout.interactionFlow
                     .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
                     .onEach {
-                        viewModelState().retry()
+                        viewModel.retry()
                     }.catch { cause: Throwable ->
                         Timber.e(cause)
                     }.collect()
@@ -101,13 +101,13 @@ class MediaListEditorContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             controller.onPostModelChange(it, requireBinding(), lifecycleScope) {
                 dismiss()
             }
         }
-        viewModelState().loadState.observe(viewLifecycleOwner) {
-            if (viewModelState().model.value == null) {
+        viewModel.loadState.observe(viewLifecycleOwner) {
+            if (viewModel.model.value == null) {
                 requireBinding().stateLayout.loadStateFlow.value = it
             } else {
                 requireBinding().stateLayout.loadStateFlow.value = LoadState.Idle()
@@ -180,5 +180,5 @@ class MediaListEditorContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

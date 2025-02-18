@@ -16,9 +16,9 @@
  */
 package co.anitrend.core.component.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
 abstract class AniTrendViewModel : ViewModel() {
-    abstract val state: AniTrendViewModelState<*>
+    abstract val savedStateHandle: SavedStateHandle
 }

@@ -58,12 +58,12 @@ class ManageMediaProvider(
     override fun createWidget(forItem: MenuItem?): View {
         if (!actionImageView.hasOnClickListeners()) {
             actionImageView.setOnClickListener { view ->
-                viewModel.state.model.value?.let {
+                viewModel.model.value?.let {
                     view.openMediaListSheetFor(it, settings)
                 }
             }
         }
-        viewModel.state.model.observe(context.requireLifecycleOwner()) { media ->
+        viewModel.model.observe(context.requireLifecycleOwner()) { media ->
             iconForState(media.mediaList?.status)
         }
         container.addView(actionImageView)

@@ -19,8 +19,6 @@ package co.anitrend.media.carousel.component.content
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.liveData
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.core.android.compose.design.ContentWrapper
@@ -91,13 +89,13 @@ class CarouselContent(
     ) = composable(context = inflater.context) {
         AniTrendTheme3 {
             ContentWrapper(
-                stateFlow = liveData { emit(LoadState.Idle()) },
+                stateFlow = viewModel.loadState,
                 param = paramOrDefault(),
                 onLoad = viewModel::invoke,
-                onClick = viewModelState()::retry,
+                onClick = viewModel::retry,
             ) {
                 CarouselScreen(
-                    carouselState = viewModelState(),
+                    carouselState = viewModel,
                     mediaPreferenceData = controller.mediaPreferenceData(settings),
                     carouselItemClick = { param ->
                         when (param) {
@@ -128,9 +126,4 @@ class CarouselContent(
             }
         }
     }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState() = viewModel.state
 }

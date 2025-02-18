@@ -20,7 +20,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.carousel.component.content.CarouselContent
 import co.anitrend.media.carousel.component.content.controller.CarouselContentController
 import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
-import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
 import co.anitrend.media.carousel.provider.FeatureProvider
 import co.anitrend.navigation.MediaCarouselRouter
 import org.koin.androidx.fragment.dsl.fragment
@@ -50,10 +49,7 @@ private val viewModelModule =
     module {
         viewModel {
             CarouselViewModel(
-                state =
-                    CarouselState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
     }

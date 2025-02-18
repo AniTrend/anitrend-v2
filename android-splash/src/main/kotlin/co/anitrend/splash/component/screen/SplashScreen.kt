@@ -18,16 +18,37 @@ package co.anitrend.splash.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.splash.component.compose.SplashScreenContent
 import co.anitrend.splash.component.presenter.SplashPresenter
+import kotlinx.coroutines.launch
 
 class SplashScreen : AniTrendScreen() {
     private val presenter by inject<SplashPresenter>()
+
+    private fun setupSplashScreen(splashScreen: SplashScreen) {
+        splashScreen.setKeepOnScreenCondition {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    presenter.firstRunCheck()
+                    finishAfterTransition()
+                }
+            }
+            false
+        }
+
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            splashScreenView.remove()
+        }
+    }
 
     override fun configureActivity() {
         super.configureActivity()
@@ -37,23 +58,10 @@ class SplashScreen : AniTrendScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        with(splashScreen) {
-            setKeepOnScreenCondition {
-                setContent {
-                    AniTrendTheme3 {
-                        SplashScreenContent(
-                            onLoad = {
-                                presenter.firstRunCheck()
-                                finishAfterTransition()
-                            },
-                        )
-                    }
-                }
-                false
-            }
-
-            setOnExitAnimationListener { splashScreenView ->
-                splashScreenView.remove()
+        setupSplashScreen(splashScreen)
+        setContent {
+            AniTrendTheme3 {
+                SplashScreenContent()
             }
         }
     }

@@ -25,9 +25,7 @@ import co.anitrend.media.discover.filter.component.content.GenreContent
 import co.anitrend.media.discover.filter.component.content.SortingContent
 import co.anitrend.media.discover.filter.component.content.TagContent
 import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
-import co.anitrend.media.discover.filter.component.viewmodel.genre.state.GenreViewModelState
 import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
-import co.anitrend.media.discover.filter.component.viewmodel.tag.state.TagViewModelState
 import co.anitrend.media.discover.filter.provider.FeatureProvider
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 import org.koin.android.ext.koin.androidContext
@@ -73,18 +71,12 @@ private val viewModelModule =
     module {
         viewModel {
             GenreViewModel(
-                state =
-                    GenreViewModelState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
         viewModel {
             TagViewModel(
-                state =
-                    TagViewModelState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
     }

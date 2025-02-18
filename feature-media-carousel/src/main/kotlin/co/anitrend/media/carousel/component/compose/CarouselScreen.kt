@@ -16,39 +16,46 @@
  */
 package co.anitrend.media.carousel.component.compose
 
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.item.MediaCarouselItem
 import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.medialist.enums.ScoreFormat
-import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
+import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
 import co.anitrend.navigation.model.common.IParam
 
 @Composable
 fun CarouselScreen(
-    carouselState: CarouselState,
+    carouselState: CarouselViewModel,
     mediaPreferenceData: MediaPreferenceData,
     carouselItemClick: (IParam) -> Unit,
 ) {
     val state = carouselState.model.observeAsState()
     val carouselItems: List<MediaCarousel> = state.value ?: return
-    Surface {
+    Scaffold { innerPadding ->
         MediaCarouselItem(
             carouselItems = carouselItems,
             mediaPreferenceData = mediaPreferenceData,
             carouselItemClick = carouselItemClick,
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }
 
 @AniTrendPreview.Mobile
 @Composable
-private fun CarouselScreenPreview() {
-    PreviewTheme(wrapInSurface = true) {
+private fun CarouselScreenPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme) {
         MediaCarouselItem(
             carouselItems = emptyList(),
             mediaPreferenceData = MediaPreferenceData(scoreFormat = ScoreFormat.POINT_100),

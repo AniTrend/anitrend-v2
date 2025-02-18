@@ -62,10 +62,5 @@ sealed class AiringParam {
         var airingAt_greater: Int? = null,
         var airingAt_lesser: Int? = null,
         var sort: List<ISortWithOrder<AiringSort>>? = null,
-    ) : AiringParam() {
-        infix fun builder(param: Find.() -> Unit): Find {
-            this.param()
-            return this
-        }
-    }
+    ) : AiringParam()
 }

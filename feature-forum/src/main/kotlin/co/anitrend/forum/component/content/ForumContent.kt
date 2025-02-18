@@ -22,29 +22,15 @@ import android.view.View
 import android.view.ViewGroup
 import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.android.views.compose.composable
 import co.anitrend.core.component.FeatureUnavailable
-import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.forum.R
+import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.forum.component.viewmodel.ForumViewModel
-import co.anitrend.forum.databinding.ForumContentBinding
 import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ForumContent(
-    override val inflateLayout: Int = R.layout.forum_content,
-) : AniTrendContent<ForumContentBinding>() {
+class ForumContent : AniTrendComposition() {
     private val viewModel by viewModel<ForumViewModel>()
-
-    private fun onFetchDataInitialize() {
-        // TODO: Implement functionality
-    }
-
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-    }
 
     /**
      * Called to have the fragment instantiate its user interface view. This is optional, and
@@ -73,23 +59,21 @@ class ForumContent(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        binding = ForumContentBinding.bind(requireNotNull(view))
-        requireBinding().root.setContent {
+    ): View =
+        composable(inflater.context) {
             AniTrendTheme3 {
-                ContentWrapper<IParam>(
+                ContentWrapper(
                     stateFlow = FeatureUnavailable.loadState,
                     config = FeatureUnavailable.config,
+                    param = IParam.None,
+                    onLoad = viewModel::invoke,
                     onClick = {},
                 ) {}
             }
         }
-        return view
-    }
 
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

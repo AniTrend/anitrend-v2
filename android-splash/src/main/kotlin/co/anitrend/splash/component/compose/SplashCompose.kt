@@ -33,7 +33,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,7 +51,6 @@ import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun SplashSpinner(modifier: Modifier = Modifier) {
@@ -246,8 +244,7 @@ private fun SplashContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SplashScreenContent(onLoad: suspend CoroutineScope.() -> Unit) {
-    LaunchedEffect(key1 = Unit, block = onLoad)
+fun SplashScreenContent() {
     Scaffold { innerPadding ->
         SplashContent(Modifier.padding(innerPadding))
     }

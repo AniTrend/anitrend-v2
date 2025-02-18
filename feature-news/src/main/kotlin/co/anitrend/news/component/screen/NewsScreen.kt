@@ -106,7 +106,7 @@ class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
 
     private fun setUpViewModelObserver() {
         val content = requireBinding().newsContent.newsContentTextView
-        viewModel.model.observe(this) {
+        viewModel.documentHtml.observe(this) {
             markwon.setMarkdown(content, it)
         }
     }

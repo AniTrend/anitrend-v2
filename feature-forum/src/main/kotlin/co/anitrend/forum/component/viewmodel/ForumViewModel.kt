@@ -16,9 +16,15 @@
  */
 package co.anitrend.forum.component.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.forum.component.viewmodel.state.ForumState
+import androidx.lifecycle.viewModelScope
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.navigation.model.common.IParam
+import kotlinx.coroutines.launch
 
-class ForumViewModel(
-    override val state: ForumState,
-) : AniTrendViewModel()
+class ForumViewModel : AniTrendViewModelState<Unit>() {
+    operator fun invoke(param: IParam) {
+        viewModelScope.launch {
+            param
+        }
+    }
+}

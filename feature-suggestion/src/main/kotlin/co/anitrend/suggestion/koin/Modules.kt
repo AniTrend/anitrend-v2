@@ -21,7 +21,6 @@ import co.anitrend.navigation.SuggestionRouter
 import co.anitrend.suggestion.component.content.SuggestionContent
 import co.anitrend.suggestion.component.screen.SuggestionScreen
 import co.anitrend.suggestion.component.viewmodel.SuggestionViewModel
-import co.anitrend.suggestion.component.viewmodel.state.SuggestionState
 import co.anitrend.suggestion.provider.FeatureProvider
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
@@ -39,9 +38,7 @@ private val fragmentModule =
 private val viewModelModule =
     module {
         viewModel {
-            SuggestionViewModel(
-                state = SuggestionState(),
-            )
+            SuggestionViewModel()
         }
     }
 

@@ -76,11 +76,11 @@ class EpisodeSheet(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
             viewModel.buildHtml(it, requireContext())
         }
-        viewModel.model.observe(viewLifecycleOwner) {
+        viewModel.documentHtml.observe(viewLifecycleOwner) {
             markwon.setMarkdown(requireBinding().episodeDescription, it)
         }
     }
@@ -98,7 +98,7 @@ class EpisodeSheet(
         )
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModelState().invoke(
+                viewModel.invoke(
                     EpisodeParam.Detail(
                         requireNotNull(param?.id),
                     ),
@@ -186,7 +186,7 @@ class EpisodeSheet(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 
     /**
      * Called when the fragment is visible to the user and actively running.

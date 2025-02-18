@@ -22,7 +22,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.news.component.content.NewsContent
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
-import co.anitrend.news.component.content.viewmodel.state.NewsContentState
 import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
 import co.anitrend.news.plugin.NewsTagPlugin
 import co.anitrend.news.presenter.NewsPresenter
@@ -82,10 +81,7 @@ private val viewModelModule =
     module {
         viewModel {
             NewsContentViewModel(
-                state =
-                    NewsContentState(
-                        interactor = get(),
-                    ),
+                interactor = get(),
             )
         }
         viewModel {

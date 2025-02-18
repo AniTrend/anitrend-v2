@@ -19,7 +19,6 @@ package co.anitrend.airing.koin
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.airing.component.content.AiringContent
 import co.anitrend.airing.component.viewmodel.AiringViewModel
-import co.anitrend.airing.component.viewmodel.state.AiringState
 import co.anitrend.airing.provider.FeatureProvider
 import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.core.android.settings.Settings
@@ -53,11 +52,8 @@ private val viewModelModule =
     module {
         viewModel { scope ->
             AiringViewModel(
-                state =
-                    AiringState(
-                        interactor = get(),
-                    ),
                 stateHandle = scope.get(),
+                interactor = get(),
             )
         }
     }
