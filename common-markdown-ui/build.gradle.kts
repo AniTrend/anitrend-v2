@@ -15,16 +15,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("co.anitrend.plugin")
 }
 
-tasks.withType(KotlinCompile::class.java) {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-opt-in=coil.annotation.ExperimentalCoilApi")
-	}
+tasks.withType(KotlinCompilationTask::class.java) {
+    compilerOptions {
+        optIn.add("coil.annotation.ExperimentalCoilApi")
+    }
 }
 
 dependencies {

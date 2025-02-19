@@ -21,5 +21,6 @@ dependencies {
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.data.edge"
 }

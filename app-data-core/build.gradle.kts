@@ -31,5 +31,6 @@ dependencies {
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.data.core"
 }

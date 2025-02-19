@@ -20,9 +20,8 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        viewBinding = true
-    }
+    buildFeatures.viewBinding = true
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.core"
 }
 

@@ -24,10 +24,8 @@ plugins {
 
 tasks.withType(KotlinCompilationTask::class.java) {
     compilerOptions {
-        freeCompilerArgs.addAll(
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-opt-in=kotlin.RequiresOptIn"
-        )
+        optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
+        optIn.add("kotlin.RequiresOptIn")
     }
 }
 
@@ -36,5 +34,6 @@ dependencies {
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.data.imgur"
 }

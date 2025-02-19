@@ -15,19 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("co.anitrend.plugin")
 }
 
-tasks.withType(KotlinCompile::class.java) {
-    kotlinOptions {
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=coil.annotation.ExperimentalCoilApi",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-        )
+tasks.withType(KotlinCompilationTask::class.java) {
+    compilerOptions {
+        optIn.add("kotlinx.coroutines.FlowPreview")
+        optIn.add("coil.annotation.ExperimentalCoilApi")
+        optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
     }
 }
 
@@ -39,5 +37,6 @@ dependencies {
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.core.android"
 }
