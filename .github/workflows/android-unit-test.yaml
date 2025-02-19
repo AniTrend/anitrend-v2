@@ -11,10 +11,10 @@ jobs:
       run: |
         chmod +x .github/scripts/action-swap-increase.sh
         bash .github/scripts/action-swap-increase.sh
-    - name: set up JDK 17
+    - name: set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: 17
+        java-version: 21
         distribution: 'adopt'
         # cache: 'gradle'
     - name: Setup Gradle
