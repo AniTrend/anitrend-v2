@@ -50,12 +50,12 @@ fun CarouselScreen(
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Default
 @Composable
 private fun CarouselScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(darkTheme = darkTheme) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         MediaCarouselItem(
             carouselItems = emptyList(),
             mediaPreferenceData = MediaPreferenceData(scoreFormat = ScoreFormat.POINT_100),

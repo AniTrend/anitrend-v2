@@ -38,10 +38,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
+import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.core.android.ui.typography.AniTrendTypography
 
 @Composable
@@ -166,16 +168,17 @@ fun AuthScreenContent(
     }
 }
 
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 @Composable
-private fun MediaDetailComponentPreview() {
-    AniTrendTheme3 {
-        AuthContent(
+private fun MediaDetailComponentPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme) {
+        AuthScreenContent(
             onAuthorizeClick = {},
             onAuthorizationHelpClick = {},
             onAuthorizationAnonymousClick = {},
+            onBackPress = {},
         )
     }
 }

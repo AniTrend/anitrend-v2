@@ -149,7 +149,8 @@ fun MediaCarouselItem(
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun MediaCarouselItemPreview() {
     PreviewTheme(wrapInSurface = true) {

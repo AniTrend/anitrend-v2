@@ -21,7 +21,6 @@
     <!-- Filter content headers -->
     <string-array name="titles_filter_pages">
         <item>General</item>
-        <item>Sorting</item>
         <item>Genres</item>
         <item>Tags</item>
     </string-array>

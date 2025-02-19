@@ -119,7 +119,8 @@ fun TagListItems(
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun TagComponentPreview() {
     PreviewTheme(wrapInSurface = true) {

@@ -128,7 +128,8 @@ fun SearchScreenContent(
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun SearchScreenPreview() {
     PreviewTheme(wrapInSurface = true) {

@@ -26,11 +26,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
@@ -47,6 +48,7 @@ import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
@@ -92,6 +94,7 @@ private fun MediaTitleItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = AniTrendTheme.typography.body2,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(4.dp),
             )
         }
@@ -182,10 +185,12 @@ fun MediaCompactItemList(
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Default
 @Composable
-private fun MediaCompactItemPreview() {
-    PreviewTheme(wrapInSurface = true) {
+private fun MediaCompactItemPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         MediaCompactItem(
             media =
                 Media.Core.empty().copy(

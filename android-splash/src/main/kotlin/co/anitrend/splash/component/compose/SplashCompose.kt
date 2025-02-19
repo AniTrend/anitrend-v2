@@ -250,14 +250,12 @@ fun SplashScreenContent() {
     }
 }
 
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 @Composable
 private fun SplashContentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
-        SplashContent()
+        SplashScreenContent()
     }
 }

@@ -48,14 +48,14 @@ fun UpdateScreenContent(onBackPress: () -> Unit) {
     }
 }
 
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 @Composable
 private fun UpdateComposablePreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
-        UpdateContent()
+        UpdateScreenContent(
+            onBackPress = {},
+        )
     }
 }

@@ -28,10 +28,9 @@ import com.google.android.material.tabs.TabLayout
 internal class MediaFilterController(
     tabLayout: TabLayout,
 ) {
-    private val sortTab by lazy(UNSAFE) { tabLayout.getTabAt(0) }
-    private val generalTab by lazy(UNSAFE) { tabLayout.getTabAt(1) }
-    private val genreTab by lazy(UNSAFE) { tabLayout.getTabAt(2) }
-    private val tagTab by lazy(UNSAFE) { tabLayout.getTabAt(3) }
+    private val generalTab by lazy(UNSAFE) { tabLayout.getTabAt(0) }
+    private val genreTab by lazy(UNSAFE) { tabLayout.getTabAt(1) }
+    private val tagTab by lazy(UNSAFE) { tabLayout.getTabAt(2) }
 
     private fun onTagFilters(
         tag: Action.Tag?,
@@ -70,17 +69,6 @@ internal class MediaFilterController(
         } else {
             generalTab?.removeBadge()
         }
-    }
-
-    private fun onSortFilter(
-        general: Action.Sort?,
-        filter: LiveData<MediaDiscoverParam>,
-    ) {
-        if (general?.isDefault() == true) {
-            sortTab?.orCreateBadge
-        } else {
-            sortTab?.removeBadge()
-        }
         filter.value?.sort = general?.sort
     }
 
@@ -91,10 +79,6 @@ internal class MediaFilterController(
         fragment: Fragment,
         filter: LiveData<MediaDiscoverParam>,
     ) {
-        fragment.setFragmentResultListener(Action.Sort::class.java.simpleName) { key: String, bundle: Bundle ->
-            val sort = bundle.getParcelable<Action.Sort>(key)
-            onSortFilter(sort, filter)
-        }
         fragment.setFragmentResultListener(Action.General::class.java.simpleName) { key: String, bundle: Bundle ->
             val general = bundle.getParcelable<Action.General>(key)
             onGeneralFilter(general, filter)

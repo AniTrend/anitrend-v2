@@ -320,16 +320,12 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
-        fun sorting(): Class<out Fragment>
-
         fun general(): Class<out Fragment>
 
         fun genre(): Class<out Fragment>
 
         fun tag(): Class<out Fragment>
     }
-
-    fun forSorting() = provider.sorting()
 
     fun forGeneral() = provider.general()
 
@@ -351,23 +347,14 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
         }
 
         @Parcelize
-        data class Sort(
+        data class General(
+            var id: Long?,
             var sort: List<Sorting<MediaSort>>,
         ) : Action() {
             /**
              * @return true if this current action impl has not been changed
              */
-            override fun isDefault() = sort.isEmpty()
-        }
-
-        @Parcelize
-        data class General(
-            var id: Long?,
-        ) : Action() {
-            /**
-             * @return true if this current action impl has not been changed
-             */
-            override fun isDefault() = id == null
+            override fun isDefault() = id == null && sort.isEmpty()
         }
 
         @Parcelize

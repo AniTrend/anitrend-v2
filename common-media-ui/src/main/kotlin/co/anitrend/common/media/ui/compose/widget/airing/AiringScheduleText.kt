@@ -20,6 +20,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -62,7 +63,7 @@ fun AiringScheduleText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
 ) {
-    val controller = MediaAiringScheduleController(media)
+    val controller = remember(media) { MediaAiringScheduleController(media) }
     if (controller.shouldHideWidget()) {
         return
     }
@@ -83,7 +84,8 @@ fun AiringScheduleText(
     )
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun AiringScheduleTextPreview() {
     PreviewTheme(wrapInSurface = true) {

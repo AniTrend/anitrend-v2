@@ -18,13 +18,10 @@ package co.anitrend.media.discover.filter.provider
 
 import co.anitrend.media.discover.filter.component.content.GeneralContent
 import co.anitrend.media.discover.filter.component.content.GenreContent
-import co.anitrend.media.discover.filter.component.content.SortingContent
 import co.anitrend.media.discover.filter.component.content.TagContent
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 
 internal class FeatureProvider : MediaDiscoverFilterRouter.Provider {
-    override fun sorting() = SortingContent::class.java
-
     override fun general() = GeneralContent::class.java
 
     override fun genre() = GenreContent::class.java

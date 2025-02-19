@@ -48,14 +48,14 @@ fun NotificationScreenContent(onBackPress: () -> Unit) {
     }
 }
 
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 @Composable
 private fun NotificationComposablePreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
-        NotificationContent()
+        NotificationScreenContent(
+            onBackPress = {},
+        )
     }
 }

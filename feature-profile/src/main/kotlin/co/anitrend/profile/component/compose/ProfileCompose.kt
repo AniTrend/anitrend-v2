@@ -48,6 +48,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.markdown.ui.compose.MarkdownText
 import co.anitrend.core.android.compose.design.BackIconButton
@@ -56,6 +57,7 @@ import co.anitrend.core.android.compose.design.image.AniTrendImageDefaults
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.helpers.image.toCoverImage
 import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.ImageViewerRouter
@@ -197,12 +199,12 @@ fun ProfileScreenContent(
     }
 }
 
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 @Composable
-private fun ProfileScreenPreview() {
-    PreviewTheme {
+private fun ProfileScreenPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         ProfileContent(
             user = User.empty(),
             onImageClick = {},

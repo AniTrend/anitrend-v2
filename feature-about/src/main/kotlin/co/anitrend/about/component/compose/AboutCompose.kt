@@ -52,14 +52,14 @@ fun AboutScreenContent(onBackPress: () -> Unit) {
     }
 }
 
+@AniTrendPreview.Default
 @Composable
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
 private fun AboutContentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
-        AboutContent()
+        AboutScreenContent(
+            onBackPress = {},
+        )
     }
 }

@@ -17,151 +17,65 @@
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.lifecycleScope
+import android.view.ViewGroup
+import androidx.compose.material3.Surface
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.arch.extension.ext.capitalizeWords
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
-import co.anitrend.core.android.extensions.createChipChoice
-import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.domain.media.enums.MediaCountry
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaLicensor
-import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.domain.media.enums.MediaSource
-import co.anitrend.domain.media.enums.MediaStatus
-import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.media.discover.filter.R
-import co.anitrend.media.discover.filter.databinding.MediaDiscoverFilterGeneralBinding
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.android.views.compose.composable
+import co.anitrend.core.component.content.compose.AniTrendComposition
+import co.anitrend.media.discover.filter.component.compose.MediaFilterScreen
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.nameOf
-import kotlinx.coroutines.launch
 
 internal class GeneralContent(
     private val dateHelper: AbstractSupportDateHelper,
-    override val inflateLayout: Int = R.layout.media_discover_filter_general,
-) : AniTrendContent<MediaDiscoverFilterGeneralBinding>() {
+) : AniTrendComposition() {
     private val param by argument(
         key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
         default = MediaDiscoverRouter::MediaDiscoverParam,
     )
 
-    private fun bindModelToViews() {
-        requireBinding().excludeAdultContent.isChecked = param.isAdult == true
-        val seasonYear = param.seasonYear
-        if (seasonYear != null) {
-            requireBinding().yearRangeSlider.setValues(seasonYear.toFloat())
-        } else {
-            requireBinding().yearRangeSlider.setValues(dateHelper.getCurrentYear().toFloat())
-        }
-        when (param.onList) {
-            true -> requireBinding().onListChipGroup.check(R.id.onListChipInclude)
-            false -> requireBinding().onListChipGroup.check(R.id.onListChipExclude)
-            else -> requireBinding().onListChipGroup.clearCheck()
-        }
-    }
-
-    private fun initializeViewsWithOptions() {
-        MediaStatus.entries.forEach {
-            requireBinding().statusChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.alias
-                    isChecked = param.status_in?.contains(it) == true || param.status == it
-                },
-            )
-        }
-        MediaType.entries.forEach {
-            requireBinding().mediaTypeChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.alias
-                    isChecked = param.type == it
-                },
-            )
-        }
-        MediaSeason.entries.forEach {
-            requireBinding().seasonChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.alias
-                    isChecked = param.season == it
-                },
-            )
-        }
-        MediaFormat.entries.forEach {
-            requireBinding().formatChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.alias
-                    isChecked = param.format_in?.contains(it) == true || param.format == it
-                },
-            )
-        }
-        MediaSource.entries.forEach {
-            requireBinding().sourceChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.alias
-                    isChecked = param.source_in?.contains(it) == true || param.source == it
-                },
-            )
-        }
-        MediaCountry.entries.forEach {
-            requireBinding().countryChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.name.lowercase().capitalizeWords()
-                    isChecked = param.countryOfOrigin == it.alias
-                },
-            )
-        }
-        MediaLicensor.entries.forEach {
-            requireBinding().streamingChipGroup.addView(
-                requireContext().createChipChoice {
-                    text = it.title
-                    isChecked = param.licensedBy_in?.contains(it) == true || param.licensedBy == it
-                },
-            )
-        }
-        requireBinding().yearRangeSlider.valueTo = dateHelper.getCurrentYear(2).toFloat()
-        requireBinding().yearRangeSlider.valueFrom = 1970f
-        requireBinding().yearRangeSlider.stepSize = 1f
-    }
-
     /**
-     * Additional initialization to be done in this method, this method will be called in
-     * [androidx.fragment.app.FragmentActivity.onCreate].
+     * Called to have the fragment instantiate its user interface view. This is optional, and
+     * non-graphical fragments can return null. This will be called between
+     * [onCreate] & [onActivityCreated].
      *
-     * **N.B.** Calling super of this will register a connectivity change listener, so only
-     * call `super.initializeComponents` if you require this behavior
+     * A default View can be returned by calling [Fragment] in your
+     * constructor. Otherwise, this method returns null.
      *
-     * @param savedInstanceState
+     * It is recommended to __only__ inflate the layout in this method and move
+     * logic that operates on the returned View to [onViewCreated].
+     *
+     * If you return a View from here, you will later be called in [onDestroyView]
+     * when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container If non-null, this is the parent view that the fragment's UI should be
+     * attached to. The fragment should not add the view itself, but this can be used to generate
+     * the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
      */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-    }
-
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-    }
-
-    /**
-     * Called immediately after [onCreateView] has returned, but before any saved state has been
-     * restored in to the view. This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.
-     *
-     * The fragment's view hierarchy is not however attached to its parent at this point.
-     *
-     * @param view The View returned by [onCreateView].
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-     * saved state as given here.
-     */
-    override fun onViewCreated(
-        view: View,
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        binding = MediaDiscoverFilterGeneralBinding.bind(view)
-        lifecycleScope.launch {
-            initializeViewsWithOptions()
-            bindModelToViews()
+    ): View =
+        composable(layoutInflater.context) {
+            AniTrendTheme3 {
+                Surface {
+                    MediaFilterScreen(
+                        dateHelper = dateHelper,
+                        param = param,
+                        onParamChange = {
+                        },
+                    )
+                }
+            }
         }
-    }
 }

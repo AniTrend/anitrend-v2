@@ -31,10 +31,11 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-
 import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.shared.FuzzyDate
@@ -151,8 +152,10 @@ fun MediaSubTitleText(
 
 @AniTrendPreview.Default
 @Composable
-private fun MediaSubTitleTextPreview() {
-    PreviewTheme(wrapInSurface = true) {
+private fun MediaSubTitleTextPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         MediaSubTitleText(
             media =
                 Media.Core.empty().copy(

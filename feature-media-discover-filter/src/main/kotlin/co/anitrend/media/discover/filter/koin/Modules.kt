@@ -22,7 +22,6 @@ import co.anitrend.core.android.recycler.selection.DefaultSelectionMode
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.filter.component.content.GeneralContent
 import co.anitrend.media.discover.filter.component.content.GenreContent
-import co.anitrend.media.discover.filter.component.content.SortingContent
 import co.anitrend.media.discover.filter.component.content.TagContent
 import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
 import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
@@ -35,9 +34,6 @@ import org.koin.dsl.module
 
 private val fragmentModule =
     module {
-        fragment {
-            SortingContent()
-        }
         fragment {
             GeneralContent(
                 dateHelper = get(),

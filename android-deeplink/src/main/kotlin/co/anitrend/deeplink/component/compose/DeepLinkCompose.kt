@@ -50,13 +50,13 @@ fun DeepLinkScreenContent(onBackPress: () -> Unit) {
 }
 
 @Composable
-@AniTrendPreview.Mobile
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 private fun DeepLinkScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme) {
-        DeepLinkContent()
+        DeepLinkScreenContent(
+            onBackPress = {},
+        )
     }
 }

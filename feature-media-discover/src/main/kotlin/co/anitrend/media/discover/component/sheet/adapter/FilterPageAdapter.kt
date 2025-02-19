@@ -63,13 +63,9 @@ internal class FilterPageAdapter(
                     ).fragmentByTagOrNew(fragmentActivity)
                 1 ->
                     FragmentItem(
-                        fragment = MediaDiscoverFilterRouter.forSorting(),
-                    ).fragmentByTagOrNew(fragmentActivity)
-                2 ->
-                    FragmentItem(
                         fragment = MediaDiscoverFilterRouter.forGenre(),
                     ).fragmentByTagOrNew(fragmentActivity)
-                3 ->
+                2 ->
                     FragmentItem(
                         fragment = MediaDiscoverFilterRouter.forTag(),
                     ).fragmentByTagOrNew(fragmentActivity)
