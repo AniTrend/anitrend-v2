@@ -25,12 +25,11 @@ import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.media.discover.filter.component.spec.FilterDefinition
-import co.anitrend.navigation.MediaDiscoverRouter.MediaDiscoverParam
 import co.anitrend.navigation.model.sorting.Sorting
 
 // Media Status (supports single or multi-selection)
 internal val statusDefinition =
-    FilterDefinition<MediaStatus, MediaDiscoverParam>(
+    FilterDefinition<MediaStatus>(
         getSingleValue = { it.status },
         setSingleValue = { param, newValue -> param.copy(status = newValue) },
         getMultiValue = { it.status_in },
@@ -40,7 +39,7 @@ internal val statusDefinition =
 
 // Media Type (single-selection only)
 internal val typeDefinition =
-    FilterDefinition<MediaType, MediaDiscoverParam>(
+    FilterDefinition<MediaType>(
         getSingleValue = { it.type },
         setSingleValue = { param, newValue -> param.copy(type = newValue) },
         getMultiValue = { null },
@@ -50,7 +49,7 @@ internal val typeDefinition =
 
 // Media Season (single-selection only)
 internal val seasonDefinition =
-    FilterDefinition<MediaSeason, MediaDiscoverParam>(
+    FilterDefinition<MediaSeason>(
         getSingleValue = { it.season },
         setSingleValue = { param, newValue -> param.copy(season = newValue) },
         getMultiValue = { null },
@@ -60,7 +59,7 @@ internal val seasonDefinition =
 
 // Media Format (supports single or multi-selection)
 internal val formatDefinition =
-    FilterDefinition<MediaFormat, MediaDiscoverParam>(
+    FilterDefinition<MediaFormat>(
         getSingleValue = { it.format },
         setSingleValue = { param, newValue -> param.copy(format = newValue) },
         getMultiValue = { it.format_in },
@@ -70,7 +69,7 @@ internal val formatDefinition =
 
 // Media Source (supports single or multi-selection)
 internal val sourceDefinition =
-    FilterDefinition<MediaSource, MediaDiscoverParam>(
+    FilterDefinition<MediaSource>(
         getSingleValue = { it.source },
         setSingleValue = { param, newValue -> param.copy(source = newValue) },
         getMultiValue = { it.source_in },
@@ -80,7 +79,7 @@ internal val sourceDefinition =
 
 // Media Licensor (supports single or multi-selection)
 internal val licensedByDefinition =
-    FilterDefinition<MediaLicensor, MediaDiscoverParam>(
+    FilterDefinition<MediaLicensor>(
         getSingleValue = { it.licensedBy },
         setSingleValue = { param, newValue -> param.copy(licensedBy = newValue) },
         getMultiValue = { it.licensedBy_in },
@@ -91,7 +90,7 @@ internal val licensedByDefinition =
 // Country of Origin is stored as a CharSequence in the parameter,
 // but we match it against MediaCountry entries.
 internal val countryDefinition =
-    FilterDefinition<MediaCountry, MediaDiscoverParam>(
+    FilterDefinition<MediaCountry>(
         getSingleValue = { param ->
             MediaCountry.entries.find { it.name == param.countryOfOrigin }
         },
@@ -103,7 +102,7 @@ internal val countryDefinition =
 
 // Season Year (an integer filter, single-selection only)
 internal val seasonYearDefinition =
-    FilterDefinition<Int, MediaDiscoverParam>(
+    FilterDefinition<Int>(
         getSingleValue = { it.seasonYear },
         setSingleValue = { param, newValue -> param.copy(seasonYear = newValue) },
         getMultiValue = { null },
@@ -113,7 +112,7 @@ internal val seasonYearDefinition =
 
 // Media Sort
 internal val sortDefinition =
-    FilterDefinition<Sorting<MediaSort>, MediaDiscoverParam>(
+    FilterDefinition<Sorting<MediaSort>>(
         getSingleValue = { null },
         setSingleValue = { param, _ -> param },
         getMultiValue = { it.sort },

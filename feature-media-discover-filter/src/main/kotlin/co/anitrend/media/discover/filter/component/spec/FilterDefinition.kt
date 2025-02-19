@@ -16,7 +16,7 @@
  */
 package co.anitrend.media.discover.filter.component.spec
 
-import co.anitrend.navigation.model.common.IParam
+import co.anitrend.navigation.MediaDiscoverRouter.MediaDiscoverParam
 
 /**
  * A generic definition for a filter that supports both a single selection and multiple selections.
@@ -28,23 +28,30 @@ import co.anitrend.navigation.model.common.IParam
  * @property setMultiValue Updates the parameter with a new list of selections.
  * @property label A function to produce a display label from a value.
  */
-data class FilterDefinition<T, P : IParam>(
-    val getSingleValue: (P) -> T?,
-    val setSingleValue: (P, T?) -> P,
-    val getMultiValue: (P) -> List<T>?,
-    val setMultiValue: (P, List<T>?) -> P,
-    val label: (T) -> String,
+data class FilterDefinition<T>(
+    val getSingleValue: (MediaDiscoverParam) -> T?,
+    val setSingleValue: (MediaDiscoverParam, T?) -> MediaDiscoverParam,
+    val getMultiValue: (MediaDiscoverParam) -> List<T>?,
+    val setMultiValue: (MediaDiscoverParam, List<T>?) -> MediaDiscoverParam,
+    val label: (T) -> String
 ) {
     companion object {
-        fun <T, P : IParam> List<FilterDefinition<T, P>>.buildSummaryItems(
-            param: P,
-            onParamChange: (P) -> Unit,
+        @Suppress("UNCHECKED_CAST")
+        private fun FilterDefinition<*>.getLabelFor(value: Any): String {
+            return (this as FilterDefinition<Any>).label(value)
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        fun List<FilterDefinition<out Any>>.buildSummaryItems(
+            param: MediaDiscoverParam,
+            onParamChange: (MediaDiscoverParam) -> Unit,
         ): List<Pair<String, () -> Unit>> {
             val items = mutableListOf<Pair<String, () -> Unit>>()
             forEach { definition ->
+                // Handle single-selection filter
                 val singleValue = definition.getSingleValue(param)
                 if (singleValue != null) {
-                    val label = definition.label(singleValue)
+                    val label = definition.getLabelFor(singleValue)
                     items += label to {
                         val updated = definition.setSingleValue(param, null)
                         onParamChange(updated)
@@ -53,10 +60,10 @@ data class FilterDefinition<T, P : IParam>(
                 // Handle multi-selection filter
                 val multiValues = definition.getMultiValue(param)
                 multiValues?.forEach { element ->
-                    val labelText = definition.label(element)
+                    val labelText = definition.getLabelFor(element)
                     items += labelText to {
-                        val newList = multiValues.toMutableList().apply { remove(element) }
-                        val updated = definition.setMultiValue(param, newList.ifEmpty { null })
+                        val newList = multiValues.toMutableList().apply { remove(element) }// Cast definition to FilterDefinition<Any> so that the type matches
+                        val updated = (definition as FilterDefinition<Any>).setMultiValue(param, newList.ifEmpty { null })
                         onParamChange(updated)
                     }
                 }

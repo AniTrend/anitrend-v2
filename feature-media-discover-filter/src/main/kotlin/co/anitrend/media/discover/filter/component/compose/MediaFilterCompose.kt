@@ -175,13 +175,6 @@ private fun SelectedFiltersSummary(
                             overflow = TextOverflow.Ellipsis,
                         )
                     },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Done,
-                            contentDescription = label,
-                            modifier = Modifier.size(FilterChipDefaults.IconSize),
-                        )
-                    },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Close,
@@ -496,7 +489,7 @@ fun SortingFilterChipGroup(
                     onSortChange(newList.ifEmpty { null })
                 }
                 FilterChip(
-                    selected = true,
+                    selected = isSelected,
                     onClick = onChipClick,
                     label = {
                         Text(
