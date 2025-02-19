@@ -32,8 +32,10 @@ import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
+import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
+import co.anitrend.navigation.extensions.fromBundle
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -81,7 +83,7 @@ class MediaDiscoverContent(
             co.anitrend.core.android.R.id.action_filter -> {
                 val fragmentItem =
                     FragmentItem(
-                        fragment = MediaDiscoverRouter.forSheet(),
+                        fragment = MediaDiscoverFilterRouter.forSheet(),
                         parameter = viewModel.default.asBundle(),
                     )
                 val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
@@ -111,6 +113,17 @@ class MediaDiscoverContent(
                     listPresenter.recyclerView,
                     ::getSpanSizeByPreference,
                 )
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                childFragmentManager.setFragmentResultListener(
+                    MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
+                    viewLifecycleOwner,
+                ) { _, bundle ->
+                    val param = bundle.fromBundle<MediaDiscoverRouter.MediaDiscoverParam>()
+                    param?.also(viewModel::setParam)
+                }
             }
         }
     }

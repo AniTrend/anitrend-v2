@@ -16,7 +16,6 @@
  */
 package co.anitrend.media.discover.component.content.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -41,13 +40,11 @@ class MediaDiscoverViewModel(
         default = MediaDiscoverRouter::MediaDiscoverParam,
     )
 
-    val filter = MutableLiveData(default)
-
     init {
         viewModelScope.launch {
             savedStateHandle
                 .getLiveData<MediaDiscoverRouter.MediaDiscoverParam>(
-                    MediaDiscoverFilterRouter.Action.KEY,
+                    MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
                 ).asFlow()
                 .collect(::invoke)
         }
@@ -57,7 +54,7 @@ class MediaDiscoverViewModel(
      * Handle param changes by settings the new [param] to the [state]
      */
     fun setParam(param: MediaDiscoverRouter.MediaDiscoverParam) {
-        savedStateHandle[MediaDiscoverFilterRouter.Action.KEY] = param
+        savedStateHandle[MediaDiscoverFilterRouter.RESULT_LISTENER_KEY] = param
     }
 
     operator fun invoke(param: MediaDiscoverRouter.MediaDiscoverParam) {

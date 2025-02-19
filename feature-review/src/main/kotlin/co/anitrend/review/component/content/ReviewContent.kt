@@ -67,7 +67,7 @@ class ReviewContent : AniTrendComposition() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View =
-        composable(inflater.context) {
+        composable(requireActivity()) {
             AniTrendTheme3 {
                 ContentWrapper(
                     stateFlow = FeatureUnavailable.loadState,

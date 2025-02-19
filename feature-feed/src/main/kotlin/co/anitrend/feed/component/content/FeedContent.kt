@@ -60,7 +60,7 @@ class FeedContent : AniTrendComposition() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View =
-        composable(inflater.context) {
+        composable(requireActivity()) {
             AniTrendTheme3 {
                 ContentWrapper<IParam>(
                     stateFlow = FeatureUnavailable.loadState,

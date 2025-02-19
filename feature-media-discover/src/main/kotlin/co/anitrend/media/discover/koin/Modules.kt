@@ -22,7 +22,6 @@ import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.component.content.MediaDiscoverContent
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
-import co.anitrend.media.discover.component.sheet.MediaDiscoverFilterSheet
 import co.anitrend.media.discover.provider.FeatureProvider
 import co.anitrend.navigation.MediaDiscoverRouter
 import org.koin.android.ext.koin.androidContext
@@ -45,9 +44,6 @@ private val fragmentModule =
                         stateConfiguration = get(),
                     ),
             )
-        }
-        fragment {
-            MediaDiscoverFilterSheet()
         }
     }
 

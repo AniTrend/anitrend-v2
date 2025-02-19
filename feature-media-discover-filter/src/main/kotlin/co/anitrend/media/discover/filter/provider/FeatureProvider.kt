@@ -16,15 +16,9 @@
  */
 package co.anitrend.media.discover.filter.provider
 
-import co.anitrend.media.discover.filter.component.content.GeneralContent
-import co.anitrend.media.discover.filter.component.content.GenreContent
-import co.anitrend.media.discover.filter.component.content.TagContent
+import co.anitrend.media.discover.filter.component.content.MediaFilterContent
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 
 internal class FeatureProvider : MediaDiscoverFilterRouter.Provider {
-    override fun general() = GeneralContent::class.java
-
-    override fun genre() = GenreContent::class.java
-
-    override fun tag() = TagContent::class.java
+    override fun sheet() = MediaFilterContent::class.java
 }

@@ -16,6 +16,7 @@
  */
 package co.anitrend.navigation.extensions
 
+import android.os.Build
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import co.anitrend.navigation.model.NavPayload
@@ -36,6 +37,20 @@ inline fun <reified T : IParam> nameOf(): String =
  * @return [Bundle]
  */
 inline fun <reified T : IParam> T.asBundle() = bundleOf(nameOf<T>() to this)
+
+/**
+ * Constructs types from [Bundle]
+ *
+ * @return [T]
+ */
+inline fun <reified T : IParam> Bundle.fromBundle(): T? {
+    val name = nameOf<T>()
+    return when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+            getParcelable(name, T::class.java)
+        else -> getParcelable(name)
+    }
+}
 
 /**
  * Constructs nav payload from [IParam] sub types

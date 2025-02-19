@@ -237,13 +237,9 @@ object MediaDiscoverRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider {
         fun fragment(): Class<out Fragment>
-
-        fun sheet(): Class<out DialogFragment>
     }
 
     fun forFragment() = provider.fragment()
-
-    fun forSheet() = provider.sheet()
 
     @Parcelize
     data class MediaDiscoverParam(
@@ -320,71 +316,12 @@ object MediaDiscoverFilterRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider {
-        fun general(): Class<out Fragment>
-
-        fun genre(): Class<out Fragment>
-
-        fun tag(): Class<out Fragment>
+        fun sheet(): Class<out DialogFragment>
     }
 
-    fun forGeneral() = provider.general()
+    fun forSheet() = provider.sheet()
 
-    fun forGenre() = provider.genre()
-
-    fun forTag() = provider.tag()
-
-    /**
-     * Filter action models
-     */
-    sealed class Action : IParam {
-        /**
-         * @return true if this current action impl has not been changed
-         */
-        abstract fun isDefault(): Boolean
-
-        companion object {
-            const val KEY = "MediaDiscoverFilterRouter#Action"
-        }
-
-        @Parcelize
-        data class General(
-            var id: Long?,
-            var sort: List<Sorting<MediaSort>>,
-        ) : Action() {
-            /**
-             * @return true if this current action impl has not been changed
-             */
-            override fun isDefault() = id == null && sort.isEmpty()
-        }
-
-        @Parcelize
-        data class Genre(
-            var genre_in: List<String>? = null,
-            var genre_not_in: List<String>? = null,
-        ) : Action() {
-            /**
-             * @return true if this current action impl has not been changed
-             */
-            override fun isDefault() = genre_in.isNullOrEmpty() && genre_not_in.isNullOrEmpty()
-        }
-
-        @Parcelize
-        data class Tag(
-            var tagCategory_in: List<String>? = null,
-            var tagCategory_not_in: List<String>? = null,
-            var tag_in: List<String>? = null,
-            var tag_not_in: List<String>? = null,
-        ) : Action() {
-            /**
-             * @return true if this current action impl has not been changed
-             */
-            override fun isDefault() =
-                tagCategory_in.isNullOrEmpty() &&
-                    tagCategory_not_in.isNullOrEmpty() &&
-                    tag_in.isNullOrEmpty() &&
-                    tag_not_in.isNullOrEmpty()
-        }
-    }
+    const val RESULT_LISTENER_KEY = "MediaDiscoverFilterRouter#Listener"
 }
 
 object MediaCarouselRouter : NavigationRouter() {

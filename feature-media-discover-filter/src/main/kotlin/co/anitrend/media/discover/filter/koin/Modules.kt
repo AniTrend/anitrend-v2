@@ -20,7 +20,7 @@ import co.anitrend.common.genre.ui.adapter.GenreListAdapter
 import co.anitrend.common.tag.ui.adpter.TagListAdapter
 import co.anitrend.core.android.recycler.selection.DefaultSelectionMode
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.media.discover.filter.component.content.GeneralContent
+import co.anitrend.media.discover.filter.component.content.MediaFilterContent
 import co.anitrend.media.discover.filter.component.content.GenreContent
 import co.anitrend.media.discover.filter.component.content.TagContent
 import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
@@ -35,7 +35,7 @@ import org.koin.dsl.module
 private val fragmentModule =
     module {
         fragment {
-            GeneralContent(
+            MediaFilterContent(
                 dateHelper = get(),
             )
         }

@@ -33,13 +33,11 @@ data class FilterDefinition<T>(
     val setSingleValue: (MediaDiscoverParam, T?) -> MediaDiscoverParam,
     val getMultiValue: (MediaDiscoverParam) -> List<T>?,
     val setMultiValue: (MediaDiscoverParam, List<T>?) -> MediaDiscoverParam,
-    val label: (T) -> String
+    val label: (T) -> String,
 ) {
     companion object {
         @Suppress("UNCHECKED_CAST")
-        private fun FilterDefinition<*>.getLabelFor(value: Any): String {
-            return (this as FilterDefinition<Any>).label(value)
-        }
+        private fun FilterDefinition<*>.getLabelFor(value: Any): String = (this as FilterDefinition<Any>).label(value)
 
         @Suppress("UNCHECKED_CAST")
         fun List<FilterDefinition<out Any>>.buildSummaryItems(
@@ -48,7 +46,6 @@ data class FilterDefinition<T>(
         ): List<Pair<String, () -> Unit>> {
             val items = mutableListOf<Pair<String, () -> Unit>>()
             forEach { definition ->
-                // Handle single-selection filter
                 val singleValue = definition.getSingleValue(param)
                 if (singleValue != null) {
                     val label = definition.getLabelFor(singleValue)
@@ -57,12 +54,11 @@ data class FilterDefinition<T>(
                         onParamChange(updated)
                     }
                 }
-                // Handle multi-selection filter
                 val multiValues = definition.getMultiValue(param)
                 multiValues?.forEach { element ->
                     val labelText = definition.getLabelFor(element)
                     items += labelText to {
-                        val newList = multiValues.toMutableList().apply { remove(element) }// Cast definition to FilterDefinition<Any> so that the type matches
+                        val newList = multiValues.toMutableList().apply { remove(element) }
                         val updated = (definition as FilterDefinition<Any>).setMultiValue(param, newList.ifEmpty { null })
                         onParamChange(updated)
                     }

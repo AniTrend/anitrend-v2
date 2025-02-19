@@ -20,13 +20,10 @@ import android.content.Context
 import android.content.Intent
 import co.anitrend.media.discover.component.content.MediaDiscoverContent
 import co.anitrend.media.discover.component.screen.MediaDiscoverScreen
-import co.anitrend.media.discover.component.sheet.MediaDiscoverFilterSheet
 import co.anitrend.navigation.MediaDiscoverRouter
 
 internal class FeatureProvider : MediaDiscoverRouter.Provider {
     override fun activity(context: Context?) = Intent(context, MediaDiscoverScreen::class.java)
 
     override fun fragment() = MediaDiscoverContent::class.java
-
-    override fun sheet() = MediaDiscoverFilterSheet::class.java
 }

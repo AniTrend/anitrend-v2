@@ -21,22 +21,47 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.android.views.compose.composable
-import co.anitrend.core.component.content.compose.AniTrendComposition
-import co.anitrend.media.discover.filter.component.compose.MediaFilterScreen
+import co.anitrend.core.component.sheet.compose.AniTrendSheetComposition
+import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.genre.model.GenreParam
+import co.anitrend.domain.tag.model.TagParam
+import co.anitrend.media.discover.filter.component.compose.MediaFilterSheetScreen
+import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
+import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
+import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.nameOf
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-internal class GeneralContent(
+internal class MediaFilterContent(
     private val dateHelper: AbstractSupportDateHelper,
-) : AniTrendComposition() {
+) : AniTrendSheetComposition() {
     private val param by argument(
         key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
         default = MediaDiscoverRouter::MediaDiscoverParam,
     )
+
+    private val genreViewModel by viewModel<GenreViewModel>()
+    private val tagViewModel by viewModel<TagViewModel>()
+
+    /**
+     * Additional initialization to be done in this method, this method will be called in
+     * [androidx.fragment.app.FragmentActivity.onCreate].
+     *
+     * @param savedInstanceState
+     */
+    override fun initializeComponents(savedInstanceState: Bundle?) {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            closeSheetOnBackPressed,
+        )
+    }
 
     /**
      * Called to have the fragment instantiate its user interface view. This is optional, and
@@ -66,14 +91,23 @@ internal class GeneralContent(
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View =
-        composable(layoutInflater.context) {
+        composable(requireActivity()) {
             AniTrendTheme3 {
                 Surface {
-                    MediaFilterScreen(
+                    LaunchedEffect(Unit) {
+                        genreViewModel(GenreParam(SortOrder.DESC))
+                        tagViewModel(TagParam(SortOrder.ASC))
+                    }
+                    MediaFilterSheetScreen(
                         dateHelper = dateHelper,
                         param = param,
                         onParamChange = {
+                            childFragmentManager.setFragmentResult(
+                                MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
+                                it.asBundle(),
+                            )
                         },
+                        onDismiss = { dismiss() },
                     )
                 }
             }

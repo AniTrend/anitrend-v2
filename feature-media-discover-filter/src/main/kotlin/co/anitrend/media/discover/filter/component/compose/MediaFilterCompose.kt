@@ -23,10 +23,12 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -36,6 +38,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -54,13 +57,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.common.enums.contract.IAliasable
 import co.anitrend.domain.common.sort.SortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
@@ -196,11 +194,15 @@ private fun SelectedFiltersSummary(
  */
 @Composable
 private fun BasicFilters(
+    modifier: Modifier = Modifier,
     dateHelper: AbstractSupportDateHelper,
     param: MediaDiscoverRouter.MediaDiscoverParam,
     onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
         // Sorting section
         SortingFilterChipGroup(
             currentSort = param.sort,
@@ -279,10 +281,14 @@ private fun BasicFilters(
  */
 @Composable
 private fun AdvancedFilters(
+    modifier: Modifier = Modifier,
     param: MediaDiscoverRouter.MediaDiscoverParam,
     onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
         // Format (multi-select)
         MultiSelectFilterChipGroup(
             title = "Format",
@@ -626,6 +632,29 @@ private fun <T> SingleSelectFilterChipGroup(
 }
 
 /**
+ * A single row at the bottom for "Apply" and "Clear All" actions.
+ */
+@Composable
+private fun ActionsRow(
+    modifier: Modifier = Modifier,
+    onApply: () -> Unit,
+    onClearAll: () -> Unit,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+    ) {
+        TextButton(onClick = onClearAll) {
+            Text("Clear All")
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Button(onClick = onApply) {
+            Text("Apply")
+        }
+    }
+}
+
+/**
  * An example of a top-level composable that:
  * - Shows a summary of selected filters
  * - Groups filters into Basic vs. Advanced sections (accordion style)
@@ -636,6 +665,7 @@ fun MediaFilterScreen(
     dateHelper: AbstractSupportDateHelper,
     param: MediaDiscoverRouter.MediaDiscoverParam,
     onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onDismiss: () -> Unit,
 ) {
     var filterUiState by remember { mutableStateOf(FilterUiState()) }
     val scrollState = rememberScrollState()
@@ -683,42 +713,11 @@ fun MediaFilterScreen(
                 onParamChange = onParamChange,
             )
         }
-    }
-}
 
-@Composable
-@AniTrendPreview.Default
-fun MediaFilterScreenPreview(
-    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
-) {
-    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
-        // Dummy dateHelper
-        val dateHelper =
-            object : AbstractSupportDateHelper() {
-                override val currentSeason: SeasonType = SeasonType.FALL
-
-                override fun getCurrentYear(delta: Int) = 2023 + delta
-            }
-
-        // Dummy param
-        val param =
-            MediaDiscoverRouter.MediaDiscoverParam(
-                status = MediaStatus.FINISHED,
-                type = MediaType.ANIME,
-                season = MediaSeason.SPRING,
-                format_in = listOf(MediaFormat.MANGA, MediaFormat.MUSIC),
-                sort =
-                    listOf(
-                        Sorting(MediaSort.DURATION, SortOrder.DESC),
-                        Sorting(MediaSort.END_DATE, SortOrder.ASC),
-                    ),
-                seasonYear = 1995,
-            )
-
-        MediaFilterScreen(
-            dateHelper = dateHelper,
-            param = param,
-            onParamChange = {},
+        ActionsRow(
+            modifier = Modifier.padding(16.dp),
+            onApply = onDismiss,
+            onClearAll = {},
         )
     }
 }
