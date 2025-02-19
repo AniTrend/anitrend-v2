@@ -15,19 +15,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
 }
 
-tasks.withType(KotlinCompile::class.java) {
-    kotlinOptions {
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-opt-in=kotlin.RequiresOptIn"
-        )
+tasks.withType(KotlinCompilationTask::class.java) {
+    compilerOptions {
+        optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
+        optIn.add("kotlin.RequiresOptIn")
     }
 }
 
@@ -41,5 +39,6 @@ dependencies {
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.data.tmdb"
 }

@@ -16,20 +16,19 @@
  */
 
 import co.anitrend.buildSrc.Libraries
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import kotlin.jvm.java
 
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
 }
 
-tasks.withType(KotlinCompile::class.java) {
-    kotlinOptions {
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-opt-in=kotlin.RequiresOptIn",
-            "-opt-in=androidx.paging.ExperimentalPagingApi"
-        )
+tasks.withType(KotlinCompilationTask::class.java) {
+    compilerOptions {
+        optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
+        optIn.add("kotlin.RequiresOptIn")
+        optIn.add("androidx.paging.ExperimentalPagingApi")
     }
 }
 
@@ -52,5 +51,6 @@ dependencies {
 }
 
 android {
+    buildFeatures.buildConfig = true
     namespace = "co.anitrend.data"
 }
