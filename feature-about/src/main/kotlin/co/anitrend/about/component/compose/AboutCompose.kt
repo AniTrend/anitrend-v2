@@ -16,38 +16,44 @@
  */
 package co.anitrend.about.component.compose
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
+import co.anitrend.about.component.compose.state.WorkItem
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import kotlinx.coroutines.flow.Flow
 
 @Composable
-private fun AboutContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.then(Modifier.padding(16.dp))) {
-        Text(
-            text = "Hello People",
-        )
-    }
+private fun AboutContent(
+    workItems: List<WorkItem>,
+    onCancelWork: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    WorkManagerStatusScreen(
+        modifier = modifier,
+        workItems = workItems,
+        onCancelWork = onCancelWork,
+    )
 }
 
 @Composable
-fun AboutScreenContent(onBackPress: () -> Unit) {
+fun AboutScreenContent(
+    workItemFlow: Flow<List<WorkItem>>,
+    onCancelWork: (String) -> Unit,
+    onBackPress: () -> Unit,
+) {
+    val workItems by workItemFlow.collectAsState(emptyList())
     DefaultScaffold(onBackPress) { modifier ->
         AboutContent(
-            modifier =
-                modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
+            modifier = modifier.fillMaxSize(),
+            workItems = workItems,
+            onCancelWork = onCancelWork,
         )
     }
 }
@@ -57,9 +63,10 @@ fun AboutScreenContent(onBackPress: () -> Unit) {
 private fun AboutContentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(darkTheme = darkTheme) {
-        AboutScreenContent(
-            onBackPress = {},
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        AboutContent(
+            workItems = emptyList(),
+            onCancelWork = {}
         )
     }
 }

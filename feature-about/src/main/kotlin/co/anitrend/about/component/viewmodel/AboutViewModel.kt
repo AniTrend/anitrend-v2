@@ -16,18 +16,52 @@
  */
 package co.anitrend.about.component.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.navigation.model.common.IParam
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.WorkQuery
+import co.anitrend.about.component.compose.state.WorkItem
+import co.anitrend.about.component.compose.state.mapWorkInfoState
+import co.anitrend.core.android.asPrettyTime
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import org.threeten.bp.Instant
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
 
 internal class AboutViewModel : ViewModel() {
-    val loadState: MutableLiveData<LoadState> = MutableLiveData(LoadState.Loading())
-
-    operator fun invoke(param: IParam) {
-        when (param) {
-            is IParam.None -> loadState.postValue(LoadState.Idle())
-            else -> Unit
-        }
+    @OptIn(ExperimentalTime::class)
+    operator fun invoke(workManager: WorkManager): Flow<List<WorkItem>> {
+        val workItems = workManager.getWorkInfosFlow(
+            WorkQuery.fromStates(WorkInfo.State.entries)
+        ).map { workInfos ->
+            workInfos.map { info ->
+                WorkItem(
+                    id = info.id.toString(),
+                    state = mapWorkInfoState(info.state),
+                    info = info.outputData.toString(),
+                    runAttemptCount = info.runAttemptCount,
+                    tags = info.tags.joinToString(),
+                    flexInterval = info.periodicityInfo?.let {
+                        Duration.convert(
+                            value = it.flexIntervalMillis.toDouble(),
+                            sourceUnit = DurationUnit.MILLISECONDS,
+                            targetUnit = DurationUnit.MINUTES
+                        ).toString()
+                                                                   },
+                    repeatInterval = info.periodicityInfo?.let {
+                        Duration.convert(
+                            value = it.repeatIntervalMillis.toDouble(),
+                            sourceUnit = DurationUnit.MILLISECONDS,
+                            targetUnit = DurationUnit.MINUTES
+                        ).toString()
+                                                                     },
+                    nextScheduleTime = Instant.ofEpochMilli(info.nextScheduleTimeMillis).asPrettyTime(),
+                )
+            }
+        }.distinctUntilChanged()
+        return workItems
     }
 }

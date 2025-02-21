@@ -53,9 +53,7 @@ fun UpdateScreenContent(onBackPress: () -> Unit) {
 private fun UpdateComposablePreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(darkTheme = darkTheme) {
-        UpdateScreenContent(
-            onBackPress = {},
-        )
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        UpdateContent()
     }
 }

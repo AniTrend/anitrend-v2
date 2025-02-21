@@ -18,28 +18,37 @@ package co.anitrend.about.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.lifecycle.liveData
+import androidx.work.WorkManager
 import co.anitrend.about.component.compose.AboutScreenContent
 import co.anitrend.about.component.viewmodel.AboutViewModel
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.UUID
 
 class AboutScreen : AniTrendScreen() {
     private val viewModel by viewModel<AboutViewModel>()
+    private val workManager by lazy { WorkManager.getInstance(context = this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
                 ContentWrapper(
-                    stateFlow = viewModel.loadState,
+                    stateFlow = liveData { emit(LoadState.Idle()) },
                     param = IParam.None,
-                    onLoad = viewModel::invoke,
-                    onClick = {},
                 ) {
-                    AboutScreenContent(onBackPress = { finish() })
+                    AboutScreenContent(
+                        workItemFlow = viewModel.invoke(workManager),
+                        onBackPress = onBackPressedDispatcher::onBackPressed,
+                        onCancelWork = { taskId ->
+                            workManager.cancelWorkById(UUID.fromString(taskId))
+                        }
+                    )
                 }
             }
         }
