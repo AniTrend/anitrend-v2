@@ -17,22 +17,68 @@
 package co.anitrend.core.android.ui.typography
 
 import androidx.compose.material3.Typography
+import co.anitrend.core.android.ui.tokens.TypefaceTokens
 
 val AniTrendTypography =
     Typography(
-        displayLarge = Typography().displayLarge,
-        displayMedium = Typography().displayMedium,
-        displaySmall = Typography().displaySmall,
-        headlineLarge = Typography().headlineLarge,
-        headlineMedium = Typography().headlineMedium,
-        headlineSmall = Typography().headlineSmall,
-        titleLarge = Typography().titleLarge,
-        titleMedium = Typography().titleMedium,
-        titleSmall = Typography().titleSmall,
-        bodyLarge = Typography().bodyLarge,
-        bodyMedium = Typography().bodyMedium,
-        bodySmall = Typography().bodySmall,
-        labelLarge = Typography().labelLarge,
-        labelMedium = Typography().labelMedium,
-        labelSmall = Typography().labelSmall,
+        displayLarge =
+            Typography().displayLarge.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        displayMedium =
+            Typography().displayMedium.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        displaySmall =
+            Typography().displaySmall.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        headlineLarge =
+            Typography().headlineLarge.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        headlineMedium =
+            Typography().headlineMedium.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        headlineSmall =
+            Typography().headlineSmall.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        titleLarge =
+            Typography().titleLarge.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        titleMedium =
+            Typography().titleMedium.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        titleSmall =
+            Typography().titleSmall.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        bodyLarge =
+            Typography().bodyLarge.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        bodyMedium =
+            Typography().bodyMedium.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        bodySmall =
+            Typography().bodySmall.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        labelLarge =
+            Typography().labelLarge.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        labelMedium =
+            Typography().labelMedium.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
+        labelSmall =
+            Typography().labelSmall.copy(
+                fontFamily = TypefaceTokens.Brand,
+            ),
     )

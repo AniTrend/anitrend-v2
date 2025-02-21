@@ -17,6 +17,7 @@
 package co.anitrend.about.component.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,7 +34,7 @@ import kotlinx.coroutines.flow.Flow
 private fun AboutContent(
     workItems: List<WorkItem>,
     onCancelWork: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     WorkManagerStatusScreen(
         modifier = modifier,
@@ -49,9 +50,9 @@ fun AboutScreenContent(
     onBackPress: () -> Unit,
 ) {
     val workItems by workItemFlow.collectAsState(emptyList())
-    DefaultScaffold(onBackPress) { modifier ->
+    DefaultScaffold(onBackPress) { padding ->
         AboutContent(
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.padding(padding).fillMaxSize(),
             workItems = workItems,
             onCancelWork = onCancelWork,
         )
@@ -66,7 +67,7 @@ private fun AboutContentPreview(
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         AboutContent(
             workItems = emptyList(),
-            onCancelWork = {}
+            onCancelWork = {},
         )
     }
 }

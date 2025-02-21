@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +48,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
@@ -142,15 +142,14 @@ fun SplashAppName(modifier: Modifier = Modifier) {
     ) {
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_segment_first),
-            style = AniTrendTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineSmall,
         )
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_segment_second),
-            style =
-                AniTrendTheme.typography.h5.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = colorResource(id = co.anitrend.arch.theme.R.color.colorStateBlue),
-                ),
+            fontWeight = FontWeight.Bold,
+            color = colorResource(id = co.anitrend.arch.theme.R.color.colorStateBlue),
+            style = MaterialTheme.typography.headlineSmall,
         )
     }
 }
@@ -166,11 +165,14 @@ fun SplashCredits(
     ) {
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_powered_by),
-            style = AniTrendTheme.typography.subtitle2.copy(fontWeight = FontWeight.Bold),
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.titleSmall,
         )
         Text(
             text = stringResource(id = co.anitrend.splash.R.string.splash_label_provider),
-            style = AniTrendTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = largeMargin),
         )
     }

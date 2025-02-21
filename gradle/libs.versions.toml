@@ -1,4 +1,5 @@
 [versions]
+annotatedtext = "1.0.3"
 ktlint = "1.5.0"
 
 gradle-plugin = "8.8.1"
@@ -82,6 +83,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 
 
 [libraries]
+annotatedtext = { module = "io.github.aghajari:AnnotatedText", version.ref = "annotatedtext" }
 threeTenBp = { module = "com.jakewharton.threetenabp:threetenabp", version = "1.4.8" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 junit = { module = "junit:junit", version = "4.13.2" }

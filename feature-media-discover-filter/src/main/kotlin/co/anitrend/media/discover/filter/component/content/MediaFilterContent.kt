@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
+import androidx.fragment.app.setFragmentResult
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
@@ -38,6 +39,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.nameOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 internal class MediaFilterContent(
     private val dateHelper: AbstractSupportDateHelper,
@@ -102,10 +104,11 @@ internal class MediaFilterContent(
                         dateHelper = dateHelper,
                         param = param,
                         onParamChange = {
-                            childFragmentManager.setFragmentResult(
+                            setFragmentResult(
                                 MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
                                 it.asBundle(),
                             )
+                            Timber.d("Sending param data to fragment: $it")
                         },
                         onDismiss = { dismiss() },
                     )

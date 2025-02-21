@@ -17,22 +17,20 @@
 package co.anitrend.staff.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.staff.databinding.StaffScreenBinding
+import androidx.activity.compose.setContent
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.staff.component.compose.StaffScreenContent
 
-class StaffScreen : AniTrendBoundScreen<StaffScreenBinding>() {
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-    }
-
+class StaffScreen : AniTrendScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = StaffScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AniTrendTheme3 {
+                StaffScreenContent(
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                )
+            }
+        }
     }
 }

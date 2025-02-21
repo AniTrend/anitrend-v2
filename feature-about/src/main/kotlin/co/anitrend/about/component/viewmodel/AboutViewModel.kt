@@ -34,34 +34,40 @@ import kotlin.time.ExperimentalTime
 internal class AboutViewModel : ViewModel() {
     @OptIn(ExperimentalTime::class)
     operator fun invoke(workManager: WorkManager): Flow<List<WorkItem>> {
-        val workItems = workManager.getWorkInfosFlow(
-            WorkQuery.fromStates(WorkInfo.State.entries)
-        ).map { workInfos ->
-            workInfos.map { info ->
-                WorkItem(
-                    id = info.id.toString(),
-                    state = mapWorkInfoState(info.state),
-                    info = info.outputData.toString(),
-                    runAttemptCount = info.runAttemptCount,
-                    tags = info.tags.joinToString(),
-                    flexInterval = info.periodicityInfo?.let {
-                        Duration.convert(
-                            value = it.flexIntervalMillis.toDouble(),
-                            sourceUnit = DurationUnit.MILLISECONDS,
-                            targetUnit = DurationUnit.MINUTES
-                        ).toString()
-                                                                   },
-                    repeatInterval = info.periodicityInfo?.let {
-                        Duration.convert(
-                            value = it.repeatIntervalMillis.toDouble(),
-                            sourceUnit = DurationUnit.MILLISECONDS,
-                            targetUnit = DurationUnit.MINUTES
-                        ).toString()
-                                                                     },
-                    nextScheduleTime = Instant.ofEpochMilli(info.nextScheduleTimeMillis).asPrettyTime(),
-                )
-            }
-        }.distinctUntilChanged()
+        val workItems =
+            workManager
+                .getWorkInfosFlow(
+                    WorkQuery.fromStates(WorkInfo.State.entries),
+                ).map { workInfos ->
+                    workInfos.map { info ->
+                        WorkItem(
+                            id = info.id.toString(),
+                            state = mapWorkInfoState(info.state),
+                            info = info.outputData.toString(),
+                            runAttemptCount = info.runAttemptCount,
+                            tags = info.tags.joinToString(),
+                            flexInterval =
+                                info.periodicityInfo?.let {
+                                    Duration
+                                        .convert(
+                                            value = it.flexIntervalMillis.toDouble(),
+                                            sourceUnit = DurationUnit.MILLISECONDS,
+                                            targetUnit = DurationUnit.MINUTES,
+                                        ).toString()
+                                },
+                            repeatInterval =
+                                info.periodicityInfo?.let {
+                                    Duration
+                                        .convert(
+                                            value = it.repeatIntervalMillis.toDouble(),
+                                            sourceUnit = DurationUnit.MILLISECONDS,
+                                            targetUnit = DurationUnit.MINUTES,
+                                        ).toString()
+                                },
+                            nextScheduleTime = Instant.ofEpochMilli(info.nextScheduleTimeMillis).asPrettyTime(),
+                        )
+                    }
+                }.distinctUntilChanged()
         return workItems
     }
 }

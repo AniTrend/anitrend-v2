@@ -17,10 +17,12 @@
 package co.anitrend.studio.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.studio.databinding.StudioScreenBinding
+import androidx.activity.compose.setContent
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.studio.component.compose.StudioScreenContent
 
-class StudioScreen : AniTrendBoundScreen<StudioScreenBinding>() {
+class StudioScreen : AniTrendScreen() {
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -32,7 +34,12 @@ class StudioScreen : AniTrendBoundScreen<StudioScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = StudioScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AniTrendTheme3 {
+                StudioScreenContent(
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                )
+            }
+        }
     }
 }

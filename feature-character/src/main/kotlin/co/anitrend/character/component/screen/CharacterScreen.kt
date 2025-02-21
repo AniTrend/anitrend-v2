@@ -17,22 +17,31 @@
 package co.anitrend.character.component.screen
 
 import android.os.Bundle
-import co.anitrend.character.databinding.CharacterScreenBinding
-import co.anitrend.core.component.screen.AniTrendBoundScreen
+import androidx.activity.compose.setContent
+import co.anitrend.character.component.viewmodel.CharacterViewModel
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.FeatureUnavailable
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.model.common.IParam
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharacterScreen : AniTrendBoundScreen<CharacterScreenBinding>() {
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-    }
+class CharacterScreen : AniTrendScreen() {
+    private val viewModel by viewModel<CharacterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = CharacterScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    param = IParam.None,
+                    onLoad = viewModel::invoke,
+                    onClick = {},
+                ) {
+                }
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@
 package co.anitrend.common.media.ui.controller.compose
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.res.stringResource
 import co.anitrend.common.media.ui.R
@@ -205,10 +206,12 @@ class CarouselController(
             }
         }
 
+    @Immutable
     data class Data(
         val param: IParam,
         val header: Header,
     ) {
+        @Immutable
         data class Header(
             val title: String,
             val description: String,

@@ -47,7 +47,7 @@ class AboutScreen : AniTrendScreen() {
                         onBackPress = onBackPressedDispatcher::onBackPressed,
                         onCancelWork = { taskId ->
                             workManager.cancelWorkById(UUID.fromString(taskId))
-                        }
+                        },
                     )
                 }
             }

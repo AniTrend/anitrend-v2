@@ -23,11 +23,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal class EdgeConfigModel(
-    @SerialName("settings") val settings: Settings,
-    @SerialName("image") val image: DefaultImage,
-    @SerialName("genres") val genres: List<EdgeGenreModel>,
-    @SerialName("navigation") val navigation: List<EdgeNavigationModel>,
+    @SerialName("config") val config: Config,
 ) {
+    @Serializable
+    data class Config(
+        @SerialName("settings") val settings: Settings,
+        @SerialName("image") val image: DefaultImage,
+        @SerialName("genres") val genres: List<EdgeGenreModel>,
+        @SerialName("navigation") val navigation: List<EdgeNavigationModel>,
+    )
+
     @Serializable
     data class Settings(
         @SerialName("analyticsEnabled") val analyticsEnabled: Boolean,

@@ -16,14 +16,14 @@
  */
 package co.anitrend.core.android.views.compose
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.FragmentActivity
 
 fun composable(
-    context: Context,
+    context: FragmentActivity,
     defaultWidth: Int = ViewGroup.LayoutParams.MATCH_PARENT,
     defaultHeight: Int = ViewGroup.LayoutParams.MATCH_PARENT,
     compositionStrategy: ViewCompositionStrategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed,

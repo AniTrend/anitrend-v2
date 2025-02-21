@@ -92,7 +92,7 @@ internal val licensedByDefinition =
 internal val countryDefinition =
     FilterDefinition<MediaCountry>(
         getSingleValue = { param ->
-            MediaCountry.entries.find { it.name == param.countryOfOrigin }
+            MediaCountry.entries.find { it.alias == param.countryOfOrigin }
         },
         setSingleValue = { param, newValue -> param.copy(countryOfOrigin = newValue?.alias) },
         getMultiValue = { null },

@@ -27,17 +27,17 @@ internal class EdgeConfigModelConverter(
         EdgeConfigEntity(
             settings =
                 EdgeConfigEntity.Settings(
-                    analyticsEnabled = it.settings.analyticsEnabled,
-                    platformSource = it.settings.platformSource,
+                    analyticsEnabled = it.config.settings.analyticsEnabled,
+                    platformSource = it.config.settings.platformSource,
                 ),
             image =
                 EdgeConfigEntity.Image(
-                    banner = it.image.banner,
-                    poster = it.image.poster,
-                    loading = it.image.loading,
-                    error = it.image.error,
-                    info = it.image.info,
-                    standard = it.image.default,
+                    banner = it.config.image.banner,
+                    poster = it.config.image.poster,
+                    loading = it.config.image.loading,
+                    error = it.config.image.error,
+                    info = it.config.image.info,
+                    standard = it.config.image.default,
                 ),
         )
     },

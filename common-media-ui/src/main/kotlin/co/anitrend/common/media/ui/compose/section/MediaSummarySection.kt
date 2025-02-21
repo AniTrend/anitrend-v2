@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
 import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.core.android.compose.AniTrendDimensions
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.score.IMediaScore
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.navigation.ImageViewerRouter
 
@@ -72,14 +72,14 @@ private fun MediaTitle(
             text = title.userPreferred.toString(),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            style = AniTrendTheme.typography.h6,
+            style = MaterialTheme.typography.headlineSmall,
         )
         Text(
             text = extraInfo ?: title.native.toString(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 8.dp),
-            style = AniTrendTheme.typography.caption,
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
@@ -87,11 +87,11 @@ private fun MediaTitle(
 @Composable
 private fun MediaScore(
     accentColor: Color,
-    meanScore: Int,
+    mediaScore: IMediaScore,
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = "$meanScore%",
+        text = "${mediaScore.mean}%",
         color = accentColor,
         fontWeight = FontWeight.Bold,
         style = MaterialTheme.typography.bodySmall,
@@ -130,7 +130,7 @@ fun MediaSummarySection(
             MediaSubTitleText(media = media)
             MediaScore(
                 accentColor = accentColor,
-                meanScore = media.meanScore,
+                mediaScore = media.score,
             )
         }
     }

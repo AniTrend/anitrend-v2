@@ -54,7 +54,6 @@ internal class AndroidPowerController(
         ).map { powerSaverState() }
             .onStart { emit(powerSaverState()) }
 
-
     override fun powerSaverState(): PowerSaverState =
         when {
             settings.isPowerSaverOn.value -> {

@@ -16,14 +16,9 @@
  */
 package co.anitrend.forum.provider
 
-import android.content.Context
-import android.content.Intent
 import co.anitrend.forum.component.content.ForumContent
-import co.anitrend.forum.component.screen.ForumScreen
 import co.anitrend.navigation.ForumRouter
 
 class FeatureProvider : ForumRouter.Provider {
-    override fun activity(context: Context?) = Intent(context, ForumScreen::class.java)
-
     override fun fragment() = ForumContent::class.java
 }

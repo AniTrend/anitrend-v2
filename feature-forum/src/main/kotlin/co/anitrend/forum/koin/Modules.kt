@@ -18,7 +18,6 @@ package co.anitrend.forum.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.forum.component.content.ForumContent
-import co.anitrend.forum.component.screen.ForumScreen
 import co.anitrend.forum.component.viewmodel.ForumViewModel
 import co.anitrend.forum.provider.FeatureProvider
 import co.anitrend.navigation.ForumRouter
@@ -28,10 +27,8 @@ import org.koin.dsl.module
 
 private val fragmentModule =
     module {
-        scope<ForumScreen> {
-            fragment {
-                ForumContent()
-            }
+        fragment {
+            ForumContent()
         }
     }
 

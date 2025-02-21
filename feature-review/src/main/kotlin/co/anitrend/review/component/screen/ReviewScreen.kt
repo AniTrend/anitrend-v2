@@ -17,35 +17,32 @@
 package co.anitrend.review.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import co.anitrend.common.shared.ui.compose.DefaultScaffold
+import co.anitrend.common.shared.ui.compose.FragmentItemHost
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.ReviewRouter
-import co.anitrend.review.databinding.ReviewScreenBinding
 
-class ReviewScreen : AniTrendBoundScreen<ReviewScreenBinding>() {
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        updateUserInterface()
-    }
-
+class ReviewScreen : AniTrendScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ReviewScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
-    }
-
-    private fun updateUserInterface() {
-        currentFragmentTag =
-            FragmentItem(
-                fragment = ReviewRouter.forFragment(),
-                parameter = intent.extras,
-            ).commit(requireBinding().content, this)
+        setContent {
+            AniTrendTheme3 {
+                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) {
+                    FragmentItemHost(
+                        modifier = Modifier.padding(it),
+                        fragmentItem =
+                            FragmentItem(
+                                fragment = ReviewRouter.forFragment(),
+                                parameter = intent.extras,
+                            ),
+                    )
+                }
+            }
+        }
     }
 }

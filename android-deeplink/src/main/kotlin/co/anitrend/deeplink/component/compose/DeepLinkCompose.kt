@@ -39,10 +39,11 @@ private fun DeepLinkContent(modifier: Modifier = Modifier) {
 
 @Composable
 fun DeepLinkScreenContent(onBackPress: () -> Unit) {
-    DefaultScaffold(onBackPress) { modifier ->
+    DefaultScaffold(onBackPress) { padding ->
         DeepLinkContent(
             modifier =
-                modifier
+                Modifier
+                    .padding(padding)
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
         )

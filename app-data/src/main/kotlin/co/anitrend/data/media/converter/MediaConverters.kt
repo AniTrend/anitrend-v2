@@ -34,6 +34,7 @@ import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
+import co.anitrend.domain.media.entity.attribute.score.MediaScore
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
 import co.anitrend.domain.media.enums.MediaSource
@@ -192,8 +193,12 @@ internal class MediaConverter(
                         format = source.format,
                         season = source.season,
                         status = source.status,
-                        meanScore = source.meanScore ?: 0,
-                        averageScore = source.averageScore ?: 0,
+                        score =
+                            MediaScore(
+                                mean = source.meanScore ?: 0,
+                                average = source.averageScore ?: 0,
+                                personal = null,
+                            ),
                         startDate = source.startDate.asFuzzyDate(),
                         endDate = source.endDate.asFuzzyDate(),
                         title =
@@ -237,6 +242,7 @@ internal class MediaConverter(
                                             )
                                         },
                                     )
+
                                 else ->
                                     Media.Category.Manga(
                                         source.chapters ?: 0,
@@ -321,8 +327,12 @@ internal class MediaConverter(
                         format = source.format,
                         season = source.season,
                         status = source.status,
-                        meanScore = source.meanScore ?: 0,
-                        averageScore = source.averageScore ?: 0,
+                        score =
+                            MediaScore(
+                                mean = source.meanScore ?: 0,
+                                average = source.averageScore ?: 0,
+                                personal = source.mediaListEntry?.score,
+                            ),
                         startDate = source.startDate.asFuzzyDate(),
                         endDate = source.endDate.asFuzzyDate(),
                         title =
@@ -465,8 +475,12 @@ internal class MediaConverter(
                         format = source.format,
                         season = source.season,
                         status = source.status,
-                        meanScore = source.meanScore ?: 0,
-                        averageScore = source.averageScore ?: 0,
+                        score =
+                            MediaScore(
+                                mean = source.meanScore ?: 0,
+                                average = source.averageScore ?: 0,
+                                personal = source.mediaListEntry?.score,
+                            ),
                         startDate = source.startDate.asFuzzyDate(),
                         endDate = source.endDate.asFuzzyDate(),
                         title =
@@ -700,8 +714,12 @@ internal class MediaEntityViewConverter(
                 format = media.format,
                 season = media.season,
                 status = media.status,
-                meanScore = media.meanScore ?: 0,
-                averageScore = media.averageScore ?: 0,
+                score =
+                    MediaScore(
+                        mean = media.meanScore ?: 0,
+                        average = media.averageScore ?: 0,
+                        personal = mediaList?.mediaList?.score,
+                    ),
                 startDate = media.startDate.asFuzzyDate(),
                 endDate = media.endDate.asFuzzyDate(),
                 title =
@@ -781,8 +799,7 @@ internal class MediaEntityViewConverter(
                             format = media.format,
                             season = media.season,
                             status = media.status,
-                            meanScore = media.meanScore,
-                            averageScore = media.averageScore,
+                            score = media.score,
                             startDate = media.startDate,
                             endDate = media.endDate,
                             title = media.title,

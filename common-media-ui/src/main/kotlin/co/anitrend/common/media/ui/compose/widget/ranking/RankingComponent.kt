@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import co.anitrend.arch.extension.ext.capitalizeWords
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
@@ -85,7 +84,7 @@ private fun RankingItem(
                 text = content.toString(),
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary,
-                style = AniTrendTheme.typography.caption,
+                style = MaterialTheme.typography.bodySmall,
             )
         },
         icon = {

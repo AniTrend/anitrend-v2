@@ -25,6 +25,7 @@ import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.android.views.compose.composable
 import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.content.compose.AniTrendComposition
+import co.anitrend.forum.component.compose.ForumScreenContent
 import co.anitrend.forum.component.viewmodel.ForumViewModel
 import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -68,7 +69,11 @@ class ForumContent : AniTrendComposition() {
                     param = IParam.None,
                     onLoad = viewModel::invoke,
                     onClick = {},
-                ) {}
+                ) {
+                    ForumScreenContent(
+                        onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                    )
+                }
             }
         }
 

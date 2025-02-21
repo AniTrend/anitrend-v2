@@ -19,16 +19,22 @@ package co.anitrend.core.android.compose.design.image
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.model.RequestImage.Media.ImageType.*
+import co.anitrend.core.android.helpers.image.model.RequestImage.Media.ImageType.BANNER
 import co.anitrend.core.android.helpers.image.toRequestBuilder
+import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
+import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.common.entity.contract.ICoverImage
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.navigation.ImageViewerRouter
 import coil.compose.AsyncImage
 import coil.transform.Transformation
@@ -96,4 +102,19 @@ fun AniTrendImage(
                 onDoubleClick = onDoubleClick,
             ),
     )
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun AniTrendImagePreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
+        AniTrendImage(
+            modifier = Modifier.padding(16.dp),
+            image = MediaImage.empty().copy(color = "#e4a15d"),
+            imageType = RequestImage.Media.ImageType.POSTER,
+            onClick = {},
+        )
+    }
 }

@@ -38,6 +38,7 @@ import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.fromBundle
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
@@ -84,7 +85,7 @@ class MediaDiscoverContent(
                 val fragmentItem =
                     FragmentItem(
                         fragment = MediaDiscoverFilterRouter.forSheet(),
-                        parameter = viewModel.default.asBundle(),
+                        parameter = viewModel.getParam().asBundle(),
                     )
                 val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
                 dialog.show(childFragmentManager, fragmentItem.tag())
@@ -115,16 +116,13 @@ class MediaDiscoverContent(
                 )
             }
         }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                childFragmentManager.setFragmentResultListener(
-                    MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
-                    viewLifecycleOwner,
-                ) { _, bundle ->
-                    val param = bundle.fromBundle<MediaDiscoverRouter.MediaDiscoverParam>()
-                    param?.also(viewModel::setParam)
-                }
-            }
+        childFragmentManager.setFragmentResultListener(
+            MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
+            viewLifecycleOwner,
+        ) { _, bundle ->
+            val result = bundle.fromBundle<MediaDiscoverRouter.MediaDiscoverParam>()
+            result?.also(viewModel::setParam)
+            Timber.d("Received result for from fragment listener: $result")
         }
     }
 

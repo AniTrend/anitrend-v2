@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.tag.entity.Tag
@@ -62,7 +61,7 @@ private fun TagItem(
                 text = tag.name,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary,
-                style = AniTrendTheme.typography.caption,
+                style = MaterialTheme.typography.bodySmall,
             )
         },
         icon = {

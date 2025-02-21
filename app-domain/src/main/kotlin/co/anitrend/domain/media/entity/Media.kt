@@ -26,6 +26,8 @@ import co.anitrend.domain.media.entity.attribute.link.IMediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
+import co.anitrend.domain.media.entity.attribute.score.IMediaScore
+import co.anitrend.domain.media.entity.attribute.score.MediaScore
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
@@ -128,8 +130,7 @@ sealed class Media : IMedia {
         override val format: MediaFormat?,
         override val season: MediaSeason?,
         override val status: MediaStatus?,
-        override val meanScore: Int,
-        override val averageScore: Int,
+        override val score: IMediaScore,
         override val startDate: FuzzyDate,
         override val endDate: FuzzyDate,
         override val mediaList: IMediaList?,
@@ -171,8 +172,7 @@ sealed class Media : IMedia {
                     format = null,
                     season = null,
                     status = null,
-                    meanScore = 0,
-                    averageScore = 0,
+                    score = MediaScore.empty(),
                     startDate = FuzzyDate.empty(),
                     endDate = FuzzyDate.empty(),
                     title = MediaTitle.empty(),
@@ -207,8 +207,7 @@ sealed class Media : IMedia {
         override val format: MediaFormat?,
         override val season: MediaSeason?,
         override val status: MediaStatus?,
-        override val meanScore: Int,
-        override val averageScore: Int,
+        override val score: IMediaScore,
         override val startDate: FuzzyDate,
         override val endDate: FuzzyDate,
         override val mediaList: IMediaList?,
@@ -257,8 +256,7 @@ sealed class Media : IMedia {
                     format = null,
                     season = null,
                     status = null,
-                    meanScore = 0,
-                    averageScore = 0,
+                    score = MediaScore.empty(),
                     startDate = FuzzyDate.empty(),
                     endDate = FuzzyDate.empty(),
                     title = MediaTitle.empty(),

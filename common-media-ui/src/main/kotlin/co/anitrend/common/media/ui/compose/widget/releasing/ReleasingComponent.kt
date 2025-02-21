@@ -17,6 +17,7 @@
 package co.anitrend.common.media.ui.compose.widget.releasing
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +28,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.widget.airing.MediaAiringScheduleWidget
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
@@ -76,7 +76,7 @@ private fun MangaQuantity(
         text = textTemplate,
         fontWeight = FontWeight.Bold,
         color = image.rememberAccentColor(),
-        style = AniTrendTheme.typography.caption,
+        style = MaterialTheme.typography.bodySmall,
         modifier = modifier.padding(4.dp),
     )
 }

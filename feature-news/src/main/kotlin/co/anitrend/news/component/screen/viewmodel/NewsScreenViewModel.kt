@@ -16,28 +16,38 @@
  */
 package co.anitrend.news.component.screen.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.extension.ext.empty
 import co.anitrend.navigation.NewsRouter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 
 class NewsScreenViewModel : ViewModel() {
-    val documentHtml = MutableLiveData<String>()
+    private val _documentHtml = MutableStateFlow(String.empty())
+    val documentHtml: Flow<String> = _documentHtml
 
-    private fun buildHtml(param: NewsRouter.NewsParam) {
+    private val _loadState = MutableLiveData<LoadState>()
+    val loadState: LiveData<LoadState> = _loadState
+
+    private suspend fun buildHtml(param: NewsRouter.NewsParam) {
         val template =
             """
             <p><h3>${param.title}</h3></p>
             <h5>${param.subTitle}</h5>
             """.trimIndent()
         val document = Jsoup.parse("$template${param.content}")
-
-        documentHtml.postValue(document.html())
+        _documentHtml.emit(document.html())
+        _loadState.postValue(LoadState.Success())
     }
 
     operator fun invoke(param: NewsRouter.NewsParam) {
+        _loadState.postValue(LoadState.Loading())
         viewModelScope.launch {
             buildHtml(param)
         }

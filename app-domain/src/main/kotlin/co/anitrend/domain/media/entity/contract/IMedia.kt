@@ -21,6 +21,7 @@ import co.anitrend.domain.common.entity.contract.IFavourable
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.entity.contract.ISynopsis
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.media.entity.attribute.score.IMediaScore
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
@@ -37,8 +38,7 @@ interface IMedia :
     val format: MediaFormat?
     val season: MediaSeason?
     val status: MediaStatus?
-    val meanScore: Int
-    val averageScore: Int
+    val score: IMediaScore
     val startDate: FuzzyDate
     val endDate: FuzzyDate
     val mediaList: IMediaList?

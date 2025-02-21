@@ -17,9 +17,9 @@
 package co.anitrend.medialist.editor.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.medialist.editor.component.sheet.MediaListEditorContent
-import co.anitrend.medialist.editor.component.sheet.controller.MediaListEditorController
-import co.anitrend.medialist.editor.component.sheet.viewmodel.MediaListEditorViewModel
+import co.anitrend.medialist.editor.component.content.MediaListEditorContent
+import co.anitrend.medialist.editor.component.controller.MediaListEditorController
+import co.anitrend.medialist.editor.component.viewmodel.MediaListEditorViewModel
 import co.anitrend.medialist.editor.provider.FeatureProvider
 import co.anitrend.navigation.MediaListEditorRouter
 import org.koin.androidx.fragment.dsl.fragment

@@ -18,6 +18,7 @@ package co.anitrend.notification.component.compose
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -38,10 +39,11 @@ private fun NotificationContent(modifier: Modifier = Modifier) {
 
 @Composable
 fun NotificationScreenContent(onBackPress: () -> Unit) {
-    DefaultScaffold(onBackPress) { modifier ->
+    DefaultScaffold(onBackPress) { padding ->
         NotificationContent(
             modifier =
-                modifier
+                Modifier
+                    .padding(padding)
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
         )

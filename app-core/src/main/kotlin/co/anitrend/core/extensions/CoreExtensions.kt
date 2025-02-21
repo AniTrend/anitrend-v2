@@ -131,3 +131,35 @@ fun View.handleViewIntent(url: String) {
         }
     }
 }
+
+/**
+ * Start custom tabs or standard intent launcher for matching resolver
+ *
+ * @param url
+ */
+fun Context.handleViewIntent(url: String) {
+    val uri = url.toUri()
+    Timber.analytics {
+        logCurrentState(
+            tag = Timber.tags.action("handle_view_intent"),
+            bundle =
+                bundleOf(
+                    Timber.keys.DATA to UriCompat.toSafeString(uri),
+                ),
+        )
+    }
+    if (url.startsWith("https://img1.ak.crunchyroll")) {
+        ImageViewerRouter.startActivity(
+            context = this,
+            navPayload = ImageViewerRouter.ImageSourceParam(url).asNavPayload(),
+        )
+    } else {
+        runCatching {
+            val customTabs = koinOf<CustomTabsIntent.Builder>().build()
+            customTabs.launchUrl(this, uri)
+        }.onFailure {
+            Timber.w(it, "Unable to open url with custom tabs, using default")
+            startViewIntent(uri)
+        }
+    }
+}

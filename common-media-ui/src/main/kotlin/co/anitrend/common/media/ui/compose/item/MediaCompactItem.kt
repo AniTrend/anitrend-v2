@@ -20,14 +20,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -40,11 +36,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import co.anitrend.common.media.ui.compose.component.MediaRating
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
 import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.core.android.R
-import co.anitrend.core.android.compose.AniTrendTheme
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.ui.AniTrendPreview
@@ -93,7 +89,7 @@ private fun MediaTitleItem(
                 text = mediaTitle.userPreferred?.toString().orEmpty(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = AniTrendTheme.typography.body2,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(4.dp),
             )
@@ -112,31 +108,43 @@ fun MediaCompactItem(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
-        AniTrendImage(
-            image = media.image,
-            imageType = RequestImage.Media.ImageType.POSTER,
-            onClick = {
-                mediaItemClick(
-                    MediaRouter.MediaParam(
-                        id = media.id,
-                        type = media.category.type,
-                    ),
-                )
-            },
-            onLongClick = {
-                mediaItemClick(
-                    MediaListEditorRouter.MediaListEditorParam(
-                        mediaId = media.id,
-                        mediaType = media.category.type,
-                        scoreFormat = mediaPreferenceData.scoreFormat,
-                    ),
-                )
-            },
+        Box(
             modifier =
                 Modifier
-                    .weight(1f)
-                    .clip(RoundedCornerShape(8.dp)),
-        )
+                    .weight(1f, fill = true),
+        ) {
+            AniTrendImage(
+                image = media.image,
+                imageType = RequestImage.Media.ImageType.POSTER,
+                onClick = {
+                    mediaItemClick(
+                        MediaRouter.MediaParam(
+                            id = media.id,
+                            type = media.category.type,
+                        ),
+                    )
+                },
+                onLongClick = {
+                    mediaItemClick(
+                        MediaListEditorRouter.MediaListEditorParam(
+                            mediaId = media.id,
+                            mediaType = media.category.type,
+                            scoreFormat = mediaPreferenceData.scoreFormat,
+                        ),
+                    )
+                },
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(8.dp)),
+            )
+
+            MediaRating(
+                media = media,
+                scoreFormat = mediaPreferenceData.scoreFormat,
+                modifier = Modifier.padding(4.dp),
+            )
+        }
         MediaTitleItem(
             mediaTitle = media.title,
             mediaStatus = media.status,
@@ -144,44 +152,13 @@ fun MediaCompactItem(
         MediaSubTitleText(
             media = media,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
-            style = AniTrendTheme.typography.caption,
+            style = MaterialTheme.typography.bodySmall,
         )
         AiringScheduleText(
             media = media,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
-            style = AniTrendTheme.typography.caption,
+            style = MaterialTheme.typography.bodySmall,
         )
-    }
-}
-
-@Composable
-fun MediaCompactItemList(
-    mediaItems: List<Media>,
-    mediaPreferenceData: MediaPreferenceData,
-    mediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    LazyRow(
-        state = rememberLazyListState(),
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier,
-    ) {
-        items(
-            count = mediaItems.size,
-            key = { mediaItems[it].hashCode() },
-            contentType = { mediaItems[it].category },
-        ) { index ->
-            MediaCompactItem(
-                media = mediaItems[index],
-                mediaPreferenceData = mediaPreferenceData,
-                mediaItemClick = mediaItemClick,
-                modifier =
-                    Modifier
-                        .height(275.dp)
-                        .aspectRatio(.55f),
-            )
-        }
     }
 }
 

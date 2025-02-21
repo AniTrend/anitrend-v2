@@ -26,7 +26,11 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
-import co.anitrend.arch.extension.ext.*
+import co.anitrend.arch.extension.ext.getCompatColor
+import co.anitrend.arch.extension.ext.getCompatDrawable
+import co.anitrend.arch.extension.ext.gone
+import co.anitrend.arch.extension.ext.updateMargins
+import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
 import co.anitrend.core.android.extensions.dp
@@ -34,6 +38,7 @@ import co.anitrend.core.android.extensions.format
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.extension.isValid
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.score.MediaScore
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
@@ -125,7 +130,7 @@ internal class MediaRatingWidget
         ) {
             mediaAverageScore.setTextColor(context.getCompatColor(tintColor))
             val scoreFormat: ScoreFormat = settings.scoreFormat.value
-            val mediaScoreDefault = (meanScore.toFloat() * 5 / 100f).toString()
+            val mediaScoreDefault = (score.mean.toFloat() * 5 / 100f).toString()
             when (scoreFormat) {
                 ScoreFormat.POINT_100 -> {
                     if (mediaList.isValid()) {
@@ -138,7 +143,7 @@ internal class MediaRatingWidget
                     if (mediaList.isValid()) {
                         mediaAverageScore.text = requireNotNull(mediaList).score.toInt().toString()
                     } else {
-                        mediaAverageScore.text = (meanScore / 10f).toString()
+                        mediaAverageScore.text = (score.mean / 10f).toString()
                     }
                 }
                 ScoreFormat.POINT_5 -> {
@@ -152,7 +157,7 @@ internal class MediaRatingWidget
                     if (mediaList.isValid()) {
                         mediaAverageScore.text = requireNotNull(mediaList).score.format(1)
                     } else {
-                        val scoreFormatted = (meanScore / 10f)
+                        val scoreFormatted = (score.mean / 10f)
                         mediaAverageScore.text = scoreFormatted.format(1)
                     }
                 }
@@ -175,7 +180,7 @@ internal class MediaRatingWidget
                         )
                     } else {
                         mediaAverageScore.setCompoundDrawablesWithIntrinsicBounds(
-                            when (averageScore) {
+                            when (score.average) {
                                 in 1..33 -> faceSad
                                 in 34..66 -> faceNeutral
                                 in 67..100 -> faceHappy
@@ -187,7 +192,7 @@ internal class MediaRatingWidget
                         )
                     }
                 }
-                else -> mediaAverageScore.text = averageScore.toString()
+                else -> mediaAverageScore.text = score.average.toString()
             }
         }
 
@@ -286,8 +291,11 @@ internal class MediaRatingWidget
                 val media =
                     Media.Core.empty().copy(
                         isFavourite = true,
-                        averageScore = 69,
-                        meanScore = 70,
+                        score =
+                            MediaScore(
+                                average = 69,
+                                mean = 70,
+                            ),
                         mediaList =
                             MediaList.Core.empty().copy(
                                 id = 100,

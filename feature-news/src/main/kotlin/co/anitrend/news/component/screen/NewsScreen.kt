@@ -17,101 +17,62 @@
 package co.anitrend.news.component.screen
 
 import android.os.Bundle
-import android.text.util.Linkify
-import android.view.Menu
-import android.view.MenuItem
+import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.android.compose.design.ContentWrapper
 import co.anitrend.core.android.koin.MarkdownFlavour
-import co.anitrend.core.component.screen.AniTrendBoundScreen
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.navigation.extensions.nameOf
-import co.anitrend.news.R
+import co.anitrend.news.component.screen.compose.NewsReaderScreen
 import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
-import co.anitrend.news.databinding.NewsScreenBinding
 import co.anitrend.news.presenter.NewsPresenter
 import io.noties.markwon.Markwon
-import me.saket.bettermovementmethod.BetterLinkMovementMethod
 import org.koin.core.qualifier.named
 
-class NewsScreen : AniTrendBoundScreen<NewsScreenBinding>() {
+class NewsScreen : AniTrendScreen() {
     private val presenter by inject<NewsPresenter>()
-
     private val viewModel by inject<NewsScreenViewModel>()
-
-    private val markwon by inject<Markwon>(
-        named(MarkdownFlavour.STANDARD),
-    )
-
-    private val param by extra<NewsRouter.NewsParam>(
-        key = nameOf<NewsRouter.NewsParam>(),
-    )
+    private val markwon by inject<Markwon>(named(MarkdownFlavour.STANDARD))
+    private val param by extra<NewsRouter.NewsParam>(key = nameOf<NewsRouter.NewsParam>())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewsScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
-        setUpViewModelObserver()
-    }
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = viewModel.loadState,
+                    param = param,
+                    onLoad = viewModel::invoke,
+                ) {
+                    NewsReaderScreen(
+                        state = viewModel.documentHtml,
+                        transformer = { markwon.toMarkdown(it) },
+                        onBackPress = onBackPressedDispatcher::onBackPressed,
+                        onOpenInWebClick = {
+                            param?.link?.also { handleViewIntent(it) }
+                        },
+                        onShareClick = {
+                            val shareCompat =
+                                param
+                                    ?.let { entity ->
+                                        presenter.createShareContent(entity, this)
+                                    }?.createChooserIntent()
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.news_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.action_open_in_browser -> {
-                runCatching {
-                    binding?.root?.handleViewIntent(
-                        requireNotNull(param?.link),
+                            runCatching {
+                                startActivity(shareCompat)
+                            }.stackTrace()
+                        },
+                        onUrlClick = { url ->
+                            handleViewIntent(url)
+                        },
                     )
-                }.stackTrace()
-                true
+                }
             }
-            else -> super.onOptionsItemSelected(item)
         }
-
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        requireBinding().shareAction.setOnClickListener {
-            val shareCompat =
-                param
-                    ?.let { entity ->
-                        presenter.createShareContent(entity, this)
-                    }?.createChooserIntent()
-
-            runCatching {
-                startActivity(shareCompat)
-            }.stackTrace()
-        }
-        BetterLinkMovementMethod
-            .linkify(Linkify.ALL, this)
-            .setOnLinkClickListener { view, url ->
-                runCatching {
-                    view.handleViewIntent(url)
-                }.stackTrace()
-                true
-            }
-        onFetchDataInitialize()
-    }
-
-    private fun setUpViewModelObserver() {
-        val content = requireBinding().newsContent.newsContentTextView
-        viewModel.documentHtml.observe(this) {
-            markwon.setMarkdown(content, it)
-        }
-    }
-
-    private fun onFetchDataInitialize() {
-        viewModel(requireNotNull(param))
     }
 }

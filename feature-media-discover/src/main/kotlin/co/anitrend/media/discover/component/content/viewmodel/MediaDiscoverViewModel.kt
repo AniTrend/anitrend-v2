@@ -57,6 +57,13 @@ class MediaDiscoverViewModel(
         savedStateHandle[MediaDiscoverFilterRouter.RESULT_LISTENER_KEY] = param
     }
 
+    fun getParam(): MediaDiscoverRouter.MediaDiscoverParam {
+        if (savedStateHandle.contains(MediaDiscoverFilterRouter.RESULT_LISTENER_KEY)) {
+            return savedStateHandle[MediaDiscoverFilterRouter.RESULT_LISTENER_KEY] ?: default
+        }
+        return default
+    }
+
     operator fun invoke(param: MediaDiscoverRouter.MediaDiscoverParam) {
         val query =
             MediaParam.Find(

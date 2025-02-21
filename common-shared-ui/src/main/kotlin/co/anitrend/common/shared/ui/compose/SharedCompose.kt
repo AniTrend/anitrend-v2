@@ -16,26 +16,24 @@
  */
 package co.anitrend.common.shared.ui.compose
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import android.view.View
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
+import co.anitrend.core.android.compose.design.BackIconButton
+import co.anitrend.core.ui.commit
+import co.anitrend.core.ui.model.FragmentItem
 
 @Composable
 fun DefaultBottomAppBar(onBackPress: () -> Unit) {
     BottomAppBar(
         actions = {
-            IconButton(onClick = onBackPress) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                    contentDescription = "Back",
-                )
-            }
+            BackIconButton(onBackClick = onBackPress)
         },
     )
 }
@@ -43,13 +41,30 @@ fun DefaultBottomAppBar(onBackPress: () -> Unit) {
 @Composable
 fun DefaultScaffold(
     onBackPress: () -> Unit,
-    content: @Composable (Modifier) -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         bottomBar = {
             DefaultBottomAppBar(onBackPress)
         },
-    ) { innerPadding ->
-        content(Modifier.padding(innerPadding))
+    ) { padding ->
+        content(padding)
     }
+}
+
+@Composable
+fun <T : Fragment> FragmentItemHost(
+    modifier: Modifier = Modifier,
+    fragmentItem: FragmentItem<T>,
+) {
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            val containerId = View.generateViewId()
+            FragmentContainerView(context).apply { id = containerId }
+        },
+        update = { view ->
+            fragmentItem.commit(view, view.context)
+        },
+    )
 }

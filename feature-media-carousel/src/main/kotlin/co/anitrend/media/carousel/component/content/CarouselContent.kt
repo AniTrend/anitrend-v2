@@ -26,7 +26,7 @@ import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.android.views.compose.composable
 import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.data.user.settings.IUserSettings
-import co.anitrend.media.carousel.component.compose.CarouselScreen
+import co.anitrend.media.carousel.component.compose.CarouselScreenContent
 import co.anitrend.media.carousel.component.content.controller.CarouselContentController
 import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
 import co.anitrend.navigation.AiringRouter
@@ -86,7 +86,7 @@ class CarouselContent(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = composable(context = inflater.context) {
+    ) = composable(context = requireActivity()) {
         AniTrendTheme3 {
             ContentWrapper(
                 stateFlow = viewModel.loadState,
@@ -94,8 +94,8 @@ class CarouselContent(
                 onLoad = viewModel::invoke,
                 onClick = viewModel::retry,
             ) {
-                CarouselScreen(
-                    carouselState = viewModel,
+                CarouselScreenContent(
+                    data = viewModel.model,
                     mediaPreferenceData = controller.mediaPreferenceData(settings),
                     carouselItemClick = { param ->
                         when (param) {

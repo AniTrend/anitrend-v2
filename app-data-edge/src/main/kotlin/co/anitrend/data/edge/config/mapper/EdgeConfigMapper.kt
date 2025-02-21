@@ -37,8 +37,8 @@ internal class EdgeConfigMapper(
      * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(source: EdgeConfigModel): EdgeConfigEntity {
-        genreMapper.onEmbedded(source.genres)
-        navigationMapper.onEmbedded(source.navigation)
+        genreMapper.onEmbedded(source.config.genres)
+        navigationMapper.onEmbedded(source.config.navigation)
         return converter.convertFrom(source)
     }
 
