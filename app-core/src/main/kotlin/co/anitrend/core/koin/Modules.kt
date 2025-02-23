@@ -117,7 +117,7 @@ private val configurationModule =
             val storageController = get<IStorageController>()
 
             val client =
-                defaultBuilder()
+                defaultBuilder(addChucker = false)
                     .cookieJar(get<CookieJar>())
                     .cache(
                         CacheHelper.createCache(

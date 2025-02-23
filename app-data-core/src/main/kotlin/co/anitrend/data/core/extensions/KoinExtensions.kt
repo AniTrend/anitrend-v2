@@ -53,7 +53,10 @@ inline fun <reified T> Scope.api(factory: IEndpointFactory): T = RetrofitProvide
 /**
  * Facade for [OkHttpClient.Builder]
  */
-fun Scope.defaultBuilder(excludeHeaders: Set<String> = emptySet()): OkHttpClient.Builder {
+fun Scope.defaultBuilder(
+    excludeHeaders: Set<String> = emptySet(),
+    addChucker: Boolean = true,
+): OkHttpClient.Builder {
     val builder =
         get<OkHttpClient.Builder> {
             parametersOf(
@@ -64,7 +67,7 @@ fun Scope.defaultBuilder(excludeHeaders: Set<String> = emptySet()): OkHttpClient
                 },
             )
         }
-    if (BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG && addChucker) {
         builder.addInterceptor(
             get<ChuckerInterceptor> {
                 parametersOf(excludeHeaders)
