@@ -37,7 +37,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.fromBundle
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import timber.log.Timber
 
 class MediaDiscoverContent(
@@ -46,7 +46,7 @@ class MediaDiscoverContent(
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Media>,
 ) : AniTrendListContent<Media>() {
-    private val viewModel by viewModel<MediaDiscoverViewModel>()
+    private val viewModel by activityViewModel<MediaDiscoverViewModel>()
 
     override val defaultSpanSize: Int
         get() =
@@ -88,7 +88,7 @@ class MediaDiscoverContent(
                         parameter = viewModel.getParam().asBundle(),
                     )
                 val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
-                dialog.show(childFragmentManager, fragmentItem.tag())
+                dialog.show(requireActivity().supportFragmentManager, fragmentItem.tag())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -116,7 +116,7 @@ class MediaDiscoverContent(
                 )
             }
         }
-        childFragmentManager.setFragmentResultListener(
+        requireActivity().supportFragmentManager.setFragmentResultListener(
             MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
             viewLifecycleOwner,
         ) { _, bundle ->

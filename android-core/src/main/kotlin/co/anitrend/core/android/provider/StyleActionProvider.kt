@@ -39,18 +39,10 @@ class StyleActionProvider(
     KoinComponent {
     private val settings by inject<ICustomizationSettings>()
 
-    private val viewModes = PreferredViewMode.values()
-
     private fun onActionClicked(view: View) {
-        val current = settings.preferredViewMode.value
-        val currentIndex = viewModes.indexOf(current)
-        settings.preferredViewMode.value =
-            when (currentIndex) {
-                PreferredViewMode.DETAILED.ordinal -> PreferredViewMode.SUMMARY
-                PreferredViewMode.SUMMARY.ordinal -> PreferredViewMode.COMPACT
-                PreferredViewMode.COMPACT.ordinal -> PreferredViewMode.COMFORTABLE
-                else -> PreferredViewMode.DETAILED
-            }
+        val entries = PreferredViewMode.entries
+        val currentIndex = entries.indexOf(settings.preferredViewMode.value)
+        settings.preferredViewMode.value = entries[(currentIndex + 1) % entries.size]
     }
 
     private fun iconForSetting(preferredViewMode: PreferredViewMode) {
