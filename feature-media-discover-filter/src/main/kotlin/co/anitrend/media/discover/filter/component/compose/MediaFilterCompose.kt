@@ -156,7 +156,7 @@ private fun FilterSection(
             enter = expandVertically(),
             exit = shrinkVertically(),
         ) {
-            Column { content() }
+            content()
         }
     }
 }
