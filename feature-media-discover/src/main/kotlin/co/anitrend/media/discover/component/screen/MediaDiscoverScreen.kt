@@ -19,30 +19,92 @@ package co.anitrend.media.discover.component.screen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.common.shared.ui.compose.FragmentItemHost
+import co.anitrend.core.android.compose.design.BackIconButton
 import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.ui.fragmentByTagOrNew
+import co.anitrend.core.ui.inject
 import co.anitrend.core.ui.model.FragmentItem
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.customize.common.PreferredViewMode
+import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
+import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.extensions.asBundle
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaDiscoverScreen : AniTrendScreen() {
+    private val viewModel by viewModel<MediaDiscoverViewModel>()
+    private val settings by inject<ICustomizationSettings>()
+
+    private fun openMediaFilterDialog() {
+        val fragmentItem =
+            FragmentItem(
+                fragment = MediaDiscoverFilterRouter.forSheet(),
+                parameter = viewModel.getParam().asBundle(),
+            )
+        val dialog = fragmentItem.fragmentByTagOrNew(this)
+        dialog.show(supportFragmentManager, fragmentItem.tag())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) {
-                    FragmentItemHost(
-                        modifier = Modifier.padding(it),
-                        fragmentItem =
-                            FragmentItem(
-                                fragment = MediaDiscoverRouter.forFragment(),
-                                parameter = intent.extras,
-                            ),
-                    )
-                }
+                MediaDiscoverCompose(
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                    onFilterClick = ::openMediaFilterDialog,
+                    onViewModeClick = {
+                        val entries = PreferredViewMode.entries
+                        val currentIndex = entries.indexOf(settings.preferredViewMode.value)
+                        settings.preferredViewMode.value = entries[(currentIndex + 1) % entries.size]
+                    },
+                    bundle = intent.extras,
+                )
             }
         }
+    }
+}
+
+@Composable
+internal fun MediaDiscoverCompose(
+    onBackPress: () -> Unit,
+    onFilterClick: () -> Unit,
+    onViewModeClick: () -> Unit,
+    bundle: Bundle?,
+) {
+    Scaffold(
+        bottomBar = {
+            BottomAppBar(
+                actions = {
+                    BackIconButton(onBackClick = onBackPress)
+                    IconButton(onClick = onFilterClick) {
+                        Icon(imageVector = Icons.Default.FilterList, contentDescription = "Filter")
+                    }
+                    IconButton(onClick = onViewModeClick) {
+                        Icon(imageVector = Icons.Default.GridView, contentDescription = "View mode")
+                    }
+                },
+            )
+        },
+    ) {
+        FragmentItemHost(
+            modifier = Modifier.padding(it),
+            fragmentItem =
+                FragmentItem(
+                    fragment = MediaDiscoverRouter.forFragment(),
+                    parameter = bundle,
+                ),
+        )
     }
 }

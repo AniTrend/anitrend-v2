@@ -402,16 +402,20 @@ private fun YearRangeFilter(
     param: MediaDiscoverRouter.MediaDiscoverParam,
     onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
-    val minYear =
-        param.seasonYear?.toFloat()
-            ?: param.startDate_lesser?.fromDateInt()?.toFloat()
-            ?: 1970f
-    val maxYear =
-        param.seasonYear?.toFloat()
-            ?: param.startDate_greater?.fromDateInt()?.toFloat()
-            ?: dateHelper.getCurrentYear(2).toFloat()
+    val minYear = 1970
+    val maxYear = dateHelper.getCurrentYear(2)
 
-    var yearRange by remember { mutableStateOf(minYear.toInt() to maxYear.toInt()) }
+    var yearRange by remember {
+        val start =
+            param.seasonYear
+                ?: param.startDate_lesser?.fromDateInt(trim = 10000)
+                ?: minYear
+        val end =
+            param.seasonYear
+                ?: param.startDate_greater?.fromDateInt(trim = 10000)
+                ?: maxYear
+        mutableStateOf(start to end)
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SectionHeader(
@@ -436,8 +440,8 @@ private fun YearRangeFilter(
                     ),
                 )
             },
-            valueRange = minYear..maxYear,
-            steps = (maxYear - minYear).toInt() - 1,
+            valueRange = minYear.toFloat()..maxYear.toFloat(),
+            steps = (maxYear - minYear) - 1,
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
