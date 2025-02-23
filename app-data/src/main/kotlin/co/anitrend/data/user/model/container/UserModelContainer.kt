@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.model.container
 
 import co.anitrend.data.common.model.paging.data.IPageModel
@@ -25,35 +24,34 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class UserModelContainer {
-
     @Serializable
     data class User(
-        @SerialName("User") val user: UserModel.Core
+        @SerialName("User") val user: UserModel.Core,
     ) : UserModelContainer()
 
     @Serializable
     data class Profile(
-        @SerialName("User") val user: UserModel.Extended
+        @SerialName("User") val user: UserModel.Extended,
     ) : UserModelContainer()
 
     @Serializable
     data class Viewer(
-        @SerialName("Viewer") val user: UserModel.Viewer
+        @SerialName("Viewer") val user: UserModel.Viewer,
     ) : UserModelContainer()
 
     @Serializable
     data class WithStatistic(
-        @SerialName("User") val user: UserModel.WithStatistic
+        @SerialName("User") val user: UserModel.WithStatistic,
     ) : UserModelContainer()
 
     @Serializable
     data class Paged(
-        @SerialName("Page") val page: Page = Page()
+        @SerialName("Page") val page: Page = Page(),
     ) : UserModelContainer() {
         @Serializable
         data class Page(
             @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
-            @SerialName("users") val userList: List<UserModel.Core> = emptyList()
+            @SerialName("users") val userList: List<UserModel.Core> = emptyList(),
         ) : IPageModel
     }
 }

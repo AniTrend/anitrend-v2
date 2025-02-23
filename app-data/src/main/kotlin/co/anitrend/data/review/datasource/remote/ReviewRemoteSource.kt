@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
@@ -28,39 +27,38 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface ReviewRemoteSource {
-
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetReview")
     suspend fun getReview(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<ReviewContainerModel.Entry>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetReviewPaged")
     suspend fun getReviewPaged(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<ReviewContainerModel.Paged>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("SaveReview")
     suspend fun saveReview(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<ReviewContainerModel.SavedEntry>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("RateReview")
     suspend fun rateReview(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<ReviewContainerModel.RatedEntry>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("DeleteReview")
     suspend fun deleteReview(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<ReviewContainerModel.DeletedEntry>>
 }

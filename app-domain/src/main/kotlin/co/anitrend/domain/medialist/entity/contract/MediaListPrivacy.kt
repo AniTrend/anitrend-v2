@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.medialist.entity.contract
 
 /**
@@ -27,14 +26,14 @@ package co.anitrend.domain.medialist.entity.contract
 data class MediaListPrivacy(
     val isPrivate: Boolean,
     val isHidden: Boolean,
-    val notes: CharSequence?
+    val notes: CharSequence?,
 ) {
-
     companion object {
-        fun empty() = MediaListPrivacy(
-            isPrivate = false,
-            isHidden = false,
-            notes = null
-        )
+        fun empty() =
+            MediaListPrivacy(
+                isPrivate = false,
+                isHidden = false,
+                notes = null,
+            )
     }
 }

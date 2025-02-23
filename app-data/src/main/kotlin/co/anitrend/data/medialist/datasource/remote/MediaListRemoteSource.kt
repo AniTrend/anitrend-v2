@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
@@ -28,53 +27,52 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface MediaListRemoteSource {
-
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaListPaged")
     suspend fun getMediaListPaged(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.Paged>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaListCollection")
     suspend fun getMediaListCollection(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.Collection>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaListEntry")
     suspend fun getMediaListEntry(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.Entry>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("SaveMediaListEntries")
     suspend fun saveMediaListEntries(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.SavedEntries>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("SaveMediaListEntry")
     suspend fun saveMediaListEntry(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.SavedEntry>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("DeleteMediaListEntry")
     suspend fun deleteMediaListEntry(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.DeletedEntry>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("DeleteCustomList")
     suspend fun deleteCustomList(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaListContainerModel.DeletedCustomList>>
 }

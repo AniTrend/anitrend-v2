@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.customlist.datasource
 
 import androidx.room.Dao
@@ -24,23 +23,28 @@ import co.anitrend.data.customlist.entity.CustomListEntity
 
 @Dao
 internal abstract class CustomListLocalSource : AbstractLocalSource<CustomListEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from custom_list
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from custom_list
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from custom_list
         where list_name = :listName and user_id = :userId
-    """)
+    """,
+    )
     abstract suspend fun clear(
         listName: String,
-        userId: Long
+        userId: Long,
     )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.extensions
 
 import android.content.Context
@@ -63,37 +62,36 @@ fun <T> Result<T>.stackTrace(): T? {
 /**
  * Runs [block] if the receiver's context is of type [FragmentActivity]
  */
-inline fun Context.runIfActivityContext(
-    block: FragmentActivity.() -> Unit
-) {
-    if (this is FragmentActivity)
+inline fun Context.runIfActivityContext(block: FragmentActivity.() -> Unit) {
+    if (this is FragmentActivity) {
         block(this)
-    else
+    } else {
         Timber.w("$this context is not type of Fragment activity")
+    }
 }
 
 /**
  * Runs [block] if the receiver's context is of type [FragmentActivity]
  */
-inline fun <T : View> T.runIfActivityContext(
-    block: FragmentActivity.() -> Unit
-) = context.runIfActivityContext(block)
+inline fun <T : View> T.runIfActivityContext(block: FragmentActivity.() -> Unit) = context.runIfActivityContext(block)
 
 /**
  * Starts a view intent action given the [uri] as data
  */
 fun Context.startViewIntent(uri: Uri) {
-    val intent = Intent().apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        action = Intent.ACTION_VIEW
-        data = uri
-    }
+    val intent =
+        Intent().apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            action = Intent.ACTION_VIEW
+            data = uri
+        }
     Timber.analytics {
         logCurrentState(
             tag = Timber.tags.action("start_view_intent"),
-            bundle = bundleOf(
-                Timber.keys.DATA to UriCompat.toSafeString(uri)
-            )
+            bundle =
+                bundleOf(
+                    Timber.keys.DATA to UriCompat.toSafeString(uri),
+                ),
         )
     }
     runCatching {
@@ -111,16 +109,17 @@ fun View.handleViewIntent(url: String) {
     Timber.analytics {
         logCurrentState(
             tag = Timber.tags.action("handle_view_intent"),
-            bundle = bundleOf(
-                Timber.keys.DATA to UriCompat.toSafeString(uri)
-            )
+            bundle =
+                bundleOf(
+                    Timber.keys.DATA to UriCompat.toSafeString(uri),
+                ),
         )
     }
     if (url.startsWith("https://img1.ak.crunchyroll")) {
         ViewCompat.setTransitionName(this, url)
         ImageViewerRouter.startActivity(
             context = context,
-            navPayload = ImageViewerRouter.ImageSourceParam(url).asNavPayload()
+            navPayload = ImageViewerRouter.ImageSourceParam(url).asNavPayload(),
         )
     } else {
         runCatching {
@@ -129,6 +128,38 @@ fun View.handleViewIntent(url: String) {
         }.onFailure {
             Timber.w(it, "Unable to open url with custom tabs, using default")
             context.startViewIntent(uri)
+        }
+    }
+}
+
+/**
+ * Start custom tabs or standard intent launcher for matching resolver
+ *
+ * @param url
+ */
+fun Context.handleViewIntent(url: String) {
+    val uri = url.toUri()
+    Timber.analytics {
+        logCurrentState(
+            tag = Timber.tags.action("handle_view_intent"),
+            bundle =
+                bundleOf(
+                    Timber.keys.DATA to UriCompat.toSafeString(uri),
+                ),
+        )
+    }
+    if (url.startsWith("https://img1.ak.crunchyroll")) {
+        ImageViewerRouter.startActivity(
+            context = this,
+            navPayload = ImageViewerRouter.ImageSourceParam(url).asNavPayload(),
+        )
+    } else {
+        runCatching {
+            val customTabs = koinOf<CustomTabsIntent.Builder>().build()
+            customTabs.launchUrl(this, uri)
+        }.onFailure {
+            Timber.w(it, "Unable to open url with custom tabs, using default")
+            startViewIntent(uri)
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.recycler.selection
 
 import android.view.ActionMode
@@ -25,7 +24,6 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
 
 class DefaultSelectionMode : ISupportSelectionMode<Long> {
-
     private val selections = mutableListOf<Long>()
 
     /**
@@ -42,9 +40,7 @@ class DefaultSelectionMode : ISupportSelectionMode<Long> {
     /**
      * Checks if item exists in the current selection
      */
-    override fun containsItem(id: Long): Boolean {
-        return selections.contains(id)
-    }
+    override fun containsItem(id: Long): Boolean = selections.contains(id)
 
     /**
      * Defines whether or not this current object can be consumed as a primary long click,
@@ -60,7 +56,7 @@ class DefaultSelectionMode : ISupportSelectionMode<Long> {
     override fun isLongSelectionClickable(
         view: View,
         decorator: ISelectionDecorator,
-        id: Long
+        id: Long,
     ): Boolean = false
 
     /**
@@ -76,12 +72,15 @@ class DefaultSelectionMode : ISupportSelectionMode<Long> {
     override fun isSelectionClickable(
         view: View,
         decorator: ISelectionDecorator,
-        id: Long
+        id: Long,
     ): Boolean {
         if (id != RecyclerView.NO_ID) {
             val exists = containsItem(id)
-            if (!exists) selections.add(id)
-            else selections.remove(id)
+            if (!exists) {
+                selections.add(id)
+            } else {
+                selections.remove(id)
+            }
             decorator.decorateUsing(view, !exists)
             return true
         }
@@ -100,7 +99,5 @@ class DefaultSelectionMode : ISupportSelectionMode<Long> {
     /**
      * @return list of selected items
      */
-    override fun selectedItems(): List<Long> {
-        return selections
-    }
+    override fun selectedItems(): List<Long> = selections
 }

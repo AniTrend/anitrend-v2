@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.discover.koin
 
 import co.anitrend.common.review.ui.adapter.ReviewPagedAdapter
@@ -23,45 +22,47 @@ import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.review.discover.component.content.ReviewDiscoverContent
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
-import co.anitrend.review.discover.component.content.viewmodel.state.ReviewDiscoverState
 import co.anitrend.review.discover.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    fragment {
-        ReviewDiscoverContent(
-            stateConfig = get(),
-            supportViewAdapter = ReviewPagedAdapter(
-                settings = get(),
-                preferredViewMode = PreferredViewMode.DETAILED,
-                resources = androidContext().resources,
-                stateConfiguration = get(),
+private val fragmentModule =
+    module {
+        fragment {
+            ReviewDiscoverContent(
+                stateConfig = get(),
+                supportViewAdapter =
+                    ReviewPagedAdapter(
+                        settings = get(),
+                        preferredViewMode = PreferredViewMode.DETAILED,
+                        resources = androidContext().resources,
+                        stateConfiguration = get(),
+                    ),
             )
-        )
+        }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        ReviewDiscoverViewModel(
-            state = ReviewDiscoverState(
+private val viewModelModule =
+    module {
+        viewModel {
+            ReviewDiscoverViewModel(
                 interactor = get(),
                 savedStateHandle = get(),
-                settings = get()
+                settings = get(),
             )
-        )
+        }
     }
-}
 
-private val featureModule = module {
-    factory<ReviewDiscoverRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<ReviewDiscoverRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

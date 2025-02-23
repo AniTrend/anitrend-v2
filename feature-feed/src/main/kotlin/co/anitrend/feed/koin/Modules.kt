@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,42 +14,42 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.feed.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.feed.component.content.FeedContent
 import co.anitrend.feed.component.screen.FeedScreen
 import co.anitrend.feed.component.viewmodel.FeedViewModel
-import co.anitrend.feed.component.viewmodel.state.FeedState
 import co.anitrend.feed.provider.FeatureProvider
 import co.anitrend.navigation.FeedRouter
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    scope<FeedScreen> {
-        fragment {
-            FeedContent()
+private val fragmentModule =
+    module {
+        scope<FeedScreen> {
+            fragment {
+                FeedContent()
+            }
         }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        FeedViewModel(
-            state = FeedState()
-        )
+private val viewModelModule =
+    module {
+        viewModel {
+            FeedViewModel()
+        }
     }
-}
 
-private val featureModule = module {
-    factory<FeedRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<FeedRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

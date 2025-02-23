@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.studio.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.studio.databinding.StudioScreenBinding
+import androidx.activity.compose.setContent
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.studio.component.compose.StudioScreenContent
 
-class StudioScreen : AniTrendBoundScreen<StudioScreenBinding>() {
+class StudioScreen : AniTrendScreen() {
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -29,12 +30,16 @@ class StudioScreen : AniTrendBoundScreen<StudioScreenBinding>() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = StudioScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
+        setContent {
+            AniTrendTheme3 {
+                StudioScreenContent(
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                )
+            }
+        }
     }
 }

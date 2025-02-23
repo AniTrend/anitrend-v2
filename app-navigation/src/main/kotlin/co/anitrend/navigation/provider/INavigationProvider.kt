@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,15 +14,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.provider
 
 import android.content.Context
 import android.content.Intent
+import timber.log.Timber
 
 /**
  * Provider for navigation components
  */
 interface INavigationProvider {
-    fun activity(context: Context?): Intent? = null
+    fun activity(context: Context?): Intent? {
+        Timber.w(NotImplementedError())
+        return null
+    }
 }

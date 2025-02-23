@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.datasource.local
 
 import androidx.room.*
@@ -25,22 +24,24 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class GenreLocalSource : AbstractLocalSource<GenreEntity>() {
-
-    @Query("""
-        select count(id) from genre
+    @Query(
         """
+        select count(id) from genre
+        """,
     )
     abstract override suspend fun count(): Int
 
-    @Query("""
-            delete from genre
+    @Query(
         """
+            delete from genre
+        """,
     )
     abstract override suspend fun clear()
 
-    @Query("""
-        select * from genre order by genre asc
+    @Query(
         """
+        select * from genre order by genre asc
+        """,
     )
     abstract fun findAllFlow(): Flow<List<GenreEntity>>
 

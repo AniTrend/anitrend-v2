@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.source
 
 import androidx.paging.PagedList
@@ -39,7 +38,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 internal class AiringScheduleSourceImpl {
-
     class Paged(
         private val remoteSource: AiringRemoteSource,
         private val localSource: AiringLocalSource,
@@ -48,31 +46,33 @@ internal class AiringScheduleSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
         private val filter: AiringQueryFilter.Paged,
-        override val dispatcher: ISupportDispatcher
+        override val dispatcher: ISupportDispatcher,
     ) : AiringScheduleSource.Paged() {
-
         override val cacheIdentity = AiringCache.Identity.Paged()
 
         override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory = mediaLocalSource
-                .rawFactory(filter.build(query.param))
-                .map(converter::convertFrom)
+            val dataSourceFactory =
+                mediaLocalSource
+                    .rawFactory(filter.build(query.param))
+                    .map(converter::convertFrom)
 
             return FlowPagedListBuilder(
                 dataSourceFactory,
                 PAGING_CONFIGURATION,
                 null,
-                this
+                this,
             ).buildFlow()
         }
 
         override suspend fun getAiringSchedule(requestCallback: RequestCallback) {
-            val deferred = deferred {
-                val queryBuilder = query.toQueryContainerBuilder(
-                    supportPagingHelper
-                )
-                remoteSource.getAiringPaged(queryBuilder)
-            }
+            val deferred =
+                deferred {
+                    val queryBuilder =
+                        query.toQueryContainerBuilder(
+                            supportPagingHelper,
+                        )
+                    remoteSource.getAiringPaged(queryBuilder)
+                }
 
             controller(deferred, requestCallback) {
                 supportPagingHelper.from(it.page)

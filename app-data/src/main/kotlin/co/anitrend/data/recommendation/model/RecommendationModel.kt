@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.recommendation.model
 
 import co.anitrend.data.media.model.MediaModel
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class RecommendationModel : IRecommendationModel {
-
     @Serializable
     internal data class Core(
         @SerialName("rating") override val rating: Int? = null,
@@ -34,6 +32,6 @@ internal sealed class RecommendationModel : IRecommendationModel {
         @SerialName("media") override val media: MediaModel.Core? = null,
         @SerialName("userRating") override val userRating: RecommendationRating? = null,
         @SerialName("mediaRecommendation") override val mediaRecommendation: MediaModel.Core? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : RecommendationModel()
 }

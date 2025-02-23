@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.anitrend.arch.recycler)
     implementation(libs.google.flexbox)
     implementation(libs.prettyTime)
+    compileOnly(libs.pintrest.ktlint.rule.engine)
+    compileOnly(libs.pintrest.ktlint.ruleset.core)
 }
 
 android {

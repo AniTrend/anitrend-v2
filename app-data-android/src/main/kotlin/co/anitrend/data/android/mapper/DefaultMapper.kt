@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.mapper
 
 import co.anitrend.arch.data.mapper.SupportResponseMapper
@@ -28,7 +27,6 @@ import timber.log.Timber
  * Making it easier for us to implement error logging and provide better error messages
  */
 abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
-
     /**
      * Save [data] into your desired local source
      */
@@ -39,12 +37,11 @@ abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
      *
      * @return [OutCome.Pass] or [OutCome.Fail] of the operation
      */
-    protected suspend fun persistChanges(data: D): OutCome<Nothing?> {
-        return runCatching {
+    protected suspend fun persistChanges(data: D): OutCome<Nothing?> =
+        runCatching {
             persist(data)
             OutCome.Pass(null)
         }.getOrElse { OutCome.Fail(listOf(it)) }
-    }
 
     /**
      * If [data] is a type of [Collection], checks if empty otherwise checks nullability
@@ -77,8 +74,8 @@ abstract class DefaultMapper<S, D> : SupportResponseMapper<S, D>() {
      */
     override suspend fun onResponseDatabaseInsert(mappedData: D) {
         mappedData evaluate
-                ::checkValidity then
-                ::persistChanges otherwise
-                ::handleException
+            ::checkValidity then
+            ::persistChanges otherwise
+            ::handleException
     }
 }

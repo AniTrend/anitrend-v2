@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.rank.koin
 
 import co.anitrend.data.core.extensions.store
@@ -22,26 +21,29 @@ import co.anitrend.data.rank.converter.RankModelConverter
 import co.anitrend.data.rank.mapper.RankMapper
 import org.koin.dsl.module
 
-private val converterModule = module {
-    factory {
-        RankModelConverter()
+private val converterModule =
+    module {
+        factory {
+            RankModelConverter()
+        }
     }
-}
 
-private val mapperModule = module {
-    factory {
-        RankMapper.Core(
-            localSource = store().rankDao(),
-            converter = get()
-        )
+private val mapperModule =
+    module {
+        factory {
+            RankMapper.Core(
+                localSource = store().rankDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            RankMapper.Embed(
+                localSource = store().rankDao(),
+            )
+        }
     }
-    factory {
-        RankMapper.Embed(
-            localSource = store().rankDao()
-        )
-    }
-}
 
-internal val rankModules = module {
-    includes(converterModule, mapperModule)
-}
+internal val rankModules =
+    module {
+        includes(converterModule, mapperModule)
+    }

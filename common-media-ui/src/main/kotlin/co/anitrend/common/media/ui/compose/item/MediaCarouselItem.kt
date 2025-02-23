@@ -1,0 +1,178 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package co.anitrend.common.media.ui.compose.item
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
+import co.anitrend.common.media.ui.controller.compose.CarouselController
+import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.domain.carousel.entity.MediaCarousel
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.navigation.model.common.IParam
+
+@Composable
+private fun HeaderTitle(
+    data: CarouselController.Data.Header,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Text(
+            text = data.title,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.bodyLarge,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+        )
+        Text(
+            text = data.description,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodySmall,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+        )
+    }
+}
+
+@Composable
+private fun CarouselHeader(
+    mediaType: MediaType,
+    carouselType: MediaCarousel.CarouselType,
+    mediaItem: Media?,
+    headerSeeMoreClick: (IParam) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val carouselData =
+        CarouselController(
+            mediaType = mediaType,
+            carouselType = carouselType,
+            mediaItem = mediaItem,
+        ).createCarouselData()
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        HeaderTitle(
+            data = carouselData.header,
+            modifier = Modifier.weight(1f),
+        )
+        TextButton(
+            onClick = { headerSeeMoreClick(carouselData.param) },
+        ) {
+            Text(
+                text = stringResource(co.anitrend.common.media.ui.R.string.label_carousel_see_more),
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CarouselItems(
+    mediaItems: List<Media>,
+    mediaPreferenceData: MediaPreferenceData,
+    modifier: Modifier = Modifier,
+    mediaItemClick: (IParam) -> Unit,
+) {
+    MediaCompactItemList(
+        mediaItems = mediaItems,
+        mediaPreferenceData = mediaPreferenceData,
+        mediaItemClick = mediaItemClick,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun MediaCarouselItem(
+    carouselItems: List<MediaCarousel>,
+    mediaPreferenceData: MediaPreferenceData,
+    carouselItemClick: (IParam) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(bottom = 64.dp),
+        modifier = modifier,
+    ) {
+        items(
+            count = carouselItems.size,
+            key = { carouselItems[it].hashCode() },
+        ) { index ->
+            val carouselItem = carouselItems[index]
+            CarouselHeader(
+                mediaType = carouselItem.mediaType,
+                carouselType = carouselItem.carouselType,
+                mediaItem = carouselItem.mediaItems.firstOrNull(),
+                headerSeeMoreClick = carouselItemClick,
+                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+            )
+            CarouselItems(
+                mediaItems = carouselItem.mediaItems,
+                mediaPreferenceData = mediaPreferenceData,
+                mediaItemClick = carouselItemClick,
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+            )
+        }
+    }
+}
+
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@Composable
+private fun MediaCarouselItemPreview() {
+    PreviewTheme(wrapInSurface = true) {
+        MediaCarouselItem(
+            carouselItems =
+                listOf(
+                    MediaCarousel(
+                        mediaType = MediaType.ANIME,
+                        carouselType = MediaCarousel.CarouselType.AIRING_SOON,
+                        mediaItems =
+                            listOf(),
+                    ),
+                ),
+            mediaPreferenceData =
+                MediaPreferenceData(
+                    scoreFormat = ScoreFormat.POINT_100,
+                ),
+            carouselItemClick = {},
+        )
+    }
+}

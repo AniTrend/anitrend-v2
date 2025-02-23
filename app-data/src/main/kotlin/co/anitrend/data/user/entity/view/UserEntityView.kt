@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity.view
 
 import androidx.room.Embedded
@@ -43,7 +42,7 @@ internal sealed class UserEntityView {
         @Embedded override val user: UserEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         val notification: UserNotificationEntity,
     ) : UserEntityView()
@@ -52,27 +51,27 @@ internal sealed class UserEntityView {
         @Embedded override val user: UserEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val generalOption: UserGeneralOptionEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val mediaListOption: UserMediaOptionEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val previousNames: List<UserPreviousNameEntity>,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val mediaListCount: List<MediaListCountView>,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val customListCount: List<CustomListCountView>,
     ) : WithExtended()
@@ -81,32 +80,32 @@ internal sealed class UserEntityView {
         @Embedded override val user: UserEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         val statistic: UserWithStatisticEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val generalOption: UserGeneralOptionEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val mediaListOption: UserMediaOptionEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val previousNames: List<UserPreviousNameEntity>,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val mediaListCount: List<MediaListCountView>,
         @Relation(
             parentColumn = "id",
-            entityColumn = "user_id"
+            entityColumn = "user_id",
         )
         override val customListCount: List<CustomListCountView>,
     ) : WithExtended()

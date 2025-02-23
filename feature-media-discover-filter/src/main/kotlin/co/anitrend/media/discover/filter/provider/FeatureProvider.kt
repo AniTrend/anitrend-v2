@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,21 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.provider
 
-import co.anitrend.media.discover.filter.component.content.GeneralContent
-import co.anitrend.media.discover.filter.component.content.GenreContent
-import co.anitrend.media.discover.filter.component.content.SortingContent
-import co.anitrend.media.discover.filter.component.content.TagContent
+import co.anitrend.media.discover.filter.component.content.MediaFilterContent
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 
 internal class FeatureProvider : MediaDiscoverFilterRouter.Provider {
-    override fun sorting() = SortingContent::class.java
-
-    override fun general() = GeneralContent::class.java
-
-    override fun genre() = GenreContent::class.java
-
-    override fun tag() = TagContent::class.java
+    override fun sheet() = MediaFilterContent::class.java
 }

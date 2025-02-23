@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.character.entity
 
 import androidx.room.ColumnInfo
@@ -25,7 +24,7 @@ import co.anitrend.data.core.common.Identity
 
 @Entity(
     tableName = "character",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
 )
 internal data class CharacterEntity(
     @ColumnInfo(name = "age") val age: Int?,
@@ -39,12 +38,11 @@ internal data class CharacterEntity(
     @ColumnInfo(name = "isFavouriteBlocked") val isFavouriteBlocked: Boolean,
     @Embedded(prefix = "name_") val name: Name,
     @ColumnInfo(name = "site_url") val siteUrl: String,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity {
-
     data class CoverImage(
         @ColumnInfo(name = "large") val large: String? = null,
-        @ColumnInfo(name = "medium") val medium: String? = null
+        @ColumnInfo(name = "medium") val medium: String? = null,
     )
 
     data class Name(

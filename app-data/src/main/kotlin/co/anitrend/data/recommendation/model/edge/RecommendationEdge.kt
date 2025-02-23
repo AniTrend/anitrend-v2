@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.recommendation.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
@@ -29,5 +28,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal class RecommendationEdge(
     @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: RecommendationModel.Core?
-) : IEntityEdge<RecommendationModel>, Identity
+    @SerialName("node") override val node: RecommendationModel.Core?,
+) : IEntityEdge<RecommendationModel>,
+    Identity

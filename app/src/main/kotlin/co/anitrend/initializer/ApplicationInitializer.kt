@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,17 +14,33 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.initializer
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.startup.Initializer
+import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.core.android.koinOf
+import co.anitrend.core.android.shortcut.contract.IShortcutController
+import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
 import co.anitrend.core.initializer.injector.InjectorInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules
 import co.anitrend.koin.appModules
+import timber.log.Timber
 
 class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
+    @RequiresApi(Build.VERSION_CODES.N_MR1)
+    private fun setUpShortcuts() {
+        runCatching {
+            val controller = koinOf<IShortcutController>()
+            controller.createShortcuts(
+                Shortcut.AiringSchedule(),
+                Shortcut.Search(),
+            )
+        }.onFailure(Timber::w)
+    }
 
     /**
      * Initializes and a component given the application [Context]
@@ -33,6 +49,12 @@ class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
      */
     override fun create(context: Context) {
         appModules.loadModules()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            val settings = koinOf<ISupportPreference>()
+            if (settings.isNewInstallation.value) {
+                setUpShortcuts()
+            }
+        }
     }
 
     /**
@@ -42,6 +64,5 @@ class ApplicationInitializer : AbstractCoreInitializer<Unit>() {
      * For e.g. if a [Initializer] `B` defines another
      * [Initializer] `A` as its dependency, then `A` gets initialized before `B`.
      */
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-        listOf(InjectorInitializer::class.java)
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(InjectorInitializer::class.java)
 }

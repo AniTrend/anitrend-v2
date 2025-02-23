@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.presenter
 
 import android.content.Context
@@ -26,18 +25,19 @@ import co.anitrend.news.component.screen.NewsScreen
 
 class NewsPresenter(
     context: Context,
-    settings: Settings
+    settings: Settings,
 ) : CorePresenter(context, settings) {
-
     fun createShareContent(
         param: NewsRouter.NewsParam,
-        screen: NewsScreen
+        screen: NewsScreen,
     ): ShareCompat.IntentBuilder {
-        val payloadContent = StringBuilder(
-            requireNotNull(param.description)
-        ).append("\n\n").append(param.link)
+        val payloadContent =
+            StringBuilder(
+                requireNotNull(param.description),
+            ).append("\n\n").append(param.link)
 
-        return ShareCompat.IntentBuilder(screen)
+        return ShareCompat
+            .IntentBuilder(screen)
             .setType("text/plain")
             .setSubject(param.title)
             .setHtmlText(payloadContent.toString())

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.controller.power
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import co.anitrend.arch.extension.ext.flowOfBroadcast
 import co.anitrend.core.android.controller.power.contract.IPowerController
@@ -45,48 +43,32 @@ internal class AndroidPowerController(
     private val connectivityManager: ConnectivityManager?,
     private val settings: IPowerSettings,
 ) : IPowerController {
+    override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> =
+        merge(
+            context.flowOfBroadcast(
+                IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
+            ),
+            context.flowOfBroadcast(
+                IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED),
+            ),
+        ).map { powerSaverState() }
+            .onStart { emit(powerSaverState()) }
 
-    override fun powerSaverStateFlow(ignorePreference: Boolean): Flow<PowerSaverState> {
-        return when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
-                merge(
-                    context.flowOfBroadcast(
-                        IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
-                    ),
-                    context.flowOfBroadcast(
-                        IntentFilter(ConnectivityManager.ACTION_RESTRICT_BACKGROUND_CHANGED)
-                    )
-                ).map {
-                    powerSaverState()
-                }.onStart {
-                    emit(powerSaverState())
-                }
+    override fun powerSaverState(): PowerSaverState =
+        when {
+            settings.isPowerSaverOn.value -> {
+                PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
             }
-            else -> {
-                context.flowOfBroadcast(
-                    IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
-                ).map {
-                    powerSaverState()
-                }.onStart {
-                    emit(powerSaverState())
-                }
+            powerManager?.isPowerSaveMode == true -> {
+                PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_POWER_SAVER)
             }
+            isBackgroundDataRestricted() -> {
+                PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
+            }
+            else -> PowerSaverState.Disabled
         }
-    }
 
-    override fun powerSaverState(): PowerSaverState = when {
-        settings.isPowerSaverOn.value -> {
-            PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
-        }
-        powerManager?.isPowerSaveMode == true -> {
-            PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_POWER_SAVER)
-        }
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isBackgroundDataRestricted() -> {
-            PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
-        }
-        else -> PowerSaverState.Disabled
-    }
-
+    @SuppressLint("BatteryLife")
     override fun disableBatteryOptimization() {
         val packageUri = "package:${context.packageName}"
         if (powerManager?.isIgnoringBatteryOptimizations(packageUri) == true) {
@@ -95,15 +77,13 @@ internal class AndroidPowerController(
                     intentOf {
                         action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                         data = packageUri.toUri()
-                    }
+                    },
                 )
             }.onFailure(Timber::e)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun isBackgroundDataRestricted(): Boolean {
-        return connectivityManager?.restrictBackgroundStatus ==
-                ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED
-    }
+    private fun isBackgroundDataRestricted(): Boolean =
+        connectivityManager?.restrictBackgroundStatus ==
+            ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.common.media.ui.adapter
 
 import android.content.res.Resources
@@ -59,9 +58,8 @@ class MediaPagedAdapter(
             PreferredViewMode.COMPACT -> MediaCompactItem(it, settings)
         }
     },
-    override val supportAction: ISupportSelectionMode<Long>? = null
+    override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : SupportPagedListAdapter<Media>(MediaDiffUtil) {
-
     /**
      * Should provide the required view holder, this function is a substitute for
      * [androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder] which now
@@ -70,9 +68,9 @@ class MediaPagedAdapter(
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
-        layoutInflater: LayoutInflater
-    ): SupportViewHolder {
-        return when (viewType) {
+        layoutInflater: LayoutInflater,
+    ): SupportViewHolder =
+        when (viewType) {
             PreferredViewMode.DETAILED.ordinal ->
                 layoutInflater.createDetailViewHolder(parent)
             PreferredViewMode.SUMMARY.ordinal ->
@@ -81,7 +79,6 @@ class MediaPagedAdapter(
                 layoutInflater.createGridViewHolder(parent)
             else -> layoutInflater.createMediaItemViewHolder(parent)
         }
-    }
 
     /**
      * Return the view type of the item at [position] for the purposes of view recycling.
@@ -94,10 +91,9 @@ class MediaPagedAdapter(
      * @return integer value identifying the type of the view needed to represent the item at
      * [position]. Type codes need not be contiguous.
      */
-    override fun getItemViewType(position: Int): Int {
-        return when (val viewType = super.getItemViewType(position)) {
+    override fun getItemViewType(position: Int): Int =
+        when (val viewType = super.getItemViewType(position)) {
             DEFAULT_VIEW_TYPE -> settings.preferredViewMode.value.ordinal
             else -> viewType
         }
-    }
 }

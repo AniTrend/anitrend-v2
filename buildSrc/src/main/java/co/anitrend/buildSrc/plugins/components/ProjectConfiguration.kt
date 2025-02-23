@@ -51,7 +51,6 @@ private fun Project.configureBuildFlavours() {
     }
 }
 
-@Suppress("UnstableApiUsage")
 private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
     if (project.isAppModule()) {
         applicationId = "co.anitrend"

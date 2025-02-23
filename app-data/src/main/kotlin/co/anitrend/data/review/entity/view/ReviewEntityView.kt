@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.entity.view
 
 import androidx.room.Embedded
@@ -33,13 +32,13 @@ internal sealed class ReviewEntityView {
         @Embedded override val review: ReviewEntity,
         @Relation(
             parentColumn = "user_id",
-            entityColumn = "id"
+            entityColumn = "id",
         )
         override val user: UserEntity,
         @Relation(
             parentColumn = "media_id",
             entityColumn = "id",
-            entity = MediaEntity::class
+            entity = MediaEntity::class,
         )
         override val media: MediaEntityView.Core,
     ) : ReviewEntityView()

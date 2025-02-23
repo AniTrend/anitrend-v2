@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.android.extensions
 
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ fun ViewGroup.applySystemBarsWindowInsetsListener() {
         val systemBars = WindowInsetsCompat.Type.systemBars()
         view.setTag(
             R.id.tag_system_window_inset_top,
-            windowInsetsCompat.getInsets(systemBars)
+            windowInsetsCompat.getInsets(systemBars),
         )
         windowInsets
     }

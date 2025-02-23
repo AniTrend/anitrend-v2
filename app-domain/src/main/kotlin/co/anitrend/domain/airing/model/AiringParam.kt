@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.airing.model
 
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 
 sealed class AiringParam {
-
     /** [AiringSchedule query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
      *
      * @param id Filter by the id of the airing schedule item
@@ -64,10 +62,5 @@ sealed class AiringParam {
         var airingAt_greater: Int? = null,
         var airingAt_lesser: Int? = null,
         var sort: List<ISortWithOrder<AiringSort>>? = null,
-    ) : AiringParam() {
-        infix fun builder(param: Find.() -> Unit): Find {
-            this.param()
-            return this
-        }
-    }
+    ) : AiringParam()
 }

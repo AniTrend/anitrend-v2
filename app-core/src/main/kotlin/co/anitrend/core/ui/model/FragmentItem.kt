@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.ui.model
 
 import android.os.Bundle
@@ -23,10 +22,10 @@ import androidx.fragment.app.Fragment
 /**
  * Fragment loader holder helper
  */
-data class FragmentItem<T: Fragment>(
+data class FragmentItem<T : Fragment>(
     val fragment: Class<out T>,
     val parameter: Bundle? = null,
-    val tag: String = fragment.simpleName
+    val tag: String = fragment.simpleName,
 ) {
     fun tag(): String = tag
 }

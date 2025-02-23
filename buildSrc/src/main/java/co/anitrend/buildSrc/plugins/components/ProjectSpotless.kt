@@ -26,27 +26,33 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     val withLicenseHeader: (String) -> File = { extension ->
         rootProject.file("spotless/copyright$extension")
     }
+    val buildDirectory = layout.buildDirectory.get()
     kotlin {
         target("**/*.kt")
-        targetExclude("**/build/**/*.kt")
-        ktlint(libs.versions.ktlint.get())
+        targetExclude("${buildDirectory}/**/*.kt", "**/src/test/**/*.kt")
+        ktlint(libs.versions.ktlint.get()).setEditorConfigPath(
+            rootProject.file(".editorconfig")
+        )
         licenseHeaderFile(
             withLicenseHeader(".kt")
         )
+        suppressLintsFor {
+            step = "ktlint"
+            shortCode = "standard:property-naming"
+        }
+        trimTrailingWhitespace()
+        endWithNewline()
     }
     kotlinGradle {
         target("**/*.kts")
-        targetExclude("**/build/**/*.kts")
+        targetExclude("${buildDirectory}/**/*.kts")
         licenseHeaderFile(withLicenseHeader(".kts"), "(^(?![\\/ ]\\*).*$)")
+        trimTrailingWhitespace()
+        endWithNewline()
     }
     format("xml") {
         target("**/*.xml")
-        targetExclude("**/build/**/*.xml")
-        licenseHeaderFile(withLicenseHeader(".xml"), "(<[^!?])")
-    }
-    format("properties") {
-        target("**/*.properties")
-        targetExclude("**/build/**/*.properties")
-        licenseHeaderFile(withLicenseHeader(".properties"), "(^(#).*\$)")
+        targetExclude("${buildDirectory}/**/*.xml")
+        licenseHeaderFile(withLicenseHeader(".xml"), "^(<\\?xml.*\\?>\\s*)?(<.*)")
     }
 }

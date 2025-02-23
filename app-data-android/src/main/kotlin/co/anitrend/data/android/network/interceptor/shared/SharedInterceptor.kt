@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.network.interceptor.shared
 
 import co.anitrend.data.core.device.IDeviceInfo
@@ -25,9 +24,8 @@ import okhttp3.Response
  * Interceptor to add user agent to requests
  */
 class SharedInterceptor(
-    private val deviceInfo: IDeviceInfo
+    private val deviceInfo: IDeviceInfo,
 ) : Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val builder = request.newBuilder()

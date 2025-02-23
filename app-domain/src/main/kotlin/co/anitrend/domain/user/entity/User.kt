@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -30,18 +29,18 @@ import co.anitrend.domain.user.entity.contract.UserStatus
  * User
  */
 sealed class User : IEntity {
-
     abstract val name: CharSequence
     abstract val avatar: UserImage
     abstract val status: UserStatus
 
     companion object {
-        fun empty() = Core(
-            name = "",
-            avatar = UserImage.empty(),
-            status = UserStatus.empty(),
-            id = INVALID_ID,
-        )
+        fun empty() =
+            Core(
+                name = "",
+                avatar = UserImage.empty(),
+                status = UserStatus.empty(),
+                id = INVALID_ID,
+            )
     }
 
     data class PreviousName(
@@ -54,7 +53,7 @@ sealed class User : IEntity {
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,
-        override val id: Long
+        override val id: Long,
     ) : User()
 
     data class Authenticated(
@@ -62,7 +61,7 @@ sealed class User : IEntity {
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,
-        override val id: Long
+        override val id: Long,
     ) : User()
 
     data class Extended(
@@ -73,7 +72,7 @@ sealed class User : IEntity {
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,
-        override val id: Long
+        override val id: Long,
     ) : User()
 
     data class WithStats(
@@ -85,6 +84,6 @@ sealed class User : IEntity {
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,
-        override val id: Long
+        override val id: Long,
     ) : User()
 }

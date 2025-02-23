@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,11 +14,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -32,7 +30,6 @@ import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.*
 
 internal abstract class NewsSource : AbstractPagingSource<News>() {
-
     protected lateinit var query: NewsQuery
 
     protected val cacheIdentity: CacheIdentity = NewsCache.Identity.NEWS
@@ -48,21 +45,22 @@ internal abstract class NewsSource : AbstractPagingSource<News>() {
         return observable()
     }
 
-    fun sync(param: NewsParam): Flow<Boolean> = flow {
-        query = NewsQuery(param)
-        val resultFlow = MutableSharedFlow<Boolean>()
-        cachePolicy(
-            scope = scope,
-            requestHelper = requestHelper,
-            cacheIdentity = cacheIdentity,
-            block = {
-                val result = getNews(it)
-                resultFlow.emit(result)
-                result
-            }
-        )
-        emitAll(resultFlow)
-    }
+    fun sync(param: NewsParam): Flow<Boolean> =
+        flow {
+            query = NewsQuery(param)
+            val resultFlow = MutableSharedFlow<Boolean>()
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = {
+                    val result = getNews(it)
+                    resultFlow.emit(result)
+                    result
+                },
+            )
+            emitAll(resultFlow)
+        }
 
     /**
      * Called when the item at the front of the PagedList has been loaded, and access has
@@ -73,14 +71,15 @@ internal abstract class NewsSource : AbstractPagingSource<News>() {
      * @param itemAtFront The first item of PagedList
      */
     override fun onItemAtFrontLoaded(itemAtFront: News) {
-        if (supportPagingHelper.isFirstPage())
+        if (supportPagingHelper.isFirstPage()) {
             cachePolicy(
                 scope = scope,
                 requestHelper = requestHelper,
                 cacheIdentity = cacheIdentity,
                 requestType = Request.Type.BEFORE,
-                block = ::getNews
+                block = ::getNews,
             )
+        }
     }
 
     /**
@@ -91,7 +90,7 @@ internal abstract class NewsSource : AbstractPagingSource<News>() {
             scope = scope,
             requestHelper = requestHelper,
             cacheIdentity = cacheIdentity,
-            block = ::getNews
+            block = ::getNews,
         )
     }
 }

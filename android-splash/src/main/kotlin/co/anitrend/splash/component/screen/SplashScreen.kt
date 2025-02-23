@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,15 +17,39 @@
 package co.anitrend.splash.component.screen
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.splash.component.content.SplashContent
-import co.anitrend.splash.databinding.ActivitySplashBinding
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.ui.inject
+import co.anitrend.splash.component.compose.SplashScreenContent
+import co.anitrend.splash.component.presenter.SplashPresenter
+import kotlinx.coroutines.launch
 
-class SplashScreen : AniTrendBoundScreen<ActivitySplashBinding>() {
+class SplashScreen : AniTrendScreen() {
+    private val presenter by inject<SplashPresenter>()
+
+    private fun setupSplashScreen(splashScreen: SplashScreen) {
+        splashScreen.setKeepOnScreenCondition {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    presenter.firstRunCheck()
+                    finishAfterTransition()
+                }
+            }
+            false
+        }
+
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            splashScreenView.remove()
+        }
+    }
+
     override fun configureActivity() {
         super.configureActivity()
         hideStatusBarAndNavigationBar()
@@ -34,26 +58,11 @@ class SplashScreen : AniTrendBoundScreen<ActivitySplashBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        with(splashScreen) {
-            setKeepOnScreenCondition {
-                onUpdateUserInterface()
-                false
-            }
-
-            setOnExitAnimationListener { splashScreenView ->
-                splashScreenView.remove()
+        setupSplashScreen(splashScreen)
+        setContent {
+            AniTrendTheme3 {
+                SplashScreenContent()
             }
         }
-    }
-
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-    }
-
-    private fun onUpdateUserInterface() {
-        currentFragmentTag =
-            FragmentItem(fragment = SplashContent::class.java)
-                .commit(requireBinding().authFrame, this)
     }
 }

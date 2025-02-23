@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.medialist.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
@@ -27,7 +26,7 @@ import org.threeten.bp.Instant
 
 internal class MediaListCache(
     override val localSource: CacheLocalSource,
-    override val request: CacheRequest = CacheRequest.MEDIA_LIST
+    override val request: CacheRequest = CacheRequest.MEDIA_LIST,
 ) : CacheStorePolicy() {
     /**
      * Check if a resource with a given [identity] is permitted to refresh
@@ -37,26 +36,25 @@ internal class MediaListCache(
      */
     override suspend fun shouldRefresh(
         identity: CacheIdentity,
-        expiresAfter: Instant
+        expiresAfter: Instant,
     ): Boolean = isRequestBefore(identity, expiresAfter)
 
     sealed class Identity : CacheIdentity {
-
         class Entry(
             val param: MediaListParam.Entry,
             override val id: Long = param.mediaId,
             override val key: String = "media_list_entry",
-            override val expiresAt: Instant = instantInPast(minutes = 1)
+            override val expiresAt: Instant = instantInPast(minutes = 1),
         ) : MediaListCache.Identity()
 
         class Paged(
             override val id: Long = 0,
-            override val key: String = "media_list_paged"
+            override val key: String = "media_list_paged",
         ) : MediaListCache.Identity()
 
         class Collection(
             override val id: Long = 0,
-            override val key: String = "media_list_collection"
+            override val key: String = "media_list_collection",
         ) : MediaListCache.Identity()
     }
 }

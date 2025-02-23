@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,45 +14,43 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.thread.model.query
 
 import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.thread.model.ThreadParam
 
 internal sealed class ThreadQuery : IGraphPayload {
-
     data class Find(
-        val param: ThreadParam.Find
+        val param: ThreadParam.Find,
     ) : ThreadQuery() {
-
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id,
-            "userId" to param.userId,
-            "replyUserId" to param.replyUserId,
-            "subscribed" to param.subscribed,
-            "categoryId" to param.categoryId,
-            "mediaCategoryId" to param.mediaCategoryId,
-            "search" to param.search,
-            "id_in" to param.id_in,
-            "sort" to param.sort
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "userId" to param.userId,
+                "replyUserId" to param.replyUserId,
+                "subscribed" to param.subscribed,
+                "categoryId" to param.categoryId,
+                "mediaCategoryId" to param.mediaCategoryId,
+                "search" to param.search,
+                "id_in" to param.id_in,
+                "sort" to param.sort,
+            )
     }
 
     data class FindComment(
-        val param: ThreadParam.FindComment
+        val param: ThreadParam.FindComment,
     ) : ThreadQuery() {
-
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id,
-            "threadId" to param.threadId,
-            "userId" to param.userId
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "threadId" to param.threadId,
+                "userId" to param.userId,
+            )
     }
 }

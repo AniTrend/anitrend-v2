@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.component.compose
 
 import android.view.View
@@ -25,8 +24,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -38,125 +35,102 @@ import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
-import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChipDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.genre.ui.compose.GenresListComponent
 import co.anitrend.common.markdown.ui.compose.MarkdownText
-import co.anitrend.common.media.ui.compose.SummarySection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.core.android.compose.AniTrendTheme
+import co.anitrend.common.media.ui.compose.section.MediaSummarySection
+import co.anitrend.common.media.ui.compose.widget.ranking.RankingItems
+import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.core.android.compose.design.BackIconButton
 import co.anitrend.core.android.compose.design.image.AniTrendImage
 import co.anitrend.core.android.compose.design.image.AniTrendImageDefaults
 import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.ui.AniTrendPreview
+import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.media.R
-import co.anitrend.media.component.viewmodel.state.MediaState
+import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-
-@Composable
-private fun TagListItems(
-    accentColor: Color,
-    modifier: Modifier = Modifier,
-    tags: List<Tag> = emptyList(),
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
-) {
-    LazyRow(
-        state = rememberLazyListState(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = modifier
-    ) {
-        items(
-            count = tags.size,
-            key = { tags[it].id },
-            contentType = { "Tag" }
-        ) { index ->
-            tags[index].also { tag ->
-                ElevatedSuggestionChip(
-                    onClick = {
-                        onMediaDiscoverableItemClick(
-                            MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
-                        )
-                    },
-                    colors = SuggestionChipDefaults.suggestionChipColors(
-                        containerColor = accentColor,
-                    ),
-                    label = {
-                        Text(
-                            text = tag.name,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            style = AniTrendTheme.typography.caption,
-                        )
-                    }
-                )
-            }
-        }
-    }
-}
-
+import co.anitrend.navigation.model.common.IParam
 
 @Composable
 private fun MediaDetailContent(
     media: Media,
     accentColor: Color,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onMediaDiscoverableItemClick: (IParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         AniTrendImage(
             image = media.image,
             imageType = RequestImage.Media.ImageType.BANNER,
             onClick = onImageClick,
-            modifier = AniTrendImageDefaults.BANNER_SIZE
+            modifier = AniTrendImageDefaults.BANNER_SIZE,
         )
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .absoluteOffset(y = (-16).dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                )
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .absoluteOffset(y = (-16).dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.background,
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                    ),
         ) {
             Column(
-                modifier = Modifier
-                    .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp,
-                    ),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier =
+                    Modifier
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 16.dp,
+                        ),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                SummarySection(
+                MediaSummarySection(
                     media = media,
                     accentColor = accentColor,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                     onCoverClick = onImageClick,
-                    modifier = Modifier
-                        .absoluteOffset(y = (-16).dp)
+                    modifier =
+                        Modifier
+                            .absoluteOffset(y = (-16).dp),
+                )
+                RankingItems(
+                    accentColor = accentColor,
+                    rankings = media.rankings.toList(),
+                    onClick = { rank, sorting ->
+                        onMediaDiscoverableItemClick(
+                            MediaDiscoverRouter.MediaDiscoverParam(
+                                type = media.category.type,
+                                format = media.format,
+                                season = media.season,
+                                seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
+                                startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
+                                sort = sorting,
+                            ),
+                        )
+                    },
                 )
                 GenresListComponent(
                     genres = media.genres as List<Genre>,
@@ -164,12 +138,12 @@ private fun MediaDetailContent(
                 )
                 MarkdownText(
                     synopsis = media,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
                 )
                 TagListItems(
                     accentColor = accentColor,
                     tags = media.tags as List<Tag>,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick
+                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                 )
             }
         }
@@ -178,12 +152,12 @@ private fun MediaDetailContent(
 
 @Composable
 fun MediaScreenContent(
-    mediaState: MediaState,
+    mediaState: MediaViewModel,
     onMyAnimeListButtonClick: (String) -> Unit,
     onBookmarkButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
     onFloatingActionButtonClick: (Media) -> Unit,
-    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    onMediaDiscoverableItemClick: (IParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -212,10 +186,11 @@ fun MediaScreenContent(
                         )
                     }
                     IconButton(onClick = {
-                        val param = FavouriteTaskRouter.Param.MediaToggleParam(
-                            id = media.id,
-                            mediaType = media.category.type
-                        )
+                        val param =
+                            FavouriteTaskRouter.Param.MediaToggleParam(
+                                id = media.id,
+                                mediaType = media.category.type,
+                            )
                         onFavouriteButtonClick(view, param)
                     }) {
                         Icon(
@@ -228,7 +203,7 @@ fun MediaScreenContent(
                     FloatingActionButton(
                         onClick = { onFloatingActionButtonClick(media) },
                         containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                     ) {
                         Icon(Icons.Rounded.Share, "Share")
                     }
@@ -241,21 +216,25 @@ fun MediaScreenContent(
             accentColor = accentColor,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
-            modifier = Modifier.padding(innerPadding)
-                .verticalScroll(rememberScrollState())
+            modifier =
+                Modifier
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState()),
         )
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Default
 @Composable
-private fun MediaDetailComponentPreview() {
-    PreviewTheme {
+private fun MediaDetailComponentPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme) {
         MediaDetailContent(
             media = Media.Extended.empty(),
             accentColor = Color.DarkGray,
             onMediaDiscoverableItemClick = {},
-            onImageClick = {}
+            onImageClick = {},
         )
     }
 }

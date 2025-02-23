@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,35 +14,43 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.about.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.viewbinding.ViewBinding
-import co.anitrend.about.component.content.AboutContent
-import co.anitrend.core.component.screen.AniTrendBoundScreen
+import androidx.lifecycle.liveData
+import androidx.work.WorkManager
+import co.anitrend.about.component.compose.AboutScreenContent
+import co.anitrend.about.component.viewmodel.AboutViewModel
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.model.common.IParam
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.UUID
 
-class AboutScreen : AniTrendBoundScreen<ViewBinding>() {
-
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        updateUserInterface()
-    }
+class AboutScreen : AniTrendScreen() {
+    private val viewModel by viewModel<AboutViewModel>()
+    private val workManager by lazy { WorkManager.getInstance(context = this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AboutContent()
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = liveData { emit(LoadState.Idle()) },
+                    param = IParam.None,
+                ) {
+                    AboutScreenContent(
+                        workItemFlow = viewModel.invoke(workManager),
+                        onBackPress = onBackPressedDispatcher::onBackPressed,
+                        onCancelWork = { taskId ->
+                            workManager.cancelWorkById(UUID.fromString(taskId))
+                        },
+                    )
+                }
+            }
         }
-    }
-
-    private fun updateUserInterface() {
-
     }
 }

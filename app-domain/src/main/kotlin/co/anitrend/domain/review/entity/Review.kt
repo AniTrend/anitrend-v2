@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.review.entity
 
 import co.anitrend.domain.media.entity.Media
@@ -24,7 +23,6 @@ import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.user.entity.User
 
 sealed class Review : IReview {
-
     data class Core(
         override val description: String,
         override val createdAt: Long,
@@ -40,7 +38,7 @@ sealed class Review : IReview {
         override val user: User,
         override val userId: Long,
         override val userRating: ReviewRating,
-        override val id: Long
+        override val id: Long,
     ) : Review()
 
     data class Extended(
@@ -59,6 +57,6 @@ sealed class Review : IReview {
         override val user: User,
         override val userId: Long,
         override val userRating: ReviewRating,
-        override val id: Long
+        override val id: Long,
     ) : Review()
 }

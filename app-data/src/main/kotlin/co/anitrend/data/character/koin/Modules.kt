@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.character.koin
 
 import co.anitrend.data.character.converter.CharacterConverter
@@ -22,38 +21,40 @@ import co.anitrend.data.character.converter.CharacterEntityConverter
 import co.anitrend.data.character.converter.CharacterModelConverter
 import org.koin.dsl.module
 
-private val sourceModule = module {
-
-}
-
-private val converterModule = module {
-    factory {
-        CharacterConverter()
+private val sourceModule =
+    module {
     }
-    factory {
-        CharacterModelConverter()
+
+private val converterModule =
+    module {
+        factory {
+            CharacterConverter()
+        }
+        factory {
+            CharacterModelConverter()
+        }
+        factory {
+            CharacterEntityConverter()
+        }
     }
-    factory {
-        CharacterEntityConverter()
+
+private val mapperModule =
+    module {
     }
-}
 
-private val mapperModule = module {
+private val useCaseModule =
+    module {
+    }
 
-}
+private val repositoryModule =
+    module {
+    }
 
-private val useCaseModule = module {
-
-}
-
-private val repositoryModule = module {
-
-}
-
-internal val characterModules = listOf(
-    sourceModule,
-    converterModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val characterModules =
+    listOf(
+        sourceModule,
+        converterModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule,
+    )

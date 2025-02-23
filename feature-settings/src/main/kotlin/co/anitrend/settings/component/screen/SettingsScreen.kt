@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,38 +14,34 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.settings.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.settings.component.content.SettingsContent
-import co.anitrend.settings.databinding.SettingsActivityBinding
+import androidx.activity.compose.setContent
+import androidx.lifecycle.liveData
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.core.ui.inject
+import co.anitrend.navigation.model.common.IParam
+import co.anitrend.settings.component.compose.SettingsContentScreen
+import co.anitrend.settings.component.presenter.SettingsPresenter
 
-class SettingsScreen : AniTrendBoundScreen<SettingsActivityBinding>() {
+class SettingsScreen : AniTrendScreen() {
+    private val presenter by inject<SettingsPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = SettingsActivityBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
-    }
-
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        onUpdateUserInterface()
-    }
-
-    private fun onUpdateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = SettingsContent::class.java
-        ).commit(requireBinding().contentFrame, this)
+        setContent {
+            ContentWrapper(
+                stateFlow = liveData { emit(LoadState.Idle()) },
+                param = IParam.None,
+            ) {
+                SettingsContentScreen(
+                    settingsItems = presenter.getSettingsItems(),
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                )
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.character.entity
 
 import co.anitrend.domain.character.entity.contract.ICharacter
@@ -23,7 +22,6 @@ import co.anitrend.domain.common.entity.shared.CoverName
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 
 sealed class Character : ICharacter {
-
     abstract val age: Int?
     abstract val dateOfBirth: FuzzyDate?
     abstract val bloodType: String?
@@ -41,6 +39,6 @@ sealed class Character : ICharacter {
         override val favourites: Int,
         override val isFavourite: Boolean,
         override val isFavouriteBlocked: Boolean,
-        override val id: Long
+        override val id: Long,
     ) : Character()
 }

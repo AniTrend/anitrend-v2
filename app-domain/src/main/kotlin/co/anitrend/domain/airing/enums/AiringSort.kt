@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.airing.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -23,9 +22,12 @@ import co.anitrend.domain.common.enums.contract.ISortable
 /**
  * Airing schedule sort enums
  */
-enum class AiringSort(override val alias: CharSequence) : IAliasable, ISortable {
+enum class AiringSort(
+    override val alias: CharSequence,
+) : IAliasable,
+    ISortable {
     ID("Id"),
     MEDIA_ID("Media id"),
     TIME("Time"),
-    EPISODE("Episode")
+    EPISODE("Episode"),
 }

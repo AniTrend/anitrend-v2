@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.auth.datasource.local
 
 import androidx.room.Dao
@@ -24,31 +23,40 @@ import co.anitrend.data.auth.entity.AuthEntity
 
 @Dao
 internal abstract class AuthLocalSource : AbstractLocalSource<AuthEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from auth
-        """)
+        """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from auth
-        """)
+        """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from auth
         where user_id = :userId
-        """)
-    abstract fun clearByUserId(userId: Long)
+        """,
+    )
+    abstract suspend fun clearByUserId(userId: Long)
 
-    @Query("""
+    @Query(
+        """
             select * from auth
             where user_id = :userId
-        """)
+        """,
+    )
     abstract fun byUserId(userId: Long): AuthEntity?
 
-    @Query("""
+    @Query(
+        """
             select user_id from auth
-        """)
+        """,
+    )
     abstract suspend fun userIds(): List<Long>
 }

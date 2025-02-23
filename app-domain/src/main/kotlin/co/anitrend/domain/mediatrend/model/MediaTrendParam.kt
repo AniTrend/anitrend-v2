@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.mediatrend.model
 
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.media.enums.MediaTrendSort
 
 sealed class MediaTrendParam {
-
     /** [MediaTrend query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
      *
      * @param mediaId Filter by the media id
@@ -75,8 +73,8 @@ sealed class MediaTrendParam {
         val episode_greater: Int? = null,
         val episode_lesser: Int? = null,
         val episode_not: Int? = null,
-        val sort: List<MediaTrendSort>? = null
-    ): MediaTrendParam() {
+        val sort: List<MediaTrendSort>? = null,
+    ) : MediaTrendParam() {
         infix fun builder(param: Find.() -> Unit): Find {
             this.param()
             return this

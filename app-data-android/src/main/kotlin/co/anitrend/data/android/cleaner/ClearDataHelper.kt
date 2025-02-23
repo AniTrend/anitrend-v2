@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.cleaner
 
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
@@ -32,9 +31,8 @@ import kotlin.coroutines.CoroutineContext
  */
 class ClearDataHelper(
     private val connectivity: ISupportConnectivity,
-    private val settings: IRefreshBehaviourSettings
+    private val settings: IRefreshBehaviourSettings,
 ) : IClearDataHelper {
-
     /**
      * Executes an [action]
      *
@@ -42,10 +40,11 @@ class ClearDataHelper(
      */
     override suspend fun invoke(action: suspend () -> Unit) {
         if (settings.clearDataOnSwipeRefresh.value) {
-            if (connectivity.isConnected)
+            if (connectivity.isConnected) {
                 runCatching {
                     action()
                 }.onFailure(Timber::e)
+            }
             return
         }
 
@@ -60,7 +59,7 @@ class ClearDataHelper(
      */
     override suspend operator fun invoke(
         context: CoroutineContext,
-        action: suspend () -> Unit
+        action: suspend () -> Unit,
     ) {
         withContext(context) {
             invoke(action)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.component.content
 
 import co.anitrend.arch.recycler.adapter.SupportAdapter
@@ -33,7 +32,6 @@ class NewsContent(
     override val supportViewAdapter: SupportAdapter<News>,
     override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
 ) : AniTrendListContent<News>() {
-
     private val viewModel by viewModel<NewsContentViewModel>()
 
     /**
@@ -45,9 +43,11 @@ class NewsContent(
      * @see initializeComponents
      */
     override fun onFetchDataInitialize() {
-        val locale = presenter.settings.locale.value.asLocaleString()
-        viewModelState().invoke(
-            NewsParam(locale)
+        val locale =
+            presenter.settings.locale.value
+                .asLocaleString()
+        viewModel.invoke(
+            NewsParam(locale),
         )
     }
 
@@ -56,7 +56,7 @@ class NewsContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
     }
@@ -64,5 +64,5 @@ class NewsContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

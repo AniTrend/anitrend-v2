@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,6 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import co.anitrend.buildSrc.Libraries
 
 plugins {
     id("co.anitrend.plugin")
@@ -21,6 +22,7 @@ plugins {
 
 dependencies {
     implementation(libs.androidx.browser)
+    implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
 
 android {

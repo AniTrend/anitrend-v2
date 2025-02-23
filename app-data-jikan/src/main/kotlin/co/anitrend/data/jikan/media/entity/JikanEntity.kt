@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.media.entity
 
 import androidx.room.ColumnInfo
@@ -24,7 +23,7 @@ import co.anitrend.data.core.common.Identity
 
 @Entity(
     tableName = "jikan",
-    primaryKeys = ["id"]
+    primaryKeys = ["id"],
 )
 data class JikanEntity(
     @Embedded(prefix = "title_") val title: Title,
@@ -46,13 +45,12 @@ data class JikanEntity(
     @ColumnInfo(name = "releasing") val releasing: Boolean? = null,
     @ColumnInfo(name = "synopsis") val synopsis: String? = null,
     @ColumnInfo(name = "background") val background: String? = null,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity {
-
     data class Title(
         @ColumnInfo(name = "japanese") val japanese: String? = null,
         @ColumnInfo(name = "english") val english: String? = null,
         @ColumnInfo(name = "preferred") val preferred: String? = null,
-        @ColumnInfo(name = "synonyms") val synonyms: List<String> = emptyList()
+        @ColumnInfo(name = "synonyms") val synonyms: List<String> = emptyList(),
     )
 }

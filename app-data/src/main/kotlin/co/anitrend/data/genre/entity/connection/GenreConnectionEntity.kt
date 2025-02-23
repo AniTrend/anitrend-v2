@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.entity.connection
 
 import androidx.room.ColumnInfo
@@ -40,20 +39,20 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"]
+            parentColumns = ["id"],
         ),
         ForeignKey(
             entity = GenreEntity::class,
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["genre_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 @EntitySchema
 internal data class GenreConnectionEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "genre_id") val genreId: Long,
-    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long = 0
+    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long = 0,
 ) : Identity

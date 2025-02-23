@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.account.component.screen
 
 import android.os.Bundle
@@ -26,7 +25,6 @@ import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.model.common.IParam
 
 class AccountScreen : AniTrendScreen() {
-
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -34,7 +32,6 @@ class AccountScreen : AniTrendScreen() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
@@ -42,9 +41,8 @@ internal class GenreContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_genre,
     override val bindingMapper: (View) -> MediaDiscoverFilterGenreBinding = {
         MediaDiscoverFilterGenreBinding.bind(it)
-    }
+    },
 ) : AniTrendSelectionContent<MediaDiscoverFilterGenreBinding, Genre>() {
-
     private val param by argument(
         key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
         default = MediaDiscoverRouter::MediaDiscoverParam,
@@ -57,9 +55,11 @@ internal class GenreContent(
         if (supportViewAdapter.isEmpty()) {
             val items = param.genre_in.combine(param.genre)
 
-            val selectedIds = genres.union(items) { p, s ->
-                s == p.name
-            }.map(Genre::id)
+            val selectedIds =
+                genres
+                    .union(items) { p, s ->
+                        s == p.name
+                    }.map(Genre::id)
 
             supportViewAdapter.supportAction?.selectAllItems(selectedIds)
         }
@@ -75,7 +75,7 @@ internal class GenreContent(
      */
     override fun onFetchDataInitialize() {
         val param = GenreParam(SortOrder.ASC)
-        viewModelState().invoke(param)
+        viewModel.invoke(param)
     }
 
     /**
@@ -83,7 +83,7 @@ internal class GenreContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             applySelections(it)
             onPostModelChange(it)
         }
@@ -100,7 +100,10 @@ internal class GenreContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         requireBinding().genresRecyclerSelection.configure()
     }
@@ -108,5 +111,5 @@ internal class GenreContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

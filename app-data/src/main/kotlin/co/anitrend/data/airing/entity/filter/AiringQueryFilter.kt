@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.entity.filter
 
 import co.anitrend.data.airing.entity.AiringScheduleEntitySchema
@@ -41,11 +40,9 @@ import co.anitrend.support.query.builder.dsl.where
 import co.anitrend.support.query.builder.dsl.whereAnd
 
 internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
-
     class Paged(
-        private val authentication: IAuthenticationSettings
+        private val authentication: IAuthenticationSettings,
     ) : AiringQueryFilter<AiringParam.Find>() {
-
         private val mediaTable = MediaEntitySchema.tableName.asTable()
         private val airingTable = AiringScheduleEntitySchema.tableName.asTable()
         private val mediaListTable = MediaListEntitySchema.tableName.asTable()
@@ -58,20 +55,23 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
             }
             filter.airingAt_greater?.also {
                 requireBuilder() whereAnd {
-                    AiringScheduleEntitySchema.airingAt.asColumn(airingTable) greaterThan  it
+                    AiringScheduleEntitySchema.airingAt.asColumn(airingTable) greaterThan it
                 }
             }
             filter.airingAt_lesser?.also {
                 requireBuilder() whereAnd {
-                    AiringScheduleEntitySchema.airingAt.asColumn(airingTable) lesserThan  it
+                    AiringScheduleEntitySchema.airingAt.asColumn(airingTable) lesserThan it
                 }
             }
             filter.notYetAired?.also { notAired ->
-                if (notAired) requireBuilder() whereAnd {
-                    MediaEntitySchema.status.asColumn(mediaTable) equal MediaStatus.NOT_YET_RELEASED.name
-                }
-                else requireBuilder() whereAnd {
-                    MediaEntitySchema.status.asColumn(mediaTable) equal MediaStatus.RELEASING.name
+                if (notAired) {
+                    requireBuilder() whereAnd {
+                        MediaEntitySchema.status.asColumn(mediaTable) equal MediaStatus.NOT_YET_RELEASED.name
+                    }
+                } else {
+                    requireBuilder() whereAnd {
+                        MediaEntitySchema.status.asColumn(mediaTable) equal MediaStatus.RELEASING.name
+                    }
                 }
             }
         }
@@ -162,7 +162,7 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
                     leftJoin(mediaListTable) {
                         on(
                             MediaListEntitySchema.mediaId.asColumn(mediaListTable),
-                            MediaEntitySchema.id.asColumn(mediaTable)
+                            MediaEntitySchema.id.asColumn(mediaTable),
                         )
                     }
                 } whereAnd {
@@ -174,9 +174,11 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun order(filter: AiringParam.Find) {
             filter.sort?.forEach { sort ->
                 when (sort.sortable) {
-                    AiringSort.TIME -> requireBuilder().orderBy(
-                        AiringScheduleEntitySchema.timeUntilAiring.asColumn(airingTable), sort.order
-                    )
+                    AiringSort.TIME ->
+                        requireBuilder().orderBy(
+                            AiringScheduleEntitySchema.timeUntilAiring.asColumn(airingTable),
+                            sort.order,
+                        )
                     else -> {
                         val qualifier = sort.sortable.name.lowercase()
                         requireBuilder().orderBy(qualifier.asColumn(airingTable), sort.order)
@@ -190,15 +192,17 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
          * to add query objections
          */
         override fun onBuildQuery(filter: AiringParam.Find) {
-            requireBuilder() from mediaTable.join(airingTable) {
-                on(
-                    MediaEntitySchema.id.asColumn(mediaTable),
-                    AiringScheduleEntitySchema.mediaId.asColumn(airingTable)
-                )
-            } where {
-                MediaEntitySchema.type.asColumn(mediaTable)
-                    .equal(MediaType.ANIME.name)
-            }
+            requireBuilder() from
+                mediaTable.join(airingTable) {
+                    on(
+                        MediaEntitySchema.id.asColumn(mediaTable),
+                        AiringScheduleEntitySchema.mediaId.asColumn(airingTable),
+                    )
+                } where {
+                    MediaEntitySchema.type
+                        .asColumn(mediaTable)
+                        .equal(MediaType.ANIME.name)
+                }
             order(filter)
             selection(filter)
             mediaSelection(filter)

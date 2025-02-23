@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
@@ -28,11 +27,10 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface MediaGenreRemoteSource {
-
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     @GraphQuery("GetMediaGenres")
     suspend fun getMediaGenres(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<GenreCollection>>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.extensions
 
 import android.text.Layout
@@ -37,25 +36,35 @@ internal fun AbstractImageSpan.onFrame(): ArrayList<Any?> {
     val source = attributes[AbstractImageSpan.SRC_ATTR]
     val styles = attributes[AbstractImageSpan.STYLE_ATTR]
     if (source?.contains(YouTubeSpanConfiguration.LOOKUP_KEY) == true) {
-        val imageSpanFactory = configuration
-            .spansFactory()
-            .get(Image::class.java)
+        val imageSpanFactory =
+            configuration
+                .spansFactory()
+                .get(Image::class.java)
 
-        val linkSpanFactory = configuration
-            .spansFactory()
-            .get(Link::class.java)
+        val linkSpanFactory =
+            configuration
+                .spansFactory()
+                .get(Link::class.java)
 
-        val width = attributes[AbstractImageSpan.WIDTH_ATTR]?.let {
-            if (it.isDigitsOnly())
-                it
-            else null
-        }?.toFloat()
+        val width =
+            attributes[AbstractImageSpan.WIDTH_ATTR]
+                ?.let {
+                    if (it.isDigitsOnly()) {
+                        it
+                    } else {
+                        null
+                    }
+                }?.toFloat()
 
-        val height = attributes[AbstractImageSpan.HEIGHT_ATTR]?.let {
-            if (it.isDigitsOnly())
-                it
-            else null
-        }?.toFloat()
+        val height =
+            attributes[AbstractImageSpan.HEIGHT_ATTR]
+                ?.let {
+                    if (it.isDigitsOnly()) {
+                        it
+                    } else {
+                        null
+                    }
+                }?.toFloat()
 
         val imageSize = generateImageSize(styles, width, height)
 
@@ -65,13 +74,14 @@ internal fun AbstractImageSpan.onFrame(): ArrayList<Any?> {
         spans.add(AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER))
     } else {
         // return some sort of unsupported span
-        val textSpan = configuration
-            .spansFactory()
-            .get(Text::class.java)
+        val textSpan =
+            configuration
+                .spansFactory()
+                .get(Text::class.java)
 
         renderProps.set(
             Prop.of("text-literal"),
-            "Unsupported embedded element"
+            "Unsupported embedded element",
         )
         spans.add(textSpan?.getSpans(configuration, renderProps))
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,21 +14,37 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.carousel.component.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.carousel.GetCarouselInteractor
+import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
-import co.anitrend.media.carousel.component.viewmodel.state.CarouselState
+import co.anitrend.navigation.MediaCarouselRouter
 import kotlinx.coroutines.launch
 
 class CarouselViewModel(
-    override val state: CarouselState
-) : AniTrendViewModel() {
-    operator fun invoke(param: CarouselParam.Find) {
+    private val interactor: GetCarouselInteractor,
+) : AniTrendViewModelState<List<MediaCarousel>>() {
+    override val loadState: MutableLiveData<LoadState> = MutableLiveData(LoadState.Loading())
+
+    operator fun invoke(param: MediaCarouselRouter.MediaCarouselRouterParam) {
         viewModelScope.launch {
-            state(param)
+            val input =
+                CarouselParam.Find(
+                    season = param.season,
+                    seasonYear = param.seasonYear,
+                    nextSeasonYear = param.nextSeasonYear,
+                    nextSeason = param.nextSeason,
+                    currentTime = param.currentTime,
+                    pageSize = param.pageSize,
+                )
+            val result = interactor(input)
+            loadState.postValue(LoadState.Idle())
+            state.postValue(result)
         }
     }
 }

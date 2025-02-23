@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.model.remote
 
 import co.anitrend.data.tag.model.contract.ITagModel
@@ -23,7 +22,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class TagModel : ITagModel {
-
     @Serializable
     internal data class Core(
         @SerialName("name") override val name: String,
@@ -31,7 +29,7 @@ internal sealed class TagModel : ITagModel {
         @SerialName("category") override val category: String? = null,
         @SerialName("isGeneralSpoiler") override val isGeneralSpoiler: Boolean? = null,
         @SerialName("isAdult") override val isAdult: Boolean? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : TagModel()
 
     /**
@@ -49,6 +47,6 @@ internal sealed class TagModel : ITagModel {
         @SerialName("category") override val category: String? = null,
         @SerialName("isGeneralSpoiler") override val isGeneralSpoiler: Boolean? = null,
         @SerialName("isAdult") override val isAdult: Boolean? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : TagModel()
 }

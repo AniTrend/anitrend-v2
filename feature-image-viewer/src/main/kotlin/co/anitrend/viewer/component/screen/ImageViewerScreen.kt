@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.viewer.component.screen
 
 import android.Manifest
@@ -43,29 +42,32 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
-
     private val param by extra<ImageViewerRouter.ImageSourceParam>(
         key = nameOf<ImageViewerRouter.ImageSourceParam>(),
     )
 
     private val viewModel by viewModel<ImageViewerViewModel>()
 
-    private val stateLayoutConfig = StateLayoutConfig(
-        loadingMessage = co.anitrend.core.R.string.label_text_loading
-    )
+    private val stateLayoutConfig =
+        StateLayoutConfig(
+            loadingMessage = co.anitrend.core.R.string.label_text_loading,
+        )
 
-    private val permissionResult = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isAllowed: Boolean ->
-        if (isAllowed)
-            viewModel.downloadImage(param?.imageSrc)
-        else
-            Toast.makeText(
-                this,
-                R.string.warning_permission_for_storage_not_granted,
-                Toast.LENGTH_LONG
-            ).show()
-    }
+    private val permissionResult =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isAllowed: Boolean ->
+            if (isAllowed) {
+                viewModel.downloadImage(param?.imageSrc)
+            } else {
+                Toast
+                    .makeText(
+                        this,
+                        R.string.warning_permission_for_storage_not_granted,
+                        Toast.LENGTH_LONG,
+                    ).show()
+            }
+        }
 
     private var disposable: Disposable? = null
 
@@ -94,7 +96,9 @@ class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
         val duration = resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_long)
         requireBinding().subSamplingImageView.setOnClickListener {
             val transparency = requireBinding().downloadAction.alpha
-            requireBinding().downloadAction.animate()
+            requireBinding()
+                .downloadAction
+                .animate()
                 .alpha(if (transparency == VISIBLE) HIDDEN else VISIBLE)
                 .setDuration(duration.toLong())
                 .apply { interpolator = DecelerateInterpolator() }
@@ -102,39 +106,42 @@ class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
         requireBinding().downloadAction.setOnClickListener {
             val transparency = requireBinding().downloadAction.alpha
             val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            if (transparency == VISIBLE)
+            if (transparency == VISIBLE) {
                 permissionResult.launch(permission)
+            }
         }
         setUpImagePreview()
     }
 
     private fun setUpImagePreview() {
-        disposable = object : Target {
-            /**
-             * Called when the request starts.
-             */
-            override fun onStart(placeholder: Drawable?) {
-                binding?.stateLayout?.loadStateFlow?.value = LoadState.Loading()
-            }
+        disposable =
+            object : Target {
+                /**
+                 * Called when the request starts.
+                 */
+                override fun onStart(placeholder: Drawable?) {
+                    binding?.stateLayout?.loadStateFlow?.value = LoadState.Loading()
+                }
 
-            /**
-             * Called if an error occurs while executing the request.
-             */
-            override fun onError(error: Drawable?) {
-                binding?.stateLayout?.loadStateFlow?.value = LoadState.Error(
-                    RequestError("Unable to load image")
-                )
-            }
+                /**
+                 * Called if an error occurs while executing the request.
+                 */
+                override fun onError(error: Drawable?) {
+                    binding?.stateLayout?.loadStateFlow?.value =
+                        LoadState.Error(
+                            RequestError("Unable to load image"),
+                        )
+                }
 
-            /**
-             * Called if the request completes successfully.
-             */
-            override fun onSuccess(result: Drawable) {
-                val source = ImageSource.bitmap(result.toBitmap())
-                binding?.subSamplingImageView?.setImage(source)
-                binding?.stateLayout?.loadStateFlow?.value = LoadState.Success()
-            }
-        }.using(param?.imageSrc.toCoverImage(), this)
+                /**
+                 * Called if the request completes successfully.
+                 */
+                override fun onSuccess(result: Drawable) {
+                    val source = ImageSource.bitmap(result.toBitmap())
+                    binding?.subSamplingImageView?.setImage(source)
+                    binding?.stateLayout?.loadStateFlow?.value = LoadState.Success()
+                }
+            }.using(param?.imageSrc.toCoverImage(), this)
     }
 
     override fun onDestroy() {

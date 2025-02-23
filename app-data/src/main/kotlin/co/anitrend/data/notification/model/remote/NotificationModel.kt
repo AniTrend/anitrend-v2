@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.notification.model.remote
 
 import co.anitrend.data.media.model.MediaModel
@@ -34,7 +33,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class NotificationModel : INotificationModel {
-
     abstract val activityId: Int?
     abstract val user: UserModel?
     abstract val media: MediaModel?

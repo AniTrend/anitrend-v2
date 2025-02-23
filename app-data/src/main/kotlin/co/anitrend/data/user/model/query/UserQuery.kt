@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.model.query
 
 import co.anitrend.data.auth.settings.IAuthenticationSettings
@@ -22,77 +21,73 @@ import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.user.model.UserParam
 
 internal sealed class UserQuery : IGraphPayload {
-
     data class Identifier(
-        val param: UserParam.Identifier
+        val param: UserParam.Identifier,
     ) : UserQuery() {
-
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "name" to param.name,
-            "id" to param.id
-        )
+        override fun toMap() =
+            mapOf(
+                "name" to param.name,
+                "id" to param.id,
+            )
     }
 
     data class Profile(
-        val param: UserParam.Profile
+        val param: UserParam.Profile,
     ) : UserQuery() {
-
-        fun isUserIdValid() =
-            param.id != IAuthenticationSettings.INVALID_USER_ID
+        fun isUserIdValid() = param.id != IAuthenticationSettings.INVALID_USER_ID
 
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id,
-            "name" to param.name,
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "name" to param.name,
+            )
     }
 
     data class Statistic(
-        val param: UserParam.Statistic
+        val param: UserParam.Statistic,
     ) : UserQuery() {
-
-        fun isUserIdValid() =
-            param.id != IAuthenticationSettings.INVALID_USER_ID
+        fun isUserIdValid() = param.id != IAuthenticationSettings.INVALID_USER_ID
 
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id,
-            "statisticsSort" to param.statisticsSort
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "statisticsSort" to param.statisticsSort,
+            )
     }
-    
-    data class Search(
-        val param: UserParam.Search
-    ) : UserQuery() {
 
+    data class Search(
+        val param: UserParam.Search,
+    ) : UserQuery() {
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "search" to param.search,
-            "sort" to param.sort
-        )
+        override fun toMap() =
+            mapOf(
+                "search" to param.search,
+                "sort" to param.sort,
+            )
     }
 
     data class Viewer(
-        val param: UserParam.Viewer
+        val param: UserParam.Viewer,
     ) : UserQuery() {
-
-        fun isUserIdValid() =
-            param.id != IAuthenticationSettings.INVALID_USER_ID
+        fun isUserIdValid() = param.id != IAuthenticationSettings.INVALID_USER_ID
 
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+            )
     }
 }

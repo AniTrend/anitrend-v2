@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.extension
 
 import co.anitrend.data.common.model.date.FuzzyDateModel
@@ -27,7 +26,6 @@ import kotlin.test.Test
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
 class FuzzyDateLikeConversionTest {
-
     @Test
     fun `should produce unknown fuzzy date like pattern`() {
         /** new instance of the fuzzy date object should return all fields defaulted to [FuzzyDateModel.UNKNOWN] */
@@ -38,36 +36,40 @@ class FuzzyDateLikeConversionTest {
 
     @Test
     fun `should produce fuzzy date like pattern with missing day`() {
-        val fuzzyDate = FuzzyDateModel.empty().copy(
-            year = 1976,
-            month = 5
-        )
+        val fuzzyDate =
+            FuzzyDateModel.empty().copy(
+                year = 1976,
+                month = 5,
+            )
 
         assertEquals("197605%", fuzzyDate.toFuzzyDateLike())
     }
 
     @Test
     fun `should produce fuzzy date like pattern with missing month`() {
-        val fuzzyDate = FuzzyDateModel.empty().copy(
-            year = 1843,
-            day = 10
-        )
+        val fuzzyDate =
+            FuzzyDateModel.empty().copy(
+                year = 1843,
+                day = 10,
+            )
 
         assertEquals("1843%10", fuzzyDate.toFuzzyDateLike())
 
-        val fuzzyDateYear = FuzzyDateModel.empty().copy(
-            year = 1843
-        )
+        val fuzzyDateYear =
+            FuzzyDateModel.empty().copy(
+                year = 1843,
+            )
 
         assertEquals("1843%", fuzzyDateYear.toFuzzyDateLike())
     }
 
     @Test
     fun `should produce fuzzy date like pattern with missing year`() {
-        val fuzzyDate = FuzzyDateModel.empty().copy(
-            month = 8,
-            day = 10
-        )
+        val fuzzyDate =
+            FuzzyDateModel.empty().copy(
+                month = 8,
+                day = 10,
+            )
 
         assertEquals("%0810", fuzzyDate.toFuzzyDateLike())
     }

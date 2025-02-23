@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.interactor
 
 import co.anitrend.arch.domain.state.UiState
@@ -22,21 +21,20 @@ import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.domain.media.repository.IMediaRepository
 
 sealed class MediaUseCase {
-
-    abstract class GetDetail<State: UiState<*>>(
-        protected val repository: IMediaRepository.Detail<State>
+    abstract class GetDetail<State : UiState<*>>(
+        protected val repository: IMediaRepository.Detail<State>,
     ) : MediaUseCase() {
         operator fun invoke(param: MediaParam.Detail) = repository.getMedia(param)
     }
 
-    abstract class GetPaged<State: UiState<*>>(
-        protected val repository: IMediaRepository.Paged<State>
+    abstract class GetPaged<State : UiState<*>>(
+        protected val repository: IMediaRepository.Paged<State>,
     ) : MediaUseCase() {
         operator fun invoke(param: MediaParam.Find) = repository.getPaged(param)
     }
 
-    abstract class GetByNetwork<State: UiState<*>>(
-        protected val repository: IMediaRepository.Network<State>
+    abstract class GetByNetwork<State : UiState<*>>(
+        protected val repository: IMediaRepository.Network<State>,
     ) : MediaUseCase() {
         operator fun invoke(param: MediaParam.Find) = repository.getPaged(param)
     }

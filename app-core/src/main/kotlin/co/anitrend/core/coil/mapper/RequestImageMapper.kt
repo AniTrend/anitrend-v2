@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.coil.mapper
 
 import co.anitrend.core.android.controller.power.contract.IPowerController
@@ -26,30 +25,28 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class RequestImageMapper(
-    powerController: IPowerController
+    powerController: IPowerController,
 ) : Mapper<RequestImage<*>, HttpUrl> {
     private val powerSaverState = powerController.powerSaverState()
 
-    internal fun getImageUrlUsing(
-        requestImage: RequestImage<*>
-    ): String {
-        return when (requestImage) {
-            is RequestImage.Media -> when (requestImage.type) {
-                RequestImage.Media.ImageType.BANNER -> requestImage.image?.banner
-                RequestImage.Media.ImageType.POSTER -> {
-                    when (powerSaverState) {
-                        PowerSaverState.Disabled -> requestImage.image?.extraLarge
-                        else -> requestImage.image?.large
+    internal fun getImageUrlUsing(requestImage: RequestImage<*>): String =
+        when (requestImage) {
+            is RequestImage.Media ->
+                when (requestImage.type) {
+                    RequestImage.Media.ImageType.BANNER -> requestImage.image?.banner
+                    RequestImage.Media.ImageType.POSTER -> {
+                        when (powerSaverState) {
+                            PowerSaverState.Disabled -> requestImage.image?.extraLarge
+                            else -> requestImage.image?.large
+                        }
                     }
                 }
-            }
             is RequestImage.Cover ->
                 when (powerSaverState) {
                     PowerSaverState.Disabled -> requestImage.image?.large
                     else -> requestImage.image?.medium
                 }
         }.toString()
-    }
 
     /**
      * Convert [data] into [V]. Return 'null' if this mapper cannot convert [data].
@@ -57,7 +54,10 @@ class RequestImageMapper(
      * @param data The data to convert.
      * @param options The options for this request.
      */
-    override fun map(data: RequestImage<*>, options: Options): HttpUrl {
+    override fun map(
+        data: RequestImage<*>,
+        options: Options,
+    ): HttpUrl {
         val url = getImageUrlUsing(data)
         return url.toHttpUrl()
     }

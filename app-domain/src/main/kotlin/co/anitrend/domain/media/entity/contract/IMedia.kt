@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.entity.contract
 
 import co.anitrend.domain.common.entity.contract.IEntity
@@ -22,21 +21,24 @@ import co.anitrend.domain.common.entity.contract.IFavourable
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.entity.contract.ISynopsis
 import co.anitrend.domain.common.entity.shared.FuzzyDate
+import co.anitrend.domain.media.entity.attribute.score.IMediaScore
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.base.IMediaList
 
-interface IMedia : IEntity, IFavourable, ISynopsis {
+interface IMedia :
+    IEntity,
+    IFavourable,
+    ISynopsis {
     val title: IMediaTitle
     val image: IMediaCover
     val isAdult: Boolean?
     val format: MediaFormat?
     val season: MediaSeason?
     val status: MediaStatus?
-    val meanScore: Int
-    val averageScore: Int
+    val score: IMediaScore
     val startDate: FuzzyDate
     val endDate: FuzzyDate
     val mediaList: IMediaList?

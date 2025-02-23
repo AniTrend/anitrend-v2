@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,39 +14,36 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.action.provider.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.domain.user.entity.User
-import co.anitrend.navigation.drawer.action.provider.viewmodel.state.AuthenticatedUserState
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 internal class NotificationProviderViewModel(
-    override val state: AuthenticatedUserState
-) : AniTrendViewModel() {
-
-    val unreadNotifications = state.model.map { user ->
-        when (user) {
-            is User.Authenticated -> user.unreadNotifications
-            else -> {
-                Timber.w("Type of $user does not has no `unreadNotifications` property")
-                0
+    private val interactor: GetAuthenticatedInteractor,
+) : AniTrendViewModelState<User>() {
+    val unreadNotifications: LiveData<Int> =
+        model.map { user ->
+            when (user) {
+                is User.Authenticated -> user.unreadNotifications
+                else -> {
+                    Timber.w("Type of $user does not have `unreadNotifications` property")
+                    0
+                }
             }
         }
-    }
-
-    init {
-        fetchUser()
-    }
 
     fun fetchUser() {
         viewModelScope.launch {
             runCatching {
-                state()
+                val result = interactor()
+                state.postValue(result)
             }.onFailure(Timber::w)
         }
     }

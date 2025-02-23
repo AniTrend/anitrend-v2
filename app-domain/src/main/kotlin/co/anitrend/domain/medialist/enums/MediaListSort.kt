@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.medialist.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -23,7 +22,10 @@ import co.anitrend.domain.common.enums.contract.ISortable
 /**
  * Media list sort enums
  */
-enum class MediaListSort(override val alias: CharSequence) : IAliasable, ISortable {
+enum class MediaListSort(
+    override val alias: CharSequence,
+) : IAliasable,
+    ISortable {
     ADDED_TIME("Added time"),
     FINISHED_ON("Finished on"),
     MEDIA_ID("Id"),
@@ -38,5 +40,5 @@ enum class MediaListSort(override val alias: CharSequence) : IAliasable, ISortab
     SCORE("Score"),
     STARTED_ON("Started on"),
     STATUS("Status"),
-    UPDATED_TIME("Updated time")
+    UPDATED_TIME("Updated time"),
 }

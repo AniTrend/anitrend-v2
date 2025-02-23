@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,28 +14,27 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.database.extensions
 
 import co.anitrend.arch.extension.ext.empty
 
-internal fun List<*>.toCommaSeparatedValues(): String {
-    return if (isNotEmpty()) {
+internal fun List<*>.toCommaSeparatedValues(): String =
+    if (isNotEmpty()) {
         joinToString(separator = ",")
-    } else
+    } else {
         String.empty()
-}
+    }
 
-internal fun String.fromCommaSeparatedValues(): List<String> {
-    return if (isNotBlank())
+internal fun String.fromCommaSeparatedValues(): List<String> =
+    if (isNotBlank()) {
         split(',')
-    else
+    } else {
         emptyList()
-}
+    }
 
 internal inline fun <reified T : Enum<T>> Int.toEnum(): T = enumValues<T>()[this]
 
-internal inline fun <reified T: Enum<*>> String.toEnum(): T {
+internal inline fun <reified T : Enum<*>> String.toEnum(): T {
     val `class` = T::class.java
     return `class`.enumConstants?.first { it.name == this }!!
 }

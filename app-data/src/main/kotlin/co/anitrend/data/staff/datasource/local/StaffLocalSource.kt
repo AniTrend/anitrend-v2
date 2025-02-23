@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.staff.datasource.local
 
 import androidx.paging.DataSource
@@ -26,49 +25,60 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class StaffLocalSource : AbstractLocalSource<StaffEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from staff
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from staff
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         delete from staff
         where id = :id
-        """)
+        """,
+    )
     abstract suspend fun clearById(id: Long)
 
-    @Query("""
+    @Query(
+        """
         select * from staff
         where id = :id
-    """)
+    """,
+    )
     abstract suspend fun staffById(id: Long): StaffEntity
 
-    @Query("""
+    @Query(
+        """
         select * from staff
         where id = :id
-    """)
+    """,
+    )
     abstract fun staffByIdFlow(id: Long): Flow<StaffEntity?>
 
-    @Query("""
+    @Query(
+        """
         select * from staff
-    """)
+    """,
+    )
     abstract fun allStaffFactory(): DataSource.Factory<Int, StaffEntity>
 
-    @Query("""
+    @Query(
+        """
         select * from staff
         where name_first match :term
         or name_full match :term
         or name_last match :term
         or name_original match :term
         or name_alternative match :term
-    """)
-    abstract fun searchStaffFactory(
-        term: String
-    ): DataSource.Factory<Int, StaffEntity>
+    """,
+    )
+    abstract fun searchStaffFactory(term: String): DataSource.Factory<Int, StaffEntity>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.staff.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -22,7 +21,9 @@ import co.anitrend.domain.common.enums.contract.IAliasable
 /**
  * The primary language of the voice actor
  */
-enum class StaffLanguage(override val alias: CharSequence) : IAliasable {
+enum class StaffLanguage(
+    override val alias: CharSequence,
+) : IAliasable {
     JAPANESE("Japanese"),
     ENGLISH("English"),
     KOREAN("Korean"),
@@ -48,5 +49,5 @@ enum class StaffLanguage(override val alias: CharSequence) : IAliasable {
     VIETNAMESE("Vietnamese"),
     NEPALI("Nepali"),
     HINDI("Hindi"),
-    URDU("Urdu")
+    URDU("Urdu"),
 }

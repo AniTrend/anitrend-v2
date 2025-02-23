@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.media.entity.attribute.link
 
 import co.anitrend.domain.media.enums.ExternalLinkType
@@ -29,5 +28,5 @@ data class MediaExternalLink(
     override val linkType: ExternalLinkType?,
     override val site: CharSequence,
     override val url: CharSequence,
-    override val id: Long
+    override val id: Long,
 ) : IMediaExternalLink

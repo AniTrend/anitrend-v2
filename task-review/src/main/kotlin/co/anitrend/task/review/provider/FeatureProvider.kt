@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.review.provider
 
 import co.anitrend.navigation.ReviewTaskRouter
@@ -23,8 +22,9 @@ import co.anitrend.task.review.component.ReviewSaveEntryWorker
 import co.anitrend.task.review.component.ReviewVoteEntryWorker
 
 class FeatureProvider : ReviewTaskRouter.Provider {
-
     override fun reviewVoteEntryWorker() = ReviewVoteEntryWorker::class.java
+
     override fun reviewSaveEntryWorker() = ReviewSaveEntryWorker::class.java
+
     override fun reviewDeleteEntryWorker() = ReviewDeleteEntryWorker::class.java
 }

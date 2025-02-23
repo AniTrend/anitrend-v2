@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.notification.component.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.notification.component.viewmodel.state.NotificationState
+import androidx.lifecycle.viewModelScope
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.navigation.model.common.IParam
+import kotlinx.coroutines.launch
 
-class NotificationViewModel(
-    override val state: NotificationState
-) : AniTrendViewModel()
+class NotificationViewModel : AniTrendViewModelState<Unit>() {
+    operator fun invoke(param: IParam) {
+        viewModelScope.launch {
+            param
+        }
+    }
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.jikan.producer.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
@@ -26,9 +25,8 @@ import co.anitrend.data.jikan.producer.datasource.local.JikanProducerLocalSource
 import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
 
 internal sealed class JikanProducerMapper : DefaultMapper<JikanMediaModel, JikanProducerEntity>() {
-
     class Embed(
         override val localSource: JikanProducerLocalSource,
-        override val converter: JikanProducerModelConverter
+        override val converter: JikanProducerModelConverter,
     ) : EmbedMapper<JikanItem, JikanProducerEntity>()
 }

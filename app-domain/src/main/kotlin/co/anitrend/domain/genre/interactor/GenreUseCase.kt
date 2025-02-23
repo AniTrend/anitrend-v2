@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.genre.interactor
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.genre.model.GenreParam
 import co.anitrend.domain.genre.repository.IGenreRepository
 
-abstract class GenreUseCase<State: UiState<*>>(
-    protected val repository: IGenreRepository<State>
+abstract class GenreUseCase<State : UiState<*>>(
+    protected val repository: IGenreRepository<State>,
 ) {
-
     /**
      * @return media genres user interface state
      */
-    fun getMediaGenres(param: GenreParam) =
-        repository.getMediaGenres(param)
+    fun getMediaGenres(param: GenreParam) = repository.getMediaGenres(param)
 }

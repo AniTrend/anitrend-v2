@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.staff.model
 
 import co.anitrend.data.character.model.remote.connection.CharacterConnection
@@ -29,7 +28,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class StaffModel : IStaffModel {
-
     abstract val age: Int?
     abstract val dateOfBirth: FuzzyDateModel?
     abstract val dateOfDeath: FuzzyDateModel?
@@ -49,7 +47,7 @@ internal sealed class StaffModel : IStaffModel {
     internal data class ActorRole(
         @SerialName("dubGroup") val dubGroup: String? = null,
         @SerialName("roleNotes") val roleNotes: String? = null,
-        @SerialName("voiceActor") val voiceActor: Core
+        @SerialName("voiceActor") val voiceActor: Core,
     )
 
     @Serializable
@@ -70,7 +68,7 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("languageV2") override val language: StaffLanguage? = null,
         @SerialName("name") override val name: SharedNameModel? = null,
         @SerialName("siteUrl") override val siteUrl: String? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StaffModel()
 
     /**
@@ -97,6 +95,6 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("languageV2") override val language: StaffLanguage? = null,
         @SerialName("name") override val name: SharedNameModel? = null,
         @SerialName("siteUrl") override val siteUrl: String? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StaffModel()
 }

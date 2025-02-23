@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.studio.entity.cotract
 
 import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.common.entity.contract.IFavourable
 import co.anitrend.domain.common.entity.shared.CoverImage
 
-interface IStudio : IEntity, IFavourable {
+interface IStudio :
+    IEntity,
+    IFavourable {
     val name: String
     val image: CoverImage?
     val isAnimationStudio: Boolean

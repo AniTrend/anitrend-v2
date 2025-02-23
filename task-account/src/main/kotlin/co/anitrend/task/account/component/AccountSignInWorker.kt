@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.task.account.component
 
 import android.content.Context
@@ -27,14 +26,11 @@ import co.anitrend.core.android.shortcut.model.Shortcut
 import co.anitrend.core.extensions.cancelAuthenticationWorkers
 import co.anitrend.core.extensions.scheduleAuthenticationWorkers
 import co.anitrend.data.account.AccountInteractor
-import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.account.model.AccountParam
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.AccountTaskRouter
-import co.anitrend.navigation.MediaListRouter
-import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.DeepLinkType
+import co.anitrend.navigation.extensions.deepLinkOf
 import co.anitrend.navigation.extensions.transform
-import kotlinx.coroutines.flow.firstOrNull
 import timber.log.Timber
 
 class AccountSignInWorker(
@@ -42,37 +38,26 @@ class AccountSignInWorker(
     parameters: WorkerParameters,
     private val interactor: AccountInteractor,
     private val shortcutController: IShortcutController,
-    private val settings: IUserSettings,
 ) : SupportCoroutineWorker(context, parameters) {
-
     private val param by parameters.transform<
         AccountTaskRouter.AccountParam,
-        AccountParam.Activate
+        AccountParam.Activate,
     > { AccountParam.Activate(userId = it.id) }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
-    private suspend fun createShortcuts() {
-        val scoreFormat = settings.scoreFormat.flow.firstOrNull() ?: IUserSettings.DEFAULT_SCORE_FORMAT
+    private fun createShortcuts() {
         runCatching {
             shortcutController.removeAllDynamicShortcuts()
             shortcutController.createShortcuts(
                 Shortcut.AnimeList(
-                    navPayload = MediaListRouter.MediaListParam(
-                        scoreFormat = scoreFormat,
-                        type = MediaType.ANIME,
-                        userId = param.userId,
-                    ).asNavPayload()
+                    data = deepLinkOf("/user/${param.userId}/animelist/", DeepLinkType.WEB),
                 ),
                 Shortcut.MangaList(
-                    navPayload = MediaListRouter.MediaListParam(
-                        scoreFormat = scoreFormat,
-                        type = MediaType.MANGA,
-                        userId = param.userId,
-                    ).asNavPayload()
+                    data = deepLinkOf("/user/${param.userId}/mangalist/", DeepLinkType.WEB),
                 ),
                 Shortcut.Notification(),
                 Shortcut.Profile(),
-                Shortcut.Search()
+                Shortcut.Search(),
             )
         }.onFailure(Timber::w)
     }

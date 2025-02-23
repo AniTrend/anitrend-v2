@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,10 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.entity.contract
-
-import co.anitrend.domain.common.entity.contract.ISynopsis
 
 /**
  * A users status
@@ -42,16 +39,17 @@ data class UserStatus(
     val updatedAt: Long?,
 ) {
     companion object {
-        fun empty() = UserStatus(
-            about = null,
-            donationBadge = null,
-            donationTier = null,
-            isFollowing = null,
-            isFollower = null,
-            isBlocked = null,
-            pageUrl = null,
-            createdAt = null,
-            updatedAt = null,
-        )
+        fun empty() =
+            UserStatus(
+                about = null,
+                donationBadge = null,
+                donationTier = null,
+                isFollowing = null,
+                isFollower = null,
+                isBlocked = null,
+                pageUrl = null,
+                createdAt = null,
+                updatedAt = null,
+            )
     }
 }

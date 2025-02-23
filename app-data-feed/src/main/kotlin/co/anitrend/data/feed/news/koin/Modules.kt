@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
@@ -35,81 +34,89 @@ import co.anitrend.data.feed.news.source.contract.NewsSource
 import co.anitrend.data.feed.news.usecase.NewsInteractor
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<NewsSource> {
-        NewsSourceImpl(
-            remoteSource = remoteSource(),
-            localSource = newsLocalSource(),
-            clearDataHelper = get(),
-            controller = defaultController(
-                mapper = get<NewsMapper>()
-            ),
-            converter = get(),
-            cachePolicy = get<NewsCache>(),
-            dispatcher = get()
-        )
+private val sourceModule =
+    module {
+        factory<NewsSource> {
+            NewsSourceImpl(
+                remoteSource = remoteSource(),
+                localSource = newsLocalSource(),
+                clearDataHelper = get(),
+                controller =
+                    defaultController(
+                        mapper = get<NewsMapper>(),
+                    ),
+                converter = get(),
+                cachePolicy = get<NewsCache>(),
+                dispatcher = get(),
+            )
+        }
     }
-}
 
-private val cacheModule = module {
-    factory {
-        NewsCache(
-            localSource = cacheLocalSource()
-        )
+private val cacheModule =
+    module {
+        factory {
+            NewsCache(
+                localSource = cacheLocalSource(),
+            )
+        }
     }
-}
 
-private val converterModule =  module {
-    factory {
-        NewsEntityConverter()
+private val converterModule =
+    module {
+        factory {
+            NewsEntityConverter()
+        }
+        factory {
+            NewsModelConverter()
+        }
     }
-    factory {
-        NewsModelConverter()
-    }
-}
 
-private val mapperModule = module {
-    factory {
-        NewsMapper(
-            localSource = newsLocalSource(),
-            converter = get()
-        )
+private val mapperModule =
+    module {
+        factory {
+            NewsMapper(
+                localSource = newsLocalSource(),
+                converter = get(),
+            )
+        }
     }
-}
 
-private val useCaseModule = module {
-    factory<NewsPagedInteractor> {
-        NewsInteractor.Paged(
-            repository = get()
-        )
+private val useCaseModule =
+    module {
+        factory<NewsPagedInteractor> {
+            NewsInteractor.Paged(
+                repository = get(),
+            )
+        }
+        factory<NewsSyncInteractor> {
+            NewsInteractor.Sync(
+                repository = get(),
+            )
+        }
     }
-    factory<NewsSyncInteractor> {
-        NewsInteractor.Sync(
-            repository = get()
-        )
-    }
-}
 
-private val repositoryModule = module {
-    factory<NewsPagedRepository> {
-        NewsRepository.Paged(
-            source = get()
-        )
+private val repositoryModule =
+    module {
+        factory<NewsPagedRepository> {
+            NewsRepository.Paged(
+                source = get(),
+            )
+        }
+        factory<NewsSyncRepository> {
+            NewsRepository.Sync(
+                source = get(),
+            )
+        }
     }
-    factory<NewsSyncRepository> {
-        NewsRepository.Sync(
-            source = get()
-        )
-    }
-}
 
-internal val newsModules = module {
-    includes(
-        sourceModule,
-        cacheModule,
-        converterModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}
+internal val newsModules =
+    module {
+        includes(
+            sourceModule,
+            cacheModule,
+            converterModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
+        )
+    }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,39 +14,35 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.suggestion.component.screen
 
 import android.os.Bundle
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.commit
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import co.anitrend.common.shared.ui.compose.DefaultScaffold
+import co.anitrend.common.shared.ui.compose.FragmentItemHost
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.SuggestionRouter
-import co.anitrend.suggestion.databinding.SuggestionScreenBinding
 
-class SuggestionScreen : AniTrendBoundScreen<SuggestionScreenBinding>() {
-
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        updateUserInterface()
-    }
-
+class SuggestionScreen : AniTrendScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = SuggestionScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        setSupportActionBar(requireBinding().bottomAppBar)
-    }
-
-    private fun updateUserInterface() {
-        currentFragmentTag = FragmentItem(
-            fragment = SuggestionRouter.forFragment(),
-            parameter = intent.extras
-        ).commit(requireBinding().content, this)
+        setContent {
+            AniTrendTheme3 {
+                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) {
+                    FragmentItemHost(
+                        modifier = Modifier.padding(it),
+                        fragmentItem =
+                            FragmentItem(
+                                fragment = SuggestionRouter.forFragment(),
+                                parameter = intent.extras,
+                            ),
+                    )
+                }
+            }
+        }
     }
 }

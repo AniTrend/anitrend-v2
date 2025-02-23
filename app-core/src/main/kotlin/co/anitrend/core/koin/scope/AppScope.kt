@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.koin.scope
 
 import co.anitrend.core.koin.scope.contract.ICustomScope
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.qualifier.named
 
-enum class AppScope(override val qualifier: Qualifier) : ICustomScope {
-    BOTTOM_NAV_DRAWER(named("bottom_nav_drawer"))
+enum class AppScope(
+    override val qualifier: Qualifier,
+) : ICustomScope {
+    BOTTOM_NAV_DRAWER(named("bottom_nav_drawer")),
 }

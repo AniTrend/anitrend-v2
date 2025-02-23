@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.genre.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -30,15 +29,13 @@ import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.data.media.model.MediaModel
 
 internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEntity>>() {
-
     protected abstract val localSource: GenreLocalSource
     protected abstract val converter: GenreModelConverter
 
     class Core(
         override val localSource: GenreLocalSource,
-        override val converter: GenreModelConverter
+        override val converter: GenreModelConverter,
     ) : GenreMapper() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -52,51 +49,50 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
          * @param source the incoming data source type
          * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: GenreCollection
-        ) = converter.convertFrom(
-            source.asGenreModels()
-        )
+        override suspend fun onResponseMapFrom(source: GenreCollection) =
+            converter.convertFrom(
+                source.asGenreModels(),
+            )
     }
 
     class Embed(
-        override val localSource: GenreConnectionLocalSource
+        override val localSource: GenreConnectionLocalSource,
     ) : EmbedMapper<Embed.Item, GenreConnectionEntity>() {
+        override val converter =
+            object : SupportConverter<Item, GenreConnectionEntity>() {
+                /**
+                 * Function reference from converting from [M] to [E] which will
+                 * be called by [convertFrom]
+                 */
+                override val fromType: (Item) -> GenreConnectionEntity = {
+                    GenreConnectionEntity(
+                        mediaId = it.mediaId,
+                        genreId = it.genreId,
+                    )
+                }
 
-        override val converter = object : SupportConverter<Item, GenreConnectionEntity>() {
-            /**
-             * Function reference from converting from [M] to [E] which will
-             * be called by [convertFrom]
-             */
-            override val fromType: (Item) -> GenreConnectionEntity = {
-                GenreConnectionEntity(
-                    mediaId = it.mediaId,
-                    genreId = it.genreId
-                )
+                /**
+                 * Function reference from converting from [E] to [M] which will
+                 * be called by [convertTo]
+                 */
+                override val toType: (GenreConnectionEntity) -> Item
+                    get() = throw NotImplementedError()
             }
-
-            /**
-             * Function reference from converting from [E] to [M] which will
-             * be called by [convertTo]
-             */
-            override val toType: (GenreConnectionEntity) -> Item
-                get() = throw NotImplementedError()
-        }
 
         data class Item(
             val mediaId: Long,
-            val genreId: Long
+            val genreId: Long,
         )
 
         companion object {
-
             fun asItem(source: MediaModel) =
-                source.genres?.map { genre ->
-                    Item(
-                        mediaId = source.id,
-                        genreId = genre.toHashId()
-                    )
-                }.orEmpty()
+                source.genres
+                    ?.map { genre ->
+                        Item(
+                            mediaId = source.id,
+                            genreId = genre.toHashId(),
+                        )
+                    }.orEmpty()
 
             fun asItem(source: List<MediaModel>) =
                 source.flatMap { media ->

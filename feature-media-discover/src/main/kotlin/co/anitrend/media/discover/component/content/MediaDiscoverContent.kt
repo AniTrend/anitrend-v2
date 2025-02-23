@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.component.content
 
 import android.view.MenuItem
@@ -33,33 +32,34 @@ import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
+import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asBundle
+import co.anitrend.navigation.extensions.fromBundle
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
     override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<Media>
+    override val supportViewAdapter: SupportAdapter<Media>,
 ) : AniTrendListContent<Media>() {
-
     private val viewModel by viewModel<MediaDiscoverViewModel>()
 
     override val defaultSpanSize: Int
-        get() = getSpanSizeByPreference(
-            settings.preferredViewMode.value
-        )
+        get() =
+            getSpanSizeByPreference(
+                settings.preferredViewMode.value,
+            )
 
-
-    @IntegerRes private fun getSpanSizeByPreference(
-        viewMode: PreferredViewMode
-    ) = when (viewMode) {
-        PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
-        PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
-        else -> co.anitrend.core.android.R.integer.column_x1
-    }
+    @IntegerRes private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
+        when (viewMode) {
+            PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
+            PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
+            else -> co.anitrend.core.android.R.integer.column_x1
+        }
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -79,20 +79,20 @@ class MediaDiscoverContent(
      *
      * @see .onCreateOptionsMenu
      */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             co.anitrend.core.android.R.id.action_filter -> {
-                val fragmentItem = FragmentItem(
-                    fragment = MediaDiscoverRouter.forSheet(),
-                    parameter = viewModel.default.asBundle()
-                )
+                val fragmentItem =
+                    FragmentItem(
+                        fragment = MediaDiscoverFilterRouter.forSheet(),
+                        parameter = viewModel.getParam().asBundle(),
+                    )
                 val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
                 dialog.show(childFragmentManager, fragmentItem.tag())
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
 
     /**
      * Stub to trigger the loading of data, by default this is only called
@@ -104,8 +104,8 @@ class MediaDiscoverContent(
      */
     override fun onFetchDataInitialize() {
         listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
-            viewModelState().invoke(
-                viewModel.default
+            viewModel.invoke(
+                viewModel.default,
             )
         }
         lifecycleScope.launch {
@@ -116,6 +116,14 @@ class MediaDiscoverContent(
                 )
             }
         }
+        childFragmentManager.setFragmentResultListener(
+            MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
+            viewLifecycleOwner,
+        ) { _, bundle ->
+            val result = bundle.fromBundle<MediaDiscoverRouter.MediaDiscoverParam>()
+            result?.also(viewModel::setParam)
+            Timber.d("Received result for from fragment listener: $result")
+        }
     }
 
     /**
@@ -123,7 +131,7 @@ class MediaDiscoverContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             onPostModelChange(it)
         }
     }
@@ -131,5 +139,5 @@ class MediaDiscoverContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

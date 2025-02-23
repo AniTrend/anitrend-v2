@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.extensions
-
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
 class CommonExtensionsKtTest {
-
-    //@Test
+    @Test
     fun `test hash for word action`() {
         val given = "Action"
         val actual = given.toHashId()
@@ -31,7 +28,7 @@ class CommonExtensionsKtTest {
         assertEquals(expected, actual)
     }
 
-    //@Test
+    @Test
     fun `test hash for word adventure`() {
         val given = "Adventure"
         val actual = given.toHashId()
@@ -39,7 +36,7 @@ class CommonExtensionsKtTest {
         assertEquals(expected, actual)
     }
 
-    //@Test
+    @Test
     fun `test hash for word comedy`() {
         val given = "Comedy"
         val actual = given.toHashId()
@@ -47,7 +44,7 @@ class CommonExtensionsKtTest {
         assertEquals(expected, actual)
     }
 
-    //@Test
+    @Test
     fun `test hash for word drama`() {
         val given = "Drama"
         val actual = given.toHashId()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.extensions
 
 import android.content.Context
@@ -29,14 +28,13 @@ import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.work.WorkSchedulerController
 import com.google.android.material.snackbar.Snackbar
 
-private inline fun taskSchedulersForAuthentication(
-    action: (WorkSchedulerController) -> Unit
-) = setOf(
-    UserTaskRouter.forAccountSyncScheduler(),
-    UserTaskRouter.forStatisticSyncScheduler(),
-    MediaListTaskRouter.forAnimeScheduler(),
-    MediaListTaskRouter.forMangaScheduler(),
-).forEach(action)
+private inline fun taskSchedulersForAuthentication(action: (WorkSchedulerController) -> Unit) =
+    setOf(
+        UserTaskRouter.forAccountSyncScheduler(),
+        UserTaskRouter.forStatisticSyncScheduler(),
+        MediaListTaskRouter.forAnimeScheduler(),
+        MediaListTaskRouter.forMangaScheduler(),
+    ).forEach(action)
 
 /**
  * Fires off worker schedules that should run when a user is signed in
@@ -64,13 +62,13 @@ fun Context.cancelAuthenticationWorkers() {
  */
 fun View.runIfAuthenticated(
     settings: IAuthenticationSettings,
-    action: () -> Unit
+    action: () -> Unit,
 ) {
     if (!settings.isAuthenticated.value) {
         snackBar(
             text = R.string.label_text_authentication_required,
             duration = Snackbar.LENGTH_INDEFINITE,
-            actionText = R.string.action_login
+            actionText = R.string.action_login,
         ) { snackBar ->
             AuthRouter.startActivity(snackBar.context)
             snackBar.dismiss()

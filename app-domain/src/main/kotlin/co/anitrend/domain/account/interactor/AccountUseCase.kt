@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,22 +14,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.account.interactor
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.domain.account.repository.AccountRepository
 
-abstract class AccountUseCase<State: UiState<*>>(
-    protected val repository: AccountRepository<State>
+abstract class AccountUseCase<State : UiState<*>>(
+    protected val repository: AccountRepository<State>,
 ) {
-    suspend fun getAuthorizedAccounts() =
-        repository.getAccountUsers()
+    suspend fun getAuthorizedAccounts() = repository.getAccountUsers()
 
-    suspend fun signOut(param: AccountParam.SignOut) =
-        repository.signOut(param)
+    suspend fun signOut(param: AccountParam.SignOut) = repository.signOut(param)
 
-    suspend fun signIn(param: AccountParam.Activate) =
-        repository.signIn(param)
+    suspend fun signIn(param: AccountParam.Activate) = repository.signIn(param)
 }

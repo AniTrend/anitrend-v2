@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.model
 
 import co.anitrend.data.airing.model.AiringScheduleModel
@@ -37,7 +36,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class MediaModel : IMediaModel {
-
     abstract val rankings: List<RankModel>
     abstract val externalLinks: List<LinkModel>
 
@@ -66,7 +64,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("color") val color: String? = null,
         @SerialName("extraLarge") val extraLarge: String? = null,
         @SerialName("large") val large: String? = null,
-        @SerialName("medium") val medium: String? = null
+        @SerialName("medium") val medium: String? = null,
     )
 
     /** [MediaTitle](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatitle.doc.html)
@@ -77,7 +75,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("romaji") val romaji: String? = null,
         @SerialName("english") val english: String? = null,
         @SerialName("native") val native: String? = null,
-        @SerialName("userPreferred") val userPreferred: String? = null
+        @SerialName("userPreferred") val userPreferred: String? = null,
     )
 
     /** [MediaTrailer](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatrailer.doc.html)
@@ -87,7 +85,7 @@ internal sealed class MediaModel : IMediaModel {
     internal data class Trailer(
         @SerialName("id") val id: String? = null,
         @SerialName("site") val site: String? = null,
-        @SerialName("thumbnail") val thumbnail: String? = null
+        @SerialName("thumbnail") val thumbnail: String? = null,
     )
 
     @Serializable
@@ -131,7 +129,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : MediaModel()
 
     @Serializable
@@ -176,7 +174,7 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : MediaModel()
 
     @Serializable
@@ -221,6 +219,6 @@ internal sealed class MediaModel : IMediaModel {
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("nextAiringEpisode") override val nextAiringEpisode: AiringScheduleModel.Core? = null,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : MediaModel()
 }

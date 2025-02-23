@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.source
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
@@ -43,23 +42,23 @@ internal class TagSourceImpl(
     private val converter: TagEntityConverter,
     private val filter: TagQueryFilter,
     override val cachePolicy: ICacheStorePolicy,
-    override val dispatcher: ISupportDispatcher
+    override val dispatcher: ISupportDispatcher,
 ) : TagSource() {
-
-    override fun observable(): Flow<List<Tag>> {
-        return localSource.rawFlowList(
-            filter.build(param)
-        ).flowOn(dispatcher.io)
-         .map(converter::convertFrom)
-         .flowOn(dispatcher.computation)
-    }
+    override fun observable(): Flow<List<Tag>> =
+        localSource
+            .rawFlowList(
+                filter.build(param),
+            ).flowOn(dispatcher.io)
+            .map(converter::convertFrom)
+            .flowOn(dispatcher.computation)
 
     override suspend fun getTags(callback: RequestCallback): Boolean {
-        val deferred = deferred {
-            remoteSource.getMediaTags(
-                QueryContainerBuilder()
-            )
-        }
+        val deferred =
+            deferred {
+                remoteSource.getMediaTags(
+                    QueryContainerBuilder(),
+                )
+            }
 
         val result = controller(deferred, callback)
 

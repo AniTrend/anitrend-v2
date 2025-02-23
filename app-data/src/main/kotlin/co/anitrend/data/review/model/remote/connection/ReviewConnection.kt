@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.model.remote.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
@@ -31,5 +30,7 @@ import kotlinx.serialization.Serializable
 internal data class ReviewConnection(
     @SerialName("edges") override val edges: List<ReviewEdge>?,
     @SerialName("nodes") override val nodes: List<ReviewModel.Core>?,
-    @SerialName("pageInfo") override val pageInfo: PageInfo?
-) : IEntityConnection, IEntityConnection.IEdge<ReviewEdge>, IEntityConnection.INode<ReviewModel>
+    @SerialName("pageInfo") override val pageInfo: PageInfo?,
+) : IEntityConnection,
+    IEntityConnection.IEdge<ReviewEdge>,
+    IEntityConnection.INode<ReviewModel>

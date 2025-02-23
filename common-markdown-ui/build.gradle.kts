@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ tasks.withType(KotlinCompilationTask::class.java) {
 
 dependencies {
 	implementation(libs.saket.betterlinkmovementmethod)
-	
+
 	implementation(libs.markwon.core)
 	implementation(libs.markwon.html)
 	implementation(libs.markwon.coil)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.user.entity.attribute.statistic
 
 import co.anitrend.domain.user.entity.attribute.statistic.contract.IStatistic
 
 sealed class Statistic : IStatistic {
-
     abstract val count: Int
     abstract val meanScore: Float
     abstract val standardDeviation: Float
@@ -42,7 +40,7 @@ sealed class Statistic : IStatistic {
         override val statuses: List<MediaStatistic.Anime>?,
         override val studios: List<MediaStatistic.Anime>?,
         override val tags: List<MediaStatistic.Anime>?,
-        override val voiceActors: List<MediaStatistic.Anime>?
+        override val voiceActors: List<MediaStatistic.Anime>?,
     ) : Statistic()
 
     data class Manga(
@@ -62,6 +60,6 @@ sealed class Statistic : IStatistic {
         override val statuses: List<MediaStatistic.Manga>?,
         override val studios: List<MediaStatistic.Manga>?,
         override val tags: List<MediaStatistic.Manga>?,
-        override val voiceActors: List<MediaStatistic.Manga>?
+        override val voiceActors: List<MediaStatistic.Manga>?,
     ) : Statistic()
 }

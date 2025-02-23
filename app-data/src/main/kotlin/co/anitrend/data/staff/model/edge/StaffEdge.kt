@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.staff.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal sealed class StaffEdge : Identity {
-
     /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
      * Staff connection edge
      *
@@ -36,8 +34,9 @@ internal sealed class StaffEdge : Identity {
     data class Favourite(
         @SerialName("favouriteOrder") val favouriteOrder: Int?,
         @SerialName("node") override val node: StaffModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : StaffEdge(), IEntityEdge<StaffModel>
+        @SerialName("id") override val id: Long,
+    ) : StaffEdge(),
+        IEntityEdge<StaffModel>
 
     /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
      * Staff connection edge
@@ -48,6 +47,8 @@ internal sealed class StaffEdge : Identity {
     data class MediaWithRole(
         @SerialName("role") val role: String?,
         @SerialName("node") override val node: MediaModel.Core?,
-        @SerialName("id") override val id: Long
-    ) : StaffEdge(), IEntityEdge<MediaModel>, Identity
+        @SerialName("id") override val id: Long,
+    ) : StaffEdge(),
+        IEntityEdge<MediaModel>,
+        Identity
 }

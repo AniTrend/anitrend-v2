@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023  AniTrend
+ * Copyright (C) 2023 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.core.component.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 
 abstract class AniTrendViewModel : ViewModel() {
-    abstract val state: AniTrendViewModelState<*>
+    abstract val savedStateHandle: SavedStateHandle
 }

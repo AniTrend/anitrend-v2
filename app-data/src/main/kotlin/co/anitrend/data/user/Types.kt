@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user
 
 import androidx.paging.PagedList
@@ -32,7 +31,7 @@ internal typealias UserAuthController = GraphQLController<UserModelContainer.Vie
 internal typealias UserProfileController = GraphQLController<UserModelContainer.Profile, UserEntity>
 internal typealias UserController = GraphQLController<UserModelContainer.User, UserEntity>
 internal typealias UserProfileStatisticController =
-        GraphQLController<UserModelContainer.WithStatistic, UserWithStatisticEntity>
+    GraphQLController<UserModelContainer.WithStatistic, UserWithStatisticEntity>
 
 internal typealias UserIdentifierRepository = IUserRepository.User<DataState<User>>
 internal typealias UserAuthenticatedRepository = IUserRepository.Authenticated<DataState<User>>

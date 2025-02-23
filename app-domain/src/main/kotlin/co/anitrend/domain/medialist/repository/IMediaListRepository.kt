@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,43 +14,41 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.medialist.repository
 
 import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.medialist.model.MediaListParam
 
 interface IMediaListRepository {
-
-    interface Sync<State: UiState<*>> : IMediaListRepository {
+    interface Sync<State : UiState<*>> : IMediaListRepository {
         fun sync(param: MediaListParam.Collection): State
     }
 
-    interface Entry<State: UiState<*>> : IMediaListRepository {
+    interface Entry<State : UiState<*>> : IMediaListRepository {
         fun getEntry(param: MediaListParam.Entry): State
     }
 
-    interface Paged<State: UiState<*>> : IMediaListRepository {
+    interface Paged<State : UiState<*>> : IMediaListRepository {
         fun getPaged(param: MediaListParam.Paged): State
     }
 
-    interface Collection<State: UiState<*>> : IMediaListRepository {
+    interface Collection<State : UiState<*>> : IMediaListRepository {
         fun getCollection(param: MediaListParam.Collection): State
     }
 
-    interface SaveEntries<State: UiState<*>> : IMediaListRepository {
+    interface SaveEntries<State : UiState<*>> : IMediaListRepository {
         fun saveEntries(param: MediaListParam.SaveEntries): State
     }
 
-    interface SaveEntry<State: UiState<*>> : IMediaListRepository {
+    interface SaveEntry<State : UiState<*>> : IMediaListRepository {
         fun saveEntry(param: MediaListParam.SaveEntry): State
     }
 
-    interface DeleteCustomList<State: UiState<*>> : IMediaListRepository {
+    interface DeleteCustomList<State : UiState<*>> : IMediaListRepository {
         fun deleteCustomList(param: MediaListParam.DeleteCustomList): State
     }
 
-    interface DeleteEntry<State: UiState<*>> : IMediaListRepository {
+    interface DeleteEntry<State : UiState<*>> : IMediaListRepository {
         fun deleteEntry(param: MediaListParam.DeleteEntry): State
     }
 }

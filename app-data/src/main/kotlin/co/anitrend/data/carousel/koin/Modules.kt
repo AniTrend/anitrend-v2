@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.carousel.koin
 
 import co.anitrend.data.android.extensions.graphQLController
@@ -30,60 +29,67 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<CarouselSource> {
-        CarouselSourceImpl(
-            remoteSource = aniListApi(),
-            localSource = store().carouselDao(),
-            controller = graphQLController(
-                mapper = get<CarouselMapper>()
-            ),
-            cachePolicy = get<CarouselCache>(),
-            clearDataHelper = get(),
-            converter = get(),
-            dispatcher = get()
+private val sourceModule =
+    module {
+        factory<CarouselSource> {
+            CarouselSourceImpl(
+                remoteSource = aniListApi(),
+                localSource = store().carouselDao(),
+                controller =
+                    graphQLController(
+                        mapper = get<CarouselMapper>(),
+                    ),
+                cachePolicy = get<CarouselCache>(),
+                clearDataHelper = get(),
+                converter = get(),
+                dispatcher = get(),
+            )
+        }
+    }
+
+private val cacheModule =
+    module {
+        factory {
+            CarouselCache(
+                localSource = store().cacheDao(),
+            )
+        }
+    }
+
+private val mapperModule =
+    module {
+        factory {
+            CarouselMapper(
+                mapper = get(),
+            )
+        }
+    }
+
+private val useCaseModule =
+    module {
+        factory<GetCarouselInteractor> {
+            MediaCarouselUseCaseImpl(
+                repository = get(),
+            )
+        }
+    }
+
+private val repositoryModule =
+    module {
+        factory<MediaCarouselListRepository> {
+            MediaCarouselRepository(
+                source = get(),
+            )
+        }
+    }
+
+internal val carouselModules =
+    module {
+        includes(
+            sourceModule,
+            cacheModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
         )
     }
-}
-
-private val cacheModule = module {
-    factory {
-        CarouselCache(
-            localSource = store().cacheDao()
-        )
-    }
-}
-
-private val mapperModule = module {
-    factory {
-        CarouselMapper(
-            mapper = get()
-        )
-    }
-}
-
-private val useCaseModule = module {
-    factory<GetCarouselInteractor> {
-        MediaCarouselUseCaseImpl(
-            repository = get()
-        )
-    }
-}
-
-private val repositoryModule = module {
-    factory<MediaCarouselListRepository> {
-        MediaCarouselRepository(
-            source = get()
-        )
-    }
-}
-
-internal val carouselModules = module {
-    includes(
-        sourceModule,
-        cacheModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}

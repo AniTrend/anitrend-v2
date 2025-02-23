@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,73 +18,70 @@ package co.anitrend.deeplink.component.screen
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.component.screen.AniTrendBoundScreen
-import co.anitrend.core.ui.inject
-import co.anitrend.deeplink.databinding.DeepLinkScreenBinding
-import co.anitrend.deeplink.exception.DeepLinkException
-import com.kingsleyadio.deeplink.DeepLinkParser
-import com.kingsleyadio.deeplink.DeepLinkUri
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.onEach
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.deeplink.component.compose.DeepLinkScreenContent
+import co.anitrend.deeplink.component.viewmodel.DeepLinkViewModel
+import co.anitrend.navigation.model.common.IParam
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DeepLinkScreen : AniTrendBoundScreen<DeepLinkScreenBinding>() {
-    private val stateLayoutConfig by inject<StateLayoutConfig>()
-    private val router by inject<DeepLinkParser<Intent?>>()
+class DeepLinkScreen : AniTrendScreen() {
+    private val viewModel by viewModel<DeepLinkViewModel>()
 
-    private fun handleIntentData() {
-        when (val uri = intent.data) {
-            null -> {
-                requireBinding().stateLayout.loadStateFlow.value =
-                    LoadState.Error(DeepLinkException.MissingIntentData())
-            }
-            else -> {
-                val deepLinkUri = DeepLinkUri.parse(uri.toString())
-                val intent = router.parse(deepLinkUri)
-                if (intent == null) {
-                    requireBinding().stateLayout.loadStateFlow.value =
-                        LoadState.Error(DeepLinkException.InvalidScreenIntent())
-                }
-                startActivity(intent)
-                ActivityCompat.finishAfterTransition(this)
-            }
+    private fun checkIntentData() {
+        val intent = viewModel(intent.data)
+        if (intent != null) {
+            startActivity(intent)
+            ActivityCompat.finishAfterTransition(this)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DeepLinkScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-        requireBinding().stateLayout.stateConfigFlow.value =
-            stateLayoutConfig.copy(retryAction = co.anitrend.core.R.string.label_text_action_ok)
-        requireBinding().stateLayout.loadStateFlow.value =
-            LoadState.Loading()
+        setContent {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = viewModel.loadState,
+                    param = IParam.None,
+                    onLoad = {},
+                    onClick = {},
+                ) {
+                    DeepLinkScreenContent(onBackPress = { finish() })
+                }
+            }
+        }
     }
 
     override fun initializeComponents(savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                requireBinding().stateLayout.interactionFlow
-                    .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
-                    .onEach { finishAfterTransition() }
-                    .catch { cause: Throwable ->
-                        Timber.e(cause)
-                    }.collect()
+                checkIntentData()
             }
         }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                handleIntentData()
-            }
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Handle onNewIntent() to inform the fragment manager that the
+     * state is not saved.  If you are handling new intents and may be
+     * making changes to the fragment state, you want to be sure to call
+     * through to the super-class here first.  Otherwise, if your state
+     * is saved but the activity is not stopped, you could get an
+     * onNewIntent() call which happens before onResume() and trying to
+     * perform fragment operations at that point will throw IllegalStateException
+     * because the fragment manager thinks the state is still saved.
+     */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        checkIntentData()
     }
 }

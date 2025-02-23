@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -18,29 +18,33 @@ package co.anitrend.deeplink.component.route
 
 import android.content.Intent
 import co.anitrend.deeplink.common.CommonRouteTest
+import co.anitrend.deeplink.provider.FeatureProvider
 import com.kingsleyadio.deeplink.DeepLinkParser
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class AppRouteTest : CommonRouteTest() {
-    private val deepLinkParser: DeepLinkParser<Intent?> by lazy {
-        DeepLinkParser.of<Intent?>(environment)
-            .addRoute(DiscoverRoute)
-            .addRoute(SocialRoute)
-            .addRoute(SuggestionsRoute)
-            .addRoute(SettingsRoute)
-            .addRoute(ProfileRoute)
-            .addRoute(UpdatesRoute)
-            .addRoute(AboutRoute)
-            .addRoute(OAuthRoute)
-            .addFallbackAction(FallbackAction)
-            .build()
+    private val deepLinkParser by lazy {
+        FeatureProvider(
+            DeepLinkParser
+                .of<Intent?>(environment)
+                .addRoute(DiscoverRoute)
+                .addRoute(SocialRoute)
+                .addRoute(SuggestionsRoute)
+                .addRoute(SettingsRoute)
+                .addRoute(ProfileRoute)
+                .addRoute(UpdatesRoute)
+                .addRoute(AboutRoute)
+                .addRoute(OAuthRoute)
+                .addFallbackAction(FallbackAction)
+                .build(),
+        )
     }
 
     @Test
     fun verifyDiscoverAppRoute() {
         val expected = "media.discover.component.screen.MediaDiscoverScreen".toIntent()
-        val actual = deepLinkParser.parse(appLinkOf("discover"))
+        val actual = deepLinkParser.matchingIntent("app.anitrend://action/discover")
 
         assertEquals(expected, actual)
     }
@@ -48,7 +52,7 @@ class AppRouteTest : CommonRouteTest() {
     @Test
     fun verifySocialAppRoute() {
         val expected = "component.screen.MainScreen".toIntent()
-        val actual = deepLinkParser.parse(appLinkOf("social"))
+        val actual = deepLinkParser.matchingIntent("app.anitrend://action/social")
 
         assertEquals(expected, actual)
     }
@@ -56,7 +60,7 @@ class AppRouteTest : CommonRouteTest() {
     @Test
     fun verifySuggestionsAppRoute() {
         val expected = "component.screen.MainScreen".toIntent()
-        val actual = deepLinkParser.parse(appLinkOf("suggestions"))
+        val actual = deepLinkParser.matchingIntent("app.anitrend://action/suggestions")
 
         assertEquals(expected, actual)
     }

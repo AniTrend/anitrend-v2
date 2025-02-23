@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.Data.feed))
 	implementation(project(Libraries.AniTrend.CommonUi.news))
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
+	implementation(project(Libraries.AniTrend.CommonUi.shared))
 
     implementation(libs.androidx.browser)
 
@@ -35,6 +36,8 @@ dependencies {
     implementation(libs.markwon.core)
 	implementation(libs.markwon.html)
     implementation(libs.markwon.linkify)
+
+    implementation(libs.annotatedtext)
 }
 
 android {

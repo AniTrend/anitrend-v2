@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core.extensions
 
 import com.google.gson.reflect.TypeToken
@@ -36,5 +35,4 @@ fun String.toHashId(): Long {
  *
  * @return [TypeToken]
  */
-inline fun <reified T> typeToken(): TypeToken<T> =
-    object : TypeToken<T>(){}
+inline fun <reified T> typeToken(): TypeToken<T> = object : TypeToken<T>() {}

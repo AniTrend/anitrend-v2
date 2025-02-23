@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
@@ -22,34 +21,35 @@ import co.anitrend.navigation.ReviewRouter
 import co.anitrend.review.component.content.ReviewContent
 import co.anitrend.review.component.screen.ReviewScreen
 import co.anitrend.review.component.viewmodel.ReviewViewModel
-import co.anitrend.review.component.viewmodel.state.ReviewState
 import co.anitrend.review.provider.FeatureProvider
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-private val fragmentModule = module {
-    scope<ReviewScreen> {
-        fragment {
-            ReviewContent()
+private val fragmentModule =
+    module {
+        scope<ReviewScreen> {
+            fragment {
+                ReviewContent()
+            }
         }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        ReviewViewModel(
-            state = ReviewState()
-        )
+private val viewModelModule =
+    module {
+        viewModel {
+            ReviewViewModel()
+        }
     }
-}
 
-private val featureModule = module {
-    factory<ReviewRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<ReviewRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(fragmentModule, viewModelModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(fragmentModule, viewModelModule, featureModule),
+    )

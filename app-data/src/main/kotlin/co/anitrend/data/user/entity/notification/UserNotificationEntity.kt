@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity.notification
 
 import androidx.room.ColumnInfo
@@ -31,8 +30,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     indices = [
         Index(
             value = ["user_id"],
-            unique = true
-        )
+            unique = true,
+        ),
     ],
     foreignKeys = [
         ForeignKey(
@@ -40,13 +39,13 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 @EntitySchema
 internal data class UserNotificationEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "unread_notifications") val unreadNotifications: Int,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : Identity

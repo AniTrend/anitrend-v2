@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.carousel.source.contract
 
-import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.carousel.cache.CarouselCache
 import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.domain.carousel.entity.MediaCarousel
@@ -29,7 +28,6 @@ import co.anitrend.domain.carousel.model.CarouselParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class CarouselSource : AbstractCoreDataSource() {
-
     protected lateinit var query: CarouselQuery
         private set
 
@@ -56,25 +54,25 @@ internal abstract class CarouselSource : AbstractCoreDataSource() {
         cachePolicy(
             requestHelper = requestHelper,
             cacheIdentity = mangaCacheIdentity,
-            block = ::getMediaCarouselManga
+            block = ::getMediaCarouselManga,
         )
 
         cachePolicy(
             requestHelper = requestHelper,
             cacheIdentity = animeCacheIdentity,
-            block = ::getMediaCarouselAnime
+            block = ::getMediaCarouselAnime,
         )
 
         cachePolicy(
             requestHelper = requestHelper,
             cacheIdentity = mangaMetaCacheIdentity,
-            block = ::getMediaCarouselMangaMeta
+            block = ::getMediaCarouselMangaMeta,
         )
 
         cachePolicy(
             requestHelper = requestHelper,
             cacheIdentity = animeMetaCacheIdentity,
-            block = ::getMediaCarouselAnimeMeta
+            block = ::getMediaCarouselAnimeMeta,
         )
 
         return observable()

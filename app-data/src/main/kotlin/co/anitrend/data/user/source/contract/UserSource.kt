@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.source.contract
 
 import androidx.paging.PagedList
-import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.arch.paging.legacy.source.SupportPagingDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -27,6 +24,7 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.paging.AbstractPagingSource
+import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.model.mutation.UserMutation
@@ -37,9 +35,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
 internal class UserSource {
-
     abstract class Identifier : AbstractCoreDataSource() {
-
         protected lateinit var cacheIdentity: CacheIdentity
 
         protected abstract val cachePolicy: ICacheStorePolicy
@@ -57,14 +53,13 @@ internal class UserSource {
                 scope = scope,
                 requestHelper = requestHelper,
                 cacheIdentity = cacheIdentity,
-                block = ::getUser
+                block = ::getUser,
             )
             return observable()
         }
     }
 
     abstract class Viewer : AbstractCoreDataSource() {
-
         protected lateinit var cacheIdentity: CacheIdentity
 
         protected abstract val settings: IAuthenticationSettings
@@ -75,7 +70,7 @@ internal class UserSource {
             get() {
                 val userId = settings.authenticatedUserId.value
                 return UserQuery.Viewer(
-                    UserParam.Viewer(userId)
+                    UserParam.Viewer(userId),
                 )
             }
 
@@ -93,7 +88,7 @@ internal class UserSource {
                     scope = scope,
                     requestHelper = requestHelper,
                     cacheIdentity = cacheIdentity,
-                    block = ::getProfile
+                    block = ::getProfile,
                 )
             }
             return observable()
@@ -101,7 +96,6 @@ internal class UserSource {
     }
 
     abstract class Search : AbstractPagingSource<User>() {
-
         protected lateinit var query: UserQuery.Search
 
         protected abstract fun observable(): Flow<PagedList<User>>
@@ -125,7 +119,7 @@ internal class UserSource {
             invoke(
                 paging = supportPagingHelper,
                 requestType = Request.Type.AFTER,
-                block = ::getUsers
+                block = ::getUsers,
             )
         }
 
@@ -151,13 +145,12 @@ internal class UserSource {
         override fun onZeroItemsLoaded() {
             invoke(
                 paging = supportPagingHelper,
-                block = ::getUsers
+                block = ::getUsers,
             )
         }
     }
 
     abstract class Profile : AbstractCoreDataSource() {
-
         protected lateinit var query: UserQuery.Profile
 
         protected lateinit var cacheIdentity: CacheIdentity
@@ -175,14 +168,13 @@ internal class UserSource {
                 scope = scope,
                 requestHelper = requestHelper,
                 cacheIdentity = cacheIdentity,
-                block = ::getProfile
+                block = ::getProfile,
             )
             return observable()
         }
     }
 
     abstract class Statistic : AbstractCoreDataSource() {
-
         protected lateinit var query: UserQuery.Statistic
 
         protected lateinit var cacheIdentity: CacheIdentity
@@ -200,14 +192,13 @@ internal class UserSource {
                 scope = scope,
                 requestHelper = requestHelper,
                 cacheIdentity = cacheIdentity,
-                block = ::getProfileStatistic
+                block = ::getProfileStatistic,
             )
             return observable()
         }
     }
 
     abstract class ToggleFollow : AbstractCoreDataSource() {
-
         protected lateinit var query: UserMutation.ToggleFollow
 
         protected abstract fun observable(): Flow<User>
@@ -231,7 +222,6 @@ internal class UserSource {
     }
 
     abstract class Update : AbstractCoreDataSource() {
-
         protected lateinit var query: UserMutation.Update
 
         protected abstract fun observable(): Flow<User>

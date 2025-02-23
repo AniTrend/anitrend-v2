@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.model.query
 
 import co.anitrend.data.common.extension.toFuzzyDateInt
@@ -37,13 +36,13 @@ import kotlin.test.Test
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
 class QueryMappingTest {
-
     @Test
     fun `mapping of page query has correct keys and values`() {
-        val pageQuery = PageQuery(
-            page = 1,
-            perPage = 15
-        )
+        val pageQuery =
+            PageQuery(
+                page = 1,
+                perPage = 15,
+            )
 
         val mappedQuery = pageQuery.toMap()
 
@@ -58,22 +57,27 @@ class QueryMappingTest {
 
     @Test
     fun `mapping of media query has correct keys and values`() {
-        val mediaQuery = MediaQuery.Find(
-            MediaParam.Find() builder {
-                type = MediaType.ANIME
-                endDate = FuzzyDateModel.empty().copy(
-                    year = 2018,
-                    month = 5
-                ).toFuzzyDateInt()
-                season = MediaSeason.FALL
-                format_in = MediaFormat.entries
-                onList = true
-                status_in = listOf(
-                    MediaStatus.FINISHED,
-                    MediaStatus.NOT_YET_RELEASED
-                )
-            }
-        )
+        val mediaQuery =
+            MediaQuery.Find(
+                MediaParam.Find(
+                    type = MediaType.ANIME,
+                    endDate =
+                    FuzzyDateModel
+                        .empty()
+                        .copy(
+                            year = 2018,
+                            month = 5,
+                        ).toFuzzyDateInt(),
+                    season = MediaSeason.FALL,
+                    format_in = MediaFormat.entries,
+                    onList = true,
+                    status_in =
+                    listOf(
+                        MediaStatus.FINISHED,
+                        MediaStatus.NOT_YET_RELEASED,
+                    ),
+                ),
+            )
 
         val mappedQuery = mediaQuery.toMap()
 
@@ -89,16 +93,28 @@ class QueryMappingTest {
         assertEquals(MediaType.ANIME, mappedQuery["type"])
         assertEquals("20180500", mappedQuery["endDate"])
         assertEquals(MediaSeason.FALL, mappedQuery["season"])
-        assertEquals(listOf(
-            MediaFormat.MANGA, MediaFormat.MOVIE, MediaFormat.MUSIC,
-            MediaFormat.NOVEL, MediaFormat.ONA, MediaFormat.ONE_SHOT,
-            MediaFormat.OVA, MediaFormat.SPECIAL, MediaFormat.TV,
-            MediaFormat.TV_SHORT
-        ), mappedQuery["format_in"])
+        assertEquals(
+            listOf(
+                MediaFormat.MANGA,
+                MediaFormat.MOVIE,
+                MediaFormat.MUSIC,
+                MediaFormat.NOVEL,
+                MediaFormat.ONA,
+                MediaFormat.ONE_SHOT,
+                MediaFormat.OVA,
+                MediaFormat.SPECIAL,
+                MediaFormat.TV,
+                MediaFormat.TV_SHORT,
+            ),
+            mappedQuery["format_in"],
+        )
         assertEquals(true, mappedQuery["onList"])
-        assertEquals(listOf(
-            MediaStatus.FINISHED,
-            MediaStatus.NOT_YET_RELEASED
-        ), mappedQuery["status_in"])
+        assertEquals(
+            listOf(
+                MediaStatus.FINISHED,
+                MediaStatus.NOT_YET_RELEASED,
+            ),
+            mappedQuery["status_in"],
+        )
     }
 }

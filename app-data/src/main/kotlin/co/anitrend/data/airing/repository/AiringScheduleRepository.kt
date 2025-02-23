@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.repository
 
 import co.anitrend.arch.data.state.DataState.Companion.create
@@ -23,12 +22,10 @@ import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.domain.airing.model.AiringParam
 
 internal sealed class AiringScheduleRepository {
-
     class Paged(
-        private val source: AiringScheduleSource.Paged
-    ) : AiringScheduleRepository(), AiringSchedulePagedRepository {
-        override fun getPaged(
-            param: AiringParam.Find
-        ) = source create source(param)
+        private val source: AiringScheduleSource.Paged,
+    ) : AiringScheduleRepository(),
+        AiringSchedulePagedRepository {
+        override fun getPaged(param: AiringParam.Find) = source create source(param)
     }
 }

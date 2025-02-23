@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.rank.entity
 
 import androidx.room.ColumnInfo
@@ -41,8 +40,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_id"],
-            parentColumns = ["id"]
-        )
+            parentColumns = ["id"],
+        ),
     ],
 )
 @EntitySchema
@@ -55,5 +54,5 @@ internal data class RankEntity(
     @ColumnInfo(name = "season") val season: MediaSeason?,
     @ColumnInfo(name = "type") val type: MediaRankType,
     @ColumnInfo(name = "year") val year: Int?,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity

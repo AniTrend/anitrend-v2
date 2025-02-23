@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.search.component.screen
 
 import android.app.SearchManager
@@ -34,10 +33,10 @@ import co.anitrend.search.component.compose.SearchScreenContent
 import co.anitrend.search.component.presenter.SearchPresenter
 
 class SearchScreen : AniTrendScreen() {
-
     private val presenter by inject<SearchPresenter>()
-    private val param by extra<SearchRouter.SearchParam>(
-        key = nameOf<SearchRouter.SearchParam>()
+    private val param by extra(
+        key = nameOf<SearchRouter.SearchParam>(),
+        default = SearchRouter::SearchParam,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,16 +46,16 @@ class SearchScreen : AniTrendScreen() {
                 ContentWrapper<IParam>(
                     stateFlow = FeatureReady.loadState,
                     config = FeatureReady.config,
-                    param = param ?: SearchRouter.SearchParam(),
+                    param = param,
                     onClick = {},
                 ) {
                     SearchScreenContent(
-                        query = param?.query.orEmpty(),
+                        query = param.query.orEmpty(),
                         onQueryChange = {},
                         onSearch = {},
                         active = false,
                         onActiveChange = {},
-                        onBackClick = ::onBackPressed,
+                        onBackClick = onBackPressedDispatcher::onBackPressed,
                     )
                 }
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -37,15 +36,13 @@ import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.settings.IUserSettings
 
 internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
-
     protected abstract val localSource: UserLocalSource
     protected abstract val converter: UserModelConverter
 
     class Paged(
         override val localSource: UserLocalSource,
-        override val converter: UserModelConverter
+        override val converter: UserModelConverter,
     ) : UserMapper<UserModelContainer.Paged, List<UserEntity>>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -59,9 +56,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: UserModelContainer.Paged
-        ) = converter.convertFrom(source.page.userList)
+        override suspend fun onResponseMapFrom(source: UserModelContainer.Paged) = converter.convertFrom(source.page.userList)
     }
 
     class Profile(
@@ -69,10 +64,8 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaOptionMapper: MediaOptionEmbed,
         private val previousNameMapper: PreviousNameEmbed,
         override val localSource: UserLocalSource,
-        override val converter: UserModelConverter
+        override val converter: UserModelConverter,
     ) : UserMapper<UserModelContainer.Profile, UserEntity>() {
-
-
         /**
          * Save [data] into your desired local source
          */
@@ -89,13 +82,11 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: UserModelContainer.Profile
-        ): UserEntity {
+        override suspend fun onResponseMapFrom(source: UserModelContainer.Profile): UserEntity {
             generalOptionMapper.onEmbedded(source.user)
             mediaOptionMapper.onEmbedded(source.user)
             previousNameMapper.onEmbedded(
-                PreviousNameEmbed.asItem(source.user)
+                PreviousNameEmbed.asItem(source.user),
             )
             return converter.convertFrom(source.user)
         }
@@ -106,8 +97,6 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private val localSource: UserStatisticLocalSource,
         private val converter: UserStatisticModelConverter,
     ) : DefaultMapper<UserModelContainer.WithStatistic, UserWithStatisticEntity>() {
-
-
         /**
          * Save [data] into your desired local source
          */
@@ -122,9 +111,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: UserModelContainer.WithStatistic
-        ): UserWithStatisticEntity {
+        override suspend fun onResponseMapFrom(source: UserModelContainer.WithStatistic): UserWithStatisticEntity {
             userMapper.onEmbedded(source.user)
             return converter.convertFrom(source.user)
         }
@@ -132,9 +119,8 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
 
     class User(
         override val localSource: UserLocalSource,
-        override val converter: UserModelConverter
+        override val converter: UserModelConverter,
     ) : UserMapper<UserModelContainer.User, UserEntity>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -148,19 +134,17 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: UserModelContainer.User
-        ) = converter.convertFrom(source.user)
+        override suspend fun onResponseMapFrom(source: UserModelContainer.User) = converter.convertFrom(source.user)
     }
 
     class Embed(
         override val localSource: UserLocalSource,
-        override val converter: UserModelConverter
+        override val converter: UserModelConverter,
     ) : EmbedMapper<UserModel, UserEntity>()
 
     class MediaOptionEmbed(
         override val localSource: UserMediaOptionLocalSource,
-        override val converter: UserMediaOptionModelConverter
+        override val converter: UserMediaOptionModelConverter,
     ) : EmbedMapper<UserModel.WithOptions, UserMediaOptionEntity>() {
         suspend fun persistEmbedded(settings: IUserSettings) {
             onResponseDatabaseInsert(entities.orEmpty())
@@ -173,7 +157,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
 
     class GeneralOptionEmbed(
         override val localSource: UserGeneralOptionLocalSource,
-        override val converter: UserGeneralOptionModelConverter
+        override val converter: UserGeneralOptionModelConverter,
     ) : EmbedMapper<UserModel.WithOptions, UserGeneralOptionEntity>() {
         suspend fun persistEmbedded(settings: IUserSettings) {
             onResponseDatabaseInsert(entities.orEmpty())
@@ -185,34 +169,34 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     }
 
     class PreviousNameEmbed(
-        override val localSource: AbstractLocalSource<UserPreviousNameEntity>
+        override val localSource: AbstractLocalSource<UserPreviousNameEntity>,
     ) : EmbedMapper<PreviousNameEmbed.Item, UserPreviousNameEntity>() {
+        override val converter =
+            object : SupportConverter<Item, UserPreviousNameEntity>() {
+                /**
+                 * Function reference from converting from [M] to [E] which will
+                 * be called by [convertFrom]
+                 */
+                override val fromType: (Item) -> UserPreviousNameEntity = {
+                    UserPreviousNameEntity(
+                        userId = it.userId,
+                        createdAt = it.previousName.createdAt,
+                        name = it.previousName.name,
+                        updatedAt = it.previousName.updatedAt,
+                    )
+                }
 
-        override val converter = object : SupportConverter<Item, UserPreviousNameEntity>() {
-            /**
-             * Function reference from converting from [M] to [E] which will
-             * be called by [convertFrom]
-             */
-            override val fromType: (Item) -> UserPreviousNameEntity = {
-                UserPreviousNameEntity(
-                    userId = it.userId,
-                    createdAt = it.previousName.createdAt,
-                    name = it.previousName.name,
-                    updatedAt = it.previousName.updatedAt,
-                )
+                /**
+                 * Function reference from converting from [E] to [M] which will
+                 * be called by [convertTo]
+                 */
+                override val toType: (UserPreviousNameEntity) -> Item
+                    get() = throw NotImplementedError()
             }
-
-            /**
-             * Function reference from converting from [E] to [M] which will
-             * be called by [convertTo]
-             */
-            override val toType: (UserPreviousNameEntity) -> Item
-                get() = throw NotImplementedError()
-        }
 
         data class Item(
             val userId: Long,
-            val previousName: UserModel.UserPreviousName
+            val previousName: UserModel.UserPreviousName,
         )
 
         companion object {
@@ -220,7 +204,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
                 source.previousNames.map {
                     Item(
                         userId = source.id,
-                        previousName = it
+                        previousName = it,
                     )
                 }
 
@@ -232,41 +216,40 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     }
 
     class NotificationEmbed(
-        override val localSource: AbstractLocalSource<UserNotificationEntity>
+        override val localSource: AbstractLocalSource<UserNotificationEntity>,
     ) : EmbedMapper<NotificationEmbed.Item, UserNotificationEntity>() {
+        override val converter =
+            object : SupportConverter<Item, UserNotificationEntity>() {
+                /**
+                 * Function reference from converting from [M] to [E] which will
+                 * be called by [convertFrom]
+                 */
+                override val fromType: (Item) -> UserNotificationEntity = {
+                    UserNotificationEntity(
+                        userId = it.userId,
+                        unreadNotifications = it.unreadNotifications,
+                    )
+                }
 
-        override val converter = object : SupportConverter<Item, UserNotificationEntity>() {
-            /**
-             * Function reference from converting from [M] to [E] which will
-             * be called by [convertFrom]
-             */
-            override val fromType: (Item) -> UserNotificationEntity = {
-                UserNotificationEntity(
-                    userId = it.userId,
-                    unreadNotifications = it.unreadNotifications
-                )
+                /**
+                 * Function reference from converting from [E] to [M] which will
+                 * be called by [convertTo]
+                 */
+                override val toType: (UserNotificationEntity) -> Item
+                    get() = throw NotImplementedError()
             }
-
-            /**
-             * Function reference from converting from [E] to [M] which will
-             * be called by [convertTo]
-             */
-            override val toType: (UserNotificationEntity) -> Item
-                get() = throw NotImplementedError()
-
-        }
 
         data class Item(
             val userId: Long,
-            val unreadNotifications: Int
+            val unreadNotifications: Int,
         )
 
-
         companion object {
-            fun asItem(source: UserModel.Viewer) = Item(
-                userId = source.id,
-                unreadNotifications = source.unreadNotificationCount ?: 0
-            )
+            fun asItem(source: UserModel.Viewer) =
+                Item(
+                    userId = source.id,
+                    unreadNotifications = source.unreadNotificationCount ?: 0,
+                )
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,35 +14,29 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.review.component.content
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.core.component.content.AniTrendContent
-import co.anitrend.review.R
+import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.core.android.views.compose.composable
+import co.anitrend.core.component.FeatureUnavailable
+import co.anitrend.core.component.content.compose.AniTrendComposition
+import co.anitrend.navigation.model.common.IParam
 import co.anitrend.review.component.viewmodel.ReviewViewModel
-import co.anitrend.review.databinding.ReviewContentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReviewContent(
-    override val inflateLayout: Int = R.layout.review_content
-) : AniTrendContent<ReviewContentBinding>() {
-    
+class ReviewContent : AniTrendComposition() {
     private val viewModel by viewModel<ReviewViewModel>()
-    
-    private fun onFetchDataInitialize() {
-        // TODO: Implement functionality
-    }
-    
+
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-
     }
 
     /**
@@ -71,15 +65,21 @@ class ReviewContent(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        binding = ReviewContentBinding.bind(requireNotNull(view))
-        return view
-    }
+        savedInstanceState: Bundle?,
+    ): View =
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = FeatureUnavailable.loadState,
+                    config = FeatureUnavailable.config,
+                    param = IParam.None,
+                    onClick = {},
+                ) {}
+            }
+        }
 
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

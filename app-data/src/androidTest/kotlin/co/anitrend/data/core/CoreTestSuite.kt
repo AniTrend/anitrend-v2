@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.core
 
 import android.content.ContentResolver
@@ -39,7 +38,6 @@ import kotlin.test.assertNotNull
  * @see [Testing documentation](http://d.android.com/tools/testing).
  */
 internal open class CoreTestSuite : KoinTest {
-
     private val source = CoreTestSuite::class.java
     private val koin: KoinApplication by lazy {
         val context = InstrumentationRegistry.getInstrumentation().context
@@ -59,21 +57,23 @@ internal open class CoreTestSuite : KoinTest {
     }
 
     protected inline fun <reified T> String.load(deserializer: DeserializationStrategy<T?>): T? {
-        val resource = source.getResourceAsStream("templates/${this}")
+        val resource = source.getResourceAsStream("templates/$this")
         assertNotNull(resource)
-        val result: T? = InputStreamReader(resource).use {
-            json.decodeFromString(deserializer, it.readText())
-        }
+        val result: T? =
+            InputStreamReader(resource).use {
+                json.decodeFromString(deserializer, it.readText())
+            }
         assertNotNull(result)
         return result
     }
 
     protected inline fun <reified T> String.load(): T? {
-        val resource = source.getResourceAsStream("templates/${this}")
+        val resource = source.getResourceAsStream("templates/$this")
         assertNotNull(resource)
-        val result: T? = InputStreamReader(resource).use {
-            json.decodeFromString(it.readText())
-        }
+        val result: T? =
+            InputStreamReader(resource).use {
+                json.decodeFromString(it.readText())
+            }
         assertNotNull(result)
         return result
     }

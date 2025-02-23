@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.status.model
 
 import co.anitrend.domain.common.DateInt
@@ -22,7 +21,6 @@ import co.anitrend.domain.status.enums.StatusSort
 import co.anitrend.domain.status.enums.StatusType
 
 sealed class StatusParam {
-
     /** [ToggleActivityPin mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
      *
      * @param id Toggle activity id to be pinned
@@ -30,7 +28,7 @@ sealed class StatusParam {
      */
     data class TogglePin(
         val id: Int,
-        val pinned: Boolean
+        val pinned: Boolean,
     )
 
     /** [SaveTextActivity mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -53,7 +51,7 @@ sealed class StatusParam {
      * @param activityId The id of the activity to delete
      */
     data class Delete(
-        val activityId: Long
+        val activityId: Long,
     ) : StatusParam()
 
     /** [SaveActivityReply mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)
@@ -81,7 +79,7 @@ sealed class StatusParam {
     data class SaveMessage(
         val message: String,
         val recipientId: Long,
-        val activityId: Long? = null
+        val activityId: Long? = null,
     ) : StatusParam()
 
     /** [ActivityReply query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -91,7 +89,7 @@ sealed class StatusParam {
      */
     data class FindReply(
         val id: Long? = null,
-        val activityId: Long? = null
+        val activityId: Long? = null,
     ) : StatusParam()
 
     /** [Activity query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -151,7 +149,7 @@ sealed class StatusParam {
         val type_not_in: List<StatusSort>? = null,
         val createdAt_greater: DateInt? = null,
         val createdAt_lesser: DateInt? = null,
-        val sort: List<StatusSort>? = null
+        val sort: List<StatusSort>? = null,
     ) : StatusParam() {
         infix fun builder(param: Find.() -> Unit): Find {
             this.param()

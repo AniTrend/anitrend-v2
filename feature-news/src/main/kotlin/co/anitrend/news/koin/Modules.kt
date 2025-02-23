@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.koin
 
 import co.anitrend.common.news.ui.adapter.NewsPagedAdapter
@@ -23,7 +22,6 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.news.component.content.NewsContent
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
-import co.anitrend.news.component.content.viewmodel.state.NewsContentState
 import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
 import co.anitrend.news.plugin.NewsTagPlugin
 import co.anitrend.news.presenter.NewsPresenter
@@ -41,68 +39,74 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import timber.log.Timber
 
-private val coreModule = module {
-    single(named(MarkdownFlavour.STANDARD)) {
-        val builder = get<Markwon.Builder>()
-        builder.usePlugin(NewsTagPlugin.create())
-            .usePlugin(LinkifyPlugin.create())
-            .usePlugin(SoftBreakAddsNewLinePlugin.create())
-            .usePlugin(
-                object : AbstractMarkwonPlugin() {
-                    override fun configureVisitor(builder: MarkwonVisitor.Builder) {
-                        builder.on(
-                            Paragraph::class.java
-                        ) { visitor, _ ->
-                            // TODO: Will remove this after multiple UI tests
-                            Timber.v("visitor for paragraph: $visitor")
+private val coreModule =
+    module {
+        single(named(MarkdownFlavour.STANDARD)) {
+            val builder = get<Markwon.Builder>()
+            builder
+                .usePlugin(NewsTagPlugin.create())
+                .usePlugin(LinkifyPlugin.create())
+                .usePlugin(SoftBreakAddsNewLinePlugin.create())
+                .usePlugin(
+                    object : AbstractMarkwonPlugin() {
+                        override fun configureVisitor(builder: MarkwonVisitor.Builder) {
+                            builder.on(
+                                Paragraph::class.java,
+                            ) { visitor, _ ->
+                                // TODO: Will remove this after multiple UI tests
+                                Timber.v("visitor for paragraph: $visitor")
+                            }
                         }
-                    }
-                }
-            ).build()
+                    },
+                ).build()
+        }
     }
-}
 
-private val fragmentModule = module {
-    fragment {
-        NewsContent(
-            presenter = get(),
-            stateConfig = get(),
-            supportViewAdapter = NewsPagedAdapter(
-                resources = androidContext().resources,
-                stateConfiguration = get()
+private val fragmentModule =
+    module {
+        fragment {
+            NewsContent(
+                presenter = get(),
+                stateConfig = get(),
+                supportViewAdapter =
+                    NewsPagedAdapter(
+                        resources = androidContext().resources,
+                        stateConfiguration = get(),
+                    ),
             )
-        )
+        }
     }
-}
 
-private val viewModelModule = module {
-    viewModel {
-        NewsContentViewModel(
-            state = NewsContentState(
-                interactor = get()
+private val viewModelModule =
+    module {
+        viewModel {
+            NewsContentViewModel(
+                interactor = get(),
             )
-        )
+        }
+        viewModel {
+            NewsScreenViewModel()
+        }
     }
-    viewModel {
-        NewsScreenViewModel()
-    }
-}
 
-private val presenterModule = module {
-    factory {
-        NewsPresenter(
-            context = get(),
-            settings = get()
-        )
+private val presenterModule =
+    module {
+        factory {
+            NewsPresenter(
+                context = get(),
+                settings = get(),
+            )
+        }
     }
-}
 
-private val featureModule = module {
-    factory<NewsRouter.Provider> {
-        FeatureProvider()
+private val featureModule =
+    module {
+        factory<NewsRouter.Provider> {
+            FeatureProvider()
+        }
     }
-}
 
-internal val moduleHelper = DynamicFeatureModuleHelper(
-    listOf(coreModule, fragmentModule, viewModelModule, presenterModule, featureModule)
-)
+internal val moduleHelper =
+    DynamicFeatureModuleHelper(
+        listOf(coreModule, fragmentModule, viewModelModule, presenterModule, featureModule),
+    )

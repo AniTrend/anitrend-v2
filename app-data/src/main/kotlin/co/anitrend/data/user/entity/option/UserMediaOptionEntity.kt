@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.entity.option
 
 import androidx.room.ColumnInfo
@@ -32,8 +31,8 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
     indices = [
         Index(
             value = ["user_id"],
-            unique = true
-        )
+            unique = true,
+        ),
     ],
     foreignKeys = [
         ForeignKey(
@@ -41,9 +40,9 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 internal data class UserMediaOptionEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
@@ -51,14 +50,13 @@ internal data class UserMediaOptionEntity(
     @ColumnInfo(name = "list_row_order") val rowOrder: String?,
     @Embedded(prefix = "anime_") val anime: MediaOption,
     @Embedded(prefix = "manga_") val manga: MediaOption,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : Identity {
-
     data class MediaOption(
         @ColumnInfo(name = "custom_lists") val customLists: List<String>,
         @ColumnInfo(name = "section_order") val sectionOrder: List<String>,
         @ColumnInfo(name = "advanced_scoring") val advancedScoring: List<String>,
         @ColumnInfo(name = "advanced_scoring_enabled") val advancedScoringEnabled: Boolean,
-        @ColumnInfo(name = "split_completed_section_by_format") val splitCompletedSectionByFormat: Boolean
+        @ColumnInfo(name = "split_completed_section_by_format") val splitCompletedSectionByFormat: Boolean,
     )
 }

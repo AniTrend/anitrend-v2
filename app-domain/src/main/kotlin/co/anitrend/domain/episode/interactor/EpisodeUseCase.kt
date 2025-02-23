@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.episode.interactor
 
 import co.anitrend.arch.domain.state.UiState
@@ -22,28 +21,21 @@ import co.anitrend.domain.episode.model.EpisodeParam
 import co.anitrend.domain.episode.repository.IEpisodeRepository
 
 sealed class EpisodeUseCase {
-
-    abstract class Detail<State: UiState<*>>(
-        protected val repository: IEpisodeRepository.Detail<State>
+    abstract class Detail<State : UiState<*>>(
+        protected val repository: IEpisodeRepository.Detail<State>,
     ) : EpisodeUseCase() {
-        operator fun invoke(
-            param: EpisodeParam.Detail
-        ) = repository.getEpisode(param)
+        operator fun invoke(param: EpisodeParam.Detail) = repository.getEpisode(param)
     }
 
-    abstract class Paged<State: UiState<*>>(
-        protected val repository: IEpisodeRepository.Paged<State>
+    abstract class Paged<State : UiState<*>>(
+        protected val repository: IEpisodeRepository.Paged<State>,
     ) : EpisodeUseCase() {
-        operator fun invoke(
-            param: EpisodeParam.Paged
-        ) = repository.getPagedEpisode(param)
+        operator fun invoke(param: EpisodeParam.Paged) = repository.getPagedEpisode(param)
     }
 
-    abstract class Sync<State: UiState<*>>(
-        protected val repository: IEpisodeRepository.Sync<State>
+    abstract class Sync<State : UiState<*>>(
+        protected val repository: IEpisodeRepository.Sync<State>,
     ) : EpisodeUseCase() {
-        operator fun invoke(
-            param: EpisodeParam.Paged
-        ) = repository.sync(param)
+        operator fun invoke(param: EpisodeParam.Paged) = repository.sync(param)
     }
 }

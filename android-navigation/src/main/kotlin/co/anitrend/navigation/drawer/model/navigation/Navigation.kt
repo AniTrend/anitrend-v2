@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.navigation.drawer.model.navigation
 
 import androidx.annotation.DrawableRes
@@ -29,9 +28,8 @@ sealed class Navigation {
         @DrawableRes val icon: Int,
         @StringRes val titleRes: Int,
         val isCheckable: Boolean = true,
-        var isChecked: Boolean = false
+        var isChecked: Boolean = false,
     ) : Navigation() {
-
         /**
          * Indicates whether some other object is "equal to" this one. Implementations must fulfil the following
          * requirements:
@@ -44,15 +42,15 @@ sealed class Navigation {
          *
          * Read more about [equality](https://kotlinlang.org/docs/reference/equality.html) in Kotlin.
          */
-        override fun equals(other: Any?): Boolean {
-            return when (other) {
-                is Menu -> other.id == id &&
+        override fun equals(other: Any?): Boolean =
+            when (other) {
+                is Menu ->
+                    other.id == id &&
                         other.titleRes == titleRes &&
                         other.isChecked == isChecked &&
                         other.isCheckable == isCheckable
                 else -> super.equals(other)
             }
-        }
 
         override fun hashCode(): Int {
             var result = id
@@ -65,9 +63,8 @@ sealed class Navigation {
     }
 
     data class Divider(
-        override val id: Int = DIVIDER
+        override val id: Int = DIVIDER,
     ) : Navigation() {
-
         /**
          * Indicates whether some other object is "equal to" this one. Implementations must fulfil the following
          * requirements:
@@ -80,21 +77,18 @@ sealed class Navigation {
          *
          * Read more about [equality](https://kotlinlang.org/docs/reference/equality.html) in Kotlin.
          */
-        override fun equals(other: Any?): Boolean {
-            return when (other) {
+        override fun equals(other: Any?): Boolean =
+            when (other) {
                 is Divider -> other.id == id
                 else -> super.equals(other)
             }
-        }
 
-        override fun hashCode(): Int {
-            return id
-        }
+        override fun hashCode(): Int = id
     }
 
     data class Group(
         @StringRes val titleRes: Int,
-        @IdRes val groupId: Int
+        @IdRes val groupId: Int,
     ) : Navigation() {
         override val id: Int = groupId
 
@@ -110,12 +104,11 @@ sealed class Navigation {
          *
          * Read more about [equality](https://kotlinlang.org/docs/reference/equality.html) in Kotlin.
          */
-        override fun equals(other: Any?): Boolean {
-            return when (other) {
+        override fun equals(other: Any?): Boolean =
+            when (other) {
                 is Group -> other.groupId == groupId && other.titleRes == titleRes
                 else -> super.equals(other)
             }
-        }
 
         override fun hashCode(): Int {
             var result = super.hashCode()
@@ -127,18 +120,16 @@ sealed class Navigation {
     }
 
     companion object {
-
         internal const val MENU = 1
         internal const val DIVIDER = 2
         internal const val GROUP = 3
 
-        internal fun Navigation?.toNavType(): Int? {
-            return when (this) {
+        internal fun Navigation?.toNavType(): Int? =
+            when (this) {
                 is Menu -> MENU
                 is Divider -> DIVIDER
                 is Group -> GROUP
                 else -> null
             }
-        }
     }
 }

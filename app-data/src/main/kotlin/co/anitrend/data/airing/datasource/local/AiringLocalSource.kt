@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.datasource.local
 
 import androidx.room.Dao
@@ -25,30 +24,33 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class AiringLocalSource : AbstractLocalSource<AiringScheduleEntity>() {
-
-    @Query("""
+    @Query(
+        """
         select count(id) from airing_schedule
-    """)
+    """,
+    )
     abstract override suspend fun count(): Int
 
-    @Query("""
+    @Query(
+        """
         delete from airing_schedule
-    """)
+    """,
+    )
     abstract override suspend fun clear()
 
-    @Query("""
+    @Query(
+        """
         select * from airing_schedule
         where media_id = :mediaId
-    """)
-    abstract suspend fun airingByMediaId(
-        mediaId: Long
-    ): AiringScheduleEntity?
+    """,
+    )
+    abstract suspend fun airingByMediaId(mediaId: Long): AiringScheduleEntity?
 
-    @Query("""
+    @Query(
+        """
         select * from airing_schedule
         where media_id = :mediaId
-    """)
-    abstract fun airingByMediaIdFlow(
-        mediaId: Long
-    ): Flow<AiringScheduleEntity>
+    """,
+    )
+    abstract fun airingByMediaIdFlow(mediaId: Long): Flow<AiringScheduleEntity>
 }

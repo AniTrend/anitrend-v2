@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022  AniTrend
+ * Copyright (C) 2022 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.cache
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
@@ -31,7 +30,6 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 @RunWith(AndroidJUnit4ClassRunner::class)
 internal class UserCacheTest : CoreTestSuite() {
-
     private val viewCache by inject<UserCache.Viewer>()
     private val identity = UserCache.Viewer.Identity(100)
     private val startTime = Instant.ofEpochSecond(1649357078L)
@@ -43,8 +41,9 @@ internal class UserCacheTest : CoreTestSuite() {
         }
     }
 
-    fun testUserViewCache() = runBlocking(dispatchers.io) {
-        assertTrue(viewCache.hasBeenRequested(identity))
-        assertTrue(viewCache.shouldRefresh(identity, instantInFuture(minutes = 6)))
-    }
+    fun testUserViewCache() =
+        runBlocking(dispatchers.io) {
+            assertTrue(viewCache.hasBeenRequested(identity))
+            assertTrue(viewCache.shouldRefresh(identity, instantInFuture(minutes = 6)))
+        }
 }

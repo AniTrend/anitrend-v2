@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.user.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
@@ -28,53 +27,52 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface UserRemoteSource {
-
     @GRAPHQL
     @GraphQuery("GetUserByName")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserByName(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @GRAPHQL
     @GraphQuery("GetUserPaged")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserPaged(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.Paged>>
 
     @GRAPHQL
     @GraphQuery("GetUserViewer")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserViewer(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.Viewer>>
 
     @GRAPHQL
     @GraphQuery("GetUserProfile")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfile(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
 
     @GRAPHQL
     @GraphQuery("GetUserWithStatistic")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserWithStatistic(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.WithStatistic>>
 
     @GRAPHQL
     @GraphQuery("SaveToggleFollowUser")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun saveToggleFollow(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @GRAPHQL
     @GraphQuery("UpdateUserProfile")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun updateUserProfile(
-        @Body queryContainer: QueryContainerBuilder
+        @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
 }

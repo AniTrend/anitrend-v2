@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.search.component.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -5,12 +21,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
@@ -39,9 +53,9 @@ private fun SearchBarContent(
     var searchQuery by rememberSaveable { mutableStateOf(query) }
     SearchBar(
         query = searchQuery,
-        onQueryChange = { query ->
-            searchQuery = query
-            onQueryChange(query)
+        onQueryChange = {
+            searchQuery = it
+            onQueryChange(it)
         },
         onSearch = onSearch,
         active = active,
@@ -78,7 +92,7 @@ private fun SearchContent(
             onSearch = onSearch,
             active = active,
             onActiveChange = onActiveChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Text(text = "Search results here")
@@ -92,16 +106,16 @@ fun SearchScreenContent(
     onSearch: (String) -> Unit,
     active: Boolean,
     onActiveChange: (Boolean) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         bottomBar = {
             BottomAppBar(
                 actions = {
                     BackIconButton(onBackClick = onBackClick)
-                }
+                },
             )
-        }
+        },
     ) { innerPadding ->
         SearchContent(
             query = query,
@@ -109,15 +123,16 @@ fun SearchScreenContent(
             onSearch = onSearch,
             active = active,
             onActiveChange = onActiveChange,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }
 
-@AniTrendPreview.Mobile
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun SearchScreenPreview() {
-    PreviewTheme {
+    PreviewTheme(wrapInSurface = true) {
         SearchContent(
             query = "Fin",
             onQueryChange = { },

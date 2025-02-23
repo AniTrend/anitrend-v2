@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.koin
 
 import co.anitrend.data.airing.AiringSchedulePagedRepository
@@ -34,97 +33,106 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<AiringScheduleSource.Paged> {
-        AiringScheduleSourceImpl.Paged(
-            remoteSource = aniListApi(),
-            localSource = store().airingScheduleDao(),
-            mediaLocalSource = store().mediaDao(),
-            controller = graphQLController(
-                mapper = get<AiringMapper.Paged>()
-            ),
-            converter = get(),
-            clearDataHelper = get(),
-            filter = get(),
-            dispatcher = get(),
-        )
+private val sourceModule =
+    module {
+        factory<AiringScheduleSource.Paged> {
+            AiringScheduleSourceImpl.Paged(
+                remoteSource = aniListApi(),
+                localSource = store().airingScheduleDao(),
+                mediaLocalSource = store().mediaDao(),
+                controller =
+                    graphQLController(
+                        mapper = get<AiringMapper.Paged>(),
+                    ),
+                converter = get(),
+                clearDataHelper = get(),
+                filter = get(),
+                dispatcher = get(),
+            )
+        }
     }
-}
 
-private val filterModule = module {
-    factory {
-        AiringQueryFilter.Paged(
-            authentication = get()
-        )
+private val filterModule =
+    module {
+        factory {
+            AiringQueryFilter.Paged(
+                authentication = get(),
+            )
+        }
     }
-}
 
-private val cacheModule = module {
-    factory {
-        AiringCache(
-            localSource = store().cacheDao()
-        )
+private val cacheModule =
+    module {
+        factory {
+            AiringCache(
+                localSource = store().cacheDao(),
+            )
+        }
     }
-}
 
-private val converterModule = module {
-    factory {
-        AiringConverter()
+private val converterModule =
+    module {
+        factory {
+            AiringConverter()
+        }
+        factory {
+            AiringModelConverter()
+        }
+        factory {
+            AiringEntityConverter()
+        }
     }
-    factory {
-        AiringModelConverter()
-    }
-    factory {
-        AiringEntityConverter()
-    }
-}
 
-private val mapperModule = module {
-    factory {
-        AiringMapper.Airing(
-            localSource = store().airingScheduleDao(),
-            converter = get()
-        )
+private val mapperModule =
+    module {
+        factory {
+            AiringMapper.Airing(
+                localSource = store().airingScheduleDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            AiringMapper.Paged(
+                mediaMapper = get(),
+                localSource = store().airingScheduleDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            AiringMapper.Embed(
+                localSource = store().airingScheduleDao(),
+                converter = get(),
+            )
+        }
     }
-    factory {
-        AiringMapper.Paged(
-            mediaMapper = get(),
-            localSource = store().airingScheduleDao(),
-            converter = get()
-        )
-    }
-    factory {
-        AiringMapper.Embed(
-            localSource = store().airingScheduleDao(),
-            converter = get()
-        )
-    }
-}
 
-private val useCaseModule = module {
-    factory<GetPagedAiringScheduleInteractor>{
-        AiringScheduleInteractor.Paged(
-            repository = get()
+private val useCaseModule =
+    module {
+        factory<GetPagedAiringScheduleInteractor> {
+            AiringScheduleInteractor.Paged(
+                repository = get(),
+            )
+        }
+    }
+
+private val repositoryModule =
+    module {
+        factory<AiringSchedulePagedRepository> {
+            AiringScheduleRepository.Paged(
+                source = get(),
+            )
+        }
+    }
+
+internal val airingModules =
+    module {
+        includes(
+            sourceModule,
+            filterModule,
+            cacheModule,
+            converterModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
         )
     }
-}
-
-private val repositoryModule = module {
-    factory<AiringSchedulePagedRepository> {
-        AiringScheduleRepository.Paged(
-            source = get()
-        )
-    }
-}
-
-internal val airingModules = module {
-    includes(
-        sourceModule,
-        filterModule,
-        cacheModule,
-        converterModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}

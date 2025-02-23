@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.news.component.content.viewmodel
 
-import co.anitrend.core.component.viewmodel.AniTrendViewModel
-import co.anitrend.news.component.content.viewmodel.state.NewsContentState
+import androidx.paging.PagedList
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.feed.news.NewsPagedInteractor
+import co.anitrend.domain.news.entity.News
+import co.anitrend.domain.news.model.NewsParam
 
 class NewsContentViewModel(
-    override val state: NewsContentState
-) : AniTrendViewModel()
+    private val interactor: NewsPagedInteractor,
+) : AniTrendViewModelState<PagedList<News>>() {
+    operator fun invoke(param: NewsParam) {
+        val result = interactor(param)
+        state.postValue(result)
+    }
+}

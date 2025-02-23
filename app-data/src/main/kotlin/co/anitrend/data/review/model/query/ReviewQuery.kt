@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,39 +14,37 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.model.query
 
 import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.review.model.ReviewParam
 
 internal sealed class ReviewQuery : IGraphPayload {
-
     data class Entry(
-        val param: ReviewParam.Entry
+        val param: ReviewParam.Entry,
     ) : ReviewQuery() {
-
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "id" to param.id,
-        )
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+            )
     }
 
     data class Paged(
-        val param: ReviewParam.Paged
+        val param: ReviewParam.Paged,
     ) : ReviewQuery() {
-
         /**
          * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
          */
-        override fun toMap() = mapOf(
-            "mediaId" to param.mediaId,
-            "userId" to param.userId,
-            "mediaType" to param.mediaType,
-            "sort" to param.sort,
-            "scoreFormat" to param.scoreFormat,
-        )
+        override fun toMap() =
+            mapOf(
+                "mediaId" to param.mediaId,
+                "userId" to param.userId,
+                "mediaType" to param.mediaType,
+                "sort" to param.sort,
+                "scoreFormat" to param.scoreFormat,
+            )
     }
 }

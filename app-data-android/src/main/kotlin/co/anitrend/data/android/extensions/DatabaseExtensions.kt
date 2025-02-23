@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.android.extensions
 
 import androidx.room.RoomDatabase
@@ -25,7 +24,7 @@ import timber.log.Timber
 @Deprecated(
     message = "Highly error prone, rather use the @Transaction annotation",
     replaceWith = ReplaceWith(""),
-    level = DeprecationLevel.ERROR
+    level = DeprecationLevel.ERROR,
 )
 @Suppress("DEPRECATION")
 inline fun runInTransaction(action: () -> Unit) {

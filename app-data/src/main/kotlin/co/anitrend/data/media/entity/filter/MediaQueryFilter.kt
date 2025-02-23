@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.entity.filter
 
 import co.anitrend.data.android.filter.FilterQueryBuilder
@@ -51,11 +50,9 @@ import co.anitrend.support.query.builder.dsl.innerJoin
 import co.anitrend.support.query.builder.dsl.whereAnd
 
 internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
-
     class Paged(
-        private val authentication: IAuthenticationSettings
+        private val authentication: IAuthenticationSettings,
     ) : MediaQueryFilter<MediaParam.Find>() {
-
         private val mediaTable = MediaEntitySchema.tableName.asTable()
         private val mediaListTable = MediaListEntitySchema.tableName.asTable()
         private val linksTable = LinkEntitySchema.tableName.asTable()
@@ -155,24 +152,25 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun genreSelection(filter: MediaParam.Find) {
             val column = GenreEntitySchema.genre.asColumn(genreTable)
-            if (filter.genre != null || filter.genre_in != null || filter.genre_not_in != null)
+            if (filter.genre != null || filter.genre_in != null || filter.genre_not_in != null) {
                 requireBuilder() from {
                     innerJoin(genreConnectionTable) {
                         on(
                             GenreConnectionEntitySchema.mediaId.asColumn(
-                                genreConnectionTable
+                                genreConnectionTable,
                             ),
-                            MediaEntitySchema.id.asColumn(mediaTable)
+                            MediaEntitySchema.id.asColumn(mediaTable),
                         )
                     }.innerJoin(genreTable) {
                         on(
                             GenreConnectionEntitySchema.genreId.asColumn(
-                                genreConnectionTable
+                                genreConnectionTable,
                             ),
-                            GenreEntitySchema.id.asColumn(genreTable)
+                            GenreEntitySchema.id.asColumn(genreTable),
                         )
                     }
                 }
+            }
 
             filter.genre?.also {
                 requireBuilder() whereAnd {
@@ -259,17 +257,18 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         }
 
         private fun licenseSelection(filter: MediaParam.Find) {
-            if (filter.licensedBy != null || filter.licensedBy_in != null)
+            if (filter.licensedBy != null || filter.licensedBy_in != null) {
                 requireBuilder() from {
                     innerJoin(linksTable) {
                         on(
                             LinkEntitySchema.mediaId.asColumn(linksTable),
-                            MediaEntitySchema.id.asColumn(mediaTable)
+                            MediaEntitySchema.id.asColumn(mediaTable),
                         )
                     }
                 } whereAnd {
                     MediaEntitySchema.isLicensed.asColumn(mediaTable).equal(true)
                 }
+            }
             filter.licensedBy?.also {
                 requireBuilder() whereAnd {
                     LinkEntitySchema.site.asColumn(linksTable).like(it.title.toString())
@@ -291,7 +290,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
                         innerJoin(mediaListTable) {
                             on(
                                 MediaListEntitySchema.mediaId.asColumn(mediaListTable),
-                                MediaEntitySchema.id.asColumn(mediaTable)
+                                MediaEntitySchema.id.asColumn(mediaTable),
                             )
                         }
                     } whereAnd {
@@ -342,9 +341,9 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
             filter.search?.also {
                 requireBuilder() whereAnd {
                     MediaEntitySchema.titleUser_preferred.match(it) or
-                            MediaEntitySchema.titleEnglish.match(it) or
-                            MediaEntitySchema.titleOriginal.match(it) or
-                            MediaEntitySchema.titleRomaji.match(it)
+                        MediaEntitySchema.titleEnglish.match(it) or
+                        MediaEntitySchema.titleOriginal.match(it) or
+                        MediaEntitySchema.titleRomaji.match(it)
                 }
             }
         }
@@ -414,26 +413,30 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun tagSelection(filter: MediaParam.Find) {
             fun joinTagTablesIfRequired() {
-                if (filter.minimumTagRank != null || filter.tagCategory != null ||
-                    filter.tagCategory_in != null || filter.tagCategory_not_in != null ||
-                    filter.tag != null || filter.tag_in != null || filter.tag_not_in != null
+                if (filter.minimumTagRank != null ||
+                    filter.tagCategory != null ||
+                    filter.tagCategory_in != null ||
+                    filter.tagCategory_not_in != null ||
+                    filter.tag != null ||
+                    filter.tag_in != null ||
+                    filter.tag_not_in != null
                 ) {
                     requireBuilder() from {
                         innerJoin(tagConnectionTable) {
                             on(
                                 TagConnectionEntitySchema.mediaId.asColumn(
-                                    tagConnectionTable
+                                    tagConnectionTable,
                                 ),
-                                MediaEntitySchema.id.asColumn(mediaTable)
+                                MediaEntitySchema.id.asColumn(mediaTable),
                             )
                         }.innerJoin(tagTable) {
                             on(
                                 TagEntitySchema.id.asColumn(
-                                    tagTable
+                                    tagTable,
                                 ),
                                 TagConnectionEntitySchema.tagId.asColumn(
-                                    tagConnectionTable
-                                )
+                                    tagConnectionTable,
+                                ),
                             )
                         }
                     }
@@ -444,49 +447,49 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
             filter.minimumTagRank?.also {
                 requireBuilder() whereAnd {
                     TagConnectionEntitySchema.rank.asColumn(
-                        tagConnectionTable
+                        tagConnectionTable,
                     ) greaterThan it
                 }
             }
             filter.tag?.also {
                 requireBuilder() whereAnd {
                     TagEntitySchema.name.asColumn(
-                        tagTable
+                        tagTable,
                     ) equal it
                 }
             }
             filter.tagCategory?.also {
                 requireBuilder() whereAnd {
                     TagEntitySchema.category.asColumn(
-                        tagTable
+                        tagTable,
                     ) equal it
                 }
             }
             filter.tagCategory_in?.also {
                 requireBuilder() whereAnd {
                     TagEntitySchema.category.asColumn(
-                        tagTable
+                        tagTable,
                     ) `in` it
                 }
             }
             filter.tagCategory_not_in?.also {
                 requireBuilder() whereAnd {
                     TagEntitySchema.category.asColumn(
-                        tagTable
+                        tagTable,
                     ) notIn it
                 }
             }
             filter.tag_in?.also {
                 requireBuilder() whereAnd {
                     TagEntitySchema.name.asColumn(
-                        tagTable
+                        tagTable,
                     ) `in` it
                 }
             }
             filter.tag_not_in?.also {
                 requireBuilder() whereAnd {
                     TagEntitySchema.name.asColumn(
-                        tagTable
+                        tagTable,
                     ) notIn it
                 }
             }
@@ -513,7 +516,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
 
         private fun selection(filter: MediaParam.Find) {
             filter.isAdult?.also {
-                requireBuilder() whereAnd  {
+                requireBuilder() whereAnd {
                     MediaEntitySchema.isAdult equal it
                 }
             }

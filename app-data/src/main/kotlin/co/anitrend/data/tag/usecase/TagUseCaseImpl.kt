@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,12 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.tag.usecase
 
 import co.anitrend.data.tag.TagInteractor
 import co.anitrend.data.tag.TagListRepository
 
 internal class TagUseCaseImpl(
-    repository: TagListRepository
+    repository: TagListRepository,
 ) : TagInteractor(repository)

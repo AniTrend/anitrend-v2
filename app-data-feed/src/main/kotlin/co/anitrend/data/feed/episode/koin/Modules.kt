@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.episode.koin
 
 import co.anitrend.data.android.extensions.cacheLocalSource
@@ -37,98 +36,106 @@ import co.anitrend.data.feed.extensions.episodeLocalSource
 import co.anitrend.data.feed.extensions.remoteSource
 import org.koin.dsl.module
 
-private val sourceModule = module {
-    factory<EpisodeSource.Detail> {
-        EpisodeSourceImpl.Detail(
-            localSource = episodeLocalSource(),
-            converter = get(),
-            dispatcher = get(),
-        )
+private val sourceModule =
+    module {
+        factory<EpisodeSource.Detail> {
+            EpisodeSourceImpl.Detail(
+                localSource = episodeLocalSource(),
+                converter = get(),
+                dispatcher = get(),
+            )
+        }
+        factory<EpisodeSource.Paged> {
+            EpisodeSourceImpl.Paged(
+                remoteSource = remoteSource(),
+                localSource = episodeLocalSource(),
+                clearDataHelper = get(),
+                controller =
+                    defaultController(
+                        mapper = get<EpisodeMapper>(),
+                    ),
+                converter = get(),
+                cachePolicy = get<EpisodeCache>(),
+                dispatcher = get(),
+            )
+        }
     }
-    factory<EpisodeSource.Paged> {
-        EpisodeSourceImpl.Paged(
-            remoteSource = remoteSource(),
-            localSource = episodeLocalSource(),
-            clearDataHelper = get(),
-            controller = defaultController(
-                mapper = get<EpisodeMapper>()
-            ),
-            converter = get(),
-            cachePolicy = get<EpisodeCache>(),
-            dispatcher = get(),
-        )
-    }
-}
 
-private val cacheModule = module {
-    factory {
-        EpisodeCache(
-            localSource = cacheLocalSource()
-        )
+private val cacheModule =
+    module {
+        factory {
+            EpisodeCache(
+                localSource = cacheLocalSource(),
+            )
+        }
     }
-}
 
-private val converterModule = module {
-    factory {
-        EpisodeModelConverter()
+private val converterModule =
+    module {
+        factory {
+            EpisodeModelConverter()
+        }
+        factory {
+            EpisodeEntityConverter()
+        }
     }
-    factory {
-        EpisodeEntityConverter()
-    }
-}
 
-private val mapperModule = module {
-    factory {
-        EpisodeMapper(
-            localSource = episodeLocalSource(),
-            converter = get()
-        )
+private val mapperModule =
+    module {
+        factory {
+            EpisodeMapper(
+                localSource = episodeLocalSource(),
+                converter = get(),
+            )
+        }
     }
-}
 
-private val useCaseModule = module {
-    factory<EpisodeDetailInteractor> {
-        EpisodeInteractor.Detail(
-            repository = get()
-        )
+private val useCaseModule =
+    module {
+        factory<EpisodeDetailInteractor> {
+            EpisodeInteractor.Detail(
+                repository = get(),
+            )
+        }
+        factory<EpisodePagedInteractor> {
+            EpisodeInteractor.Paged(
+                repository = get(),
+            )
+        }
+        factory<EpisodeSyncInteractor> {
+            EpisodeInteractor.Sync(
+                repository = get(),
+            )
+        }
     }
-    factory<EpisodePagedInteractor> {
-        EpisodeInteractor.Paged(
-            repository = get()
-        )
-    }
-    factory<EpisodeSyncInteractor> {
-        EpisodeInteractor.Sync(
-            repository = get()
-        )
-    }
-}
 
-private val repositoryModule = module {
-    factory<EpisodeDetailRepository> {
-        EpisodeRepository.Detail(
-            source = get()
-        )
+private val repositoryModule =
+    module {
+        factory<EpisodeDetailRepository> {
+            EpisodeRepository.Detail(
+                source = get(),
+            )
+        }
+        factory<EpisodePagedRepository> {
+            EpisodeRepository.Paged(
+                source = get(),
+            )
+        }
+        factory<EpisodeSyncRepository> {
+            EpisodeRepository.Sync(
+                source = get(),
+            )
+        }
     }
-    factory<EpisodePagedRepository> {
-        EpisodeRepository.Paged(
-            source = get()
-        )
-    }
-    factory<EpisodeSyncRepository> {
-        EpisodeRepository.Sync(
-            source = get()
-        )
-    }
-}
 
-internal val episodeModules = module {
-    includes(
-        sourceModule,
-        cacheModule,
-        converterModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule
-    )
-}
+internal val episodeModules =
+    module {
+        includes(
+            sourceModule,
+            cacheModule,
+            converterModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
+        )
+    }

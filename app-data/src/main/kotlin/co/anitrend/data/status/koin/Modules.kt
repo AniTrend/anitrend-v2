@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,35 +14,35 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.status.koin
 
 import org.koin.dsl.module
 
-private val sourceModule = module {
+private val sourceModule =
+    module {
+    }
 
-}
+private val converterModule =
+    module {
+    }
 
-private val converterModule = module {
+private val mapperModule =
+    module {
+    }
 
-}
+private val useCaseModule =
+    module {
+    }
 
-private val mapperModule = module {
+private val repositoryModule =
+    module {
+    }
 
-}
-
-private val useCaseModule = module {
-
-}
-
-private val repositoryModule = module {
-
-}
-
-internal val statusModules = listOf(
-    sourceModule,
-    converterModule,
-    mapperModule,
-    useCaseModule,
-    repositoryModule
-)
+internal val statusModules =
+    listOf(
+        sourceModule,
+        converterModule,
+        mapperModule,
+        useCaseModule,
+        repositoryModule,
+    )

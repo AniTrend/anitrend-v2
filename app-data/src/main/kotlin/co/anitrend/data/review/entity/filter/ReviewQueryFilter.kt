@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.review.entity.filter
 
 import co.anitrend.data.android.filter.FilterQueryBuilder
@@ -31,7 +30,6 @@ import co.anitrend.support.query.builder.dsl.from
 import co.anitrend.support.query.builder.dsl.whereAnd
 
 internal sealed class ReviewQueryFilter<T> : FilterQueryBuilder<T>() {
-
     protected val mediaTable = MediaEntitySchema.tableName.asTable()
     protected val userTable = UserEntitySchema.tableName.asTable()
     protected val reviewTable = ReviewEntitySchema.tableName.asTable()
@@ -41,62 +39,74 @@ internal sealed class ReviewQueryFilter<T> : FilterQueryBuilder<T>() {
      * to add query objections
      */
     override fun onBuildQuery(filter: T) {
-        requireBuilder() from (reviewTable).innerJoin(mediaTable).on(
-            MediaEntitySchema.id.asColumn(mediaTable).equal(
-                ReviewEntitySchema.mediaId.asColumn(reviewTable)
-            )
-        ).innerJoin(userTable).on(
-            UserEntitySchema.id.asColumn(userTable).equal(
-                ReviewEntitySchema.userId.asColumn(reviewTable)
-            )
-        )
+        requireBuilder() from
+            (reviewTable)
+                .innerJoin(mediaTable)
+                .on(
+                    MediaEntitySchema.id.asColumn(mediaTable).equal(
+                        ReviewEntitySchema.mediaId.asColumn(reviewTable),
+                    ),
+                ).innerJoin(userTable)
+                .on(
+                    UserEntitySchema.id.asColumn(userTable).equal(
+                        ReviewEntitySchema.userId.asColumn(reviewTable),
+                    ),
+                )
     }
 
     class Paged : ReviewQueryFilter<ReviewParam.Paged>() {
-
         private fun selection(filter: ReviewParam.Paged) {
             filter.mediaType?.also { mediaType ->
                 requireBuilder() whereAnd {
                     MediaEntitySchema.type.asColumn(mediaTable).equal(
-                        mediaType.toString()
+                        mediaType.toString(),
                     )
                 }
             }
             filter.mediaId?.also { mediaId ->
                 requireBuilder() whereAnd {
                     MediaEntitySchema.id.asColumn(mediaTable).equal(
-                        mediaId
+                        mediaId,
                     )
                 }
             }
             filter.userId?.also { userId ->
                 requireBuilder() whereAnd {
                     UserEntitySchema.id.asColumn(userTable).equal(
-                        userId
+                        userId,
                     )
                 }
             }
         }
 
-
         private fun order(filter: ReviewParam.Paged) {
             filter.sort?.forEach { sort ->
                 when (sort.sortable) {
-                    ReviewSort.CREATED_AT -> requireBuilder().orderBy(
-                        ReviewEntitySchema.createdAt.asColumn(reviewTable), sort.order
-                    )
-                    ReviewSort.ID -> requireBuilder().orderBy(
-                        ReviewEntitySchema.id.asColumn(reviewTable), sort.order
-                    )
-                    ReviewSort.RATING -> requireBuilder().orderBy(
-                        ReviewEntitySchema.rating.asColumn(reviewTable), sort.order
-                    )
-                    ReviewSort.SCORE -> requireBuilder().orderBy(
-                        ReviewEntitySchema.score.asColumn(reviewTable), sort.order
-                    )
-                    ReviewSort.UPDATED_AT -> requireBuilder().orderBy(
-                        ReviewEntitySchema.updatedAt.asColumn(reviewTable), sort.order
-                    )
+                    ReviewSort.CREATED_AT ->
+                        requireBuilder().orderBy(
+                            ReviewEntitySchema.createdAt.asColumn(reviewTable),
+                            sort.order,
+                        )
+                    ReviewSort.ID ->
+                        requireBuilder().orderBy(
+                            ReviewEntitySchema.id.asColumn(reviewTable),
+                            sort.order,
+                        )
+                    ReviewSort.RATING ->
+                        requireBuilder().orderBy(
+                            ReviewEntitySchema.rating.asColumn(reviewTable),
+                            sort.order,
+                        )
+                    ReviewSort.SCORE ->
+                        requireBuilder().orderBy(
+                            ReviewEntitySchema.score.asColumn(reviewTable),
+                            sort.order,
+                        )
+                    ReviewSort.UPDATED_AT ->
+                        requireBuilder().orderBy(
+                            ReviewEntitySchema.updatedAt.asColumn(reviewTable),
+                            sort.order,
+                        )
                 }
             }
         }
@@ -113,12 +123,11 @@ internal sealed class ReviewQueryFilter<T> : FilterQueryBuilder<T>() {
     }
 
     class Entry : ReviewQueryFilter<ReviewParam.Entry>() {
-
         private fun selection(filter: ReviewParam.Entry) {
             filter.id.also { id ->
                 requireBuilder() whereAnd {
                     ReviewEntitySchema.id.asColumn(reviewTable).equal(
-                        id
+                        id,
                     )
                 }
             }

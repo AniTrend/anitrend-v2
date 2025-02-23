@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.airing.mapper
 
 import co.anitrend.data.airing.converters.AiringModelConverter
@@ -27,16 +26,14 @@ import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.media.mapper.MediaMapper
 
 internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
-
     protected abstract val localSource: AiringLocalSource
     protected abstract val converter: AiringModelConverter
 
     class Paged(
         private val mediaMapper: MediaMapper.Embed,
         override val localSource: AiringLocalSource,
-        override val converter: AiringModelConverter
+        override val converter: AiringModelConverter,
     ) : AiringMapper<AiringScheduleModelContainer.Paged, List<AiringScheduleEntity>>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -51,13 +48,11 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: AiringScheduleModelContainer.Paged
-        ): List<AiringScheduleEntity> {
+        override suspend fun onResponseMapFrom(source: AiringScheduleModelContainer.Paged): List<AiringScheduleEntity> {
             mediaMapper.onEmbedded(
                 source.page.airingSchedules.mapNotNull(
-                    AiringScheduleModel.Extended::media
-                )
+                    AiringScheduleModel.Extended::media,
+                ),
             )
             return converter.convertFrom(source.page.airingSchedules)
         }
@@ -65,9 +60,8 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
 
     class Airing(
         override val localSource: AiringLocalSource,
-        override val converter: AiringModelConverter
+        override val converter: AiringModelConverter,
     ) : AiringMapper<AiringScheduleModel, AiringScheduleEntity>() {
-
         /**
          * Save [data] into your desired local source
          */
@@ -81,13 +75,11 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(
-            source: AiringScheduleModel
-        ): AiringScheduleEntity = converter.convertFrom(source)
+        override suspend fun onResponseMapFrom(source: AiringScheduleModel): AiringScheduleEntity = converter.convertFrom(source)
     }
 
     class Embed(
         override val localSource: AiringLocalSource,
-        override val converter: AiringModelConverter
+        override val converter: AiringModelConverter,
     ) : EmbedMapper<AiringScheduleModel, AiringScheduleEntity>()
 }

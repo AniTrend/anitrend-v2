@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.domain.review.enums
 
 import co.anitrend.domain.common.enums.contract.IAliasable
@@ -23,10 +22,13 @@ import co.anitrend.domain.common.enums.contract.ISortable
 /**
  * Review sort enums
  */
-enum class ReviewSort(override val alias: CharSequence) : IAliasable, ISortable {
+enum class ReviewSort(
+    override val alias: CharSequence,
+) : IAliasable,
+    ISortable {
     CREATED_AT("Created at"),
     ID("Id"),
     RATING("Rating"),
     SCORE("Score"),
-    UPDATED_AT("Update at")
+    UPDATED_AT("Update at"),
 }

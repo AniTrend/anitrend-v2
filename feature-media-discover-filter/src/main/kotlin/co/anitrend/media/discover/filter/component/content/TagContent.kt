@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.media.discover.filter.component.content
 
 import android.os.Bundle
@@ -42,9 +41,8 @@ internal class TagContent(
     override val inflateLayout: Int = R.layout.media_discover_filter_tag,
     override val bindingMapper: (View) -> MediaDiscoverFilterTagBinding = {
         MediaDiscoverFilterTagBinding.bind(it)
-    }
+    },
 ) : AniTrendSelectionContent<MediaDiscoverFilterTagBinding, Tag>() {
-
     private val param by argument(
         key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
         default = MediaDiscoverRouter::MediaDiscoverParam,
@@ -57,15 +55,19 @@ internal class TagContent(
         if (supportViewAdapter.isEmpty()) {
             val tagParams = param.tag_in.combine(param.tag)
 
-            val tagSelectedIds = tags.union(tagParams) { p, s ->
-                p.name == s
-            }.map(Tag::id)
+            val tagSelectedIds =
+                tags
+                    .union(tagParams) { p, s ->
+                        p.name == s
+                    }.map(Tag::id)
 
             val categories = param.tagCategory_in.combine(param.tagCategory)
 
-            val categorySelectedIds = tags.union(categories) { p, s ->
-                p.category == s
-            }.map(Tag::id)
+            val categorySelectedIds =
+                tags
+                    .union(categories) { p, s ->
+                        p.category == s
+                    }.map(Tag::id)
 
             val selectedIds = (tagSelectedIds + categorySelectedIds).distinct()
             supportViewAdapter.supportAction?.selectAllItems(selectedIds)
@@ -82,7 +84,7 @@ internal class TagContent(
      */
     override fun onFetchDataInitialize() {
         val param = TagParam(SortOrder.ASC)
-        viewModelState().invoke(param)
+        viewModel.invoke(param)
     }
 
     /**
@@ -90,7 +92,7 @@ internal class TagContent(
      * called in [onViewCreated]
      */
     override fun setUpViewModelObserver() {
-        viewModelState().model.observe(viewLifecycleOwner) {
+        viewModel.model.observe(viewLifecycleOwner) {
             applySelections(it)
             onPostModelChange(it)
         }
@@ -107,7 +109,10 @@ internal class TagContent(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         requireBinding().tagsRecyclerSelection.configure()
     }
@@ -115,5 +120,5 @@ internal class TagContent(
     /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel.state
+    override fun viewModelState() = viewModel
 }

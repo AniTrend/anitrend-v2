@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.customlist.entity
 
 import androidx.room.ColumnInfo
@@ -37,7 +36,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
                 "user_id",
                 "user_name",
             ],
-            unique = true
+            unique = true,
         ),
         Index(value = ["media_list_id"]),
         Index(value = ["user_id"]),
@@ -48,16 +47,16 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["media_list_id"],
-            parentColumns = ["id"]
+            parentColumns = ["id"],
         ),
         ForeignKey(
             entity = UserEntity::class,
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
             childColumns = ["user_id"],
-            parentColumns = ["id"]
-        )
-    ]
+            parentColumns = ["id"],
+        ),
+    ],
 )
 @EntitySchema
 internal data class CustomListEntity(
@@ -66,5 +65,5 @@ internal data class CustomListEntity(
     @ColumnInfo(name = "media_list_id") val mediaListId: Long,
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "user_name") val userName: String,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : Identity

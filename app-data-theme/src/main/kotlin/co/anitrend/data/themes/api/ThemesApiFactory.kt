@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.themes.api
 
 import co.anitrend.data.android.network.cache.CacheHelper
@@ -29,17 +28,18 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
 
 internal class ThemesApiFactory : IEndpointFactory {
-    override val endpointType = object : IEndpointType {
-        override val url: HttpUrl = BuildConfig.themesMoe.toHttpUrl()
-    }
+    override val endpointType =
+        object : IEndpointType {
+            override val url: HttpUrl = BuildConfig.themesMoe.toHttpUrl()
+        }
 
     override fun okHttpConfig(scope: Scope): OkHttpClient {
         val builder = scope.defaultBuilder()
         builder.cache(
             CacheHelper.createCache(
                 scope.androidContext(),
-                "themes"
-            )
+                "themes",
+            ),
         )
         return builder.build()
     }

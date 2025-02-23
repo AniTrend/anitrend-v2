@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020  AniTrend
+ * Copyright (C) 2020 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.media.entity
 
 import androidx.room.ColumnInfo
@@ -37,9 +36,9 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     indices = [
         Index(
             value = ["mal_id"],
-            unique = true
-        )
-    ]
+            unique = true,
+        ),
+    ],
 )
 @EntitySchema
 internal data class MediaEntity(
@@ -77,27 +76,26 @@ internal data class MediaEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "volumes") val volumes: Int?,
     @ColumnInfo(name = "mal_id") val malId: Long?,
-    @ColumnInfo(name = "id") override val id: Long
+    @ColumnInfo(name = "id") override val id: Long,
 ) : Identity {
-
     internal data class CoverImage(
         @ColumnInfo(name = "color") val color: String?,
         @ColumnInfo(name = "extra_large") val extraLarge: String?,
         @ColumnInfo(name = "large") val large: String?,
         @ColumnInfo(name = "medium") val medium: String?,
-        @ColumnInfo(name = "banner") val banner: String?
+        @ColumnInfo(name = "banner") val banner: String?,
     )
 
     internal data class Title(
         @ColumnInfo(name = "romaji") var romaji: String?,
         @ColumnInfo(name = "english") var english: String?,
         @ColumnInfo(name = "original") val original: String?,
-        @ColumnInfo(name = "user_preferred") var userPreferred: String?
+        @ColumnInfo(name = "user_preferred") var userPreferred: String?,
     )
 
     internal data class Trailer(
         @ColumnInfo(name = "id") val id: String,
         @ColumnInfo(name = "site") val site: String?,
-        @ColumnInfo(name = "thumbnail") val thumbnail: String?
+        @ColumnInfo(name = "thumbnail") val thumbnail: String?,
     )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.feed.news.source
 
 import androidx.paging.PagedList
@@ -32,7 +31,6 @@ import co.anitrend.data.feed.news.datasource.remote.NewsRemoteSource
 import co.anitrend.data.feed.news.source.contract.NewsSource
 import co.anitrend.domain.news.entity.News
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 
 internal class NewsSourceImpl(
@@ -42,26 +40,27 @@ internal class NewsSourceImpl(
     private val controller: NewPagedController,
     private val converter: NewsEntityConverter,
     override val cachePolicy: ICacheStorePolicy,
-    override val dispatcher: ISupportDispatcher
+    override val dispatcher: ISupportDispatcher,
 ) : NewsSource() {
-
     override fun observable(): Flow<PagedList<News>> {
-        val dataSourceFactory = localSource
-            .entryFactory()
-            .map(converter::convertFrom)
+        val dataSourceFactory =
+            localSource
+                .entryFactory()
+                .map(converter::convertFrom)
 
         return FlowPagedListBuilder(
             dataSourceFactory,
             PAGING_CONFIGURATION,
             null,
-            this
+            this,
         ).buildFlow()
     }
 
     override suspend fun getNews(requestCallback: RequestCallback): Boolean {
-        val deferred = deferred {
-            remoteSource.getNews(query.param.locale)
-        }
+        val deferred =
+            deferred {
+                remoteSource.getNews(query.param.locale)
+            }
 
         val result = controller(deferred, requestCallback)
 

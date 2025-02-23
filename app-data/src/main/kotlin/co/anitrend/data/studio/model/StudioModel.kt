@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.studio.model
 
 import co.anitrend.data.media.model.connection.MediaConnection
@@ -27,7 +26,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal sealed class StudioModel : IStudioModel {
-
     abstract val isFavouriteBlocked: Boolean?
 
     @Serializable
@@ -38,7 +36,7 @@ internal sealed class StudioModel : IStudioModel {
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean? = null,
         @SerialName("name") override val name: String,
         @SerialName("siteUrl") override val siteUrl: String,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StudioModel()
 
     /**
@@ -53,6 +51,6 @@ internal sealed class StudioModel : IStudioModel {
         @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean? = null,
         @SerialName("name") override val name: String,
         @SerialName("siteUrl") override val siteUrl: String,
-        @SerialName("id") override val id: Long
+        @SerialName("id") override val id: Long,
     ) : StudioModel()
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021  AniTrend
+ * Copyright (C) 2021 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 package co.anitrend.deeplink.component.route.contract
 
 import android.content.Intent
+import androidx.core.net.UriCompat
 import androidx.core.os.bundleOf
 import co.anitrend.core.android.extensions.analytics
 import co.anitrend.core.android.extensions.keys
@@ -24,12 +25,15 @@ import co.anitrend.core.android.extensions.tags
 import com.kingsleyadio.deeplink.BaseRoute
 import com.kingsleyadio.deeplink.DeepLinkUri
 import com.kingsleyadio.deeplink.Environment
+import com.kingsleyadio.deeplink.extension.toAndroidUri
 import timber.log.Timber
 
 /**
  * Application deep link router for handling anitrend and web URIs
  */
-abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
+abstract class Route(
+    vararg routes: String,
+) : BaseRoute<Intent?>(*routes) {
     /**
      * Called when the application receives a matching deep link from [routes]
      *
@@ -42,12 +46,17 @@ abstract class Route(vararg routes: String) : BaseRoute<Intent?>(*routes) {
         params: Map<String, String>,
         env: Environment,
     ): Intent? {
-        Timber.d("Deep link matcher found!")
+        Timber.d("DeepLinkUri match hit: $uri")
         val entries = params.entries.joinToString()
         Timber.analytics {
             logCurrentState(
                 Timber.tags.view("deep_link"),
-                bundleOf(Timber.keys.DATA to uri.toString()),
+                bundleOf(
+                    Timber.keys.DATA to
+                        UriCompat.toSafeString(
+                            uri.toAndroidUri(),
+                        ),
+                ),
             )
         }
         Timber.d("Attempting to resolve -> uri: $uri | params: $entries")

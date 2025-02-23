@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019  AniTrend
+ * Copyright (C) 2019 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package co.anitrend.data.common.model.paging.query
 
 import androidx.annotation.IntRange
@@ -30,9 +29,9 @@ import co.anitrend.data.common.model.graph.IGraphPayload
 internal data class PageQuery(
     var page: Int,
     @IntRange(from = 0, to = 50)
-    val perPage: Int = 30
-): IGraphPayload, ISupportPagingHelper {
-
+    val perPage: Int = 30,
+) : IGraphPayload,
+    ISupportPagingHelper {
     /**
      * Resets the paging parameters to their default
      */
@@ -62,8 +61,9 @@ internal data class PageQuery(
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
-    override fun toMap() = mapOf(
-        "page" to page,
-        "perPage" to perPage
-    )
+    override fun toMap() =
+        mapOf(
+            "page" to page,
+            "perPage" to perPage,
+        )
 }
