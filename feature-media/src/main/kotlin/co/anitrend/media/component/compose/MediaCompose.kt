@@ -42,6 +42,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,22 +63,29 @@ import co.anitrend.core.android.helpers.image.model.RequestImage
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
+import co.anitrend.domain.media.entity.attribute.score.MediaScore
+import co.anitrend.domain.media.entity.attribute.title.MediaTitle
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.tag.entity.Tag
+import co.anitrend.domain.medialist.entity.MediaList
+import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.media.R
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.model.common.IParam
 
 @Composable
 private fun MediaDetailContent(
     media: Media,
     accentColor: Color,
-    onMediaDiscoverableItemClick: (IParam) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -142,7 +150,7 @@ private fun MediaDetailContent(
                 )
                 TagListItems(
                     accentColor = accentColor,
-                    tags = media.tags as List<Tag>,
+                    tags = media.tags,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                 )
             }
@@ -157,12 +165,12 @@ fun MediaScreenContent(
     onBookmarkButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
     onFloatingActionButtonClick: (Media) -> Unit,
-    onMediaDiscoverableItemClick: (IParam) -> Unit,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val state = mediaState.model.observeAsState()
-    val media: Media = state.value ?: return
+    val state by mediaState.model.observeAsState()
+    val media: Media = state ?: return
 
     val accentColor = media.image.rememberAccentColor()
 
@@ -229,9 +237,45 @@ fun MediaScreenContent(
 private fun MediaDetailComponentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(darkTheme = darkTheme) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         MediaDetailContent(
-            media = Media.Extended.empty(),
+            media =
+                Media.Extended.empty().copy(
+                    title =
+                        MediaTitle(
+                            userPreferred = "Boku no Hero Academia 3",
+                            english = "My Hero Academia Season 3",
+                            romaji = "Boku no Hero Academia 3",
+                            native = "僕のヒーローアカデミア 3",
+                        ),
+                    status = MediaStatus.FINISHED,
+                    image = MediaImage.empty().copy(color = "#e4a15d"),
+                    startDate = FuzzyDate.empty().copy(2018),
+                    format = MediaFormat.TV,
+                    category =
+                        Media.Category.Anime
+                            .empty()
+                            .copy(25),
+                    isFavourite = true,
+                    score =
+                        MediaScore(
+                            average = 69,
+                            mean = 70,
+                            personal = null,
+                        ),
+                    mediaList =
+                        MediaList.Core.empty().copy(
+                            id = 100,
+                            status = MediaListStatus.COMPLETED,
+                            score = 8.3f,
+                            privacy =
+                                MediaListPrivacy(
+                                    isHidden = false,
+                                    isPrivate = false,
+                                    notes = "Good..",
+                                ),
+                        ),
+                ),
             accentColor = Color.DarkGray,
             onMediaDiscoverableItemClick = {},
             onImageClick = {},
