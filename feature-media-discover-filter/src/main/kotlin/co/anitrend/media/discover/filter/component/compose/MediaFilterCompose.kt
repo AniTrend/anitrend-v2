@@ -60,7 +60,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.domain.common.enums.contract.IAliasable
+import co.anitrend.domain.common.fromDateInt
 import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.common.toDateInt
 import co.anitrend.domain.media.enums.MediaCountry
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaLicensor
@@ -400,8 +402,15 @@ private fun YearRangeFilter(
     param: MediaDiscoverRouter.MediaDiscoverParam,
     onParamChange: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
 ) {
-    val minYear = param.seasonYear?.toFloat() ?: 1970f
-    val maxYear = dateHelper.getCurrentYear(2).toFloat()
+    val minYear =
+        param.seasonYear?.toFloat()
+            ?: param.startDate_lesser?.fromDateInt()?.toFloat()
+            ?: 1970f
+    val maxYear =
+        param.seasonYear?.toFloat()
+            ?: param.startDate_greater?.fromDateInt()?.toFloat()
+            ?: dateHelper.getCurrentYear(2).toFloat()
+
     var yearRange by remember { mutableStateOf(minYear.toInt() to maxYear.toInt()) }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -422,8 +431,8 @@ private fun YearRangeFilter(
                 }
                 onParamChange(
                     param.copy(
-                        startDate_lesser = "${yearRange.first}0000",
-                        startDate_greater = "${yearRange.second}0000",
+                        startDate_lesser = yearRange.first.toDateInt(),
+                        startDate_greater = yearRange.second.toDateInt(),
                     ),
                 )
             },

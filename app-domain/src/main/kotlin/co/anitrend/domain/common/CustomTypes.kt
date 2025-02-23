@@ -46,3 +46,29 @@ typealias DateLike = CharSequence
  * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) Two-letter country codes
  */
 internal typealias CountryCode = CharSequence
+
+/**
+ * Converts a [Int] to a DateInt (YYYYMMDD integer).
+ *
+ * Pads partial dates (at least 4 digits) with '0' to 8 digits.
+ *
+ * @receiver The [Int] to convert.
+ * @return A [DateInt] representing the parsed date.
+ * @throws IllegalArgumentException if the CharSequence has less than 4 digits or contains non-digit characters.
+ */
+fun Int.toDateInt(): DateInt {
+    require(this >= 1000) { "Invalid date format. Expected at least 4 digits (YYYY), but got: $this" }
+    return toString().padEnd(8, '0')
+}
+
+/**
+ * Converts a [DateInt] to [Int].
+ *
+ * @receiver The [DateInt] to convert.
+ * @throws IllegalArgumentException if the CharSequence has less than 4 digits or contains non-digit characters.
+ */
+fun DateInt.fromDateInt(trim: Int = 1): Int {
+    require(length >= 4) { "Invalid date format. Expected at least 4 digits (YYYY), but got: $this" }
+    require(all(Char::isDigit)) { "Invalid date format. Expected only digits, but got: $this" }
+    return Integer.parseInt(toString()) / trim
+}
