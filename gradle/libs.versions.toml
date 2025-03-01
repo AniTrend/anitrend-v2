@@ -29,7 +29,7 @@ androidx-test-ext = "1.2.1"
 androidx-work = "2.10.0"
 
 anitrend-arch = "1.8.6"
-anitrend-emojify = "1.9.6"
+anitrend-emojify = "1.9.7"
 anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
 anitrend-retrofit = "0.11.6"
