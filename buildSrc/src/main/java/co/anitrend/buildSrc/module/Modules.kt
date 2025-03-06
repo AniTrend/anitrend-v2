@@ -134,6 +134,7 @@ internal object Modules {
         Updater("task-updater"),
         Account("task-account"),
         Config("task-config"),
+        Favourite("task-favourite"),
     }
 }
 
