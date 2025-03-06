@@ -31,5 +31,5 @@
         android:orderInCategory="101"
         android:icon="@drawable/ic_outline_settings_24dp"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

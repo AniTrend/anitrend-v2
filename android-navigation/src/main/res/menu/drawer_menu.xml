@@ -18,7 +18,6 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:orderInCategory="100"
         android:id="@+id/action_notifications"
@@ -26,18 +25,4 @@
         android:icon="@drawable/ic_notifications_24"
         app:showAsAction="always"
         app:actionProviderClass="co.anitrend.navigation.drawer.action.provider.NotificationActionProvider" />
-
-    <item
-        android:id="@+id/action_about"
-        android:orderInCategory="101"
-        android:icon="@drawable/ic_info_outline_24dp"
-        android:title="@string/action_about"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:orderInCategory="102"
-        android:id="@+id/action_updates"
-        android:icon="@drawable/ic_update_24"
-        android:title="@string/action_updates"
-        app:showAsAction="never" />
 </menu>
