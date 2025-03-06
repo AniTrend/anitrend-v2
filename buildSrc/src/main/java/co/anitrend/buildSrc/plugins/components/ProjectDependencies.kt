@@ -17,7 +17,24 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.extensions.androidTest
+import co.anitrend.buildSrc.extensions.compile
+import co.anitrend.buildSrc.extensions.debugImplementation
+import co.anitrend.buildSrc.extensions.googleImplementation
+import co.anitrend.buildSrc.extensions.hasComposeSupport
+import co.anitrend.buildSrc.extensions.implementation
+import co.anitrend.buildSrc.extensions.isAndroidCoreModule
+import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.kapt
+import co.anitrend.buildSrc.extensions.libs
+import co.anitrend.buildSrc.extensions.matchesAndroidModule
+import co.anitrend.buildSrc.extensions.matchesAppModule
+import co.anitrend.buildSrc.extensions.matchesCommonModule
+import co.anitrend.buildSrc.extensions.matchesDataModule
+import co.anitrend.buildSrc.extensions.matchesFeatureModule
+import co.anitrend.buildSrc.extensions.matchesTaskModule
+import co.anitrend.buildSrc.extensions.releaseImplementation
+import co.anitrend.buildSrc.extensions.runtime
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
 import org.gradle.api.Project
@@ -47,9 +64,6 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(libs.androidx.collection.ktx)
     dependencies.implementation(libs.androidx.swiperefreshlayout)
     dependencies.implementation(libs.androidx.constraintlayout)
-
-    dependencies.implementation(libs.saket.cascade)
-    dependencies.implementation(libs.cash.contour)
 
     dependencies.implementation(libs.google.android.material)
 
@@ -99,7 +113,6 @@ private fun Project.applyAppModuleDependencies() {
     dependencies.implementation(libs.androidx.constraintlayout)
 
     dependencies.implementation(libs.coil)
-    dependencies.implementation(libs.saket.cascade)
 
     dependencies.implementation(project(Modules.Data.Settings.path()))
 
@@ -260,9 +273,6 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(libs.androidx.collection.ktx)
     dependencies.implementation(libs.androidx.constraintlayout)
 
-    dependencies.implementation(libs.cash.contour)
-    dependencies.implementation(libs.saket.cascade)
-
     dependencies.implementation(libs.google.android.material)
 
     dependencies.implementation(libs.coil)
@@ -303,8 +313,6 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(libs.androidx.startup.runtime)
     dependencies.implementation(libs.androidx.collection.ktx)
     dependencies.implementation(libs.androidx.constraintlayout)
-
-    dependencies.implementation(libs.cash.contour)
 
     dependencies.implementation(libs.google.android.material)
 

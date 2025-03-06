@@ -18,7 +18,6 @@ package co.anitrend.navigation.drawer.component.content
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
@@ -38,8 +37,6 @@ import co.anitrend.core.android.components.sheet.action.contract.OnStateChangedA
 import co.anitrend.core.android.extensions.applySystemBarsWindowInsetsListener
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.core.ui.inject
-import co.anitrend.navigation.AboutRouter
-import co.anitrend.navigation.UpdaterRouter
 import co.anitrend.navigation.drawer.R
 import co.anitrend.navigation.drawer.action.OnSandwichSlideAction
 import co.anitrend.navigation.drawer.adapter.AccountAdapter
@@ -51,7 +48,6 @@ import co.anitrend.navigation.drawer.component.viewmodel.NavigationViewModel
 import co.anitrend.navigation.drawer.databinding.BottomNavigationDrawerBinding
 import co.anitrend.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.drawer.model.state.SandwichState
-import co.anitrend.navigation.extensions.startActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.Flow
@@ -342,37 +338,6 @@ class BottomDrawerContent(
             navigationRecyclerView.adapter = navigationAdapter
         }
     }
-
-    /**
-     * This hook is called whenever an item in your options menu is selected.
-     * The default implementation simply returns false to have the normal
-     * processing happen (calling the item's Runnable or sending a message to
-     * its Handler as appropriate).  You can use this method for any items
-     * for which you would like to do processing without those other
-     * facilities.
-     *
-     * Derived classes should call through to the base class for it to
-     * perform the default menu handling.
-     *
-     * @param item The menu item that was selected.
-     *
-     * @return boolean Return false to allow normal menu processing to
-     * proceed, true to consume it here.
-     *
-     * @see .onCreateOptionsMenu
-     */
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.action_about -> {
-                AboutRouter.startActivity(context)
-                true
-            }
-            R.id.action_updates -> {
-                UpdaterRouter.startActivity(context)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
     override fun isShowing(): Boolean =
         behavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED ||

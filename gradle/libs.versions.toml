@@ -218,7 +218,6 @@ airbnb-paris-processor = { module = "com.airbnb.android:paris-processor", versio
 blitz = { module = "com.github.perfomer:blitz", version.ref = "blitz" }
 
 cash-copper = { module = "app.cash.copper:copper-flow", version = "1.0.0" }
-cash-contour = { module = "app.cash.contour:contour", version = "1.1.0" }
 cash-turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
 
 chuncker-debug = { module = "com.github.ChuckerTeam.Chucker:library", version.ref = "chuncker" }
@@ -301,7 +300,6 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 saket-betterlinkmovementmethod = { module = "me.saket:better-link-movement-method", version = "2.2.0" }
-saket-cascade = { module = "me.saket.cascade:cascade", version = "2.3.0" }
 
 sheets-calendar = { module = "com.maxkeppeler.sheets:calendar", version.ref = "sheets" }
 sheets-core = { module = "com.maxkeppeler.sheets:core", version.ref = "sheets" }
