@@ -21,11 +21,6 @@ import co.anitrend.buildSrc.module.Modules
 
 object Libraries {
 
-    object Repositories {
-        const val jitPack = "https://www.jitpack.io"
-        const val sonatypeReleases = "https://oss.sonatype.org/content/repositories/releases"
-    }
-
     object AniTrend {
 
         object CommonUi {

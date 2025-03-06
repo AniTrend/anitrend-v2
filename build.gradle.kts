@@ -1,4 +1,3 @@
-import co.anitrend.buildSrc.Libraries.Repositories
 import co.anitrend.buildSrc.resolver.handleConflicts
 
 plugins {
@@ -22,24 +21,7 @@ buildscript {
 }
 
 allprojects {
-    repositories {
-        mavenLocal()
-        google()
-        jcenter()
-        mavenCentral()
-        maven {
-            setUrl(Repositories.jitPack)
-        }
-        maven {
-            setUrl(Repositories.sonatypeReleases)
-        }
-    }
-
     configurations.all {
         handleConflicts(this@allprojects)
     }
-}
-
-tasks.create("clean", Delete::class) {
-    delete(rootProject.layout.buildDirectory.get())
 }

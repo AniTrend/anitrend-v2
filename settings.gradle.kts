@@ -1,3 +1,29 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version("0.4.0")
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven {
+            setUrl("https://www.jitpack.io")
+        }
+        maven {
+            setUrl("https://oss.sonatype.org/content/repositories/releases")
+        }
+    }
+}
+
 rootProject.name= "anitrend-v2"
 include(
     ":app",
