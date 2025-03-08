@@ -27,4 +27,5 @@ dependencies {
 
 android {
     namespace = "co.anitrend.settings"
+    buildFeatures.buildConfig = true
 }

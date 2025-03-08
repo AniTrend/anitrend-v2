@@ -53,4 +53,7 @@
     <string name="action_share">Share</string>
     <!-- Reusable for setting the list style on various discover style screens. e.g anime, manga, users, studios, character and staff screens -->
     <string name="action_favourite">Favourite</string>
+
+    <!-- Global label for system referring to system being either the app or the system -->
+    <string name="global_label_system">System</string>
 </resources>

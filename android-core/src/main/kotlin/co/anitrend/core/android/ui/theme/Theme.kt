@@ -170,19 +170,15 @@ private val AniTrendShapes =
         extraLarge = ShapeDefaults.ExtraLarge,
     )
 
-fun Color.applyOpacity(enabled: Boolean): Color {
-    return if (enabled) this else this.copy(alpha = 0.62f)
-}
+fun Color.applyOpacity(enabled: Boolean): Color = if (enabled) this else this.copy(alpha = 0.62f)
 
 @Composable
 @ReadOnlyComposable
-fun Color.harmonizeWith(other: Color) =
-    Color(MaterialColors.harmonize(this.toArgb(), other.toArgb()))
+fun Color.harmonizeWith(other: Color) = Color(MaterialColors.harmonize(this.toArgb(), other.toArgb()))
 
 @Composable
 @ReadOnlyComposable
-fun Color.harmonizeWithPrimary(): Color =
-    this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
+fun Color.harmonizeWithPrimary(): Color = this.harmonizeWith(other = MaterialTheme.colorScheme.primary)
 
 @Composable
 fun AniTrendTheme3(

@@ -26,13 +26,21 @@ sealed class SettingItem(
         val title: String,
     ) : SettingItem(id)
 
+    data class HintCard(
+        override val id: String,
+        val title: String,
+        val description: String?,
+        val icon: ImageVector,
+        val onClick: () -> Unit,
+    ) : SettingItem(id)
+
     data class SwitchSetting(
         override val id: String,
         val title: String,
         val summary: String,
         val icon: ImageVector,
         val onValueChange: (Boolean) -> Unit,
-        val checked: () -> Boolean,
+        val onClick: () -> Boolean,
     ) : SettingItem(id)
 
     data class ClickableSetting(
@@ -52,5 +60,6 @@ sealed class SettingItem(
         val selectedOption: () -> T,
         val onOptionSelected: (T) -> Unit,
         val displayText: (T) -> String,
+        val displayDescription: ((T) -> String)? = null,
     ) : SettingItem(id)
 }

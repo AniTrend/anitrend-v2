@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,17 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.settings.component.content
+package co.anitrend.settings.component.builder.contract
 
-import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
-import co.anitrend.settings.R
+import co.anitrend.settings.model.SettingItem
 
-class SettingsContent : PreferenceFragmentCompat() {
-    override fun onCreatePreferences(
-        savedInstanceState: Bundle?,
-        rootKey: String?,
-    ) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey)
-    }
+interface IPreferenceBuilder {
+    fun add(
+        category: SettingItem.CategoryHeader? = null,
+        entries: List<SettingItem> = emptyList(),
+        isVisible: Boolean = true,
+    ): IPreferenceBuilder
+
+    fun build(): List<SettingItem>
+
+    fun size(): Int
+
+    fun clear()
 }

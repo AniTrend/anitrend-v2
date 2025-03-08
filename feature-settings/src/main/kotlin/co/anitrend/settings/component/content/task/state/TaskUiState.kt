@@ -14,12 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.about.component.compose.state
+package co.anitrend.settings.component.content.task.state
 
 import androidx.compose.runtime.Immutable
 import androidx.work.WorkInfo
 
-enum class WorkState {
+enum class TaskState {
     Enqueued,
     Running,
     Succeeded,
@@ -29,9 +29,9 @@ enum class WorkState {
 }
 
 @Immutable
-data class WorkItem(
+data class TaskWorkItem(
     val id: String,
-    val state: WorkState,
+    val state: TaskState,
     val info: String = "",
     val runAttemptCount: Int = 0,
     val tags: String,
@@ -41,12 +41,12 @@ data class WorkItem(
 )
 
 // Mapping function to convert WorkInfo.State into our UI model.
-fun mapWorkInfoState(state: WorkInfo.State): WorkState =
+fun mapWorkInfoState(state: WorkInfo.State): TaskState =
     when (state) {
-        WorkInfo.State.ENQUEUED -> WorkState.Enqueued
-        WorkInfo.State.RUNNING -> WorkState.Running
-        WorkInfo.State.SUCCEEDED -> WorkState.Succeeded
-        WorkInfo.State.FAILED -> WorkState.Failed
-        WorkInfo.State.BLOCKED -> WorkState.Blocked
-        WorkInfo.State.CANCELLED -> WorkState.Cancelled
+        WorkInfo.State.ENQUEUED -> TaskState.Enqueued
+        WorkInfo.State.RUNNING -> TaskState.Running
+        WorkInfo.State.SUCCEEDED -> TaskState.Succeeded
+        WorkInfo.State.FAILED -> TaskState.Failed
+        WorkInfo.State.BLOCKED -> TaskState.Blocked
+        WorkInfo.State.CANCELLED -> TaskState.Cancelled
     }

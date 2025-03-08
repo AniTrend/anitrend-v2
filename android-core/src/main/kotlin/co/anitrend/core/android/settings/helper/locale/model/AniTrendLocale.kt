@@ -16,6 +16,8 @@
  */
 package co.anitrend.core.android.settings.helper.locale.model
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import co.anitrend.arch.extension.ext.empty
 import java.util.Locale
 
@@ -33,9 +35,13 @@ import java.util.Locale
  */
 enum class AniTrendLocale(
     val language: String,
-    val country: String? = null,
+    val country: String,
 ) {
-    AUTOMATIC(String.empty()),
+    AUTOMATIC(String.empty(), String.empty()),
+    UK_ENGLISH(
+        language = Locale.UK.language,
+        country = Locale.UK.country,
+    ),
     GERMAN_GERMANY(
         language = Locale.GERMAN.language,
         country = Locale.GERMAN.country,
@@ -48,12 +54,24 @@ enum class AniTrendLocale(
         language = Locale.FRANCE.language,
         country = Locale.FRANCE.country,
     ),
+    PERU_SPANISH(
+        language = Locale.forLanguageTag("es-PE").language,
+        country = Locale.forLanguageTag("es-PE").country,
+    ),
     ;
 
     companion object {
-        fun Locale.asLocaleString() = "$language$country"
+        fun Locale.asLocaleString(): String = "$language$country"
 
-        fun AniTrendLocale.asLocaleString() =
+        @Composable
+        fun Locale.asDisplayName(): String =
+            if (language.isBlank() && country.isBlank()) {
+                stringResource(co.anitrend.core.android.R.string.global_label_system)
+            } else {
+                getDisplayName(this)
+            }
+
+        fun AniTrendLocale.asLocaleString(): String =
             when (this) {
                 AUTOMATIC -> {
                     val default = Locale.getDefault()
@@ -61,5 +79,16 @@ enum class AniTrendLocale(
                 }
                 else -> "$language$country"
             }
+
+        fun AniTrendLocale.asLocale(): Locale =
+            when (this) {
+                AUTOMATIC -> Locale.getDefault()
+                else -> Locale(language, country)
+            }
+
+        fun Locale.asAniTrendLocale(): AniTrendLocale =
+            entries.find { locale ->
+                locale.asLocaleString() == asLocaleString()
+            } ?: AUTOMATIC
     }
 }

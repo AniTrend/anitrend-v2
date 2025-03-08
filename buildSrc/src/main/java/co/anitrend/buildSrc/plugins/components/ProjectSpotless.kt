@@ -29,7 +29,12 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     val buildDirectory = layout.buildDirectory.get()
     kotlin {
         target("**/*.kt")
-        targetExclude("${buildDirectory}/**/*.kt", "**/src/test/**/*.kt")
+        targetExclude(
+            "${buildDirectory}/**/*.kt",
+            "**/src/test/**/*.kt",
+            "**/src/**/com/kyant/**/*.kt",
+            "**/src/**/io/material/**/*.kt",
+        )
         ktlint(libs.versions.ktlint.get()).setEditorConfigPath(
             rootProject.file(".editorconfig")
         )

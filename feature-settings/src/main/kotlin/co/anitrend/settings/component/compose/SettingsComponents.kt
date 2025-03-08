@@ -16,23 +16,12 @@
  */
 package co.anitrend.settings.component.compose
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,139 +29,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import co.anitrend.core.android.compose.design.category.AniTrendCategoryItem
+import co.anitrend.core.android.compose.design.choice.AniTrendSingleChoiceItem
 import co.anitrend.settings.model.SettingItem
 
 @Composable
-fun PreferenceCategory(
-    item: SettingItem.CategoryHeader,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = item.title,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.primary,
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-    )
-}
-
-@Composable
-fun PreferenceSwitch(
-    item: SettingItem.SwitchSetting,
-    modifier: Modifier = Modifier,
-) {
-    ListItem(
-        modifier = modifier.clickable { item.onValueChange(!item.checked()) },
-        headlineContent = {
-            Text(
-                text = item.title,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        },
-        supportingContent = {
-            if (item.summary.isNotEmpty()) {
-                Text(
-                    text = item.summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        },
-        leadingContent = {
-            Icon(
-                imageVector = item.icon,
-                contentDescription = item.title,
-            )
-        },
-        trailingContent = {
-            Switch(
-                checked = item.checked(),
-                onCheckedChange = item.onValueChange,
-            )
-        },
-    )
-}
-
-@Composable
-fun PreferenceItem(
-    item: SettingItem.ClickableSetting,
-    modifier: Modifier = Modifier,
-) {
-    ListItem(
-        modifier = modifier.clickable { item.onClick() },
-        headlineContent = {
-            Text(
-                text = item.title,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-        },
-        supportingContent = {
-            if (item.summary.isNotEmpty()) {
-                Text(
-                    text = item.summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        },
-        leadingContent = {
-            Icon(
-                imageVector = item.icon,
-                contentDescription = item.title,
-            )
-        },
-        trailingContent = {
-            Icon(
-                imageVector = Icons.Filled.ChevronRight,
-                contentDescription = null,
-            )
-        },
-    )
-}
-
-@Composable
-fun <T> PreferenceDialog(
-    item: SettingItem.DialogSetting<T>,
-    modifier: Modifier = Modifier,
-) {
+fun <T> PreferenceDialog(item: SettingItem.DialogSetting<T>) {
     var showDialog by remember { mutableStateOf(false) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(item.selectedOption()) }
 
-    // The preference row. When tapped, the dialog is triggered.
-    ListItem(
-        modifier = modifier.clickable { showDialog = true },
-        headlineContent = {
-            Text(text = item.title, style = MaterialTheme.typography.bodyLarge)
-        },
-        supportingContent = {
-            Column {
-                if (item.summary.isNotEmpty()) {
-                    Text(
-                        text = item.summary,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Text(
-                    text = item.displayText(item.selectedOption()),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        },
-        leadingContent = {
+    AniTrendCategoryItem(
+        title = item.title,
+        description = item.summary,
+        icon = item.icon,
+        enabled = !showDialog,
+        onClick = { showDialog = true },
+        trailingIcon = {
             Icon(
-                imageVector = item.icon,
-                contentDescription = item.title,
-            )
-        },
-        trailingContent = {
-            Icon(
-                imageVector = Icons.Filled.ArrowDropDown,
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 contentDescription = null,
             )
         },
@@ -184,37 +59,26 @@ fun <T> PreferenceDialog(
             title = {
                 Text(text = item.title)
             },
+            icon = {
+                Icon(imageVector = item.icon, contentDescription = null)
+            },
             text = {
-                // A column that lists all the options with radio buttons.
-                Column {
+                Column(modifier = Modifier.selectableGroup()) {
                     item.options.forEach { option ->
-                        val selected = item.selectedOption() == option
-                        Row(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        item.onOptionSelected(option)
-                                        showDialog = false
-                                    }.padding(vertical = 8.dp, horizontal = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            RadioButton(
-                                selected = selected,
-                                onClick = {
-                                    item.onOptionSelected(option)
-                                    showDialog = false
-                                },
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = item.displayText(option), style = MaterialTheme.typography.bodyLarge)
-                        }
+                        AniTrendSingleChoiceItem(
+                            text = item.displayText(option),
+                            selected = selectedOption == option,
+                            onOptionSelected = {
+                                onOptionSelected(option)
+                                item.onOptionSelected(option)
+                            },
+                        )
                     }
                 }
             },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text(text = "OK")
+                    Text(text = "Close")
                 }
             },
         )
