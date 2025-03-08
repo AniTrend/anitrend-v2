@@ -370,6 +370,7 @@ private fun Project.applyComposeDependencies() {
     dependencies.implementation(libs.androidx.compose.ui.tooling.preview)
     dependencies.androidTest(libs.androidx.compose.ui.test)
     dependencies.implementation(libs.androidx.compose.ui)
+    dependencies.implementation(libs.androidx.navigation.compose)
 
     dependencies.implementation(libs.androidx.activity.compose)
     dependencies.implementation(libs.androidx.lifecycle.viewmodel.compose)

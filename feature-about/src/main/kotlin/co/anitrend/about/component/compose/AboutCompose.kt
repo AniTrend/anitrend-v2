@@ -19,42 +19,22 @@ package co.anitrend.about.component.compose
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.about.component.compose.state.WorkItem
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import kotlinx.coroutines.flow.Flow
 
 @Composable
-private fun AboutContent(
-    workItems: List<WorkItem>,
-    onCancelWork: (String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    WorkManagerStatusScreen(
-        modifier = modifier,
-        workItems = workItems,
-        onCancelWork = onCancelWork,
-    )
+private fun AboutContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AboutScreenContent(
-    workItemFlow: Flow<List<WorkItem>>,
-    onCancelWork: (String) -> Unit,
-    onBackPress: () -> Unit,
-) {
-    val workItems by workItemFlow.collectAsState(emptyList())
+fun AboutScreenContent(onBackPress: () -> Unit) {
     DefaultScaffold(onBackPress) { padding ->
         AboutContent(
             modifier = Modifier.padding(padding).fillMaxSize(),
-            workItems = workItems,
-            onCancelWork = onCancelWork,
         )
     }
 }
@@ -65,9 +45,6 @@ private fun AboutContentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
-        AboutContent(
-            workItems = emptyList(),
-            onCancelWork = {},
-        )
+        AboutContent()
     }
 }

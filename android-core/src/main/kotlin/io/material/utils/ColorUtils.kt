@@ -27,26 +27,38 @@ import kotlin.math.roundToLong
  * CAM16.
  */
 object ColorUtils {
-    val SRGB_TO_XYZ = arrayOf(
-        doubleArrayOf(0.41233895, 0.35762064, 0.18051042),
-        doubleArrayOf(0.2126, 0.7152, 0.0722),
-        doubleArrayOf(0.01932141, 0.11916382, 0.95034478)
-    )
-    val XYZ_TO_SRGB = arrayOf(
-        doubleArrayOf(
-            3.2413774792388685, -1.5376652402851851, -0.49885366846268053
-        ), doubleArrayOf(
-            -0.9691452513005321, 1.8758853451067872, 0.04156585616912061
-        ), doubleArrayOf(
-            0.05562093689691305, -0.20395524564742123, 1.0571799111220335
+    val SRGB_TO_XYZ =
+        arrayOf(
+            doubleArrayOf(0.41233895, 0.35762064, 0.18051042),
+            doubleArrayOf(0.2126, 0.7152, 0.0722),
+            doubleArrayOf(0.01932141, 0.11916382, 0.95034478),
         )
-    )
+    val XYZ_TO_SRGB =
+        arrayOf(
+            doubleArrayOf(
+                3.2413774792388685,
+                -1.5376652402851851,
+                -0.49885366846268053,
+            ),
+            doubleArrayOf(
+                -0.9691452513005321,
+                1.8758853451067872,
+                0.04156585616912061,
+            ),
+            doubleArrayOf(
+                0.05562093689691305,
+                -0.20395524564742123,
+                1.0571799111220335,
+            ),
+        )
     val WHITE_POINT_D65 = doubleArrayOf(95.047, 100.0, 108.883)
 
     /** Converts a color from RGB components to ARGB format.  */
-    fun argbFromRgb(red: Int, green: Int, blue: Int): Int {
-        return 255 shl 24 or (red and 255 shl 16) or (green and 255 shl 8) or (blue and 255)
-    }
+    fun argbFromRgb(
+        red: Int,
+        green: Int,
+        blue: Int,
+    ): Int = 255 shl 24 or (red and 255 shl 16) or (green and 255 shl 8) or (blue and 255)
 
     /** Converts a color from linear RGB components to ARGB format.  */
     fun argbFromLinrgb(linrgb: DoubleArray?): Int {
@@ -57,32 +69,26 @@ object ColorUtils {
     }
 
     /** Returns the alpha component of a color in ARGB format.  */
-    fun alphaFromArgb(argb: Int): Int {
-        return argb shr 24 and 255
-    }
+    fun alphaFromArgb(argb: Int): Int = argb shr 24 and 255
 
     /** Returns the red component of a color in ARGB format.  */
-    fun redFromArgb(argb: Int): Int {
-        return argb shr 16 and 255
-    }
+    fun redFromArgb(argb: Int): Int = argb shr 16 and 255
 
     /** Returns the green component of a color in ARGB format.  */
-    fun greenFromArgb(argb: Int): Int {
-        return argb shr 8 and 255
-    }
+    fun greenFromArgb(argb: Int): Int = argb shr 8 and 255
 
     /** Returns the blue component of a color in ARGB format.  */
-    fun blueFromArgb(argb: Int): Int {
-        return argb and 255
-    }
+    fun blueFromArgb(argb: Int): Int = argb and 255
 
     /** Returns whether a color in ARGB format is opaque.  */
-    fun isOpaque(argb: Int): Boolean {
-        return alphaFromArgb(argb) >= 255
-    }
+    fun isOpaque(argb: Int): Boolean = alphaFromArgb(argb) >= 255
 
     /** Converts a color from ARGB to XYZ.  */
-    fun argbFromXyz(x: Double, y: Double, z: Double): Int {
+    fun argbFromXyz(
+        x: Double,
+        y: Double,
+        z: Double,
+    ): Int {
         val matrix = XYZ_TO_SRGB
         val linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z
         val linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z
@@ -102,7 +108,11 @@ object ColorUtils {
     }
 
     /** Converts a color represented in Lab color space into an ARGB integer.  */
-    fun argbFromLab(l: Double, a: Double, b: Double): Int {
+    fun argbFromLab(
+        l: Double,
+        a: Double,
+        b: Double,
+    ): Int {
         val whitePoint = WHITE_POINT_D65
         val fy = (l + 16.0) / 116.0
         val fx = a / 500.0 + fy
@@ -179,9 +189,7 @@ object ColorUtils {
      * @param lstar L* in L*a*b*
      * @return Y in XYZ
      */
-    fun yFromLstar(lstar: Double): Double {
-        return 100.0 * labInvf((lstar + 16.0) / 116.0)
-    }
+    fun yFromLstar(lstar: Double): Double = 100.0 * labInvf((lstar + 16.0) / 116.0)
 
     /**
      * Converts a Y value to an L* value.
@@ -196,9 +204,7 @@ object ColorUtils {
      * @param y Y in XYZ
      * @return L* in L*a*b*
      */
-    fun lstarFromY(y: Double): Double {
-        return labF(y / 100.0) * 116.0 - 16.0
-    }
+    fun lstarFromY(y: Double): Double = labF(y / 100.0) * 116.0 - 16.0
 
     /**
      * Linearizes an RGB component.
@@ -224,11 +230,12 @@ object ColorUtils {
     fun delinearized(rgbComponent: Double): Int {
         val normalized = rgbComponent / 100.0
         var delinearized = 0.0
-        delinearized = if (normalized <= 0.0031308) {
-            normalized * 12.92
-        } else {
-            1.055 * normalized.pow(1.0 / 2.4) - 0.055
-        }
+        delinearized =
+            if (normalized <= 0.0031308) {
+                normalized * 12.92
+            } else {
+                1.055 * normalized.pow(1.0 / 2.4) - 0.055
+            }
         return MathUtils.clampInt(0, 255, (delinearized * 255.0).roundToLong().toInt())
     }
 
@@ -237,9 +244,7 @@ object ColorUtils {
      *
      * @return The white point
      */
-    fun whitePointD65(): DoubleArray {
-        return WHITE_POINT_D65
-    }
+    fun whitePointD65(): DoubleArray = WHITE_POINT_D65
 
     fun labF(t: Double): Double {
         val e = 216.0 / 24389.0

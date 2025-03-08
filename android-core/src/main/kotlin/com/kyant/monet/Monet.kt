@@ -9,9 +9,10 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.kyant.monet.TonalPalettes.Companion.toTonalPalettes
 
-val LocalTonalPalettes = staticCompositionLocalOf {
-    Color(0xFF007FAC).toTonalPalettes()
-}
+val LocalTonalPalettes =
+    staticCompositionLocalOf {
+        Color(0xFF007FAC).toTonalPalettes()
+    }
 
 inline val Number.a1: Color
     @Composable
@@ -30,8 +31,8 @@ inline val Number.n2: Color
     @Composable get() = LocalTonalPalettes.current neutral2 toDouble()
 
 @Composable
-fun dynamicColorScheme(isLight: Boolean = !isSystemInDarkTheme()): ColorScheme {
-    return if (isLight) {
+fun dynamicColorScheme(isLight: Boolean = !isSystemInDarkTheme()): ColorScheme =
+    if (isLight) {
         lightColorScheme(
             background = 98.n1,
             inverseOnSurface = 95.n1,
@@ -100,4 +101,3 @@ fun dynamicColorScheme(isLight: Boolean = !isSystemInDarkTheme()): ColorScheme {
             surfaceContainerHighest = 22.n1,
         )
     }
-}

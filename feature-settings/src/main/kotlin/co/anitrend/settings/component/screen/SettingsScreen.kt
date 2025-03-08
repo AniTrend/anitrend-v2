@@ -18,9 +18,14 @@ package co.anitrend.settings.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.liveData
+import androidx.navigation.compose.rememberNavController
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.core.android.compose.design.ContentWrapper
+import co.anitrend.core.android.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.model.common.IParam
@@ -33,14 +38,31 @@ class SettingsScreen : AniTrendScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ContentWrapper(
-                stateFlow = liveData { emit(LoadState.Idle()) },
-                param = IParam.None,
-            ) {
-                SettingsContentScreen(
-                    settingsItems = presenter.getSettingsItems(),
-                    onBackPress = onBackPressedDispatcher::onBackPressed,
-                )
+            AniTrendTheme3 {
+                ContentWrapper(
+                    stateFlow = liveData { emit(LoadState.Idle()) },
+                    param = IParam.None,
+                ) {
+                    val navController = rememberNavController()
+                    val settingItems by remember {
+                        derivedStateOf {
+                            presenter.getSettingsItems(
+                                navigateTo = {
+                                    navController.navigate(route = it.name)
+                                },
+                            )
+                        }
+                    }
+                    SettingsContentScreen(
+                        navigationController = navController,
+                        settingsItems = settingItems,
+                        onBackPress = {
+                            if (!navController.popBackStack()) {
+                                onBackPressedDispatcher.onBackPressed()
+                            }
+                        },
+                    )
+                }
             }
         }
     }

@@ -18,10 +18,13 @@ package co.anitrend.settings.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
+import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.content.task.viewmodel.TaskViewModel
 import co.anitrend.settings.component.presenter.SettingsPresenter
 import co.anitrend.settings.component.screen.SettingsScreen
 import co.anitrend.settings.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 private val presenterModule =
@@ -31,6 +34,7 @@ private val presenterModule =
                 SettingsPresenter(
                     context = androidContext(),
                     settings = get(),
+                    preferenceBuilder = PreferenceBuilder(),
                 )
             }
         }
@@ -43,7 +47,12 @@ private val featureModule =
         }
     }
 
+private val viewModelModule =
+    module {
+        viewModelOf(::TaskViewModel)
+    }
+
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(presenterModule, featureModule),
+        listOf(presenterModule, featureModule, viewModelModule),
     )

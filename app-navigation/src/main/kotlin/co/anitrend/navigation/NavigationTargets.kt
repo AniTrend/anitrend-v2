@@ -142,6 +142,21 @@ object SettingsRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    enum class Destination {
+        ROOT,
+        ACCOUNTS,
+        PRIVACY,
+        FILTERS,
+        POWER,
+        LOCALE,
+        THEME,
+        NOTIFICATION,
+        SYNCHRONIZATION,
+        STORAGE,
+        LOGS,
+        TASK,
+    }
 }
 
 object AboutRouter : NavigationRouter() {

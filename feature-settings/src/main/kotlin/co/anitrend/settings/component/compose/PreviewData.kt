@@ -31,6 +31,13 @@ import co.anitrend.settings.model.SettingItem
 internal val PreviewData =
     listOf(
         // Appearance category
+        SettingItem.HintCard(
+            id = "hint_card",
+            title = "About this app",
+            description = "Find out more about our product",
+            icon = Icons.Default.BarChart,
+            onClick = { },
+        ),
         SettingItem.CategoryHeader(
             id = "appearance_category",
             title = "Appearance",
@@ -44,6 +51,7 @@ internal val PreviewData =
             selectedOption = { true },
             onOptionSelected = { },
             displayText = { locale -> locale.toString() },
+            displayDescription = { locale -> locale.toString() },
         ),
         SettingItem.DialogSetting(
             id = "theme",
@@ -54,6 +62,7 @@ internal val PreviewData =
             selectedOption = { AniTrendTheme.SYSTEM },
             onOptionSelected = { },
             displayText = { theme -> theme.toString() },
+            displayDescription = { theme -> theme.toString() },
         ),
         // Analytics & Reporting category
         SettingItem.CategoryHeader(
@@ -65,7 +74,7 @@ internal val PreviewData =
             title = "Usage Analytics",
             summary = "Allows usage statistics to be sent to the developer",
             icon = Icons.Default.BarChart,
-            checked = { true },
+            onClick = { true },
             onValueChange = { },
         ),
         SettingItem.SwitchSetting(
@@ -73,7 +82,7 @@ internal val PreviewData =
             title = "Crash Reporting",
             summary = "Automatically report crashes",
             icon = Icons.Default.Report,
-            checked = { true },
+            onClick = { true },
             onValueChange = { },
         ),
         // Behavior category
@@ -86,7 +95,7 @@ internal val PreviewData =
             title = "Clear Database on Refresh",
             summary = "Typically the database is cleared when you pull to refresh",
             icon = Icons.Default.Refresh,
-            checked = { false },
+            onClick = { false },
             onValueChange = { },
         ),
         SettingItem.SwitchSetting(
@@ -94,7 +103,7 @@ internal val PreviewData =
             title = "Auto Heap Dump",
             summary = "Dump heap automatically when leak is detected",
             icon = Icons.Default.Memory,
-            checked = { true },
+            onClick = { true },
             onValueChange = { },
         ),
         SettingItem.CategoryHeader(
