@@ -83,7 +83,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 
 [libraries]
 annotatedtext = { module = "io.github.aghajari:AnnotatedText", version.ref = "annotatedtext" }
-threeTenBp = { module = "com.jakewharton.threetenabp:threetenabp", version = "1.4.8" }
+threeTenBp = { module = "com.jakewharton.threetenabp:threetenabp", version = "1.4.9" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 junit = { module = "junit:junit", version = "4.13.2" }
 
