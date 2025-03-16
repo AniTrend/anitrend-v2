@@ -1,4 +1,5 @@
 query GetConfig {
+  id
   config {
     id
     settings {
