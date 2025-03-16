@@ -46,9 +46,9 @@ internal val MIGRATION_1_2 =
          * This method is already called inside a transaction and that transaction might actually be a
          * composite transaction of all necessary `Migration`s.
          *
-         * @param database The database instance
+         * @param db The database instance
          */
-        override fun migrate(database: SupportSQLiteDatabase) {
+        override fun migrate(db: SupportSQLiteDatabase) {
             val tableName = "media_list"
 
             @Language("sql")
@@ -84,7 +84,7 @@ internal val MIGRATION_1_2 =
 
                 ALTER TABLE `${tableName}_temp` RENAME TO `$tableName`;
                 """.trimIndent()
-            database.usingTransaction("MIGRATION_1_2", createQuery)
+            db.usingTransaction("MIGRATION_1_2", createQuery)
         }
     }
 
