@@ -27,12 +27,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.core.android.compose.design.BackIconButton
 import co.anitrend.core.android.ui.AniTrendPreview
@@ -52,7 +52,7 @@ fun NewsReaderScreen(
     onShareClick: () -> Unit,
     onUrlClick: (String) -> Unit,
 ) {
-    val data by state.collectAsState(String.empty())
+    val data by state.collectAsStateWithLifecycle(String.empty())
 
     Scaffold(
         bottomBar = {

@@ -31,13 +31,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.work.WorkManager
 import co.anitrend.core.android.compose.design.category.AniTrendCategoryHeader
 import co.anitrend.core.android.compose.design.category.AniTrendCategoryItem
@@ -59,7 +59,7 @@ fun TaskScreen(
     val context = LocalContext.current
     val workManager = remember { WorkManager.getInstance(context = context) }
     val observable = viewModel(workManager = workManager)
-    val taskWorkItems by observable.collectAsState(initial = emptyList())
+    val taskWorkItems by observable.collectAsStateWithLifecycle(emptyList())
     TaskContent(modifier = modifier, taskWorkItems = taskWorkItems) {
         workManager.cancelWorkById(UUID.fromString(it))
     }
