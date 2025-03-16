@@ -61,7 +61,6 @@ class TaskViewModel : ViewModel() {
             nextScheduleTime = Instant.ofEpochMilli(info.nextScheduleTimeMillis).asPrettyTime(),
         )
 
-    @OptIn(ExperimentalTime::class)
     operator fun invoke(workManager: WorkManager): Flow<List<TaskWorkItem>> {
         val taskWorkItems =
             workManager

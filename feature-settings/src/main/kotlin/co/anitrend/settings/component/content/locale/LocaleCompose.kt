@@ -20,9 +20,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -62,13 +63,12 @@ fun LocaleScreen(
     modifier: Modifier = Modifier,
     settings: ILocaleSettings = koinInject(),
 ) {
-    val selectedLocal by settings.locale.flow.collectAsState(AniTrendLocale.AUTOMATIC)
-
-    val systemLocaleList = rememberLocaleList(selectedLocal)
-    val supportedLocales = rememberSupportLocaleList(selectedLocal)
+    var selectedLocale by remember { mutableStateOf(settings.locale.value) }
+    val systemLocaleList = rememberLocaleList(selectedLocale)
+    val supportedLocales = rememberSupportLocaleList(selectedLocale)
 
     val suggestedLocales =
-        remember(selectedLocal) {
+        remember(selectedLocale) {
             systemLocaleList.filter { supported ->
                 supportedLocales.any { desired ->
                     LocaleListCompat.matchesLanguageAndScript(
@@ -79,26 +79,28 @@ fun LocaleScreen(
             }
         }
 
-    val allLocales = remember(selectedLocal) { supportedLocales - suggestedLocales.toSet() }
+    val allLocales = remember(selectedLocale) { supportedLocales - suggestedLocales.toSet() }
 
     LocaleContent(
-        selectedLocale = selectedLocal.asLocale(),
+        selectedLocale = selectedLocale.asLocale(),
         suggestedLocales = suggestedLocales,
         allLocales = allLocales,
         onLocaleChange = {
             settings.locale.value = it.asAniTrendLocale()
+            selectedLocale = it.asAniTrendLocale()
         },
     )
 }
 
 @Composable
 private fun LocaleContent(
+    modifier: Modifier = Modifier,
     suggestedLocales: List<Locale>,
     allLocales: List<Locale>,
     selectedLocale: Locale,
     onLocaleChange: (Locale) -> Unit = {},
 ) {
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         item {
             AniTrendHintCard(
                 title = "Language and region",
