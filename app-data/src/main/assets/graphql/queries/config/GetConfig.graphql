@@ -1,5 +1,6 @@
 query GetConfig {
   config {
+    id
     settings {
       analyticsEnabled
       platformSource

@@ -27,6 +27,7 @@ internal class EdgeConfigModel(
 ) {
     @Serializable
     data class Config(
+        @SerialName("id") val id: String,
         @SerialName("settings") val settings: Settings,
         @SerialName("image") val image: DefaultImage,
         @SerialName("genres") val genres: List<EdgeGenreModel>,
