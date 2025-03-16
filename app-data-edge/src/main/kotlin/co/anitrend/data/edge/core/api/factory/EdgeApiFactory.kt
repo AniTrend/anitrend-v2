@@ -26,6 +26,8 @@ import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.core.extensions.defaultBuilder
 import co.anitrend.data.edge.BuildConfig
 import co.anitrend.data.edge.core.api.interceptor.EdgeClientInterceptor
+import co.anitrend.data.edge.core.api.interceptor.EdgeCookieInterceptor
+import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -35,6 +37,7 @@ import org.koin.core.scope.Scope
 internal class EdgeApiFactory(
     private val deviceInfo: IDeviceInfo,
     private val appInfo: IAppInfo,
+    private val cookieJar: CookieJar,
 ) : IEndpointFactory {
     override val endpointType =
         object : IEndpointType {
@@ -45,6 +48,7 @@ internal class EdgeApiFactory(
         val builder =
             scope
                 .defaultBuilder()
+                .cookieJar(cookieJar)
                 .cache(
                     CacheHelper.createCache(
                         scope.androidContext(),
@@ -60,7 +64,11 @@ internal class EdgeApiFactory(
                     ),
                 ).addInterceptor(
                     EdgeClientInterceptor(),
-                ).cookieJar(scope.get())
+                ).addInterceptor(
+                    EdgeCookieInterceptor(
+                        cookieJar = cookieJar,
+                    ),
+                )
         return builder.build()
     }
 

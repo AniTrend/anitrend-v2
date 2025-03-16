@@ -22,18 +22,20 @@ import okhttp3.Response
 
 internal class EdgeClientInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
+        val request = chain.request()
 
-        val contentLength = original.body?.contentLength() ?: 0
-        val requestBuilder = original.newBuilder()
+        val contentLength = request.body?.contentLength() ?: 0
+        val requestBuilder = request.newBuilder()
 
         requestBuilder
             .header(CONTENT_TYPE, GraphConverter.MIME_TYPE)
             .header(ACCEPT, ACCEPT_TYPE)
             .header(CONTENT_LENGTH, contentLength.toString())
-            .method(original.method, original.body)
+            .method(request.method, request.body)
 
-        return chain.proceed(requestBuilder.build())
+        val response = chain.proceed(requestBuilder.build())
+
+        return response
     }
 
     companion object {
