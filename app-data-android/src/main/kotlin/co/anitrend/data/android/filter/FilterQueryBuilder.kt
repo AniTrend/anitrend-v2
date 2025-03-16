@@ -55,7 +55,7 @@ abstract class FilterQueryBuilder<F> {
                 .filterNot { it is Projection }
                 .toTypedArray()
         Timber.d(
-            "Generated SQL query: \n\r$query \n\rparams: [${parameters.joinToString()}]",
+            "Generated SQL query: $query params: [${parameters.joinToString()}]",
         )
         return SimpleSQLiteQuery(query, parameters)
     }

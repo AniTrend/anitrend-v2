@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.settings.component.content.log.viewmodel
 
 import android.content.Context
@@ -14,7 +30,7 @@ import kotlinx.coroutines.launch
 
 class LogViewModel(
     private val controller: IStorageController,
-    private val dispatchers: ISupportDispatcher
+    private val dispatchers: ISupportDispatcher,
 ) : ViewModel() {
     private val logsContentStateFlow: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
     private val mutableLogsStateFlow: MutableStateFlow<LogUiState> = MutableStateFlow(LogUiState.Loading)
@@ -22,13 +38,16 @@ class LogViewModel(
 
     init {
         viewModelScope.launch(dispatchers.computation) {
-            logsContentStateFlow.onEach { lines ->
-                val accumulatedLogs = accumulateLogLines(lines)
-                mutableLogsStateFlow.value = LogUiState.Success(
-                    accumulatedLogs.map(::createLogItem)
-                        .reversed()
-                )
-            }.collect()
+            logsContentStateFlow
+                .onEach { lines ->
+                    val accumulatedLogs = accumulateLogLines(lines)
+                    mutableLogsStateFlow.value =
+                        LogUiState.Success(
+                            accumulatedLogs
+                                .map(::createLogItem)
+                                .reversed(),
+                        )
+                }.collect()
         }
     }
 
@@ -63,10 +82,11 @@ class LogViewModel(
         return LogUiState.LogItem(
             date = tokens[DATE_INDEX],
             time = tokens[TIME_INDEX],
-            level = levelEntries.find {
-                it.identifier == tokens[MESSAGE_INDEX].firstOrNull()
-            } ?: LogUiState.LogItem.Level.VERBOSE,
-            message = log
+            level =
+                levelEntries.find {
+                    it.identifier == tokens[MESSAGE_INDEX].firstOrNull()
+                } ?: LogUiState.LogItem.Level.VERBOSE,
+            message = log,
         )
     }
 
