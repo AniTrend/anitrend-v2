@@ -16,84 +16,92 @@
  */
 package co.anitrend.settings.component.content.log
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.core.android.compose.design.cards.AniTrendHintCard
-import co.anitrend.core.android.storage.contract.IStorageController
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import co.anitrend.core.extensions.stackTrace
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import co.anitrend.settings.component.content.log.state.LogUiState
+import co.anitrend.settings.component.content.log.viewmodel.LogViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun LogViewerScreen(
     modifier: Modifier = Modifier,
-    controller: IStorageController = koinInject(),
+    viewModel: LogViewModel = koinInject(),
 ) {
-    val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val fileName = "${context.packageName}.log"
-    var logs by remember { mutableStateOf(emptyList<String>()) }
+    val logState by viewModel.logState.collectAsStateWithLifecycle(LogUiState.Loading)
+
     LaunchedEffect(Unit) {
-        scope.launch(Dispatchers.IO) {
-            runCatching {
-                val directory = controller.getLogsCache(context)
-                logs = directory.resolve(fileName).readLines()
-            }.stackTrace()
-        }
+        viewModel.getLogs(context)
     }
+
     Column(modifier = modifier) {
         AniTrendHintCard(
             title = "Share logs",
             description = "Logs help us figure out the root cause to some issues. Tap to share",
             icon = Icons.Outlined.Share,
         )
-        LogViewerContent(
-            logs = logs,
-        )
+        when (val state = logState) {
+            is LogUiState.Error -> Box {
+                Text(
+                    text = state.message,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            LogUiState.Loading -> Box {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp).align(
+                        alignment = Alignment.Center
+                    )
+                )
+            }
+            is LogUiState.Success ->
+                LogViewerContent(
+                    state = state,
+                )
+        }
     }
 }
 
 @Composable
 private fun LogViewerContent(
     modifier: Modifier = Modifier,
-    logs: List<String>,
+    state: LogUiState.Success,
 ) {
     SelectionContainer {
         LazyColumn(
             modifier = modifier,
         ) {
             items(
-                count = logs.size,
-                key = { index: Int -> logs[index] },
-            ) { index ->
-                val log = logs[index]
-                val color = getLogColor(log)
+                items = state.logs,
+            ) { logItem ->
                 Text(
-                    text = log,
-                    color = color,
+                    text = logItem.message,
+                    color = getLogColor(logItem.level),
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp),
                 )
             }
@@ -101,29 +109,15 @@ private fun LogViewerContent(
     }
 }
 
-/**
- * Extracts the log level from a log line based on the expected format:
- * "03-07 21:12:01:802 D/[Koin](2) : ..."
- */
-private fun extractLogLevel(log: String): Char? {
-    // Split the log by spaces. Expecting at least three tokens:
-    // [date, time, levelWithTag, ...]
-    val tokens = log.split(" ")
-    if (tokens.size < 3) return null
-    return tokens[2].firstOrNull()
-}
-
 @Composable
 @ReadOnlyComposable
-private fun getLogColor(log: String): Color {
-    val level = extractLogLevel(log)
+private fun getLogColor(level: LogUiState.LogItem.Level): Color {
     return when (level) {
-        'E' -> MaterialTheme.colorScheme.error
-        'W' -> MaterialTheme.colorScheme.secondary
-        'I' -> MaterialTheme.colorScheme.primary
-        'D' -> MaterialTheme.colorScheme.onSurface
-        'V' -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        else -> MaterialTheme.colorScheme.onSurface
+        LogUiState.LogItem.Level.ERROR -> MaterialTheme.colorScheme.error
+        LogUiState.LogItem.Level.WARNING -> MaterialTheme.colorScheme.error.copy(alpha = 0.85f)
+        LogUiState.LogItem.Level.INFO -> MaterialTheme.colorScheme.primary
+        LogUiState.LogItem.Level.DEBUG -> MaterialTheme.colorScheme.secondary
+        LogUiState.LogItem.Level.VERBOSE -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
     }
 }
 
@@ -134,13 +128,34 @@ private fun LogViewerScreenPreview(
 ) {
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         LogViewerContent(
-            logs =
+            state = LogUiState.Success(
                 listOf(
-                    "03-07 21:12:01:802 D/[Koin](2) : | (+) '[Factory: 'co.anitrend.navigation.drawer.component.content.BottomDrawerContent',scope:bottom_nav_drawer,binds:co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer]'",
-                    "03-07 21:12:02:123 E/[Network](5) : Error connecting to server",
-                    "03-07 21:12:03:456 I/[Main](1) : Initialization complete",
-                    "03-07 21:12:04:789 W/[Cache](3) : Cache miss for key 'user_123'",
+                    LogUiState.LogItem(
+                        date = "03-07",
+                        time = "21:12:01:802",
+                        level = LogUiState.LogItem.Level.DEBUG,
+                        message = "03-07 21:12:01:802 D/[Koin](2) : | (+) '[Factory: 'co.anitrend.navigation.drawer.component.content.BottomDrawerContent',scope:bottom_nav_drawer,binds:co.anitrend.navigation.drawer.component.content.contract.INavigationDrawer]'"
+                    ),
+                    LogUiState.LogItem(
+                        date = "03-07",
+                        time = "21:12:02:123",
+                        level = LogUiState.LogItem.Level.ERROR,
+                        message = "03-07 21:12:02:123 E/[Network](5) : Error connecting to server"
+                    ),
+                    LogUiState.LogItem(
+                        date = "03-07",
+                        time = "21:12:03:456",
+                        level = LogUiState.LogItem.Level.INFO,
+                        message = "03-07 21:12:03:456 I/[Main](1) : Initialization complete"
+                    ),
+                    LogUiState.LogItem(
+                        date = "03-07",
+                        time = "21:12:04:789",
+                        level = LogUiState.LogItem.Level.WARNING,
+                        message = "03-07 21:12:04:789 W/[Cache](3) : Cache miss for key 'user_123'"
+                    ),
                 ),
+            )
         )
     }
 }

@@ -19,6 +19,7 @@ package co.anitrend.settings.koin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.content.log.viewmodel.LogViewModel
 import co.anitrend.settings.component.content.task.viewmodel.TaskViewModel
 import co.anitrend.settings.component.presenter.SettingsPresenter
 import co.anitrend.settings.component.screen.SettingsScreen
@@ -50,6 +51,7 @@ private val featureModule =
 private val viewModelModule =
     module {
         viewModelOf(::TaskViewModel)
+        viewModelOf(::LogViewModel)
     }
 
 internal val moduleHelper =
