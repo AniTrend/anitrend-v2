@@ -105,21 +105,7 @@ object SplashRouter : NavigationRouter() {
 object OnBoardingRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
-    interface Provider : INavigationProvider {
-        fun fragment(): Class<out Fragment>
-    }
-
-    fun forFragment() = provider.fragment()
-
-    @Parcelize
-    data class OnboardingParam(
-        @RawRes val resource: Int,
-        @DrawableRes val background: Int,
-        val title: @RawValue SpannedString,
-        val subTitle: @RawValue SpannedString,
-        val description: @RawValue SpannedString,
-        @ColorRes val textColor: Int,
-    ) : IParam
+    interface Provider : INavigationProvider
 }
 
 object SearchRouter : NavigationRouter() {
