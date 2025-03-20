@@ -16,8 +16,23 @@
   -->
 
 <resources>
+    <string name="onboarding_button_get_started">Get Started</string>
 
-    <string name="onbaording_button_get_started">Get started</string>
-    <string name="onbaording_button_next">Next</string>
-    <string name="onbaording_button_skip">Skip</string>
+    <string name="onboarding_title_welcome">Welcome to AniTrend</string>
+    <string name="onboarding_desc_welcome">Discover, track, and share your anime and manga journey with fans worldwide.</string>
+
+    <string name="onboarding_title_trends">Stay in the Loop</string>
+    <string name="onboarding_desc_trends">Track anime and manga trends effortlessly, and manage your lists from one unified space.</string>
+
+    <string name="onboarding_title_search">Find Exactly What You Love</string>
+    <string name="onboarding_desc_search">Effortlessly search anime, manga, characters, and creators with our powerful search engine.</string>
+
+    <string name="onboarding_title_rating">Rate Your Way</string>
+    <string name="onboarding_desc_rating">Personalize your experience with flexible rating systems tailored just for you.</string>
+
+    <string name="onboarding_title_smart">Smart and Efficient</string>
+    <string name="onboarding_desc_smart">AniTrend intelligently adapts to your device\'s settings to optimize battery and data usage.</string>
+
+    <string name="onboarding_title_adventure">Start Your Adventure</string>
+    <string name="onboarding_desc_adventure">Join our community, support AniTrend, and dive into an incredible anime and manga experience!</string>
 </resources>

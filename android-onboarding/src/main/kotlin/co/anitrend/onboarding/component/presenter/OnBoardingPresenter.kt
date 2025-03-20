@@ -17,128 +17,59 @@
 package co.anitrend.onboarding.component.presenter
 
 import android.content.Context
-import androidx.core.text.buildSpannedString
+import androidx.compose.ui.graphics.Color
 import co.anitrend.core.android.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.MainRouter
-import co.anitrend.navigation.OnBoardingRouter
 import co.anitrend.navigation.extensions.startActivity
-import co.anitrend.onboarding.R
+import co.anitrend.onboarding.component.model.OnboardingPage
 
 class OnBoardingPresenter(
     context: Context,
     settings: Settings,
 ) : CorePresenter(context, settings) {
-    val onBoardingItems =
-        listOf(
-            OnBoardingRouter.OnboardingParam(
-                resource = R.raw.anitrend,
-                background = R.drawable.gradient_slide_01,
-                title =
-                    buildSpannedString {
-                        append("Welcome to AniTrend!")
-                    },
-                subTitle =
-                    buildSpannedString {
-                        append("Track, watch and connect with fans around the world")
-                    },
-                description =
-                    buildSpannedString {
-                        append("Let's preview some of the awesome things AniTrend can do! Swipe left or right to get started")
-                    },
-                textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
-            ),
-            OnBoardingRouter.OnboardingParam(
-                resource = R.raw.bookmark,
-                background = R.drawable.gradient_slide_02,
-                title =
-                    buildSpannedString {
-                        append("Track and lookup")
-                    },
-                subTitle =
-                    buildSpannedString {
-                        append("See what's trending in the world of anime and manga")
-                    },
-                description =
-                    buildSpannedString {
-                        append("Stay up to date with trends in the anime or manga community, keep your lists up to date from one place")
-                    },
-                textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
-            ),
-            OnBoardingRouter.OnboardingParam(
-                resource = R.raw.search,
-                background = R.drawable.gradient_slide_01,
-                title =
-                    buildSpannedString {
-                        append("Comprehensive search engine")
-                    },
-                subTitle =
-                    buildSpannedString {
-                        append("Search for your favourite anime, manga, characters and more")
-                    },
-                description =
-                    buildSpannedString {
-                        append("Find whatever you're looking for with language agnostic search for anime and manga")
-                    },
-                textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
-            ),
-            OnBoardingRouter.OnboardingParam(
-                resource = R.raw.rating_system,
-                background = R.drawable.gradient_slide_02,
-                title =
-                    buildSpannedString {
-                        append("Flexible scoring system")
-                    },
-                subTitle =
-                    buildSpannedString {
-                        append("Choose from several different scoring systems")
-                    },
-                description =
-                    buildSpannedString {
-                        append("Customize your experience using one of the many rating systems for your lists")
-                    },
-                textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
-            ),
-            OnBoardingRouter.OnboardingParam(
-                resource = R.raw.cartoon_loading,
-                background = R.drawable.gradient_slide_01,
-                title =
-                    buildSpannedString {
-                        append("Intelligent by design")
-                    },
-                subTitle =
-                    buildSpannedString {
-                        append("Low battery, metered connection? AniTrend has you covered")
-                    },
-                description =
-                    buildSpannedString {
-                        append("AniTrend can automatically change it's behaviour based on system wide settings to give you the best experience")
-                    },
-                textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
-            ),
-            OnBoardingRouter.OnboardingParam(
-                resource = R.raw.open_book,
-                background = R.drawable.gradient_slide_02,
-                title =
-                    buildSpannedString {
-                        append("Start your adventure")
-                    },
-                subTitle =
-                    buildSpannedString {
-                        append("We hope you enjoy your stay")
-                    },
-                description =
-                    buildSpannedString {
-                        append("Feel free to join our discord community and support the development of AniTrend on patreon! ^_^")
-                    },
-                textColor = co.anitrend.arch.theme.R.color.primaryTextColor,
-            ),
+    val onBoardingPages = listOf(
+        OnboardingPage(
+            resource = co.anitrend.onboarding.R.drawable.welcome,
+            background = listOf(Color(0xFFEADDFF), Color(0xFF6750A4)),
+            title = co.anitrend.onboarding.R.string.onboarding_title_welcome,
+            description = co.anitrend.onboarding.R.string.onboarding_desc_welcome
+        ),
+        OnboardingPage(
+            resource = co.anitrend.onboarding.R.drawable.trends,
+            background = listOf(Color(0xFFE0F2F1), Color(0xFF009688)),
+            title = co.anitrend.onboarding.R.string.onboarding_title_trends,
+            description = co.anitrend.onboarding.R.string.onboarding_desc_trends
+        ),
+        OnboardingPage(
+            resource = co.anitrend.onboarding.R.drawable.search,
+            background = listOf(Color(0xFFE8EAF6), Color(0xFF7986CB)),
+            title = co.anitrend.onboarding.R.string.onboarding_title_search,
+            description = co.anitrend.onboarding.R.string.onboarding_desc_search
+        ),
+        OnboardingPage(
+            resource = co.anitrend.onboarding.R.drawable.rating,
+            background = listOf(Color(0xFFEFEBE9), Color(0xFFA1887F)),
+            title = co.anitrend.onboarding.R.string.onboarding_title_rating,
+            description = co.anitrend.onboarding.R.string.onboarding_desc_rating
+        ),
+        OnboardingPage(
+            resource = co.anitrend.onboarding.R.drawable.smart,
+            background = listOf(Color(0xFFECEFF1), Color(0xFF607D8B)),
+            title = co.anitrend.onboarding.R.string.onboarding_title_smart,
+            description = co.anitrend.onboarding.R.string.onboarding_desc_smart
+        ),
+        OnboardingPage(
+            resource = co.anitrend.onboarding.R.drawable.adventure,
+            background = listOf(Color(0xFFFBE9E7), Color(0xFFFF8A65)),
+            title = co.anitrend.onboarding.R.string.onboarding_title_adventure,
+            description = co.anitrend.onboarding.R.string.onboarding_desc_adventure
         )
+    )
 
-    val pages = onBoardingItems.size.minus(1)
-
-    fun onBoardingExperienceCompleted() {
+    fun onBoardingExperienceCompleted(onActionCompleted: () -> Unit) {
         settings.isNewInstallation.value = false
         MainRouter.startActivity(context)
+        onActionCompleted()
     }
 }
