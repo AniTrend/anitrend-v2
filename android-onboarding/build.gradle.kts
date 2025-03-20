@@ -20,8 +20,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.liquidSwipe)
-    implementation(libs.airbnb.lottie)
+
 }
 
 android {
