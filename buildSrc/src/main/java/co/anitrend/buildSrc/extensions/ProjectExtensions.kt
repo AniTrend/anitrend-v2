@@ -41,24 +41,29 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 
 
-fun Project.isAppModule() = name == Modules.App.Main.id
-fun Project.isDataModule() = name == Modules.App.Data.id
-fun Project.isDomainModule() = name == Modules.App.Domain.id
-fun Project.isCoreModule() = name == Modules.App.Core.id
-fun Project.isNavigationModule() = name == Modules.App.Navigation.id
-fun Project.isAndroidCoreModule() = name == Modules.Android.Core.id
+fun Project.isAppModule() = path == Modules.App.Main.path
+fun Project.isDataModule() = path == Modules.Data.Common.path
+fun Project.isDomainModule() = path == Modules.Domain.Common.path
+fun Project.isCoreModule() = path == Modules.App.Core.path
+fun Project.isNavigationModule() = path == Modules.App.Navigation.path
+fun Project.isAndroidCoreModule() = path == Modules.Android.Core.path
 
-fun Project.matchesAppModule() = name.startsWith(Modules.appModulePattern)
-fun Project.matchesDataModule() = name.startsWith(Modules.dataModulePattern)
-fun Project.matchesAndroidModule() = name.startsWith(Modules.androidModulePattern)
-fun Project.matchesFeatureModule() = name.startsWith(Modules.featureModulePattern)
-fun Project.matchesCommonModule() = name.startsWith(Modules.commonModulePattern)
-fun Project.matchesTaskModule() = name.startsWith(Modules.taskModulePattern)
+fun Project.matchesAppModule() = path.startsWith(Modules.APP_MODULE_PATTERN)
+fun Project.matchesDataModule() = path.startsWith(Modules.DATA_MODULE_PATTERN)
+fun Project.matchesDomainModule() = path.startsWith(Modules.DOMAIN_MODULE_PATTERN)
+fun Project.matchesAndroidModule() = path.startsWith(Modules.ANDROID_MODULE_PATTERN)
+fun Project.matchesFeatureModule() = path.startsWith(Modules.FEATURE_MODULE_PATTERN)
+fun Project.matchesCommonModule() = path.startsWith(Modules.COMMON_MODULE_PATTERN)
+fun Project.matchesTaskModule() = path.startsWith(Modules.TASK_MODULE_PATTERN)
+
+fun Project.isDomainGroupModule() = isDomainModule() || matchesDomainModule()
+fun Project.isDataGroupModule() = isDataModule() || matchesDataModule()
+fun Project.isAppGroupModule() = isAppModule() || matchesAppModule()
 
 /**
  * Module that supports kotlinx-coroutines dependencies
  */
-fun Project.hasCoroutineSupport() = name != Modules.App.Navigation.id || name != Modules.App.Domain.id
+fun Project.hasCoroutineSupport() = path != Modules.App.Navigation.path || !isDomainGroupModule()
 
 /**
  * Module that supports androidx.compose dependencies
@@ -69,20 +74,20 @@ fun Project.hasComposeSupport() = isAppModule() || matchesFeatureModule() ||
 /**
  * Module that support [io.insert-koin:koin-androidx-*] dependencies
  */
-fun Project.hasKoinAndroidSupport() = 
-    name != Modules.App.Data.id || name != Modules.App.Core.id || name != Modules.App.Navigation.id
+fun Project.hasKoinAndroidSupport() =
+    path != Modules.Data.Common.path || path != Modules.App.Core.path || path != Modules.App.Navigation.path
 
 /**
  * Module that supports the kotlin annotation processor plugin
  */
 fun Project.hasKaptSupport() =
-    name != Modules.App.Main.id || name != Modules.App.Data.id || name != Modules.App.Core.id
+    path != Modules.App.Main.path || path != Modules.Data.Common.path || path != Modules.App.Core.path
 
 /**
  * Module that supports the kotlin-android-extensions annotation processor plugin
  */
 fun Project.hasKotlinAndroidExtensionSupport() =
-    name != Modules.App.Domain.id
+    path != Modules.Domain.Common.path
 
 
 internal val Project.props: PropertiesReader

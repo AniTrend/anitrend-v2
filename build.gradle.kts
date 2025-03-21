@@ -25,3 +25,8 @@ allprojects {
         handleConflicts(this@allprojects)
     }
 }
+
+plugins.forEach {
+    project.logger.lifecycle("Available plugin for module $path -> ${it.javaClass}")
+}
+

@@ -25,12 +25,15 @@ import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.implementation
 import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.isDataModule
+import co.anitrend.buildSrc.extensions.isDomainModule
 import co.anitrend.buildSrc.extensions.kapt
 import co.anitrend.buildSrc.extensions.libs
 import co.anitrend.buildSrc.extensions.matchesAndroidModule
 import co.anitrend.buildSrc.extensions.matchesAppModule
 import co.anitrend.buildSrc.extensions.matchesCommonModule
 import co.anitrend.buildSrc.extensions.matchesDataModule
+import co.anitrend.buildSrc.extensions.matchesDomainModule
 import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.releaseImplementation
@@ -70,35 +73,49 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(libs.airbnb.paris)
     dependencies.implementation(libs.threeTenBp)
 
-    dependencies.implementation(project(Modules.Android.Core.path()))
-    dependencies.implementation(project(Modules.App.Navigation.path()))
-    dependencies.implementation(project(Modules.App.Core.path()))
-    dependencies.implementation(project(Modules.App.Domain.path()))
-    dependencies.implementation(project(Modules.App.Data.path()))
-    dependencies.implementation(project(Modules.Data.Settings.path()))
+    dependencies.implementation(project(Modules.Android.Core.path))
+    dependencies.implementation(project(Modules.App.Navigation.path))
+    dependencies.implementation(project(Modules.App.Core.path))
+    dependencies.implementation(project(Modules.Domain.Common.path))
+    dependencies.implementation(project(Modules.Data.Common.path))
+    dependencies.implementation(project(Modules.Data.Settings.path))
 }
 
 private fun Project.applyAppModuleDependencies() {
-    Modules.Feature.values().forEach { module ->
-        logger.lifecycle("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
-        dependencies.runtime(project(module.path()))
+    Modules.Domain.values().forEach { module ->
+        logger.lifecycle("Adding implementation dependency ${module.path} -> ${project.path}")
+        dependencies.implementation(project(module.path))
     }
 
-    Modules.Task.values().forEach { module ->
-        logger.lifecycle("Adding runtimeOnly dependency ${module.path()} -> ${project.path}")
-        dependencies.runtime(project(module.path()))
-    }
-
-    Modules.App.values().forEach { module ->
-        if (module != Modules.App.Main) {
-            logger.lifecycle("Adding base module dependency ${module.path()} -> ${project.path}")
-            dependencies.implementation(project(module.path()))
+    Modules.Data.values().forEach { module ->
+        if (module != Modules.Data.Settings) {
+            logger.lifecycle("Adding implementation dependency ${module.path} -> ${project.path}")
+            dependencies.implementation(project(module.path))
+        }
+        else {
+            logger.lifecycle("Adding runtimeOnly dependency ${module.path} -> ${project.path}")
+            dependencies.runtime(project(module.path))
         }
     }
 
+    Modules.Feature.values().forEach { module ->
+        logger.lifecycle("Adding runtimeOnly dependency ${module.path} -> ${project.path}")
+        dependencies.runtime(project(module.path))
+    }
+
+    Modules.Task.values().forEach { module ->
+        logger.lifecycle("Adding runtimeOnly dependency ${module.path} -> ${project.path}")
+        dependencies.runtime(project(module.path))
+    }
+
+    Modules.App.values().filter { it != Modules.App.Main }.forEach { module ->
+        logger.lifecycle("Adding app sub-module dependency ${module.path} -> ${project.path}")
+        dependencies.implementation(project(module.path))
+    }
+
     Modules.Android.values().forEach { module ->
-        logger.lifecycle("Adding android core module dependency ${module.path()} -> ${project.path}")
-        dependencies.implementation(project(module.path()))
+        logger.lifecycle("Adding android module dependency ${module.path} -> ${project.path}")
+        dependencies.implementation(project(module.path))
     }
 
     dependencies.implementation(libs.google.android.material)
@@ -114,7 +131,7 @@ private fun Project.applyAppModuleDependencies() {
 
     dependencies.implementation(libs.coil)
 
-    dependencies.implementation(project(Modules.Data.Settings.path()))
+    dependencies.implementation(project(Modules.Data.Settings.path))
 
     dependencies.googleImplementation(libs.google.firebase.analytics.ktx)
     dependencies.googleImplementation(libs.google.firebase.crashlytics)
@@ -125,12 +142,13 @@ private fun Project.applyAppModuleDependencies() {
 
 private fun Project.applyAppModuleGroupDependencies() {
     logger.lifecycle("Applying base module dependencies for module -> $path")
-    when (name) {
-        Modules.App.Core.id -> {
-            dependencies.implementation(project(Modules.Android.Core.path()))
-            dependencies.implementation(project(Modules.App.Navigation.path()))
-            dependencies.implementation(project(Modules.App.Domain.path()))
-            dependencies.implementation(project(Modules.App.Data.path()))
+    when (path) {
+        Modules.App.Core.path -> {
+            dependencies.implementation(project(Modules.Android.Core.path))
+            dependencies.implementation(project(Modules.App.Navigation.path))
+            // TODO: Review the need for some of these dependencies
+            dependencies.implementation(project(Modules.Domain.Common.path))
+            dependencies.implementation(project(Modules.Data.Common.path))
 
             dependencies.implementation(libs.google.android.material)
 
@@ -153,44 +171,11 @@ private fun Project.applyAppModuleGroupDependencies() {
             dependencies.implementation(libs.coil.svg)
             dependencies.implementation(libs.coil.video)
 
-            dependencies.implementation(project(Modules.Data.Core.path()))
-            dependencies.implementation(project(Modules.Data.Android.path()))
-            dependencies.implementation(project(Modules.Data.Settings.path()))
+            dependencies.implementation(project(Modules.Data.Core.path))
+            dependencies.implementation(project(Modules.Data.Android.path))
+            dependencies.implementation(project(Modules.Data.Settings.path))
         }
-        Modules.App.Data.id -> {
-            dependencies.implementation(project(Modules.App.Domain.path()))
-
-            dependencies.implementation(libs.androidx.paging.common)
-            dependencies.implementation(libs.androidx.paging.runtime)
-            dependencies.implementation(libs.androidx.paging.runtime.ktx)
-            dependencies.implementation(libs.androidx.room.runtime)
-            dependencies.implementation(libs.androidx.room.ktx)
-            dependencies.kapt(libs.androidx.room.compiler)
-
-            dependencies.implementation(libs.square.okhttp.logging)
-            dependencies.implementation(libs.square.retrofit)
-            dependencies.implementation(libs.square.retrofit.converter.gson)
-
-            dependencies.implementation(libs.anitrend.retrofit.graphql)
-            dependencies.implementation(libs.retrofitSerializer)
-            dependencies.implementation(libs.threeTenBp)
-
-            dependencies.debugImplementation(libs.chuncker.debug)
-            dependencies.releaseImplementation(libs.chuncker.release)
-
-            dependencies.androidTest(libs.androidx.room.testing)
-            dependencies.androidTest(libs.square.okhttp.mockwebserver)
-
-            dependencies.compile(libs.square.kotlinpoet)
-
-            Modules.Data.values().forEach { module ->
-                dependencies.implementation(project(module.path()))
-            }
-        }
-        Modules.App.Domain.id -> {
-            dependencies.implementation(libs.anitrend.arch.domain)
-        }
-        Modules.App.Navigation.id -> {
+        Modules.App.Navigation.path -> {
             dependencies.implementation(libs.androidx.core.ktx)
             dependencies.implementation(libs.androidx.activity.ktx)
             dependencies.implementation(libs.androidx.collection.ktx)
@@ -199,8 +184,50 @@ private fun Project.applyAppModuleGroupDependencies() {
     }
 }
 
-private fun Project.applyDataModuleGroupDependencies() {
+private fun Project.applyDomainModuleDependencies() {
+    logger.lifecycle("Applying domain module dependencies for module -> $path")
+    dependencies.implementation(libs.anitrend.arch.domain)
+}
+
+private fun Project.applyDomainModuleGroupDependencies() {
+    logger.lifecycle("Applying domain module group dependencies for module -> $path")
+    dependencies.implementation(libs.anitrend.arch.domain)
+}
+
+private fun Project.applyDataModuleDependencies() {
     logger.lifecycle("Applying base module dependencies for module -> $path")
+    dependencies.implementation(project(Modules.Domain.Common.path))
+
+    dependencies.implementation(libs.androidx.paging.common)
+    dependencies.implementation(libs.androidx.paging.runtime)
+    dependencies.implementation(libs.androidx.paging.runtime.ktx)
+    dependencies.implementation(libs.androidx.room.runtime)
+    dependencies.implementation(libs.androidx.room.ktx)
+    dependencies.kapt(libs.androidx.room.compiler)
+
+    dependencies.implementation(libs.square.okhttp.logging)
+    dependencies.implementation(libs.square.retrofit)
+    dependencies.implementation(libs.square.retrofit.converter.gson)
+
+    dependencies.implementation(libs.anitrend.retrofit.graphql)
+    dependencies.implementation(libs.retrofitSerializer)
+    dependencies.implementation(libs.threeTenBp)
+
+    dependencies.debugImplementation(libs.chuncker.debug)
+    dependencies.releaseImplementation(libs.chuncker.release)
+
+    dependencies.androidTest(libs.androidx.room.testing)
+    dependencies.androidTest(libs.square.okhttp.mockwebserver)
+
+    dependencies.compile(libs.square.kotlinpoet)
+
+    Modules.Data.values().filter { it != Modules.Data.Common }.forEach { module ->
+        dependencies.implementation(project(module.path))
+    }
+}
+
+private fun Project.applyDataModuleGroupDependencies() {
+    logger.lifecycle("Applying data module group dependencies for module -> $path")
     dependencies.implementation(libs.anitrend.arch.analytics)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.data)
@@ -208,9 +235,9 @@ private fun Project.applyDataModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.paging.legacy)
     dependencies.implementation(libs.anitrend.arch.extension)
 
-    dependencies.implementation(project(Modules.App.Domain.path()))
+    dependencies.implementation(project(Modules.Domain.Common.path))
 
-    if (name != Modules.Data.Settings.id) {
+    if (path != Modules.Data.Settings.path) {
         dependencies.implementation(libs.androidx.paging.common)
         dependencies.implementation(libs.androidx.paging.runtime)
         dependencies.implementation(libs.androidx.paging.runtime.ktx)
@@ -233,26 +260,26 @@ private fun Project.applyDataModuleGroupDependencies() {
         dependencies.androidTest(libs.square.okhttp.mockwebserver)
     }
 
-    when (name) {
-        Modules.Data.Android.id -> {
-            dependencies.implementation(project(Modules.Data.Core.path()))
-            dependencies.implementation(project(Modules.Data.Settings.path()))
+    when (path) {
+        Modules.Data.Android.path -> {
+            dependencies.implementation(project(Modules.Data.Core.path))
+            dependencies.implementation(project(Modules.Data.Settings.path))
         }
-        Modules.Data.Settings.id -> { }
-        Modules.Data.Core.id -> {
-            dependencies.implementation(project(Modules.Data.Settings.path()))
+        Modules.Data.Settings.path -> { }
+        Modules.Data.Core.path -> {
+            dependencies.implementation(project(Modules.Data.Settings.path))
         }
         else -> {
             logger.lifecycle("Applying core and android data dependencies for module -> $path")
-            dependencies.implementation(project(Modules.Data.Core.path()))
-            dependencies.implementation(project(Modules.Data.Android.path()))
-            dependencies.implementation(project(Modules.Data.Settings.path()))
+            dependencies.implementation(project(Modules.Data.Core.path))
+            dependencies.implementation(project(Modules.Data.Android.path))
+            dependencies.implementation(project(Modules.Data.Settings.path))
         }
     }
 }
 
 private fun Project.applyAndroidModuleGroupDependencies() {
-    logger.lifecycle("Applying core feature dependencies for feature module -> $path")
+    logger.lifecycle("Applying android group dependencies for feature module -> $path")
 
     dependencies.implementation(libs.anitrend.arch.ui)
     dependencies.implementation(libs.anitrend.arch.extension)
@@ -278,20 +305,20 @@ private fun Project.applyAndroidModuleGroupDependencies() {
     dependencies.implementation(libs.coil)
     dependencies.implementation(libs.threeTenBp)
 
-    dependencies.implementation(project(Modules.App.Navigation.path()))
-    dependencies.implementation(project(Modules.App.Domain.path()))
-    dependencies.implementation(project(Modules.App.Data.path()))
+    dependencies.implementation(project(Modules.App.Navigation.path))
+    dependencies.implementation(project(Modules.Domain.Common.path))
+    dependencies.implementation(project(Modules.Data.Common.path))
 
-    dependencies.implementation(project(Modules.Data.Settings.path()))
+    dependencies.implementation(project(Modules.Data.Settings.path))
 
     if (!isAndroidCoreModule()) {
-        dependencies.implementation(project(Modules.Android.Core.path()))
-        dependencies.implementation(project(Modules.App.Core.path()))
+        dependencies.implementation(project(Modules.Android.Core.path))
+        dependencies.implementation(project(Modules.App.Core.path))
     }
 }
 
 private fun Project.applyCommonModuleGroupDependencies() {
-    logger.lifecycle("Applying common feature dependencies for module -> $path")
+    logger.lifecycle("Applying common feature group dependencies for module -> $path")
 
     dependencies.implementation(libs.anitrend.arch.ui)
     dependencies.implementation(libs.anitrend.arch.extension)
@@ -321,16 +348,16 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(libs.threeTenBp)
     dependencies.implementation(libs.airbnb.paris)
 
-    dependencies.implementation(project(Modules.Android.Core.path()))
-    dependencies.implementation(project(Modules.App.Navigation.path()))
-    dependencies.implementation(project(Modules.App.Domain.path()))
-    dependencies.implementation(project(Modules.App.Data.path()))
-    dependencies.implementation(project(Modules.App.Core.path()))
-    dependencies.implementation(project(Modules.Data.Settings.path()))
+    dependencies.implementation(project(Modules.Android.Core.path))
+    dependencies.implementation(project(Modules.App.Navigation.path))
+    dependencies.implementation(project(Modules.Domain.Common.path))
+    dependencies.implementation(project(Modules.Data.Common.path))
+    dependencies.implementation(project(Modules.App.Core.path))
+    dependencies.implementation(project(Modules.Data.Settings.path))
 }
 
 private fun Project.applyTaskModuleGroupDependencies() {
-    logger.lifecycle("Applying task feature dependencies for module -> $path")
+    logger.lifecycle("Applying task module group dependencies for module -> $path")
 
     dependencies.implementation(libs.anitrend.arch.extension)
     dependencies.implementation(libs.anitrend.arch.core)
@@ -346,18 +373,18 @@ private fun Project.applyTaskModuleGroupDependencies() {
 
     dependencies.implementation(libs.threeTenBp)
 
-    dependencies.implementation(project(Modules.Android.Core.path()))
-    dependencies.implementation(project(Modules.App.Navigation.path()))
-    dependencies.implementation(project(Modules.App.Domain.path()))
-    dependencies.implementation(project(Modules.App.Data.path()))
-    dependencies.implementation(project(Modules.App.Core.path()))
-    dependencies.implementation(project(Modules.Data.Settings.path()))
+    dependencies.implementation(project(Modules.Android.Core.path))
+    dependencies.implementation(project(Modules.App.Navigation.path))
+    dependencies.implementation(project(Modules.Domain.Common.path))
+    dependencies.implementation(project(Modules.Data.Common.path))
+    dependencies.implementation(project(Modules.App.Core.path))
+    dependencies.implementation(project(Modules.Data.Settings.path))
 
     //dependencies.androidTest(libs.androidx.work.test)
 }
 
 private fun Project.applyComposeDependencies() {
-    logger.lifecycle("Applying compose dependencies for feature module -> $path")
+    logger.lifecycle("Applying compose dependencies for module -> $path")
     dependencies.implementation(libs.androidx.compose.foundation)
     dependencies.implementation(libs.androidx.compose.foundation.layout)
     dependencies.implementation(libs.androidx.compose.material)
@@ -401,8 +428,11 @@ internal fun Project.configureDependencies() {
     DependencyStrategy(project).applyDependenciesOn(dependencies)
 
     if (isAppModule()) applyAppModuleDependencies()
+    if (isDataModule()) applyDataModuleDependencies()
+    if (isDomainModule()) applyDomainModuleDependencies()
     if (matchesAppModule()) applyAppModuleGroupDependencies()
     if (matchesDataModule()) applyDataModuleGroupDependencies()
+    if (matchesDomainModule()) applyDomainModuleGroupDependencies()
     if (matchesAndroidModule()) applyAndroidModuleGroupDependencies()
     if (matchesFeatureModule()) applyFeatureModuleGroupDependencies()
     if (matchesCommonModule()) applyCommonModuleGroupDependencies()

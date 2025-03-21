@@ -19,12 +19,13 @@ package co.anitrend.buildSrc.module
 
 internal object Modules {
 
-    const val dataModulePattern = "app-data-"
-    const val androidModulePattern = "android-"
-    const val featureModulePattern = "feature-"
-    const val commonModulePattern = "common-"
-    const val taskModulePattern = "task-"
-    const val appModulePattern = "app-"
+    const val DATA_MODULE_PATTERN = ":data:"
+    const val DOMAIN_MODULE_PATTERN = ":domain:"
+    const val ANDROID_MODULE_PATTERN = ":android:"
+    const val FEATURE_MODULE_PATTERN = ":feature:"
+    const val COMMON_MODULE_PATTERN = ":common:"
+    const val TASK_MODULE_PATTERN = ":task:"
+    const val APP_MODULE_PATTERN = ":app:"
 
     interface Module {
         val id: String
@@ -32,109 +33,111 @@ internal object Modules {
         /**
          * @return Formatted id of module as a path string
          */
-        fun path(): String = ":$id"
+        val path: String
+            get() = ":$id"
     }
 
     enum class App(override val id: String) : Module {
         Main("app"),
-        Core("app-core"),
-        Data("app-data"),
-        Domain("app-domain"),
-        Navigation("app-navigation")
+        Core("app:core"),
+        Navigation("app:navigation"),
+    }
+
+    enum class Domain(override val id: String) : Module {
+        Common("domain"),
     }
 
     enum class Data(override val id: String) : Module {
-        Android("app-data-android"),
-        Core("app-data-core"),
-        Feed("app-data-feed"),
-        Imgur("app-data-imgur"),
-        Jikan("app-data-jikan"),
-        Relation("app-data-relation"),
-        Theme("app-data-theme"),
-        TheXem("app-data-thexem"),
-        Tmdb("app-data-tmdb"),
-        Trakt("app-data-trakt"),
-        Settings("app-data-settings"),
-        Edge("app-data-edge"),
+        Common("data"),
+        Android("data:android"),
+        Core("data:core"),
+        Feed("data:feed"),
+        Imgur("data:imgur"),
+        Jikan("data:jikan"),
+        Relation("data:relation"),
+        Theme("data:theme"),
+        TheXem("data:thexem"),
+        Tmdb("data:tmdb"),
+        Trakt("data:trakt"),
+        Settings("data:settings"),
+        Edge("data:edge"),
     }
 
     enum class Android(override val id: String) : Module {
-        Core("android-core"),
-        Navigation("android-navigation"),
-        OnBoarding("android-onboarding"),
-        Splash("android-splash"),
-        DeepLink("android-deeplink"),
+        Core("android:core"),
+        Navigation("android:navigation"),
+        DeepLink("android:deeplink"),
     }
 
     enum class Common(override val id: String) : Module {
-        Character("common-character-ui"),
-        Forum("common-forum-ui"),
-        Media("common-media-ui"),
-        Recommendation("common-recommendation-ui"),
-        Review("common-review-ui"),
-        Staff("common-staff-ui"),
-        User("common-user-ui"),
-        Episode("common-episode-ui"),
-        News("common-news-ui"),
-        MediaList("common-medialist-ui"),
-        Editor("common-editor-ui"),
-        Feed("common-feed-ui"),
-        Studio("common-studio-ui"),
-        Genre("common-genre-ui"),
-        Tag("common-tag-ui"),
-        Shared("common-shared-ui"),
-        Markdown("common-markdown-ui")
+        Character("common:character"),
+        Forum("common:forum"),
+        Media("common:media"),
+        Recommendation("common:recommendation"),
+        Review("common:review"),
+        Staff("common:staff"),
+        User("common:user"),
+        Episode("common:episode"),
+        News("common:news"),
+        MediaList("common:medialist"),
+        Editor("common:editor"),
+        Feed("common:feed"),
+        Studio("common:studio"),
+        Genre("common:genre"),
+        Tag("common:tag"),
+        Shared("common:shared"),
+        Markdown("common:markdown")
     }
 
     enum class Feature(override val id: String) : Module {
-        Auth("feature-auth"),
-        Airing("feature-airing"),
-        Character("feature-character"),
-        Episode("feature-episode"),
-        Feed("feature-feed"),
-        Staff("feature-staff"),
-        Studio("feature-studio"),
-        Suggestion("feature-suggestion"),
-        Media("feature-media"),
-        MediaCarousel("feature-media-carousel"),
-        MediaDiscover("feature-media-discover"),
-        MediaDiscoverFilter("feature-media-discover-filter"),
-        Notification("feature-notification"),
-        MediaList("feature-medialist"),
-        MediaListEditor("feature-medialist-editor"),
-        Review("feature-review"),
-        ReviewDiscover("feature-review-discover"),
-        Forum("feature-forum"),
-        Recommendation("feature-recommendation"),
-        Settings("feature-settings"),
-        Search("feature-search"),
-        Profile("feature-profile"),
-        Account("feature-account"),
-        About("feature-about"),
-        News("feature-news"),
-        ImageViewer("feature-image-viewer"),
-        Updater("feature-updater")
+        Auth("feature:auth"),
+        Airing("feature:airing"),
+        Character("feature:character"),
+        Episode("feature:episode"),
+        Feed("feature:feed"),
+        Staff("feature:staff"),
+        Studio("feature:studio"),
+        Suggestion("feature:suggestion"),
+        Media("feature:media"),
+        MediaCarousel("feature:media:carousel"),
+        MediaDiscover("feature:media:discover"),
+        MediaDiscoverFilter("feature:media:discover:filter"),
+        Notification("feature:notification"),
+        MediaList("feature:medialist"),
+        MediaListEditor("feature:medialist:editor"),
+        Review("feature:review"),
+        ReviewDiscover("feature:review:discover"),
+        Forum("feature:forum"),
+        Recommendation("feature:recommendation"),
+        Settings("feature:settings"),
+        Search("feature:search"),
+        Profile("feature:profile"),
+        Account("feature:account"),
+        About("feature:about"),
+        News("feature:news"),
+        ImageViewer("feature:image-viewer"),
+        Updater("feature:updater")
     }
 
     enum class Task(override val id: String) : Module {
-        Character("task-character"),
-        Forum("task-forum"),
-        Media("task-media"),
-        MediaList("task-medialist"),
-        Recommendation("task-recommendation"),
-        Review("task-review"),
-        Staff("task-staff"),
-        User("task-user"),
-        Episode("task-episode"),
-        News("task-news"),
-        Feed("task-feed"),
-        Studio("task-studio"),
-        Genre("task-genre"),
-        Tag("task-tag"),
-        Updater("task-updater"),
-        Account("task-account"),
-        Config("task-config"),
-        Favourite("task-favourite"),
+        Character("task:character"),
+        Forum("task:forum"),
+        Media("task:media"),
+        MediaList("task:medialist"),
+        Recommendation("task:recommendation"),
+        Review("task:review"),
+        Staff("task:staff"),
+        User("task:user"),
+        Episode("task:episode"),
+        News("task:news"),
+        Feed("task:feed"),
+        Studio("task:studio"),
+        Genre("task:genre"),
+        Tag("task:tag"),
+        Updater("task:updater"),
+        Account("task:account"),
+        Config("task:config"),
+        Favourite("task:favourite"),
     }
 }
 

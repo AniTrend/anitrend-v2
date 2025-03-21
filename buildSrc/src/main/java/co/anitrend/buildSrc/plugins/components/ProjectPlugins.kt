@@ -17,8 +17,8 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.androidComponents
+import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.hasKaptSupport
 import co.anitrend.buildSrc.extensions.hasKotlinAndroidExtensionSupport
 import co.anitrend.buildSrc.extensions.isAppModule
@@ -59,9 +59,9 @@ internal fun Project.configurePlugins() {
 internal fun Project.configureAdditionalPlugins() {
     if (isAppModule()) {
         androidComponents().beforeVariants {
-            logger.lifecycle("VariantFilter { name: ${it.name}, flavor: ${it.flavorName}, module: $name }")
+            logger.lifecycle("VariantFilter { name: ${it.name}, flavor: ${it.flavorName}, module: $path }")
             if (it.flavorName == "google") {
-                logger.lifecycle("Applying additional google plugins on -> module: $name | type: ${it.name}")
+                logger.lifecycle("Applying additional google plugins on -> module: $path | type: ${it.name}")
                 if (file("google-services.json").exists()) {
                     plugins.apply("com.google.gms.google-services")
                     plugins.apply("com.google.firebase.crashlytics")

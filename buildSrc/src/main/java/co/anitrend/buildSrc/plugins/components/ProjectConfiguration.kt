@@ -17,7 +17,16 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.extensions.baseAppExtension
+import co.anitrend.buildSrc.extensions.baseExtension
+import co.anitrend.buildSrc.extensions.hasComposeSupport
+import co.anitrend.buildSrc.extensions.hasCoroutineSupport
+import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.libraryExtension
+import co.anitrend.buildSrc.extensions.matchesAppModule
+import co.anitrend.buildSrc.extensions.matchesTaskModule
+import co.anitrend.buildSrc.extensions.props
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
@@ -66,9 +75,9 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
 
     if (!project.matchesAppModule() && !project.matchesTaskModule()) {
         // checking app module again since the group for app modules is
-        // `app-` while the main app is just `app`
-        if (!project.isAppModule()) {
-            project.logger.lifecycle("Applying view binding feature for module -> ${project.path}")
+        // `:app:` while the main app is just `:app`
+        if (!project.isAppModule() && project.hasComposeSupport()) {
+            project.logger.lifecycle("Applying view binding and compose build features for module -> ${project.path}")
             project.libraryExtension().buildFeatures {
                 viewBinding = true
                 if (project.hasComposeSupport())
@@ -248,8 +257,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                         logger.lifecycle("$proguardFile contents are identical to $missingRules")
                     }
                 }
-            } else {
-                logger.lifecycle("missing_rules.txt does not exist in $missingRules")
             }
         } else {
             logger.lifecycle("Creating new proguard-rules.pro file in: $proguardFile")

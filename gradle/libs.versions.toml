@@ -78,6 +78,8 @@ google-devtools-ksp = "2.1.10-1.0.31"
 jetbrains-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-devtools-ksp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
+android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 
 
 [libraries]
@@ -180,6 +182,7 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 androidx-test-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "androidx-test-espresso" }
 
 androidx-test-ext-junit-ktx =  { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext" }
 
 androidx-work-runtime-ktx =  { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-work-multiprocess = { module = "androidx.work:work-multiprocess", version.ref = "androidx-work" }
