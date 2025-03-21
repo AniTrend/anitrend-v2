@@ -56,9 +56,7 @@ fun adaptiveIconPainterResource(
 }
 
 @Composable
-fun rememberSystemAnimDuration(
-    systemAnimationDuration: SystemAnimationDuration = SystemAnimationDuration.SHORT
-): Int {
+fun rememberSystemAnimDuration(systemAnimationDuration: SystemAnimationDuration = SystemAnimationDuration.SHORT): Int {
     val context = LocalContext.current
     return remember(context, systemAnimationDuration) {
         context.resources.getInteger(systemAnimationDuration.duration)
