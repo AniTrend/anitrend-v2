@@ -20,7 +20,7 @@ package co.anitrend.buildSrc.plugins.strategy
 import co.anitrend.buildSrc.extensions.androidTest
 import co.anitrend.buildSrc.extensions.hasKoinAndroidSupport
 import co.anitrend.buildSrc.extensions.implementation
-import co.anitrend.buildSrc.extensions.isDomainModule
+import co.anitrend.buildSrc.extensions.isDomainGroupModule
 import co.anitrend.buildSrc.extensions.isNavigationModule
 import co.anitrend.buildSrc.extensions.libs
 import co.anitrend.buildSrc.extensions.test
@@ -32,7 +32,7 @@ internal class DependencyStrategy(private val project: Project) {
 
     private fun DependencyHandler.applyDefaultDependencies() {
         implementation(project.libs.jetbrains.kotlin.stdlib)
-        if (!project.isDomainModule())
+        if (!project.isDomainGroupModule())
             implementation(project.libs.timber)
 
         test(project.libs.jetbrains.kotlin.test)
@@ -87,8 +87,8 @@ internal class DependencyStrategy(private val project: Project) {
     }
 
     private fun DependencyHandler.applyOtherDependencies() {
-        when (project.name) {
-            Modules.App.Main.id -> {
+        when (project.path) {
+            Modules.App.Main.path -> {
                 implementation(project.libs.anitrend.arch.analytics)
                 implementation(project.libs.anitrend.arch.recycler)
                 implementation(project.libs.anitrend.arch.domain)
@@ -98,7 +98,7 @@ internal class DependencyStrategy(private val project: Project) {
                 implementation(project.libs.anitrend.arch.extension)
                 implementation(project.libs.anitrend.arch.ui)
             }
-            Modules.App.Core.id -> {
+            Modules.App.Core.path -> {
                 implementation(project.libs.anitrend.arch.analytics)
                 implementation(project.libs.anitrend.arch.recycler.paging.legacy)
                 implementation(project.libs.anitrend.arch.recycler)
@@ -109,7 +109,7 @@ internal class DependencyStrategy(private val project: Project) {
                 implementation(project.libs.anitrend.arch.extension)
                 implementation(project.libs.anitrend.arch.ui)
             }
-            Modules.App.Data.id -> {
+            Modules.Data.Common.path -> {
                 implementation(project.libs.anitrend.arch.analytics)
                 implementation(project.libs.anitrend.arch.domain)
                 implementation(project.libs.anitrend.arch.data)
@@ -122,7 +122,7 @@ internal class DependencyStrategy(private val project: Project) {
 
     fun applyDependenciesOn(handler: DependencyHandler) {
         handler.applyDefaultDependencies()
-        if (!project.isDomainModule() || !project.isNavigationModule()) {
+        if (!project.isDomainGroupModule() || !project.isNavigationModule()) {
             handler.applyLifeCycleDependencies()
             handler.applyAndroidTestDependencies()
             handler.applyCoroutinesDependencies()

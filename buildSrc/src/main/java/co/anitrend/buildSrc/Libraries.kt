@@ -24,38 +24,43 @@ object Libraries {
     object AniTrend {
 
         object CommonUi {
-            val character = Modules.Common.Character.path()
-            val forum = Modules.Common.Forum.path()
-            val media = Modules.Common.Media.path()
-            val recommendation = Modules.Common.Recommendation.path()
-            val review = Modules.Common.Review.path()
-            val staff = Modules.Common.Staff.path()
-            val user = Modules.Common.User.path()
-            val episode = Modules.Common.Episode.path()
-            val news = Modules.Common.News.path()
-            val mediaList = Modules.Common.MediaList.path()
-            val editor = Modules.Common.Editor.path()
-            val feed = Modules.Common.Feed.path()
-            val studio = Modules.Common.Studio.path()
-            val genre = Modules.Common.Genre.path()
-            val tag = Modules.Common.Tag.path()
-			val shared = Modules.Common.Shared.path()
-			val markdown = Modules.Common.Markdown.path()
+            val character = Modules.Common.Character.path
+            val forum = Modules.Common.Forum.path
+            val media = Modules.Common.Media.path
+            val recommendation = Modules.Common.Recommendation.path
+            val review = Modules.Common.Review.path
+            val staff = Modules.Common.Staff.path
+            val user = Modules.Common.User.path
+            val episode = Modules.Common.Episode.path
+            val news = Modules.Common.News.path
+            val mediaList = Modules.Common.MediaList.path
+            val editor = Modules.Common.Editor.path
+            val feed = Modules.Common.Feed.path
+            val studio = Modules.Common.Studio.path
+            val genre = Modules.Common.Genre.path
+            val tag = Modules.Common.Tag.path
+			val shared = Modules.Common.Shared.path
+			val markdown = Modules.Common.Markdown.path
         }
 
         object Data {
-            val android = Modules.Data.Android.path()
-            val core = Modules.Data.Core.path()
-            val feed = Modules.Data.Feed.path()
-            val imgur = Modules.Data.Imgur.path()
-            val jikan = Modules.Data.Jikan.path()
-            val relation = Modules.Data.Relation.path()
-            val theme = Modules.Data.Theme.path()
-            val thexem = Modules.Data.TheXem.path()
-            val tmdb = Modules.Data.Tmdb.path()
-            val trakt = Modules.Data.Trakt.path()
-            val settings = Modules.Data.Settings.path()
-            val edge = Modules.Data.Edge.path()
+            val common = Modules.Data.Common.path
+            val android = Modules.Data.Android.path
+            val core = Modules.Data.Core.path
+            val feed = Modules.Data.Feed.path
+            val imgur = Modules.Data.Imgur.path
+            val jikan = Modules.Data.Jikan.path
+            val relation = Modules.Data.Relation.path
+            val theme = Modules.Data.Theme.path
+            val thexem = Modules.Data.TheXem.path
+            val tmdb = Modules.Data.Tmdb.path
+            val trakt = Modules.Data.Trakt.path
+            val settings = Modules.Data.Settings.path
+            val edge = Modules.Data.Edge.path
+        }
+
+        object Domain {
+            val common = Modules.Domain.Common.path
         }
     }
 }
