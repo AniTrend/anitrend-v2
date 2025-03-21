@@ -19,7 +19,9 @@ package co.anitrend.core.android.extensions
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.os.Build
 import androidx.annotation.DrawableRes
+import androidx.annotation.IntegerRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
@@ -51,4 +53,22 @@ fun adaptiveIconPainterResource(
         // We're not on Android O or later, just use painterResource
         painterResource(id)
     }
+}
+
+@Composable
+fun rememberSystemAnimDuration(
+    systemAnimationDuration: SystemAnimationDuration = SystemAnimationDuration.SHORT
+): Int {
+    val context = LocalContext.current
+    return remember(context, systemAnimationDuration) {
+        context.resources.getInteger(systemAnimationDuration.duration)
+    }
+}
+
+enum class SystemAnimationDuration(
+    @IntegerRes val duration: Int,
+) {
+    SHORT(android.R.integer.config_shortAnimTime),
+    MEDIUM(android.R.integer.config_mediumAnimTime),
+    LONG(android.R.integer.config_longAnimTime),
 }
