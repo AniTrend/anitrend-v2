@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import co.anitrend.core.android.extensions.rememberSystemAnimDuration
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
@@ -238,7 +239,7 @@ fun PageIndicator(
     modifier: Modifier = Modifier,
     dotDiameter: Dp = 8.dp,
     dotGap: Dp = 12.dp,
-    animationDuration: Int = 400,
+    animationDuration: Int = rememberSystemAnimDuration(),
     pageIndicatorColor: Color,
     currentPageIndicatorColor: Color,
 ) {

@@ -94,7 +94,7 @@ private fun PagingControls(
     ) {
         IconButton(
             onClick = onPreviousClick,
-            enabled = progress > 0f,
+            enabled = pagerState.settledPage > 0,
             colors =
                 iconButtonColors(
                     contentColor = MaterialTheme.colorScheme.onSurface,
