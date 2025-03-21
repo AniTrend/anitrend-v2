@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (C) 2019  AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="splash_label_powered_by" translatable="false">Powered by</string>
+    <string name="splash_label_provider" translatable="false">AniList</string>
+
+    <string name="splash_label_segment_first" translatable="false">Ani</string>
+    <string name="splash_label_segment_second" translatable="false">Trend</string>
+
+
+    <string name="onboarding_button_get_started">Get Started</string>
+
+    <string name="onboarding_title_welcome">Welcome to AniTrend</string>
+    <string name="onboarding_desc_welcome">Discover, track, and share your anime and manga journey with fans worldwide.</string>
+
+    <string name="onboarding_title_trends">Stay in the Loop</string>
+    <string name="onboarding_desc_trends">Track anime and manga trends effortlessly, and manage your lists from one unified space.</string>
+
+    <string name="onboarding_title_search">Find Exactly What You Love</string>
+    <string name="onboarding_desc_search">Effortlessly search anime, manga, characters, and creators with our powerful search engine.</string>
+
+    <string name="onboarding_title_rating">Rate Your Way</string>
+    <string name="onboarding_desc_rating">Personalize your experience with flexible rating systems tailored just for you.</string>
+
+    <string name="onboarding_title_smart">Smart and Efficient</string>
+    <string name="onboarding_desc_smart">AniTrend intelligently adapts to your device\'s settings to optimize battery and data usage.</string>
+
+    <string name="onboarding_title_adventure">Start Your Adventure</string>
+    <string name="onboarding_desc_adventure">Join our community, support AniTrend, and dive into an incredible anime and manga experience!</string>
+</resources>

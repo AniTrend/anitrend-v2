@@ -17,7 +17,12 @@
 
 package co.anitrend.buildSrc.plugins
 
-import co.anitrend.buildSrc.plugins.components.*
+import co.anitrend.buildSrc.plugins.components.configureAdditionalPlugins
+import co.anitrend.buildSrc.plugins.components.configureAndroid
+import co.anitrend.buildSrc.plugins.components.configureDependencies
+import co.anitrend.buildSrc.plugins.components.configureOptions
+import co.anitrend.buildSrc.plugins.components.configurePlugins
+import co.anitrend.buildSrc.plugins.components.configureSpotless
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -29,7 +34,7 @@ open class CorePlugin : Plugin<Project> {
     private fun Project.availableExtensions() {
         val extensionSchema = project.extensions.extensionsSchema
         extensionSchema.forEach {
-            logger.lifecycle("Available extension for module ${project.path}: ${it.name} -> ${it.publicType}")
+            logger.lifecycle("Available extension for module ${project.path} | ${it.name} -> ${it.publicType}")
         }
     }
 
@@ -39,7 +44,7 @@ open class CorePlugin : Plugin<Project> {
     private fun Project.availableComponents() {
         val collectionSchema = project.components.asMap
         collectionSchema.forEach {
-            logger.lifecycle("Available component for module ${project.path}: ${it.key} -> ${it.value}")
+            logger.lifecycle("Available component for module ${project.path} | ${it.key} -> ${it.value}")
         }
     }
 
