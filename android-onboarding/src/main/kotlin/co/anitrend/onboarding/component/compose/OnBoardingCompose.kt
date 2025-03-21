@@ -1,6 +1,7 @@
 package co.anitrend.onboarding.component.compose
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,12 +22,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -37,26 +46,20 @@ import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.onboarding.component.model.OnboardingPage
 import kotlinx.coroutines.launch
 
+// Color interpolation extension
+fun lerp(start: Color, end: Color, fraction: Float): Color {
+    return androidx.compose.ui.graphics.lerp(start, end, fraction)
+}
+
 @Composable
 private fun PagingControls(
-    isFirstPage: Boolean,
+    progress: Float,
     pagerState: PagerState,
     onBoardingCompleted: () -> Unit,
     modifier: Modifier = Modifier,
     onPreviousClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
 ) {
-    // Determine the last page index.
-    val lastPageIndex = pagerState.pageCount - 1
-
-    // Calculate progress based on the current page and its offset:
-    // When on the penultimate page, use the offset fraction; when on the last page, progress is 1.
-    val progress = when (pagerState.currentPage) {
-        lastPageIndex -> 1f
-        lastPageIndex - 1 -> pagerState.currentPageOffsetFraction.coerceIn(0f, 1f)
-        else -> 0f
-    }
-
     // Animate alpha values for a smooth transition.
     val pageIndicatorAlpha by animateFloatAsState(targetValue = 1f - progress)
     val textButtonAlpha by animateFloatAsState(targetValue = progress)
@@ -71,7 +74,7 @@ private fun PagingControls(
     ) {
         IconButton(
             onClick = onPreviousClick,
-            enabled = !isFirstPage,
+            enabled = progress > 0f,
             colors = iconButtonColors(
                 contentColor = MaterialTheme.colorScheme.onSurface,
             ),
@@ -130,13 +133,49 @@ private fun PagingControls(
 private fun OnBoardingContent(
     modifier: Modifier = Modifier,
     onBoardingPages: List<OnboardingPage>,
-    onBoardingCompleted: () -> Unit
+    onBoardingCompleted: () -> Unit,
+    onBoardingColorLists: List<List<Color>>,
 ) {
+    // Track current brush state
+    var brushState by remember { mutableStateOf(Brush.linearGradient(onBoardingColorLists.first())) }
     val pagerState = rememberPagerState(pageCount = onBoardingPages::size)
-    val coroutineScope = rememberCoroutineScope()
-    val isFirstPage = pagerState.settledPage == 0
+    val scrollScope = rememberCoroutineScope()
 
-    Box(modifier = modifier) {
+    // Determine the last page index.
+    val lastPageIndex = pagerState.pageCount - 1
+
+    // Calculate progress based on the current page and its offset:
+    // When on the penultimate page, use the offset fraction; when on the last page, progress is 1.
+    val progress = when (pagerState.currentPage) {
+        lastPageIndex -> 1f
+        lastPageIndex - 1 -> pagerState.currentPageOffsetFraction.coerceIn(0f, 1f)
+        else -> 0f
+    }
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage + pagerState.currentPageOffsetFraction }
+            .collect { visualPage ->
+                val basePage = visualPage.toInt().coerceIn(0, onBoardingColorLists.lastIndex)
+                val nextPage = (basePage + 1).coerceIn(0, onBoardingColorLists.lastIndex)
+                val fraction = (visualPage - basePage).coerceIn(0f, 1f)
+
+                val startColors = onBoardingColorLists[basePage]
+                val endColors = onBoardingColorLists[nextPage]
+
+                val interpolatedColors = startColors.zip(endColors) { start, end ->
+                    lerp(start, end, fraction)
+                }
+
+                brushState = Brush.linearGradient(
+                    colors = interpolatedColors,
+                    start = Offset.Zero,
+                    end = Offset.Infinite,
+                    tileMode = TileMode.Clamp
+                )
+            }
+    }
+
+    Box(modifier = modifier.background(brush = brushState)) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -145,18 +184,18 @@ private fun OnBoardingContent(
             OnBoardingItem(page = onBoardingPages[page])
         }
         PagingControls(
-            isFirstPage = isFirstPage,
+            progress = progress,
             pagerState = pagerState,
             onBoardingCompleted = onBoardingCompleted,
             modifier = Modifier.align(Alignment.BottomCenter),
             onNextClick = {
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                scrollScope.launch {
+                    pagerState.animateScrollToPage(pagerState.settledPage + 1)
                 }
             },
             onPreviousClick = {
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                scrollScope.launch {
+                    pagerState.animateScrollToPage(pagerState.settledPage - 1)
                 }
             }
         )
@@ -168,20 +207,28 @@ fun OnBoardingScreenContent(
     onBoardingPages: List<OnboardingPage>,
     onBoardingCompleted: () -> Unit,
 ) {
+    val surface = MaterialTheme.colorScheme.surface
+    val onBoardingColorLists = remember(onBoardingPages) {
+        onBoardingPages.map { page ->
+            page.background.plus(surface)
+        }
+    }
+
     OnBoardingContent(
         modifier = Modifier.fillMaxSize(),
         onBoardingPages = onBoardingPages,
-        onBoardingCompleted = onBoardingCompleted
+        onBoardingColorLists = onBoardingColorLists,
+        onBoardingCompleted = onBoardingCompleted,
     )
 }
 
 @Composable
 @AniTrendPreview.Default
-private fun OnBoardingScreenContent(
+private fun OnBoardingScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
 ) {
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        OnBoardingContent(
+        OnBoardingScreenContent(
             onBoardingPages = listOf(
                 OnboardingPage(
                     resource = co.anitrend.onboarding.R.drawable.welcome,
