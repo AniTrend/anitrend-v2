@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.onboarding.component.compose
 
 import androidx.compose.animation.core.animateFloatAsState
@@ -47,9 +63,13 @@ import co.anitrend.onboarding.component.model.OnboardingPage
 import kotlinx.coroutines.launch
 
 // Color interpolation extension
-fun lerp(start: Color, end: Color, fraction: Float): Color {
-    return androidx.compose.ui.graphics.lerp(start, end, fraction)
-}
+fun lerp(
+    start: Color,
+    end: Color,
+    fraction: Float,
+): Color =
+    androidx.compose.ui.graphics
+        .lerp(start, end, fraction)
 
 @Composable
 private fun PagingControls(
@@ -67,17 +87,18 @@ private fun PagingControls(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(16.dp),
     ) {
         IconButton(
             onClick = onPreviousClick,
             enabled = progress > 0f,
-            colors = iconButtonColors(
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ),
+            colors =
+                iconButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
             content = {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.NavigateBefore,
@@ -115,16 +136,17 @@ private fun PagingControls(
         IconButton(
             onClick = onNextClick,
             enabled = progress < 1f,
-            colors = iconButtonColors(
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ),
+            colors =
+                iconButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
             content = {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.NavigateNext,
                     contentDescription = "Next page",
                     modifier = Modifier.size(24.dp),
                 )
-            }
+            },
         )
     }
 }
@@ -146,11 +168,12 @@ private fun OnBoardingContent(
 
     // Calculate progress based on the current page and its offset:
     // When on the penultimate page, use the offset fraction; when on the last page, progress is 1.
-    val progress = when (pagerState.currentPage) {
-        lastPageIndex -> 1f
-        lastPageIndex - 1 -> pagerState.currentPageOffsetFraction.coerceIn(0f, 1f)
-        else -> 0f
-    }
+    val progress =
+        when (pagerState.currentPage) {
+            lastPageIndex -> 1f
+            lastPageIndex - 1 -> pagerState.currentPageOffsetFraction.coerceIn(0f, 1f)
+            else -> 0f
+        }
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage + pagerState.currentPageOffsetFraction }
@@ -162,24 +185,27 @@ private fun OnBoardingContent(
                 val startColors = onBoardingColorLists[basePage]
                 val endColors = onBoardingColorLists[nextPage]
 
-                val interpolatedColors = startColors.zip(endColors) { start, end ->
-                    lerp(start, end, fraction)
-                }
+                val interpolatedColors =
+                    startColors.zip(endColors) { start, end ->
+                        lerp(start, end, fraction)
+                    }
 
-                brushState = Brush.linearGradient(
-                    colors = interpolatedColors,
-                    start = Offset.Zero,
-                    end = Offset.Infinite,
-                    tileMode = TileMode.Clamp
-                )
+                brushState =
+                    Brush.linearGradient(
+                        colors = interpolatedColors,
+                        start = Offset.Zero,
+                        end = Offset.Infinite,
+                        tileMode = TileMode.Clamp,
+                    )
             }
     }
 
     Box(modifier = modifier.background(brush = brushState)) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) { page ->
             OnBoardingItem(page = onBoardingPages[page])
         }
@@ -197,7 +223,7 @@ private fun OnBoardingContent(
                 scrollScope.launch {
                     pagerState.animateScrollToPage(pagerState.settledPage - 1)
                 }
-            }
+            },
         )
     }
 }
@@ -208,11 +234,12 @@ fun OnBoardingScreenContent(
     onBoardingCompleted: () -> Unit,
 ) {
     val surface = MaterialTheme.colorScheme.surface
-    val onBoardingColorLists = remember(onBoardingPages) {
-        onBoardingPages.map { page ->
-            page.background.plus(surface)
+    val onBoardingColorLists =
+        remember(onBoardingPages) {
+            onBoardingPages.map { page ->
+                page.background.plus(surface)
+            }
         }
-    }
 
     OnBoardingContent(
         modifier = Modifier.fillMaxSize(),
@@ -225,24 +252,25 @@ fun OnBoardingScreenContent(
 @Composable
 @AniTrendPreview.Default
 private fun OnBoardingScreenPreview(
-    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         OnBoardingScreenContent(
-            onBoardingPages = listOf(
-                OnboardingPage(
-                    resource = co.anitrend.onboarding.R.drawable.welcome,
-                    background = listOf(Color(0xFFEADDFF), Color(0xFF6750A4)),
-                    title = co.anitrend.onboarding.R.string.onboarding_title_welcome,
-                    description = co.anitrend.onboarding.R.string.onboarding_desc_welcome
+            onBoardingPages =
+                listOf(
+                    OnboardingPage(
+                        resource = co.anitrend.onboarding.R.drawable.welcome,
+                        background = listOf(Color(0xFFEADDFF), Color(0xFF6750A4)),
+                        title = co.anitrend.onboarding.R.string.onboarding_title_welcome,
+                        description = co.anitrend.onboarding.R.string.onboarding_desc_welcome,
+                    ),
+                    OnboardingPage(
+                        resource = co.anitrend.onboarding.R.drawable.trends,
+                        background = listOf(Color(0xFFE0F2F1), Color(0xFF009688)),
+                        title = co.anitrend.onboarding.R.string.onboarding_title_trends,
+                        description = co.anitrend.onboarding.R.string.onboarding_desc_trends,
+                    ),
                 ),
-                OnboardingPage(
-                    resource = co.anitrend.onboarding.R.drawable.trends,
-                    background = listOf(Color(0xFFE0F2F1), Color(0xFF009688)),
-                    title = co.anitrend.onboarding.R.string.onboarding_title_trends,
-                    description = co.anitrend.onboarding.R.string.onboarding_desc_trends
-                ),
-            ),
             onBoardingCompleted = {},
         )
     }

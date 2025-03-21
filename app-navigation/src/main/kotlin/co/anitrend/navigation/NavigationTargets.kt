@@ -17,10 +17,6 @@
 package co.anitrend.navigation
 
 import android.content.Intent
-import android.text.SpannedString
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.work.ListenableWorker

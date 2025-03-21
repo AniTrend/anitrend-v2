@@ -1,7 +1,23 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.core.android.compose.design.pageindicator
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.height
@@ -11,11 +27,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -32,9 +44,6 @@ import androidx.compose.ui.unit.dp
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
-
 
 private fun DrawScope.drawJoiningDots(
     leftDotCenterX: Float,
@@ -43,7 +52,7 @@ private fun DrawScope.drawJoiningDots(
     dotRadius: Float,
     dotGap: Float,
     joiningFraction: Float,
-    color: Color
+    color: Color,
 ) {
     val path = Path()
     val halfDotRadius = dotRadius / 2
@@ -55,15 +64,16 @@ private fun DrawScope.drawJoiningDots(
 
     // Left dot arc
     path.arcTo(
-        rect = Rect(
-            left = leftDotCenterX - dotRadius,
-            top = dotTopY,
-            right = leftDotCenterX + dotRadius,
-            bottom = dotBottomY
-        ),
+        rect =
+            Rect(
+                left = leftDotCenterX - dotRadius,
+                top = dotTopY,
+                right = leftDotCenterX + dotRadius,
+                bottom = dotBottomY,
+            ),
         startAngleDegrees = 90f,
         sweepAngleDegrees = 180f,
-        forceMoveTo = true
+        forceMoveTo = true,
     )
 
     // Extend to right
@@ -74,7 +84,7 @@ private fun DrawScope.drawJoiningDots(
         x2 = endX1,
         y2 = dotCenterY - halfDotRadius,
         x3 = endX1,
-        y3 = dotCenterY
+        y3 = dotCenterY,
     )
 
     // Back to bottom
@@ -84,7 +94,7 @@ private fun DrawScope.drawJoiningDots(
         x2 = leftDotCenterX + halfDotRadius,
         y2 = dotBottomY,
         x3 = leftDotCenterX,
-        y3 = dotBottomY
+        y3 = dotBottomY,
     )
 
     // Draw right dot with similar approach
@@ -92,15 +102,16 @@ private fun DrawScope.drawJoiningDots(
     rightDotPath.moveTo(rightDotCenterX, dotBottomY)
 
     rightDotPath.arcTo(
-        rect = Rect(
-            left = rightDotCenterX - dotRadius,
-            top = dotTopY,
-            right = rightDotCenterX + dotRadius,
-            bottom = dotBottomY
-        ),
+        rect =
+            Rect(
+                left = rightDotCenterX - dotRadius,
+                top = dotTopY,
+                right = rightDotCenterX + dotRadius,
+                bottom = dotBottomY,
+            ),
         startAngleDegrees = 90f,
         sweepAngleDegrees = -180f,
-        forceMoveTo = true
+        forceMoveTo = true,
     )
 
     val endX2 = rightDotCenterX - dotRadius - (joiningFraction * dotGap)
@@ -110,7 +121,7 @@ private fun DrawScope.drawJoiningDots(
         x2 = endX2,
         y2 = dotCenterY - halfDotRadius,
         x3 = endX2,
-        y3 = dotCenterY
+        y3 = dotCenterY,
     )
 
     rightDotPath.cubicTo(
@@ -119,7 +130,7 @@ private fun DrawScope.drawJoiningDots(
         x2 = rightDotCenterX - halfDotRadius,
         y2 = dotBottomY,
         x3 = rightDotCenterX,
-        y3 = dotBottomY
+        y3 = dotBottomY,
     )
 
     val combinedPath = Path()
@@ -134,7 +145,7 @@ private fun DrawScope.drawCurvedJoining(
     dotRadius: Float,
     dotGap: Float,
     joiningFraction: Float,
-    color: Color
+    color: Color,
 ) {
     // Convert fraction to better visual effect
     val adjustedFraction = (joiningFraction - 0.2f) * 1.25f
@@ -147,15 +158,16 @@ private fun DrawScope.drawCurvedJoining(
 
     // Arc to top left
     path.arcTo(
-        rect = Rect(
-            left = leftDotCenterX - dotRadius,
-            top = dotTopY,
-            right = leftDotCenterX + dotRadius,
-            bottom = dotBottomY
-        ),
+        rect =
+            Rect(
+                left = leftDotCenterX - dotRadius,
+                top = dotTopY,
+                right = leftDotCenterX + dotRadius,
+                bottom = dotBottomY,
+            ),
         startAngleDegrees = 90f,
         sweepAngleDegrees = 180f,
-        forceMoveTo = true
+        forceMoveTo = true,
     )
 
     // Connect to top middle with curve
@@ -168,7 +180,7 @@ private fun DrawScope.drawCurvedJoining(
         x2 = middleX - ((1 - adjustedFraction) * dotRadius),
         y2 = topY,
         x3 = middleX,
-        y3 = topY
+        y3 = topY,
     )
 
     // Continue to top right
@@ -178,20 +190,21 @@ private fun DrawScope.drawCurvedJoining(
         x2 = middleX + (adjustedFraction * dotRadius),
         y2 = dotTopY,
         x3 = rightDotCenterX,
-        y3 = dotTopY
+        y3 = dotTopY,
     )
 
     // Arc to bottom right
     path.arcTo(
-        rect = Rect(
-            left = rightDotCenterX - dotRadius,
-            top = dotTopY,
-            right = rightDotCenterX + dotRadius,
-            bottom = dotBottomY
-        ),
+        rect =
+            Rect(
+                left = rightDotCenterX - dotRadius,
+                top = dotTopY,
+                right = rightDotCenterX + dotRadius,
+                bottom = dotBottomY,
+            ),
         startAngleDegrees = 270f,
         sweepAngleDegrees = 180f,
-        forceMoveTo = false
+        forceMoveTo = false,
     )
 
     // Connect to bottom middle with curve
@@ -203,7 +216,7 @@ private fun DrawScope.drawCurvedJoining(
         x2 = middleX + ((1 - adjustedFraction) * dotRadius),
         y2 = bottomY,
         x3 = middleX,
-        y3 = bottomY
+        y3 = bottomY,
     )
 
     // Finish back to start point
@@ -213,7 +226,7 @@ private fun DrawScope.drawCurvedJoining(
         x2 = middleX - (adjustedFraction * dotRadius),
         y2 = dotBottomY,
         x3 = leftDotCenterX,
-        y3 = dotBottomY
+        y3 = dotBottomY,
     )
 
     drawPath(path = path, color = color)
@@ -231,85 +244,31 @@ fun PageIndicator(
 ) {
     if (pagerState.pageCount <= 1) return
 
-    // Convert dp values to pixels
     val density = LocalDensity.current
-    val dotRadiusPx = with(density) { dotDiameter.toPx() / 2 }
+    val dotDiameterPx = with(density) { dotDiameter.toPx() }
+    val dotRadiusPx = dotDiameterPx / 2
     val dotGapPx = with(density) { dotGap.toPx() }
-    val totalWidth = pagerState.pageCount * with(density) { dotDiameter.toPx() } + (pagerState.pageCount - 1) * with(density) { dotGap.toPx() }
+    val totalWidth = pagerState.pageCount * dotDiameterPx + (pagerState.pageCount - 1) * dotGapPx
 
-    // Store previous page for animation
-    var previousPage by remember { mutableIntStateOf(pagerState.currentPage) }
+    // Derive the continuous visual page value
+    val visualPage = pagerState.currentPage + pagerState.currentPageOffsetFraction
 
-    // Detect page changes
-    LaunchedEffect(pagerState) {
-        if (pagerState.currentPage != previousPage) {
-            previousPage = pagerState.currentPage
-        }
-    }
-
-    // Animation values
-    val selectedDotOffsetAnimation = remember { Animatable(pagerState.currentPage.toFloat() + pagerState.currentPageOffsetFraction) }
-    val joiningAnimations = remember {
-        List(maxOf(pagerState.pageCount - 1, 0)) { Animatable(0f) }
-    }
-    val dotRevealAnimations = remember {
-        List(pagerState.pageCount) { Animatable(0f) }
-    }
-
-    // Update selected dot position on page change or offset
-    LaunchedEffect(pagerState.currentPage, pagerState.currentPageOffsetFraction) {
-        if (pagerState.currentPage == previousPage) {
-            selectedDotOffsetAnimation.snapTo(pagerState.currentPage.toFloat() + pagerState.currentPageOffsetFraction)
-        }
-    }
-
-    // Handle page transitions
-    LaunchedEffect(pagerState.currentPage, previousPage) {
-        if (pagerState.currentPage != previousPage) {
-            val targetPage = pagerState.currentPage
-            selectedDotOffsetAnimation.animateTo(
-                targetValue = targetPage.toFloat(),
-                animationSpec = tween(
-                    durationMillis = (animationDuration * 0.75).toInt(),
-                    easing = FastOutSlowInEasing
-                )
-            )
-
-            val direction = if (pagerState.currentPage > previousPage) 1 else -1
-            val steps = (pagerState.currentPage - previousPage).absoluteValue
-
-            if (steps > 1) {
-                val dots = if (direction > 0) {
-                    (previousPage until pagerState.currentPage).toList()
-                } else {
-                    (previousPage downTo pagerState.currentPage + 1).toList()
-                }
-
-                dots.forEach { dot ->
-                    val index = minOf(dot, pagerState.pageCount - 2).coerceAtLeast(0)
-                    joiningAnimations[index].snapTo(1f)
-
-                    launch {
-                        dotRevealAnimations[dot].animateTo(
-                            targetValue = 1f,
-                            animationSpec = tween(
-                                durationMillis = animationDuration / 2,
-                                easing = FastOutSlowInEasing
-                            )
-                        )
-                        dotRevealAnimations[dot].animateTo(0f, tween(0))
-                    }
-                }
-            }
-            previousPage = targetPage
-        }
-    }
+    // Animate the selected dot's offset smoothly
+    val animatedDotOffset by animateFloatAsState(
+        targetValue = visualPage,
+        animationSpec =
+            tween(
+                durationMillis = animationDuration,
+                easing = FastOutSlowInEasing,
+            ),
+    )
 
     // Calculate positions
     Canvas(
-        modifier = modifier
-            .width(with(density) { totalWidth.toDp() })
-            .height(dotDiameter)
+        modifier =
+            modifier
+                .width(with(density) { totalWidth.toDp() })
+                .height(dotDiameter),
     ) {
         val dotRadius = dotDiameter.toPx() / 2
         val dotCenterY = size.height / 2
@@ -322,28 +281,43 @@ fun PageIndicator(
                 drawCircle(
                     color = pageIndicatorColor,
                     radius = dotRadius,
-                    center = Offset(dotCenterX, dotCenterY)
+                    center = Offset(dotCenterX, dotCenterY),
                 )
             }
 
             // Draw joining line between dots during transitions
             if (i < pagerState.pageCount - 1) {
                 val nextDotCenterX = dotCenterX + dotDiameter.toPx() + dotGapPx
-                val joiningFraction = joiningAnimations[i].value
+                val joiningFraction =
+                    when {
+                        animatedDotOffset <= i -> 0f
+                        animatedDotOffset >= i + 1 -> 1f
+                        else -> animatedDotOffset - i
+                    }
 
                 if (joiningFraction > 0) {
                     when {
                         joiningFraction <= 0.5f -> {
                             drawJoiningDots(
-                                dotCenterX, dotCenterY, nextDotCenterX,
-                                dotRadius, dotGapPx, joiningFraction, pageIndicatorColor
+                                dotCenterX,
+                                dotCenterY,
+                                nextDotCenterX,
+                                dotRadius,
+                                dotGapPx,
+                                joiningFraction,
+                                pageIndicatorColor,
                             )
                         }
 
                         joiningFraction < 1f -> {
                             drawCurvedJoining(
-                                dotCenterX, dotCenterY, nextDotCenterX,
-                                dotRadius, dotGapPx, joiningFraction, pageIndicatorColor
+                                dotCenterX,
+                                dotCenterY,
+                                nextDotCenterX,
+                                dotRadius,
+                                dotGapPx,
+                                joiningFraction,
+                                pageIndicatorColor,
                             )
                         }
 
@@ -352,7 +326,7 @@ fun PageIndicator(
                                 color = pageIndicatorColor,
                                 topLeft = Offset(dotCenterX - dotRadius, dotCenterY - dotRadius),
                                 size = Size(nextDotCenterX - dotCenterX + dotRadius * 2, dotRadius * 2),
-                                cornerRadius = CornerRadius(dotRadius, dotRadius)
+                                cornerRadius = CornerRadius(dotRadius, dotRadius),
                             )
                         }
                     }
@@ -360,12 +334,11 @@ fun PageIndicator(
             }
         }
 
-        // Draw selected dot with animation
-        val selectedDotPosition = dotRadius + selectedDotOffsetAnimation.value * (dotDiameter.toPx() + dotGapPx)
+        val selectedDotX = dotRadiusPx + animatedDotOffset * (dotDiameterPx + dotGapPx)
         drawCircle(
             color = currentPageIndicatorColor,
-            radius = dotRadius,
-            center = Offset(selectedDotPosition, dotCenterY)
+            radius = dotRadiusPx,
+            center = Offset(selectedDotX, dotCenterY),
         )
     }
 }
@@ -383,7 +356,7 @@ private fun PageIndicatorPreview(
             dotGap = 12.dp,
             animationDuration = 400,
             pageIndicatorColor = MaterialTheme.colorScheme.onSurface,
-            currentPageIndicatorColor = MaterialTheme.colorScheme.primary
+            currentPageIndicatorColor = MaterialTheme.colorScheme.primary,
         )
     }
 }
