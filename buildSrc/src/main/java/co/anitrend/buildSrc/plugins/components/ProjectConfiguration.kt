@@ -124,8 +124,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 getDefaultProguardFile(
                     "proguard-android-optimize.txt"
                 ),
-                "proguard-rules.pro",
-                "../proguard-common.pro"
+                projectDir.resolve("proguard-rules.pro"),
+                rootDir.resolve("proguard-common.pro"),
             )
             if (project.file(".config/keystore.properties").exists())
                 signingConfig = signingConfigs.getByName("release")
@@ -140,8 +140,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 getDefaultProguardFile(
                     "proguard-android-optimize.txt"
                 ),
-                "proguard-rules.pro",
-                "../proguard-common.pro"
+                projectDir.resolve("proguard-rules.pro"),
+                rootDir.resolve("proguard-common.pro"),
             )
         }
     }
