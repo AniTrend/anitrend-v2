@@ -39,7 +39,6 @@ fun DeepLinkScreenContent(
     onNavigateTo: () -> Unit,
 ) {
     val splashState by viewModel.splashState.collectAsStateWithLifecycle()
-    if (splashState != SplashPresenter.State.DONE) return
     Scaffold { padding ->
         NavHost(
             modifier = Modifier.padding(padding),
@@ -50,6 +49,7 @@ fun DeepLinkScreenContent(
                 route = DeepLinkRouter.Destination.SPLASH.name,
                 content = {
                     SplashScreenContent(
+                        splashState = splashState,
                         splashPresenter = splashPresenter,
                         onSplashFinished = { showOnBoarding ->
                             if (showOnBoarding) {

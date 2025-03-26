@@ -47,9 +47,7 @@ class DeepLinkScreen : AniTrendScreen() {
     private fun setupSplashScreen(splashScreen: SplashScreen) {
         splashScreen.setKeepOnScreenCondition {
             lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    viewModel.splashState.emit(SplashPresenter.State.RUNNING)
-                }
+                viewModel.splashState.emit(SplashPresenter.State.RUNNING)
             }
             false
         }
@@ -79,12 +77,7 @@ class DeepLinkScreen : AniTrendScreen() {
                     onBoardingPresenter = onBoardingPresenter,
                     navigationController = navController,
                     onNavigateTo = {
-                        val target = viewModel.intentState
-                        if (target == null) {
-                            MainRouter.startActivity(this)
-                        } else {
-                            startActivity(target)
-                        }
+                        viewModel.intentState?.also(::startActivity) ?: MainRouter.startActivity(this)
                         ActivityCompat.finishAfterTransition(this)
                     },
                 )
