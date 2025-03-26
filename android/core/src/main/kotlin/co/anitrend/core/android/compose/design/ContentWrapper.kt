@@ -17,6 +17,7 @@
 package co.anitrend.core.android.compose.design
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +51,7 @@ import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import co.anitrend.core.android.R
 import co.anitrend.core.android.ui.AniTrendPreview
 import co.anitrend.core.android.ui.theme.preview.PreviewTheme
 import co.anitrend.navigation.model.common.IParam
@@ -61,15 +64,13 @@ private fun ContentImage(
     @DrawableRes drawableResource: Int?,
     modifier: Modifier = Modifier,
 ) {
-    if (drawableResource == null) {
-        return
+    drawableResource?.let {
+        Image(
+            painter = rememberAsyncImagePainter(drawableResource),
+            contentDescription = null,
+            modifier = modifier.size(96.dp),
+        )
     }
-
-    Image(
-        painter = rememberAsyncImagePainter(drawableResource),
-        contentDescription = null,
-        modifier = modifier.size(96.dp),
-    )
 }
 
 @Composable
@@ -161,43 +162,40 @@ fun <P : IParam> ContentWrapper(
     onClick: suspend () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
-    val modifier: Modifier = Modifier.fillMaxSize().padding(32.dp)
-    val loadState by stateFlow.observeAsState(LoadState.Loading())
-
-    if (param == null) {
-        ErrorContent(
-            config = config,
-            state =
+    val loadState: LoadState by stateFlow.observeAsState(
+        initial =
+            if (param == null) {
                 LoadState.Error(
                     RequestError(
-                        topic = stringResource(co.anitrend.core.android.R.string.app_controller_heading_missing_param),
-                        description = stringResource(co.anitrend.core.android.R.string.app_controller_message_missing_param),
+                        topic = stringResource(R.string.app_controller_heading_missing_param),
+                        description = stringResource(R.string.app_controller_message_missing_param),
                     ),
-                ),
-            modifier = modifier,
-            onClick = onClick,
-        )
-        return
-    }
+                )
+            } else {
+                LoadState.Loading()
+            },
+    )
 
-    when (val state = loadState) {
-        is LoadState.Error ->
-            ErrorContent(
-                config = config,
-                state = state,
-                modifier = modifier,
-                onClick = onClick,
-            )
-        is LoadState.Loading ->
-            LoadingContent(
-                config = config,
-                modifier = modifier,
-            )
-        else -> content()
+    AnimatedContent(targetState = loadState) { state ->
+        when (state) {
+            is LoadState.Error ->
+                ErrorContent(
+                    config = config,
+                    state = state,
+                    onClick = onClick,
+                    modifier = Modifier.fillMaxSize().padding(32.dp),
+                )
+            is LoadState.Loading ->
+                LoadingContent(
+                    config = config,
+                    modifier = Modifier.fillMaxSize().padding(32.dp),
+                )
+            else -> content()
+        }
     }
 
     LaunchedEffect(param) {
-        onLoad(param)
+        param?.also(onLoad)
     }
 }
 
@@ -225,14 +223,25 @@ private fun ContentWrapperPreview(
                     modifier = modifier,
                     onClick = {},
                 )
+
             is LoadState.Loading ->
                 LoadingContent(
                     config = config,
                     modifier = modifier,
                 )
+
             is LoadState.Idle,
             is LoadState.Success,
-            -> {}
+            ->
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    Column(modifier = modifier.padding(16.dp)) {
+                        Text(text = "What are you doing here?")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(onClick = {}) {
+                            Text(text = "Ignore me")
+                        }
+                    }
+                }
         }
     }
 }
