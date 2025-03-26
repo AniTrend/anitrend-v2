@@ -31,8 +31,8 @@ import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.adapter.MediaCompactAdapter
 import co.anitrend.common.media.ui.databinding.MediaCarouselItemBinding
 import co.anitrend.common.shared.ui.extension.setUpWith
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.domain.airing.enums.AiringSort
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.common.sort.order.SortOrder

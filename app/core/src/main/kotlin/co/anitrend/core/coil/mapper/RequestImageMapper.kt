@@ -16,9 +16,9 @@
  */
 package co.anitrend.core.coil.mapper
 
-import co.anitrend.core.android.controller.power.contract.IPowerController
-import co.anitrend.core.android.controller.power.contract.PowerSaverState
-import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.android.core.controller.power.contract.IPowerController
+import co.anitrend.android.core.controller.power.contract.PowerSaverState
+import co.anitrend.android.core.helpers.image.model.RequestImage
 import coil.map.Mapper
 import coil.request.Options
 import okhttp3.HttpUrl

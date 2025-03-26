@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import co.anitrend.core.android.asPrettyTime
+import co.anitrend.android.core.asPrettyTime
 import co.anitrend.settings.component.content.task.state.TaskWorkItem
 import co.anitrend.settings.component.content.task.state.mapWorkInfoState
 import kotlinx.coroutines.flow.Flow

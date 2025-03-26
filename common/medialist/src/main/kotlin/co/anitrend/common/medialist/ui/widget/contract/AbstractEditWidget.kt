@@ -32,7 +32,7 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getCompatDrawableAttr
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.medialist.ui.R
-import co.anitrend.core.android.extensions.dp
+import co.anitrend.android.core.extensions.dp
 import com.airbnb.paris.extensions.style
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.channels.awaitClose
@@ -71,7 +71,7 @@ abstract class AbstractEditWidget
                 setImageDrawable(
                     context.getCompatDrawable(
                         R.drawable.ic_arrow_up,
-                        co.anitrend.core.android.R.color.colorAccent,
+                        co.anitrend.android.core.R.color.colorAccent,
                     ),
                 )
             }
@@ -95,7 +95,7 @@ abstract class AbstractEditWidget
                 setImageDrawable(
                     context.getCompatDrawable(
                         R.drawable.ic_arrow_down,
-                        co.anitrend.core.android.R.color.colorAccent,
+                        co.anitrend.android.core.R.color.colorAccent,
                     ),
                 )
             }

@@ -69,12 +69,12 @@ class MaterialSortChip
                         CheckedState.ASC ->
                             context.getCompatDrawable(
                                 R.drawable.ic_arrow_up,
-                                co.anitrend.core.android.R.color.white_1000,
+                                co.anitrend.android.core.R.color.white_1000,
                             )
                         CheckedState.DESC ->
                             context.getCompatDrawable(
                                 R.drawable.ic_arrow_down,
-                                co.anitrend.core.android.R.color.white_1000,
+                                co.anitrend.android.core.R.color.white_1000,
                             )
                     }
                 } else {
@@ -99,9 +99,9 @@ class MaterialSortChip
             attrs: AttributeSet?,
             styleAttr: Int?,
         ) {
-            style(co.anitrend.core.android.R.style.AppTheme_Material_Chip_Action)
+            style(co.anitrend.android.core.R.style.AppTheme_Material_Chip_Action)
             setChipBackgroundColorResource(
-                co.anitrend.core.android.R.color.selector_chip_background,
+                co.anitrend.android.core.R.color.selector_chip_background,
             )
             setOnCheckedChangeListener { _, _ ->
                 isChecked = controller.isCheckedState()

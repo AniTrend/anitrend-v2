@@ -18,7 +18,7 @@ package co.anitrend.medialist.koin
 
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.medialist.component.container.MediaListContainer
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel

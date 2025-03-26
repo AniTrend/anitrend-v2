@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import co.anitrend.core.android.compose.design.BackIconButton
+import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 

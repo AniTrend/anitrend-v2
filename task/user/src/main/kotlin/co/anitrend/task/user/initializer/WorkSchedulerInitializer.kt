@@ -18,7 +18,7 @@ package co.anitrend.task.user.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.android.koinOf
+import co.anitrend.android.core.koinOf
 import co.anitrend.core.initializer.contract.AbstractTaskInitializer
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.UserTaskRouter

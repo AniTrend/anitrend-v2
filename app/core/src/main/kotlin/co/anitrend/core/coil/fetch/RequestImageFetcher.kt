@@ -16,7 +16,7 @@
  */
 package co.anitrend.core.coil.fetch
 
-import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.mapper.RequestImageMapper
 import coil.ImageLoader

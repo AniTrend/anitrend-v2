@@ -25,7 +25,7 @@ import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.activity.SupportActivity
-import co.anitrend.core.android.settings.helper.config.contract.IConfigurationHelper
+import co.anitrend.android.core.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.core.ui.inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect

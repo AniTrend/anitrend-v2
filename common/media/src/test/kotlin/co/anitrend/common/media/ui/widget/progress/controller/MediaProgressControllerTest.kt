@@ -16,7 +16,7 @@
  */
 package co.anitrend.common.media.ui.widget.progress.controller
 
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.medialist.entity.MediaList

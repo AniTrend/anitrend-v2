@@ -27,11 +27,11 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.media.ui.controller.extensions.startMediaScreenFor
 import co.anitrend.common.media.ui.databinding.MediaComfortableItemBinding
-import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.toMediaRequestImage
-import co.anitrend.core.android.helpers.image.using
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.android.core.helpers.image.toMediaRequestImage
+import co.anitrend.android.core.helpers.image.using
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -100,7 +100,7 @@ internal data class MediaComfortableItem(
         spanCount: Int,
         position: Int,
         resources: Resources,
-    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x2)
+    ) = resources.getInteger(co.anitrend.android.core.R.integer.column_x2)
 
     companion object {
         internal fun LayoutInflater.createGridViewHolder(viewGroup: ViewGroup) =

@@ -20,7 +20,7 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.data.medialist.SyncMediaListEntryInteractor
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.model.MediaListParam

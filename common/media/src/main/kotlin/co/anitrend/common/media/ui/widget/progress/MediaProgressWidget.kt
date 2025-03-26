@@ -28,8 +28,8 @@ import co.anitrend.arch.extension.ext.*
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.presenter.MediaPresenter
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.domain.media.entity.contract.IMedia
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textview.MaterialTextView
@@ -143,11 +143,11 @@ internal class MediaProgressWidget
 
                 if (controller.hasCaughtUp()) {
                     progressSpinner.setIndicatorColor(
-                        context.getCompatColor(co.anitrend.core.android.R.color.green_A700),
+                        context.getCompatColor(co.anitrend.android.core.R.color.green_A700),
                     )
                 } else {
                     progressSpinner.setIndicatorColor(
-                        context.getCompatColor(co.anitrend.core.android.R.color.orange_A700),
+                        context.getCompatColor(co.anitrend.android.core.R.color.orange_A700),
                     )
                 }
             }
@@ -189,7 +189,7 @@ internal class MediaProgressWidget
             addView(progressIncrement)
 
             progressText.updateMargins(start = 8.dp, end = 8.dp)
-            background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.widget_background)
+            background = context.getCompatDrawable(co.anitrend.android.core.R.drawable.widget_background)
 
             if (isInEditMode) {
                 progressText.text = "5 / 25"

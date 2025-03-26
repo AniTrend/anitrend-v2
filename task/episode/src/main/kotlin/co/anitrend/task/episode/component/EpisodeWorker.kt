@@ -20,8 +20,8 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.core.android.settings.common.locale.ILocaleSettings
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.android.core.settings.common.locale.ILocaleSettings
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.data.feed.episode.EpisodeSyncInteractor
 import co.anitrend.domain.episode.model.EpisodeParam
 import kotlinx.coroutines.flow.first

@@ -24,9 +24,9 @@ import androidx.core.widget.TextViewCompat
 import co.anitrend.arch.extension.ext.themeStyle
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.markdown.R
-import co.anitrend.core.android.extensions.startViewIntent
-import co.anitrend.core.android.koin.MarkdownFlavour
-import co.anitrend.core.android.koinOf
+import co.anitrend.android.core.extensions.startViewIntent
+import co.anitrend.android.core.koin.MarkdownFlavour
+import co.anitrend.android.core.koinOf
 import co.anitrend.domain.common.entity.contract.IEntityName
 import com.google.android.material.textview.MaterialTextView
 import io.noties.markwon.Markwon

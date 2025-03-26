@@ -17,7 +17,7 @@
 package co.anitrend.episode.koin
 
 import co.anitrend.common.episode.ui.adapter.EpisodePagedAdapter
-import co.anitrend.core.android.koin.MarkdownFlavour
+import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel

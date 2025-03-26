@@ -22,8 +22,8 @@ import android.text.SpannableStringBuilder
 import androidx.work.Operation
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.common.media.ui.widget.progress.controller.MediaProgressController
-import co.anitrend.core.android.koinOf
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.koinOf
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.navigation.MediaListTaskRouter

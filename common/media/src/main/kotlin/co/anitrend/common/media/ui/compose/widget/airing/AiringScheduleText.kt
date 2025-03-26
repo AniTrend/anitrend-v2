@@ -32,9 +32,9 @@ import androidx.compose.ui.text.withStyle
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.widget.airing.controller.MediaAiringScheduleController
-import co.anitrend.core.android.asPrettyTime
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.asPrettyTime
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.media.entity.Media
 
 @Composable

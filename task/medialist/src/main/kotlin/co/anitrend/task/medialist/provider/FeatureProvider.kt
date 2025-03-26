@@ -16,7 +16,7 @@
  */
 package co.anitrend.task.medialist.provider
 
-import co.anitrend.core.android.koinOf
+import co.anitrend.android.core.koinOf
 import co.anitrend.navigation.MediaListTaskRouter
 import co.anitrend.task.medialist.component.sync.MediaListAnimeSyncWorker
 import co.anitrend.task.medialist.component.sync.MediaListMangaSyncWorker

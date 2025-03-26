@@ -30,8 +30,8 @@ import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.medialist.ui.R
 import co.anitrend.common.medialist.ui.widget.date.controller.FuzzyDateController
 import co.anitrend.common.medialist.ui.widget.date.presenter.FuzzyDatePresenter
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.entity.shared.FuzzyDate.Companion.orEmpty
 import com.airbnb.paris.extensions.style
@@ -59,7 +59,7 @@ class FuzzyDateWidget
                 setImageDrawable(
                     context.getCompatDrawable(
                         R.drawable.ic_edit_calendar,
-                        co.anitrend.core.android.R.color.colorAccent,
+                        co.anitrend.android.core.R.color.colorAccent,
                     ),
                 )
             }

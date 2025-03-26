@@ -28,8 +28,8 @@ import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.updateMargins
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.shared.R
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.extensions.toHumanReadableQuantity
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.extensions.toHumanReadableQuantity
 import co.anitrend.domain.common.entity.contract.IFavourable
 import com.google.android.material.textview.MaterialTextView
 
@@ -58,7 +58,7 @@ class FavouriteView
                     ).also { param ->
                         param.gravity = Gravity.CENTER_VERTICAL
                     }
-                setTextColor(context.getCompatColor(co.anitrend.core.android.R.color.white_1000))
+                setTextColor(context.getCompatColor(co.anitrend.android.core.R.color.white_1000))
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
                 setTypeface(typeface, Typeface.BOLD)
             }
@@ -93,8 +93,8 @@ class FavouriteView
 
             background =
                 context.getCompatDrawable(
-                    co.anitrend.core.android.R.drawable.widget_background,
-                    co.anitrend.core.android.R.color.bubble_color,
+                    co.anitrend.android.core.R.drawable.widget_background,
+                    co.anitrend.android.core.R.color.bubble_color,
                 )
 
             favouriteTextView.updateMargins(start = 8.dp)

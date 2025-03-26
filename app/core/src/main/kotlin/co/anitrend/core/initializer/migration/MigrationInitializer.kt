@@ -18,7 +18,7 @@ package co.anitrend.core.initializer.migration
 
 import android.content.Context
 import androidx.startup.Initializer
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
 import co.anitrend.core.initializer.logger.TimberInitializer
 import co.anitrend.core.migration.MigrationManager

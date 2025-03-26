@@ -22,8 +22,8 @@ import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.shared.ui.extension.shareContent
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.extensions.startViewIntent

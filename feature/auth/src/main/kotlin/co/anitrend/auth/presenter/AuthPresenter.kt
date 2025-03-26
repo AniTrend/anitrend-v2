@@ -25,10 +25,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.auth.R
 import co.anitrend.auth.model.Authentication
-import co.anitrend.core.android.extensions.analytics
-import co.anitrend.core.android.extensions.keys
-import co.anitrend.core.android.extensions.tags
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.extensions.analytics
+import co.anitrend.android.core.extensions.keys
+import co.anitrend.android.core.extensions.tags
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.extensions.startViewIntent
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.auth.helper.AuthenticationType
@@ -72,7 +72,7 @@ class AuthPresenter(
 
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
-        val uri = Uri.parse(context.getString(co.anitrend.core.android.R.string.app_faq_page_link))
+        val uri = Uri.parse(context.getString(co.anitrend.android.core.R.string.app_faq_page_link))
         runCatching {
             Timber.analytics {
                 logCurrentState(

@@ -24,5 +24,5 @@ dependencies {
 }
 
 android {
-    namespace = "co.anitrend.i18n"
+    namespace = "co.anitrend.android.i18n"
 }

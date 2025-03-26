@@ -21,8 +21,8 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.liveData
 import co.anitrend.about.component.compose.AboutScreenContent
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.model.common.IParam
 

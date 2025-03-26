@@ -28,9 +28,9 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.tag.R
 import co.anitrend.common.tag.databinding.TagItemBinding
-import co.anitrend.core.android.extensions.asChoice
-import co.anitrend.core.android.helpers.color.asColorInt
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.extensions.asChoice
+import co.anitrend.android.core.helpers.color.asColorInt
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.navigation.MediaDiscoverRouter

@@ -18,7 +18,7 @@ package co.anitrend.staff.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.staff.component.compose.StaffScreenContent
 

@@ -24,7 +24,7 @@ import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.core.android.binding.IBindingView
+import co.anitrend.android.core.binding.IBindingView
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.core.ui.inject
 import kotlinx.coroutines.flow.catch

@@ -26,8 +26,8 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.helpers.image.using
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.helpers.image.using
 import co.anitrend.domain.review.entity.Review
 import coil.request.Disposable
 import coil.transform.CircleCropTransformation
@@ -68,7 +68,7 @@ internal class ReviewAvatarWidget
                         it.gravity = Gravity.CENTER_VERTICAL
                     }
                 setTextColor(
-                    context.getCompatColor(co.anitrend.core.android.R.color.white_1000),
+                    context.getCompatColor(co.anitrend.android.core.R.color.white_1000),
                 )
             }
 
@@ -92,7 +92,7 @@ internal class ReviewAvatarWidget
             attrs: AttributeSet?,
             styleAttr: Int?,
         ) {
-            background = context.getCompatDrawable(co.anitrend.core.android.R.drawable.bubble_background)
+            background = context.getCompatDrawable(co.anitrend.android.core.R.drawable.bubble_background)
             addView(userImage)
             addView(spacing)
             addView(userName)

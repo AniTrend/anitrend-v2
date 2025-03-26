@@ -20,9 +20,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
-import co.anitrend.core.android.views.compose.composable
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
 import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.feed.component.viewmodel.FeedViewModel

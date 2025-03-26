@@ -33,7 +33,7 @@ import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.outlined.WorkHistory
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.SettingsRouter

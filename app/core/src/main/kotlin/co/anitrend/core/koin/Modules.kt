@@ -26,9 +26,9 @@ import co.anitrend.arch.extension.ext.isLowRamDevice
 import co.anitrend.arch.theme.extensions.isEnvironmentNightMode
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import co.anitrend.core.R
-import co.anitrend.core.android.koin.androidCoreModules
-import co.anitrend.core.android.storage.contract.IStorageController
-import co.anitrend.core.android.storage.enums.StorageType
+import co.anitrend.android.core.koin.androidCoreModules
+import co.anitrend.android.core.storage.contract.IStorageController
+import co.anitrend.android.core.storage.enums.StorageType
 import co.anitrend.core.coil.client.CoilRequestClient
 import co.anitrend.core.coil.fetch.RequestImageFetcher
 import co.anitrend.core.coil.mapper.RequestImageMapper
@@ -75,7 +75,7 @@ private val coreModule =
             val context = androidContext()
             CustomTabsIntent
                 .Builder()
-                .setStartAnimations(context, co.anitrend.core.android.R.anim.enter_from_bottom, co.anitrend.core.android.R.anim.exit_to_bottom)
+                .setStartAnimations(context, co.anitrend.android.core.R.anim.enter_from_bottom, co.anitrend.android.core.R.anim.exit_to_bottom)
                 .setExitAnimations(context, android.R.anim.fade_in, android.R.anim.fade_out)
                 .setColorSchemeParams(
                     if (context.isEnvironmentNightMode()) {
@@ -171,7 +171,7 @@ private val configurationModule =
             if (!isLowRamDevice) {
                 loader.crossfade(
                     context.resources.getInteger(
-                        co.anitrend.core.android.R.integer.motion_duration_medium,
+                        co.anitrend.android.core.R.integer.motion_duration_medium,
                     ),
                 )
             } else {

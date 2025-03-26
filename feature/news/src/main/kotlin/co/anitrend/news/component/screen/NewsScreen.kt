@@ -19,9 +19,9 @@ package co.anitrend.news.component.screen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.koin.MarkdownFlavour
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.koin.MarkdownFlavour
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.core.extensions.stackTrace

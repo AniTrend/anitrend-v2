@@ -23,10 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.core.android.compose.design.cards.AniTrendHintCard
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.extensions.startActivity

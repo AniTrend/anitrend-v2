@@ -29,7 +29,7 @@
         android:id="@+id/contentMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="co.anitrend.core.android.behaviour.BottomOffsetBehavior"
+        app:layout_behavior="co.anitrend.android.core.behaviour.BottomOffsetBehavior"
         />
 
     <androidx.fragment.app.FragmentContainerView

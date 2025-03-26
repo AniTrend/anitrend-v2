@@ -38,8 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.anitrend.common.media.ui.R
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.score.IMediaRating
 import co.anitrend.domain.media.entity.attribute.score.IMediaScore
@@ -105,7 +105,7 @@ fun MediaRating(
     val mediaList by remember(media) { derivedStateOf { media.mediaList } }
     val hasMediaList by remember(mediaList) { derivedStateOf { mediaList != null } }
 
-    val bubbleColor = tintColor ?: colorResource(id = co.anitrend.core.android.R.color.bubble_color)
+    val bubbleColor = tintColor ?: colorResource(id = co.anitrend.android.core.R.color.bubble_color)
 
     val statusIconRes by remember(media) {
         derivedStateOf {

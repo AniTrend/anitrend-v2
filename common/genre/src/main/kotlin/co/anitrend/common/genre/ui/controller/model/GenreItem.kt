@@ -23,10 +23,10 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.genre.databinding.GenreItemBinding
-import co.anitrend.core.android.extensions.asChoice
-import co.anitrend.core.android.helpers.color.asColorInt
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
-import co.anitrend.core.android.views.text.TextDrawable
+import co.anitrend.android.core.extensions.asChoice
+import co.anitrend.android.core.helpers.color.asColorInt
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.views.text.TextDrawable
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload

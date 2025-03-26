@@ -16,7 +16,7 @@
  */
 package co.anitrend.common.medialist.ui.widget.date.controller
 
-import co.anitrend.core.android.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 
 internal class FuzzyDateController(

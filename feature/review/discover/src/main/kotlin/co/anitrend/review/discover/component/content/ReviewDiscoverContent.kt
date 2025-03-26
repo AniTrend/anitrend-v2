@@ -21,7 +21,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.android.core.assureParamNotMissing
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
@@ -29,9 +29,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewDiscoverContent(
     override val stateConfig: StateLayoutConfig,
-    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.android.core.R.menu.discover_menu,
     override val supportViewAdapter: SupportAdapter<Review>,
-    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
+    override val defaultSpanSize: Int = co.anitrend.android.core.R.integer.column_x1,
 ) : AniTrendListContent<Review>() {
     private val viewModel by viewModel<ReviewDiscoverViewModel>()
 
@@ -40,7 +40,7 @@ class ReviewDiscoverContent(
         inflater: MenuInflater,
     ) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(co.anitrend.core.android.R.id.action_list_style).isVisible = false
+        menu.findItem(co.anitrend.android.core.R.id.action_list_style).isVisible = false
     }
 
     /**
@@ -63,7 +63,7 @@ class ReviewDiscoverContent(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
-            co.anitrend.core.android.R.id.action_filter -> {
+            co.anitrend.android.core.R.id.action_filter -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)

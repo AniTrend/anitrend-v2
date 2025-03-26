@@ -45,9 +45,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 
 @Composable
 private fun UpdateContent(
@@ -71,7 +71,7 @@ private fun UpdateContent(
                 contentDescription = null,
                 modifier =
                     Modifier
-                        .size(dimensionResource(id = co.anitrend.core.android.R.dimen.series_image_sm))
+                        .size(dimensionResource(id = co.anitrend.android.core.R.dimen.series_image_sm))
                         .clip(RoundedCornerShape(64.dp)),
             )
             Spacer(modifier = Modifier.height(32.dp))

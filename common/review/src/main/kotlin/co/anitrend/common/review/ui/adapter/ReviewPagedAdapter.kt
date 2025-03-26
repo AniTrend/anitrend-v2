@@ -31,7 +31,7 @@ import co.anitrend.common.review.ui.controller.model.ReviewCompactItem
 import co.anitrend.common.review.ui.controller.model.ReviewCompactItem.Companion.createReviewCompatItemViewHolder
 import co.anitrend.common.review.ui.controller.model.ReviewDetailedItem
 import co.anitrend.common.review.ui.controller.model.ReviewDetailedItem.Companion.createReviewDetailItemViewHolder
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.review.entity.Review
 

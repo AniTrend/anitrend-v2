@@ -43,29 +43,29 @@ class MediaStatusWidget
                 MediaStatus.NOT_YET_RELEASED -> {
                     background =
                         context.getCompatDrawable(
-                            co.anitrend.core.android.R.drawable.dot_indicator,
-                            co.anitrend.core.android.R.color.orange_A700,
+                            co.anitrend.android.core.R.drawable.dot_indicator,
+                            co.anitrend.android.core.R.color.orange_A700,
                         )
                 }
                 MediaStatus.RELEASING -> {
                     background =
                         context.getCompatDrawable(
-                            co.anitrend.core.android.R.drawable.dot_indicator,
-                            co.anitrend.core.android.R.color.blue_A700,
+                            co.anitrend.android.core.R.drawable.dot_indicator,
+                            co.anitrend.android.core.R.color.blue_A700,
                         )
                 }
                 MediaStatus.CANCELLED -> {
                     background =
                         context.getCompatDrawable(
-                            co.anitrend.core.android.R.drawable.dot_indicator,
-                            co.anitrend.core.android.R.color.red_A700,
+                            co.anitrend.android.core.R.drawable.dot_indicator,
+                            co.anitrend.android.core.R.color.red_A700,
                         )
                 }
                 MediaStatus.FINISHED -> {
                     background =
                         context.getCompatDrawable(
-                            co.anitrend.core.android.R.drawable.dot_indicator,
-                            co.anitrend.core.android.R.color.green_A700,
+                            co.anitrend.android.core.R.drawable.dot_indicator,
+                            co.anitrend.android.core.R.color.green_A700,
                         )
                 }
                 else -> background = null

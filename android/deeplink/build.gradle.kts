@@ -28,5 +28,5 @@ dependencies {
 }
 
 android {
-    namespace = "co.anitrend.deeplink"
+    namespace = "co.anitrend.android.deeplink"
 }

@@ -23,8 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.core.android.settings.extensions.flowUpdating
+import co.anitrend.android.core.assureParamNotMissing
+import co.anitrend.android.core.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
@@ -42,7 +42,7 @@ import timber.log.Timber
 
 class MediaDiscoverContent(
     private val settings: ICustomizationSettings,
-    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.android.core.R.menu.discover_menu,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Media>,
 ) : AniTrendListContent<Media>() {
@@ -56,9 +56,9 @@ class MediaDiscoverContent(
 
     @IntegerRes private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
         when (viewMode) {
-            PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
-            PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
-            else -> co.anitrend.core.android.R.integer.column_x1
+            PreferredViewMode.COMPACT -> co.anitrend.android.core.R.integer.column_x3
+            PreferredViewMode.COMFORTABLE -> co.anitrend.android.core.R.integer.column_x2
+            else -> co.anitrend.android.core.R.integer.column_x1
         }
 
     /**
@@ -81,7 +81,7 @@ class MediaDiscoverContent(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
-            co.anitrend.core.android.R.id.action_filter -> {
+            co.anitrend.android.core.R.id.action_filter -> {
                 val fragmentItem =
                     FragmentItem(
                         fragment = MediaDiscoverFilterRouter.forSheet(),

@@ -18,8 +18,8 @@ package co.anitrend.episode.component.content
 
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.settings.common.locale.ILocaleSettings
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
+import co.anitrend.android.core.settings.common.locale.ILocaleSettings
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
@@ -30,7 +30,7 @@ class EpisodeContent(
     private val settings: ILocaleSettings,
     override val stateConfig: StateLayoutConfig,
     override val supportViewAdapter: SupportAdapter<Episode>,
-    override val defaultSpanSize: Int = co.anitrend.core.android.R.integer.column_x1,
+    override val defaultSpanSize: Int = co.anitrend.android.core.R.integer.column_x1,
 ) : AniTrendListContent<Episode>() {
     private val viewModel by viewModel<EpisodeContentViewModel>()
 

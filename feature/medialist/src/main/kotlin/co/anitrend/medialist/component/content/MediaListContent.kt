@@ -24,8 +24,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.assureParamNotMissing
-import co.anitrend.core.android.settings.extensions.flowUpdating
+import co.anitrend.android.core.assureParamNotMissing
+import co.anitrend.android.core.settings.extensions.flowUpdating
 import co.anitrend.core.component.content.list.AniTrendListContent
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
@@ -50,9 +50,9 @@ class MediaListContent(
     @IntegerRes
     private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
         when (viewMode) {
-            PreferredViewMode.COMPACT -> co.anitrend.core.android.R.integer.column_x3
-            PreferredViewMode.COMFORTABLE -> co.anitrend.core.android.R.integer.column_x2
-            else -> co.anitrend.core.android.R.integer.column_x1
+            PreferredViewMode.COMPACT -> co.anitrend.android.core.R.integer.column_x3
+            PreferredViewMode.COMFORTABLE -> co.anitrend.android.core.R.integer.column_x2
+            else -> co.anitrend.android.core.R.integer.column_x1
         }
 
     /**

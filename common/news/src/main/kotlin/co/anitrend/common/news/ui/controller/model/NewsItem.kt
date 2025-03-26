@@ -25,10 +25,10 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.news.databinding.NewsItemBinding
-import co.anitrend.core.android.R
-import co.anitrend.core.android.helpers.image.toCoverImage
-import co.anitrend.core.android.helpers.image.using
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.R
+import co.anitrend.android.core.helpers.image.toCoverImage
+import co.anitrend.android.core.helpers.image.using
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.news.entity.News
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.navigation.extensions.asNavPayload

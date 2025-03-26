@@ -17,7 +17,7 @@
 package co.anitrend.common.shared.ui.extension
 
 import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.core.android.recycler.CarouselRecycler
+import co.anitrend.android.core.recycler.CarouselRecycler
 
 /**
  * Sets up a recycler view by handling all the boilerplate code associated with it using

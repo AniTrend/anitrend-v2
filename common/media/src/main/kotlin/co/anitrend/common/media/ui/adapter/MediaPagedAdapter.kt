@@ -37,7 +37,7 @@ import co.anitrend.common.media.ui.controller.model.MediaDetailedItem
 import co.anitrend.common.media.ui.controller.model.MediaDetailedItem.Companion.createDetailViewHolder
 import co.anitrend.common.media.ui.controller.model.MediaSummaryItem
 import co.anitrend.common.media.ui.controller.model.MediaSummaryItem.Companion.createListViewHolder
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.media.entity.Media
 

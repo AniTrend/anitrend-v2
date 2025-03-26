@@ -22,7 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
-import co.anitrend.core.android.binding.IBindingView
+import co.anitrend.android.core.binding.IBindingView
 import co.anitrend.core.databinding.SharedListContentBinding
 
 /**
