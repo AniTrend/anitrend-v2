@@ -127,9 +127,10 @@ private fun PagingControls(
                 )
                 PageIndicator(
                     pagerState = pagerState,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .alpha(pageIndicatorAlpha),
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center)
+                            .alpha(pageIndicatorAlpha),
                     pageIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     currentPageIndicatorColor = MaterialTheme.colorScheme.onSurface,
                 )
@@ -272,9 +273,10 @@ fun OnBoardingScreenContent(
 ) {
     val surface = MaterialTheme.colorScheme.surface
     val onBoardingPages = onBoardingPresenter.onBoardingPages
-    val onBoardingColorLists = remember(onBoardingPages) {
-        onBoardingPages.map { page -> page.background.plus(surface) }
-    }
+    val onBoardingColorLists =
+        remember(onBoardingPages) {
+            onBoardingPages.map { page -> page.background.plus(surface) }
+        }
 
     OnBoardingContent(
         modifier = Modifier.fillMaxSize(),
@@ -292,26 +294,28 @@ fun OnBoardingScreenContent(
 private fun OnBoardingScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    val onBoardingPages = listOf(
-        OnboardingPage(
-            resource = co.anitrend.deeplink.R.drawable.welcome,
-            background = listOf(Color(0xFFEADDFF), Color(0xFF6750A4)),
-            title = co.anitrend.deeplink.R.string.onboarding_title_welcome,
-            description = co.anitrend.deeplink.R.string.onboarding_desc_welcome,
-        ),
-        OnboardingPage(
-            resource = co.anitrend.deeplink.R.drawable.trends,
-            background = listOf(Color(0xFFE0F2F1), Color(0xFF009688)),
-            title = co.anitrend.deeplink.R.string.onboarding_title_trends,
-            description = co.anitrend.deeplink.R.string.onboarding_desc_trends,
-        ),
-    )
+    val onBoardingPages =
+        listOf(
+            OnboardingPage(
+                resource = co.anitrend.deeplink.R.drawable.welcome,
+                background = listOf(Color(0xFFEADDFF), Color(0xFF6750A4)),
+                title = co.anitrend.deeplink.R.string.onboarding_title_welcome,
+                description = co.anitrend.deeplink.R.string.onboarding_desc_welcome,
+            ),
+            OnboardingPage(
+                resource = co.anitrend.deeplink.R.drawable.trends,
+                background = listOf(Color(0xFFE0F2F1), Color(0xFF009688)),
+                title = co.anitrend.deeplink.R.string.onboarding_title_trends,
+                description = co.anitrend.deeplink.R.string.onboarding_desc_trends,
+            ),
+        )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         OnBoardingContent(
             onBoardingPages = onBoardingPages,
-            onBoardingColorLists = onBoardingPages.map { page ->
-                page.background.plus(MaterialTheme.colorScheme.surface)
-            },
+            onBoardingColorLists =
+                onBoardingPages.map { page ->
+                    page.background.plus(MaterialTheme.colorScheme.surface)
+                },
             onBoardingCompleted = {},
         )
     }
