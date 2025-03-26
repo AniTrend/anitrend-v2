@@ -248,10 +248,12 @@ private fun SplashContent(modifier: Modifier = Modifier) {
 
 @Composable
 fun SplashScreenContent(
+    splashState: SplashPresenter.State,
     splashPresenter: SplashPresenter,
     onSplashFinished: (Boolean) -> Unit,
 ) {
-    LaunchedEffect(Unit) {
+    LaunchedEffect(splashState) {
+        if (splashState == SplashPresenter.State.RUNNING) return@LaunchedEffect
         val shouldShowOnBoarding = splashPresenter.shouldShowOnBoarding()
         onSplashFinished(shouldShowOnBoarding)
     }
