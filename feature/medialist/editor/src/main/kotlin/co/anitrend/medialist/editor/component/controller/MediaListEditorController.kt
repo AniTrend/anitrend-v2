@@ -24,10 +24,10 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.common.medialist.ui.widget.counter.model.CounterEditModel
 import co.anitrend.common.medialist.ui.widget.progress.model.ProgressEditModel
 import co.anitrend.common.medialist.ui.widget.score.model.ScoreEditModel
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.toMediaRequestImage
-import co.anitrend.core.android.helpers.image.using
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.android.core.helpers.image.toMediaRequestImage
+import co.anitrend.android.core.helpers.image.using
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.entity.base.IMediaList

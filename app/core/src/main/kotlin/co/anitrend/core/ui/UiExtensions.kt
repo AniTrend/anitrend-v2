@@ -25,8 +25,8 @@ import androidx.fragment.app.*
 import androidx.lifecycle.ViewModel
 import co.anitrend.arch.extension.ext.SYNCHRONIZED
 import co.anitrend.core.R
-import co.anitrend.core.android.extensions.fragmentManager
-import co.anitrend.core.android.provider.contract.AbstractActionProvider
+import co.anitrend.android.core.extensions.fragmentManager
+import co.anitrend.android.core.provider.contract.AbstractActionProvider
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.model.FragmentItem
 import org.koin.androidx.fragment.android.KoinFragmentFactory
@@ -82,8 +82,8 @@ inline fun FragmentItem<*>.commit(
     context: Context,
     fragmentTransaction: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
-            co.anitrend.core.android.R.anim.enter_from_bottom,
-            co.anitrend.core.android.R.anim.exit_to_bottom,
+            co.anitrend.android.core.R.anim.enter_from_bottom,
+            co.anitrend.android.core.R.anim.exit_to_bottom,
             R.anim.popup_enter,
             R.anim.popup_exit,
         )
@@ -115,8 +115,8 @@ inline fun <T : Fragment> FragmentItem<T>.commit(
     context: Context,
     action: FragmentTransaction.() -> Unit = {
         setCustomAnimations(
-            co.anitrend.core.android.R.anim.enter_from_bottom,
-            co.anitrend.core.android.R.anim.exit_to_bottom,
+            co.anitrend.android.core.R.anim.enter_from_bottom,
+            co.anitrend.android.core.R.anim.exit_to_bottom,
             R.anim.popup_enter,
             R.anim.popup_exit,
         )

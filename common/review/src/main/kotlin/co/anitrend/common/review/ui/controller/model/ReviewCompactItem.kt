@@ -25,7 +25,7 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.review.R
 import co.anitrend.common.review.databinding.ReviewCompactItemBinding
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
 import co.anitrend.domain.review.entity.Review
 import coil.request.Disposable
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,7 +76,7 @@ internal class ReviewCompactItem(
         spanCount: Int,
         position: Int,
         resources: Resources,
-    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x1)
+    ) = resources.getInteger(co.anitrend.android.core.R.integer.column_x1)
 
     companion object {
         internal fun LayoutInflater.createReviewCompatItemViewHolder(viewGroup: ViewGroup) =

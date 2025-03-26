@@ -18,9 +18,9 @@ package co.anitrend.core.migration.model
 
 import android.content.Context
 import androidx.core.content.edit
-import co.anitrend.core.android.R
-import co.anitrend.core.android.settings.Settings
-import co.anitrend.core.android.storage.StorageController
+import co.anitrend.android.core.R
+import co.anitrend.android.core.settings.Settings
+import co.anitrend.android.core.storage.StorageController
 
 internal object Migrations {
     private val FROM_v2_0_0_28_TO_v2_0_0_30 =

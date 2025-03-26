@@ -43,7 +43,7 @@ internal class MediaListTabConfiguration(
             backgroundColor =
                 context.getColorFromAttr(
                     androidx.appcompat.R.attr.colorAccent,
-                    co.anitrend.core.android.R.color.colorAccent,
+                    co.anitrend.android.core.R.color.colorAccent,
                 )
             number = mediaInfo.count
         }

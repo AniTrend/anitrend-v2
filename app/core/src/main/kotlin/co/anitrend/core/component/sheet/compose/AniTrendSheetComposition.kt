@@ -26,12 +26,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import co.anitrend.android.core.components.sheet.SheetBehaviourCallback
+import co.anitrend.android.core.extensions.dp
 import co.anitrend.arch.core.model.ISupportViewModelState
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import co.anitrend.arch.ui.common.ILifecycleController
-import co.anitrend.core.android.components.sheet.SheetBehaviourCallback
-import co.anitrend.core.android.extensions.dp
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.core.ui.inject
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -75,7 +75,7 @@ abstract class AniTrendSheetComposition :
         runCatching {
             val parent = viewParent as View
             val params = parent.layoutParams as CoordinatorLayout.LayoutParams
-            val width = resources.getDimensionPixelSize(co.anitrend.core.android.R.dimen.bottom_sheet_margin)
+            val width = resources.getDimensionPixelSize(co.anitrend.android.core.R.dimen.bottom_sheet_margin)
             params.setMargins(width, 0, width, 0)
             parent.layoutParams = params
         }.stackTrace()

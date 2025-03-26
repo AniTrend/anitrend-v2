@@ -24,8 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.liveData
 import androidx.navigation.compose.rememberNavController
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.model.common.IParam

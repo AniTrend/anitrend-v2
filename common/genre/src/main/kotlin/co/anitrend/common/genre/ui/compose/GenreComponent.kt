@@ -28,7 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import co.anitrend.core.android.views.text.TextDrawable
+import co.anitrend.android.core.views.text.TextDrawable
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.navigation.MediaDiscoverRouter
 import com.google.accompanist.drawablepainter.rememberDrawablePainter

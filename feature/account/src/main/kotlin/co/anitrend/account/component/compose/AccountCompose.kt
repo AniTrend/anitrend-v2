@@ -22,9 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 
 @Composable
 private fun AccountScreenContent(modifier: Modifier = Modifier) {

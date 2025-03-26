@@ -18,7 +18,7 @@ package co.anitrend.news.presenter
 
 import android.content.Context
 import androidx.core.app.ShareCompat
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.news.component.screen.NewsScreen

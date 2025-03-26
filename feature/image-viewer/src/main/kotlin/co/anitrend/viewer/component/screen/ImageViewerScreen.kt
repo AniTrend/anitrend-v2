@@ -28,8 +28,8 @@ import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.helpers.image.toCoverImage
-import co.anitrend.core.android.helpers.image.using
+import co.anitrend.android.core.helpers.image.toCoverImage
+import co.anitrend.android.core.helpers.image.using
 import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.extensions.nameOf
@@ -93,7 +93,7 @@ class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
-        val duration = resources.getInteger(co.anitrend.core.android.R.integer.motion_duration_long)
+        val duration = resources.getInteger(co.anitrend.android.core.R.integer.motion_duration_long)
         requireBinding().subSamplingImageView.setOnClickListener {
             val transparency = requireBinding().downloadAction.alpha
             requireBinding()

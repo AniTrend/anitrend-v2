@@ -28,17 +28,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.core.os.LocaleListCompat
-import co.anitrend.core.android.compose.design.cards.AniTrendHintCard
-import co.anitrend.core.android.compose.design.category.AniTrendCategoryHeader
-import co.anitrend.core.android.compose.design.choice.AniTrendSingleChoiceItem
-import co.anitrend.core.android.settings.common.locale.ILocaleSettings
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asAniTrendLocale
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asDisplayName
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale.Companion.asLocale
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.R
+import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.compose.design.category.AniTrendCategoryHeader
+import co.anitrend.android.core.compose.design.choice.AniTrendSingleChoiceItem
+import co.anitrend.android.core.settings.common.locale.ILocaleSettings
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asAniTrendLocale
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asDisplayName
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocale
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import org.koin.compose.koinInject
 import java.util.Locale
 
@@ -121,7 +122,7 @@ private fun LocaleContent(
                 item {
                     val defaultLocale = AniTrendLocale.AUTOMATIC.asLocale()
                     AniTrendSingleChoiceItem(
-                        text = stringResource(co.anitrend.core.android.R.string.global_label_system),
+                        text = stringResource(R.string.global_label_system),
                         selected = defaultLocale == selectedLocale,
                         onOptionSelected = {
                             onLocaleChange(defaultLocale)

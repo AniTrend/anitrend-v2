@@ -25,8 +25,8 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.episode.R
 import co.anitrend.common.episode.databinding.EpisodeItemBinding
-import co.anitrend.core.android.helpers.image.using
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.helpers.image.using
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
@@ -99,7 +99,7 @@ internal class EpisodeItem(
         spanCount: Int,
         position: Int,
         resources: Resources,
-    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x1)
+    ) = resources.getInteger(co.anitrend.android.core.R.integer.column_x1)
 
     companion object {
         internal fun LayoutInflater.createViewHolder(viewGroup: ViewGroup) =

@@ -24,7 +24,7 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-            <meta-data  android:name="co.anitrend.navigation.drawer.initializer.FeatureInitializer"
+            <meta-data  android:name="co.anitrend.android.navigation.drawer.initializer.FeatureInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

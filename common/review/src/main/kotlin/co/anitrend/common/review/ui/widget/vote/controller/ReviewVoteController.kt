@@ -16,8 +16,8 @@
  */
 package co.anitrend.common.review.ui.widget.vote.controller
 
-import co.anitrend.core.android.controller.widget.WidgetController
-import co.anitrend.core.android.extensions.toHumanReadableQuantity
+import co.anitrend.android.core.controller.widget.WidgetController
+import co.anitrend.android.core.extensions.toHumanReadableQuantity
 import co.anitrend.domain.review.entity.contract.IReview
 
 internal class ReviewVoteController(

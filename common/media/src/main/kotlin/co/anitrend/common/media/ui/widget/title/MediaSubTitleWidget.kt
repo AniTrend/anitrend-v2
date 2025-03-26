@@ -25,7 +25,7 @@ import androidx.core.text.italic
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
-import co.anitrend.core.android.helpers.color.asColorInt
+import co.anitrend.android.core.helpers.color.asColorInt
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media

@@ -21,9 +21,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
-import co.anitrend.core.android.koinOf
-import co.anitrend.core.android.shortcut.contract.IShortcutController
-import co.anitrend.core.android.shortcut.model.Shortcut
+import co.anitrend.android.core.koinOf
+import co.anitrend.android.core.shortcut.contract.IShortcutController
+import co.anitrend.android.core.shortcut.model.Shortcut
 import co.anitrend.core.extensions.cancelAuthenticationWorkers
 import co.anitrend.data.account.AccountInteractor
 import co.anitrend.domain.account.model.AccountParam

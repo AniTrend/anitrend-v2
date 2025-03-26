@@ -19,7 +19,7 @@ package co.anitrend.core.initializer.logger
 import android.content.Context
 import android.util.Log
 import co.anitrend.core.BuildConfig
-import co.anitrend.core.android.storage.StorageController
+import co.anitrend.android.core.storage.StorageController
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
 import fr.bipi.treessence.file.FileLoggerTree
 import timber.log.Timber

@@ -29,7 +29,7 @@ import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.android.core.assureParamNotMissing
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.medialist.editor.R
 import co.anitrend.medialist.editor.component.controller.MediaListEditorController
@@ -77,7 +77,7 @@ class MediaListEditorContent(
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 requireBinding()
                     .stateLayout.interactionFlow
-                    .debounce(resources.getInteger(co.anitrend.core.android.R.integer.debounce_duration_short).toLong())
+                    .debounce(resources.getInteger(co.anitrend.android.core.R.integer.debounce_duration_short).toLong())
                     .onEach {
                         viewModel.retry()
                     }.catch { cause: Throwable ->

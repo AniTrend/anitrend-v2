@@ -24,5 +24,5 @@
         android:title="@string/action_notifications"
         android:icon="@drawable/ic_notifications_24"
         app:showAsAction="always"
-        app:actionProviderClass="co.anitrend.navigation.drawer.action.provider.NotificationActionProvider" />
+        app:actionProviderClass="co.anitrend.android.navigation.drawer.action.provider.NotificationActionProvider" />
 </menu>

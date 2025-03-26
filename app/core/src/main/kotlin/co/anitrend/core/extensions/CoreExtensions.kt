@@ -28,10 +28,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.AniTrendApplication
-import co.anitrend.core.android.extensions.analytics
-import co.anitrend.core.android.extensions.keys
-import co.anitrend.core.android.extensions.tags
-import co.anitrend.core.android.koinOf
+import co.anitrend.android.core.extensions.analytics
+import co.anitrend.android.core.extensions.keys
+import co.anitrend.android.core.extensions.tags
+import co.anitrend.android.core.koinOf
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity

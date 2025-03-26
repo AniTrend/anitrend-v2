@@ -34,10 +34,10 @@ import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.arch.extension.ext.empty
-import co.anitrend.core.android.compose.design.BackIconButton
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.compose.design.BackIconButton
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import com.aghajari.compose.text.AnnotatedText
 import com.aghajari.compose.text.asAnnotatedString
 import kotlinx.coroutines.flow.Flow

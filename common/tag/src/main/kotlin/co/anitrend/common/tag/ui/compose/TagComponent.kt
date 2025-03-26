@@ -34,8 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.navigation.MediaDiscoverRouter
 

@@ -19,7 +19,7 @@ package co.anitrend.updater.component.screen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.viewbinding.ViewBinding
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendBoundScreen
 import co.anitrend.updater.component.compose.UpdateScreenContent
 

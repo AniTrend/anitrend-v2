@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import co.anitrend.core.android.helpers.color.asColorInt
+import co.anitrend.android.core.helpers.color.asColorInt
 import co.anitrend.domain.common.entity.contract.IMediaCover
 
 @Composable

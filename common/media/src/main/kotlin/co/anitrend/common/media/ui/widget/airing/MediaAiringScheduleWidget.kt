@@ -27,7 +27,7 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.widget.airing.controller.MediaAiringScheduleController
-import co.anitrend.core.android.asPrettyTime
+import co.anitrend.android.core.asPrettyTime
 import co.anitrend.domain.media.entity.Media
 import com.google.android.material.textview.MaterialTextView
 
@@ -85,7 +85,7 @@ class MediaAiringScheduleWidget
             if (isInEditMode) {
                 val builder =
                     SpannableStringBuilder()
-                        .color(context.getCompatColor(co.anitrend.core.android.R.color.orange_A400)) {
+                        .color(context.getCompatColor(co.anitrend.android.core.R.color.orange_A400)) {
                             append(
                                 context.getString(
                                     R.string.label_episode_airing_in_time,

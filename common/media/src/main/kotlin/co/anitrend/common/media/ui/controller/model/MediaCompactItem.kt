@@ -27,11 +27,11 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.media.ui.controller.extensions.startMediaScreenFor
 import co.anitrend.common.media.ui.databinding.MediaCompactItemBinding
-import co.anitrend.core.android.helpers.image.model.RequestImage
-import co.anitrend.core.android.helpers.image.roundedCornersTransformation
-import co.anitrend.core.android.helpers.image.toMediaRequestImage
-import co.anitrend.core.android.helpers.image.using
-import co.anitrend.core.android.recycler.model.RecyclerItemBinding
+import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.android.core.helpers.image.roundedCornersTransformation
+import co.anitrend.android.core.helpers.image.toMediaRequestImage
+import co.anitrend.android.core.helpers.image.using
+import co.anitrend.android.core.recycler.model.RecyclerItemBinding
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import coil.request.Disposable
@@ -104,7 +104,7 @@ internal class MediaCompactItem(
         spanCount: Int,
         position: Int,
         resources: Resources,
-    ) = resources.getInteger(co.anitrend.core.android.R.integer.column_x3)
+    ) = resources.getInteger(co.anitrend.android.core.R.integer.column_x3)
 
     companion object {
         internal fun LayoutInflater.createMediaItemViewHolder(viewGroup: ViewGroup) =

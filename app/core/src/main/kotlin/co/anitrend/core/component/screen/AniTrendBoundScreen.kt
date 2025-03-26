@@ -17,7 +17,7 @@
 package co.anitrend.core.component.screen
 
 import androidx.viewbinding.ViewBinding
-import co.anitrend.core.android.binding.IBindingView
+import co.anitrend.android.core.binding.IBindingView
 
 /**
  * Abstract over [AniTrendScreen] bound to view binding definition

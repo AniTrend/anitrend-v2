@@ -25,10 +25,10 @@ import co.anitrend.auth.R
 import co.anitrend.auth.component.compose.AuthScreenContent
 import co.anitrend.auth.component.viewmodel.AuthViewModel
 import co.anitrend.auth.presenter.AuthPresenter
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.extensions.observeOnce
-import co.anitrend.core.android.extensions.requireLifecycleOwner
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.extensions.observeOnce
+import co.anitrend.android.core.extensions.requireLifecycleOwner
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.navigation.AuthRouter

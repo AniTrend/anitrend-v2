@@ -17,7 +17,7 @@
 package co.anitrend.core.migration.model
 
 import android.content.Context
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 
 internal abstract class Migration(
     val startVersion: Int,

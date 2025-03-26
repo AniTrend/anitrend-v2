@@ -26,9 +26,9 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.review.R
 import co.anitrend.common.review.ui.widget.action.presenter.ReviewActionPresenter
-import co.anitrend.core.android.extensions.dp
-import co.anitrend.core.android.settings.Settings
-import co.anitrend.core.android.widget.button.LoadingTextButton
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.settings.Settings
+import co.anitrend.android.core.widget.button.LoadingTextButton
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
 
@@ -58,7 +58,7 @@ internal class ReviewActionWidget
                     downVote.setDrawable(
                         context.getCompatDrawable(
                             R.drawable.ic_thumb_down,
-                            co.anitrend.core.android.R.color.orange_A700,
+                            co.anitrend.android.core.R.color.orange_A700,
                         ),
                     )
                     upVote.setDrawable(
@@ -71,7 +71,7 @@ internal class ReviewActionWidget
                     upVote.setDrawable(
                         context.getCompatDrawable(
                             R.drawable.ic_thumb_up,
-                            co.anitrend.core.android.R.color.green_A700,
+                            co.anitrend.android.core.R.color.green_A700,
                         ),
                     )
                     downVote.setDrawable(

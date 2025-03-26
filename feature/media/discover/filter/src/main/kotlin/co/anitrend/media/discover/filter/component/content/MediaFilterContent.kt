@@ -25,8 +25,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.fragment.app.setFragmentResult
 import co.anitrend.arch.extension.ext.argument
 import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
-import co.anitrend.core.android.views.compose.composable
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
 import co.anitrend.core.component.sheet.compose.AniTrendSheetComposition
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.genre.model.GenreParam

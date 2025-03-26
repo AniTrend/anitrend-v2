@@ -21,8 +21,8 @@ import android.view.MenuItem
 import android.view.View
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
-import co.anitrend.core.android.extensions.requireLifecycleOwner
-import co.anitrend.core.android.provider.contract.AbstractActionProvider
+import co.anitrend.android.core.extensions.requireLifecycleOwner
+import co.anitrend.android.core.provider.contract.AbstractActionProvider
 import co.anitrend.core.ui.sharedViewModel
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.medialist.enums.MediaListStatus

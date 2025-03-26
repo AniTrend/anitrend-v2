@@ -16,7 +16,7 @@
  */
 package co.anitrend.common.media.ui.widget.title.controller
 
-import co.anitrend.core.android.controller.widget.WidgetController
+import co.anitrend.android.core.controller.widget.WidgetController
 import co.anitrend.domain.media.entity.Media
 
 internal class MediaSubTitleController(

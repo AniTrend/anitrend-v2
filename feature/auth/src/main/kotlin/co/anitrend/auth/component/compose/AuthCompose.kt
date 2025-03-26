@@ -41,10 +41,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
-import co.anitrend.core.android.ui.typography.AniTrendTypography
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.typography.AniTrendTypography
 
 @Composable
 private fun AuthBrandNameComponent(modifier: Modifier = Modifier) {

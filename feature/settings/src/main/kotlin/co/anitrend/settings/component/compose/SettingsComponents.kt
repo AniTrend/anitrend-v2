@@ -30,8 +30,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import co.anitrend.core.android.compose.design.category.AniTrendCategoryItem
-import co.anitrend.core.android.compose.design.choice.AniTrendSingleChoiceItem
+import co.anitrend.android.core.compose.design.category.AniTrendCategoryItem
+import co.anitrend.android.core.compose.design.choice.AniTrendSingleChoiceItem
 import co.anitrend.settings.model.SettingItem
 
 @Composable

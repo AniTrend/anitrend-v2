@@ -34,9 +34,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import co.anitrend.common.media.ui.R
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media

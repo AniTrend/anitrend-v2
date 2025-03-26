@@ -20,8 +20,8 @@ import android.content.Context
 import android.view.MenuItem
 import android.view.View
 import co.anitrend.arch.extension.ext.getCompatDrawable
-import co.anitrend.core.android.extensions.requireLifecycleOwner
-import co.anitrend.core.android.provider.contract.AbstractActionProvider
+import co.anitrend.android.core.extensions.requireLifecycleOwner
+import co.anitrend.android.core.provider.contract.AbstractActionProvider
 import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.ui.sharedViewModel
 import co.anitrend.data.auth.settings.IAuthenticationSettings
@@ -53,8 +53,8 @@ class MediaFavouriteActionProvider(
             setImageDrawable(
                 context.getCompatDrawable(
                     when (isFavourite) {
-                        true -> co.anitrend.core.android.R.drawable.ic_heart_filled
-                        else -> co.anitrend.core.android.R.drawable.ic_heart_outline
+                        true -> co.anitrend.android.core.R.drawable.ic_heart_filled
+                        else -> co.anitrend.android.core.R.drawable.ic_heart_outline
                     },
                 ),
             )

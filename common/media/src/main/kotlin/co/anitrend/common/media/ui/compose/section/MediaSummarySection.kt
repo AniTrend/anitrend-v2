@@ -35,9 +35,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
 import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
-import co.anitrend.core.android.compose.AniTrendDimensions
-import co.anitrend.core.android.compose.design.image.AniTrendImage
-import co.anitrend.core.android.helpers.image.model.RequestImage
+import co.anitrend.android.core.compose.AniTrendDimensions
+import co.anitrend.android.core.compose.design.image.AniTrendImage
+import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.score.IMediaScore

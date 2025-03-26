@@ -18,7 +18,7 @@ package co.anitrend.core.migration
 
 import android.content.Context
 import co.anitrend.core.BuildConfig
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.migration.contract.AbstractMigrationManager
 import co.anitrend.core.migration.model.Migration
 import co.anitrend.core.migration.model.Migrations

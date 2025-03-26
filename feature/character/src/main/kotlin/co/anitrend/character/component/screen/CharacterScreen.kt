@@ -19,8 +19,8 @@ package co.anitrend.character.component.screen
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import co.anitrend.character.component.viewmodel.CharacterViewModel
-import co.anitrend.core.android.compose.design.ContentWrapper
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.model.common.IParam

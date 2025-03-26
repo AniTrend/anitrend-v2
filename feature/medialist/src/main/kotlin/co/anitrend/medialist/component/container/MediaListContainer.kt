@@ -25,7 +25,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.core.android.assureParamNotMissing
+import co.anitrend.android.core.assureParamNotMissing
 import co.anitrend.core.component.content.AniTrendContent
 import co.anitrend.domain.user.entity.attribute.MediaListInfo
 import co.anitrend.medialist.R
@@ -40,7 +40,7 @@ import timber.log.Timber
 
 class MediaListContainer(
     private val stateConfig: StateLayoutConfig,
-    override val inflateMenu: Int = co.anitrend.core.android.R.menu.discover_menu,
+    override val inflateMenu: Int = co.anitrend.android.core.R.menu.discover_menu,
     override val inflateLayout: Int = R.layout.media_list_container,
 ) : AniTrendContent<MediaListContainerBinding>() {
     private val viewModel by viewModel<UserViewModel>()
@@ -78,7 +78,7 @@ class MediaListContainer(
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
-            co.anitrend.core.android.R.id.action_filter -> {
+            co.anitrend.android.core.R.id.action_filter -> {
                 true
             }
             else -> super.onOptionsItemSelected(item)

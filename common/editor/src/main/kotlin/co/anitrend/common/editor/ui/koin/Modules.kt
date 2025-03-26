@@ -16,7 +16,7 @@
  */
 package co.anitrend.common.editor.ui.koin
 
-import co.anitrend.core.android.koin.MarkdownFlavour
+import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import io.noties.markwon.Markwon
 import io.noties.markwon.editor.MarkwonEditor

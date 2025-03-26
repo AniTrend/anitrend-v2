@@ -17,7 +17,7 @@
 package co.anitrend.common.media.ui.controller.extensions
 
 import android.view.View
-import co.anitrend.core.android.extensions.fragmentManager
+import co.anitrend.android.core.extensions.fragmentManager
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.ui.fragmentByTagOrNew

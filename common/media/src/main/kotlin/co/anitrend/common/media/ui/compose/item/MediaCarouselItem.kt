@@ -35,8 +35,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.controller.compose.CarouselController
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType

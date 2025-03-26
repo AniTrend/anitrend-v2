@@ -19,8 +19,8 @@ package co.anitrend.common.medialist.ui.widget.date.presenter
 import android.view.View
 import co.anitrend.common.medialist.ui.R
 import co.anitrend.common.medialist.ui.widget.date.controller.FuzzyDateController
-import co.anitrend.core.android.extensions.fragmentManager
-import co.anitrend.core.android.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.extensions.fragmentManager
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textview.MaterialTextView

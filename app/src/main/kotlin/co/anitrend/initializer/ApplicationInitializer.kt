@@ -21,9 +21,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.startup.Initializer
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
-import co.anitrend.core.android.koinOf
-import co.anitrend.core.android.shortcut.contract.IShortcutController
-import co.anitrend.core.android.shortcut.model.Shortcut
+import co.anitrend.android.core.koinOf
+import co.anitrend.android.core.shortcut.contract.IShortcutController
+import co.anitrend.android.core.shortcut.model.Shortcut
 import co.anitrend.core.initializer.contract.AbstractCoreInitializer
 import co.anitrend.core.initializer.injector.InjectorInitializer
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper.Companion.loadModules

@@ -18,7 +18,7 @@ package co.anitrend.media.discover.filter.koin
 
 import co.anitrend.common.genre.ui.adapter.GenreListAdapter
 import co.anitrend.common.tag.ui.adpter.TagListAdapter
-import co.anitrend.core.android.recycler.selection.DefaultSelectionMode
+import co.anitrend.android.core.recycler.selection.DefaultSelectionMode
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.filter.component.content.MediaFilterContent
 import co.anitrend.media.discover.filter.component.content.GenreContent

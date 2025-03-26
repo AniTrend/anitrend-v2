@@ -22,7 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.common.shared.ui.compose.FragmentItemHost
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.navigation.AiringRouter

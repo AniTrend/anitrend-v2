@@ -17,7 +17,7 @@
 package co.anitrend.search.component.presenter
 
 import android.content.Context
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
 
 class SearchPresenter(

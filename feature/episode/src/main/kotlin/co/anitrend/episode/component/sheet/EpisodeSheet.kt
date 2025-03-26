@@ -26,8 +26,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.core.android.components.sheet.action.contract.OnSlideAction
-import co.anitrend.core.android.helpers.image.using
+import co.anitrend.android.core.components.sheet.action.contract.OnSlideAction
+import co.anitrend.android.core.helpers.image.using
 import co.anitrend.core.component.sheet.AniTrendBottomSheet
 import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.core.extensions.stackTrace

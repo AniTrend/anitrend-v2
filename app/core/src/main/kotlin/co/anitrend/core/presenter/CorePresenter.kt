@@ -18,7 +18,7 @@ package co.anitrend.core.presenter
 
 import android.content.Context
 import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.core.android.settings.Settings
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 
 abstract class CorePresenter(

@@ -17,7 +17,7 @@
 package co.anitrend.news.koin
 
 import co.anitrend.common.news.ui.adapter.NewsPagedAdapter
-import co.anitrend.core.android.koin.MarkdownFlavour
+import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.news.component.content.NewsContent

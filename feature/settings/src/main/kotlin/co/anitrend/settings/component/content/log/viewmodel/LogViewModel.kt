@@ -20,7 +20,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.core.android.storage.contract.IStorageController
+import co.anitrend.android.core.storage.contract.IStorageController
 import co.anitrend.settings.component.content.log.state.LogUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

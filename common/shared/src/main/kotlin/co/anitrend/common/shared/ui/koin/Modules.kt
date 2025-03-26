@@ -19,7 +19,7 @@ package co.anitrend.common.shared.ui.koin
 // import co.anitrend.support.markdown.link.LinkifyPlugin
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.common.shared.ui.plugin.MarkdownPlugin
-import co.anitrend.core.android.koin.MarkdownFlavour
+import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.support.markdown.center.CenterPlugin
 import co.anitrend.support.markdown.ephasis.EmphasisPlugin
@@ -40,7 +40,7 @@ private val coreModule =
     module {
         single(named(MarkdownFlavour.ANILIST)) {
             val context = androidContext()
-            val accent = context.getCompatColor(co.anitrend.core.android.R.color.colorAccent)
+            val accent = context.getCompatColor(co.anitrend.android.core.R.color.colorAccent)
             val builder = get<Markwon.Builder>()
             builder
                 .usePlugin(MarkdownPlugin.create())

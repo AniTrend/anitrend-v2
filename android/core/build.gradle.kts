@@ -40,5 +40,5 @@ dependencies {
 
 android {
     buildFeatures.buildConfig = true
-    namespace = "co.anitrend.core.android"
+    namespace = "co.anitrend.android.core"
 }

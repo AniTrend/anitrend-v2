@@ -25,8 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.LiveData
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.item.MediaCarouselItem
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat

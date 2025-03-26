@@ -24,8 +24,8 @@ import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Translate
-import co.anitrend.core.android.settings.helper.locale.model.AniTrendLocale
-import co.anitrend.core.android.settings.helper.theme.model.AniTrendTheme
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
+import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.settings.model.SettingItem
 
 internal val PreviewData =

@@ -36,9 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import co.anitrend.core.android.compose.design.BackIconButton
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.compose.design.BackIconButton
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

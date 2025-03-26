@@ -36,7 +36,7 @@ import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.dipToPx
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.core.android.koinOf
+import co.anitrend.android.core.koinOf
 import com.google.android.material.textfield.TextInputEditText
 import io.noties.markwon.editor.MarkwonEditorTextWatcher
 import io.wax911.emojify.EmojiManager

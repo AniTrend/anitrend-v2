@@ -29,8 +29,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import co.anitrend.common.shared.ui.compose.FragmentItemHost
-import co.anitrend.core.android.compose.design.BackIconButton
-import co.anitrend.core.android.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.compose.design.BackIconButton
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.inject

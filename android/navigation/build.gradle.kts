@@ -24,5 +24,5 @@ dependencies {
 }
 
 android {
-    namespace = "co.anitrend.navigation.drawer"
+    namespace = "co.anitrend.android.navigation.drawer"
 }

@@ -39,10 +39,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import co.anitrend.core.android.compose.design.cards.AniTrendHintCard
-import co.anitrend.core.android.ui.AniTrendPreview
-import co.anitrend.core.android.ui.theme.preview.DarkThemeProvider
-import co.anitrend.core.android.ui.theme.preview.PreviewTheme
+import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.settings.component.content.log.state.LogUiState
 import co.anitrend.settings.component.content.log.viewmodel.LogViewModel
 import org.koin.compose.koinInject
@@ -138,8 +138,8 @@ private fun LogViewerScreenPreview(
                             time = "21:12:01:802",
                             level = LogUiState.LogItem.Level.DEBUG,
                             message =
-                                "03-07 21:12:01:802 D/[Koin](2) : | (+) '[Factory: 'co.anitrend.navigation.drawer.component" +
-                                    ".content.BottomDrawerContent',scope:bottom_nav_drawer,binds:co.anitrend.navigation.drawer.component" +
+                                "03-07 21:12:01:802 D/[Koin](2) : | (+) '[Factory: 'co.anitrend.android.navigation.drawer.component" +
+                                    ".content.BottomDrawerContent',scope:bottom_nav_drawer,binds:co.anitrend.android.navigation.drawer.component" +
                                     ".content.contract.INavigationDrawer]'",
                         ),
                         LogUiState.LogItem(
