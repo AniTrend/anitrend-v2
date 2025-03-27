@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.screen
+package co.anitrend.android.deeplink.component.screen
 
 import android.content.Intent
 import android.os.Bundle
@@ -30,10 +30,10 @@ import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
-import co.anitrend.deeplink.component.compose.DeepLinkScreenContent
-import co.anitrend.deeplink.component.presenter.OnBoardingPresenter
-import co.anitrend.deeplink.component.presenter.SplashPresenter
-import co.anitrend.deeplink.component.viewmodel.DeepLinkViewModel
+import co.anitrend.android.deeplink.component.compose.DeepLinkScreenContent
+import co.anitrend.android.deeplink.component.presenter.OnBoardingPresenter
+import co.anitrend.android.deeplink.component.presenter.SplashPresenter
+import co.anitrend.android.deeplink.component.viewmodel.DeepLinkViewModel
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.extensions.startActivity
 import kotlinx.coroutines.launch

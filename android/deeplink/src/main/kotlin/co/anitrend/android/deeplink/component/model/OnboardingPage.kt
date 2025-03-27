@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.model
+package co.anitrend.android.deeplink.component.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable

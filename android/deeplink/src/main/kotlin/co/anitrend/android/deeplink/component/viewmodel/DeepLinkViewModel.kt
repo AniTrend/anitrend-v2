@@ -14,13 +14,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.viewmodel
+package co.anitrend.android.deeplink.component.viewmodel
 
 import android.content.Intent
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import co.anitrend.deeplink.component.presenter.SplashPresenter
-import co.anitrend.deeplink.exception.DeepLinkException
+import co.anitrend.android.deeplink.component.presenter.SplashPresenter
+import co.anitrend.android.deeplink.exception.DeepLinkException
 import co.anitrend.navigation.DeepLinkRouter
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber

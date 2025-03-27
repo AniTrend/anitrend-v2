@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.exception
+package co.anitrend.android.deeplink.exception
 
 sealed class DeepLinkException : Throwable() {
     data class MissingIntentData(

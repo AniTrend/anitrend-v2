@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.compose
+package co.anitrend.android.deeplink.component.compose
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
@@ -67,8 +67,8 @@ import co.anitrend.android.core.compose.design.pageindicator.PageIndicator
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.deeplink.component.model.OnboardingPage
-import co.anitrend.deeplink.component.presenter.OnBoardingPresenter
+import co.anitrend.android.deeplink.component.model.OnboardingPage
+import co.anitrend.android.deeplink.component.presenter.OnBoardingPresenter
 import kotlinx.coroutines.launch
 
 @Composable

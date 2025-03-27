@@ -14,11 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.route
+package co.anitrend.android.deeplink.component.route
 
 import android.content.Intent
-import co.anitrend.deeplink.common.CommonRouteTest
-import co.anitrend.deeplink.provider.FeatureProvider
+import co.anitrend.android.deeplink.common.CommonRouteTest
+import co.anitrend.android.deeplink.provider.FeatureProvider
 import com.kingsleyadio.deeplink.DeepLinkParser
 import kotlin.test.Test
 import kotlin.test.assertEquals

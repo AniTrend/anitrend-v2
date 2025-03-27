@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.environment
+package co.anitrend.android.deeplink.environment
 
 import android.content.Context
 import co.anitrend.android.core.environment.IAniTrendEnvironment
