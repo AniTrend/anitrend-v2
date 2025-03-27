@@ -45,16 +45,16 @@ object AniTrendImageDefaults {
 
 /**
  * Custom [AsyncImage] for specific use cases that uses auto image quality selection based on device power requirements
- * see [co.anitrend.core.android.controller.power.contract.IPowerController]
+ * see [co.anitrend.android.core.controller.power.contract.IPowerController]
  *
- * @param image Resource to load, if literal use [co.anitrend.core.android.helpers.image.toCoverImage]
+ * @param image Resource to load, if literal use [co.anitrend.android.core.helpers.image.toCoverImage]
  * @param modifier Default modifier that will have a default clickable modifier that invokes [onClick]
  * @param imageType The type of image, this will make some behavioural changes
  * @param transformations Image transformations for Coil
  * @param contentScale [ContentScale] defaulted to [ContentScale.Crop]
  * @param onClick Callback with a receiver of [ImageViewerRouter.ImageSourceParam]
  *
- * @see [co.anitrend.core.android.helpers.image]
+ * @see [co.anitrend.android.core.helpers.image]
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
