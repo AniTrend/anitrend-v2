@@ -26,7 +26,7 @@ import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.android.core.components.action.menu.IFloatingActionMenu
-import co.anitrend.core.android.databinding.ActionFrameLayoutBinding
+import co.anitrend.android.core.databinding.ActionFrameLayoutBinding
 import co.anitrend.android.core.views.FrameLayoutWithBinding
 
 class FloatingActionMenu

@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <co.anitrend.core.android.widget.appbar.BottomAppBar
+    <co.anitrend.android.core.widget.appbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         style="@style/AppTheme.Material.BottomAppBar"
         app:fabAlignmentMode="end"

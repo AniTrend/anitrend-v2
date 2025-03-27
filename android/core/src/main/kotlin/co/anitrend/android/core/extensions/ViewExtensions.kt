@@ -62,7 +62,7 @@ fun View.setTooltip(
 /**
  * Temporary work around for nested scrolling inside a bottom sheet for [ViewPager2]
  *
- * @see co.anitrend.core.android.widget.viewpager.BottomSheetViewPager
+ * @see co.anitrend.android.core.widget.viewpager.BottomSheetViewPager
  */
 fun ViewPager2.enableBottomSheetScrolling() {
     children
