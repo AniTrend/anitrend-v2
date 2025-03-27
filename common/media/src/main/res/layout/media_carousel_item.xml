@@ -67,7 +67,7 @@
 
     </FrameLayout>
 
-    <co.anitrend.core.android.recycler.CarouselRecycler
+    <co.anitrend.android.core.recycler.CarouselRecycler
         android:id="@+id/mediaCarouselRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

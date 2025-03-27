@@ -300,7 +300,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="co.anitrend.deeplink.initializer.FeatureInitializer"
+                android:name="co.anitrend.android.deeplink.initializer.FeatureInitializer"
                 android:value="androidx.startup" />
         </provider>
 
