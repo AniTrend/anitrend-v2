@@ -14,11 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.provider
+package co.anitrend.android.deeplink.provider
 
 import android.content.Context
 import android.content.Intent
-import co.anitrend.deeplink.component.screen.DeepLinkScreen
+import co.anitrend.android.deeplink.component.screen.DeepLinkScreen
 import co.anitrend.navigation.DeepLinkRouter
 import com.kingsleyadio.deeplink.DeepLinkParser
 import com.kingsleyadio.deeplink.DeepLinkUri

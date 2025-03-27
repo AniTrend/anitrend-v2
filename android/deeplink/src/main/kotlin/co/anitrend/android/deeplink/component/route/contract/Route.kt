@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.route.contract
+package co.anitrend.android.deeplink.component.route.contract
 
 import android.content.Intent
 import androidx.core.net.UriCompat

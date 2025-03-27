@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.route
+package co.anitrend.android.deeplink.component.route
 
 import android.content.Intent
 import android.net.Uri
@@ -25,7 +25,7 @@ import co.anitrend.data.auth.helper.CALLBACK_QUERY_ERROR_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_EXPIRES_IN_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_KEY
 import co.anitrend.data.auth.helper.CALLBACK_QUERY_TOKEN_TYPE_KEY
-import co.anitrend.deeplink.component.route.contract.Route
+import co.anitrend.android.deeplink.component.route.contract.Route
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.AiringRouter
 import co.anitrend.navigation.AuthRouter

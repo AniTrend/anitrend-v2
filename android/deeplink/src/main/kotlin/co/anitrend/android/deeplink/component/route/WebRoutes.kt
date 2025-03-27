@@ -14,12 +14,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.route
+package co.anitrend.android.deeplink.component.route
 
 import android.content.Intent
 import androidx.core.text.isDigitsOnly
 import co.anitrend.android.core.environment.IAniTrendEnvironment
-import co.anitrend.deeplink.component.route.contract.Route
+import co.anitrend.android.deeplink.component.route.contract.Route
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus

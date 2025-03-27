@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.compose
+package co.anitrend.android.deeplink.component.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -51,7 +51,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.deeplink.component.presenter.SplashPresenter
+import co.anitrend.android.deeplink.component.presenter.SplashPresenter
 
 @Composable
 fun SplashSpinner(modifier: Modifier = Modifier) {

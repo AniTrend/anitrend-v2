@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.common
+package co.anitrend.android.deeplink.common
 
 import android.app.Instrumentation
 import android.content.Intent
@@ -23,8 +23,8 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.settings.IUserSettings
-import co.anitrend.deeplink.component.screen.DeepLinkScreen
-import co.anitrend.deeplink.environment.AniTrendEnvironment
+import co.anitrend.android.deeplink.component.screen.DeepLinkScreen
+import co.anitrend.android.deeplink.environment.AniTrendEnvironment
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Rule

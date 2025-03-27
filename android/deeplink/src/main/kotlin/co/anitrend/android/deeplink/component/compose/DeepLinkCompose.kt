@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.compose
+package co.anitrend.android.deeplink.component.compose
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -25,9 +25,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import co.anitrend.deeplink.component.presenter.OnBoardingPresenter
-import co.anitrend.deeplink.component.presenter.SplashPresenter
-import co.anitrend.deeplink.component.viewmodel.DeepLinkViewModel
+import co.anitrend.android.deeplink.component.presenter.OnBoardingPresenter
+import co.anitrend.android.deeplink.component.presenter.SplashPresenter
+import co.anitrend.android.deeplink.component.viewmodel.DeepLinkViewModel
 import co.anitrend.navigation.DeepLinkRouter
 
 @Composable

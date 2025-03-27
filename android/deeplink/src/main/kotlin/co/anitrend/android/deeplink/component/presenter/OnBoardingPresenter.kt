@@ -14,13 +14,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.deeplink.component.presenter
+package co.anitrend.android.deeplink.component.presenter
 
 import android.content.Context
 import androidx.compose.ui.graphics.Color
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.presenter.CorePresenter
-import co.anitrend.deeplink.component.model.OnboardingPage
+import co.anitrend.android.deeplink.component.model.OnboardingPage
 
 class OnBoardingPresenter(
     context: Context,
