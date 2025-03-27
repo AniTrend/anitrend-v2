@@ -35,7 +35,7 @@ abstract class LinearLayoutWithBinding<V : ViewBinding>
         defStyleAttr: Int = 0,
     ) : LinearLayoutCompat(context, attrs, defStyleAttr),
         CustomView,
-    IBindingView<V> {
+        IBindingView<V> {
         override var binding: V? = null
 
         override fun onInit(
