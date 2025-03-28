@@ -37,7 +37,7 @@ class FloatingActionMenu
         defStyleAttr: Int = 0,
     ) : FrameLayoutWithBinding<ActionFrameLayoutBinding>(context, attrs, defStyleAttr),
         CustomView,
-    IFloatingActionMenu {
+        IFloatingActionMenu {
         init {
             onInit(context, attrs, defStyleAttr)
         }
