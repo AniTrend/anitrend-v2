@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.airing.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 
 /** [AiringSchedule](https://anilist.github.io/ApiV2-GraphQL-Docs/airingschedule.doc.html)
  * Media Airing Schedule
@@ -26,7 +26,7 @@ import co.anitrend.data.core.common.Identity
  * @property mediaId
  * @property timeUntilAiring
  */
-internal interface IAiringScheduleModel : Identity {
+internal interface IAiringScheduleModel : IEntityId<Long> {
     val airingAt: Long
     val episode: Int
     val mediaId: Long

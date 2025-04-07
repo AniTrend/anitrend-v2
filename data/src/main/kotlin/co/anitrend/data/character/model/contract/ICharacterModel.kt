@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.character.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.shared.model.SharedNameModel
 
@@ -32,7 +32,7 @@ import co.anitrend.data.shared.model.SharedNameModel
  * @property name The names of the character
  * @property siteUrl The url for the character page on the AniList website
  */
-internal interface ICharacterModel : Identity {
+internal interface ICharacterModel : IEntityId<Long> {
     val description: String?
     val favourites: Int?
     val image: SharedImageModel?

@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.link.model
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.media.enums.ExternalLinkType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -40,4 +40,4 @@ data class LinkModel(
     @SerialName("site") val site: String,
     @SerialName("url") val url: String,
     @SerialName("id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

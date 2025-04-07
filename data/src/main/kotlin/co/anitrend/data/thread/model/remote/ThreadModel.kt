@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.thread.model.remote
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.thread.model.contract.IThreadModel
 import co.anitrend.data.user.model.UserModel
@@ -37,7 +37,7 @@ internal sealed class ThreadModel : IThreadModel {
     internal data class Category(
         val name: String,
         override val id: Long,
-    ) : Identity
+    ) : IEntityId<Long>
 
     internal data class Core(
         override val id: Long,

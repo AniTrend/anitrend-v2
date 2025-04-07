@@ -17,14 +17,14 @@
 package co.anitrend.data.staff.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal sealed class StaffEdge : Identity {
+internal sealed class StaffEdge : IEntityId<Long> {
     /** [StaffEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/staffedge.doc.html)
      * Staff connection edge
      *
@@ -50,5 +50,5 @@ internal sealed class StaffEdge : Identity {
         @SerialName("id") override val id: Long,
     ) : StaffEdge(),
         IEntityEdge<MediaModel>,
-        Identity
+        IEntityId<Long>
 }

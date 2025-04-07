@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.user.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.shared.model.SharedImageModel
 
 /** [User](https://anilist.github.io/ApiV2-GraphQL-Docs/user.doc.html)
@@ -35,7 +35,7 @@ import co.anitrend.data.shared.model.SharedImageModel
  * @property updatedAt When the user's data was last updated
  * @property createdAt When the user's account was created. (accounts created on/after 2020)
  */
-internal interface IUserModel : Identity {
+internal interface IUserModel : IEntityId<Long> {
     val name: String
     val avatar: SharedImageModel?
     val bannerImage: String?

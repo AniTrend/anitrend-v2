@@ -22,7 +22,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import co.anitrend.data.common.CountryCode
 import co.anitrend.data.common.FuzzyDateInt
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaSource
@@ -77,7 +77,7 @@ internal data class MediaEntity(
     @ColumnInfo(name = "volumes") val volumes: Int?,
     @ColumnInfo(name = "mal_id") val malId: Long?,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity {
+) : IEntityId<Long> {
     internal data class CoverImage(
         @ColumnInfo(name = "color") val color: String?,
         @ColumnInfo(name = "extra_large") val extraLarge: String?,

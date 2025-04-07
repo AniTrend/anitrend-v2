@@ -17,7 +17,7 @@
 package co.anitrend.data.review.model.remote.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.review.model.remote.ReviewModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,4 +30,4 @@ internal data class ReviewEdge(
     @SerialName("id") override val id: Long,
     @SerialName("node") override val node: ReviewModel.Core?,
 ) : IEntityEdge<ReviewModel>,
-    Identity
+    IEntityId<Long>

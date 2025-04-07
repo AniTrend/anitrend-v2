@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.staff.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.shared.model.SharedNameModel
 import co.anitrend.domain.staff.enums.StaffLanguage
@@ -33,7 +33,7 @@ import co.anitrend.domain.staff.enums.StaffLanguage
  * @property name The names of the staff member
  * @property siteUrl The url for the staff page on the AniList website
  */
-internal interface IStaffModel : Identity {
+internal interface IStaffModel : IEntityId<Long> {
     val description: String?
     val favourites: Int
     val image: SharedImageModel?

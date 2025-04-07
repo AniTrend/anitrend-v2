@@ -22,7 +22,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.medialist.enums.ScoreFormat
 
@@ -51,7 +51,7 @@ internal data class UserMediaOptionEntity(
     @Embedded(prefix = "anime_") val anime: MediaOption,
     @Embedded(prefix = "manga_") val manga: MediaOption,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : Identity {
+) : IEntityId<Long> {
     data class MediaOption(
         @ColumnInfo(name = "custom_lists") val customLists: List<String>,
         @ColumnInfo(name = "section_order") val sectionOrder: List<String>,

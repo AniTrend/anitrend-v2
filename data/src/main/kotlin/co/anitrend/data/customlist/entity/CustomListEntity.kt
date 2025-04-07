@@ -21,7 +21,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
@@ -66,4 +66,4 @@ internal data class CustomListEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "user_name") val userName: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : Identity
+) : IEntityId<Long>

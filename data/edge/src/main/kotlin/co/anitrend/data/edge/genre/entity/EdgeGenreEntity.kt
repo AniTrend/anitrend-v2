@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
@@ -46,4 +46,4 @@ data class EdgeGenreEntity(
     @ColumnInfo(name = "config_id") val configId: Long,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

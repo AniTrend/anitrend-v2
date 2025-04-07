@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.domain.media.enums.ExternalLinkType
 import co.anitrend.support.query.builder.annotation.EntitySchema
@@ -54,4 +54,4 @@ internal data class LinkEntity(
     @ColumnInfo(name = "site") val site: String,
     @ColumnInfo(name = "url") val url: String,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

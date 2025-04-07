@@ -19,7 +19,7 @@ package co.anitrend.data.jikan.media.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 
 @Entity(
     tableName = "jikan",
@@ -46,7 +46,7 @@ data class JikanEntity(
     @ColumnInfo(name = "synopsis") val synopsis: String? = null,
     @ColumnInfo(name = "background") val background: String? = null,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity {
+) : IEntityId<Long> {
     data class Title(
         @ColumnInfo(name = "japanese") val japanese: String? = null,
         @ColumnInfo(name = "english") val english: String? = null,

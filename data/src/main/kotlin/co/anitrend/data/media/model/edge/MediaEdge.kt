@@ -19,7 +19,7 @@ package co.anitrend.data.media.model.edge
 import co.anitrend.data.airing.model.AiringScheduleModel
 import co.anitrend.data.character.model.remote.CharacterModel
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
@@ -38,7 +38,7 @@ internal sealed class MediaEdge {
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
         IEntityEdge<AiringScheduleModel>,
-        Identity
+        IEntityId<Long>
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -61,7 +61,7 @@ internal sealed class MediaEdge {
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
         IEntityEdge<MediaModel>,
-        Identity
+        IEntityId<Long>
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -75,7 +75,7 @@ internal sealed class MediaEdge {
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
         IEntityEdge<MediaModel>,
-        Identity
+        IEntityId<Long>
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -89,7 +89,7 @@ internal sealed class MediaEdge {
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
         IEntityEdge<MediaModel>,
-        Identity
+        IEntityId<Long>
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -107,7 +107,7 @@ internal sealed class MediaEdge {
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
         IEntityEdge<CharacterModel>,
-        Identity
+        IEntityId<Long>
 
     /** [MediaEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/mediaedge.doc.html)
      * Media connection edge
@@ -122,5 +122,5 @@ internal sealed class MediaEdge {
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
         IEntityEdge<MediaModel>,
-        Identity
+        IEntityId<Long>
 }

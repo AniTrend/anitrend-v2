@@ -18,9 +18,9 @@ package co.anitrend.data.status.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 
-internal sealed class StatusEntity : Identity {
+internal sealed class StatusEntity : IEntityId<Long> {
     @Entity(tableName = "list_status")
     data class ListStatus(
         @PrimaryKey

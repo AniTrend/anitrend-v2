@@ -17,7 +17,7 @@
 package co.anitrend.data.studio.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.studio.model.StudioModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -35,7 +35,7 @@ internal sealed class StudioEdge : IEntityEdge<StudioModel> {
         @SerialName("node") override val node: StudioModel?,
         @SerialName("id") override val id: Long,
     ) : StudioEdge(),
-        Identity
+        IEntityId<Long>
 
     /** [StudioEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/studioedge.doc.html)
      * Studio connection edge
@@ -48,5 +48,5 @@ internal sealed class StudioEdge : IEntityEdge<StudioModel> {
         @SerialName("node") override val node: StudioModel?,
         @SerialName("id") override val id: Long,
     ) : StudioEdge(),
-        Identity
+        IEntityId<Long>
 }

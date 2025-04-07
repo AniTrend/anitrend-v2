@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.thread.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.model.contract.IUserModel
 
 /** [Thread](Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/thread.doc.html)
@@ -42,7 +42,7 @@ import co.anitrend.data.user.model.contract.IUserModel
  * @property userId The id of the thread owner user
  * @property viewCount The number of times users have viewed the thread
  */
-internal interface IThreadModel : Identity {
+internal interface IThreadModel : IEntityId<Long> {
     val body: String?
     val createdAt: Long
     val isLiked: Boolean

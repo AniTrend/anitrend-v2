@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.user.model
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.data.user.model.option.UserOptionsModel
@@ -78,7 +78,7 @@ internal sealed class UserModel : IUserModel {
     @Serializable
     internal data class Id(
         @SerialName("id") override val id: Long,
-    ) : Identity
+    ) : IEntityId<Long>
 
     /**
      * @param isFollowing If the authenticated user if following this user

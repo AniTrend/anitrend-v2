@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.rank.model
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
@@ -36,4 +36,4 @@ internal data class RankModel(
     @SerialName("type") val type: MediaRankType,
     @SerialName("year") val year: Int? = null,
     @SerialName("id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

@@ -22,7 +22,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
@@ -50,7 +50,7 @@ data class EdgeNavigationEntity(
     @ColumnInfo(name = "i18n") val i18n: String,
     @ColumnInfo(name = "icon") val icon: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : Identity {
+) : IEntityId<Long> {
     data class Group(
         @ColumnInfo(name = "authenticated") val authenticated: Boolean,
         @ColumnInfo(name = "i18n") val i18n: String,
