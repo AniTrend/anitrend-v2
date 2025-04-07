@@ -18,7 +18,7 @@ package co.anitrend.data.studio.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
@@ -34,4 +34,4 @@ internal data class StudioEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "site_url") val siteUrl: String,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

@@ -17,7 +17,7 @@
 package co.anitrend.data.character.model.remote.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.model.MediaModel
 import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.domain.character.enums.CharacterRole
@@ -48,7 +48,7 @@ internal sealed class CharacterEdge {
         @SerialName("media") val media: List<MediaModel.Core>? = null,
         @SerialName("id") override val id: Long,
     ) : CharacterEdge(),
-        Identity
+        IEntityId<Long>
 
     /** [CharacterEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/characteredge.doc.html)
      * Character connection edge
@@ -63,5 +63,5 @@ internal sealed class CharacterEdge {
         @SerialName("id") override val id: Long,
     ) : CharacterEdge(),
         IEntityEdge<MediaModel>,
-        Identity
+        IEntityId<Long>
 }

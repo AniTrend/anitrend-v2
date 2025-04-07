@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.notification.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.notification.enums.NotificationType
 
 /** [Notification](https://anilist.github.io/ApiV2-GraphQL-Docs/notificationunion.doc.html)
@@ -26,7 +26,7 @@ import co.anitrend.domain.notification.enums.NotificationType
  * @property createdAt The time the notification was created at
  * @property type The type of notification
  */
-internal interface INotificationModel : Identity {
+internal interface INotificationModel : IEntityId<Long> {
     val context: String?
     val createdAt: Long?
     val type: NotificationType?

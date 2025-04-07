@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
@@ -47,4 +47,4 @@ internal data class AiringScheduleEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "time_until_airing") val timeUntilAiring: Long,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

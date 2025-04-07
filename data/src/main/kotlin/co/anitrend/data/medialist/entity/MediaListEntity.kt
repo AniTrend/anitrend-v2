@@ -19,7 +19,7 @@ package co.anitrend.data.medialist.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import co.anitrend.data.common.FuzzyDateInt
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.support.query.builder.annotation.EntitySchema
@@ -48,4 +48,4 @@ internal data class MediaListEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "user_name") val userName: String,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

@@ -17,7 +17,7 @@
 package co.anitrend.data.user.entity.option
 
 import androidx.room.*
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.notification.enums.NotificationType
@@ -51,7 +51,7 @@ internal data class UserGeneralOptionEntity(
     @ColumnInfo(name = "title_language") val titleLanguage: UserTitleLanguage,
     @ColumnInfo(name = "profile_color") val profileColor: String?,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : Identity {
+) : IEntityId<Long> {
     @Serializable
     data class NotificationOption(
         @SerialName("enabled") val enabled: Boolean,

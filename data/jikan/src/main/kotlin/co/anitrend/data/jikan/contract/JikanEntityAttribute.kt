@@ -16,9 +16,9 @@
  */
 package co.anitrend.data.jikan.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 
-internal interface JikanEntityAttribute : Identity {
+internal interface JikanEntityAttribute : IEntityId<Long> {
     val jikanId: Long
     val type: String?
     val name: String?

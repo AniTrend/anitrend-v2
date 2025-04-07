@@ -21,7 +21,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
@@ -57,4 +57,4 @@ internal data class TagConnectionEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "tag_id") val tagId: Long,
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-) : Identity
+) : IEntityId<Long>

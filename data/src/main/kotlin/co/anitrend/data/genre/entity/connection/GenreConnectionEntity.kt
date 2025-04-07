@@ -21,7 +21,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
@@ -55,4 +55,4 @@ internal data class GenreConnectionEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "genre_id") val genreId: Long,
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-) : Identity
+) : IEntityId<Long>

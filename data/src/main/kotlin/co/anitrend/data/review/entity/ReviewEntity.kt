@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.review.enums.ReviewRating
@@ -66,4 +66,4 @@ internal data class ReviewEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "user_rating") val userRating: ReviewRating,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

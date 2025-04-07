@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
@@ -55,4 +55,4 @@ internal data class RankEntity(
     @ColumnInfo(name = "type") val type: MediaRankType,
     @ColumnInfo(name = "year") val year: Int?,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

@@ -17,7 +17,7 @@
 package co.anitrend.data.user.entity.statistic
 
 import androidx.room.*
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.model.statistics.UserStatisticModel
 import kotlinx.serialization.SerialName
@@ -40,7 +40,7 @@ internal data class UserWithStatisticEntity(
     @Embedded(prefix = "statistic_") val statistic: Statistic,
     @ColumnInfo(name = "user_id") val userId: Long,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : Identity {
+) : IEntityId<Long> {
     @Serializable
     data class Statistic(
         @SerialName("anime") @ColumnInfo(name = "anime") val anime: UserStatisticModel.Anime?,

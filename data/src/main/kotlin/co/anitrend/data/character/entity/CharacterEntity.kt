@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import co.anitrend.data.common.FuzzyDateInt
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 
 @Entity(
     tableName = "character",
@@ -39,7 +39,7 @@ internal data class CharacterEntity(
     @Embedded(prefix = "name_") val name: Name,
     @ColumnInfo(name = "site_url") val siteUrl: String,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity {
+) : IEntityId<Long> {
     data class CoverImage(
         @ColumnInfo(name = "large") val large: String? = null,
         @ColumnInfo(name = "medium") val medium: String? = null,

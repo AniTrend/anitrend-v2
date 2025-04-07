@@ -19,7 +19,7 @@ package co.anitrend.data.media.model.contract
 import co.anitrend.data.airing.model.contract.IAiringScheduleModel
 import co.anitrend.data.common.CountryCode
 import co.anitrend.data.common.model.date.contract.IFuzzyDateModel
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.media.enums.*
 
 /** [Media](https://anilist.github.io/ApiV2-GraphQL-Docs/media.doc.html)
@@ -55,7 +55,7 @@ import co.anitrend.domain.media.enums.*
  * @property nextAiringEpisode The media's next episode airing schedule
  * @property mediaListEntry The authenticated user's media list entry for the media
  */
-internal interface IMediaModel : Identity {
+internal interface IMediaModel : IEntityId<Long> {
     val idMal: Long?
     val bannerImage: String?
     val type: MediaType

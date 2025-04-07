@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.tag.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 
 /** [MediaTag](https://anilist.github.io/ApiV2-GraphQL-Docs/mediatag.doc.html)
  * A tag that describes a theme or element of the media
@@ -28,7 +28,7 @@ import co.anitrend.data.core.common.Identity
  * @property isAdult If the tag is only for adult 18+ media
  * @property id The id of the tag
  */
-internal interface ITagModel : Identity {
+internal interface ITagModel : IEntityId<Long> {
     val name: String
     val description: String?
     val category: String?

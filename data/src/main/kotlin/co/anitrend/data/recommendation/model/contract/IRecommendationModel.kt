@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.recommendation.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.model.contract.IMediaModel
 import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.domain.recommendation.enums.RecommendationRating
@@ -30,7 +30,7 @@ import co.anitrend.domain.recommendation.enums.RecommendationRating
  * @property user The user that first created the recommendation
  * @property userRating The rating of the recommendation by currently authenticated user
  */
-internal interface IRecommendationModel : Identity {
+internal interface IRecommendationModel : IEntityId<Long> {
     val rating: Int?
     val user: IUserModel?
     val media: IMediaModel?

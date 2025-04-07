@@ -17,7 +17,7 @@
 package co.anitrend.data.medialist.model.contract
 
 import co.anitrend.data.common.model.date.contract.IFuzzyDateModel
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.model.contract.IUserModel
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
@@ -42,7 +42,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
  * @property updatedAt When the entry data was last updated
  * @property user The owner of the list entry
  */
-internal interface IMediaListModel : Identity {
+internal interface IMediaListModel : IEntityId<Long> {
     val advancedScores: Map<String, Float>?
     val customLists: Collection<ICustomList>?
     val completedAt: IFuzzyDateModel?

@@ -21,7 +21,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.entity.UserEntity
 
 @Entity(
@@ -47,4 +47,4 @@ internal data class UserPreviousNameEntity(
     @ColumnInfo(name = "name") val name: CharSequence,
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : Identity
+) : IEntityId<Long>

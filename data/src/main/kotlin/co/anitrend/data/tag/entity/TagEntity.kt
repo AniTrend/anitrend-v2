@@ -19,7 +19,7 @@ package co.anitrend.data.tag.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
@@ -44,4 +44,4 @@ internal data class TagEntity(
     @ColumnInfo(name = "is_general_spoiler") val isGeneralSpoiler: Boolean,
     @ColumnInfo(name = "is_adult") val isAdult: Boolean,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity
+) : IEntityId<Long>

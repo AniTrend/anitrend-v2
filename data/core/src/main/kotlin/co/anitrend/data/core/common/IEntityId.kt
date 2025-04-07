@@ -21,6 +21,6 @@ package co.anitrend.data.core.common
  *
  * @property id The id of the model/entity
  */
-interface Identity {
-    val id: Long
+interface IEntityId<T> {
+    val id: T
 }

@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.status.model.contract
 
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.domain.status.enums.StatusType
 
 /** [Activity](https://anilist.github.io/ApiV2-GraphQL-Docs/activityunion.doc.html)
@@ -30,7 +30,7 @@ import co.anitrend.domain.status.enums.StatusType
  * @property type The type of activity
  * @property id The id of the activity
  */
-internal interface IStatusModel : Identity {
+internal interface IStatusModel : IEntityId<Long> {
     val createdAt: Long
     val isLiked: Boolean?
     val likeCount: Int

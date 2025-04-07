@@ -20,7 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
-import co.anitrend.data.core.common.Identity
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
@@ -38,7 +38,7 @@ internal data class UserEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: Long?,
     @ColumnInfo(name = "created_at") val createdAt: Long?,
     @ColumnInfo(name = "id") override val id: Long,
-) : Identity {
+) : IEntityId<Long> {
     data class About(
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "bio") val bio: String?,
