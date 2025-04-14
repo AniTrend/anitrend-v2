@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
+import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.common.markdown.ui.widget.MarkdownTextWidget
 import co.anitrend.domain.common.entity.contract.ISynopsis
@@ -29,13 +30,14 @@ import co.anitrend.domain.common.entity.contract.ISynopsis
 fun MarkdownText(
     content: CharSequence?,
     modifier: Modifier = Modifier,
+    flavour: MarkdownFlavour = MarkdownFlavour.ANILIST,
 ) {
     val onSurfaceColor = MaterialTheme.colorScheme.onSurface.toArgb()
     AndroidView(
         factory = ::MarkdownTextWidget,
         update = { widget ->
             widget.setTextColor(onSurfaceColor)
-            widget.setContent(content)
+            widget.setContent(text = content, flavour = flavour)
         },
         onReset = { widget ->
             widget.text = String.empty()
@@ -49,4 +51,9 @@ fun MarkdownText(
 fun MarkdownText(
     synopsis: ISynopsis,
     modifier: Modifier = Modifier,
-) = MarkdownText(synopsis.description, modifier)
+    flavour: MarkdownFlavour = MarkdownFlavour.ANILIST,
+) = MarkdownText(
+    content = synopsis.description,
+    modifier = modifier,
+    flavour = flavour,
+)
