@@ -24,17 +24,11 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.Data.feed))
     implementation(project(Libraries.AniTrend.CommonUi.episode))
+    implementation(project(Libraries.AniTrend.CommonUi.markdown))
 
     implementation(libs.androidx.browser)
 
-    implementation(libs.saket.betterlinkmovementmethod)
     implementation(libs.jsoup)
-
-    /** Markwon */
-    implementation(libs.markwon.core)
-    implementation(libs.markwon.html)
-    implementation(libs.markwon.linkify)
-    implementation(libs.markwon.coil)
 }
 
 android {
