@@ -16,43 +16,34 @@
  */
 package co.anitrend.episode.component.sheet.viewmodel
 
-import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import co.anitrend.arch.extension.ext.empty
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.feed.episode.EpisodeDetailInteractor
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
-import co.anitrend.episode.R
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 import org.jsoup.Jsoup
+import timber.log.Timber
 
 class EpisodeSheetViewModel(
     private val interactor: EpisodeDetailInteractor,
 ) : AniTrendViewModelState<Episode>() {
-    val documentHtml = MutableLiveData<String>()
+    override val model: LiveData<Episode> =
+        state.switchMap {
+            Timber.i("Performing `model` switch map using ${viewModelScope.coroutineContext} on $this")
+            it.model
+                .map { model ->
+                    val description = model.description.orEmpty()
+                    val document = Jsoup.parse(description).html()
+                    model.copy(description = document)
+                }.asLiveData(viewModelScope.coroutineContext)
+        }
 
     operator fun invoke(param: EpisodeParam.Detail) {
         val result = interactor(param)
         state.postValue(result)
-    }
-
-    fun buildHtml(
-        episode: Episode,
-        context: Context,
-    ) {
-        viewModelScope.launch {
-            val description = episode.description
-            val content =
-                if (description.isNullOrBlank()) {
-                    context.getString(R.string.label_episode_has_no_summary, episode.about.episodeTitle)
-                } else {
-                    episode.description ?: String.empty()
-                }
-
-            val document = Jsoup.parse(content)
-            documentHtml.postValue(document.html())
-        }
     }
 }

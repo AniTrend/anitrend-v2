@@ -17,7 +17,6 @@
 package co.anitrend.episode.koin
 
 import co.anitrend.common.episode.ui.adapter.EpisodePagedAdapter
-import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
@@ -27,8 +26,8 @@ import co.anitrend.episode.provider.FeatureProvider
 import co.anitrend.navigation.EpisodeRouter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.fragment.dsl.fragmentOf
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 private val fragmentModule =
@@ -44,11 +43,7 @@ private val fragmentModule =
                     ),
             )
         }
-        fragment {
-            EpisodeSheet(
-                markwon = get(named(MarkdownFlavour.STANDARD)),
-            )
-        }
+        fragmentOf(::EpisodeSheet)
     }
 
 private val viewModelModule =
