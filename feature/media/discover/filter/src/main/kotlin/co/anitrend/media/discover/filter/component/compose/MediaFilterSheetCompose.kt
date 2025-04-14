@@ -31,10 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.navigation.MediaDiscoverRouter
 
 @Composable
@@ -98,7 +98,7 @@ fun MediaFilterSheetScreen(
 
 @AniTrendPreview.Default
 @Composable
-fun MediaFilterSheetScreenPreview(
+private fun MediaFilterSheetScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
