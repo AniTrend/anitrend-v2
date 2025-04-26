@@ -25,7 +25,7 @@ androidx-recycler = "1.4.0"
 androidx-room = "2.7.1"
 androidx-test-espresso = "3.6.1"
 androidx-test-ext = "1.2.1"
-androidx-work = "2.10.0"
+androidx-work = "2.10.1"
 
 anitrend-arch = "1.8.10"
 anitrend-emojify = "1.9.7"
