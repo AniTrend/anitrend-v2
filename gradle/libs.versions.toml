@@ -219,7 +219,7 @@ airbnb-paris-processor = { module = "com.airbnb.android:paris-processor", versio
 blitz = { module = "com.github.perfomer:blitz", version.ref = "blitz" }
 
 cash-copper = { module = "app.cash.copper:copper-flow", version = "1.0.0" }
-cash-turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
+cash-turbine = { module = "app.cash.turbine:turbine", version = "1.2.1" }
 
 chuncker-debug = { module = "com.github.ChuckerTeam.Chucker:library", version.ref = "chuncker" }
 chuncker-release = { module = "com.github.ChuckerTeam.Chucker:library-no-op", version.ref = "chuncker" }
