@@ -53,12 +53,12 @@ jetbrains-kotlinx-coroutines = "1.10.2"
 jetbrains-kotlinx-datetime = "0.6.2"
 jetbrains-kotlinx-serialization = "1.8.1"
 
-koin-core = "4.0.4"
-koin-test = "4.0.4"
-koin-android = "4.0.4"
-koin-androidx-navigation = "4.0.4"
-koin-androidx-workManager = "4.0.4"
-koin-android-compose = "4.0.4"
+koin-core = "4.1.0"
+koin-test = "4.1.0"
+koin-android = "4.1.0"
+koin-androidx-navigation = "4.1.0"
+koin-androidx-workManager = "4.1.0"
+koin-android-compose = "4.1.0"
 
 markwon = "4.6.2"
 
