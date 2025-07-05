@@ -66,7 +66,7 @@ mockk = "1.14.4"
 
 square-kotlinpoet = "2.2.0"
 square-leakcanary = "2.14"
-square-okhttp = "4.12.0"
+square-okhttp = "5.0.0"
 square-retrofit = "3.0.0"
 
 sheets = "2.3.1"
