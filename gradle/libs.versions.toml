@@ -256,7 +256,7 @@ google-android-material = { module = "com.google.android.material:material", ver
 google-android-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter-3", version = "1.1.1" }
 
 google-gms-google-services = { module = "com.google.gms:google-services", version = "4.4.3" }
-google-android-gsm-playServicesOssLicenses = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.1.0" }
+google-android-gsm-playServicesOssLicenses = { module = "com.google.android.gms:play-services-oss-licenses", version = "17.2.0" }
 
 google-devtools-ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "google-devtools-ksp" }
 
