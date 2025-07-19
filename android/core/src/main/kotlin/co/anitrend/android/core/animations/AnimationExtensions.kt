@@ -126,6 +126,8 @@ fun Float.normalize(
         return outputMax
     }
 
-    return outputMin * (1 - (this - inputMin) / (inputMax - inputMin)) +
-        outputMax * ((this - inputMin) / (inputMax - inputMin))
+    return outputMin *
+        (1 - (this - inputMin) / (inputMax - inputMin)) +
+        outputMax *
+        ((this - inputMin) / (inputMax - inputMin))
 }

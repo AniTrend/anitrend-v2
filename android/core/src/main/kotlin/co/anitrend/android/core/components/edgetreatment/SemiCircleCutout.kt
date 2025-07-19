@@ -79,8 +79,10 @@ class SemiCircleCutout(
         roundedCornerOffset = interpolation * cutoutRoundedCornerRadius
         middle = length / 2f + cutoutHorizontalOffset
 
-        verticalOffset = interpolation * cutoutVerticalOffset +
-            (1 - interpolation) * cradleRadius
+        verticalOffset = interpolation *
+            cutoutVerticalOffset +
+            (1 - interpolation) *
+            cradleRadius
         verticalOffsetRatio = verticalOffset / cradleRadius
 
         if (verticalOffsetRatio >= 1.0f) {

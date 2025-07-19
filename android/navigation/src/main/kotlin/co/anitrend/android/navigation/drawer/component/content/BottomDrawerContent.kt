@@ -193,7 +193,8 @@ class BottomDrawerContent(
             sheetBackgroundContainer.translationY = progress *
                 (
                     (
-                        scrimView.bottom - accountRecycler.height -
+                        scrimView.bottom -
+                            accountRecycler.height -
                             resources.getDimension(co.anitrend.android.core.R.dimen.design_bottom_app_bar_height)
                     ) -
                         (sheetBackgroundContainer.getTag(R.id.tag_view_top_snapshot) as Int)
