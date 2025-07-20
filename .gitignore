@@ -244,3 +244,5 @@ jacoco.exec
 .idea/
 
 .kotlin/
+
+app/playstore-service-account.json
