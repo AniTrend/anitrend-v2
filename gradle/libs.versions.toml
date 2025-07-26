@@ -1,6 +1,6 @@
 [versions]
 annotatedtext = "1.0.3"
-ktlint = "1.7.0"
+ktlint = "1.7.1"
 
 gradle-plugin = "8.11.1"
 
