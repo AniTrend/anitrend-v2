@@ -43,33 +43,33 @@ internal class GenreModelConverter(
     override val toType: (GenreEntity) -> GenreCollection.GenreModel = { throw NotImplementedError() },
 ) : SupportConverter<GenreCollection.GenreModel, GenreEntity>() {
     private companion object {
-        fun EmojiManager.withAlias(alias: String): String {
-            val emoji = getForAlias(alias)
+        fun EmojiManager.withShortCode(alias: String): String {
+            val emoji = getForTag(alias)?.firstOrNull()
             return emoji?.emoji.orEmpty()
         }
 
         fun EmojiManager.getEmojiFor(genre: String): String =
             when (genre) {
-                "Action" -> withAlias("cowboy")
-                "Adventure" -> withAlias("rocket")
-                "Comedy" -> withAlias("rofl")
-                "Drama" -> withAlias("speak_no_evil")
-                "Ecchi" -> withAlias("smirk")
-                "Fantasy" -> withAlias("art")
-                "Hentai" -> withAlias("eggplant")
-                "Horror" -> withAlias("scream")
-                "Mahou Shoujo" -> withAlias("woman_mage")
-                "Mecha" -> withAlias("robot_face")
-                "Music" -> withAlias("saxophone")
-                "Mystery" -> withAlias("detective")
-                "Psychological" -> withAlias("weary")
-                "Romance" -> withAlias("couplekiss")
-                "Sci-Fi" -> withAlias("space_invader")
-                "Slice of Life" -> withAlias("couple")
-                "Sports" -> withAlias("basketball")
-                "Supernatural" -> withAlias("ghost")
-                "Thriller" -> withAlias("dagger")
-                else -> withAlias("question")
+                "Action" -> withShortCode("cowboy")
+                "Adventure" -> withShortCode("rocket")
+                "Comedy" -> withShortCode("rofl")
+                "Drama" -> withShortCode("speak_no_evil")
+                "Ecchi" -> withShortCode("smirk")
+                "Fantasy" -> withShortCode("art")
+                "Hentai" -> withShortCode("eggplant")
+                "Horror" -> withShortCode("scream")
+                "Mahou Shoujo" -> withShortCode("woman_mage")
+                "Mecha" -> withShortCode("robot_face")
+                "Music" -> withShortCode("saxophone")
+                "Mystery" -> withShortCode("detective")
+                "Psychological" -> withShortCode("weary")
+                "Romance" -> withShortCode("couplekiss")
+                "Sci-Fi" -> withShortCode("space_invader")
+                "Slice of Life" -> withShortCode("couple")
+                "Sports" -> withShortCode("basketball")
+                "Supernatural" -> withShortCode("ghost")
+                "Thriller" -> withShortCode("dagger")
+                else -> withShortCode("question")
             }
 
         fun transform(
