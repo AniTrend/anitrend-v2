@@ -89,7 +89,7 @@ timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 junit = { module = "junit:junit", version = "4.13.2" }
 
 treessence = { module = "com.github.bastienpaulfr:Treessence", version = "1.1.2" }
-tmdb = { module = "com.uwetrottmann.tmdb2:tmdb-java", version = "2.11.0" }
+tmdb = { module = "com.uwetrottmann.tmdb2:tmdb-java", version = "2.12.0" }
 trakt = { module = "com.uwetrottmann.trakt5:trakt-java", version = "6.16.0" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.21.1" }
 scalingImageView = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version = "3.10.0" }
