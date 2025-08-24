@@ -16,19 +16,22 @@
  */
 package co.anitrend.media.component.screen
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.common.shared.ui.extension.shareContent
-import co.anitrend.android.core.compose.design.ContentWrapper
-import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.extensions.startViewIntent
 import co.anitrend.core.ui.inject
 import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.component.compose.MediaScreenContent
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
@@ -60,10 +63,12 @@ class MediaScreen : AniTrendScreen() {
                     onLoad = viewModel::invoke,
                     onClick = viewModel::retry,
                 ) {
+                    val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_100)
                     MediaScreenContent(
                         mediaState = viewModelState(),
+                        scoreFormat = scoreFormat,
                         onMyAnimeListButtonClick = { url ->
-                            startViewIntent(Uri.parse(url))
+                            startViewIntent(url.toUri())
                         },
                         onBookmarkButtonClick = { view, media ->
                             view.openMediaListSheetFor(media, settings)

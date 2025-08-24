@@ -23,19 +23,20 @@ import co.anitrend.domain.common.enums.contract.IAliasable
  */
 enum class ScoreFormat(
     override val alias: CharSequence,
+    val base: Number,
 ) : IAliasable {
     /** An integer from 0-10 */
-    POINT_10("Point 0-10"),
+    POINT_10("Point 0-10", 10),
 
     /** An integer from 0-100 */
-    POINT_100("Point 0-100"),
+    POINT_100("Point 0-100", 100),
 
     /** A float from 0-10 with 1 decimal place */
-    POINT_10_DECIMAL("Point 0.0-10.0"),
+    POINT_10_DECIMAL("Point 0.0-10.0", 10f),
 
     /** An integer from 0-3. Should be represented in Smileys. 0 => No Score, 1 => :(, 2 => :|, 3 => :) */
-    POINT_3("Point 0-3"),
+    POINT_3("Point 0-3", 3),
 
     /** An integer from 0-5. Should be represented in Stars */
-    POINT_5("Point 0-5"),
+    POINT_5("Point 0-5", 5),
 }

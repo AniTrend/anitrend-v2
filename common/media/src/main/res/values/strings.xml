@@ -79,4 +79,11 @@
 
     <string name="label_carousel_recently_added_manga">Recently Added • Manga</string>
     <string name="label_carousel_recently_added_manga_description">Manga that has been recently added.</string>
+
+
+    <string name="label_media_score_section_your_rating">Your rating</string>
+    <string name="label_media_score_section_popularity_footer_suffix">ratings</string>
+    <string name="placeholder_media_score_section_rating" translatable="false">—</string>
+    <string name="label_media_score_section_community">Community</string>
+    <string name="label_media_rank_section_show_all_rankings">Show all rankings</string>
 </resources>

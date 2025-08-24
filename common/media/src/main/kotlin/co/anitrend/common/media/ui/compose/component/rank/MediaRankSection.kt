@@ -32,18 +32,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.media.ui.R
 import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.navigation.model.sorting.Sorting
 
 @Composable
-private fun MediaRankGroupHeader(modifier: Modifier = Modifier) {
+private fun MediaRankSectionHeader(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Icon(
             painter = painterResource(co.anitrend.common.media.ui.R.drawable.ic_trophy),
@@ -65,7 +67,7 @@ private fun MediaRankGroupHeader(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MediaRankGroup(
+fun MediaRankSection(
     ranks: List<IMediaRank>,
     onClick: (IMediaRank, List<Sorting<MediaSort>>) -> Unit,
     modifier: Modifier = Modifier,
@@ -79,7 +81,7 @@ fun MediaRankGroup(
         modifier = modifier,
     ) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
-            MediaRankGroupHeader()
+            MediaRankSectionHeader()
             Spacer(modifier = Modifier.padding(bottom = 8.dp))
             ranks.take(2).forEachIndexed { index, rank ->
                 MediaRankItem(
@@ -91,11 +93,12 @@ fun MediaRankGroup(
             if (ranks.size > 2) {
                 TextButton(
                     onClick = {
-                        // TODO: Create a bottom sheet for this? We'll probably have many similar use-case
+                    // TODO: Create a bottom sheet for this? We'll probably have many similar
+                    //  use-case otherwise we should just show the of them?
                     },
                     content = {
                         Text(
-                            text = "View all rankings",
+                            text = stringResource(R.string.label_media_rank_section_show_all_rankings),
                             textAlign = TextAlign.Start,
                             style = MaterialTheme.typography.bodyMedium,
                         )
@@ -109,11 +112,11 @@ fun MediaRankGroup(
 
 @AniTrendPreview.Default
 @Composable
-private fun MediaRankGroupPreview(
+private fun MediaRankSectionPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
-        MediaRankGroup(
+        MediaRankSection(
             ranks = MediaRankPreviewProvider().values.toList(),
             onClick = { _, _ -> },
             modifier =
