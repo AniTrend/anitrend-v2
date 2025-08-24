@@ -78,7 +78,7 @@ internal class GenreModelConverter(
         ) = GenreEntity(
             id = source.id,
             genre = source.genre,
-            emoji =
+            emoji = // TODO: when we update to android-emojify 2.1.0 change this to `emojiManage.getShortCodeFor`
                 emojiManager.getEmojiFor(
                     source.genre,
                 ),

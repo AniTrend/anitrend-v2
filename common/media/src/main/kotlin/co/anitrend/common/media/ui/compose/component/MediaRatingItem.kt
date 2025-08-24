@@ -37,9 +37,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.anitrend.common.media.ui.R
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.media.ui.R
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.score.IMediaRating
 import co.anitrend.domain.media.entity.attribute.score.IMediaScore
@@ -63,9 +63,10 @@ private fun ScoreContent(
 }
 
 @Composable
-private fun IconScoreContent(
+fun IconScoreContent(
     rating: IMediaRating.Mood,
     iconTint: Color = Color.White,
+    modifier: Modifier = Modifier.size(14.dp),
 ) {
     val iconRes =
         when (rating.sentiment) {
@@ -78,7 +79,7 @@ private fun IconScoreContent(
         painter = painterResource(id = iconRes),
         contentDescription = null,
         tint = iconTint,
-        modifier = Modifier.size(14.dp),
+        modifier = modifier,
     )
 }
 
@@ -183,6 +184,8 @@ private fun MediaRatingPreview() {
                         average = 69,
                         mean = 70,
                         personal = null,
+                        popularity = 4_000,
+                        trending = 800,
                     ),
                 mediaList =
                     MediaList.Core.empty().copy(

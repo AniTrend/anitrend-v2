@@ -29,18 +29,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
-import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
+import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.attribute.score.IMediaScore
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.navigation.ImageViewerRouter
 
@@ -85,24 +82,8 @@ private fun MediaTitle(
 }
 
 @Composable
-private fun MediaScore(
-    accentColor: Color,
-    mediaScore: IMediaScore,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = "${mediaScore.mean}%",
-        color = accentColor,
-        fontWeight = FontWeight.Bold,
-        style = MaterialTheme.typography.bodySmall,
-        modifier = modifier,
-    )
-}
-
-@Composable
 fun MediaSummarySection(
     media: Media,
-    accentColor: Color,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -128,10 +109,6 @@ fun MediaSummarySection(
             )
             MediaReleaseStatus(media)
             MediaSubTitleText(media = media)
-            MediaScore(
-                accentColor = accentColor,
-                mediaScore = media.score,
-            )
         }
     }
 }

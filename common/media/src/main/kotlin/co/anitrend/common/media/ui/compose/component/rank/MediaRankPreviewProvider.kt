@@ -23,7 +23,7 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
 
-internal class MediaRankPreviewProvider(
+internal data class MediaRankPreviewProvider(
     override val values: Sequence<IMediaRank> =
         sequenceOf(
             MediaRank(

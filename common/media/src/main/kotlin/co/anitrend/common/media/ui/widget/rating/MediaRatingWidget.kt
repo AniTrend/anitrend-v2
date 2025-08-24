@@ -26,6 +26,8 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.extensions.format
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.gone
@@ -33,8 +35,6 @@ import co.anitrend.arch.extension.ext.updateMargins
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.common.media.ui.R
-import co.anitrend.android.core.extensions.dp
-import co.anitrend.android.core.extensions.format
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.extension.isValid
 import co.anitrend.domain.media.entity.Media
@@ -295,6 +295,9 @@ internal class MediaRatingWidget
                             MediaScore(
                                 average = 69,
                                 mean = 70,
+                                personal = null,
+                                popularity = null,
+                                trending = null
                             ),
                         mediaList =
                             MediaList.Core.empty().copy(
