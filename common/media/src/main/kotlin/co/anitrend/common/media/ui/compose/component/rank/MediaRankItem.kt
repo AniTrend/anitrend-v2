@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.component.rank
 
 import androidx.compose.foundation.clickable
@@ -34,54 +50,58 @@ fun MediaRankItem(
     onClick: (IMediaRank, List<Sorting<MediaSort>>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val content = remember(rank.id) {
-        buildString {
-            append(rank.context.toString().capitalizeWords())
-            rank.season?.let { append(" $CHARACTER_SEPARATOR ${it.alias}") }
-            rank.year?.let { append(" $CHARACTER_SEPARATOR $it") }
-            append(" $CHARACTER_SEPARATOR ${rank.format.alias}")
+    val content =
+        remember(rank.id) {
+            buildString {
+                append(rank.context.toString().capitalizeWords())
+                rank.season?.let { append(" $CHARACTER_SEPARATOR ${it.alias}") }
+                rank.year?.let { append(" $CHARACTER_SEPARATOR $it") }
+                append(" $CHARACTER_SEPARATOR ${rank.format.alias}")
+            }
         }
-    }
-    Row(modifier = modifier.clickable(
-        enabled = true,
-        onClick = {
-            val sorting =
-                when (rank.type) {
-                    MediaRankType.RATED ->
-                        Sorting(
-                            sortable = MediaSort.SCORE,
-                            order = SortOrder.DESC,
-                        )
-                    else ->
-                        Sorting(
-                            sortable = MediaSort.POPULARITY,
-                            order = SortOrder.DESC,
-                        )
-                }
-            onClick(rank, listOf(sorting))
-        },
-        role = Role.Button,
-        onClickLabel = "null"
-        )
+    Row(
+        modifier =
+            modifier.clickable(
+                enabled = true,
+                onClick = {
+                    val sorting =
+                        when (rank.type) {
+                            MediaRankType.RATED ->
+                                Sorting(
+                                    sortable = MediaSort.SCORE,
+                                    order = SortOrder.DESC,
+                                )
+                            else ->
+                                Sorting(
+                                    sortable = MediaSort.POPULARITY,
+                                    order = SortOrder.DESC,
+                                )
+                        }
+                    onClick(rank, listOf(sorting))
+                },
+                role = Role.Button,
+                onClickLabel = "null",
+            ),
     ) {
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f),
+            modifier =
+                Modifier
+                    .align(Alignment.CenterVertically)
+                    .weight(1f),
         )
         Box {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.Numbers,
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(16.dp),
                 )
                 Spacer(modifier = Modifier.size(4.dp))
                 Text(
                     text = "${rank.rank}",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }
@@ -98,8 +118,7 @@ private fun MediaRankItemPreview(
         MediaRankItem(
             rank = rank,
             onClick = { _, _ -> },
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
         )
     }
 }
-
