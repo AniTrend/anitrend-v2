@@ -50,12 +50,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import co.anitrend.common.genre.ui.compose.GenresListComponent
-import co.anitrend.common.markdown.ui.compose.MarkdownText
-import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.common.media.ui.compose.section.MediaSummarySection
-import co.anitrend.common.media.ui.compose.widget.ranking.RankingItems
-import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.compose.design.image.AniTrendImageDefaults
@@ -63,6 +57,12 @@ import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.genre.ui.compose.GenresListComponent
+import co.anitrend.common.markdown.ui.compose.MarkdownText
+import co.anitrend.common.media.ui.compose.component.rank.MediaRankGroup
+import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
+import co.anitrend.common.media.ui.compose.section.MediaSummarySection
+import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -124,7 +124,22 @@ private fun MediaDetailContent(
                         Modifier
                             .absoluteOffset(y = (-16).dp),
                 )
-                RankingItems(
+                MediaRankGroup(
+                    ranks = media.rankings.toList(),
+                    onClick = { rank, sorting ->
+                        onMediaDiscoverableItemClick(
+                            MediaDiscoverRouter.MediaDiscoverParam(
+                                type = media.category.type,
+                                format = media.format,
+                                season = media.season,
+                                seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
+                                startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
+                                sort = sorting,
+                            ),
+                        )
+                    },
+                )
+                /*RankingItems(
                     accentColor = accentColor,
                     rankings = media.rankings.toList(),
                     onClick = { rank, sorting ->
@@ -139,7 +154,7 @@ private fun MediaDetailContent(
                             ),
                         )
                     },
-                )
+                )*/
                 GenresListComponent(
                     genres = media.genres as List<Genre>,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
