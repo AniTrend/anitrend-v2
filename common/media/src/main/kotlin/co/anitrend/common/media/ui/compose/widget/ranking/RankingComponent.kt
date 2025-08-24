@@ -99,6 +99,7 @@ private fun RankingItem(
     )
 }
 
+@Deprecated("Use MediaRankSection instead")
 @Composable
 fun RankingItems(
     accentColor: Color,

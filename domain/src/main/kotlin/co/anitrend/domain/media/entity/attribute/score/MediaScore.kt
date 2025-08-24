@@ -55,7 +55,23 @@ data class MediaScore(
                     in 67..100 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.GOOD)
                     else -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NONE)
                 }
+            ScoreFormat.POINT_10_DECIMAL -> IMediaRating.Text(score = "%.1f".format(myScore))
+            else -> IMediaRating.Text(score = myScore.toString())
         }
+    }
+
+    override fun asFormattedCommunity(scoreFormat: ScoreFormat): IMediaRating = when (scoreFormat) {
+        ScoreFormat.POINT_100 -> IMediaRating.Text(score = mean.toString())
+        ScoreFormat.POINT_10 -> IMediaRating.Text(score = (mean / 10).toString())
+        ScoreFormat.POINT_5 -> IMediaRating.Text(score = (mean * 5 / 100).toString())
+        ScoreFormat.POINT_10_DECIMAL -> IMediaRating.Text(score = "%.1f".format(mean / 10f))
+        else -> when (average) {
+            in 1..33 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.BAD)
+            in 34..66 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NEUTRAL)
+            in 67..100 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.GOOD)
+            else -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NONE)
+        }
+    }
 
     companion object {
         fun empty() =
