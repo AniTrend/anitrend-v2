@@ -21,20 +21,40 @@ categories:
     labels:
       - ':dagger: dependencies'
     collapse-after: 5
+  - title: '🧪 Testing'
+    labels:
+      - ':test_tube: test'
+    collapse-after: 5
+  - title: '🏗️ Build & CI'
+    labels:
+      - ':building_construction: build'
+      - ':construction_worker: ci'
+    collapse-after: 5
+  - title: '⏪ Reverts'
+    labels:
+      - ':rewind: revert'
+    collapse-after: 5
+  - title: '📚 Documentation'
+    labels:
+      - ':books: docs'
+    collapse-after: 5
   - title: '🔖 Other changes'
 autolabeler:
   - label: ':books: docs'
     files:
       - '*.md'
     branch:
-      - '/docs{0,1}\/.+/'
+      - '/docs\/.+/'
+      - '/docs{0,1}\/.+/'  # Keep backward compatibility
   - label: ':adhesive_bandage: bug fix'
     branch:
-      - '/bugfix\/.+/'
-      - '/hotfix\/.+/'
+      - '/fix\/.+/'
+      - '/bugfix\/.+/'     # Keep backward compatibility
+      - '/hotfix\/.+/'     # Keep backward compatibility
   - label: ':star2: feature'
     branch:
-      - '/feature\/.+/'
+      - '/feat\/.+/'
+      - '/feature\/.+/'    # Keep backward compatibility
   - label: ':wrench: enhancement'
     branch:
       - '/enhancement\/.+/'
@@ -43,8 +63,21 @@ autolabeler:
       - '/refactor\/.+/'
   - label: ':dagger: dependencies'
     branch:
-      - '/dependencies\/.+/'
-      - '/renovate\/.+/'
+      - '/chore\/.+/'
+      - '/dependencies\/.+/'  # Keep backward compatibility
+      - '/renovate\/.+/'       # Keep backward compatibility
+  - label: ':test_tube: test'
+    branch:
+      - '/test\/.+/'
+  - label: ':building_construction: build'
+    branch:
+      - '/build\/.+/'
+  - label: ':construction_worker: ci'
+    branch:
+      - '/ci\/.+/'
+  - label: ':rewind: revert'
+    branch:
+      - '/revert\/.+/'
 change-template: '- $TITLE by @$AUTHOR in #$NUMBER'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
