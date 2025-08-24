@@ -126,9 +126,11 @@ private fun StackRating(
     label: String,
 ) {
     Column(modifier = modifier) {
+        // Always show the label first
+        LabelText(text = label)
+
         when (rating) {
             is IMediaRating.Mood -> {
-                LabelText(text = label)
                 IconScoreContent(
                     rating = rating,
                     iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -136,9 +138,10 @@ private fun StackRating(
                 )
             }
             is IMediaRating.Text -> {
-                LabelText(text = label)
+                // Normalize zero-like values to null so we render the placeholder
+                val normalized: String? = rating.score.takeUnless { it.isZeroLike() }
                 ValueOutOf(
-                    value = rating.score,
+                    value = normalized,
                     showSuffix = showSuffix,
                     placeholder = stringResource(R.string.placeholder_media_score_section_rating),
                 )
@@ -151,7 +154,14 @@ private fun StackRating(
                 }
             }
 
-            else -> Unit
+            // When rating is null, show placeholder
+            else -> {
+                ValueOutOf(
+                    value = null,
+                    showSuffix = showSuffix,
+                    placeholder = stringResource(R.string.placeholder_media_score_section_rating),
+                )
+            }
         }
     }
 }
@@ -238,6 +248,19 @@ private fun ColorScheme.outlineVariantOnSurface(): Color =
     } catch (_: Throwable) {
         outline.copy(alpha = 0.4f)
     }
+
+/**
+ * Returns true if the string represents a numeric zero (e.g., "0", "0.0", "00").
+ *
+ * This is used to normalize zero-like numerical strings to null so that
+ * UI can show a consistent placeholder instead of an unhelpful "0" score.
+ */
+private fun String?.isZeroLike(): Boolean {
+    val trimmed = this?.trim()
+    if (trimmed.isNullOrEmpty()) return true // treat empty as zero-like for placeholder purposes
+    val numeric = trimmed.toDoubleOrNull()
+    return numeric != null && numeric == 0.0
+}
 
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
