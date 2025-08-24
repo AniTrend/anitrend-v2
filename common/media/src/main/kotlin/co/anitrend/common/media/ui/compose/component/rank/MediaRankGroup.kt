@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.component.rank
 
 import androidx.compose.foundation.layout.Column
@@ -33,13 +49,15 @@ private fun MediaRankGroupHeader(modifier: Modifier = Modifier) {
             painter = painterResource(co.anitrend.common.media.ui.R.drawable.ic_trophy),
             contentDescription = null,
             modifier = Modifier.align(alignment = Alignment.CenterVertically),
-            tint = colorResource(co.anitrend.android.core.R.color.orange_700)
+            tint = colorResource(co.anitrend.android.core.R.color.orange_700),
         )
         Spacer(modifier = Modifier.padding(end = 16.dp))
         Text(
             text = "Rankings",
-            modifier = Modifier.weight(1f)
-                .align(alignment = Alignment.CenterVertically),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .align(alignment = Alignment.CenterVertically),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.titleLarge,
         )
@@ -53,11 +71,12 @@ fun MediaRankGroup(
     modifier: Modifier = Modifier,
 ) {
     OutlinedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
         shape = CardDefaults.outlinedShape,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
             MediaRankGroupHeader()
@@ -66,7 +85,7 @@ fun MediaRankGroup(
                 MediaRankItem(
                     rank = ranks[index],
                     onClick = onClick,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp),
                 )
             }
             if (ranks.size > 2) {
@@ -81,7 +100,7 @@ fun MediaRankGroup(
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     },
-                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
                 )
             }
         }
@@ -91,15 +110,16 @@ fun MediaRankGroup(
 @AniTrendPreview.Default
 @Composable
 private fun MediaRankGroupPreview(
-    @PreviewParameter(DarkThemeProvider ::class) darkTheme: Boolean,
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(darkTheme = darkTheme,wrapInSurface = true) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         MediaRankGroup(
             ranks = MediaRankPreviewProvider().values.toList(),
             onClick = { _, _ -> },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
         )
     }
 }
