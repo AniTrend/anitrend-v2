@@ -28,6 +28,10 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -45,7 +49,7 @@ import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.navigation.model.sorting.Sorting
 
 @Composable
-private fun MediaRankSectionHeader(modifier: Modifier = Modifier) {
+fun MediaRankSectionHeader(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Icon(
             painter = painterResource(co.anitrend.common.media.ui.R.drawable.ic_trophy),
@@ -55,7 +59,7 @@ private fun MediaRankSectionHeader(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.padding(end = 16.dp))
         Text(
-            text = "Rankings",
+            text = stringResource(R.string.label_media_rank_section_title),
             modifier =
                 Modifier
                     .weight(1f)
@@ -72,6 +76,7 @@ fun MediaRankSection(
     onClick: (IMediaRank, List<Sorting<MediaSort>>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var showAll by remember { mutableStateOf(false) }
     OutlinedCard(
         colors =
             CardDefaults.cardColors(
@@ -93,8 +98,7 @@ fun MediaRankSection(
             if (ranks.size > 2) {
                 TextButton(
                     onClick = {
-                        // TODO: Create a bottom sheet for this? We'll probably have many similar
-                        //  use-case otherwise we should just show the of them?
+                        showAll = true
                     },
                     content = {
                         Text(
@@ -107,6 +111,14 @@ fun MediaRankSection(
                 )
             }
         }
+    }
+
+    if (showAll) {
+        MediaRankSheet(
+            ranks = ranks,
+            onItemClick = { rank, sorting -> onClick(rank, sorting) },
+            onDismiss = { showAll = false },
+        )
     }
 }
 

@@ -18,7 +18,7 @@ package co.anitrend.common.media.ui.compose.widget.ranking
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.TrendingUp
@@ -99,7 +99,6 @@ private fun RankingItem(
     )
 }
 
-@Deprecated("Use MediaRankSection instead")
 @Composable
 fun RankingItems(
     accentColor: Color,
@@ -107,10 +106,10 @@ fun RankingItems(
     rankings: List<IMediaRank> = emptyList(),
     onClick: (IMediaRank, List<Sorting<MediaSort>>) -> Unit,
 ) {
-    LazyRow(
+    LazyColumn(
         state = rememberLazyListState(),
         contentPadding = PaddingValues(all = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
         items(
