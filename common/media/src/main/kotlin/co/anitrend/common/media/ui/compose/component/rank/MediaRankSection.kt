@@ -93,8 +93,8 @@ fun MediaRankSection(
             if (ranks.size > 2) {
                 TextButton(
                     onClick = {
-                    // TODO: Create a bottom sheet for this? We'll probably have many similar
-                    //  use-case otherwise we should just show the of them?
+                        // TODO: Create a bottom sheet for this? We'll probably have many similar
+                        //  use-case otherwise we should just show the of them?
                     },
                     content = {
                         Text(

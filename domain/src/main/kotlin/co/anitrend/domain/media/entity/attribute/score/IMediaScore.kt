@@ -26,6 +26,8 @@ interface IMediaScore {
     val trending: Int?
 
     fun asFormatted(scoreFormat: ScoreFormat): IMediaRating
+
     fun asFormattedPersonal(scoreFormat: ScoreFormat): IMediaRating?
+
     fun asFormattedCommunity(scoreFormat: ScoreFormat): IMediaRating
 }

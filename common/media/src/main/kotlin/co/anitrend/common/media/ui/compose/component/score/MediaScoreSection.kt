@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.media.ui.compose.component.score
 
 import androidx.compose.foundation.BorderStroke
@@ -50,34 +66,37 @@ fun MediaScoreSection(
     modifier: Modifier = Modifier,
 ) {
     val shape = RoundedCornerShape(20.dp)
-    val gradient = Brush.linearGradient(
-        listOf(
-            MaterialTheme.colorScheme.surface,
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.04f)
+    val gradient =
+        Brush.linearGradient(
+            listOf(
+                MaterialTheme.colorScheme.surface,
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.04f),
+            ),
         )
-    )
     val outline = MaterialTheme.colorScheme.outlineVariantOnSurface()
 
     Surface(
-        modifier = modifier
-            .clip(shape)
-            //.background(MaterialTheme.colorScheme.surface, shape = shape)
-            .background(gradient, shape),
+        modifier =
+            modifier
+                .clip(shape)
+                // .background(MaterialTheme.colorScheme.surface, shape = shape)
+                .background(gradient, shape),
         shape = shape,
         color = Color.Transparent,
         border = BorderStroke(1.dp, outline),
         tonalElevation = 0.dp,
-        shadowElevation = 0.dp
+        shadowElevation = 0.dp,
     ) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             StarBadge(
                 tint = MaterialTheme.colorScheme.primary,
-                showBorder = true
+                showBorder = true,
             )
             Spacer(Modifier.width(12.dp))
             StackRating(
@@ -113,9 +132,8 @@ private fun StackRating(
                 IconScoreContent(
                     rating = rating,
                     iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
-
             }
             is IMediaRating.Text -> {
                 LabelText(text = label)
@@ -128,7 +146,7 @@ private fun StackRating(
                     Text(
                         text = "$it $footerSuffix",
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -139,38 +157,41 @@ private fun StackRating(
 }
 
 @Composable
-private fun LabelText(text: String) = Text(
-    text = text,
-    style = MaterialTheme.typography.labelLarge,
-    color = MaterialTheme.colorScheme.onSurfaceVariant
-)
+private fun LabelText(text: String) =
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 
 @Composable
 private fun ValueOutOf(
     value: String?,
     showSuffix: Boolean,
-    placeholder: String
+    placeholder: String,
 ) {
     val mainSize = 22.sp
     val suffixSize = 16.sp
     val mainColor = MaterialTheme.colorScheme.onSurface
     val hintColor = MaterialTheme.colorScheme.onSurfaceVariant
 
-    val text = buildAnnotatedString {
-        withStyle(
-            SpanStyle(
-                fontSize = mainSize, fontWeight = FontWeight.SemiBold,
-                color = if (value != null) mainColor else hintColor
-            )
-        ) {
-            append(value ?: placeholder)
-        }
-        if (showSuffix) {
-            withStyle(SpanStyle(fontSize = suffixSize, color = hintColor)) {
-                append("/100")
+    val text =
+        buildAnnotatedString {
+            withStyle(
+                SpanStyle(
+                    fontSize = mainSize,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (value != null) mainColor else hintColor,
+                ),
+            ) {
+                append(value ?: placeholder)
+            }
+            if (showSuffix) {
+                withStyle(SpanStyle(fontSize = suffixSize, color = hintColor)) {
+                    append("/100")
+                }
             }
         }
-    }
     Text(text)
 }
 
@@ -178,28 +199,32 @@ private fun ValueOutOf(
 @Composable
 private fun StarBadge(
     tint: Color,
-    showBorder: Boolean
+    showBorder: Boolean,
 ) {
     val bg = tint.copy(alpha = 0.12f)
     val border = tint.copy(alpha = 0.20f)
 
     Box(
-        modifier = Modifier
-            .size(44.dp)
-            .clip(CircleShape)
-            .background(bg)
-            .then(
-                if (showBorder) Modifier
-                    .border(BorderStroke(1.dp, border), CircleShape)
-                else Modifier
-            ),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(bg)
+                .then(
+                    if (showBorder) {
+                        Modifier
+                            .border(BorderStroke(1.dp, border), CircleShape)
+                    } else {
+                        Modifier
+                    },
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = Icons.Rounded.Star,
             contentDescription = null,
             tint = tint,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
     }
 }
@@ -208,8 +233,11 @@ private fun StarBadge(
 @Composable
 private fun ColorScheme.outlineVariantOnSurface(): Color =
     // outlineVariant is part of M3. Fall back to outline with opacity if unavailable.
-    try { outlineVariant } catch (_: Throwable) { outline.copy(alpha = 0.4f) }
-
+    try {
+        outlineVariant
+    } catch (_: Throwable) {
+        outline.copy(alpha = 0.4f)
+    }
 
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
