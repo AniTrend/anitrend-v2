@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# AniTrend v2 Pre-commit Hook
+# Validates that branch names follow the convention: <type>/<description>
+# where type is one of: feat, fix, chore, docs, refactor, test, build, ci, revert
+
+# Get the current branch name
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+# Skip validation for main/master/develop branches
+if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "master" ] || [ "$BRANCH_NAME" = "develop" ]; then
+    exit 0
+fi
+
+# Define the valid branch name pattern
+PATTERN="^(feat|fix|chore|docs|refactor|test|build|ci|revert)\/[a-z0-9\-]+$"
+
+# Validate branch name using grep for POSIX compatibility
+if ! echo "$BRANCH_NAME" | grep -qE "$PATTERN"; then
+    echo "❌ Error: Invalid branch name: '$BRANCH_NAME'"
+    echo ""
+    echo "Branch names must follow the format: <type>/<description>"
+    echo ""
+    echo "Valid types:"
+    echo "  • feat      - A new feature"
+    echo "  • fix       - A bug fix"
+    echo "  • chore     - Routine tasks (build processes, dependencies)"
+    echo "  • docs      - Documentation only changes"
+    echo "  • refactor  - Code change that neither fixes a bug nor adds a feature"
+    echo "  • test      - Adding missing tests or correcting existing tests"
+    echo "  • build     - Changes that affect the build system or dependencies"
+    echo "  • ci        - Changes to CI configuration files"
+    echo "  • revert    - Reverting a previous commit"
+    echo ""
+    echo "Examples:"
+    echo "  ✅ feat/add-login-feature"
+    echo "  ✅ fix/bug-in-login"
+    echo "  ✅ chore/update-dependencies"
+    echo "  ✅ docs/update-readme"
+    echo ""
+    echo "Your branch: '$BRANCH_NAME'"
+    echo ""
+    echo "To rename your branch, use:"
+    echo "  git branch -m <new-branch-name>"
+    echo ""
+    exit 1
+fi
+
+echo "✅ Branch name '$BRANCH_NAME' follows the naming convention"
+exit 0

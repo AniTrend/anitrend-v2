@@ -25,6 +25,19 @@ Big shout out to all the testers, translators and donators on the [AniTrend Disc
 
 Development documentation for AniTrend is still a work in progress so for the time being on the essentials are available and can be found over at: __[anitrend.gitbook.io](https://anitrend.gitbook.io/project/)__
 
+## Development Setup
+
+To get started with development, follow these steps:
+
+1. Clone the repository
+2. Set up Git hooks to enforce branch naming conventions:
+   ```bash
+   ./.githooks/setup.sh
+   ```
+3. See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines, including branch naming conventions
+
+The Git hooks will ensure your branch names follow the required format: `<type>/<description>` where type is one of: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `build`, `ci`, or `revert`.
+
 ## Sponsors
 
 > Big thanks to **[POEditor](https://poeditor.com)** for supporting the open source movement! AniTrend was approved for a free localization project. 

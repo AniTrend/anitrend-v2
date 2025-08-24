@@ -15,7 +15,7 @@ Please ensure your **issues** adheres to the following guidelines:
 Please ensure your **pull request** adheres to the following guidelines:
 
 - Make an individual pull requests for each issue, and make sure the issue is linked to the PR
-- Titles should be based off of the branch name .e.g. `feature/106-add-new-fancy-feature`
+- Titles should be based off of the branch name (e.g. `feat/106-add-new-fancy-feature`)
 - Be sure not to stage any files excluded in any of the `.gitignore` files
 - Assure that your commits mention any relevant **issues** or other **pull requests**
 
@@ -24,9 +24,29 @@ Please ensure your **pull request** adheres to the following guidelines:
 
 For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your use case coverage. If you have any questions regarding this please feel free to ask. In addition to these standards please follow the following
 
-- Create branches from issues with the prefix matching the issue type: .e.g `feature/106-name-of-issue-with-feature-description`
+- **Branch Naming Convention**: Create branches with the prefix matching the change type, following the format `<type>/<description>` where type is one of:
+  - `feat` - A new feature
+  - `fix` - A bug fix
+  - `chore` - Routine tasks (build processes, dependencies)
+  - `docs` - Documentation only changes
+  - `refactor` - Code change that neither fixes a bug nor adds a feature
+  - `test` - Adding missing tests or correcting existing tests
+  - `build` - Changes that affect the build system or dependencies
+  - `ci` - Changes to CI configuration files
+  - `revert` - Reverting a previous commit
+  - Examples: `feat/add-login-feature`, `fix/bug-in-login`, `chore/update-dependencies`
 - Assign yourself to an issue prior to picking up any work to ensure that multiple people don't start working on the same thing
 - Use [discussions](https://github.com/AniTrend/anitrend-v2/discussions) for general development related queries or planning information to keep our issues clutter free
+
+### Setting up Git Hooks
+
+To enforce the branch naming convention locally, run the setup script after cloning:
+
+```bash
+./.githooks/setup.sh
+```
+
+This will configure Git to use the repository's custom hooks that validate branch names before commits.
 
 Please see [Git Best Practises](https://deepsource.io/blog/git-best-practices/)
 
