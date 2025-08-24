@@ -117,8 +117,8 @@ private fun MediaDetailContent(
                             .absoluteOffset(y = (-16).dp),
                 )
                 MediaScoreSection(
-                    //accentColor = accentColor,
-                    //onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    // accentColor = accentColor,
+                    // onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                     mediaScore = media.score,
                     scoreFormat = scoreFormat,
                 )

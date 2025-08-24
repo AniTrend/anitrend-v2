@@ -297,7 +297,7 @@ internal class MediaRatingWidget
                                 mean = 70,
                                 personal = null,
                                 popularity = null,
-                                trending = null
+                                trending = null,
                             ),
                         mediaList =
                             MediaList.Core.empty().copy(
