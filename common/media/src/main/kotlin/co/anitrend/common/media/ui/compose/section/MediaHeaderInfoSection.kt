@@ -34,11 +34,18 @@ import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
-import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
+import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
+import co.anitrend.domain.media.entity.attribute.title.MediaTitle
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.navigation.ImageViewerRouter
 
 @Composable
@@ -82,7 +89,7 @@ private fun MediaTitle(
 }
 
 @Composable
-fun MediaSummarySection(
+fun MediaHeaderInfoSection(
     media: Media,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
@@ -107,8 +114,48 @@ fun MediaSummarySection(
                 title = media.title,
                 extraInfo = (media as Media.Extended).extraInfo,
             )
+            // TODO: We need to replace this in a different section
             MediaReleaseStatus(media)
-            MediaSubTitleText(media = media)
         }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun MediaSummarySectionPreview() {
+    PreviewTheme(wrapInSurface = true) {
+        MediaHeaderInfoSection(
+            media =
+                Media.Extended.empty().copy(
+                    title =
+                        MediaTitle(
+                            userPreferred = "Boku no Hero Academia 3",
+                            english = "My Hero Academia Season 3",
+                            romaji = "Boku no Hero Academia 3",
+                            native = "僕のヒーローアカデミア 3",
+                        ),
+                    // extraInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et",
+                    status = MediaStatus.RELEASING,
+                    image = MediaImage.empty().copy(color = "#e4a15d"),
+                    startDate = FuzzyDate.empty().copy(2018),
+                    format = MediaFormat.TV,
+                    category =
+                        Media.Category.Anime(
+                            episodes = 26,
+                            broadcast = "",
+                            duration = 24,
+                            premiered = "",
+                            schedule =
+                                AiringSchedule(
+                                    airingAt = 1750862811,
+                                    episode = 8,
+                                    timeUntilAiring = 62811,
+                                    mediaId = 1,
+                                    id = 1,
+                                ),
+                        ),
+                ),
+            onCoverClick = {},
+        )
     }
 }

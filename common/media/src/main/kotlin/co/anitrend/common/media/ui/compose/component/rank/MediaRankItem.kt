@@ -16,22 +16,19 @@
  */
 package co.anitrend.common.media.ui.compose.component.rank
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.ui.AniTrendPreview
@@ -59,30 +56,7 @@ fun MediaRankItem(
                 append(" $CHARACTER_SEPARATOR ${rank.format.alias}")
             }
         }
-    Row(
-        modifier =
-            modifier.clickable(
-                enabled = true,
-                onClick = {
-                    val sorting =
-                        when (rank.type) {
-                            MediaRankType.RATED ->
-                                Sorting(
-                                    sortable = MediaSort.SCORE,
-                                    order = SortOrder.DESC,
-                                )
-                            else ->
-                                Sorting(
-                                    sortable = MediaSort.POPULARITY,
-                                    order = SortOrder.DESC,
-                                )
-                        }
-                    onClick(rank, listOf(sorting))
-                },
-                role = Role.Button,
-                onClickLabel = "null",
-            ),
-    ) {
+    Row(modifier = modifier) {
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
@@ -91,20 +65,37 @@ fun MediaRankItem(
                     .align(Alignment.CenterVertically)
                     .weight(1f),
         )
-        Box {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Numbers,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                )
-                Spacer(modifier = Modifier.size(4.dp))
+        SuggestionChip(
+            onClick = {
+                val sorting =
+                    when (rank.type) {
+                        MediaRankType.RATED ->
+                            Sorting(
+                                sortable = MediaSort.SCORE,
+                                order = SortOrder.DESC,
+                            )
+                        else ->
+                            Sorting(
+                                sortable = MediaSort.POPULARITY,
+                                order = SortOrder.DESC,
+                            )
+                    }
+                onClick(rank, listOf(sorting))
+            },
+            label = {
                 Text(
                     text = "${rank.rank}",
                     style = MaterialTheme.typography.bodyMedium,
                 )
-            }
-        }
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Numbers,
+                    contentDescription = "Filter by rank",
+                    modifier = Modifier.size(16.dp),
+                )
+            },
+        )
     }
 }
 

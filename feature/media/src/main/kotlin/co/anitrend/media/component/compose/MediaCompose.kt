@@ -56,12 +56,13 @@ import co.anitrend.android.core.compose.design.image.AniTrendImageDefaults
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.common.genre.ui.compose.GenresListComponent
-import co.anitrend.common.markdown.ui.compose.MarkdownText
+import co.anitrend.common.genre.ui.compose.MediaGenreSection
+import co.anitrend.common.genre.ui.compose.MediaGenreSectionMode
 import co.anitrend.common.media.ui.compose.component.rank.MediaRankSection
 import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
+import co.anitrend.common.media.ui.compose.component.synopsis.MediaSynopsisSection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.common.media.ui.compose.section.MediaSummarySection
+import co.anitrend.common.media.ui.compose.section.MediaHeaderInfoSection
 import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -109,12 +110,17 @@ private fun MediaDetailContent(
                         ),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                MediaSummarySection(
+                MediaHeaderInfoSection(
                     media = media,
                     onCoverClick = onImageClick,
                     modifier =
                         Modifier
                             .absoluteOffset(y = (-16).dp),
+                )
+                MediaGenreSection(
+                    genres = media.genres as List<Genre>,
+                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    sectionMode = MediaGenreSectionMode.FLEX,
                 )
                 MediaScoreSection(
                     // accentColor = accentColor,
@@ -122,29 +128,26 @@ private fun MediaDetailContent(
                     mediaScore = media.score,
                     scoreFormat = scoreFormat,
                 )
-                MediaRankSection(
-                    ranks = media.rankings.toList(),
-                    onClick = { rank, sorting ->
-                        onMediaDiscoverableItemClick(
-                            MediaDiscoverRouter.MediaDiscoverParam(
-                                type = media.category.type,
-                                format = media.format,
-                                season = media.season,
-                                seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
-                                startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
-                                sort = sorting,
-                            ),
-                        )
-                    },
-                )
-                GenresListComponent(
-                    genres = media.genres as List<Genre>,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
-                )
-                MarkdownText(
+                MediaSynopsisSection(
                     synopsis = media,
-                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
                 )
+                if (media.rankings.isNotEmpty()) {
+                    MediaRankSection(
+                        ranks = media.rankings.toList(),
+                        onClick = { rank, sorting ->
+                            onMediaDiscoverableItemClick(
+                                MediaDiscoverRouter.MediaDiscoverParam(
+                                    type = media.category.type,
+                                    format = media.format,
+                                    season = media.season,
+                                    seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
+                                    startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
+                                    sort = sorting,
+                                ),
+                            )
+                        },
+                    )
+                }
                 TagListItems(
                     accentColor = accentColor,
                     tags = media.tags,
@@ -244,6 +247,7 @@ private fun MediaDetailComponentPreview(
             accentColor = Color.DarkGray,
             onMediaDiscoverableItemClick = {},
             onImageClick = {},
+            modifier = Modifier.verticalScroll(rememberScrollState()),
         )
     }
 }
