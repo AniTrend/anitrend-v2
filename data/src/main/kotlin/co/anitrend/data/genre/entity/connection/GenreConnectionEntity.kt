@@ -55,4 +55,4 @@ internal data class GenreConnectionEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "genre_id") val genreId: Long,
     @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long? = null,
-): IEntityId<Long?>
+) : IEntityId<Long?>
