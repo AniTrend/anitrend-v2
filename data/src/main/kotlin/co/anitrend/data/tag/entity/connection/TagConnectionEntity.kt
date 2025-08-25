@@ -56,5 +56,5 @@ internal data class TagConnectionEntity(
     @ColumnInfo(name = "is_media_spoiler") val isMediaSpoiler: Boolean,
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "tag_id") val tagId: Long,
-    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-) : IEntityId<Long>
+    @ColumnInfo(name = "id") @PrimaryKey(autoGenerate = true) override val id: Long? = null,
+): IEntityId<Long?>
