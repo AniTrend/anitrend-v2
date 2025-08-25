@@ -92,6 +92,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     autoMigrations = [
         AutoMigration(from = 6, to = 8),
+        AutoMigration(from = 8, to = 9),
     ],
 )
 @TypeConverters(
@@ -104,7 +105,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 8
+        const val DATABASE_SCHEMA_VERSION = 9
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room
