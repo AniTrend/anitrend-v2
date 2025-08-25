@@ -17,12 +17,10 @@
 package co.anitrend.common.media.ui.compose.component.rank
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -34,8 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -50,24 +46,12 @@ import co.anitrend.navigation.model.sorting.Sorting
 
 @Composable
 fun MediaRankSectionHeader(modifier: Modifier = Modifier) {
-    Row(modifier = modifier) {
-        Icon(
-            painter = painterResource(co.anitrend.common.media.ui.R.drawable.ic_trophy),
-            contentDescription = null,
-            modifier = Modifier.align(alignment = Alignment.CenterVertically),
-            tint = colorResource(co.anitrend.android.core.R.color.orange_700),
-        )
-        Spacer(modifier = Modifier.padding(end = 16.dp))
-        Text(
-            text = stringResource(R.string.label_media_rank_section_title),
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .align(alignment = Alignment.CenterVertically),
-            textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.titleLarge,
-        )
-    }
+    Text(
+        text = stringResource(R.string.label_media_rank_section_title),
+        modifier = modifier,
+        textAlign = TextAlign.Start,
+        style = MaterialTheme.typography.titleLarge,
+    )
 }
 
 @Composable
@@ -83,7 +67,7 @@ fun MediaRankSection(
                 containerColor = MaterialTheme.colorScheme.surface,
             ),
         shape = CardDefaults.outlinedShape,
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(all = 16.dp)) {
             MediaRankSectionHeader()
@@ -92,7 +76,7 @@ fun MediaRankSection(
                 MediaRankItem(
                     rank = ranks[index],
                     onClick = onClick,
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(horizontal = 8.dp),
                 )
             }
             if (ranks.size > 2) {

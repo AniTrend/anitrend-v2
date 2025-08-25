@@ -85,6 +85,9 @@
     <string name="label_media_score_section_popularity_footer_suffix">ratings</string>
     <string name="placeholder_media_score_section_rating" translatable="false">—</string>
     <string name="label_media_score_section_community">Community</string>
+
     <string name="label_media_rank_section_show_all_rankings">Show all rankings</string>
     <string name="label_media_rank_section_title">Rankings</string>
+
+    <string name="label_media_synopsis_section_title">Synopsis</string>
 </resources>
