@@ -17,6 +17,8 @@
 package co.anitrend.data.genre.datasource.local.connection
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
@@ -36,4 +38,7 @@ internal abstract class GenreConnectionLocalSource : AbstractLocalSource<GenreCo
         """,
     )
     abstract override suspend fun clear()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertConnections(attribute: List<GenreConnectionEntity>)
 }

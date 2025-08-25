@@ -79,6 +79,14 @@ internal sealed class GenreMapper : DefaultMapper<GenreCollection, List<GenreEnt
                     get() = throw NotImplementedError()
             }
 
+        /**
+         * Save [data] into your desired local source
+         */
+        override suspend fun persist(data: List<GenreConnectionEntity>) {
+            // Use composite-unique upsert via REPLACE on (genre_id, media_id) instead of PK-based upsert
+            localSource.upsertConnections(data)
+        }
+
         data class Item(
             val mediaId: Long,
             val genreId: Long,

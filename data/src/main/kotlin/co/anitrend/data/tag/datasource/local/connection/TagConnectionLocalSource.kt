@@ -17,6 +17,8 @@
 package co.anitrend.data.tag.datasource.local.connection
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
@@ -36,4 +38,7 @@ internal abstract class TagConnectionLocalSource : AbstractLocalSource<TagConnec
         """,
     )
     abstract override suspend fun clear()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertConnections(attribute: List<TagConnectionEntity>)
 }
