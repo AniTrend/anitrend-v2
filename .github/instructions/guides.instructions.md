@@ -22,6 +22,28 @@ When developing new features or modifying existing ones, it’s important to **f
 - Use accompanist libraries included for things like system UI controller, pager, etc., rather than writing from scratch.
 - **Resource Strings and Localization**: All user-facing strings should be in `strings.xml`. The project likely has multi-language support (the README mentions POEditor for translations[83]). When adding text, add an English entry to the appropriate `strings.xml`. Do not hard-code strings in code. Similarly, use dimension and style resources for spacing and text appearance, consistent with Material guidelines.
 
+## Database: Room join tables and migrations
+
+### Room join-table best practices
+
+- Scope note: These guidelines apply when a table uses a surrogate primary key that Room autogenerates (typical for join/connection tables and local-only caches). They do not apply to entities that use server-provided/natural IDs as the primary key, nor to tables that define a composite primary key without a surrogate `id` column.
+
+- Use nullable surrogate PKs for auto-generated IDs: declare `@PrimaryKey(autoGenerate = true) val id: Long? = null` (or Int?). Room only treats a value as “to be generated” when it’s NULL; a non-null default like 0 is considered a concrete PK and will break autoincrement semantics.
+- Define a composite unique index for the logical relationship: for many-to-many tables declare `@Index(value = ["left_id", "right_id"], unique = true)` (e.g., `(tag_id, media_id)` or `(genre_id, media_id)`).
+- Upsert by composite uniqueness, not by surrogate PK: add DAO `@Insert(onConflict = REPLACE)` methods for batch upserts; pass entities keyed by the composite columns so duplicates replace the correct logical row.
+- Keep mappers simple and deterministic: in mappers’ `persist` steps, call the DAO batch upsert for connection entities rather than persisting by surrogate PK.
+- Avoid non-null ID contracts: do not require non-null `id` in interfaces or models for rows whose IDs are DB-generated; this ensures inserts go through with NULL.
+
+### Database migration checklist
+
+When making schema-impacting changes:
+- Bump `DATABASE_SCHEMA_VERSION` in the Room database and declare the appropriate `@AutoMigration(from = X, to = Y)` or provide a manual migration if needed.
+- Export and inspect the schema JSON in `data/schemas/.../AniTrendStore/<version>.json`; verify column nullability, indices, and identity hash changes are expected.
+- Build app/module to validate annotation processing and schema export run cleanly.
+- Perform a runtime smoke test on an older on-device DB (from `from` version) to ensure migration applies without crashes.
+- If changing join tables, confirm multiple relationship rows persist and read back correctly (no collapsing to a single row).
+- Update documentation (this guide) and note changes in the PR, attaching a brief schema diff summary.
+
 ## Testing Guidelines
 
 - The structure allows for testing domain and data layers easily. For any critical logic (parsers, complex use case), add unit tests in the corresponding module. Use **JUnit4** and **MockK** (both are included)[69][70]. For coroutine flows, use the Turbine library to test emission of flows.
