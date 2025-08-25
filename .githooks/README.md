@@ -24,6 +24,8 @@ Validates that branch names follow the AniTrend v2 naming convention: `<type>/<d
 - `chore/update-dependencies`
 - `docs/update-readme`
 
+This hook automatically skips validation when commits occur in a detached HEAD state or during interactive operations such as rebase, squash, merge, cherry-pick, or revert. This prevents false failures when `HEAD` is not an actual branch name.
+
 ## Setup
 
 To enable these hooks in your local repository, run:
@@ -43,3 +45,7 @@ git commit --no-verify
 ```
 
 **Note:** This should only be used in exceptional circumstances as it defeats the purpose of maintaining consistent branch naming conventions.
+
+## Troubleshooting
+
+- Error mentioning `Invalid branch name: 'HEAD'` during squash/rebase: Update your hooks by re-running `./.githooks/setup.sh`. The hook now detects detached HEAD and skips validation during these operations.

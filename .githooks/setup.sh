@@ -8,6 +8,12 @@ echo "🔧 Setting up AniTrend v2 Git hooks..."
 # Set Git to use the custom hooks directory
 git config core.hooksPath .githooks
 
+# Ensure hook scripts are executable
+chmod +x .githooks/* 2>/dev/null || true
+
+# Show effective hooksPath for confirmation
+echo "hooksPath => $(git config --get core.hooksPath)"
+
 echo "✅ Git hooks configured successfully!"
 echo ""
 echo "The following hooks are now active:"
