@@ -18,6 +18,7 @@ package co.anitrend.media.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.component.viewmodel.MediaViewModel
+import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.navigation.MediaRouter
 import org.koin.core.module.dsl.viewModel
@@ -29,6 +30,11 @@ private val viewModelModule =
             MediaViewModel(
                 interactor = get(),
                 settings = get(),
+            )
+        }
+        viewModel {
+            MediaScheduleViewModel(
+                interactor = get(),
             )
         }
     }
