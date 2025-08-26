@@ -44,6 +44,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
@@ -60,19 +63,22 @@ import co.anitrend.common.genre.ui.compose.MediaGenreSection
 import co.anitrend.common.genre.ui.compose.MediaGenreSectionMode
 import co.anitrend.common.media.ui.compose.component.rank.MediaRankSection
 import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
+import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.component.synopsis.MediaSynopsisSection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.compose.section.MediaHeaderInfoSection
 import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
+import co.anitrend.media.component.schedule.MediaScheduleSheet
+import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 private fun MediaDetailContent(
@@ -110,6 +116,9 @@ private fun MediaDetailContent(
                         ),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
+                // Local state for schedule sheet visibility
+                var showScheduleSheet by remember { mutableStateOf(false) }
+
                 MediaHeaderInfoSection(
                     media = media,
                     onCoverClick = onImageClick,
@@ -123,14 +132,26 @@ private fun MediaDetailContent(
                     sectionMode = MediaGenreSectionMode.FLEX,
                 )
                 MediaScoreSection(
-                    // accentColor = accentColor,
-                    // onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                     mediaScore = media.score,
                     scoreFormat = scoreFormat,
                 )
                 MediaSynopsisSection(
                     synopsis = media,
                 )
+                MediaStatusSection(
+                    media = media,
+                    onShowSchedule = {
+                        showScheduleSheet = media.category is Media.Category.Anime
+                    },
+                )
+                if (showScheduleSheet && media.category is Media.Category.Anime) {
+                    val scheduleViewModel: MediaScheduleViewModel = koinViewModel()
+                    MediaScheduleSheet(
+                        mediaId = media.id,
+                        onDismiss = { showScheduleSheet = false },
+                        viewModel = scheduleViewModel,
+                    )
+                }
                 if (media.rankings.isNotEmpty()) {
                     MediaRankSection(
                         ranks = media.rankings.toList(),
@@ -140,8 +161,8 @@ private fun MediaDetailContent(
                                     type = media.category.type,
                                     format = media.format,
                                     season = media.season,
-                                    seasonYear = if (rank.allTime != true && media.category.type == MediaType.ANIME) rank.year else null,
-                                    startDate_like = if (rank.allTime != true && media.category.type == MediaType.MANGA) "${rank.year}%" else null,
+                                    seasonYear = if (rank.allTime != true && media.category is Media.Category.Anime) rank.year else null,
+                                    startDate_like = if (rank.allTime != true && media.category is Media.Category.Manga) "${rank.year}%" else null,
                                     sort = sorting,
                                 ),
                             )
