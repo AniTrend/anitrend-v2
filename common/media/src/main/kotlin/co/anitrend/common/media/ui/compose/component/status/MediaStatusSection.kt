@@ -90,9 +90,10 @@ fun MediaStatusSection(
         modifier = modifier,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // UI looks cleaner without the section title
@@ -101,7 +102,7 @@ fun MediaStatusSection(
 
             when (media.status) {
                 MediaStatus.RELEASING -> NextAiringPublicationCard(media = media)
-                MediaStatus.HIATUS -> HiatusInfoCard()
+                MediaStatus.HIATUS -> HiatusInfoCard(category = media.category)
                 MediaStatus.FINISHED, MediaStatus.CANCELLED, MediaStatus.NOT_YET_RELEASED -> {
                     // No special card for these states, status chip handles it
                 }
@@ -119,15 +120,23 @@ fun MediaStatusSection(
 
 @Composable
 private fun SectionTitleRow(mediaType: MediaType) {
-    val titleIcon = if (mediaType == MediaType.ANIME) Icons.Filled.Tv else Icons.AutoMirrored.Filled.MenuBook
-    val titleText = stringResource(
-        id = if (mediaType == MediaType.ANIME) R.string.label_media_status_airing
-        else R.string.label_media_status_publishing
-    )
+    val titleIcon =
+        when (mediaType) {
+            MediaType.ANIME -> Icons.Filled.Tv
+            else -> Icons.AutoMirrored.Filled.MenuBook
+        }
+    val titleText =
+        stringResource(
+            id =
+                when (mediaType) {
+                    MediaType.ANIME -> R.string.label_media_status_airing
+                    else -> R.string.label_media_status_publishing
+                },
+        )
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Icon(imageVector = titleIcon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         Text(text = titleText, style = MaterialTheme.typography.titleLarge)
@@ -138,7 +147,7 @@ private fun SectionTitleRow(mediaType: MediaType) {
 private fun StatusInfoRow(media: Media) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         StatusChipRedesigned(media = media)
         if (media.status == MediaStatus.RELEASING) {
@@ -150,22 +159,28 @@ private fun StatusInfoRow(media: Media) {
 @Composable
 private fun StatusChipRedesigned(media: Media) {
     val status = media.status
-    val statusText = when (status) {
-        MediaStatus.RELEASING -> if (media.category.type == MediaType.ANIME) stringResource(R.string.label_media_status_chip_airing) else stringResource(R.string.label_media_status_chip_publishing)
-        MediaStatus.FINISHED -> stringResource(R.string.label_media_status_chip_completed)
-        MediaStatus.NOT_YET_RELEASED -> stringResource(R.string.label_media_status_chip_not_yet_released)
-        MediaStatus.CANCELLED -> stringResource(R.string.label_media_status_chip_cancelled)
-        MediaStatus.HIATUS -> stringResource(R.string.label_media_status_chip_hiatus)
-        null -> stringResource(R.string.label_media_status_chip_unknown)
-    }
+    val statusText =
+        when (status) {
+            MediaStatus.RELEASING ->
+                when (media.category.type) {
+                    MediaType.ANIME -> stringResource(R.string.label_media_status_chip_airing)
+                    else -> stringResource(R.string.label_media_status_chip_publishing)
+                }
+            MediaStatus.FINISHED -> stringResource(R.string.label_media_status_chip_completed)
+            MediaStatus.NOT_YET_RELEASED -> stringResource(R.string.label_media_status_chip_not_yet_released)
+            MediaStatus.CANCELLED -> stringResource(R.string.label_media_status_chip_cancelled)
+            MediaStatus.HIATUS -> stringResource(R.string.label_media_status_chip_hiatus)
+            null -> stringResource(R.string.label_media_status_unknown_value)
+        }
     val statusColor = statusColorFor(status)
     val contentColor = contentColorFor(backgroundColor = statusColor)
-    val icon = when(status) {
-        MediaStatus.RELEASING -> Icons.Filled.SettingsInputAntenna
-        MediaStatus.FINISHED -> Icons.Filled.CheckCircleOutline
-        MediaStatus.HIATUS -> Icons.Filled.PauseCircleOutline
-        else -> Icons.AutoMirrored.Filled.HelpOutline
-    }
+    val icon =
+        when (status) {
+            MediaStatus.RELEASING -> Icons.Filled.SettingsInputAntenna
+            MediaStatus.FINISHED -> Icons.Filled.CheckCircleOutline
+            MediaStatus.HIATUS -> Icons.Filled.PauseCircleOutline
+            else -> Icons.AutoMirrored.Filled.HelpOutline
+        }
 
     Surface(
         shape = RoundedCornerShape(8.dp),
@@ -175,12 +190,12 @@ private fun StatusChipRedesigned(media: Media) {
         Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(18.dp),
             )
 
             Text(
@@ -193,23 +208,28 @@ private fun StatusChipRedesigned(media: Media) {
     }
 }
 
-
 @Composable
 private fun LiveActiveIndicator(mediaType: MediaType) {
-    val text = if (mediaType == MediaType.ANIME) stringResource(R.string.airing_status_live)
-    else stringResource(R.string.publication_status_active)
-    val color = if (mediaType == MediaType.ANIME)
-        colorResource(co.anitrend.android.core.R.color.blue_A700)
-    else MaterialTheme.colorScheme.primary
+    val text =
+        when (mediaType) {
+            MediaType.ANIME -> stringResource(R.string.label_media_status_airing_indicator_live)
+            else -> stringResource(R.string.publication_status_active)
+        }
+    val color =
+        when (mediaType) {
+            MediaType.ANIME -> colorResource(co.anitrend.android.core.R.color.blue_A700)
+            else -> MaterialTheme.colorScheme.primary
+        }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Box(
-            modifier = Modifier
-                .size(8.dp)
-                .background(color, CircleShape)
+            modifier =
+                Modifier
+                    .size(8.dp)
+                    .background(color, CircleShape),
         )
         Text(text = text, style = MaterialTheme.typography.labelMedium, color = color)
     }
@@ -221,8 +241,9 @@ private fun NextAiringPublicationCard(
     dateHelper: AniTrendDateHelper = koinInject(),
 ) {
     val category = media.category
-    if (category !is Media.Category.Anime)
+    if (category !is Media.Category.Anime) {
         return
+    }
 
     val schedule = category.schedule
 
@@ -230,29 +251,29 @@ private fun NextAiringPublicationCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
-        elevation = CardDefaults.cardElevation(0.dp)
+        elevation = CardDefaults.cardElevation(0.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = stringResource(id = R.string.label_media_status_next_episode),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (schedule?.episode != null) {
                     Surface(
                         shape = RoundedCornerShape(6.dp),
                         color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     ) {
                         Text(
                             text = stringResource(R.string.label_media_status_episode_number, schedule.episode),
                             style = MaterialTheme.typography.labelMedium,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         )
                     }
                 }
@@ -261,28 +282,30 @@ private fun NextAiringPublicationCard(
             if (schedule != null) {
                 AiringScheduleText(
                     media = media,
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    ),
+                    style =
+                        MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                        ),
                     format = AiringScheduleTextFormat.WITHOUT_PREFIX,
                 )
-                 Text(
-                    text = dateHelper.convertFromUnixTimeStamp(
-                        unixTimeStamp = schedule.airingAt * 1000L,
-                        outputDatePattern = AniTrendDateHelper.DATE_FORMAT_WITH_TIME_ZONE
-                    ),
-                    style = MaterialTheme.typography.bodySmall
+                Text(
+                    text =
+                        dateHelper.convertFromUnixTimeStamp(
+                            unixTimeStamp = schedule.airingAt * 1000L,
+                            outputDatePattern = AniTrendDateHelper.DATE_FORMAT_WITH_TIME_ZONE,
+                        ),
+                    style = MaterialTheme.typography.bodySmall,
                 )
             } else if (media.category is Media.Category.Manga) {
                 // Placeholder for Manga countdown if data becomes available
                 Text(
                     text = stringResource(R.string.label_media_status_manga_next_chapter_placeholder), // e.g. "6d 22h 54m"
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary),
                 )
-                 Text(
+                Text(
                     text = stringResource(R.string.label_media_status_manga_next_chapter_date_placeholder), // e.g. "Tue, Sep 2, 02:50 AM GMT+9"
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         }
@@ -290,33 +313,45 @@ private fun NextAiringPublicationCard(
 }
 
 @Composable
-private fun HiatusInfoCard() {
+private fun HiatusInfoCard(category: Media.Category) {
+    val title =
+        when (category) {
+            is Media.Category.Anime -> stringResource(R.string.label_media_status_anime_hiatus_title)
+            else -> stringResource(R.string.label_media_status_manga_hiatus_title)
+        }
+
+    val subtitle =
+        when (category) {
+            is Media.Category.Anime -> stringResource(R.string.label_media_status_anime_hiatus_subtitle)
+            else -> stringResource(R.string.label_media_status_manga_hiatus_subtitle)
+        }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = statusColorFor(MediaStatus.HIATUS).copy(alpha = 0.1f)),
-        elevation = CardDefaults.cardElevation(0.dp)
+        elevation = CardDefaults.cardElevation(0.dp),
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Icon(
                 imageVector = Icons.Filled.ErrorOutline,
                 contentDescription = null,
                 tint = statusColorFor(MediaStatus.HIATUS),
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(32.dp),
             )
             Column {
                 Text(
-                    text = stringResource(R.string.label_media_status_hiatus_title),
+                    text = title,
                     style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = stringResource(R.string.label_media_status_hiatus_subtitle),
-                    style = MaterialTheme.typography.bodySmall
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         }
@@ -325,48 +360,60 @@ private fun HiatusInfoCard() {
 
 @Composable
 private fun MediaDetailsRow(media: Media) {
-    val broadcastOrPublicationStatus = when (val category = media.category) {
-        is Media.Category.Anime -> {
-            category.broadcast?.let { it.ifBlank { stringResource(R.string.label_media_status_unknown_value) } }
-        }
-        is Media.Category.Manga -> {
-            // Assuming publishingInfo field
-            category.type.alias.let { it.ifBlank { stringResource(R.string.label_media_status_unknown_value) } }
-        }
-    }?.toString()
+    val broadcastOrPublicationStatus =
+        when (val category = media.category) {
+            is Media.Category.Anime -> {
+                category.broadcast?.let { it.ifBlank { stringResource(R.string.label_media_status_unknown_value) } }
+            }
+            is Media.Category.Manga -> {
+                // Assuming publishingInfo field
+                category.type.alias.let { it.ifBlank { stringResource(R.string.label_media_status_unknown_value) } }
+            }
+        }?.toString()
 
     Row(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = if (media.category.type == MediaType.ANIME) stringResource(R.string.label_media_status_broadcast)
-                       else stringResource(R.string.label_media_status_publication),
+                text =
+                    if (media.category.type == MediaType.ANIME) {
+                        stringResource(R.string.label_media_status_broadcast)
+                    } else {
+                        stringResource(R.string.label_media_status_publication)
+                    },
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                val icon = if (media.category.type == MediaType.ANIME) Icons.Filled.SettingsInputAntenna else Icons.AutoMirrored.Filled.MenuBook
+                val icon =
+                    when (media.category.type) {
+                        MediaType.ANIME -> Icons.Filled.SettingsInputAntenna
+                        else -> Icons.AutoMirrored.Filled.MenuBook
+                    }
                 Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(16.dp))
                 Text(
                     text = broadcastOrPublicationStatus ?: stringResource(R.string.label_media_status_unknown_value),
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }
         Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-             Text(
-                text = if (media.category.type == MediaType.ANIME) stringResource(R.string.label_media_status_premiered)
-                       else stringResource(R.string.label_media_status_started),
+            Text(
+                text =
+                    when (media.category.type) {
+                        MediaType.ANIME -> stringResource(R.string.label_media_status_premiered)
+                        else -> stringResource(R.string.label_media_status_started)
+                    },
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 Icon(imageVector = Icons.Filled.CalendarToday, contentDescription = null, modifier = Modifier.size(16.dp))
                 Text(
                     text = formatMediaStartDate(media),
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }
@@ -376,11 +423,12 @@ private fun MediaDetailsRow(media: Media) {
 @Composable
 private fun formatMediaStartDate(media: Media): String {
     val helper = AniTrendDateHelper()
-    val date = media.startDate.takeIf { !it.isDateNotSet() }?.let {
-        runCatching {
-            helper.convertToTextDate(it).toString()
-        }.stackTrace()
-    }
+    val date =
+        media.startDate.takeIf { !it.isDateNotSet() }?.let {
+            runCatching {
+                helper.convertToTextDate(it).toString()
+            }.stackTrace()
+        }
     val season = media.season
     // This is a simplified formatter. You might have a more robust one in your domain/core layer.
     return when {
@@ -391,54 +439,55 @@ private fun formatMediaStartDate(media: Media): String {
     }
 }
 
-
 @Composable
 private fun ProgressDetails(media: Media) {
     val (progress, total, unitLabelSingular, unitLabelPlural) = computeProgressDetails(media)
     val totalDisplay = if (total > 0) total.toString() else "?"
     val unitLabel = if (total == 1) unitLabelSingular else unitLabelPlural
 
-
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = unitLabel.replaceFirstChar { it.titlecase() }, // "Episodes" or "Chapters"
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "$progress/$totalDisplay",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         if (total > 0 && progress <= total) {
             LinearProgressIndicator(
                 progress = { (progress.toFloat() / total.toFloat()).coerceIn(0f, 1f) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(4.dp)),
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         } else if (total == 0 && progress > 0) { // Progress known, total unknown
-             LinearProgressIndicator(
+            LinearProgressIndicator(
                 progress = { 1f }, // Show as indeterminate or full if only progress known
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(4.dp)),
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         } else if (media.status == MediaStatus.FINISHED && total > 0) { // Completed
-             LinearProgressIndicator(
+            LinearProgressIndicator(
                 progress = { 1f },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(4.dp)),
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
@@ -446,39 +495,41 @@ private fun ProgressDetails(media: Media) {
     }
 }
 
-
 @Composable
-private fun ScheduleButton(mediaType: MediaType, onClick: () -> Unit) {
+private fun ScheduleButton(
+    mediaType: MediaType,
+    onClick: () -> Unit,
+) {
     // TODO: When we have episode data we should only show this episode schedule button when we have episodes to show
     if (mediaType == MediaType.ANIME) {
         Button(
             onClick = onClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
         ) {
             Icon(
                 imageVector = Icons.Filled.Schedule,
                 contentDescription = null,
                 modifier = Modifier.size(ButtonDefaults.IconSize),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text(
-                text = stringResource(
-                    id = R.string.label_media_status_episode_schedule_button
-                ),
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                text =
+                    stringResource(
+                        id = R.string.label_media_status_episode_schedule_button,
+                    ),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
     }
 }
 
-
 @Composable
 @ReadOnlyComposable
-private fun computeProgressDetails(media: Media): Quadruple<Int, Int, String, String> {
-    return when (val category = media.category) {
+private fun computeProgressDetails(media: Media): Quadruple<Int, Int, String, String> =
+    when (val category = media.category) {
         is Media.Category.Anime -> {
             val totalEpisodes = category.episodes
             val currentProgress = (media.mediaList?.progress as? MediaListProgress.Anime)?.episodeProgress ?: 0
@@ -486,7 +537,7 @@ private fun computeProgressDetails(media: Media): Quadruple<Int, Int, String, St
                 currentProgress,
                 totalEpisodes,
                 stringResource(id = R.string.label_episode_singular),
-                stringResource(id = R.string.label_episode_plural)
+                stringResource(id = R.string.label_episode_plural),
             )
         }
         is Media.Category.Manga -> {
@@ -496,14 +547,17 @@ private fun computeProgressDetails(media: Media): Quadruple<Int, Int, String, St
                 currentProgress,
                 totalChapters,
                 stringResource(id = R.string.label_chapter_singular),
-                stringResource(id = R.string.label_chapter_plural)
+                stringResource(id = R.string.label_chapter_plural),
             )
         }
     }
-}
 
-data class Quadruple<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
-
+data class Quadruple<A, B, C, D>(
+    val first: A,
+    val second: B,
+    val third: C,
+    val fourth: D,
+)
 
 @Composable
 @ReadOnlyComposable
@@ -520,12 +574,11 @@ private fun statusColorFor(status: MediaStatus?): Color {
 
 @Composable
 @ReadOnlyComposable
-private fun contentColorFor(backgroundColor: Color): Color {
-    val scheme = MaterialTheme.colorScheme
-    return if (backgroundColor.luminance() > 0.5f) scheme.onSurface // Dark text on light bg
-    else Color.White // Light text on dark bg
-}
-
+private fun contentColorFor(backgroundColor: Color): Color =
+    when {
+        backgroundColor.luminance() > 0.5f -> MaterialTheme.colorScheme.onSurface
+        else -> Color.White
+    }
 
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
@@ -536,7 +589,6 @@ private fun MediaStatusSectionPreview(
     PreviewTheme(wrapInSurface = true) {
         MediaStatusSection(
             media = media,
-            modifier = Modifier.padding(0.dp), // Padding is now inside the component
             onShowSchedule = {},
         )
     }
