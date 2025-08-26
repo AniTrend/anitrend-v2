@@ -19,10 +19,17 @@ package co.anitrend.android.core.ui.theme.preview
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.fragment.app.FragmentActivity
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.settings.helper.theme.contract.IThemeHelper
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import com.jakewharton.threetenabp.AndroidThreeTen
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
+import org.koin.mp.KoinPlatformTools
+import org.ocpsoft.prettytime.PrettyTime
 
 private val PreviewThemeHelper =
     object : IThemeHelper {
@@ -42,6 +49,16 @@ private val PreviewThemeHelper =
         ) {}
     }
 
+private val PreviewModule =
+    module {
+        single {
+            PrettyTime()
+        }
+        single {
+            AniTrendDateHelper()
+        }
+    }
+
 class DarkThemeProvider : PreviewParameterProvider<Boolean> {
     override val values = sequenceOf(false, true)
 }
@@ -53,6 +70,12 @@ fun PreviewTheme(
     wrapInSurface: Boolean = false,
     content: @Composable () -> Unit,
 ) {
+    AndroidThreeTen.init(LocalContext.current)
+    if (KoinPlatformTools.defaultContext().getOrNull() == null) {
+        startKoin {
+            modules(modules = PreviewModule)
+        }
+    }
     AniTrendTheme3(
         darkTheme = darkTheme,
         themeHelper = themeHelper,
