@@ -90,4 +90,42 @@
     <string name="label_media_rank_section_title">Rankings</string>
 
     <string name="label_media_synopsis_section_title">Synopsis</string>
+
+    <!-- Media status section -->
+    <string name="label_media_status_airing_title">Airing Status</string>
+    <string name="label_media_status_publishing_title">Publishing Status</string>
+    <string name="label_media_status_show_schedule">Show schedule</string>
+    <string name="label_volumes_count">Volumes: %1$d</string>
+
+    <!-- New strings for MediaStatusSection -->
+    <string name="action_toggle_notifications">Toggle Notifications</string>
+    <string name="label_media_status_chip_airing">Currently Airing</string>
+    <string name="label_media_status_chip_publishing">Publishing</string>
+    <string name="label_media_status_chip_completed">Completed</string>
+    <string name="label_media_status_chip_not_yet_released">Not Yet Released</string>
+    <string name="label_media_status_chip_cancelled">Cancelled</string>
+    <string name="label_media_status_chip_hiatus">On Hiatus</string>
+    <string name="label_media_status_chip_unknown">Unknown</string>
+    <string name="airing_status_live">Live</string>
+    <string name="publication_status_active">Active</string>
+    <string name="label_media_status_next_episode">Next Episode</string>
+    <string name="label_media_status_next_chapter">Next Chapter</string>
+    <string name="label_media_status_episode_number">Episode %1$d</string>
+    <string name="label_media_status_chapter_number">Chapter %1$d</string>
+    <string name="label_media_status_manga_next_chapter_placeholder">Check online for next chapter</string>
+    <string name="label_media_status_manga_next_chapter_date_placeholder">Date TBD</string>
+    <string name="label_media_status_hiatus_title">Series is currently on hiatus</string>
+    <string name="label_media_status_hiatus_subtitle">No upcoming episodes scheduled</string>
+    <string name="label_media_status_broadcast">Broadcast</string>
+    <string name="label_media_status_publication">Publication</string>
+    <string name="label_media_status_unknown_value">Unknown</string>
+    <string name="label_media_status_premiered">Premiered</string>
+    <string name="label_media_status_started">Started</string>
+    <string name="label_media_status_episode_schedule_button">Episode Schedule</string>
+    <string name="label_media_status_publication_schedule_button">Publication Schedule</string>
+
+    <!-- Old strings that were previously commented as "Used for section title" - retaining them in case they are used elsewhere -->
+    <string name="label_media_status_airing">Airing Status</string>
+    <string name="label_media_status_publishing">Publishing Status</string>
+
 </resources>
