@@ -36,7 +36,6 @@ import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.entity.shared.FuzzyDate
@@ -74,13 +73,13 @@ private fun MediaTitle(
     ) {
         Text(
             text = title.userPreferred.toString(),
-            maxLines = 2,
+            maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.headlineSmall,
         )
         Text(
             text = extraInfo ?: title.native.toString(),
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 8.dp),
             style = MaterialTheme.typography.bodySmall,
@@ -114,8 +113,6 @@ fun MediaHeaderInfoSection(
                 title = media.title,
                 extraInfo = (media as Media.Extended).extraInfo,
             )
-            // TODO: We need to replace this in a different section
-            MediaReleaseStatus(media)
         }
     }
 }
