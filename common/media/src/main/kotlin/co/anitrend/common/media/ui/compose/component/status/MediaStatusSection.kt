@@ -196,10 +196,10 @@ private fun StatusChipRedesigned(media: Media) {
             Text(
                 text = statusText,
                 style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         },
-        colors = SuggestionChipDefaults.suggestionChipColors()
+        colors = SuggestionChipDefaults.suggestionChipColors(),
     )
 }
 
