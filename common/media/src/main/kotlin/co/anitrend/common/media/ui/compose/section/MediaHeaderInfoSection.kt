@@ -126,29 +126,30 @@ private fun MediaSummarySectionPreview() {
                 Media.Extended.empty().copy(
                     title =
                         MediaTitle(
-                            userPreferred = "Boku no Hero Academia 3",
-                            english = "My Hero Academia Season 3",
-                            romaji = "Boku no Hero Academia 3",
-                            native = "僕のヒーローアカデミア 3",
+                            userPreferred = "Seishun Buta Yarou wa Santa Claus no Yume wo Minai",
+                            english = "Rascal Does Not Dream of Santa Claus",
+                            romaji = "Seishun Buta Yarou wa Santa Claus no Yume wo Minai",
+                            native = "青春ブタ野郎はサンタクロースの夢を見ない",
                         ),
                     // extraInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et",
                     status = MediaStatus.RELEASING,
-                    image = MediaImage.empty().copy(color = "#e4a15d"),
-                    startDate = FuzzyDate.empty().copy(2018),
+                    image = MediaImage.empty().copy(color = "#e4c928"),
+                    startDate = FuzzyDate(2025, 7, 5),
+                    endDate = FuzzyDate(2025, 9, 27),
                     format = MediaFormat.TV,
                     category =
                         Media.Category.Anime(
-                            episodes = 26,
+                            episodes = 13,
                             broadcast = "",
                             duration = 24,
                             premiered = "",
                             schedule =
                                 AiringSchedule(
-                                    airingAt = 1750862811,
-                                    episode = 8,
-                                    timeUntilAiring = 62811,
-                                    mediaId = 1,
-                                    id = 1,
+                                    airingAt = 1756564200,
+                                    episode = 9,
+                                    timeUntilAiring = 323880,
+                                    mediaId = 171046,
+                                    id = 399334,
                                 ),
                         ),
                 ),

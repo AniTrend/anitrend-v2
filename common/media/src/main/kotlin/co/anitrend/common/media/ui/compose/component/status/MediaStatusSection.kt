@@ -16,6 +16,7 @@
  */
 package co.anitrend.common.media.ui.compose.component.status
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,7 +62,6 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
@@ -172,8 +174,6 @@ private fun StatusChipRedesigned(media: Media) {
             MediaStatus.HIATUS -> stringResource(R.string.label_media_status_chip_hiatus)
             null -> stringResource(R.string.label_media_status_unknown_value)
         }
-    val statusColor = statusColorFor(status)
-    val contentColor = contentColorFor(backgroundColor = statusColor)
     val icon =
         when (status) {
             MediaStatus.RELEASING -> Icons.Filled.SettingsInputAntenna
@@ -182,30 +182,25 @@ private fun StatusChipRedesigned(media: Media) {
             else -> Icons.AutoMirrored.Filled.HelpOutline
         }
 
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = statusColor,
-        contentColor = contentColor,
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
+    SuggestionChip(
+        onClick = {},
+        icon = {
             Icon(
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = "Filter by status",
                 modifier = Modifier.size(18.dp),
             )
-
+        },
+        border = BorderStroke(width = 1.dp, color = statusColorFor(status)),
+        label = {
             Text(
                 text = statusText,
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold
             )
-        }
-    }
+        },
+        colors = SuggestionChipDefaults.suggestionChipColors()
+    )
 }
 
 @Composable
@@ -215,11 +210,7 @@ private fun LiveActiveIndicator(mediaType: MediaType) {
             MediaType.ANIME -> stringResource(R.string.label_media_status_airing_indicator_live)
             else -> stringResource(R.string.publication_status_active)
         }
-    val color =
-        when (mediaType) {
-            MediaType.ANIME -> colorResource(co.anitrend.android.core.R.color.blue_A700)
-            else -> MaterialTheme.colorScheme.primary
-        }
+    val color = MaterialTheme.colorScheme.primary
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -231,7 +222,7 @@ private fun LiveActiveIndicator(mediaType: MediaType) {
                     .size(8.dp)
                     .background(color, CircleShape),
         )
-        Text(text = text, style = MaterialTheme.typography.labelMedium, color = color)
+        Text(text = text, style = MaterialTheme.typography.labelMedium)
     }
 }
 
