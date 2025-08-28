@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.medialist.editor.component.compose.helper
 
 import androidx.compose.runtime.Composable
@@ -43,11 +59,12 @@ class MediaListEditorState(
     var selectedEndDate by mutableStateOf<FuzzyDate?>(null)
 
     val mediaTitle: String = media?.title?.userPreferred?.toString() ?: ""
-    val totalUnits: Int? = when (val category = media?.category) {
-        is Media.Category.Anime -> category.episodes
-        is Media.Category.Manga -> category.chapters
-        else -> null
-    }
+    val totalUnits: Int? =
+        when (val category = media?.category) {
+            is Media.Category.Anime -> category.episodes
+            is Media.Category.Manga -> category.chapters
+            else -> null
+        }
     private val initialMediaList: MediaList.Core? = media?.mediaList as? MediaList.Core
 
     init {
@@ -55,7 +72,10 @@ class MediaListEditorState(
             privateUpdate = list.privacy.isPrivate
             selectedStatus = list.status
             progressText = list.progress.progress.toString()
-            scoreText = list.score.takeIf { it > 0 }?.toInt()?.toString() ?: ""
+            scoreText = list.score
+                .takeIf { it > 0 }
+                ?.toInt()
+                ?.toString() ?: ""
             selectedStartDate = list.startedOn
             selectedEndDate = list.finishedOn
             notesText = list.privacy.notes?.toString() ?: ""
@@ -73,38 +93,41 @@ class MediaListEditorState(
         showEndDatePicker = false
     }
 
-    fun buildMediaListCore(): MediaList.Core {
-        return MediaList.Core(
+    fun buildMediaListCore(): MediaList.Core =
+        MediaList.Core(
             id = initialMediaList?.id ?: 0L,
             mediaId = param.mediaId,
             status = selectedStatus ?: MediaListStatus.PLANNING,
             score = scoreText.toFloatOrNull() ?: 0f,
-            progress = when (param.mediaType) {
-                MediaType.ANIME -> MediaListProgress.Anime(
-                    episodeProgress = progressText.toIntOrNull() ?: 0,
-                    repeatedCount = (initialMediaList?.progress as? MediaListProgress.Anime)?.repeatedCount ?: 0,
-                )
+            progress =
+                when (param.mediaType) {
+                    MediaType.ANIME ->
+                        MediaListProgress.Anime(
+                            episodeProgress = progressText.toIntOrNull() ?: 0,
+                            repeatedCount = (initialMediaList?.progress as? MediaListProgress.Anime)?.repeatedCount ?: 0,
+                        )
 
-                MediaType.MANGA -> MediaListProgress.Manga(
-                    chapterProgress = progressText.toIntOrNull() ?: 0,
-                    volumeProgress = (initialMediaList?.progress as? MediaListProgress.Manga)?.volumeProgress ?: 0,
-                    repeatedCount = (initialMediaList?.progress as? MediaListProgress.Manga)?.repeatedCount ?: 0,
-                )
-            },
+                    MediaType.MANGA ->
+                        MediaListProgress.Manga(
+                            chapterProgress = progressText.toIntOrNull() ?: 0,
+                            volumeProgress = (initialMediaList?.progress as? MediaListProgress.Manga)?.volumeProgress ?: 0,
+                            repeatedCount = (initialMediaList?.progress as? MediaListProgress.Manga)?.repeatedCount ?: 0,
+                        )
+                },
             startedOn = selectedStartDate.orEmpty(),
             finishedOn = selectedEndDate.orEmpty(),
-            privacy = MediaListPrivacy(
-                isPrivate = privateUpdate,
-                notes = notesText.takeIf { it.isNotBlank() },
-                isHidden = initialMediaList?.privacy?.isHidden ?: false,
-            ),
+            privacy =
+                MediaListPrivacy(
+                    isPrivate = privateUpdate,
+                    notes = notesText.takeIf { it.isNotBlank() },
+                    isHidden = initialMediaList?.privacy?.isHidden ?: false,
+                ),
             customLists = customLists.filterValues { it }.keys.map { MediaList.CustomList(it, true) },
             advancedScores = initialMediaList?.advancedScores ?: emptyList(),
             userId = initialMediaList?.userId ?: 0L,
             priority = initialMediaList?.priority,
             createdOn = initialMediaList?.createdOn,
         )
-    }
 }
 
 @Composable
