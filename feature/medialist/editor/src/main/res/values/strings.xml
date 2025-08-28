@@ -16,13 +16,69 @@
   -->
 
 <resources>
-
-    <string name="media_list_editor_hint_enter_your_notes">Enter your notes</string>
-    <string name="media_list_editor_label_end_date">End Date</string>
-    <string name="media_list_editor_label_start_date">Start Date</string>
+    <!-- Original strings being kept as they don't have direct replacements -->
     <string name="media_list_editor_label_repeat_count">Repeat Count</string>
     <string name="media_list_editor_label_progress_volumes">Progress Volumes</string>
     <string name="media_list_editor_label_progress">Progress</string>
-    <string name="media_list_editor_label_score">Score</string>
     <string name="media_list_editor_label_status">Status</string>
+
+    <!-- Screen title shown at top of media list editor sheet -->
+    <string name="title_media_list_editor_add_to_library">Add to Library</string>
+    <!-- Subtitle shown below title, %1$s will be replaced with media title -->
+    <string name="subtitle_media_list_editor_manage_media">Manage \"%1$s\" in your library</string>
+    <!-- Placeholder text shown in media title input field -->
+    <string name="placeholder_media_list_editor_media_title">Media Title</string>
+
+    <!-- Section header for privacy settings -->
+    <string name="label_media_list_editor_privacy">Privacy</string>
+    <!-- Label for private update toggle switch -->
+    <string name="label_media_list_editor_private_update">Private Update</string>
+    <!-- Description text explaining what private update means -->
+    <string name="label_media_list_editor_private_update_description">Hide this activity from public feeds</string>
+
+    <!-- Label for watch/read status dropdown -->
+    <string name="label_media_list_editor_watch_status">Watch Status</string>
+    <!-- Placeholder shown in status dropdown when no status is selected -->
+    <string name="placeholder_media_list_editor_select_status">Select watch status</string>
+
+    <!-- Label for episode progress section (anime) -->
+    <string name="label_media_list_editor_episode_progress">Episode Progress</string>
+    <!-- Label for chapter progress section (manga) -->
+    <string name="label_media_list_editor_chapter_progress">Chapter Progress</string>
+    <!-- Input field label for current episode number -->
+    <string name="label_media_list_editor_current_episode">Current episode</string>
+    <!-- Input field label for current chapter number -->
+    <string name="label_media_list_editor_current_chapter">Current chapter</string>
+    <!-- Shows completion percentage, %1$d will be replaced with percentage number -->
+    <string name="label_media_list_editor_progress_percentage">Progress %1$d%%</string>
+
+    <!-- Label for start date input field -->
+    <string name="label_media_list_editor_start_date">Start Date</string>
+    <!-- Label for end date input field -->
+    <string name="label_media_list_editor_end_date">End Date</string>
+
+    <!-- Label for personal score section -->
+    <string name="label_media_list_editor_your_score">Your Score</string>
+    <!-- Label for score input field -->
+    <string name="label_media_list_editor_score">Score</string>
+
+    <!-- Label showing number of custom lists, %1$d will be replaced with count -->
+    <string name="label_media_list_editor_custom_lists_count">Custom Lists (%1$d)</string>
+    <!-- Shows how many lists are selected, %1$d will be replaced with selected count -->
+    <string name="label_media_list_editor_custom_lists_selected">%1$d selected</string>
+    <!-- Button text to create a new custom list -->
+    <string name="action_media_list_editor_create_new_list">Create New List</string>
+
+    <!-- Label for personal notes section -->
+    <string name="label_media_list_editor_personal_notes">Personal Notes</string>
+    <!-- Placeholder text in notes input field -->
+    <string name="placeholder_media_list_editor_personal_notes">Add your personal notes about this series…</string>
+
+    <!-- Button text to save changes -->
+    <string name="action_media_list_editor_save">Save</string>
+    <!-- Content description for close button -->
+    <string name="action_media_list_editor_close">Close</string>
+    <!-- Content description for calendar icon to select date -->
+    <string name="action_media_list_editor_select_date">Select date</string>
+
 </resources>
