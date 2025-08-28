@@ -22,6 +22,90 @@ When developing new features or modifying existing ones, it’s important to **f
 - Use accompanist libraries included for things like system UI controller, pager, etc., rather than writing from scratch.
 - **Resource Strings and Localization**: All user-facing strings should be in `strings.xml`. The project likely has multi-language support (the README mentions POEditor for translations[83]). When adding text, add an English entry to the appropriate `strings.xml`. Do not hard-code strings in code. Similarly, use dimension and style resources for spacing and text appearance, consistent with Material guidelines.
 
+## String Resource Naming Conventions
+
+**CRITICAL**: Follow consistent naming patterns for string resources to maintain codebase coherence and enable AI/tooling assistance. Use these prefixes based on the string's semantic purpose:
+
+### Naming Pattern Structure
+`{prefix}_{module_or_context}_{specific_identifier}`
+
+### Standard Prefixes
+- **`label_`** - Field labels, section headers, descriptive text (e.g., `label_media_list_editor_watch_status`)
+- **`title_`** - Screen titles, dialog titles, major headings (e.g., `title_media_list_editor_add_to_library`)
+- **`subtitle_`** - Secondary headings, descriptive subtitles (e.g., `subtitle_media_list_editor_manage_media`)
+- **`placeholder_`** - Input hints, empty state text (e.g., `placeholder_media_list_editor_select_status`)
+- **`action_`** - Button text, menu items, actionable text (e.g., `action_media_list_editor_create_new_list`)
+- **`message_`** - User messages, notifications, feedback text (e.g., `message_sync_complete`)
+- **`error_`** - Error messages, validation messages (e.g., `error_network_unavailable`)
+- **`hint_`** - Helper text, tooltips, guidance (e.g., `hint_swipe_to_refresh`)
+- **`description_`** - Accessibility descriptions, detailed explanations (e.g., `description_favorite_button`)
+
+### Module Context Guidelines
+- Use **underscores** to separate words: `media_list_editor` not `medialisteditor`
+- Be specific but concise: `media_list` not `medialist`, `episode_progress` not `progress`
+- Include feature/module context when strings are feature-specific
+- For common/shared strings, use generic context: `label_loading`, `action_save`, `error_network`
+
+### Examples of Good vs Bad Naming
+
+**GOOD:**
+```xml
+<string name="label_media_list_editor_watch_status">Watch Status</string>
+<string name="title_profile_settings">Profile Settings</string>
+<string name="placeholder_search_anime_manga">Search anime and manga...</string>
+<string name="action_mark_as_watched">Mark as Watched</string>
+<string name="error_authentication_failed">Authentication failed</string>
+```
+
+**BAD:**
+```xml
+<string name="medialist_editor_watch_status">Watch Status</string>  <!-- Missing prefix -->
+<string name="profileSettingsTitle">Profile Settings</string>        <!-- CamelCase, wrong prefix -->
+<string name="searchHint">Search anime and manga...</string>         <!-- Generic, unclear purpose -->
+<string name="watchedButton">Mark as Watched</string>               <!-- Context unclear -->
+<string name="authError">Authentication failed</string>             <!-- Too abbreviated -->
+```
+
+### Migration Guidelines
+- When updating existing string resources, prefer the new naming convention
+- Add comments noting replacements: `<!-- Replaces old_string_name -->`
+- Update all references when renaming strings
+- Check that translations and plurals follow the same naming pattern
+
+### POEditor Integration for Community Translations
+**REQUIRED**: Always add descriptive comments above string resources to help community translators understand context. POEditor automatically picks up these comments and displays them to translators.
+
+**Format**: Use XML comments immediately before the string resource:
+```xml
+<!-- Displayed when user hasn't set a rating yet -->
+<string name="placeholder_media_score_section_rating">Not rated</string>
+
+<!-- Button to save changes to user's anime/manga list -->
+<string name="action_media_list_editor_save_changes">Save Changes</string>
+
+<!-- Shows current episode progress out of total episodes -->
+<string name="label_media_list_editor_progress_percentage">Progress %1$d%%</string>
+```
+
+**Guidelines for effective translator comments**:
+- **Context**: Explain where/when the string appears in the app
+- **Purpose**: Describe what action or information the string represents
+- **Variables**: Explain what `%1$s`, `%1$d` parameters represent
+- **Tone**: Indicate if the string should be formal, casual, urgent, etc.
+- **Character limits**: Note if there are UI space constraints
+
+**Examples**:
+```xml
+<!-- Title shown at top of screen when adding anime/manga to library -->
+<string name="title_media_list_editor_add_to_library">Add to Library</string>
+
+<!-- Error message when network request fails, shown in red text -->
+<string name="error_network_unavailable">Network unavailable</string>
+
+<!-- Placeholder text in search box, %1$s will be "anime and manga" -->
+<string name="placeholder_search_content">Search %1$s...</string>
+```
+
 ## Database: Room join tables and migrations
 
 ### Room join-table best practices
