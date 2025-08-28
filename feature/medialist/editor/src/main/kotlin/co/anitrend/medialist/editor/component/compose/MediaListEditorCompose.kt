@@ -125,10 +125,11 @@ fun MediaListEditorSheetScreen(
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
-    val editorState = rememberMediaListEditorState(
-        mediaData = mediaData,
-        param = param,
-    )
+    val editorState =
+        rememberMediaListEditorState(
+            mediaData = mediaData,
+            param = param,
+        )
 
     if (showSheet) {
         ModalBottomSheet(
@@ -171,10 +172,12 @@ private fun MediaListEditorContent(
     onSave: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 80.dp), // Space for save button
+        modifier =
+            Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 80.dp),
+        // Space for save button
     ) {
         EditorHeader(
             mediaTitle = state.mediaTitle,
@@ -204,7 +207,7 @@ private fun MediaListEditorContent(
         ScoreSection(
             score = state.scoreText,
             onScoreChange = { state.scoreText = it },
-            maxScore = "100"//state.maxScore,
+            maxScore = "100", // state.maxScore,
         )
         Spacer(modifier = Modifier.height(16.dp))
         CustomListsSection(
@@ -223,44 +226,51 @@ private fun MediaListEditorContent(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
     ) {
         Button(
             onClick = onSave,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(stringResource(R.string.action_save))
+            Text(stringResource(R.string.action_media_list_editor_save))
         }
     }
 }
 
 @Composable
-private fun EditorHeader(mediaTitle: String, onDismiss: () -> Unit) {
+private fun EditorHeader(
+    mediaTitle: String,
+    onDismiss: () -> Unit,
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = stringResource(R.string.title_add_to_library),
+                text = stringResource(R.string.title_media_list_editor_add_to_library),
                 style = MaterialTheme.typography.titleLarge,
             )
             Text(
-                text = stringResource(R.string.subtitle_manage_media, mediaTitle),
+                text = stringResource(R.string.subtitle_media_list_editor_manage_media, mediaTitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         IconButton(onClick = onDismiss) {
-            Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.action_close))
+            Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.action_media_list_editor_close))
         }
     }
 }
 
 @Composable
-private fun PrivacySection(isPrivate: Boolean, onPrivacyChange: (Boolean) -> Unit) {
+private fun PrivacySection(
+    isPrivate: Boolean,
+    onPrivacyChange: (Boolean) -> Unit,
+) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -269,7 +279,7 @@ private fun PrivacySection(isPrivate: Boolean, onPrivacyChange: (Boolean) -> Uni
                 modifier = Modifier.padding(end = 8.dp),
             )
             Text(
-                stringResource(R.string.label_privacy),
+                stringResource(R.string.label_media_list_editor_privacy),
                 style = MaterialTheme.typography.titleMedium,
             )
         }
@@ -279,9 +289,10 @@ private fun PrivacySection(isPrivate: Boolean, onPrivacyChange: (Boolean) -> Uni
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -291,9 +302,9 @@ private fun PrivacySection(isPrivate: Boolean, onPrivacyChange: (Boolean) -> Uni
                 )
                 Spacer(Modifier.width(8.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.label_private_update), style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.label_media_list_editor_private_update), style = MaterialTheme.typography.bodyLarge)
                     Text(
-                        stringResource(R.string.label_private_update_description),
+                        stringResource(R.string.label_media_list_editor_private_update_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -315,7 +326,7 @@ private fun WatchStatusSection(
 
     Column {
         Text(
-            stringResource(R.string.label_watch_status),
+            stringResource(R.string.label_media_list_editor_watch_status),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp),
         )
@@ -324,13 +335,15 @@ private fun WatchStatusSection(
             onExpandedChange = { expanded = !expanded },
         ) {
             OutlinedTextField(
-                value = selectedStatus?.name?.replaceFirstChar { it.titlecase() } ?: stringResource(R.string.placeholder_select_status),
+                value =
+                    selectedStatus?.name?.replaceFirstChar { it.titlecase() } ?: stringResource(R.string.placeholder_media_list_editor_select_status),
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
             )
             ExposedDropdownMenu(
                 expanded = expanded,
@@ -358,8 +371,12 @@ private fun ProgressSection(
     totalUnits: Int?,
     currentProgress: Int,
 ) {
-    val label = if (mediaType == MediaType.ANIME) stringResource(R.string.label_episode_progress)
-    else stringResource(R.string.label_chapter_progress)
+    val label =
+        if (mediaType == MediaType.ANIME) {
+            stringResource(R.string.label_media_list_editor_episode_progress)
+        } else {
+            stringResource(R.string.label_media_list_editor_chapter_progress)
+        }
 
     val icon = if (mediaType == MediaType.ANIME) Icons.Filled.PlayArrow else Icons.Filled.MenuBook
 
@@ -373,32 +390,46 @@ private fun ProgressSection(
             value = progressText,
             onValueChange = { onProgressChange(it.filter { char -> char.isDigit() }) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(if (mediaType == MediaType.ANIME) R.string.label_current_episode else R.string.label_current_chapter)) },
+            label = {
+                Text(
+                    stringResource(
+                        if (mediaType ==
+                            MediaType.ANIME
+                        ) {
+                            R.string.label_media_list_editor_current_episode
+                        } else {
+                            R.string.label_media_list_editor_current_chapter
+                        },
+                    ),
+                )
+            },
             suffix = { totalUnits?.let { Text("/ $it") } },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
         Spacer(Modifier.height(4.dp))
-        val progressFraction = if (totalUnits != null && totalUnits > 0) {
-            (currentProgress.toFloat() / totalUnits.toFloat()).coerceIn(0f, 1f)
-        } else {
-            0f
-        }
+        val progressFraction =
+            if (totalUnits != null && totalUnits > 0) {
+                (currentProgress.toFloat() / totalUnits.toFloat()).coerceIn(0f, 1f)
+            } else {
+                0f
+            }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                stringResource(R.string.label_progress_percentage, (progressFraction * 100).toInt()),
+                stringResource(R.string.label_media_list_editor_progress_percentage, (progressFraction * 100).toInt()),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         LinearProgressIndicator(
             progress = { progressFraction },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
         )
     }
 }
@@ -407,9 +438,10 @@ private fun ProgressSection(
 @Composable
 private fun DateSelectionSection(state: MediaListEditorState) {
     if (state.showStartDatePicker) {
-        val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = state.startDate.toEpochMillis(),
-        )
+        val datePickerState =
+            rememberDatePickerState(
+                initialSelectedDateMillis = state.startDate.toEpochMillis(),
+            )
         DatePickerDialog(
             onDismissRequest = { state.showStartDatePicker = false },
             confirmButton = {
@@ -432,9 +464,10 @@ private fun DateSelectionSection(state: MediaListEditorState) {
     }
 
     if (state.showEndDatePicker) {
-        val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = state.endDate.toEpochMillis(),
-        )
+        val datePickerState =
+            rememberDatePickerState(
+                initialSelectedDateMillis = state.endDate.toEpochMillis(),
+            )
         DatePickerDialog(
             onDismissRequest = { state.showEndDatePicker = false },
             confirmButton = {
@@ -458,43 +491,71 @@ private fun DateSelectionSection(state: MediaListEditorState) {
 
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Column(Modifier.weight(1f)) {
-            Text(stringResource(R.string.label_start_date), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
+            Text(
+                stringResource(R.string.label_media_list_editor_start_date),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
             OutlinedTextField(
                 value = state.startDateText,
                 onValueChange = {},
                 readOnly = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { state.showStartDatePicker = true },
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { state.showStartDatePicker = true },
                 label = { Text("yyyy/MM/dd") },
-                trailingIcon = { Icon(Icons.Filled.CalendarToday, contentDescription = stringResource(R.string.action_select_date)) },
+                trailingIcon = {
+                    Icon(
+                        Icons.Filled.CalendarToday,
+                        contentDescription = stringResource(R.string.action_media_list_editor_select_date),
+                    )
+                },
             )
         }
         Column(Modifier.weight(1f)) {
-            Text(stringResource(R.string.label_end_date), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
+            Text(
+                stringResource(R.string.label_media_list_editor_end_date),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
             OutlinedTextField(
                 value = state.endDateText,
                 onValueChange = {},
                 readOnly = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { state.showEndDatePicker = true },
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { state.showEndDatePicker = true },
                 label = { Text("yyyy/MM/dd") },
-                trailingIcon = { Icon(Icons.Filled.CalendarToday, contentDescription = stringResource(R.string.action_select_date)) },
+                trailingIcon = {
+                    Icon(
+                        Icons.Filled.CalendarToday,
+                        contentDescription = stringResource(R.string.action_media_list_editor_select_date),
+                    )
+                },
             )
         }
     }
 }
 
 @Composable
-private fun ScoreSection(score: String, onScoreChange: (String) -> Unit, maxScore: String) {
+private fun ScoreSection(
+    score: String,
+    onScoreChange: (String) -> Unit,
+    maxScore: String,
+) {
     Column {
-        Text(stringResource(R.string.label_your_score), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
+        Text(
+            stringResource(R.string.label_media_list_editor_your_score),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
         OutlinedTextField(
             value = score,
             onValueChange = { onScoreChange(it.filter { char -> char.isDigit() }) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.label_score)) },
+            label = { Text(stringResource(R.string.label_media_list_editor_score)) },
             suffix = { Text("/ $maxScore") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
@@ -512,25 +573,26 @@ private fun CustomListsSection(
 
     Column {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = !expanded }
-                .padding(vertical = 8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(stringResource(R.string.label_custom_lists_count, customLists.size), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.label_media_list_editor_custom_lists_count, customLists.size), style = MaterialTheme.typography.titleMedium)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (selectedCount > 0) {
                     AssistChip(
                         onClick = { expanded = !expanded },
-                        label = { Text(stringResource(R.string.label_custom_lists_selected, selectedCount)) },
+                        label = { Text(stringResource(R.string.label_media_list_editor_custom_lists_selected, selectedCount)) },
                     )
                     Spacer(Modifier.width(8.dp))
                 }
                 Icon(
                     imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                    contentDescription = stringResource(if (expanded) R.string.action_collapse else R.string.action_expand),
+                    contentDescription = if (expanded) "Collapse" else "Expand",
                 )
             }
         }
@@ -538,10 +600,11 @@ private fun CustomListsSection(
         if (expanded) {
             customLists.forEach { (name, isSelected) ->
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onCustomListToggle(name, !isSelected) }
-                        .padding(vertical = 8.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onCustomListToggle(name, !isSelected) }
+                            .padding(vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Checkbox(checked = isSelected, onCheckedChange = { onCustomListToggle(name, it) })
@@ -556,87 +619,109 @@ private fun CustomListsSection(
             ) {
                 Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(R.string.action_create_new_list))
+                Text(stringResource(R.string.action_media_list_editor_create_new_list))
             }
         }
     }
 }
 
 @Composable
-private fun NotesSection(notes: String, onNotesChange: (String) -> Unit) {
+private fun NotesSection(
+    notes: String,
+    onNotesChange: (String) -> Unit,
+) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.AutoMirrored.Filled.Notes, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
-            Text(stringResource(R.string.label_personal_notes), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.label_media_list_editor_personal_notes), style = MaterialTheme.typography.titleMedium)
         }
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
             value = notes,
             onValueChange = onNotesChange,
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 100.dp),
-            label = { Text(stringResource(R.string.placeholder_personal_notes)) },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 100.dp),
+            label = { Text(stringResource(R.string.placeholder_media_list_editor_personal_notes)) },
             maxLines = 5,
         )
     }
 }
 
-
 @Preview(showBackground = true, name = "MediaListEditor Content Preview")
 @Composable
 private fun MediaListEditorContentPreview() {
-    val previewMedia = Media.Extended.empty().copy(
-        title = MediaTitle("Attack on Titan", "Shingeki no Kyojin", "進撃の巨人", "Attack on Titan"),
-        image = MediaImage("url_banner", "url_extra_large", "url_large", "url_medium", "#FFC107"),
-        category = Media.Category.Anime(
-            episodes = 87,
-            duration = 24,
-            broadcast = "Sundays at 00:10 (JST)",
-            premiered = "Spring 2013",
-            schedule = null,
-        ),
-        status = MediaStatus.RELEASING,
-        score = MediaScore(88, 89, 9.5f, 100000, 5000),
-        format = MediaFormat.TV,
-        countryCode = "JP", description = "Centuries ago...",
-        externalLinks = emptyList(), favourites = 12000, genres = emptyList(),
-        twitterTag = "#shingeki", isRecommendationBlocked = false, isReviewBlocked = false,
-        rankings = emptyList(), isLicensed = true, isLocked = false,
-        siteUrl = SiteUrl("anilist.co/anime/123", "myanimelist.net/anime/123"),
-        source = MediaSource.ANIME,
-        synonyms = emptyList(),
-        tags = emptyList(),
-        season = MediaSeason.SUMMER,
-        startDate = FuzzyDate(2013, 4, 7),
-        endDate = FuzzyDate.empty(),
-        trailer = MediaTrailer("trailer_id", "youtube", "thumbnail_url"),
-        isAdult = false,
-        isFavourite = false,
-        isFavouriteBlocked = false,
-        mediaList = MediaList.Core(
-            id = 1L, mediaId = 123L, userId = 1L,
-            status = MediaListStatus.CURRENT,
-            score = 9f,
-            progress = MediaListProgress.Anime(
-                episodeProgress = 60,
-                repeatedCount = 0,
-            ),
-            startedOn = FuzzyDate(2020, 1, 15),
-            finishedOn = FuzzyDate.empty(),
-            privacy = MediaListPrivacy(
-                isPrivate = false,
-                notes = "Best anime ever!",
-                isHidden = false,
-            ),
-            customLists = listOf(MediaList.CustomList("Favorites", true), MediaList.CustomList("To Discuss", false)),
-            advancedScores = emptyList(), priority = 0, createdOn = System.currentTimeMillis(),
-        ),
-        id = 1L,
-    )
-    val param = MediaListEditorRouter.MediaListEditorParam(
-        mediaId = 123L, mediaType = MediaType.ANIME, scoreFormat = ScoreFormat.POINT_10,
-    )
+    val previewMedia =
+        Media.Extended.empty().copy(
+            title = MediaTitle("Attack on Titan", "Shingeki no Kyojin", "進撃の巨人", "Attack on Titan"),
+            image = MediaImage("url_banner", "url_extra_large", "url_large", "url_medium", "#FFC107"),
+            category =
+                Media.Category.Anime(
+                    episodes = 87,
+                    duration = 24,
+                    broadcast = "Sundays at 00:10 (JST)",
+                    premiered = "Spring 2013",
+                    schedule = null,
+                ),
+            status = MediaStatus.RELEASING,
+            score = MediaScore(88, 89, 9.5f, 100000, 5000),
+            format = MediaFormat.TV,
+            countryCode = "JP",
+            description = "Centuries ago...",
+            externalLinks = emptyList(),
+            favourites = 12000,
+            genres = emptyList(),
+            twitterTag = "#shingeki",
+            isRecommendationBlocked = false,
+            isReviewBlocked = false,
+            rankings = emptyList(),
+            isLicensed = true,
+            isLocked = false,
+            siteUrl = SiteUrl("anilist.co/anime/123", "myanimelist.net/anime/123"),
+            source = MediaSource.ANIME,
+            synonyms = emptyList(),
+            tags = emptyList(),
+            season = MediaSeason.SUMMER,
+            startDate = FuzzyDate(2013, 4, 7),
+            endDate = FuzzyDate.empty(),
+            trailer = MediaTrailer("trailer_id", "youtube", "thumbnail_url"),
+            isAdult = false,
+            isFavourite = false,
+            isFavouriteBlocked = false,
+            mediaList =
+                MediaList.Core(
+                    id = 1L,
+                    mediaId = 123L,
+                    userId = 1L,
+                    status = MediaListStatus.CURRENT,
+                    score = 9f,
+                    progress =
+                        MediaListProgress.Anime(
+                            episodeProgress = 60,
+                            repeatedCount = 0,
+                        ),
+                    startedOn = FuzzyDate(2020, 1, 15),
+                    finishedOn = FuzzyDate.empty(),
+                    privacy =
+                        MediaListPrivacy(
+                            isPrivate = false,
+                            notes = "Best anime ever!",
+                            isHidden = false,
+                        ),
+                    customLists = listOf(MediaList.CustomList("Favorites", true), MediaList.CustomList("To Discuss", false)),
+                    advancedScores = emptyList(),
+                    priority = 0,
+                    createdOn = System.currentTimeMillis(),
+                ),
+            id = 1L,
+        )
+    val param =
+        MediaListEditorRouter.MediaListEditorParam(
+            mediaId = 123L,
+            mediaType = MediaType.ANIME,
+            scoreFormat = ScoreFormat.POINT_10,
+        )
     val state = rememberMediaListEditorState(MutableLiveData(previewMedia), param)
 
     PreviewTheme(wrapInSurface = true) {
