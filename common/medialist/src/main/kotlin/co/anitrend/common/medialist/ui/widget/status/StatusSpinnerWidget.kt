@@ -45,7 +45,7 @@ class StatusSpinnerWidget
                 context,
                 R.layout.adapter_status_spiner_item,
                 R.id.statusSpinnerText,
-                MediaListStatus.values().toList(),
+                MediaListStatus.entries,
             )
 
         val selectionChangeFlow: Flow<MediaListStatus> =
